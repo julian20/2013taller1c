@@ -6,7 +6,7 @@
  */
 #include <stdio.h>
 
-#include <model/Game.h>
+#include <Game.h>
 #include <model/ConfigurationReader.h>
 
 Game::Game() {
