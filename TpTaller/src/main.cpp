@@ -11,7 +11,7 @@
 #include <model/ConfigurationReader.h>
 #include <model/Game.h>
 
-#define CONFIGURATION_FILE "../configuration/entities.yaml"
+#define CONFIGURATION_FILE "/home/gonchub/workspace/TpTaller/configuration/entities.yaml"
 
 using namespace std;
 

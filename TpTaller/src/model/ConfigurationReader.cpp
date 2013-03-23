@@ -91,7 +91,7 @@ void operator >>(const YAML::Node& yamlNode, Entity& entity) {
  * @param configurationFile yaml configuration file.
  */
 void ConfigurationReader::loadConfiguration(std::string configurationFile) {
-    std::ifstream inputFile(configurationFile.c_str());
+    std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
     YAML::Parser parser(inputFile);
     YAML::Node yamlNode;
     parser.GetNextDocument(yamlNode);

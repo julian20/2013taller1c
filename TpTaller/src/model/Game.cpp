@@ -19,7 +19,7 @@ Game::Game(ConfigurationReader* cfgReader){
 }
 
 bool gameEnd() {
-    return false;
+    return true;
 }
 
 void getEvent() {
