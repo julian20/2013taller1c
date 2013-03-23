@@ -10,7 +10,7 @@
 #include <string>
 #include <stdio.h>
 #include <model/ConfigurationReader.h>
-#include <model/Game.h>
+#include <Game.h>
 
 #define CONFIGURATION_FILE "./configuration/entities.yaml"
 
