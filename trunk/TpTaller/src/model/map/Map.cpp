@@ -5,9 +5,9 @@
  * Created on March 21, 2013, 3:06 PM
  */
 
-#include <model/mapa/Mapa.h>
+#include <model/map/Map.h>
 
-Mapa::Mapa(int largoX, int largoY) {
+Map::Map(int largoX, int largoY) {
     //TODO - UNTESTED
     matriz = new void** [largoX];
     
@@ -19,7 +19,7 @@ Mapa::Mapa(int largoX, int largoY) {
 }
 
 //Destructor
-Mapa::~Mapa() {
+Map::~Map() {
     for (int i = 0; i < largoX; i++) {
         delete matriz[i];
     }
