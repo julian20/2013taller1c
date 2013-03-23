@@ -14,10 +14,8 @@ class ConfigurationReader {
 public:
     ConfigurationReader();
     ConfigurationReader(const ConfigurationReader& orig);
-   // void loadConfiguration(std::string configurationFile);
+    void loadConfiguration(std::string configurationFile);
     virtual ~ConfigurationReader();
-private:
-
 };
 
 #endif	/* CONFIGURATIONREADER_H */
