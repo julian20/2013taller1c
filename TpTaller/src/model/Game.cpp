@@ -4,6 +4,7 @@
  *  Created on: 22/03/2013
  *      Author: tomas
  */
+#include <stdio.h>
 
 #include <model/Game.h>
 #include <model/ConfigurationReader.h>
@@ -39,6 +40,7 @@ void draw() {
 void Game::run(){
 
     while (!gameEnd()) {
+    	printf("Hello World \n");
 /*        // 1ro leo entrada del usuario y resuelvo segun dicha entrada
         getEvent();
 
