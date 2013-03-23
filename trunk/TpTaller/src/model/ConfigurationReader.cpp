@@ -13,7 +13,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
-
+#include <exception>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -92,6 +93,11 @@ void operator >>(const YAML::Node& yamlNode, Entity& entity) {
  */
 void ConfigurationReader::loadConfiguration(std::string configurationFile) {
     std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
+    //Error Check
+    if (!inputFile){
+    	cout << "No se encontro el archivo de conf\n";
+    	exit(1);
+    }
     YAML::Parser parser(inputFile);
     YAML::Node yamlNode;
     parser.GetNextDocument(yamlNode);
