@@ -36,7 +36,7 @@ void refreshCharacters() {
 void draw() {
 }
 
-void run() {
+void Game::run(){
 
     while (!gameEnd()) {
 /*        // 1ro leo entrada del usuario y resuelvo segun dicha entrada
