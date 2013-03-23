@@ -5,19 +5,19 @@
  * Created on March 21, 2013, 3:06 PM
  */
 
-#ifndef MAPA_H
-#define	MAPA_H
+#ifndef MAP_H
+#define	MAP_H
 
-class Mapa {
+class Map {
 public:
-    Mapa(int largoX, int largoY);
-    Mapa(const Mapa& orig);
-    virtual ~Mapa();
+    Map(int largoX, int largoY);
+    Map(const Map& orig);
+    virtual ~Map();
 private:
     //Probablemente convenga tener un vector<void*> mas que con punteros directos, pendiente
     void*** matriz;
     int largoX, largoY;
 };
 
-#endif	/* MAPA_H */
+#endif	/* MAP_H */
 
