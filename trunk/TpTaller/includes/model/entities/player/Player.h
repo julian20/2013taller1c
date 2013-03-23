@@ -8,7 +8,7 @@
 #ifndef PLAYER_H
 #define	PLAYER_H
 
-#include <model/utilities/Position.h>
+#include <model/entityProperties/Position.h>
 
 class Player {
 public:
