@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
 
 	// Lectura del archivo de configuracion
 	ConfigurationReader* cfgReader = new ConfigurationReader();
-	//cfgReader->loadConfiguration(CONFIGURATION_FILE);
+	cfgReader->loadConfiguration(CONFIGURATION_FILE);
 
 	//Inicializamos todo lo que haya que inicializar
 	Game* game = new Game(cfgReader);
