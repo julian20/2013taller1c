@@ -10,10 +10,10 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
-#define BACK_IMG "../../resources/Lord_Of_The_Rings_Wallpaper_by_beyondwonderwall.png"
+#define BACK_IMG "resources/Lord_Of_The_Rings_Wallpaper_by_beyondwonderwall.png"
 #define NUM_BUTTONS 2
-#define BUTTON_0 = "../../resources/new_game_button.png"
-#define BUTTON_1 = "../../resources/exit_button.png"
+#define BUTTON_0 = "resources/new_game_button.png"
+#define BUTTON_1 = "resources/exit_button.png"
 
 namespace std {
 

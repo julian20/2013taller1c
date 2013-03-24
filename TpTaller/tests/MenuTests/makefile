@@ -7,6 +7,9 @@ LIBS=`sdl-config --cflags --libs` -L/usr/local/lib -lSDL -lSDL_image
 SRC=../../src/
 LIB=Menu
 
+#Directorio base del proyecto relativo a este makefile
+PROYECT_DIR = ../../
+
 VFLAGS= valgrind --leak-check=full --show-reachable=yes --track-origins=yes
 
 EXEC=menuTests
@@ -18,13 +21,18 @@ $(LIB).o:
 	
 $(EXEC): $(EXEC).cpp $(LIB).o
 	$(CC) $(CCFLAGS) $(LIB).o $(EXEC).cpp -o $(EXEC) $(LIBS)
+	cp $(EXEC) ../../
 	
 run: $(EXEC)
+	cd $(PROYECT_DIR);\
 	./$(EXEC)
 	
 test: 
+	cd $(PROYECT_DIR);\
 	$(VFLAGS) ./$(EXEC)
 	
 clean:
-	rm $(EXEC) *.o
+	rm $(EXEC) *.o;\
+	cd $(PROYECT_DIR);\
+	rm $(EXEC)
 	
