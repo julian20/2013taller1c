@@ -5,7 +5,23 @@
  * Created on 23 de marzo de 2013, 12:25
  */
 
-#include "view/PersonajeVista.h"
+#include <view/PersonajeVista.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
+
+//The frames per second
+const int FRAMES_PER_SECOND = 10;
+
+
+
+//como es animado necesito la cantidad de clips por lado.
+int NUMERODECLIPS=4;
+
+SDL_Rect clipsDerecha[ 4 ];
+SDL_Rect clipsIzquierda[ 4 ];
+SDL_Rect clipsArriba[ 4 ];
+SDL_Rect clipsAbajo[ 4 ];
+
 
 SDL_Surface *load_image( char* urlImagen )
 {
@@ -161,7 +177,8 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo)
     //    dibujar(miPersonaje->GetOffsetX(),miPersonaje->GetOffsetY(), this->personajeImagen, fondo, &clipsAbajo[ marco ] );
     }
 }
-/*
+
+
 void PersonajeVista::EstablecerLosClips(int cantidadPorLado)
 {
     //Clip the sprites
@@ -246,7 +263,7 @@ void PersonajeVista::EstablecerLosClips(int cantidadPorLado)
     clipsAbajo[ 3 ].w = PERSONAJE_ANCHO;
     clipsAbajo[ 3 ].h = PERSONAJE_ALTO;
 
-}*/
+}
 
 PersonajeVista::~PersonajeVista() 
 {

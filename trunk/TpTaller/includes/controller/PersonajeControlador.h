@@ -9,9 +9,8 @@
 #ifndef PERSONAJECONTROLADOR_H
 #define	PERSONAJECONTROLADOR_H
 
-#include "view/PersonajeVista.h"
+#include <view/PersonajeVista.h>
 
-SDL_Event event;
 
 class PersonajeControlador {
 public:
