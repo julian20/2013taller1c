@@ -5,8 +5,8 @@
  * Created on March 21, 2013, 10:57 AM
  */
 #include <stdlib.h>
-//#include <model/entities/player/Player.h>
-//#include <model/entityProperties/position/Position.h>
+#include <model/entities/player/Player.h>
+#include <model/entityProperties/position/Position.h>
 
 //Lucas: agregar mas parametros (level, armas que tiene, etc)?
 Player::Player(){
