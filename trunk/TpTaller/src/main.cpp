@@ -31,11 +31,10 @@ int main(int argc, char** argv) {
 
 	delete cfgReader;
 
-	MenuEvent event;
 
-	while (event != EXIT_EVENT){
-		menu->showMenu();
-		event = menu->getEvent();
+	while (true){
+
+		MenuEvent event = menu->getEvent();
 		switch (event){
 		case NEWGAME_EVENT:
 			game->run();
@@ -45,8 +44,9 @@ int main(int argc, char** argv) {
 			break;
 		case EXIT_EVENT:
 			exit(1);
-		//TODO: add more
+			//TODO: add more
 		}
+		menu->showMenu();
 	}
 
 	delete game;
