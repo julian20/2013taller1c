@@ -69,7 +69,7 @@ void dibujar( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_R
 }
 
 
-PersonajeVista::PersonajeVista(Personaje* unPersonaje,char* urlImagen) 
+PersonajeVista::PersonajeVista(Personaje* unPersonaje,char* urlImagen,SDL_Surface* fondo)
 {
   /* Faltaria lanzar una excepcion en caso de que no recieba alguno de los parametros
    *  if(!unPersonaje)
@@ -81,8 +81,10 @@ PersonajeVista::PersonajeVista(Personaje* unPersonaje,char* urlImagen)
 
    // try
     //{
+    	this->fondo=fondo;
         personajeImagen=this->CargarImagen(urlImagen);
-     //   this->EstablecerLosClips(NUMERODECLIPS);
+        this->EstablecerLosClips(NUMERODECLIPS);
+        this->Mostrar();
    /* }catch(ERROR e)
     {
         //TODO:cargo una imagen alternativa.
@@ -102,6 +104,7 @@ SDL_Surface* PersonajeVista::CargarImagen(char* img)
     //If there was a problem in loading the sprite
     if( !miPersonajeImagen)
     {
+    	printf("NO SE HA ENCONTRADO LA IMAGEN\n");
         //return false;
         //TODO:cargo una alternativa
     }
@@ -109,7 +112,7 @@ SDL_Surface* PersonajeVista::CargarImagen(char* img)
     estado=PERSONAJE_DERECHA;
     return miPersonajeImagen;
 }
-void PersonajeVista::Mostrar(SDL_Surface* fondo)
+void PersonajeVista::Mostrar()
 {
     //If Personaje is moving left
     if( this->miPersonaje->GetVelocidadX() < 0 )
@@ -162,19 +165,19 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo)
     //Show the stick figure
     if( estado == PERSONAJE_DERECHA )
     {
-      //  dibujar( miPersonaje->GetOffsetX(),miPersonaje->GetOffsetY(), this->personajeImagen, fondo, &clipsDerecha[ marco ] );
+        dibujar( miPersonaje->GetOffsetX(),miPersonaje->GetOffsetY(), this->personajeImagen, fondo, &clipsDerecha[ marco ] );
     }
     else if( estado == PERSONAJE_IZQUIERDA )
     {
-      //  dibujar( miPersonaje->GetOffsetX(),miPersonaje->GetOffsetY(), this->personajeImagen, fondo, &clipsIzquierda[ marco ] );
+        dibujar( miPersonaje->GetOffsetX(),miPersonaje->GetOffsetY(), this->personajeImagen, fondo, &clipsIzquierda[ marco ] );
     }else if (estado ==PERSONAJE_ARRIBA)
     {
         
-      //  dibujar(miPersonaje->GetOffsetX(),miPersonaje->GetOffsetY(), this->personajeImagen, fondo, &clipsArriba[ marco ] );
+        dibujar(miPersonaje->GetOffsetX(),miPersonaje->GetOffsetY(), this->personajeImagen, fondo, &clipsArriba[ marco ] );
         
     }else if (estado ==PERSONAJE_ABAJO)
     {
-    //    dibujar(miPersonaje->GetOffsetX(),miPersonaje->GetOffsetY(), this->personajeImagen, fondo, &clipsAbajo[ marco ] );
+        dibujar(miPersonaje->GetOffsetX(),miPersonaje->GetOffsetY(), this->personajeImagen, fondo, &clipsAbajo[ marco ] );
     }
 }
 
