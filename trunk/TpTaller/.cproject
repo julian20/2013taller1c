@@ -22,6 +22,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.base.1517943504" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.base">
 								<option id="gnu.both.asm.option.include.paths.882873020" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/include/c++/4.7.2}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TpTaller/includes}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1169332046" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -32,6 +33,7 @@
 									<listOptionValue builtIn="false" value="usr/include/c++/4.7.2"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/local/include/yaml-cpp}&quot;"/>
 									<listOptionValue builtIn="false" value="/usr/include"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TpTaller/includes}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.32094327" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.1193814438" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
@@ -42,6 +44,7 @@
 								<option id="gnu.c.compiler.option.debugging.level.585384809" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1162649562" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/include/c++/4.7.2}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TpTaller/includes}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1936584581" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -93,6 +96,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.305731449" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/local/include/yaml-cpp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/include/c++/4.7.2}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TpTaller/includes}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.2026616097" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -102,6 +106,7 @@
 								<option id="gnu.c.compiler.option.include.paths.48917219" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/local/include/yaml-cpp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/include/c++/4.7.2}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TpTaller/includes}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.87161437" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -122,6 +127,7 @@
 								<option id="gnu.both.asm.option.include.paths.1774700181" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/local/include/yaml-cpp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/include/c++/4.7.2}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TpTaller/includes}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.332913585" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -181,11 +187,11 @@
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1612871563;cdt.managedbuild.config.gnu.exe.debug.1612871563.;cdt.managedbuild.tool.gnu.cpp.compiler.base.1256782498;cdt.managedbuild.tool.gnu.cpp.compiler.input.419063738">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1612871563;cdt.managedbuild.config.gnu.exe.debug.1612871563.;cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.122793657;cdt.managedbuild.tool.gnu.cpp.compiler.input.1150576328">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
-		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1612871563;cdt.managedbuild.config.gnu.exe.debug.1612871563.;cdt.managedbuild.tool.gnu.c.compiler.mingw.base.1415467639;cdt.managedbuild.tool.gnu.c.compiler.input.940938455">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1612871563;cdt.managedbuild.config.gnu.exe.debug.1612871563.;cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.122793657;cdt.managedbuild.tool.gnu.cpp.compiler.input.1150576328">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1612871563;cdt.managedbuild.config.gnu.exe.debug.1612871563.;cdt.managedbuild.tool.gnu.cpp.compiler.base.494356663;cdt.managedbuild.tool.gnu.cpp.compiler.input.366660228">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
