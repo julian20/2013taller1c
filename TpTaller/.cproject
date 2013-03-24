@@ -29,11 +29,9 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.122793657" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base">
 								<option id="gnu.cpp.compiler.option.include.paths.729814931" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/includes}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/include/c++/4.7.2}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/include/SDL}&quot;"/>
+									<listOptionValue builtIn="false" value="usr/include/c++/4.7.2"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/local/include/yaml-cpp}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/include/c++/4.7}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/usr/include/c++}&quot;"/>
+									<listOptionValue builtIn="false" value="/usr/include"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.32094327" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.1193814438" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
