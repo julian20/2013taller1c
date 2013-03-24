@@ -5,7 +5,7 @@
  * Created on 23 de marzo de 2013, 12:25
  */
 
-#include "controller/PersonajeControlador.h"
+#include <controller/PersonajeControlador.h>
 
 PersonajeControlador::PersonajeControlador(Personaje* unPersonaje) {
     
@@ -14,6 +14,7 @@ PersonajeControlador::PersonajeControlador(Personaje* unPersonaje) {
 
 void PersonajeControlador::ControlarEventos()
 {
+	SDL_Event event;
 	int movVertical=PERSONAJE_ALTO/4;
 	int movHorizontal=PERSONAJE_ANCHO/4;
     //If a key was pressed

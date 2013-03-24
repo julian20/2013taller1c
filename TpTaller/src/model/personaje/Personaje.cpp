@@ -5,7 +5,7 @@
  * Created on 23 de marzo de 2013, 12:13
  */
 
-#include "model/Personaje.h"
+#include <model/Personaje.h>
 
 Personaje::Personaje()
 {
