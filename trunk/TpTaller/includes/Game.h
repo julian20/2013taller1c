@@ -12,7 +12,6 @@
 
 class Game {
 public:
-	Game();
 	Game(ConfigurationReader* cfgReader);
 	void run();
 	virtual ~Game();

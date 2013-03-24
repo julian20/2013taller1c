@@ -8,13 +8,9 @@
 #include <Game.h>
 #include <model/ConfigurationReader.h>
 
-Game::Game() {
+Game::Game(ConfigurationReader* cfgReader) {
 	// TODO Auto-generated constructor stub
 
-}
-
-Game::Game(ConfigurationReader* cfgReader){
-	// TODO
 }
 
 bool gameEnd() {
