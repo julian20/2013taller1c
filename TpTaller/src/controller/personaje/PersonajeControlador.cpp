@@ -12,18 +12,18 @@ PersonajeControlador::PersonajeControlador(Personaje* unPersonaje) {
     miPersonaje=unPersonaje;
 }
 
-void PersonajeControlador::ControlarEventos()
+void PersonajeControlador::ControlarEventos(SDL_Event& event)
 {
 
 	int movVertical=PERSONAJE_ALTO/4;
 	int movHorizontal=PERSONAJE_ANCHO/4;
     //If a key was pressed
-    SDL_Event event;
+   // SDL_Event event;
 	SDL_PollEvent(&event);
     if( event.type == SDL_KEYDOWN )
     {
             //Es la vista la que le da la info al controlador de cuanto debe desplazar el personaje.
-           if(event.key.keysym.sym == SDLK_RIGHT) miPersonaje->PersonajeMoverDerecha(movHorizontal);
+           if(event.key.keysym.sym == SDLK_RIGHT){ miPersonaje->PersonajeMoverDerecha(movHorizontal);}
            if(event.key.keysym.sym== SDLK_LEFT) miPersonaje->PersonajeMoverIzquierda(movHorizontal);
            if(event.key.keysym.sym==SDLK_UP) miPersonaje->PersonajeMoverArriba(movVertical);
            if(event.key.keysym.sym== SDLK_DOWN) miPersonaje->PersonajeMoverAbajo(movVertical);

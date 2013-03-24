@@ -26,9 +26,9 @@
 
 class PersonajeVista {
 public:
-    PersonajeVista(Personaje* unPersonaje,char* urlImagen);
+    PersonajeVista(Personaje* unPersonaje,char* urlImagen,SDL_Surface* fondo);
     SDL_Surface* CargarImagen(char* path);
-    void Mostrar(SDL_Surface* fondo);
+    void Mostrar();
     virtual ~PersonajeVista();
 private:
          void EstablecerLosClips(int cantidadPorLado);
@@ -36,6 +36,7 @@ private:
 
 
         //The surfaces
+        SDL_Surface* fondo;
         SDL_Surface* personajeImagen;
         //Its current frame
          int marco;

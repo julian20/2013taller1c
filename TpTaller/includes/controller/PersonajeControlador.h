@@ -16,7 +16,7 @@ class PersonajeControlador {
 public:
     PersonajeControlador(Personaje* unPersonaje);
     void PersonajeVerificarQueEsteEnRango();
-    void ControlarEventos();
+    void ControlarEventos(SDL_Event& event);
     PersonajeControlador(const PersonajeControlador& orig);
     virtual ~PersonajeControlador();
 private:
