@@ -19,6 +19,7 @@
 #define BUTTON_1 "resources/exit_button.png"
 #define BACK_MUSIC  "resources/sound/pirates.mp3"
 #define START_LAUGH "resources/sound/laugh.wav"
+#define START_TAUNT "resources/sound/darkness.wav"
 #define ENVIRONMENT_WINDOW "SDL_VIDEO_CENTERED=1"
 
 
@@ -104,7 +105,8 @@ void Menu::startMusic(){
 		exit(1);
 	}
 
-	startLaugh();
+	//startLaugh();
+
 
 	// Cargamos la musica
 
@@ -117,8 +119,8 @@ void Menu::startMusic(){
 	}
 
 
-	Mix_FadeInMusic(musica,-1,6000);
-
+	Mix_FadeInMusic(musica,-1,3000);
+	startVoice();
 
 
 }
@@ -145,14 +147,41 @@ void Menu::startLaugh(){
 
 	// Creamos un canal
 
-	Mix_AllocateChannels(1);
+	Mix_AllocateChannels(2);
+
+
+	// Introducimos el sonido en el canal
+	// En el canal 1 con una reproducción (0)
+
+	Mix_PlayChannel(1, sonido, 0);
+}
+
+void Menu::startVoice(){
+	// Cargamos un sonido
+
+	darknessVoice = Mix_LoadWAV(START_TAUNT);
+
+	if(darknessVoice == NULL) {
+
+		cerr << "No se puede cargar el darknessVoice de darkness" << endl;
+		exit(1);
+
+	}
+
+
+	// Establecemos el volumen para el darknessVoice
+
+	int volumen = 1000;
+
+	Mix_VolumeChunk(darknessVoice, volumen);
 
 
 	// Introducimos el sonido en el canal
 	// En el canal 1 con una reproducción (1)
 
-	Mix_PlayChannel(-1, sonido, 0);
+	Mix_PlayChannel(0, darknessVoice, 0);
 }
+
 
 
 Menu::~Menu() {
@@ -160,6 +189,7 @@ Menu::~Menu() {
 	SDL_FreeSurface(screen);
 	Mix_FreeMusic(musica);
 	Mix_FreeChunk(sonido);
+	Mix_FreeChunk(darknessVoice);
 	Mix_CloseAudio();
 	SDL_Quit();
 
