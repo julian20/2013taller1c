@@ -14,10 +14,12 @@ PersonajeControlador::PersonajeControlador(Personaje* unPersonaje) {
 
 void PersonajeControlador::ControlarEventos()
 {
-	SDL_Event event;
+
 	int movVertical=PERSONAJE_ALTO/4;
 	int movHorizontal=PERSONAJE_ANCHO/4;
     //If a key was pressed
+    SDL_Event event;
+	SDL_PollEvent(&event);
     if( event.type == SDL_KEYDOWN )
     {
             //Es la vista la que le da la info al controlador de cuanto debe desplazar el personaje.
