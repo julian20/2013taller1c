@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <model/ConfigurationReader.h>
 #include <Game.h>
+#include <Menu.h>
 
 #define CONFIGURATION_FILE "./configuration/entities.yaml"
 
@@ -24,13 +25,34 @@ int main(int argc, char** argv) {
 	// Lectura del archivo de configuracion
 	ConfigurationReader* cfgReader = new ConfigurationReader();
 	cfgReader->loadConfiguration(CONFIGURATION_FILE);
-	//Inicializamos todo lo que haya que inicializar
-	Game* game = new Game(cfgReader);
-	// GameLoop
-	game->run();
 
-	// Liberamos recursos
+	Menu* menu = new Menu();
+	Game* game = new Game(cfgReader);
+
+	delete cfgReader;
+
+	MenuEvent event;
+
+	while (event != EXIT_EVENT){
+		menu->showMenu();
+		event = menu->getEvent();
+		switch (event){
+		case NEWGAME_EVENT:
+			game->run();
+			break;
+		case CONFIG_EVENT:
+			menu->runConfigMenu();
+			break;
+		case EXIT_EVENT:
+			exit(1);
+		//TODO: add more
+		}
+	}
+
 	delete game;
+	delete menu;
+
+
 
 	return 0;
 }
