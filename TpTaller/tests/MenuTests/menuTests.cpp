@@ -12,7 +12,7 @@ using namespace std;
 
 
 // Change to main and run the makefile in the terminal.
-int main2(){
+int main(){
 
 	Menu* menu = new Menu();
 	menu->showMenu();
