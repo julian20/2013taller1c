@@ -18,6 +18,8 @@
 #define BUTTON_0 "resources/new_game_button.png"
 #define BUTTON_1 "resources/exit_button.png"
 #define BACK_MUSIC  "resources/sound/pirates.mp3"
+#define START_LAUGH "resources/sound/laugh.wav"
+
 
 namespace std {
 
@@ -100,7 +102,9 @@ void Menu::startMusic(){
 		exit(1);
 	}
 
-	// Cargamos un sonido
+	startLaugh();
+
+	// Cargamos la musica
 
 	musica = Mix_LoadMUS(BACK_MUSIC);
 
@@ -111,14 +115,50 @@ void Menu::startMusic(){
 	}
 
 
-	Mix_PlayMusic(musica,-1);
+	Mix_FadeInMusic(musica,-1,6000);
+
+
 
 }
+
+
+void Menu::startLaugh(){
+	// Cargamos un sonido
+
+	sonido = Mix_LoadWAV(START_LAUGH);
+
+	if(sonido == NULL) {
+
+		cerr << "No se puede cargar el sonido de la risa" << endl;
+		exit(1);
+
+	}
+
+
+	// Establecemos el volumen para el sonido
+
+	int volumen = 1000;
+
+	Mix_VolumeChunk(sonido, volumen);
+
+	// Creamos un canal
+
+	Mix_AllocateChannels(1);
+
+
+	// Introducimos el sonido en el canal
+	// En el canal 1 con una reproducción (1)
+
+	Mix_PlayChannel(-1, sonido, 0);
+}
+
 
 Menu::~Menu() {
 	// TODO Auto-generated destructor stub
 	SDL_FreeSurface(screen);
 	Mix_FreeMusic(musica);
+	Mix_FreeChunk(sonido);
+	Mix_CloseAudio();
 	SDL_Quit();
 
 }

@@ -29,8 +29,10 @@ public:
 	virtual ~Menu();
 private:
 	void startMusic();
+	void startLaugh();
 	SDL_Surface *screen;
 	Mix_Music *musica;
+	Mix_Chunk *sonido;
 };
 
 
