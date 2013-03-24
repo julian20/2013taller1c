@@ -12,6 +12,13 @@ class Position {
 public:
     Position(int x, int y, int z);
     void changeTo(int nuevaX, int nuevaY, int nuevaZ);
+	int getX() const;
+	void setX(int x);
+	int getY() const;
+	void setY(int y);
+	int getZ() const;
+	void setZ(int z);
+
 private:
     Position();
     int x, y, z;
