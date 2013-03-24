@@ -8,9 +8,9 @@
 #include <model/entityProperties/position/Position.h>
 
 Position::Position(){
-	x=0;
-	y=0;
-	z=0;
+	x = 0;
+	y = 0;
+	z = 0;
 }
 
 Position::Position(int coordX, int coordY, int coordZ) {
@@ -27,3 +27,26 @@ void Position::changeTo(int newX, int newY, int newZ) {
 
 }
 
+int Position::getX() const {
+	return x;
+}
+
+void Position::setX(int x) {
+	this->x = x;
+}
+
+int Position::getY() const {
+	return y;
+}
+
+void Position::setY(int y) {
+	this->y = y;
+}
+
+int Position::getZ() const {
+	return z;
+}
+
+void Position::setZ(int z) {
+	this->z = z;
+}

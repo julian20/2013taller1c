@@ -1,24 +1,30 @@
 - name: Ogre
-  position: [0, 5]
-  speed: 3
+  position: [3, 2, 1]
+  speed:
+    magnitude: 1
+    direction: [1, 2, 3]
   powers:
     - name: Club
-      damage: 10
+      damage: 2
     - name: Fist
-      damage: 8
+      damage: 3
 - name: Dragon
-  position: [1, 0]
-  speed: 7
+  position: [6, 5, 4]
+  speed:
+    magnitude: 4
+    direction: [4, 5, 6]
   powers:
     - name: Fire Breath
-      damage: 25
+      damage: 5
     - name: Claws
-      damage: 15
+      damage: 6
 - name: Wizard
-  position: [5, -3]
-  speed: 5
+  position: [9, 8, 7]
+  speed:
+    magnitude: 7
+    direction: [7, 8, 9]
   powers:
     - name: Acid Rain
-      damage: 50
+      damage: 8
     - name: Staff
-      damage: 3
+      damage: 9

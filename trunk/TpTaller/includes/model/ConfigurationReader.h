@@ -9,6 +9,7 @@
 #define	CONFIGURATIONREADER_H
 
 #include <string>
+#include <model/entities/Entity.h>
 
 class ConfigurationReader {
 public:
@@ -16,6 +17,9 @@ public:
     ConfigurationReader(const ConfigurationReader& orig);
     void loadConfiguration(std::string configurationFile);
     virtual ~ConfigurationReader();
+
+private:
+	void printEntity(Entity* parsedEntity);
 };
 
 #endif	/* CONFIGURATIONREADER_H */
