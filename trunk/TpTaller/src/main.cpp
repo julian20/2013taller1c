@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
 			menu->runConfigMenu();
 			break;
 		case EXIT_EVENT:
+			menu->~Menu();
 			exit(1);
 			//TODO: add more
 		}
