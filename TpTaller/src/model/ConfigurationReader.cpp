@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 #include <exception>
+#include <cstdlib>
 #include <stdlib.h>
 
 using namespace std;
