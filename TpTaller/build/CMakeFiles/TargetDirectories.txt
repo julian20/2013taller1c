@@ -1,0 +1,5 @@
+/home/damian/yaml-cpp/build/CMakeFiles/debuggable.dir
+/home/damian/yaml-cpp/build/util/CMakeFiles/parse.dir
+/home/damian/yaml-cpp/build/CMakeFiles/releasable.dir
+/home/damian/yaml-cpp/build/test/CMakeFiles/run-tests.dir
+/home/damian/yaml-cpp/build/CMakeFiles/yaml-cpp.dir

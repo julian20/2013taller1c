@@ -45,6 +45,8 @@ int main(int argc, char** argv) {
 		case EXIT_EVENT:
 			menu->~Menu();
 			exit(1);
+		default:
+			break;
 			//TODO: add more
 		}
 		menu->showMenu();
