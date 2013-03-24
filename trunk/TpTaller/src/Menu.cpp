@@ -34,7 +34,8 @@ SDL_Rect pos[NUM_BUTTONS];
 
 Menu::Menu() {
 	//La linea siguiente es para que la window se centre
-	putenv(ENVIRONMENT_WINDOW);
+	char environment_setting[] = ENVIRONMENT_WINDOW;
+	putenv(environment_setting);
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 
