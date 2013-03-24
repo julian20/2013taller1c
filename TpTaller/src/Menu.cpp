@@ -19,6 +19,7 @@
 #define BUTTON_1 "resources/exit_button.png"
 #define BACK_MUSIC  "resources/sound/pirates.mp3"
 #define START_LAUGH "resources/sound/laugh.wav"
+#define ENVIRONMENT_WINDOW "SDL_VIDEO_CENTERED=1"
 
 
 namespace std {
@@ -33,7 +34,7 @@ SDL_Rect pos[NUM_BUTTONS];
 
 Menu::Menu() {
 	//La linea siguiente es para que la window se centre
-	putenv("SDL_VIDEO_CENTERED=1");
+	putenv(ENVIRONMENT_WINDOW);
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 
