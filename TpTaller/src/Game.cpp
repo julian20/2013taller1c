@@ -2,7 +2,6 @@
  * Game.cpp
  *
  *  Created on: 22/03/2013
- *      Author: tomas
  */
 #include <stdio.h>
 
