@@ -30,9 +30,11 @@ public:
 private:
 	void startMusic();
 	void startLaugh();
+	void startVoice();
 	SDL_Surface *screen;
 	Mix_Music *musica;
 	Mix_Chunk *sonido;
+	Mix_Chunk *darknessVoice;
 };
 
 
