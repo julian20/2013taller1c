@@ -9,13 +9,15 @@
 #define MENU_H_
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
 
 namespace std {
 
 typedef enum {
 	NEWGAME_EVENT,
 	EXIT_EVENT,
-	CONFIG_EVENT
+	CONFIG_EVENT,
+	NOTHING_EVENT
 }MenuEvent;
 
 class Menu {
@@ -26,7 +28,9 @@ public:
 	void runConfigMenu();
 	virtual ~Menu();
 private:
+	void startMusic();
 	SDL_Surface *screen;
+	Mix_Music *musica;
 };
 
 

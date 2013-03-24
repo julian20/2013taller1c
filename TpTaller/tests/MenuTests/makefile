@@ -3,7 +3,7 @@ INCLUDES=../../includes
 
 CC= g++
 CCFLAGS= -g -Wall -pedantic -I$(INCLUDES) 
-LIBS=`sdl-config --cflags --libs` -L/usr/local/lib -lSDL -lSDL_image
+LIBS=`sdl-config --cflags --libs` -L/usr/local/lib -lSDL -lSDL_image -lSDL_gfx -lSDL_mixer
 SRC=../../src/
 LIB=Menu
 
