@@ -7,7 +7,7 @@
  */
 
 #include <cstdlib>
-#include <string>
+#include <string.h>
 #include <stdio.h>
 #include <model/ConfigurationReader.h>
 #include <Game.h>
