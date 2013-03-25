@@ -36,6 +36,17 @@ int Personaje::GetOffsetY()
 {
     return this->offSetY;
 }
+void Personaje::MoveTo(int x, int y,int desplazamientoX, int desplazamientoY)
+{
+	int despX=offSetX-x;
+	int despY=offSetY-y;
+	float pendiente=despY/despX;
+	while(offSetX!=x && offSetY!=y )
+	{
+		this->velocidadX+=pendiente*desplazamientoX;
+		this->velocidadY+=desplazamientoY;
+	}
+}
 void Personaje::PersonajeMover()
 {
     //Move

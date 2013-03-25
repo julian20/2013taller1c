@@ -15,6 +15,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+
+
 #include <vector>
 #include <exception>
 #include <cstdlib>
@@ -29,6 +31,11 @@ struct ThreeDimensionalVector {
 	int x, y, z;
 };
 
+void operator >>(const YAML::Node& yamlNode, ThreeDimensionalVector& vector) {
+	yamlNode[0] >> vector.x;
+	yamlNode[1] >> vector.y;
+	yamlNode[2] >> vector.z;
+}
 /**
  * Structure to represent the power of an entity.
  */
@@ -59,12 +66,6 @@ struct AuxEntity {
 /**
  * Extraction operator for two dimensional vectors.
  */
-void operator >>(const YAML::Node& yamlNode, ThreeDimensionalVector& vector) {
-	yamlNode[0] >> vector.x;
-	yamlNode[1] >> vector.y;
-	yamlNode[2] >> vector.z;
-}
-
 /**
  * Extraction operator for power.
  */

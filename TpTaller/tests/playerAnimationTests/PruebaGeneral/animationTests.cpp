@@ -197,10 +197,10 @@ int main( int argc, char* args[] )
         //While there's events to handle
         while( SDL_PollEvent( &event ) )
         {
-        	//printf("se ha producido un evento\n");
-            miControladorDePersonaje->ControlarEventos(event);
-            miControladorDePersonaje->PersonajeVerificarQueEsteEnRango();
-            //If the user has Xed out the window
+
+        	miControladorDePersonaje->ControlarEventos(event);
+            //Si se cierra la ventana.
+
             if( event.type == SDL_QUIT )
             {
                 //Quit the program
@@ -209,6 +209,7 @@ int main( int argc, char* args[] )
         }
         //Move the stick figure
         miPersonaje->PersonajeMover();
+        miControladorDePersonaje->PersonajeVerificarQueEsteEnRango();
        // miPersonaje->PersonajeMover();
 
         //Fill the screen white
@@ -229,6 +230,9 @@ int main( int argc, char* args[] )
             SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
         }
     }
+    miControladorDePersonaje->~PersonajeControlador();
+    miPersonaje->~Personaje();
+    miPersonajeVista->~PersonajeVista();
     return 0;
 }
 
