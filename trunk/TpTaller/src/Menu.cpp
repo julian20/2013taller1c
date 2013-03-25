@@ -235,11 +235,12 @@ MenuEvent Menu::checkReleasedButton(SDL_Event event){
 	//TODO harcoded for 1 button
 	for (int i = 0 ; i < NUM_BUTTONS ; i++){
 
+		SDL_FreeSurface(buttons[i].surface);
+		buttons[i].surface = IMG_Load(buttons_released[i]);
+		SDL_BlitSurface(buttons[i].surface, NULL, screen, &(buttons[i].pos));
+		SDL_UpdateRects(screen,1,&(buttons[i].pos));
+
 		if (mouseIsOnButton(buttons[i],event)){
-			SDL_FreeSurface(buttons[i].surface);
-			buttons[i].surface = IMG_Load(buttons_released[i]);
-			SDL_BlitSurface(buttons[i].surface, NULL, screen, &(buttons[i].pos));
-			SDL_UpdateRects(screen,1,&(buttons[i].pos));
 			return buttons[i].event;
 		}
 	}
