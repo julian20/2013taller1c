@@ -41,10 +41,11 @@ Menu::Menu() {
 	if (!info)
 		screen = SDL_SetVideoMode(default_w, default_h, default_bpp,
 				SDL_HWSURFACE | SDL_RESIZABLE);
-	else
+	else{
 		screen = SDL_SetVideoMode(info->current_w, info->current_h,
 				info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE | SDL_RESIZABLE);
 
+	}
 	if (!screen) {
 		fprintf(stderr, "No se pudo establecer el modo de video: %s",
 				SDL_GetError());
@@ -56,6 +57,9 @@ Menu::Menu() {
 
 void blitButtons(SDL_Surface* screen) {
 
+	//liberamos la anterior like a champignon
+	if(buttons[0].surface)
+		SDL_FreeSurface(buttons[0].surface);
 	buttons[0].surface = IMG_Load(BUTTON_0);
 	if (!buttons[0].surface) {
 		fprintf(stderr, "No se ha podido cargar la imagen de boton: %s\n",
@@ -65,7 +69,7 @@ void blitButtons(SDL_Surface* screen) {
 
 	SDL_Event event;
 
-	while (SDL_PollEvent(&event)){
+	while (SDL_PollEvent(&event)!=0){
 		if (event.type == SDL_MOUSEBUTTONDOWN){
 			if (event.button.x > buttons[0].pos.x && event.button.x < buttons[0].pos.x + buttons[0].pos.w
 					&& event.button.y > buttons[0].pos.y && event.button.y < buttons[0].pos.y + buttons[0].pos.h){
@@ -73,6 +77,9 @@ void blitButtons(SDL_Surface* screen) {
 			}
 
 		}
+		//TODO - HARCODED
+		if (event.type == SDL_QUIT)
+			exit(0);
 	}
 
 
@@ -89,16 +96,16 @@ void blitButtons(SDL_Surface* screen) {
 }
 
 void Menu::showMenu() {
-	SDL_Surface *background_tmp = IMG_Load(BACK_IMG);
-	if (!background_tmp) {
+	SDL_Surface *background_image = IMG_Load(BACK_IMG);
+	if (!background_image) {
 		fprintf(stderr, "No se ha podido cargar la imagen de fondo: %s\n",
 				SDL_GetError());
 		exit(1);
 	}
 
-	float escalaX = (float) screen->w / background_tmp->w;
-	float escalaY = (float) screen->h / background_tmp->h;
-	background_tmp = rotozoomSurfaceXY(background_tmp, 0, escalaX, escalaY, 0);
+	float escalaX = (float) screen->w / background_image->w;
+	float escalaY = (float) screen->h / background_image->h;
+	SDL_Surface* background_tmp = rotozoomSurfaceXY(background_image, 0, escalaX, escalaY, 0);
 	SDL_Surface* background = SDL_DisplayFormatAlpha(background_tmp);
 
 	SDL_Rect dest;
@@ -110,16 +117,19 @@ void Menu::showMenu() {
 
 	blitButtons(screen);
 	SDL_UpdateRects(screen, 1, &dest);
+	SDL_FreeSurface(background_image);
 	SDL_FreeSurface(background_tmp);
+	SDL_FreeSurface(background);
 }
 
 /* Lucas: esto hecho de esta forma demora 4 segundos, directamente
  ciclando sobre el event en main tarda 1 sec, para revisar */
 MenuEvent Menu::getEvent() {
 	SDL_Event event;
-	SDL_PollEvent(&event);
+	while(SDL_PollEvent(&event)!=0){
 	if (event.type == SDL_QUIT)
 		return EXIT_EVENT;
+	}
 	return NOTHING_EVENT;
 }
 
