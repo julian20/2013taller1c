@@ -22,22 +22,22 @@ typedef enum {
 	NOTHING_EVENT
 }MenuEvent;
 
-typedef struct button{
-	SDL_Rect pos;
-	SDL_Surface* surface;
-}Button;
-
 class Menu {
 public:
 	Menu();
-	void showMenu();
-	MenuEvent getEvent();
+	void init();
+	MenuEvent run();
 	void runConfigMenu();
 	virtual ~Menu();
 private:
+	void startScreen();
+	void startButtons();
 	void startMusic();
 	void startLaugh();
 	void startVoice();
+
+	void checkPressedButton(SDL_Event event);
+	MenuEvent checkReleasedButton(SDL_Event event);
 	SDL_Surface *screen;
 	Mix_Music *musica;
 	Mix_Chunk *sonido;

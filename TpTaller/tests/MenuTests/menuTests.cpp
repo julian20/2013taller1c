@@ -7,6 +7,7 @@
  
 
 #include <Menu.h>
+#include <iostream>
 
 using namespace std;
 
@@ -15,24 +16,31 @@ using namespace std;
 int main(){
 
 	Menu* menu = new Menu();
-	while (true){
+	menu->init();
 
-			MenuEvent event = menu->getEvent();
-			switch (event){
-			case NEWGAME_EVENT:
-				break;
-			case CONFIG_EVENT:
-				menu->runConfigMenu();
-				break;
-			case EXIT_EVENT:
-				menu->~Menu();
-				exit(1);
-			default:
-				break;
-				//TODO: add more
-			}
-			menu->showMenu();
+	MenuEvent event = NOTHING_EVENT;
+
+	while(event != EXIT_EVENT){
+
+		event = menu->run();
+		switch (event){
+		case NOTHING_EVENT:
+			break;
+		case NEWGAME_EVENT:
+			//Aca inicio el juego
+			cout << "Se inicio el juego" << endl;
+			break;
+		case CONFIG_EVENT:
+			//Aca inicio el menu de configuraciones
+			cout << "Se inicio el menu de configuraciones" << endl;
+			break;
+		case EXIT_EVENT:
+			break;
+		}
+
+
 	}
+
 	delete menu;
 
 	return 0;

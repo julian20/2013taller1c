@@ -26,27 +26,33 @@ int main(int argc, char** argv) {
 	//cfgReader->loadConfiguration(CONFIGURATION_FILE);
 
 	Menu* menu = new Menu();
+	menu->init();
 	Game* game = new Game(cfgReader);
 
 	delete cfgReader;
 
-	while (true){
-		MenuEvent event = menu->getEvent();
+	MenuEvent event;
+
+	while(event != EXIT_EVENT){
+
+		event = menu->run();
 		switch (event){
+		case NOTHING_EVENT:
+			break;
+		case EXIT_EVENT:
+			break;
 		case NEWGAME_EVENT:
+			//Aca inicio el juego
 			game->run();
 			break;
 		case CONFIG_EVENT:
-			menu->runConfigMenu();
+			//Aca inicio el menu de configuraciones
+			cout << "Se inicio el menu de configuraciones" << endl;
 			break;
-		case EXIT_EVENT:
-			menu->~Menu();
-			exit(1);
-		default:
-			break;
-			//TODO: add more
+
 		}
-		menu->showMenu();
+
+
 	}
 
 	delete game;

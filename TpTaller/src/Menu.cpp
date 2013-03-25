@@ -15,8 +15,6 @@
 #include <iostream>
 
 #define BACK_IMG "resources/lich.jpg"
-#define BUTTON_0 "resources/buttons/new_game_button.png"
-#define BUTTON_0_PRESSED "resources/buttons/new_game_pressed.png"
 #define BACK_MUSIC  "resources/sound/pirates.ogg"
 #define START_LAUGH "resources/sound/laugh.wav"
 #define START_TAUNT "resources/sound/darkness.wav"
@@ -28,7 +26,17 @@ int default_w = 1024;
 int default_h = 768;
 int default_bpp = 0;
 
+typedef struct button{
+	SDL_Rect pos;
+	SDL_Surface* surface;
+	MenuEvent event;
+}Button;
+
 Button buttons[NUM_BUTTONS];
+
+const char* buttons_released[NUM_BUTTONS] = {"resources/buttons/new_game_button.png","resources/buttons/exit_button.png"};
+const char* buttons_pressed[NUM_BUTTONS] = {"resources/buttons/new_game_pressed.png","resources/buttons/exit_pressed.png"};
+const MenuEvent button_events[NUM_BUTTONS] = {NEWGAME_EVENT,EXIT_EVENT};
 
 Menu::Menu() {
 	//La linea siguiente es para que la window se centre
@@ -51,55 +59,13 @@ Menu::Menu() {
 				SDL_GetError());
 		exit(1);
 	}
-
-
-	//startMusic();
-	buttons[0].surface = IMG_Load(BUTTON_0);
-	if (!buttons[0].surface) {
-		fprintf(stderr, "No se ha podido cargar la imagen de boton: %s\n",
-				SDL_GetError());
-		exit(1);
-	};
 }
 
-void blitButtons(SDL_Surface* screen) {
+/*
+ * <init>
+ */
 
-	SDL_Event event;
-
-	while (SDL_PollEvent(&event)!=0){
-		switch(event.type){
-		case SDL_MOUSEBUTTONDOWN:
-			if (event.button.x > buttons[0].pos.x && event.button.x < buttons[0].pos.x + buttons[0].pos.w
-					&& event.button.y > buttons[0].pos.y && event.button.y < buttons[0].pos.y + buttons[0].pos.h){
-				SDL_FreeSurface(buttons[0].surface);
-				buttons[0].surface = IMG_Load(BUTTON_0_PRESSED);
-			}
-			break;
-
-		case SDL_MOUSEBUTTONUP:
-			SDL_FreeSurface(buttons[0].surface);
-			buttons[0].surface = IMG_Load(BUTTON_0);
-			break;
-		//TODO - HARCODED
-		case SDL_QUIT:
-			exit(0);
-
-		}
-	}
-
-
-
-	buttons[0].pos.x = screen->w/2 - buttons[0].surface->w/2;
-	buttons[0].pos.y = screen->h/3 - buttons[0].surface->h/2;
-	buttons[0].pos.h = buttons[0].surface->h;
-	buttons[0].pos.w = buttons[0].surface->w;
-
-
-	SDL_BlitSurface(buttons[0].surface, NULL, screen, &(buttons[0].pos));
-
-}
-
-void Menu::showMenu() {
+void Menu::startScreen(){
 	SDL_Surface *background_image = IMG_Load(BACK_IMG);
 	if (!background_image) {
 		fprintf(stderr, "No se ha podido cargar la imagen de fondo: %s\n",
@@ -119,27 +85,35 @@ void Menu::showMenu() {
 	dest.w = background->w;
 	SDL_BlitSurface(background, NULL, screen, &dest);
 
-	blitButtons(screen);
 	SDL_UpdateRects(screen, 1, &dest);
+
 	SDL_FreeSurface(background_image);
 	SDL_FreeSurface(background_tmp);
 	SDL_FreeSurface(background);
 }
 
-/* Lucas: esto hecho de esta forma demora 4 segundos, directamente
- ciclando sobre el event en main tarda 1 sec, para revisar */
-MenuEvent Menu::getEvent() {
-	SDL_Event event;
-	while(SDL_PollEvent(&event)!=0){
-	if (event.type == SDL_QUIT)
-		return EXIT_EVENT;
+void Menu::startButtons(){
+
+	SDL_Rect* rects = (SDL_Rect*) malloc(NUM_BUTTONS*sizeof(SDL_Rect));
+
+	for (int i = 0 ; i < NUM_BUTTONS ; i++){
+		buttons[i].surface = IMG_Load(buttons_released[i]);
+		buttons[i].pos.x = screen->w/2 - buttons[i].surface->w/2;
+		buttons[i].pos.y = screen->h/3 - buttons[i].surface->h/2 + i*buttons[i].surface->h*2;
+		buttons[i].pos.h = buttons[i].surface->h;
+		buttons[i].pos.w = buttons[i].surface->w;
+		buttons[i].event = button_events[i];
+
+		SDL_BlitSurface(buttons[i].surface,NULL,screen,&(buttons[i].pos));
+		rects[i] = buttons[i].pos;
 	}
-	return NOTHING_EVENT;
+
+	SDL_UpdateRects(screen, NUM_BUTTONS, rects);
+
+	free(rects);
+
 }
 
-void Menu::runConfigMenu() {
-
-}
 void Menu::startMusic() {
 	// Inicializamos la librería SDL_Mixer
 
@@ -216,6 +190,98 @@ void Menu::startVoice() {
 
 	Mix_PlayChannel(0, darknessVoice, 0);
 }
+
+void Menu::init(){
+	startScreen();
+	startButtons();
+	startMusic();
+}
+
+/*
+ * </init>
+ */
+
+
+/*
+ * <run>
+ */
+
+// Funcion fea
+bool mouseIsOnButton(Button button,SDL_Event event){
+
+	return (event.button.x > button.pos.x && event.button.x < button.pos.x + button.pos.w
+			&& event.button.y > button.pos.y && event.button.y < button.pos.y + button.pos.h);
+
+}
+
+void Menu::checkPressedButton(SDL_Event event){
+
+	//TODO harcoded for 1 button
+	for (int i = 0 ; i < NUM_BUTTONS ; i++){
+
+		if (mouseIsOnButton(buttons[i],event)){
+			SDL_FreeSurface(buttons[i].surface);
+			buttons[i].surface = IMG_Load(buttons_pressed[i]);
+			SDL_BlitSurface(buttons[i].surface, NULL, screen, &(buttons[i].pos));
+			SDL_UpdateRects(screen,1,&(buttons[i].pos));
+		}
+
+	}
+
+}
+
+MenuEvent Menu::checkReleasedButton(SDL_Event event){
+
+	//TODO harcoded for 1 button
+	for (int i = 0 ; i < NUM_BUTTONS ; i++){
+
+		if (mouseIsOnButton(buttons[i],event)){
+			SDL_FreeSurface(buttons[i].surface);
+			buttons[i].surface = IMG_Load(buttons_released[i]);
+			SDL_BlitSurface(buttons[i].surface, NULL, screen, &(buttons[i].pos));
+			SDL_UpdateRects(screen,1,&(buttons[i].pos));
+			return buttons[i].event;
+		}
+	}
+
+	return NOTHING_EVENT;
+
+}
+
+
+MenuEvent Menu::run() {
+
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event)){
+		switch (event.type){
+		case SDL_QUIT:
+			return EXIT_EVENT;
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			checkPressedButton(event);
+			return NOTHING_EVENT;
+			break;
+		case SDL_MOUSEBUTTONUP:
+			return checkReleasedButton(event);
+		default:
+			return NOTHING_EVENT;
+			break;
+		}
+	}
+
+	return NOTHING_EVENT;
+}
+
+/*
+ * </run>
+ */
+
+
+void Menu::runConfigMenu() {
+
+}
+
 
 Menu::~Menu() {
 	// TODO Auto-generated destructor stub
