@@ -6,8 +6,10 @@
   powers:
     - name: Club
       damage: 2
+      range: 1
     - name: Fist
       damage: 3
+      range: 1
 - name: Dragon
   position: [6, 5, 4]
   speed:
@@ -16,8 +18,10 @@
   powers:
     - name: Fire Breath
       damage: 5
+      range: 2
     - name: Claws
       damage: 6
+      range: 1
 - name: Wizard
   position: [9, 8, 7]
   speed:
@@ -26,5 +30,7 @@
   powers:
     - name: Acid Rain
       damage: 8
+      range: 3
     - name: Staff
       damage: 9
+      range: 1

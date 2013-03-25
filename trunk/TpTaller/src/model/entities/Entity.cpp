@@ -7,6 +7,8 @@
 
 #include <model/entities/Entity.h>
 
+#include <vector>
+
 /**
  * TODO Player, personaje deben heredar de esta entidad, ya que
  * tendrian los mismos atributos basicos.
@@ -18,10 +20,12 @@ Entity::Entity() {
 	this->name = "";
 }
 
-Entity::Entity(std::string name, Position* position, Speed* speed) {
+Entity::Entity(std::string name, Position* position, Speed* speed,
+		std::vector<Power*> powers) {
 	this->position = position;
 	this->speed = speed;
 	this->name = name;
+	this->powers = powers;
 }
 
 Entity::~Entity() {
@@ -51,4 +55,12 @@ const std::string Entity::getName() const {
 
 void Entity::setName(std::string name) {
 	this->name = name;
+}
+
+std::vector<Power*> Entity::getPowers() {
+	return powers;
+}
+
+void Entity::setPowers(const std::vector<Power*> powers) {
+	this->powers = powers;
 }
