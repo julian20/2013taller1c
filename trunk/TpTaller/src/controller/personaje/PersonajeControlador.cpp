@@ -37,6 +37,10 @@ void PersonajeControlador::ControlarEventos(SDL_Event& event)
     	           if(event.key.keysym.sym== SDLK_LEFT) miPersonaje->PersonajeMoverDerecha(movHorizontal);
     	           if(event.key.keysym.sym==SDLK_UP) miPersonaje->PersonajeMoverAbajo(movVertical);
     	           if(event.key.keysym.sym== SDLK_DOWN)  miPersonaje->PersonajeMoverArriba(movVertical);
+    }else if(event.type==SDL_MOUSEBUTTONDOWN)
+    {
+    	miPersonaje->MoveTo(event.button.x,event.button.y,movHorizontal, movVertical);
+
     }
 }
 

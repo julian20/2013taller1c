@@ -16,6 +16,7 @@ const int PERSONAJE_ABAJO = 3;
 
 class Personaje {
 public:
+	void MoveTo(int x , int y,int desplazamientoX,int desplazamientoY);
       private:
     //The offset
     int offSetX;
