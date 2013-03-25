@@ -5,8 +5,8 @@
  *      Author: gonchub
  */
 
-#include <model/entityProperties/speed/Speed.h>
-#include <model/entityProperties/position/Position.h>
+#include <model/entityProperties/Speed.h>
+#include <model/entityProperties/Position.h>
 
 Speed::Speed() {
 	this->magnitude = 0;

@@ -6,8 +6,8 @@
  */
 
 #include <yaml-cpp/yaml.h>
-#include <model/entityProperties/speed/Speed.h>
-#include <model/entityProperties/position/Position.h>
+#include <model/entityProperties/Speed.h>
+#include <model/entityProperties/Position.h>
 #include <model/ConfigurationReader.h>
 #include <model/entities/Entity.h>
 
