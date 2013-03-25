@@ -52,36 +52,40 @@ Menu::Menu() {
 		exit(1);
 	}
 
+
 	//startMusic();
-}
-
-void blitButtons(SDL_Surface* screen) {
-
-	//liberamos la anterior like a champignon
-	if(buttons[0].surface)
-		SDL_FreeSurface(buttons[0].surface);
 	buttons[0].surface = IMG_Load(BUTTON_0);
 	if (!buttons[0].surface) {
 		fprintf(stderr, "No se ha podido cargar la imagen de boton: %s\n",
 				SDL_GetError());
 		exit(1);
-	}
+	};
+}
+
+void blitButtons(SDL_Surface* screen) {
 
 	SDL_Event event;
 
 	while (SDL_PollEvent(&event)!=0){
-		if (event.type == SDL_MOUSEBUTTONDOWN){
+		switch(event.type){
+		case SDL_MOUSEBUTTONDOWN:
 			if (event.button.x > buttons[0].pos.x && event.button.x < buttons[0].pos.x + buttons[0].pos.w
 					&& event.button.y > buttons[0].pos.y && event.button.y < buttons[0].pos.y + buttons[0].pos.h){
+				SDL_FreeSurface(buttons[0].surface);
 				buttons[0].surface = IMG_Load(BUTTON_0_PRESSED);
 			}
+			break;
+
+		case SDL_MOUSEBUTTONUP:
+			SDL_FreeSurface(buttons[0].surface);
+			buttons[0].surface = IMG_Load(BUTTON_0);
+			break;
+		//TODO - HARCODED
+		case SDL_QUIT:
+			exit(0);
 
 		}
-		//TODO - HARCODED
-		if (event.type == SDL_QUIT)
-			exit(0);
 	}
-
 
 
 
