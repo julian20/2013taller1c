@@ -15,11 +15,24 @@ using namespace std;
 int main(){
 
 	Menu* menu = new Menu();
-	menu->showMenu();
-	SDL_Event event;
+	while (true){
 
-	while (event.type != SDL_QUIT)
-		SDL_PollEvent(&event);
+			MenuEvent event = menu->getEvent();
+			switch (event){
+			case NEWGAME_EVENT:
+				break;
+			case CONFIG_EVENT:
+				menu->runConfigMenu();
+				break;
+			case EXIT_EVENT:
+				menu->~Menu();
+				exit(1);
+			default:
+				break;
+				//TODO: add more
+			}
+			menu->showMenu();
+	}
 	delete menu;
 
 	return 0;
