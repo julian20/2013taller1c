@@ -6,7 +6,7 @@
  */
 #include <stdlib.h>
 #include <model/entities/player/Player.h>
-#include <model/entityProperties/position/Position.h>
+#include <model/entityProperties/Position.h>
 
 //Lucas: agregar mas parametros (level, armas que tiene, etc)?
 Player::Player(){

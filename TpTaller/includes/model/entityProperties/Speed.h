@@ -8,7 +8,7 @@
 #ifndef SPEED_H_
 #define SPEED_H_
 
-#include <model/entityProperties/position/Position.h>
+#include <model/entityProperties/Position.h>
 
 /**
  * TODO Uso la posicion como un vector para definir la direccion, en realidad

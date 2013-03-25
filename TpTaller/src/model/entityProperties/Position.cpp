@@ -5,7 +5,7 @@
  * Created on March 21, 2013, 10:58 AM
  */
 
-#include <model/entityProperties/position/Position.h>
+#include <model/entityProperties/Position.h>
 
 Position::Position(){
 	x = 0;
