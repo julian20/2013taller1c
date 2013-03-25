@@ -13,12 +13,19 @@
 
 namespace std {
 
+#define NUM_BUTTONS 2
+
 typedef enum {
 	NEWGAME_EVENT,
 	EXIT_EVENT,
 	CONFIG_EVENT,
 	NOTHING_EVENT
 }MenuEvent;
+
+typedef struct button{
+	SDL_Rect pos;
+	SDL_Surface* surface;
+}Button;
 
 class Menu {
 public:
