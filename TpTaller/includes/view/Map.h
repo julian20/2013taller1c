@@ -2,6 +2,7 @@
 #define	MAP_H
 
 #include <model/map/MapData.h>
+#include <controller/MapController.h>
 #include <string>
 #include <iostream>
 #include <SDL/SDL.h>
@@ -21,8 +22,13 @@ private:
     string texturesPaths[ MapData::AMOUNT_TYPES ];
     SDL_Surface* tilesTextures[ MapData::AMOUNT_TYPES ];
     string backgroundPath;
+
+    MapController* mapController;
+    int cameraX, cameraY;
+
     void DefineTexturePaths();
     void GraphicalSetup();
+    void CameraUpdate();
 };
 
 #endif	/* MAP_H */
