@@ -6,7 +6,6 @@
  */
 
 #include <controller/PersonajeControlador.h>
-
 PersonajeControlador::PersonajeControlador(Personaje* unPersonaje) {
     
     miPersonaje=unPersonaje;
@@ -25,7 +24,7 @@ void PersonajeControlador::ControlarEventos(SDL_Event& event)
             //Es la vista la que le da la info al controlador de cuanto debe desplazar el personaje.
            if(event.key.keysym.sym == SDLK_RIGHT){ miPersonaje->PersonajeMoverDerecha(movHorizontal);}
            if(event.key.keysym.sym== SDLK_LEFT) miPersonaje->PersonajeMoverIzquierda(movHorizontal);
-           if(event.key.keysym.sym==SDLK_UP) miPersonaje->PersonajeMoverArriba(movVertical);
+           if(event.key.keysym.sym==SDLK_UP) {printf("toco arriba\n");miPersonaje->PersonajeMoverArriba(movVertical);}
            if(event.key.keysym.sym== SDLK_DOWN) miPersonaje->PersonajeMoverAbajo(movVertical);
     }
     //If a key was released
@@ -33,15 +32,15 @@ void PersonajeControlador::ControlarEventos(SDL_Event& event)
     {
     	  //Es la vista la que le da la info al controlador de cuanto debe desplazar el personaje.
 
-    	           if(event.key.keysym.sym == SDLK_RIGHT) miPersonaje->PersonajeMoverIzquierda(movHorizontal);
-    	           if(event.key.keysym.sym== SDLK_LEFT) miPersonaje->PersonajeMoverDerecha(movHorizontal);
-    	           if(event.key.keysym.sym==SDLK_UP) miPersonaje->PersonajeMoverAbajo(movVertical);
-    	           if(event.key.keysym.sym== SDLK_DOWN)  miPersonaje->PersonajeMoverArriba(movVertical);
-    }else if(event.type==SDL_MOUSEBUTTONDOWN)
+    	           if(event.key.keysym.sym == SDLK_RIGHT)/* miPersonaje->FrenarX();*/miPersonaje->PersonajeMoverIzquierda(movHorizontal);
+    	           if(event.key.keysym.sym== SDLK_LEFT) /*miPersonaje->FrenarX();*/miPersonaje->PersonajeMoverDerecha(movHorizontal);
+    	           if(event.key.keysym.sym==SDLK_UP) /*miPersonaje->FrenarY();*/miPersonaje->PersonajeMoverAbajo(movVertical);
+    	           if(event.key.keysym.sym== SDLK_DOWN) /* miPersonaje->FrenarY();*/miPersonaje->PersonajeMoverArriba(movVertical);
+  /*  }else if(event.type==SDL_MOUSEBUTTONDOWN)
     {
     	miPersonaje->MoveTo(event.button.x,event.button.y,movHorizontal, movVertical);
 
-    }
+    */}
 }
 
 void PersonajeControlador::PersonajeVerificarQueEsteEnRango()

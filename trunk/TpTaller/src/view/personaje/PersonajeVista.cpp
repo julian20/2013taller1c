@@ -141,7 +141,7 @@ void PersonajeVista::Mostrar()
         //Move to the next marco in the animation
         marco++;
     }
-    else if( miPersonaje->GetVelocidadY() > 0 )
+    else if( miPersonaje->GetVelocidadY() < 0 )
     {
         //Set the animation to right
         estado = PERSONAJE_ARRIBA;
@@ -161,7 +161,7 @@ void PersonajeVista::Mostrar()
     {
         marco = 0;
     }
-
+    printf("Estado del personaje %i \n", estado);
     //Show the stick figure
     if( estado == PERSONAJE_DERECHA )
     {
