@@ -1,6 +1,6 @@
 /* 
  * File:   ConfigurationReader.cpp
- * Author: gonchub
+ * Author: gonchub (el niño parser)
  * 
  * Created on March 21, 2013, 9:25 PM
  */
@@ -15,7 +15,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
 #include <vector>
 #include <exception>
 #include <cstdlib>
@@ -23,7 +22,14 @@
 
 using namespace std;
 /**
- * Structure to represent a two dimensional vector.
+ * YAML Configuration file position.
+ */
+#define CONFIGURATION_ENTITIES_DEFINITION 0
+#define CONFIGURATION_TILES_DEFINITION 1
+#define CONFIGURATION_MAP_DEFINITION 2
+
+/**
+ * Structure to represent a three dimensional vector.
  */
 struct ThreeDimensionalVector {
 	int x, y, z;
@@ -177,9 +183,9 @@ Entity* parseEntity(AuxEntity entity) {
 	return parsedEntity;
 }
 
-/* *********************************** *
- * *********** MAP PARSING *********** *
- * *********************************** */
+/* *********************************************** *
+ * *********** TILE DEFINITION PARSING *********** *
+ * *********************************************** */
 
 /**
  * Definition of a tile texture.
@@ -237,6 +243,57 @@ AuxTileDefinition& parseTileDefinition(AuxTileDefinition& tileDefinition) {
 	return tileDefinition;
 }
 
+/* *********************************** *
+ * *********** MAP PARSING *********** *
+ * *********************************** */
+
+struct AuxTile {
+	ThreeDimensionalVector position;
+	std::string textureIdentifier;
+};
+
+struct AuxMap {
+	std::vector<AuxTile> tileList;
+};
+
+/**
+ * Extraction operator for map tile.
+ */
+void operator >>(const YAML::Node& yamlNode, AuxTile& tile) {
+	yamlNode["position"] >> tile.position;
+	yamlNode["texture"] >> tile.textureIdentifier;
+}
+
+/**
+ * Extraction operator of a map.
+ */
+void operator >>(const YAML::Node& yamlNode, AuxMap& entity) {
+	const YAML::Node& tileList = yamlNode["map"];
+	for (unsigned i = 0; i < tileList.size(); i++) {
+		AuxTile tile;
+		tileList[i] >> tile;
+		entity.tileList.push_back(tile);
+	}
+}
+
+/**
+ * Parsing of a tile.
+ */
+AuxTile parseMapTile(AuxTile& tile) {
+	return tile;
+}
+
+/**
+ * Prints a tile to check for parsing integrity.
+ */
+void printTile(AuxTile& tile) {
+	std::cout << "Position: ";
+	std::cout << "(" << tile.position.x << ", " << tile.position.y << ", "
+			<< tile.position.z << ")\n";
+	std::cout << "Texture: ";
+	std::cout << tile.textureIdentifier << "\n";
+}
+
 /**
  * Loads the configuration and prints its output.
  */
@@ -244,29 +301,41 @@ AuxTileDefinition& parseTileDefinition(AuxTileDefinition& tileDefinition) {
 void ConfigurationReader::loadConfiguration(std::string configurationFile) {
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
 
-	//Error Check
+	// Error Check
 	if (!inputFile) {
 		cout << "No se encontro el archivo de conf\n";
 		exit(1);
 	}
+
+	// Parser initialization.
 	YAML::Parser parser(inputFile);
 	YAML::Node yamlNode;
 	parser.GetNextDocument(yamlNode);
 
+	// Parsing entities.
 	AuxEntityList entities;
-	yamlNode[0] >> entities;
+	yamlNode[CONFIGURATION_ENTITIES_DEFINITION] >> entities;
 	for (unsigned j = 0; j < entities.entities.size(); j++) {
 		Entity* parsedEntity = parseEntity(entities.entities[j]);
 		printEntity(parsedEntity);
 	}
 
+	// Parsing tile definition.
 	AuxTileDefinitionList tileDefinitionList;
-	yamlNode[1] >> tileDefinitionList;
+	yamlNode[CONFIGURATION_TILES_DEFINITION] >> tileDefinitionList;
 	for (unsigned j = 0; j < tileDefinitionList.tileDefinitionList.size();
 			j++) {
 		AuxTileDefinition parsedTileDefinition = parseTileDefinition(
 				tileDefinitionList.tileDefinitionList[j]);
 		printTileDefinition(parsedTileDefinition);
+	}
+
+	// Parsing map tile locations.
+	AuxMap mapConfiguration;
+	yamlNode[CONFIGURATION_MAP_DEFINITION] >> mapConfiguration;
+	for (unsigned j = 0; j < mapConfiguration.tileList.size(); j++) {
+		AuxTile parsedTile = parseMapTile(mapConfiguration.tileList[j]);
+		printTile(parsedTile);
 	}
 
 }
