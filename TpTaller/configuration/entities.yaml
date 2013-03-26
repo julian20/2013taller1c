@@ -40,3 +40,12 @@
     imageSrc: ./dirt.png
   - identifier: grass
     imageSrc: ./grass.png
+- map:
+  - position: [0, 0, 0]
+    texture: grass
+  - position: [0, 1, 0]
+    texture: grass
+  - position: [1, 0, 0]
+    texture: dirt
+  - position: [1, 1, 0]
+    texture: dirt
