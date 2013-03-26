@@ -16,7 +16,6 @@
 #include <fstream>
 #include <string>
 
-
 #include <vector>
 #include <exception>
 #include <cstdlib>
@@ -36,6 +35,15 @@ void operator >>(const YAML::Node& yamlNode, ThreeDimensionalVector& vector) {
 	yamlNode[1] >> vector.y;
 	yamlNode[2] >> vector.z;
 }
+
+/**
+ * Extraction operator for two dimensional vectors.
+ */
+
+/* ************************************** *
+ * *********** ENTITY PARSING *********** *
+ * ************************************** */
+
 /**
  * Structure to represent the power of an entity.
  */
@@ -64,8 +72,12 @@ struct AuxEntity {
 };
 
 /**
- * Extraction operator for two dimensional vectors.
+ * Structure to represent an entity.
  */
+struct AuxEntityList {
+	std::vector<AuxEntity> entities;
+};
+
 /**
  * Extraction operator for power.
  */
@@ -98,7 +110,22 @@ void operator >>(const YAML::Node& yamlNode, AuxEntity& entity) {
 	}
 }
 
-void ConfigurationReader::printEntity(Entity* parsedEntity) {
+/**
+ * Extraction of all configured entities.
+ */
+void operator >>(const YAML::Node& yamlNode, AuxEntityList& entityList) {
+	const YAML::Node& entities = yamlNode["entities"];
+	for (unsigned i = 0; i < entities.size(); i++) {
+		AuxEntity entity;
+		entities[i] >> entity;
+		entityList.entities.push_back(entity);
+	}
+}
+
+/**
+ * Prints an entity to check if it was parsed correctly.
+ */
+void printEntity(Entity* parsedEntity) {
 
 	std::cout << "Name: ";
 	std::cout << parsedEntity->getName() << "\n";
@@ -115,11 +142,98 @@ void ConfigurationReader::printEntity(Entity* parsedEntity) {
 	std::cout << parsedEntity->getSpeed()->getDirection()->getZ() << ")\n";
 	std::cout << "Powers:\n";
 	for (unsigned i = 0; i < parsedEntity->getPowers().size(); i++) {
-		std::cout << "       " << "- Name: " << parsedEntity->getPowers()[i]->getName() << "\n";
-		std::cout << "       " << "  Damage: " << parsedEntity->getPowers()[i]->getDamage() << "\n";
-		std::cout << "       " << "  Range: " << parsedEntity->getPowers()[i]->getRange() << "\n";
+		std::cout << "       " << "- Name: "
+				<< parsedEntity->getPowers()[i]->getName() << "\n";
+		std::cout << "       " << "  Damage: "
+				<< parsedEntity->getPowers()[i]->getDamage() << "\n";
+		std::cout << "       " << "  Range: "
+				<< parsedEntity->getPowers()[i]->getRange() << "\n";
 	}
 
+}
+
+/**
+ * Converts an auxiliary struct entity into a model-based entity.
+ */
+Entity* parseEntity(AuxEntity entity) {
+	Position* parsedPosition = new Position(entity.position.x,
+			entity.position.y, entity.position.z);
+
+	Speed* parsedSpeed = new Speed(entity.speed.magnitude,
+			new Position(entity.speed.direction.x, entity.speed.direction.y,
+					entity.speed.direction.z));
+
+	std::vector<Power*> parsedPowers;
+	for (unsigned i = 0; i < entity.powers.size(); i++) {
+		Power* parsedPower = new Power(entity.powers[i].name,
+				entity.powers[i].damage, entity.powers[i].range);
+		parsedPowers.push_back(parsedPower);
+	}
+
+	Entity* parsedEntity = new Entity(entity.name, parsedPosition, parsedSpeed,
+			parsedPowers);
+
+	return parsedEntity;
+}
+
+/* *********************************** *
+ * *********** MAP PARSING *********** *
+ * *********************************** */
+
+/**
+ * Definition of a tile texture.
+ */
+struct AuxTileDefinition {
+	std::string identifier;
+	std::string imageSrc;
+};
+
+/**
+ * List of all tile texture definitions.
+ */
+struct AuxTileDefinitionList {
+	std::vector<AuxTileDefinition> tileDefinitionList;
+};
+
+/**
+ * Extraction operator for tile definition.
+ */
+void operator >>(const YAML::Node& yamlNode,
+		AuxTileDefinition& tileDefinition) {
+	yamlNode["identifier"] >> tileDefinition.identifier;
+	yamlNode["imageSrc"] >> tileDefinition.imageSrc;
+}
+
+/**
+ * Extraction of all configured entities.
+ */
+void operator >>(const YAML::Node& yamlNode,
+		AuxTileDefinitionList& tileDefinitionList) {
+	const YAML::Node& tileDefinitions = yamlNode["tiles"];
+	for (unsigned i = 0; i < tileDefinitions.size(); i++) {
+		AuxTileDefinition tileDef;
+		tileDefinitions[i] >> tileDef;
+		tileDefinitionList.tileDefinitionList.push_back(tileDef);
+	}
+}
+
+/**
+ * Prints an entity to check if it was parsed correctly.
+ */
+void printTileDefinition(AuxTileDefinition& parsedTileDefinition) {
+
+	std::cout << "Identifier: ";
+	std::cout << parsedTileDefinition.identifier << "\n";
+	std::cout << "Image Source: ";
+	std::cout << parsedTileDefinition.imageSrc << "\n";
+
+}
+
+/**
+ * Converts an auxiliary struct entity into a model-based entity.
+ */
+AuxTileDefinition& parseTileDefinition(AuxTileDefinition& tileDefinition) {
+	return tileDefinition;
 }
 
 /**
@@ -127,7 +241,8 @@ void ConfigurationReader::printEntity(Entity* parsedEntity) {
  */
 void ConfigurationReader::loadConfiguration(std::string configurationFile) {
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
-//Error Check
+
+	//Error Check
 	if (!inputFile) {
 		cout << "No se encontro el archivo de conf\n";
 		exit(1);
@@ -135,31 +250,23 @@ void ConfigurationReader::loadConfiguration(std::string configurationFile) {
 	YAML::Parser parser(inputFile);
 	YAML::Node yamlNode;
 	parser.GetNextDocument(yamlNode);
-	for (unsigned i = 0; i < yamlNode.size(); i++) {
 
-		AuxEntity entity;
-		yamlNode[i] >> entity;
-
-		Position* parsedPosition = new Position(entity.position.x,
-				entity.position.y, entity.position.z);
-
-		Speed* parsedSpeed = new Speed(entity.speed.magnitude,
-				new Position(entity.speed.direction.x, entity.speed.direction.y,
-						entity.speed.direction.z));
-
-		std::vector<Power*> parsedPowers;
-		for (unsigned i = 0; i < entity.powers.size(); i++) {
-			Power* parsedPower = new Power(entity.powers[i].name,
-					entity.powers[i].damage, entity.powers[i].range);
-			parsedPowers.push_back(parsedPower);
-		}
-
-		Entity* parsedEntity = new Entity(entity.name, parsedPosition,
-				parsedSpeed, parsedPowers);
-
+	AuxEntityList entities;
+	yamlNode[0] >> entities;
+	for (unsigned j = 0; j < entities.entities.size(); j++) {
+		Entity* parsedEntity = parseEntity(entities.entities[j]);
 		printEntity(parsedEntity);
-
 	}
+
+	AuxTileDefinitionList tileDefinitionList;
+	yamlNode[1] >> tileDefinitionList;
+	for (unsigned j = 0; j < tileDefinitionList.tileDefinitionList.size();
+			j++) {
+		AuxTileDefinition parsedTileDefinition = parseTileDefinition(
+				tileDefinitionList.tileDefinitionList[j]);
+		printTileDefinition(parsedTileDefinition);
+	}
+
 }
 
 ConfigurationReader::ConfigurationReader() {
