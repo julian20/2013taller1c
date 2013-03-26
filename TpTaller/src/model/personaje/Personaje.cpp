@@ -47,6 +47,13 @@ void Personaje::MoveTo(int x, int y,int desplazamientoX, int desplazamientoY)
 		this->velocidadY+=desplazamientoY;
 	}
 }
+void Personaje::MostrarAtributos()
+{
+	printf("offset x %i\n",this->offSetX);
+	printf("offset y %i\n",this->offSetY);
+	printf("velx %i\n",this->velocidadX);
+	printf("vely %i\n",this->velocidadY);
+}
 void Personaje::PersonajeMover()
 {
     //Move
@@ -60,24 +67,29 @@ void Personaje::FrenarX()
 }
 void Personaje::FrenarY()
 {
+	this->MostrarAtributos();
      this->offSetY-=this->velocidadY;
 }
 
 void Personaje::PersonajeMoverDerecha(int desplazamiento)
 {
+	this->MostrarAtributos();
     this->velocidadX += desplazamiento;
 }
 
 void Personaje::PersonajeMoverIzquierda(int desplazamiento)
 {
+	this->MostrarAtributos();
     this->velocidadX -=desplazamiento;
 }
 void Personaje::PersonajeMoverArriba(int desplazamiento)
 {
+	this->MostrarAtributos();
     this->velocidadY -=desplazamiento;
 }
 void Personaje::PersonajeMoverAbajo(int desplazamiento)
 {
+	this->MostrarAtributos();
     this->velocidadY +=desplazamiento;
 }
 

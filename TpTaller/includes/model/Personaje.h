@@ -6,7 +6,7 @@
  */
 #ifndef PERSONAJE_H
 #define	PERSONAJE_H
-
+#include <stdio.h>
 //Constantes para definir la direccion. Faltan los laterales.
 const int PERSONAJE_DERECHA = 0;
 const int PERSONAJE_IZQUIERDA = 1;
@@ -39,6 +39,7 @@ public:
 
     //Moves the stick figure
     void PersonajeMover();
+    void MostrarAtributos();
     void PersonajeMoverIzquierda(int desplazamiento);
     void PersonajeMoverDerecha(int desplazamiento);
     void PersonajeMoverArriba(int desplazamiento);

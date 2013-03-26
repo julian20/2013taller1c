@@ -22,19 +22,12 @@
 #include <stdlib.h>
 
 using namespace std;
-
 /**
  * Structure to represent a two dimensional vector.
  */
 struct ThreeDimensionalVector {
 	int x, y, z;
 };
-
-void operator >>(const YAML::Node& yamlNode, ThreeDimensionalVector& vector) {
-	yamlNode[0] >> vector.x;
-	yamlNode[1] >> vector.y;
-	yamlNode[2] >> vector.z;
-}
 
 /**
  * Extraction operator for two dimensional vectors.
@@ -70,6 +63,14 @@ struct AuxEntity {
 	AuxSpeed speed;
 	std::vector<AuxPower> powers;
 };
+
+
+void operator >>(const YAML::Node& yamlNode, ThreeDimensionalVector& vector) {
+	yamlNode[0] >> vector.x;
+	yamlNode[1] >> vector.y;
+	yamlNode[2] >> vector.z;
+}
+
 
 /**
  * Structure to represent an entity.
@@ -239,6 +240,7 @@ AuxTileDefinition& parseTileDefinition(AuxTileDefinition& tileDefinition) {
 /**
  * Loads the configuration and prints its output.
  */
+
 void ConfigurationReader::loadConfiguration(std::string configurationFile) {
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
 
