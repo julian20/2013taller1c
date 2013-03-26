@@ -5,7 +5,8 @@ CC= g++
 CCFLAGS= -g -Wall -pedantic -I$(INCLUDES) 
 LIBS=`sdl-config --cflags --libs` -L/usr/local/lib -lSDL -lSDL_image -lSDL_gfx -lSDL_mixer
 SRC=../../src/
-LIB=Menu
+LIB= Menu view/MenuView view/Button
+LIBS_LOCAL = Menu.o MenuView.o Button.o
 
 #Directorio base del proyecto relativo a este makefile
 PROYECT_DIR = ../../
@@ -17,10 +18,13 @@ EXEC=menuTests
 all: $(SRC) $(EXEC)
 	
 $(LIB).o: 
-	$(CC) $(CCFLAGS) -c $(SRC)$(LIB).cpp
+	$(foreach lib,$(LIB),\
+		echo -n $(dir);\
+		$(CC) $(CCFLAGS) -c $(SRC)$(lib).cpp; \
+		echo Listo"\n";)
 	
 $(EXEC): $(EXEC).cpp $(LIB).o
-	$(CC) $(CCFLAGS) $(LIB).o $(EXEC).cpp -o $(EXEC) $(LIBS)
+	$(CC) $(CCFLAGS) $(LIBS_LOCAL) $(EXEC).cpp -o $(EXEC) $(LIBS)
 	cp $(EXEC) ../../
 	
 run: $(EXEC)
