@@ -1,6 +1,11 @@
 #include <stdlib.h>
 #include <model/map/MapData.h>
 
+/**
+ * TODO: agregar clases Tile y TileDefinition, cuyos structs
+ * son parseados utilizando YAML.
+ */
+
 MapData::MapData(int _nrows, int _ncols) {
     nrows = _nrows;
     ncols = _ncols;
