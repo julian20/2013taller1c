@@ -114,7 +114,7 @@ void ConfigurationReader::printEntity(Entity* parsedEntity) {
 	std::cout << parsedEntity->getSpeed()->getDirection()->getY() << ", ";
 	std::cout << parsedEntity->getSpeed()->getDirection()->getZ() << ")\n";
 	std::cout << "Powers:\n";
-	for (unsigned i = 0; parsedEntity->getPowers().size(); i++) {
+	for (unsigned i = 0; i < parsedEntity->getPowers().size(); i++) {
 		std::cout << "       " << "- Name: " << parsedEntity->getPowers()[i]->getName() << "\n";
 		std::cout << "       " << "  Damage: " << parsedEntity->getPowers()[i]->getDamage() << "\n";
 		std::cout << "       " << "  Range: " << parsedEntity->getPowers()[i]->getRange() << "\n";
