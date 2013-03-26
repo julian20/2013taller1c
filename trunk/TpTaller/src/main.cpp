@@ -26,7 +26,6 @@ int main(int argc, char** argv) {
 //	cfgReader->loadConfiguration(CONFIGURATION_FILE);
 
 	Menu* menu = new Menu();
-	menu->init();
 	Game* game = new Game(cfgReader);
 
 	delete cfgReader;
