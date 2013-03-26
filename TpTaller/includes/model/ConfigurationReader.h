@@ -19,7 +19,6 @@ public:
     virtual ~ConfigurationReader();
 
 private:
-	void printEntity(Entity* parsedEntity);
 };
 
 #endif	/* CONFIGURATIONREADER_H */

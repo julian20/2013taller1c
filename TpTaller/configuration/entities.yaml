@@ -1,36 +1,42 @@
-- name: Ogre
-  position: [3, 2, 1]
-  speed:
-    magnitude: 1
-    direction: [1, 2, 3]
-  powers:
-    - name: Club
-      damage: 2
-      range: 1
-    - name: Fist
-      damage: 3
-      range: 1
-- name: Dragon
-  position: [6, 5, 4]
-  speed:
-    magnitude: 4
-    direction: [4, 5, 6]
-  powers:
-    - name: Fire Breath
-      damage: 5
-      range: 2
-    - name: Claws
-      damage: 6
-      range: 1
-- name: Wizard
-  position: [9, 8, 7]
-  speed:
-    magnitude: 7
-    direction: [7, 8, 9]
-  powers:
-    - name: Acid Rain
-      damage: 8
-      range: 3
-    - name: Staff
-      damage: 9
-      range: 1
+- entities:
+  - name: Ogre
+    position: [3, 2, 1]
+    speed:
+      magnitude: 1
+      direction: [1, 2, 3]
+    powers:
+      - name: Club
+        damage: 2
+        range: 1
+      - name: Fist
+        damage: 3
+        range: 1
+  - name: Dragon
+    position: [6, 5, 4]
+    speed:
+      magnitude: 4
+      direction: [4, 5, 6]
+    powers:
+      - name: Fire Breath
+        damage: 5
+        range: 2
+      - name: Claws
+        damage: 6
+        range: 1
+  - name: Wizard
+    position: [9, 8, 7]
+    speed:
+      magnitude: 7
+      direction: [7, 8, 9]
+    powers:
+      - name: Acid Rain
+        damage: 8
+        range: 3
+      - name: Staff
+        damage: 9
+        range: 1
+- tiles:
+  - identifier: dirt
+    imageSrc: ./dirt.png
+  - identifier: grass
+    imageSrc: ./grass.png
