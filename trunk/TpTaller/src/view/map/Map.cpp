@@ -1,11 +1,14 @@
 #include <view/Map.h>
 
-#define LeftMargin  100     // px
-#define TopMargin   100     // px
-#define TilesScale  0.4
+#define MapMargin		40		// px
+#define TilesOverlap	2		// px
+#define TilesScale  	1
+#define CameraSpeed		5		// px
 
 Map::Map(MapData* _data) {
     data = _data;
+    cameraX = cameraY = 0;
+    mapController = new MapController();
 
     DefineTexturePaths();
     GraphicalSetup();
@@ -35,9 +38,7 @@ void Map::GraphicalSetup() {
 
     for (int i = 0; i < MapData::AMOUNT_TYPES; i++) {
         tilesTextures[i] = rotozoomSurfaceXY(tilesTextures[i], 0, TilesScale, TilesScale, 0);
-
-        // No se porque la linea de aca abajo no anda
-        //tilesTextures[i] = SDL_DisplayFormatAlpha(tilesTextures[i]);
+        tilesTextures[i] = SDL_DisplayFormatAlpha(tilesTextures[i]);
     }
 
 }
@@ -45,16 +46,42 @@ void Map::GraphicalSetup() {
 Map::~Map() {
 }
 
+void Map::CameraUpdate() {
+	if (mapController->MoveScreenUp()) {
+		cameraY += CameraSpeed;
+	} else if (mapController->MoveScreenDown()) {
+		cameraY -= CameraSpeed;
+	} else if (mapController->MoveScreenLeft()) {
+		cameraX += CameraSpeed;
+	} else if (mapController->MoveScreenRight()) {
+		cameraX -= CameraSpeed;
+	} else if (mapController->MoveScreenLeftUp()) {
+		cameraX += CameraSpeed;
+		cameraY += CameraSpeed;
+	} else if (mapController->MoveScreenLeftDown()) {
+		cameraX += CameraSpeed;
+		cameraY -= CameraSpeed;
+	} else if (mapController->MoveScreenRightUp()) {
+		cameraX -= CameraSpeed;
+		cameraY += CameraSpeed;
+	} else if (mapController->MoveScreenRightDown()) {
+		cameraX -= CameraSpeed;
+		cameraY -= CameraSpeed;
+	}
+}
+
 void Map::Draw(SDL_Surface* pantalla) {
+	CameraUpdate();
+
     SDL_Rect posTile;
 
-    int widthTexture = tilesTextures[0]->w;
-    int heightTexture = tilesTextures[0]->h;
+    int widthTexture = tilesTextures[0]->w - TilesOverlap;
+    int heightTexture = tilesTextures[0]->h - TilesOverlap;
 
     for (int col = 0; col < data->GetNCols(); col++) {
         for (int row = 0; row < data->GetNRows(); row++) {
-            posTile.x = (row % 2) * widthTexture / 2 + LeftMargin + col * widthTexture;
-            posTile.y = TopMargin + row * heightTexture / 2;
+            posTile.x = cameraX - MapMargin + (row % 2) * widthTexture / 2 + col * widthTexture;
+            posTile.y = cameraY - MapMargin + row * heightTexture / 2;
             posTile.w = widthTexture;
             posTile.h = heightTexture;
 

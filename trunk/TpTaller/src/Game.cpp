@@ -15,6 +15,9 @@
 
 #define BACKGROUND_IMAGE_PATH	"resources/background.png"
 
+#define Default_w	1024	// px
+#define Default_h	768	// px
+
 SDL_Surface* pantalla;
 SDL_Rect posFondo;
 SDL_Surface* fondo;
@@ -23,16 +26,12 @@ Map* map;
 Game::Game(ConfigurationReader* cfgReader) {
 	// TODO Auto-generated constructor stub
 
-	MapData* mapData = new MapData(20, 10);
+	MapData* mapData = new MapData(50, 30);
 
 	mapData->SetTileType( MapData::SOIL, 5, 5);
 	mapData->SetTileType( MapData::WATER, 7, 5);
 
 	map = new Map(mapData);
-}
-
-bool gameEnd() {
-    return true;
 }
 
 void getEvent() {
@@ -54,7 +53,7 @@ void startDrawing() {
     const SDL_VideoInfo* escritorio = SDL_GetVideoInfo();
 
     //Creamos la ventana
-    pantalla = SDL_SetVideoMode(escritorio->current_w, escritorio->current_h, 32, SDL_HWSURFACE);
+    pantalla = SDL_SetVideoMode(Default_w, Default_h, 32, SDL_HWSURFACE);
 
     //La hacemos fullscreen
    /* int flag = 1;
@@ -104,14 +103,18 @@ void endDrawing() {
     SDL_Quit();
 }
 
-void Game::run(){
+MenuEvent Game::run(){
 
 	startDrawing();
 
-	int foo = 0;
+	SDL_Event event;
+	bool exit = false;
+	while (!exit) {
 
-    //while (!gameEnd()) {
-	while (foo < 70) {	// Para que se cierre solo
+		while (SDL_PollEvent(&event)){
+			if (event.type == SDL_QUIT) exit = true;
+		}
+
 /*        // 1ro leo entrada del usuario y resuelvo segun dicha entrada
         getEvent();
 
@@ -128,12 +131,11 @@ void Game::run(){
 */
         // Dibujo
         draw();
-
-        foo++;
     }
 
     endDrawing();
 
+    return EXIT_EVENT;
 }
 
 

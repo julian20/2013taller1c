@@ -31,10 +31,11 @@ int main(int argc, char** argv) {
 	delete cfgReader;
 
 	MenuEvent event;
+	bool gameRunning = false;
 
 	while(event != EXIT_EVENT){
 
-		event = menu->run();
+		event = (gameRunning) ? game->run() : menu->run();
 		switch (event){
 		case NOTHING_EVENT:
 			break;
@@ -42,7 +43,7 @@ int main(int argc, char** argv) {
 			break;
 		case NEWGAME_EVENT:
 			//Aca inicio el juego
-			game->run();
+			gameRunning = true;	// QUE CODIGO LOCOOOO PAPÁ
 			break;
 		case CONFIG_EVENT:
 			//Aca inicio el menu de configuraciones
@@ -51,11 +52,10 @@ int main(int argc, char** argv) {
 
 		}
 
-
 	}
 
 	delete game;
-	delete menu;
+	//delete menu;		// Tira un segmentation fault medio loco
 
 
 

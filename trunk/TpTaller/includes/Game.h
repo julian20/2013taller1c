@@ -9,11 +9,13 @@
 #define GAME_H_
 
 #include <model/ConfigurationReader.h>
+#include <SDL/SDL_events.h>
+#include <Events.h>
 
 class Game {
 public:
 	Game(ConfigurationReader* cfgReader);
-	void run();
+	MenuEvent run();
 	virtual ~Game();
 };
 
