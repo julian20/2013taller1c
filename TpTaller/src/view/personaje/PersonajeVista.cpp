@@ -51,12 +51,13 @@ SDL_Surface *load_image( char* urlImagen )
 
 void PersonajeVista::Draw( float x, float y, SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip )
 {
-    SDL_Rect *offset;
+    SDL_Rect offset;
 
-    offset->x = (int)x + cameraX;
-    offset->y = (int)y + cameraY;
-
-    SDL_BlitSurface( source, clip, screen, offset );
+    offset.x = (int)x + cameraX - clip->w*2.5;
+    offset.y = (int)y + cameraY- clip->h;
+    offset.w = clip->w;
+    offset.h = clip->h;
+    SDL_BlitSurface( source, clip, screen, &offset );
 }
 
 void PersonajeVista::UpdateCameraPos(int x, int y){
@@ -67,7 +68,8 @@ void PersonajeVista::UpdateCameraPos(int x, int y){
 PersonajeVista::PersonajeVista(Personaje* unPersonaje, char* urlImagen, SDL_Surface* fondo)
 {
 	cameraX = cameraY = 0;
-
+	marco = 0;
+	estado = 0;
 	/* TODO: Faltaria lanzar una excepcion en caso de que no recieba alguno de los parametros
      if(!unPersonaje)
     {
