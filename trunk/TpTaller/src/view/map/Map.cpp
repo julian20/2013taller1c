@@ -23,6 +23,10 @@ void Map::DefineTexturePaths() {
     backgroundPath = "./background.png";
 }
 
+Vector2* Map::GetCamera(){
+	return new Vector2(cameraX, cameraY);
+}
+
 void Map::GraphicalSetup() {
     //Cargamos las textura de los tiles
     for (int i = 0; i < MapData::AMOUNT_TYPES; i++) {
@@ -70,27 +74,86 @@ void Map::CameraUpdate() {
 	}
 }
 
-void Map::Draw(SDL_Surface* pantalla) {
-	CameraUpdate();
-
+void Map::SetUpPersonajes(){
+	// Setea la posicion por unica vez de los personajes (y en un futuro posiblemente
+	// todo lo representable) en el mapa.
     SDL_Rect posTile;
-
-    int widthTexture = tilesTextures[0]->w - TilesOverlap;
-    int heightTexture = tilesTextures[0]->h - TilesOverlap;
 
     for (int col = 0; col < data->GetNCols(); col++) {
         for (int row = 0; row < data->GetNRows(); row++) {
-            posTile.x = cameraX - MapMargin + (row % 2) * widthTexture / 2 + col * widthTexture;
-            posTile.y = cameraY - MapMargin + row * heightTexture / 2;
-            posTile.w = widthTexture;
-            posTile.h = heightTexture;
+
+            Personaje* personaje = data->GetPersonaje(row, col);
+            if (personaje != NULL) {
+            	posTile = GetTilePos(row, col);
+
+            	personaje->SetPos((float)posTile.x, (float)posTile.y);
+            }
+        }
+    }
+}
+
+void Map::Draw(SDL_Surface* screen) {
+	CameraUpdate();
+
+	Personaje* personajes = NULL;
+    SDL_Rect posTile;
+
+    for (int col = 0; col < data->GetNCols(); col++) {
+        for (int row = 0; row < data->GetNRows(); row++) {
+        	posTile = GetTilePos(row, col);
 
             SDL_BlitSurface(tilesTextures[ data->GetTileType(row, col) ],
             				NULL,
-            				pantalla,
+            				screen,
             				&posTile);
+
+            tileData* tileData = data->GetTileData(row, col);
+            // TODO: Dibujar las cosas de tileData
+
+            // En esta parte deberia agregarlo a una lista, como solo hay uno por
+            // ahora solo se guarda en una variable
+            Personaje* personaje = data->GetPersonaje(row, col);
+            if (personaje != NULL) personajes = personaje;
         }
     }
+
+    // Luego se blitean todos los personajes despues de haber bliteado el piso
+    // para que el piso no tape a los flacos.
+    if (personajes != NULL){
+		PersonajeVista* personajeVista =
+				new PersonajeVista(personajes, "resources/foo.png", screen);
+
+		personajeVista->UpdateCameraPos(cameraX, cameraY);
+		personajeVista->Mostrar();
+    }
+}
+
+SDL_Rect Map::GetTilePos(int row, int col) {
+    int widthTexture = tilesTextures[0]->w - TilesOverlap;
+    int heightTexture = tilesTextures[0]->h - TilesOverlap;
+
+    SDL_Rect posTile;
+
+    posTile.x = cameraX - MapMargin + (row % 2) * widthTexture / 2 + col * widthTexture;
+    posTile.y = cameraY - MapMargin + row * heightTexture / 2;
+    posTile.w = widthTexture;
+    posTile.h = heightTexture;
+
+    return posTile;
+}
+
+void Map::ClickOn(int x, int y, int button) {
+	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
+	SDL_Rect firstTile = GetTilePos(0, 0);
+
+	int row = (y - firstTile.y)*2/firstTile.h;
+	int col = (x - firstTile.x)/firstTile.w;
+
+	printf("row: %d, col: %d\n", row, col);
+}
+
+void Map::Update() {
+
 }
 
 

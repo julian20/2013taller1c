@@ -7,6 +7,7 @@
 
 #include <Game.h>
 #include <view/Map.h>
+#include <model/Personaje.h>
 #include <model/ConfigurationReader.h>
 
 #include <SDL/SDL.h>
@@ -15,13 +16,15 @@
 
 #define BACKGROUND_IMAGE_PATH	"resources/background.png"
 
-#define Default_w	1024	// px
-#define Default_h	768	// px
+#define Default_w	800		// px
+#define Default_h	600		// px
+#define Default_bpp 0		// px
 
 SDL_Surface* pantalla;
 SDL_Rect posFondo;
 SDL_Surface* fondo;
 Map* map;
+Personaje* personaje;
 
 Game::Game(ConfigurationReader* cfgReader) {
 	// TODO Auto-generated constructor stub
@@ -31,7 +34,11 @@ Game::Game(ConfigurationReader* cfgReader) {
 	mapData->SetTileType( MapData::SOIL, 5, 5);
 	mapData->SetTileType( MapData::WATER, 7, 5);
 
+	personaje = new Personaje();
+	mapData->AddPersonaje(0, 0, personaje);
+
 	map = new Map(mapData);
+	map->SetUpPersonajes();
 }
 
 void getEvent() {
@@ -112,23 +119,26 @@ MenuEvent Game::run(){
 	while (!exit) {
 
 		while (SDL_PollEvent(&event)){
+			if (event.type == SDL_MOUSEBUTTONDOWN) {
+				Vector2* camera = map->GetCamera();
+				personaje->MoveTo(event.button.x - camera->GetX(), event.button.y - camera->GetY());
+				map->ClickOn( event.button.x, event.button.y, event.button.button );
+			}
+
 			if (event.type == SDL_QUIT) exit = true;
 		}
 
-/*        // 1ro leo entrada del usuario y resuelvo segun dicha entrada
-        getEvent();
-
         //Actualizo la parte visual, sin mostrarla todavia
         //1. Mapa
-        refreshMap();
+        map->Update();
         // 2. Entidades estaticas
-        refreshEntities();
+ //       refreshEntities();
         // 3. Personaje/s
-        refreshCharacters();
+        personaje->Update();
 
         // En un futuro, aca se comprueban las colisiones.
         // y se corrige la posicion del personaje.
-*/
+
         // Dibujo
         draw();
     }

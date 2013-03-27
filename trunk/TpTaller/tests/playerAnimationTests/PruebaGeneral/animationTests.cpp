@@ -184,11 +184,11 @@ int main( int argc, char* args[] )
     PersonajeControlador* miControladorDePersonaje= new PersonajeControlador(miPersonaje);
     PersonajeVista* miPersonajeVista= new PersonajeVista(miPersonaje,"resources/foo.png",screen);
 
-    //The frame rate regulator
+    // The frame rate regulator
     Timer fps;
     SDL_Event event;
 
-    //While the user hasn't quit
+    // While the user hasn't quit
     while( quit == false )
     {
         //Start the frame timer
