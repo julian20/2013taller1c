@@ -3,6 +3,8 @@
 
 #include <model/map/MapData.h>
 #include <controller/MapController.h>
+#include <model/Personaje.h>
+#include <view/PersonajeVista.h>
 #include <string>
 #include <iostream>
 #include <SDL/SDL.h>
@@ -15,8 +17,12 @@ class Map {
 public:
     Map(MapData* data);
     virtual ~Map();
-    
+
     void Draw(SDL_Surface* pantalla);
+    void ClickOn(int x, int y, int button);
+    void Update();
+    void SetUpPersonajes();
+    Vector2* GetCamera();
 private:
     MapData* data;
     string texturesPaths[ MapData::AMOUNT_TYPES ];
@@ -26,6 +32,7 @@ private:
     MapController* mapController;
     int cameraX, cameraY;
 
+    SDL_Rect GetTilePos(int row, int col);
     void DefineTexturePaths();
     void GraphicalSetup();
     void CameraUpdate();

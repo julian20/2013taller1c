@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <model/map/MapData.h>
 
 /**
@@ -14,7 +13,7 @@ MapData::MapData(int _nrows, int _ncols) {
            // TODO: tirar error al log
     }
     
-    data = (int*)malloc(sizeof(int) * nrows * ncols);
+    data = (tileData*)malloc(sizeof(tileData) * nrows * ncols);
     if (!data){
         // TODO: tirar error al log
     }
@@ -28,7 +27,9 @@ MapData::~MapData() {
 void MapData::InitializeData() {
     for (int i = 0; i < nrows*ncols; i++)
     {
-        data[i] = NEUTRAL;
+        data[i].tileType = NEUTRAL;
+        data[i].contentAmount = 0;
+        data[i].personaje = NULL;
     }
 }
 
@@ -37,13 +38,13 @@ void MapData::SetTileType( int tileType, int row, int col ) {
     // creo q ya va a estar en en YAML 
     CheckRowColsValue(row, col);
     
-    data[row + nrows*col] = tileType;
+    data[row + nrows*col].tileType = tileType;
 }
 
 int MapData::GetTileType( int row, int col ){
     CheckRowColsValue(row, col);
     
-    return data[row + nrows*col];
+    return data[row + nrows*col].tileType;
 }
 
 void MapData::CheckRowColsValue(int row, int col) {
@@ -53,6 +54,30 @@ void MapData::CheckRowColsValue(int row, int col) {
     if (col < 0 || col >= ncols) {
         // TODO: tirar error al log
     }
+}
+
+void MapData::AddRepresentable(int row, int col, IRepresentable* object) {
+	tileData currentData = data[row + nrows*col];
+
+	currentData.content[currentData.contentAmount] = object;
+	currentData.contentAmount++;
+
+	if (currentData.contentAmount++ >= MAX_TILE_CONTENT)
+	{
+		printf("Error en MapData\n");
+	}
+}
+
+tileData* MapData::GetTileData(int row, int col){
+	return &data[row + nrows*col];
+}
+
+void MapData::AddPersonaje(int row, int col, Personaje* personaje) {
+	data[row + nrows*col].personaje = personaje;
+}
+
+Personaje* MapData::GetPersonaje(int row, int col) {
+	return data[row + nrows*col].personaje;
 }
 
 int MapData::GetNRows() {

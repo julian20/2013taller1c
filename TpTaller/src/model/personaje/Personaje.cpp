@@ -7,90 +7,58 @@
 
 #include <model/Personaje.h>
 
-Personaje::Personaje()
-{
-    //Initialize movement variables
-    offSetX = 0;
-    offSetY = 0;
-    velocidadX = 0;
-    velocidadY = 0;
-    //Initialize animation variables
-    //marco = 0;
-    //estado = PERSONAJE_DERECHA;
+#define OFFSET_X	26
+#define OFFSET_Y	0
+
+Personaje::Personaje() {
+    currentPos = new Vector2(OFFSET_X, OFFSET_Y);
+    endPos = new Vector2(OFFSET_X, OFFSET_Y);
+    velocity = 3;
 }
 
-int Personaje::GetVelocidadX()
-{
-    return this->velocidadX;
-}
-int Personaje::GetVelocidadY()
-{
-    return this->velocidadY;
+void Personaje::SetPos(float x, float y) {
+	 currentPos->SetValues(x + OFFSET_X, y + OFFSET_Y);
+	 endPos->SetValues( currentPos->GetX(), currentPos->GetY() );
 }
 
-int Personaje::GetOffsetX()
-{
-    return this->offSetX;
+void Personaje::MoveTo(int x, int y) {
+	endPos = new Vector2(x + OFFSET_X , y + OFFSET_Y);
 }
-int Personaje::GetOffsetY()
-{
-    return this->offSetY;
-}
-void Personaje::MoveTo(int x, int y,int desplazamientoX, int desplazamientoY)
-{
-	int despX=offSetX-x;
-	int despY=offSetY-y;
-	float pendiente=despY/despX;
-	while(offSetX!=x && offSetY!=y )
-	{
-		this->velocidadX+=pendiente*desplazamientoX;
-		this->velocidadY+=desplazamientoY;
+
+void Personaje::Update() {
+	if (currentPos->IsEqual(endPos)) return;	// Si ya llego a la posicion final
+
+	Vector2* moveDirection = new Vector2(endPos->GetX() - currentPos->GetX() ,
+										 endPos->GetY() - currentPos->GetY());
+
+	if (moveDirection->GetNorm() < velocity) {
+		// Close enough to the end position to move in one step.
+		currentPos->SetValues(endPos->GetX(), endPos->GetY());
+	} else {
+		moveDirection->Normalize();
+		moveDirection->MultiplyBy(velocity);
+
+		currentPos->Add(moveDirection);
 	}
 }
-void Personaje::MostrarAtributos()
-{
-	printf("offset x %i\n",this->offSetX);
-	printf("offset y %i\n",this->offSetY);
-	printf("velx %i\n",this->velocidadX);
-	printf("vely %i\n",this->velocidadY);
-}
-void Personaje::PersonajeMover()
-{
-    //Move
-    offSetX += velocidadX;
-    offSetY += velocidadY;
+
+Vector2* Personaje::GetCurrentPos() {
+	return new Vector2( currentPos->GetX(), currentPos->GetY());
 }
 
-void Personaje::FrenarX()
-{
-    this->offSetX-=this->velocidadX;
-}
-void Personaje::FrenarY()
-{
-	this->MostrarAtributos();
-     this->offSetY-=this->velocidadY;
+Vector2* Personaje::GetMovementDirection() {
+	Vector2* moveDirection = new Vector2(endPos->GetX() - currentPos->GetX() ,
+										 endPos->GetY() - currentPos->GetY());
+	moveDirection->Normalize();
+
+	return moveDirection;
 }
 
-void Personaje::PersonajeMoverDerecha(int desplazamiento)
-{
-	this->MostrarAtributos();
-    this->velocidadX += desplazamiento;
+bool IRepresentable::Transitable() {
+	return true;
 }
 
-void Personaje::PersonajeMoverIzquierda(int desplazamiento)
-{
-	this->MostrarAtributos();
-    this->velocidadX -=desplazamiento;
-}
-void Personaje::PersonajeMoverArriba(int desplazamiento)
-{
-	this->MostrarAtributos();
-    this->velocidadY -=desplazamiento;
-}
-void Personaje::PersonajeMoverAbajo(int desplazamiento)
-{
-	this->MostrarAtributos();
-    this->velocidadY +=desplazamiento;
+IRepresentable::~IRepresentable() {
 }
 
 Personaje::~Personaje() {
