@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>
+#include <cmath>
 
 #define FRAMES_PER_SECOND	10
 #define SCALE				0.2
@@ -116,27 +117,56 @@ void PersonajeVista::Mostrar()
 	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
 	Vector2* pos = this->miPersonaje->GetCurrentPos();
 
-    if( movementDirection->GetX() < 0 )
+
+    if( movementDirection->GetX() < 0  && movementDirection->GetY()==0)
     {
+    	printf("mueve izq\n");
         estado = PERSONAJE_IZQUIERDA;
         marco++;         // Move to the next marco in the animation
     }
-    else if( movementDirection->GetX() > 0 )
+    else if( movementDirection->GetX() < 0  && movementDirection->GetY()>0)
+       {
+       	printf("mueve izqabj\n");
+
+           estado = PERSONAJE_IZQUIERDA;
+           marco++;         // Move to the next marco in the animation
+       }
+    else if( movementDirection->GetX() > 0 && movementDirection->GetY()==0)
     {
+    	printf("mueve derecha\n");
         estado = PERSONAJE_DERECHA;
         marco++;
     }
-    
-    else if( movementDirection->GetY() > 0 )
+    else if( movementDirection->GetX() > 0 && movementDirection->GetY()<0)
+       {
+       	printf("mueve derecharriba\n");
+           estado = PERSONAJE_DERECHA;
+           marco++;
+       }
+    else if( movementDirection->GetY() > 0 && movementDirection->GetX()==0)
     {
+    	printf("mueve abajo\n");
         estado = PERSONAJE_ABAJO;
         marco++;
     }
-    else if( movementDirection->GetY() < 0 )
+    else if( movementDirection->GetY() > 0 && movementDirection->GetX()>0)
+        {
+        	printf("mueve derechaabajo\n");
+            estado = PERSONAJE_ABAJO;
+            marco++;
+        }
+    else if( movementDirection->GetY() < 0 && movementDirection->GetX()==0)
     {
+    	printf("mueve arriba\n");
         estado = PERSONAJE_ARRIBA;
         marco++;
     }
+    else if( movementDirection->GetY() < 0 && movementDirection->GetX()<0)
+        {
+        	printf("mueve izqarriba\n");
+            estado = PERSONAJE_ARRIBA;
+            marco++;
+        }
     else     // If Personaje standing
     {
         marco = 0; // Restart animation
