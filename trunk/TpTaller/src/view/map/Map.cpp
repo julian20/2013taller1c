@@ -93,13 +93,16 @@ void Map::SetUpPersonajes(){
 }
 
 void Map::Draw(SDL_Surface* screen) {
+
 	CameraUpdate();
 
-	Personaje* personajes = NULL;
+	//Personaje* personajes = NULL;
     SDL_Rect posTile;
 
     for (int col = 0; col < data->GetNCols(); col++) {
+
         for (int row = 0; row < data->GetNRows(); row++) {
+
         	posTile = GetTilePos(row, col);
 
             SDL_BlitSurface(tilesTextures[ data->GetTileType(row, col) ],
@@ -108,24 +111,25 @@ void Map::Draw(SDL_Surface* screen) {
             				&posTile);
 
             tileData* tileData = data->GetTileData(row, col);
-            // TODO: Dibujar las cosas de tileData
 
+            // TODO: Dibujar las cosas de tileData
             // En esta parte deberia agregarlo a una lista, como solo hay uno por
             // ahora solo se guarda en una variable
-            Personaje* personaje = data->GetPersonaje(row, col);
-            if (personaje != NULL) personajes = personaje;
+
+           // Personaje* personaje = data->GetPersonaje(row, col);
+           // if (personaje != NULL) personajes = personaje;
         }
     }
 
     // Luego se blitean todos los personajes despues de haber bliteado el piso
     // para que el piso no tape a los flacos.
-    if (personajes != NULL){
+  /*  if (personajes != NULL){
 		PersonajeVista* personajeVista =
 				new PersonajeVista(personajes, "resources/foo.png", screen);
 
 		personajeVista->UpdateCameraPos(cameraX, cameraY);
 		personajeVista->Mostrar();
-    }
+    }*/
 }
 
 SDL_Rect Map::GetTilePos(int row, int col) {
