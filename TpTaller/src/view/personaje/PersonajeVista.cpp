@@ -66,7 +66,7 @@ void PersonajeVista::UpdateCameraPos(int x, int y){
 	cameraY = y;
 }
 
-PersonajeVista::PersonajeVista(Personaje* unPersonaje, char* urlImagen, SDL_Surface* fondo)
+PersonajeVista::PersonajeVista(Personaje* unPersonaje, char* urlImagen)
 {
 	cameraX = cameraY = 0;
 	marco = 0;
@@ -81,7 +81,7 @@ PersonajeVista::PersonajeVista(Personaje* unPersonaje, char* urlImagen, SDL_Surf
 
    // try
     //{
-    	this->fondo = fondo;
+    	//this->fondo = fondo;
         personajeImagen = this->CargarImagen(urlImagen);
         this->EstablecerLosClips(NUMERODECLIPS);
    /* }catch(ERROR e)
@@ -112,64 +112,71 @@ SDL_Surface* PersonajeVista::CargarImagen(char* img)
     estado = PERSONAJE_DERECHA;
     return miPersonajeImagen;
 }
-void PersonajeVista::Mostrar()
+void PersonajeVista::Mostrar(SDL_Surface* fondo)
 {
 	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
 	Vector2* pos = this->miPersonaje->GetCurrentPos();
 
-
-    if( movementDirection->GetX() < 0  && movementDirection->GetY()==0)
+	printf("marco inicial %i",marco);
+    if( movementDirection->GetX() < 0  && floor(movementDirection->GetY()==0))
     {
-    	printf("mueve izq\n");
+
         estado = PERSONAJE_IZQUIERDA;
-        marco++;         // Move to the next marco in the animation
+        this->marco++;         // Move to the next marco in the animation
+    	printf("mueve izq marco %i\n",marco);
     }
     else if( movementDirection->GetX() < 0  && movementDirection->GetY()>0)
        {
-       	printf("mueve izqabj\n");
+
 
            estado = PERSONAJE_IZQUIERDA;
-           marco++;         // Move to the next marco in the animation
+           this->marco++;         // Move to the next marco in the animation
+       	printf("mueve izqabj %i\n",marco);
        }
-    else if( movementDirection->GetX() > 0 && movementDirection->GetY()==0)
+    else if( movementDirection->GetX() > 0 && floor(movementDirection->GetY()==0))
     {
-    	printf("mueve derecha\n");
+
         estado = PERSONAJE_DERECHA;
-        marco++;
+        this->marco++;
+        printf("mueve derecha %i\n",marco);
     }
     else if( movementDirection->GetX() > 0 && movementDirection->GetY()<0)
        {
-       	printf("mueve derecharriba\n");
+
            estado = PERSONAJE_DERECHA;
-           marco++;
+           this->marco++;
+           printf("mueve derecharriba\n %i",marco);
        }
-    else if( movementDirection->GetY() > 0 && movementDirection->GetX()==0)
+    else if( movementDirection->GetY() > 0 && floor(movementDirection->GetX()==0))
     {
-    	printf("mueve abajo\n");
-        estado = PERSONAJE_ABAJO;
+    	printf("mueve abajo %i \n",marco);
+        this->estado = PERSONAJE_ABAJO;
         marco++;
     }
     else if( movementDirection->GetY() > 0 && movementDirection->GetX()>0)
         {
-        	printf("mueve derechaabajo\n");
+
             estado = PERSONAJE_ABAJO;
             marco++;
+            printf("mueve derechaabajo %i\n",marco);
         }
-    else if( movementDirection->GetY() < 0 && movementDirection->GetX()==0)
+    else if( movementDirection->GetY() < 0 && floor(movementDirection->GetX()==0))
     {
-    	printf("mueve arriba\n");
+
         estado = PERSONAJE_ARRIBA;
         marco++;
+        printf("mueve arriba %i\n",marco);
     }
     else if( movementDirection->GetY() < 0 && movementDirection->GetX()<0)
         {
-        	printf("mueve izqarriba\n");
+
             estado = PERSONAJE_ARRIBA;
             marco++;
+            printf("mueve izqarriba %i\n",marco);
         }
     else     // If Personaje standing
     {
-        marco = 0; // Restart animation
+   //     marco = 0; // Restart animation
     }
 
     //Loop the animation
@@ -193,6 +200,7 @@ void PersonajeVista::Mostrar()
     {
         Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsAbajo[ marco ] );
     }
+    printf("marco final %i",marco);
 }
 
 

@@ -7,6 +7,7 @@
 
 #include <Game.h>
 #include <view/Map.h>
+#include <view/PersonajeVista.h>
 #include <model/Personaje.h>
 #include <model/ConfigurationReader.h>
 
@@ -25,6 +26,8 @@ SDL_Rect posFondo;
 SDL_Surface* fondo;
 Map* map;
 Personaje* personaje;
+PersonajeVista* personajeVista;
+
 
 Game::Game(ConfigurationReader* cfgReader) {
 	// TODO Auto-generated constructor stub
@@ -35,10 +38,13 @@ Game::Game(ConfigurationReader* cfgReader) {
 	mapData->SetTileType( MapData::WATER, 7, 5);
 
 	personaje = new Personaje();
-	mapData->AddPersonaje(0, 0, personaje);
 
 	map = new Map(mapData);
 	map->SetUpPersonajes();
+
+	personajeVista= new PersonajeVista(personaje,"resources/foo.png");
+	mapData->AddPersonaje(0, 0, personaje);
+
 }
 
 void getEvent() {
@@ -97,6 +103,10 @@ void draw() {
 
     map->Draw(pantalla);
 
+    Vector2* cam= map->GetCamera();
+    personajeVista->UpdateCameraPos(cam->GetX(), cam->GetY());
+    personajeVista->Mostrar(pantalla);
+    delete cam;
     // Actualiza la pantalla
     SDL_Flip(pantalla);
     SDL_Delay(20);
@@ -126,6 +136,7 @@ MenuEvent Game::run(){
 			}
 
 			if (event.type == SDL_QUIT) exit = true;
+			//personajeVista->Mostrar();
 		}
 
         //Actualizo la parte visual, sin mostrarla todavia

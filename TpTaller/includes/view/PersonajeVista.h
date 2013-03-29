@@ -26,16 +26,16 @@
 
 class PersonajeVista {
 public:
-    PersonajeVista(Personaje* unPersonaje,char* urlImagen,SDL_Surface* fondo);
+    PersonajeVista(Personaje* unPersonaje,char* urlImagen);
     SDL_Surface* CargarImagen(char* path);
-    void Mostrar();
+    void Mostrar(SDL_Surface* fondo);
     void UpdateCameraPos(int x, int y);
     virtual ~PersonajeVista();
 private:
     void Draw( float x, float y, SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip );
 	void EstablecerLosClips(int cantidadPorLado);
 	Personaje* miPersonaje;
-	SDL_Surface* fondo;
+	//SDL_Surface* fondo;
 	SDL_Surface* personajeImagen;
 	int cameraX;
 	int cameraY;
