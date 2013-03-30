@@ -129,7 +129,7 @@ MenuEvent Game::run(){
 	while (!exit) {
 
 		while (SDL_PollEvent(&event)){
-			if (event.type == SDL_MOUSEBUTTONDOWN) {
+			if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == 1) {
 				Vector2* camera = map->GetCamera();
 				personaje->MoveTo(event.button.x - camera->GetX(), event.button.y - camera->GetY());
 				map->ClickOn( event.button.x, event.button.y, event.button.button );
