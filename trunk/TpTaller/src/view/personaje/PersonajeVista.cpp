@@ -12,7 +12,7 @@
 #include <cmath>
 
 #define FRAMES_PER_SECOND	10
-#define SCALE				0.2
+#define SCALE				0.4
 
 //como es animado necesito la cantidad de clips por lado.
 int NUMERODECLIPS=4;
@@ -54,7 +54,7 @@ void PersonajeVista::Draw( float x, float y, SDL_Surface* source, SDL_Surface* s
 {
     SDL_Rect offset;
 
-    offset.x = (int)x + cameraX - clip->w*2.5;
+    offset.x = (int)x + cameraX - (clip->w/SCALE)/2;
     offset.y = (int)y + cameraY- clip->h;
     offset.w = clip->w;
     offset.h = clip->h;
@@ -117,7 +117,7 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo)
 	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
 	Vector2* pos = this->miPersonaje->GetCurrentPos();
 
-	printf("marco inicial %i",marco);
+	printf("marco inicial %i\n",marco);
     if( movementDirection->GetX() < 0  && floor(movementDirection->GetY()==0))
     {
 
