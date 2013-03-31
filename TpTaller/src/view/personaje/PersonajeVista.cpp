@@ -43,7 +43,7 @@ SDL_Surface *load_image( char* urlImagen )
     	//loadedImage = rotozoomSurfaceXY(loadedImage, 0, SCALE, SCALE, 0);
 
         //Create an optimized surface
-        optimizedImage = SDL_DisplayFormat( loadedImage );
+        optimizedImage = SDL_DisplayFormatAlpha( loadedImage );
 
         SDL_FreeSurface( loadedImage );
 
