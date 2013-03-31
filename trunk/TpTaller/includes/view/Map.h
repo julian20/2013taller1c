@@ -32,10 +32,11 @@ private:
     MapController* mapController;
     int cameraX, cameraY;
 
-    SDL_Rect GetTilePos(int row, int col);
     void DefineTexturePaths();
     void GraphicalSetup();
     void CameraUpdate();
+    SDL_Rect GetSquaredMapTilePos(int row, int col);
+    SDL_Rect GetDiamondShapeMapTilePos(int row, int col);
 };
 
 #endif	/* MAP_H */
