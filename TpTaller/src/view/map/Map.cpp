@@ -1,5 +1,7 @@
 #include <view/Map.h>
 
+#define TILE_POS_FUNC	GetDiamondShapeMapTilePos
+
 #define MapMargin		40		// px
 #define TilesOverlap	2		// px
 #define TilesScale  	1
@@ -84,8 +86,7 @@ void Map::SetUpPersonajes(){
 
             Personaje* personaje = data->GetPersonaje(row, col);
             if (personaje != NULL) {
-            	posTile = GetTilePos(row, col);
-
+            	posTile = TILE_POS_FUNC(row, col);
             	personaje->SetPos((float)posTile.x, (float)posTile.y);
             }
         }
@@ -103,7 +104,7 @@ void Map::Draw(SDL_Surface* screen) {
 
         for (int row = 0; row < data->GetNRows(); row++) {
 
-        	posTile = GetTilePos(row, col);
+        	posTile = TILE_POS_FUNC(row, col);
 
             SDL_BlitSurface(tilesTextures[ data->GetTileType(row, col) ],
             				NULL,
@@ -132,7 +133,7 @@ void Map::Draw(SDL_Surface* screen) {
     }*/
 }
 
-SDL_Rect Map::GetTilePos(int row, int col) {
+SDL_Rect Map::GetSquaredMapTilePos(int row, int col) {
     int widthTexture = tilesTextures[0]->w - TilesOverlap;
     int heightTexture = tilesTextures[0]->h - TilesOverlap;
 
@@ -146,9 +147,23 @@ SDL_Rect Map::GetTilePos(int row, int col) {
     return posTile;
 }
 
+SDL_Rect Map::GetDiamondShapeMapTilePos(int row, int col) {
+    int widthTexture = tilesTextures[0]->w - TilesOverlap;
+    int heightTexture = tilesTextures[0]->h - TilesOverlap;
+
+    SDL_Rect posTile;
+
+    posTile.x = cameraX + (col + row) * widthTexture / 2;
+    posTile.y = cameraY + (col - row) * heightTexture / 2;
+    posTile.w = widthTexture;
+    posTile.h = heightTexture;
+
+    return posTile;
+}
+
 void Map::ClickOn(int x, int y, int button) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
-	SDL_Rect firstTile = GetTilePos(0, 0);
+	SDL_Rect firstTile = TILE_POS_FUNC(0, 0);
 
 	int row = (y - firstTile.y)*2/firstTile.h;
 	int col = (x - firstTile.x)/firstTile.w;
