@@ -11,6 +11,9 @@
 #include <SDL/SDL_rotozoom.h>
 #include <cmath>
 
+#define OFFSET_X	40
+#define OFFSET_Y	10
+
 #define FRAMES_PER_SECOND	5
 
 //#define SCALE				0.2
@@ -120,110 +123,33 @@ SDL_Surface* PersonajeVista::CargarImagen(char* img)
     estado = PERSONAJE_DERECHA;
     return miPersonajeImagen;
 }
+
 void PersonajeVista::Mostrar(SDL_Surface* fondo)
 {
 	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
+	float direction = movementDirection->GetAngle();
 	Vector2* pos = this->miPersonaje->GetCurrentPos();
 
-	//printf("marco inicial %i\n",marco);
-    if( movementDirection->GetX() < 0  && floor(movementDirection->GetY()==0))
-    {
+    int x = pos->GetX() + OFFSET_X;
+    int y = pos->GetY() + OFFSET_Y;
 
-        estado = PERSONAJE_IZQUIERDA;
-        this->marco++;         // Move to the next marco in the animation
-    	//printf("mueve izq marco %i\n",marco);
-    }
-    else if( movementDirection->GetX() < 0  && movementDirection->GetY()>0)
-       {
+    SDL_Rect* clipToDraw;
 
+	if (M_PI * 15 / 8 < direction || direction < M_PI * 1 / 8) 		clipToDraw = &clipsDerecha[ marco ];
+	else if (M_PI * 1 / 8 < direction && direction < M_PI * 3 / 8) 	clipToDraw = &clipsAbajoDer[ marco ];
+	else if (M_PI * 3 / 8 < direction && direction < M_PI * 5 / 8) 	clipToDraw = &clipsAbajo[ marco ];
+	else if (M_PI * 5 / 8 < direction && direction < M_PI * 7 / 8) 	clipToDraw = &clipsAbajoIzq[ marco ];
+	else if (M_PI * 7 / 8 < direction && direction < M_PI * 9 / 8) 	clipToDraw = &clipsIzquierda[ marco ];
+	else if (M_PI * 9 / 8 < direction && direction < M_PI * 11 / 8) clipToDraw = &clipsArribaIzq[ marco ];
+	else if (M_PI * 11 / 8 < direction && direction < M_PI * 13 / 8)clipToDraw = &clipsArriba[ marco ];
+	else if (M_PI * 13 / 8 < direction && direction < M_PI * 15 / 8)clipToDraw = &clipsArribaDer[ marco ];
 
-           estado = PERSONAJE_ABAJOIZQ;
-           this->marco++;         // Move to the next marco in the animation
-       	//printf("mueve izqabj %i\n",marco);
-       }
-    else if( movementDirection->GetX() > 0 && floor(movementDirection->GetY()==0))
-    {
+	if (miPersonaje->IsMoving()) this->marco++;	// Move to the next marco in the animation
+	else	marco = 0;	// Stop Animation, unit standing.
 
-        estado = PERSONAJE_DERECHA;
-        this->marco++;
-        //printf("mueve derecha %i\n",marco);
-    }
-    else if( movementDirection->GetX() > 0 && movementDirection->GetY()<0)
-       {
+    if( marco >= 4 ) marco = 0;    // Loop the animation
 
-           estado = PERSONAJE_ARRIBADER;
-           this->marco++;
-          // printf("mueve derecharriba\n %i",marco);
-       }
-    else if( movementDirection->GetY() > 0 && floor(movementDirection->GetX()==0))
-    {
-    	//printf("mueve abajo %i \n",marco);
-        this->estado = PERSONAJE_ABAJO;
-        marco++;
-    }
-    else if( movementDirection->GetY() > 0 && movementDirection->GetX()>0)
-        {
-
-            estado = PERSONAJE_ABAJODER;
-            marco++;
-         //   printf("mueve derechaabajo %i\n",marco);
-        }
-    else if( movementDirection->GetY() < 0 && floor(movementDirection->GetX()==0))
-    {
-
-        estado = PERSONAJE_ARRIBA;
-        marco++;
-       // printf("mueve arriba %i\n",marco);
-    }
-    else if( movementDirection->GetY() < 0 && movementDirection->GetX()<0)
-        {
-
-            estado = PERSONAJE_ARRIBAIZQ;
-            marco++;
-         //   printf("mueve izqarriba %i\n",marco);
-        }
-    else     // If Personaje standing
-    {
-        marco = 0; // Restart animation
-    }
-
-    //Loop the animation
-    if( marco >= 4 )
-    {
-        marco = 0;
-    }
-
-    //Show the stick figure
-    if( estado == PERSONAJE_DERECHA )
-    {
-        Draw( pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsDerecha[ marco ] );
-    }
-    else if( estado == PERSONAJE_IZQUIERDA )
-    {
-        Draw( pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsIzquierda[ marco ] );
-    }else if (estado ==PERSONAJE_ARRIBA)
-    {
-        Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsArriba[ marco ] );
-    }else if (estado ==PERSONAJE_ABAJO)
-    {
-        Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsAbajo[ marco ] );
-
-	}else if (estado ==PERSONAJE_ABAJODER)
-    {
-        Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsAbajoDer[ marco ] );
-
-	}else if (estado ==PERSONAJE_ABAJOIZQ)
-    {
-        Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsAbajoIzq[ marco ] );
-    }else if (estado ==PERSONAJE_ARRIBADER)
-    {
-        Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsArribaDer[ marco ] );
-    }else if (estado ==PERSONAJE_ARRIBAIZQ)
-    {
-        Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsArribaIzq[ marco ] );
-    }
-
-   //
+    Draw(x, y, this->personajeImagen, fondo, clipToDraw );
 }
 void PersonajeVista::EstablecerLosClips(int cantidadPorLado)
 {

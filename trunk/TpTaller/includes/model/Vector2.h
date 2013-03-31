@@ -8,6 +8,7 @@
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
+#define _USE_MATH_DEFINES	// To use math.h constants
 #include <math.h>
 
 class Vector2{
@@ -22,6 +23,7 @@ public:
 	void Add(Vector2 *other);
 	void Sub(Vector2 *other);
 	bool IsEqual(Vector2 *other);
+	float GetAngle();
 private:
 	float x, y;
 };

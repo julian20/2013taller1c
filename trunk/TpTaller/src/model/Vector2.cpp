@@ -6,7 +6,7 @@
  */
 
 #include <model/Vector2.h>
-
+#include <stdio.h>
 #define TOLERANCE 0.1
 
 Vector2::Vector2(float _x, float _y){
@@ -55,7 +55,27 @@ void Vector2::Sub(Vector2 *other){
 
 bool Vector2::IsEqual(Vector2 *other) {
 	bool XEquality = (x >= other->GetX() - TOLERANCE && x <= other->GetX() + TOLERANCE);
-	bool YEquality = (y >= other->GetY() - TOLERANCE && y <= other->GetX() + TOLERANCE);
+	bool YEquality = (y >= other->GetY() - TOLERANCE && y <= other->GetY() + TOLERANCE);
 
 	return (XEquality && YEquality);
+}
+
+float Vector2::GetAngle() {
+	if (x > 0 && y >= 0)
+	{
+		return atan(y / x);
+	}
+	else if (x < 0)
+	{
+		return atan(y / x) + M_PI;
+	}
+	else if (x > 0 && y < 0)
+	{
+		return atan(y / x) + 2 * M_PI;
+	}
+	else // this.x == 0
+	{
+		if (y > 0) return M_PI / 2;
+		return M_PI * 3 / 2;
+	}
 }

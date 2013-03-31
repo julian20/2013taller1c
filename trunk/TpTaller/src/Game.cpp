@@ -103,7 +103,7 @@ void draw() {
 
     map->Draw(pantalla);
 
-    Vector2* cam= map->GetCamera();
+    Vector2* cam = map->GetCamera();
     personajeVista->UpdateCameraPos(cam->GetX(), cam->GetY());
     personajeVista->Mostrar(pantalla);
     delete cam;
