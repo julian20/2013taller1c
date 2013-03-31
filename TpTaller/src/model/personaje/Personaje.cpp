@@ -7,31 +7,28 @@
 
 #include <model/Personaje.h>
 
-#define OFFSET_X	26
-#define OFFSET_Y	0
-
 Personaje::Personaje() {
-    currentPos = new Vector2(OFFSET_X, OFFSET_Y);
-    endPos = new Vector2(OFFSET_X, OFFSET_Y);
+    currentPos = new Vector2(0, 0);
+    endPos = new Vector2(0, 0);
     velocity = 3;
 }
 
 void Personaje::SetPos(float x, float y) {
-	 currentPos->SetValues(x + OFFSET_X, y + OFFSET_Y);
+	 currentPos->SetValues(x, y);
 	 endPos->SetValues( currentPos->GetX(), currentPos->GetY() );
 }
 
 void Personaje::MoveTo(int x, int y) {
-	endPos = new Vector2(x + OFFSET_X , y + OFFSET_Y);
+	endPos = new Vector2(x , y);
 }
 
 void Personaje::Update() {
-	if (currentPos->IsEqual(endPos)) return;	// Si ya llego a la posicion final
+	if (IsMoving() == false) return;
 
 	Vector2* moveDirection = new Vector2(endPos->GetX() - currentPos->GetX() ,
 										 endPos->GetY() - currentPos->GetY());
 
-	if (moveDirection->GetNorm() < velocity) {
+	if (moveDirection->GetNorm() < velocity + 1) {
 		// Close enough to the end position to move in one step.
 		currentPos->SetValues(endPos->GetX(), endPos->GetY());
 	} else {
@@ -52,6 +49,10 @@ Vector2* Personaje::GetMovementDirection() {
 	moveDirection->Normalize();
 
 	return moveDirection;
+}
+
+bool Personaje::IsMoving() {
+	return !(currentPos->IsEqual(endPos));
 }
 
 bool IRepresentable::Transitable() {

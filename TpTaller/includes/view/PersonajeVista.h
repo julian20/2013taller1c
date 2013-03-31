@@ -12,6 +12,9 @@
 #include <SDL/SDL_image.h>
 #include <model/Vector2.h>
 
+#define _USE_MATH_DEFINES	// To use math.h constants
+#include <math.h>
+
 #define		SCREEN_WIDTH	640
 #define		SCREEN_HEIGHT  	480
 #define		SCREEN_BPP  	32

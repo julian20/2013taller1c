@@ -29,6 +29,7 @@ public:
 	void Update();
 	Vector2* GetCurrentPos();
 	Vector2* GetMovementDirection();
+	bool IsMoving();
 	virtual ~Personaje();
 private:
 	Vector2* currentPos;

@@ -1,6 +1,6 @@
 #include <view/Map.h>
 
-#define TILE_POS_FUNC	GetDiamondShapeMapTilePos
+#define TILE_POS_FUNC	GetSquaredMapTilePos
 
 #define MapMargin		40		// px
 #define TilesOverlap	2		// px
