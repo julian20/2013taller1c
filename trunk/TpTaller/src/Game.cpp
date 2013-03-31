@@ -42,7 +42,7 @@ Game::Game(ConfigurationReader* cfgReader) {
 	map = new Map(mapData);
 	map->SetUpPersonajes();
 
-	personajeVista= new PersonajeVista(personaje,"resources/foo.png");
+	personajeVista= new PersonajeVista(personaje,"resources/foo4.png");
 	mapData->AddPersonaje(0, 0, personaje);
 
 }

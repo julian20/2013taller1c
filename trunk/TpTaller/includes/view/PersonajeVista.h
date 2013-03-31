@@ -17,8 +17,8 @@
 #define		SCREEN_BPP  	32
 
 //Dimensiones de la figura Imagen.
-#define PERSONAJE_ANCHO  64
-#define PERSONAJE_ALTO  205
+#define PERSONAJE_ANCHO  96
+#define PERSONAJE_ALTO  96
 
 
 //APerfiles de la vista del personaje.
