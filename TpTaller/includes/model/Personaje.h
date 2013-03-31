@@ -16,7 +16,10 @@ const int PERSONAJE_DERECHA = 0;
 const int PERSONAJE_IZQUIERDA = 1;
 const int PERSONAJE_ARRIBA = 2;
 const int PERSONAJE_ABAJO = 3;
-
+const int PERSONAJE_ABAJODER = 4;
+const int PERSONAJE_ABAJOIZQ = 5;
+const int PERSONAJE_ARRIBADER = 7;
+const int PERSONAJE_ARRIBAIZQ = 6;
 
 class Personaje : public IRepresentable{
 public:

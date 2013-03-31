@@ -11,8 +11,10 @@
 #include <SDL/SDL_rotozoom.h>
 #include <cmath>
 
-#define FRAMES_PER_SECOND	10
-#define SCALE				0.4
+#define FRAMES_PER_SECOND	5
+
+//#define SCALE				0.2
+
 
 //como es animado necesito la cantidad de clips por lado.
 int NUMERODECLIPS=4;
@@ -21,6 +23,10 @@ SDL_Rect clipsDerecha[ 4 ];
 SDL_Rect clipsIzquierda[ 4 ];
 SDL_Rect clipsArriba[ 4 ];
 SDL_Rect clipsAbajo[ 4 ];
+SDL_Rect clipsAbajoIzq[ 4 ];
+SDL_Rect clipsAbajoDer[ 4 ];
+SDL_Rect clipsArribaDer[ 4 ];
+SDL_Rect clipsArribaIzq[ 4 ];
 
 SDL_Surface *load_image( char* urlImagen )
 {
@@ -31,9 +37,10 @@ SDL_Surface *load_image( char* urlImagen )
     SDL_Surface* optimizedImage = NULL;
 
     loadedImage = IMG_Load( urlImagen );
+
     if( loadedImage != NULL )
     {
-    	loadedImage = rotozoomSurfaceXY(loadedImage, 0, SCALE, SCALE, 0);
+    	//loadedImage = rotozoomSurfaceXY(loadedImage, 0, SCALE, SCALE, 0);
 
         //Create an optimized surface
         optimizedImage = SDL_DisplayFormat( loadedImage );
@@ -54,7 +61,8 @@ void PersonajeVista::Draw( float x, float y, SDL_Surface* source, SDL_Surface* s
 {
     SDL_Rect offset;
 
-    offset.x = (int)x + cameraX - (clip->w/SCALE)/2;
+    //offset.x = (int)x + cameraX - (clip->w/SCALE)/2;
+    offset.x= (int)x +cameraX -clip->w;
     offset.y = (int)y + cameraY- clip->h;
     offset.w = clip->w;
     offset.h = clip->h;
@@ -117,66 +125,66 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo)
 	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
 	Vector2* pos = this->miPersonaje->GetCurrentPos();
 
-	printf("marco inicial %i\n",marco);
+	//printf("marco inicial %i\n",marco);
     if( movementDirection->GetX() < 0  && floor(movementDirection->GetY()==0))
     {
 
         estado = PERSONAJE_IZQUIERDA;
         this->marco++;         // Move to the next marco in the animation
-    	printf("mueve izq marco %i\n",marco);
+    	//printf("mueve izq marco %i\n",marco);
     }
     else if( movementDirection->GetX() < 0  && movementDirection->GetY()>0)
        {
 
 
-           estado = PERSONAJE_IZQUIERDA;
+           estado = PERSONAJE_ABAJOIZQ;
            this->marco++;         // Move to the next marco in the animation
-       	printf("mueve izqabj %i\n",marco);
+       	//printf("mueve izqabj %i\n",marco);
        }
     else if( movementDirection->GetX() > 0 && floor(movementDirection->GetY()==0))
     {
 
         estado = PERSONAJE_DERECHA;
         this->marco++;
-        printf("mueve derecha %i\n",marco);
+        //printf("mueve derecha %i\n",marco);
     }
     else if( movementDirection->GetX() > 0 && movementDirection->GetY()<0)
        {
 
-           estado = PERSONAJE_DERECHA;
+           estado = PERSONAJE_ARRIBADER;
            this->marco++;
-           printf("mueve derecharriba\n %i",marco);
+          // printf("mueve derecharriba\n %i",marco);
        }
     else if( movementDirection->GetY() > 0 && floor(movementDirection->GetX()==0))
     {
-    	printf("mueve abajo %i \n",marco);
+    	//printf("mueve abajo %i \n",marco);
         this->estado = PERSONAJE_ABAJO;
         marco++;
     }
     else if( movementDirection->GetY() > 0 && movementDirection->GetX()>0)
         {
 
-            estado = PERSONAJE_ABAJO;
+            estado = PERSONAJE_ABAJODER;
             marco++;
-            printf("mueve derechaabajo %i\n",marco);
+         //   printf("mueve derechaabajo %i\n",marco);
         }
     else if( movementDirection->GetY() < 0 && floor(movementDirection->GetX()==0))
     {
 
         estado = PERSONAJE_ARRIBA;
         marco++;
-        printf("mueve arriba %i\n",marco);
+       // printf("mueve arriba %i\n",marco);
     }
     else if( movementDirection->GetY() < 0 && movementDirection->GetX()<0)
         {
 
-            estado = PERSONAJE_ARRIBA;
+            estado = PERSONAJE_ARRIBAIZQ;
             marco++;
-            printf("mueve izqarriba %i\n",marco);
+         //   printf("mueve izqarriba %i\n",marco);
         }
     else     // If Personaje standing
     {
-   //     marco = 0; // Restart animation
+        marco = 0; // Restart animation
     }
 
     //Loop the animation
@@ -199,11 +207,71 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo)
     }else if (estado ==PERSONAJE_ABAJO)
     {
         Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsAbajo[ marco ] );
+
+	}else if (estado ==PERSONAJE_ABAJODER)
+    {
+        Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsAbajoDer[ marco ] );
+
+	}else if (estado ==PERSONAJE_ABAJOIZQ)
+    {
+        Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsAbajoIzq[ marco ] );
+    }else if (estado ==PERSONAJE_ARRIBADER)
+    {
+        Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsArribaDer[ marco ] );
+    }else if (estado ==PERSONAJE_ARRIBAIZQ)
+    {
+        Draw(pos->GetX(), pos->GetY(), this->personajeImagen, fondo, &clipsArribaIzq[ marco ] );
     }
-    printf("marco final %i",marco);
+
+   //
 }
+void PersonajeVista::EstablecerLosClips(int cantidadPorLado)
+{
+	for(int cantidadDePosiciones=0;cantidadDePosiciones<4;cantidadDePosiciones++)
+	{
+		clipsDerecha[ cantidadDePosiciones ].x = PERSONAJE_ANCHO*cantidadDePosiciones;
+		clipsDerecha[ cantidadDePosiciones ].y = 0;
+		clipsDerecha[ cantidadDePosiciones ].w = PERSONAJE_ANCHO;
+		clipsDerecha[ cantidadDePosiciones ].h = PERSONAJE_ALTO;
 
+		 clipsIzquierda[ cantidadDePosiciones ].x = PERSONAJE_ANCHO*cantidadDePosiciones;
+		 clipsIzquierda[ cantidadDePosiciones ].y = PERSONAJE_ALTO;
+		 clipsIzquierda[ cantidadDePosiciones ].w = PERSONAJE_ANCHO;
+		 clipsIzquierda[ cantidadDePosiciones ].h = PERSONAJE_ALTO;
 
+		 clipsArriba[ cantidadDePosiciones ].x = PERSONAJE_ANCHO*cantidadDePosiciones;
+		 clipsArriba[ cantidadDePosiciones ].y = PERSONAJE_ALTO * 2;
+		 clipsArriba[ cantidadDePosiciones ].w = PERSONAJE_ANCHO;
+		 clipsArriba[ cantidadDePosiciones ].h = PERSONAJE_ALTO;
+
+		 clipsAbajo[ cantidadDePosiciones ].x = PERSONAJE_ANCHO*cantidadDePosiciones;
+		 clipsAbajo[ cantidadDePosiciones ].y = PERSONAJE_ALTO * 3;
+		 clipsAbajo[ cantidadDePosiciones ].w = PERSONAJE_ANCHO;
+		 clipsAbajo[ cantidadDePosiciones ].h = PERSONAJE_ALTO;
+
+		 clipsArribaIzq[ cantidadDePosiciones ].x = PERSONAJE_ANCHO*cantidadDePosiciones;
+		 clipsArribaIzq[ cantidadDePosiciones ].y = PERSONAJE_ALTO * 6;
+		 clipsArribaIzq[ cantidadDePosiciones ].w = PERSONAJE_ANCHO;
+		 clipsArribaIzq[ cantidadDePosiciones ].h = PERSONAJE_ALTO;
+
+		 clipsArribaDer[ cantidadDePosiciones ].x = PERSONAJE_ANCHO*cantidadDePosiciones;
+		 clipsArribaDer[ cantidadDePosiciones ].y = PERSONAJE_ALTO * 7;
+		 clipsArribaDer[ cantidadDePosiciones ].w = PERSONAJE_ANCHO;
+		 clipsArribaDer[ cantidadDePosiciones ].h = PERSONAJE_ALTO;
+
+		 clipsAbajoIzq[ cantidadDePosiciones ].x = PERSONAJE_ANCHO*cantidadDePosiciones;
+		 clipsAbajoIzq[ cantidadDePosiciones ].y = PERSONAJE_ALTO * 5;
+		 clipsAbajoIzq[ cantidadDePosiciones ].w = PERSONAJE_ANCHO;
+		 clipsAbajoIzq[ cantidadDePosiciones ].h = PERSONAJE_ALTO;
+
+		 clipsAbajoDer[ cantidadDePosiciones ].x = PERSONAJE_ANCHO*cantidadDePosiciones;
+		 clipsAbajoDer[ cantidadDePosiciones ].y = PERSONAJE_ALTO * 4;
+		 clipsAbajoDer[ cantidadDePosiciones ].w = PERSONAJE_ANCHO;
+		 clipsAbajoDer[ cantidadDePosiciones ].h = PERSONAJE_ALTO;
+
+	}
+}
+/*
 void PersonajeVista::EstablecerLosClips(int cantidadPorLado)
 {
     //Clip the sprites
@@ -288,7 +356,7 @@ void PersonajeVista::EstablecerLosClips(int cantidadPorLado)
     clipsAbajo[ 3 ].w = PERSONAJE_ANCHO*SCALE;
     clipsAbajo[ 3 ].h = PERSONAJE_ALTO*SCALE;
 
-}
+}*/
 
 PersonajeVista::~PersonajeVista() 
 {
