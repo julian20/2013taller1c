@@ -108,9 +108,7 @@ void Menu::runConfigMenu() {
 
 
 Menu::~Menu() {
-	// TODO Auto-generated destructor stub
 	delete view;
-
 }
 
 } /* namespace std */
