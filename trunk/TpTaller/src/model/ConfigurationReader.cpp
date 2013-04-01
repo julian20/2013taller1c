@@ -28,102 +28,134 @@ using namespace std;
 #define CONFIGURATION_TILES_DEFINITION 1
 #define CONFIGURATION_MAP_DEFINITION 2
 
-/**
- * Structure to represent a three dimensional vector.
- */
-struct ThreeDimensionalVector {
-	int x, y, z;
-};
-
-/**
- * Extraction operator for two dimensional vectors.
- */
-
 /* ************************************** *
- * *********** ENTITY PARSING *********** *
+ * *********** AUX STRUCTURES *********** *
  * ************************************** */
-
-/**
- * Structure to represent the power of an entity.
- */
-struct AuxPower {
-	std::string name;
-	int damage;
-	int range;
-};
-
-/**
- * Structure to represent the power of an entity.
- */
-struct AuxSpeed {
-	int magnitude;
-	ThreeDimensionalVector direction;
-};
-
-/**
- * Structure to represent an entity.
- */
-struct AuxEntity {
-	std::string name;
-	ThreeDimensionalVector position;
-	AuxSpeed speed;
-	std::vector<AuxPower> powers;
-};
-
-
-void operator >>(const YAML::Node& yamlNode, ThreeDimensionalVector& vector) {
-	yamlNode[0] >> vector.x;
-	yamlNode[1] >> vector.y;
-	yamlNode[2] >> vector.z;
-}
-
 
 /**
  * Structure to represent an entity.
  */
 struct AuxEntityList {
-	std::vector<AuxEntity> entities;
+	std::vector<Entity*> entities;
 };
 
 /**
- * Extraction operator for power.
+ * Definition of a tile texture.
  */
-void operator >>(const YAML::Node& yamlNode, AuxPower& power) {
-	yamlNode["name"] >> power.name;
-	yamlNode["damage"] >> power.damage;
-	yamlNode["range"] >> power.range;
+struct AuxTileDefinition {
+	std::string identifier;
+	std::string imageSrc;
+};
+
+/**
+ * List of all tile texture definitions.
+ */
+struct AuxTileDefinitionList {
+	std::vector<AuxTileDefinition> tileDefinitionList;
+};
+
+/**
+ * Map tile.
+ */
+struct AuxTile {
+	Position* position;
+	std::string textureIdentifier;
+};
+
+/**
+ * Map: list of tiles.
+ */
+struct AuxMap {
+	std::vector<AuxTile> tileList;
+};
+/* ************************************** *
+ * *********** ENTITY PARSING *********** *
+ * ************************************** */
+
+/**
+ * Sobrecarga de operador >> para llenar los datos de un puntero
+ * a Position.
+ */
+void operator >>(const YAML::Node& yamlNode, Position* vector) {
+	int auxX, auxY, auxZ;
+
+	yamlNode[0] >> auxX;
+	yamlNode[1] >> auxY;
+	yamlNode[2] >> auxZ;
+
+	vector->setX(auxX);
+	vector->setY(auxY);
+	vector->setZ(auxZ);
 }
 
 /**
- * Extraction operator for power.
+ * Sobrecarga de operador >> para llenar los datos de un puntero
+ * a Power.
  */
-void operator >>(const YAML::Node& yamlNode, AuxSpeed& speed) {
-	yamlNode["magnitude"] >> speed.magnitude;
-	yamlNode["direction"] >> speed.direction;
+void operator >>(const YAML::Node& yamlNode, Power* power) {
+	std::string auxName;
+	int auxDamage, auxRange;
+
+	yamlNode["name"] >> auxName;
+	yamlNode["damage"] >> auxDamage;
+	yamlNode["range"] >> auxRange;
+
+	power->setName(auxName);
+	power->setDamage(auxDamage);
+	power->setRange(auxRange);
 }
 
 /**
- * Extraction of an entity.
+ * Sobrecarga de operador >> para llenar los datos de un puntero
+ * a Speed.
  */
-void operator >>(const YAML::Node& yamlNode, AuxEntity& entity) {
-	yamlNode["name"] >> entity.name;
-	yamlNode["position"] >> entity.position;
-	yamlNode["speed"] >> entity.speed;
+void operator >>(const YAML::Node& yamlNode, Speed* speed) {
+	int auxMagnitude;
+	yamlNode["magnitude"] >> auxMagnitude;
+	speed->setMagnitude(auxMagnitude);
+
+	Position* auxPosition = new Position(0, 0, 0);
+	yamlNode["direction"] >> auxPosition;
+	speed->setDirection(auxPosition);
+}
+
+/**
+ * Sobrecarga de operador >> para llenar los datos de un puntero
+ * a Entity.
+ */
+void operator >>(const YAML::Node& yamlNode, Entity* entity) {
+
+	Position* auxPosition = new Position(0, 0, 0);
+	Speed* auxSpeed = new Speed(0, NULL);
+	std::string auxName;
+	std::vector<Power*> auxPowers;
+
+	yamlNode["name"] >> auxName;
+	yamlNode["position"] >> auxPosition;
+	yamlNode["speed"] >> auxSpeed;
+
 	const YAML::Node& powers = yamlNode["powers"];
 	for (unsigned i = 0; i < powers.size(); i++) {
-		AuxPower power;
+		Power* power = new Power("", 0, 0);
 		powers[i] >> power;
-		entity.powers.push_back(power);
+		auxPowers.push_back(power);
 	}
+
+	entity->setName(auxName);
+	entity->setPosition(auxPosition);
+	entity->setSpeed(auxSpeed);
+	entity->setPowers(auxPowers);
+
 }
 
 /**
- * Extraction of all configured entities.
+ * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
  */
 void operator >>(const YAML::Node& yamlNode, AuxEntityList& entityList) {
 	const YAML::Node& entities = yamlNode["entities"];
 	for (unsigned i = 0; i < entities.size(); i++) {
-		AuxEntity entity;
+		std::vector<Power*> auxPowers;
+		Entity* entity = new Entity("", NULL, NULL, auxPowers);
 		entities[i] >> entity;
 		entityList.entities.push_back(entity);
 	}
@@ -159,48 +191,9 @@ void printEntity(Entity* parsedEntity) {
 
 }
 
-/**
- * Converts an auxiliary struct entity into a model-based entity.
- */
-Entity* parseEntity(AuxEntity entity) {
-	Position* parsedPosition = new Position(entity.position.x,
-			entity.position.y, entity.position.z);
-
-	Speed* parsedSpeed = new Speed(entity.speed.magnitude,
-			new Position(entity.speed.direction.x, entity.speed.direction.y,
-					entity.speed.direction.z));
-
-	std::vector<Power*> parsedPowers;
-	for (unsigned i = 0; i < entity.powers.size(); i++) {
-		Power* parsedPower = new Power(entity.powers[i].name,
-				entity.powers[i].damage, entity.powers[i].range);
-		parsedPowers.push_back(parsedPower);
-	}
-
-	Entity* parsedEntity = new Entity(entity.name, parsedPosition, parsedSpeed,
-			parsedPowers);
-
-	return parsedEntity;
-}
-
 /* *********************************************** *
  * *********** TILE DEFINITION PARSING *********** *
  * *********************************************** */
-
-/**
- * Definition of a tile texture.
- */
-struct AuxTileDefinition {
-	std::string identifier;
-	std::string imageSrc;
-};
-
-/**
- * List of all tile texture definitions.
- */
-struct AuxTileDefinitionList {
-	std::vector<AuxTileDefinition> tileDefinitionList;
-};
 
 /**
  * Extraction operator for tile definition.
@@ -247,19 +240,11 @@ AuxTileDefinition& parseTileDefinition(AuxTileDefinition& tileDefinition) {
  * *********** MAP PARSING *********** *
  * *********************************** */
 
-struct AuxTile {
-	ThreeDimensionalVector position;
-	std::string textureIdentifier;
-};
-
-struct AuxMap {
-	std::vector<AuxTile> tileList;
-};
-
 /**
  * Extraction operator for map tile.
  */
 void operator >>(const YAML::Node& yamlNode, AuxTile& tile) {
+	tile.position = new Position(0, 0, 0);
 	yamlNode["position"] >> tile.position;
 	yamlNode["texture"] >> tile.textureIdentifier;
 }
@@ -288,8 +273,8 @@ AuxTile parseMapTile(AuxTile& tile) {
  */
 void printTile(AuxTile& tile) {
 	std::cout << "Position: ";
-	std::cout << "(" << tile.position.x << ", " << tile.position.y << ", "
-			<< tile.position.z << ")\n";
+	std::cout << "(" << tile.position->getX() << ", " << tile.position->getY()
+			<< ", " << tile.position->getZ() << ")\n";
 	std::cout << "Texture: ";
 	std::cout << tile.textureIdentifier << "\n";
 }
@@ -316,8 +301,7 @@ void ConfigurationReader::loadConfiguration(std::string configurationFile) {
 	AuxEntityList entities;
 	yamlNode[CONFIGURATION_ENTITIES_DEFINITION] >> entities;
 	for (unsigned j = 0; j < entities.entities.size(); j++) {
-		Entity* parsedEntity = parseEntity(entities.entities[j]);
-		printEntity(parsedEntity);
+		printEntity(entities.entities[j]);
 	}
 
 	// Parsing tile definition.
