@@ -13,6 +13,7 @@
 #include <model/entities/Entity.h>
 #include <model/map/Tile.h>
 #include <model/map/TileDefinition.h>
+#include <model/map/TextureHolder.h>
 
 #include <iostream>
 #include <fstream>
@@ -169,13 +170,12 @@ void operator >>(const YAML::Node& yamlNode, TileDefinition* tileDefinition) {
 /**
  * Extraction of all configured entities.
  */
-void operator >>(const YAML::Node& yamlNode,
-		AuxTileDefinitionList& tileDefinitionList) {
-	const YAML::Node& tileDefinitions = yamlNode["tiles"];
-	for (unsigned i = 0; i < tileDefinitions.size(); i++) {
+void operator >>(const YAML::Node& yamlNode, TextureHolder* textureHolder) {
+	const YAML::Node& yamlTileDefinitions = yamlNode["tiles"];
+	for (unsigned i = 0; i < yamlTileDefinitions.size(); i++) {
 		TileDefinition* tileDef = new TileDefinition("", "");
-		tileDefinitions[i] >> tileDef;
-		tileDefinitionList.tileDefinitionList.push_back(tileDef);
+		yamlTileDefinitions[i] >> tileDef;
+		textureHolder->addTexture(tileDef);
 	}
 }
 
@@ -258,12 +258,22 @@ void printEntity(Entity* parsedEntity) {
 /**
  * Prints an entity to check if it was parsed correctly.
  */
-void printTileDefinition(TileDefinition* parsedTileDefinition) {
+void printTextureHolder(TextureHolder* parsedTileDefinition) {
 
-	std::cout << "Identifier: ";
-	std::cout << parsedTileDefinition->getTileId() << "\n";
-	std::cout << "Image Source: ";
-	std::cout << "\n";
+	std::vector<std::string> textureIds;
+
+	textureIds.push_back("soil");
+	textureIds.push_back("neutral");
+	textureIds.push_back("water");
+	textureIds.push_back("tree");
+
+	for (unsigned int i = 0; i < textureIds.size(); i++) {
+		std::cout << "Identifier: ";
+		std::cout << textureIds[i] << "\n";
+		std::cout << "Image Source: ";
+		std::cout << parsedTileDefinition->getTextureSrc(textureIds[i]);
+		std::cout << "\n";
+	}
 
 }
 
@@ -293,12 +303,9 @@ void ConfigurationReader::loadConfiguration(std::string configurationFile) {
 	}
 
 	// Parsing tile definition.
-	AuxTileDefinitionList tileDefinitionList;
-	yamlNode[CONFIGURATION_TILES_DEFINITION] >> tileDefinitionList;
-	for (unsigned j = 0; j < tileDefinitionList.tileDefinitionList.size();
-			j++) {
-		printTileDefinition(tileDefinitionList.tileDefinitionList[j]);
-	}
+	TextureHolder* textureHolder = new TextureHolder();
+	yamlNode[CONFIGURATION_TILES_DEFINITION] >> textureHolder;
+	printTextureHolder(textureHolder);
 
 	// Parsing map tile locations.
 	AuxMap mapConfiguration;
@@ -306,6 +313,8 @@ void ConfigurationReader::loadConfiguration(std::string configurationFile) {
 	for (unsigned j = 0; j < mapConfiguration.tileList.size(); j++) {
 		printTile(mapConfiguration.tileList[j]);
 	}
+
+	delete textureHolder;
 
 }
 
