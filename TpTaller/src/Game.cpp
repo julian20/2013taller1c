@@ -15,11 +15,10 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_rotozoom.h>
 
-#define BACKGROUND_IMAGE_PATH	"resources/background.png"
 
-#define Default_w	800		// px
-#define Default_h	600		// px
-#define Default_bpp 0		// px
+#define DEFAULT_W	800		// px
+#define DEFAULT_H	600		// px
+#define DEFAULT_BPP 0		// px
 
 SDL_Surface* pantalla;
 SDL_Rect posFondo;
@@ -60,45 +59,31 @@ void refreshCharacters() {
 void startDrawing() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	//Buscamos info sobre la resolucion del escritorio
-	const SDL_VideoInfo* escritorio = SDL_GetVideoInfo();
+	//Buscamos info sobre la resolucion del escritorio y creamos la pantalla
+	const SDL_VideoInfo *info = SDL_GetVideoInfo();
+		if (!info) {
+			pantalla = SDL_SetVideoMode(DEFAULT_W, DEFAULT_H, DEFAULT_BPP,
+					SDL_HWSURFACE | SDL_RESIZABLE);
+		} else {
+			pantalla = SDL_SetVideoMode(info->current_w, info->current_h,
+					info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE | SDL_RESIZABLE);
 
-	//Creamos la ventana
-	pantalla = SDL_SetVideoMode(Default_w, Default_h, 32, SDL_HWSURFACE);
+		}
 
 	//La hacemos fullscreen
-	/* int flag = 1;
+	 /*int flag = 1;
 	 flag = SDL_WM_ToggleFullScreen(pantalla);
 	 if (flag == 0) {
 	 printf("Unable to go fullscreen: %s\n", SDL_GetError());
 	 exit(1);
-	 }*/
+	 }
+	 */
 
-	//Cargamos la imagen de fondo
-	SDL_Surface* imagen = IMG_Load(BACKGROUND_IMAGE_PATH);
-	if (imagen == NULL) {
-		printf("Unable to load bitmap: %s\n", SDL_GetError());
-		exit(1);
-	}
-
-	float escalaX = (float) pantalla->w / imagen->w;
-	float escalaY = (float) pantalla->h / imagen->h;
-	SDL_Surface* fondo_tmp = rotozoomSurfaceXY(imagen, 0, escalaX, escalaY, 0);
-	fondo = SDL_DisplayFormatAlpha(fondo_tmp);
-	//Liberamos las variables temporales.
-	SDL_FreeSurface(imagen);
-	SDL_FreeSurface(fondo_tmp);
-
-	posFondo.x = posFondo.y = 0;
-	posFondo.w = fondo->w;
-	posFondo.h = fondo->h;
 }
 
 void draw() {
 	//Borramos y redibujamos en cada ciclo
 	SDL_FillRect(pantalla, NULL, 0);
-	SDL_BlitSurface(fondo, NULL, pantalla, &posFondo);
-
 	map->Draw(pantalla);
 
 	Vector2* cam = map->GetCamera();
@@ -110,13 +95,6 @@ void draw() {
 	SDL_Delay(20);
 }
 
-void endDrawing() {
-	//Libera la imagen
-	SDL_FreeSurface(fondo);
-
-	//Cierra SDL
-	SDL_Quit();
-}
 
 MenuEvent Game::run() {
 
@@ -155,7 +133,6 @@ MenuEvent Game::run() {
 		draw();
 	}
 
-	endDrawing();
 
 	return EXIT_EVENT;
 }

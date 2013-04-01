@@ -27,8 +27,8 @@ int default_bpp = 0;
 MenuView::MenuView() {
 
 	musica = NULL;
-	sonido = NULL;
 	darknessVoice = NULL;
+	screen = NULL;
 
 	//La linea siguiente es para que la window se centre
 	char environment_setting[] = ENVIRONMENT_WINDOW;
@@ -127,34 +127,13 @@ void MenuView::initMusic() {
 		cerr << "No se puede cargar el sonido:" << SDL_GetError() << endl;
 		exit(1);
 	}
-
+	Mix_VolumeMusic(500);
 	Mix_FadeInMusic(musica, -1, 3000);
 	startVoice();
 
 }
 
-void MenuView::startLaugh() {
-	// Cargamos un sonido
 
-	sonido = Mix_LoadWAV(START_LAUGH);
-
-	if (sonido == NULL) {
-		cerr << "No se puede cargar el sonido de la risa" << SDL_GetError()
-				<< endl;
-		exit(1);
-	}
-
-	// Establecemos el volumen para el sonido
-	int volumen = 1000;
-	Mix_VolumeChunk(sonido, volumen);
-
-	// Creamos un canal
-	Mix_AllocateChannels(2);
-
-	// Introducimos el sonido en el canal
-	// En el canal 1 con una reproducción (0)
-	Mix_PlayChannel(1, sonido, 0);
-}
 
 void MenuView::startVoice() {
 	// Cargamos un sonido
@@ -177,7 +156,6 @@ void MenuView::startVoice() {
 MenuView::~MenuView() {
 	SDL_FreeSurface(screen);
 	Mix_FreeMusic(musica);
-	Mix_FreeChunk(sonido);
 	Mix_FreeChunk(darknessVoice);
 	Mix_CloseAudio();
 	SDL_Quit();
