@@ -19,6 +19,7 @@ public:
 	virtual ~TextureHolder();
 	void addTexture(TileDefinition* tileDefinition);
 	SDL_Surface* getTexture(std::string id);
+	std::string getTextureSrc(std::string id);
 private:
 	std::vector<TileDefinition*> listOfTextures;
 	bool duplicateTexture(std::string id);

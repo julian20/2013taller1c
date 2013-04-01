@@ -35,6 +35,10 @@ void TileDefinition::setTileId(std::string id) {
 	this->id = id;
 }
 
+std::string TileDefinition::getTileImageSrc() {
+	return this->imageSrc;
+}
+
 SDL_Surface* TileDefinition::getTileImage() {
 	SDL_Surface* loadedImage = IMG_Load(this->imageSrc.c_str());
 	if (loadedImage == NULL) {

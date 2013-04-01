@@ -20,6 +20,7 @@ public:
 	void setTileId(std::string id);
 	SDL_Surface* getTileImage();
 	void setTileImageSrc(std::string imageSrc);
+	std::string getTileImageSrc();
 	SDL_Surface* getDefaultTileImage();
 private:
 	std::string id, imageSrc, defaultImgSrc;

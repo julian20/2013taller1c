@@ -37,6 +37,17 @@ void TextureHolder::addTexture(TileDefinition* tileDefinition) {
 	this->listOfTextures.push_back(tileDefinition);
 }
 
+std::string TextureHolder::getTextureSrc(std::string id) {
+	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
+		TileDefinition* auxTileDefinition = this->listOfTextures[i];
+		if (id.compare(auxTileDefinition->getTileId())) {
+			return auxTileDefinition->getTileImageSrc();
+		}
+	}
+
+	return getTextureSrc(DEFAULT_TEXTURE_ID);
+}
+
 SDL_Surface* TextureHolder::getTexture(std::string id) {
 	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
 		TileDefinition* auxTileDefinition = this->listOfTextures[i];

@@ -48,7 +48,7 @@
   - position: [0, 0, 0]
     texture: neutral
   - position: [0, 1, 0]
-    texture: grass
+    texture: water
   - position: [1, 0, 0]
     texture: soil
   - position: [1, 1, 0]
