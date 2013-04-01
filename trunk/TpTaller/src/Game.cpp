@@ -20,6 +20,7 @@
 #define Default_w	800		// px
 #define Default_h	600		// px
 #define Default_bpp 0		// px
+
 SDL_Surface* pantalla;
 SDL_Rect posFondo;
 SDL_Surface* fondo;
