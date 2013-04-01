@@ -14,6 +14,7 @@
 class TileDefinition {
 public:
 	TileDefinition();
+	TileDefinition(std::string id, std::string imageSrc);
 	virtual ~TileDefinition();
 	std::string getTileId();
 	void setTileId(std::string id);

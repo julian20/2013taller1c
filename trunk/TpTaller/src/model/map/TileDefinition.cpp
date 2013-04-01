@@ -10,10 +10,18 @@
 #include <string>
 #include <SDL/SDL_image.h>
 
+#define DEFAULT_TEXTURE_PATH "defaultPath"
+
 TileDefinition::TileDefinition() {
 	this->id = "default";
-	this->setDefaultTileImage("defaultTexturePath");
+	this->setDefaultTileImage(DEFAULT_TEXTURE_PATH);
 	this->imageSrc = this->defaultImgSrc;
+}
+
+TileDefinition::TileDefinition(std::string id, std::string imageSrc) {
+	this->id = id;
+	this->imageSrc = imageSrc;
+	this->setDefaultTileImage(DEFAULT_TEXTURE_PATH);
 }
 
 TileDefinition::~TileDefinition() {

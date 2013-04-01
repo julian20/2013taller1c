@@ -11,6 +11,8 @@
 #include <model/entityProperties/Power.h>
 #include <model/ConfigurationReader.h>
 #include <model/entities/Entity.h>
+#include <model/map/Tile.h>
+#include <model/map/TileDefinition.h>
 
 #include <iostream>
 #include <fstream>
@@ -40,33 +42,17 @@ struct AuxEntityList {
 };
 
 /**
- * Definition of a tile texture.
- */
-struct AuxTileDefinition {
-	std::string identifier;
-	std::string imageSrc;
-};
-
-/**
  * List of all tile texture definitions.
  */
 struct AuxTileDefinitionList {
-	std::vector<AuxTileDefinition> tileDefinitionList;
-};
-
-/**
- * Map tile.
- */
-struct AuxTile {
-	Position* position;
-	std::string textureIdentifier;
+	std::vector<TileDefinition*> tileDefinitionList;
 };
 
 /**
  * Map: list of tiles.
  */
 struct AuxMap {
-	std::vector<AuxTile> tileList;
+	std::vector<Tile*> tileList;
 };
 
 /* ************************************** *
@@ -162,6 +148,83 @@ void operator >>(const YAML::Node& yamlNode, AuxEntityList& entityList) {
 	}
 }
 
+/* *********************************************** *
+ * *********** TILE DEFINITION PARSING *********** *
+ * *********************************************** */
+
+/**
+ * Extraction operator for tile definition.
+ */
+void operator >>(const YAML::Node& yamlNode, TileDefinition* tileDefinition) {
+
+	std::string auxId, auxSrc;
+
+	yamlNode["identifier"] >> auxId;
+	yamlNode["imageSrc"] >> auxSrc;
+
+	tileDefinition->setTileId(auxId);
+	tileDefinition->setTileImageSrc(auxSrc);
+}
+
+/**
+ * Extraction of all configured entities.
+ */
+void operator >>(const YAML::Node& yamlNode,
+		AuxTileDefinitionList& tileDefinitionList) {
+	const YAML::Node& tileDefinitions = yamlNode["tiles"];
+	for (unsigned i = 0; i < tileDefinitions.size(); i++) {
+		TileDefinition* tileDef = new TileDefinition("", "");
+		tileDefinitions[i] >> tileDef;
+		tileDefinitionList.tileDefinitionList.push_back(tileDef);
+	}
+}
+
+/* *********************************** *
+ * *********** MAP PARSING *********** *
+ * *********************************** */
+
+/**
+ * Extraction operator for map tile.
+ */
+void operator >>(const YAML::Node& yamlNode, Tile* tile) {
+	std::string auxId;
+	Position* auxPosition = new Position(0, 0, 0);
+
+	yamlNode["position"] >> auxPosition;
+	yamlNode["texture"] >> auxId;
+
+	tile->setPosition(auxPosition);
+	tile->setTextureIdentifier(auxId);
+}
+
+/**
+ * Extraction operator of a map.
+ */
+void operator >>(const YAML::Node& yamlNode, AuxMap& entity) {
+	const YAML::Node& tileList = yamlNode["map"];
+	for (unsigned i = 0; i < tileList.size(); i++) {
+		Tile* tile = new Tile(NULL, "");
+		tileList[i] >> tile;
+		entity.tileList.push_back(tile);
+	}
+}
+
+/* *************************************************** *
+ * *********** PRINTING OF PARSED ELEMENTS *********** *
+ * *************************************************** */
+
+/**
+ * Prints a tile to check for parsing integrity.
+ */
+void printTile(Tile* tile) {
+	std::cout << "Position: ";
+	std::cout << "(" << tile->getPosition()->getX() << ", "
+			<< tile->getPosition()->getY() << ", "
+			<< tile->getPosition()->getZ() << ")\n";
+	std::cout << "Texture: ";
+	std::cout << tile->getTextureIdentifier() << "\n";
+}
+
 /**
  * Prints an entity to check if it was parsed correctly.
  */
@@ -192,92 +255,16 @@ void printEntity(Entity* parsedEntity) {
 
 }
 
-/* *********************************************** *
- * *********** TILE DEFINITION PARSING *********** *
- * *********************************************** */
-
-/**
- * Extraction operator for tile definition.
- */
-void operator >>(const YAML::Node& yamlNode,
-		AuxTileDefinition& tileDefinition) {
-	yamlNode["identifier"] >> tileDefinition.identifier;
-	yamlNode["imageSrc"] >> tileDefinition.imageSrc;
-}
-
-/**
- * Extraction of all configured entities.
- */
-void operator >>(const YAML::Node& yamlNode,
-		AuxTileDefinitionList& tileDefinitionList) {
-	const YAML::Node& tileDefinitions = yamlNode["tiles"];
-	for (unsigned i = 0; i < tileDefinitions.size(); i++) {
-		AuxTileDefinition tileDef;
-		tileDefinitions[i] >> tileDef;
-		tileDefinitionList.tileDefinitionList.push_back(tileDef);
-	}
-}
-
 /**
  * Prints an entity to check if it was parsed correctly.
  */
-void printTileDefinition(AuxTileDefinition& parsedTileDefinition) {
+void printTileDefinition(TileDefinition* parsedTileDefinition) {
 
 	std::cout << "Identifier: ";
-	std::cout << parsedTileDefinition.identifier << "\n";
+	std::cout << parsedTileDefinition->getTileId() << "\n";
 	std::cout << "Image Source: ";
-	std::cout << parsedTileDefinition.imageSrc << "\n";
+	std::cout << "\n";
 
-}
-
-/**
- * Converts an auxiliary struct entity into a model-based entity.
- */
-AuxTileDefinition& parseTileDefinition(AuxTileDefinition& tileDefinition) {
-	return tileDefinition;
-}
-
-/* *********************************** *
- * *********** MAP PARSING *********** *
- * *********************************** */
-
-/**
- * Extraction operator for map tile.
- */
-void operator >>(const YAML::Node& yamlNode, AuxTile& tile) {
-	tile.position = new Position(0, 0, 0);
-	yamlNode["position"] >> tile.position;
-	yamlNode["texture"] >> tile.textureIdentifier;
-}
-
-/**
- * Extraction operator of a map.
- */
-void operator >>(const YAML::Node& yamlNode, AuxMap& entity) {
-	const YAML::Node& tileList = yamlNode["map"];
-	for (unsigned i = 0; i < tileList.size(); i++) {
-		AuxTile tile;
-		tileList[i] >> tile;
-		entity.tileList.push_back(tile);
-	}
-}
-
-/**
- * Parsing of a tile.
- */
-AuxTile parseMapTile(AuxTile& tile) {
-	return tile;
-}
-
-/**
- * Prints a tile to check for parsing integrity.
- */
-void printTile(AuxTile& tile) {
-	std::cout << "Position: ";
-	std::cout << "(" << tile.position->getX() << ", " << tile.position->getY()
-			<< ", " << tile.position->getZ() << ")\n";
-	std::cout << "Texture: ";
-	std::cout << tile.textureIdentifier << "\n";
 }
 
 /**
@@ -310,17 +297,14 @@ void ConfigurationReader::loadConfiguration(std::string configurationFile) {
 	yamlNode[CONFIGURATION_TILES_DEFINITION] >> tileDefinitionList;
 	for (unsigned j = 0; j < tileDefinitionList.tileDefinitionList.size();
 			j++) {
-		AuxTileDefinition parsedTileDefinition = parseTileDefinition(
-				tileDefinitionList.tileDefinitionList[j]);
-		printTileDefinition(parsedTileDefinition);
+		printTileDefinition(tileDefinitionList.tileDefinitionList[j]);
 	}
 
 	// Parsing map tile locations.
 	AuxMap mapConfiguration;
 	yamlNode[CONFIGURATION_MAP_DEFINITION] >> mapConfiguration;
 	for (unsigned j = 0; j < mapConfiguration.tileList.size(); j++) {
-		AuxTile parsedTile = parseMapTile(mapConfiguration.tileList[j]);
-		printTile(parsedTile);
+		printTile(mapConfiguration.tileList[j]);
 	}
 
 }
