@@ -10,6 +10,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>
 #include <cmath>
+#include <string>
 
 #define OFFSET_X	40
 #define OFFSET_Y	10
@@ -31,14 +32,14 @@ SDL_Rect clipsArribaDer[4];
 SDL_Rect clipsArribaIzq[4];
 SDL_Rect clipsQuieto[4];
 
-SDL_Surface *load_image(char* urlImagen) {
+SDL_Surface* load_image(std::string urlImagen) {
 	//The image that's loaded
 	SDL_Surface* loadedImage = NULL;
 
 	//The optimized surface that will be used
 	SDL_Surface* optimizedImage = NULL;
 
-	loadedImage = IMG_Load(urlImagen);
+	loadedImage = IMG_Load(urlImagen.c_str());
 
 	if (loadedImage != NULL) {
 		//loadedImage = rotozoomSurfaceXY(loadedImage, 0, SCALE, SCALE, 0);
@@ -76,7 +77,7 @@ void PersonajeVista::UpdateCameraPos(int x, int y) {
 	cameraY = y;
 }
 
-PersonajeVista::PersonajeVista(Personaje* unPersonaje, char* urlImagen) {
+PersonajeVista::PersonajeVista(Personaje* unPersonaje, std::string urlImagen) {
 	cameraX = cameraY = 0;
 	marco = 0;
 	estado = 0;
@@ -99,9 +100,9 @@ PersonajeVista::PersonajeVista(Personaje* unPersonaje, char* urlImagen) {
 	 }*/
 }
 
-SDL_Surface* PersonajeVista::CargarImagen(char* img) {
+SDL_Surface* PersonajeVista::CargarImagen(std::string img) {
 	//Load the sprite sheet
-	if (!img) {
+	if (img.compare("")) {
 		//  throw new FaltaParametroException();
 	}
 

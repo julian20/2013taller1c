@@ -11,6 +11,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <model/Vector2.h>
+#include <string>
 
 #define _USE_MATH_DEFINES	// To use math.h constants
 #include <math.h>
@@ -29,8 +30,8 @@
 
 class PersonajeVista {
 public:
-    PersonajeVista(Personaje* unPersonaje,char* urlImagen);
-    SDL_Surface* CargarImagen(char* path);
+    PersonajeVista(Personaje* unPersonaje,std::string urlImagen);
+    SDL_Surface* CargarImagen(std::string path);
     void Mostrar(SDL_Surface* fondo);
     void UpdateCameraPos(int x, int y);
     virtual ~PersonajeVista();
