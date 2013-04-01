@@ -309,7 +309,8 @@ void printMapDimensions(AuxMap &mapConfiguration) {
  * Loads the configuration, prints its output and returns
  * a persistent configuration object.
  */
-PersistentConfiguration* ConfigurationReader::loadConfiguration(std::string configurationFile) {
+PersistentConfiguration* ConfigurationReader::loadConfiguration(
+		std::string configurationFile) {
 
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
 
@@ -343,6 +344,9 @@ PersistentConfiguration* ConfigurationReader::loadConfiguration(std::string conf
 	mapConfiguration.dimension = mapDimension;
 	printMapDimensions(mapConfiguration);
 
+	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
+			mapConfiguration.dimension.ncols);
+
 	// Parsing map tile locations.
 	yamlNode[CONFIGURATION_TILELOCATION_DEFINITION] >> mapConfiguration;
 	for (unsigned j = 0; j < mapConfiguration.tileList.size(); j++) {
@@ -353,6 +357,7 @@ PersistentConfiguration* ConfigurationReader::loadConfiguration(std::string conf
 	PersistentConfiguration* configuration = new PersistentConfiguration();
 	configuration->setEntityList(entities.entities);
 	configuration->setTextureHolder(textureHolder);
+	configuration->setMapData(mapData);
 
 	return configuration;
 
