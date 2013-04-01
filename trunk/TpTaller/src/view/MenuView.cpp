@@ -166,7 +166,6 @@ void MenuView::startVoice() {
 }
 
 MenuView::~MenuView() {
-	// TODO Auto-generated destructor stub
 	SDL_FreeSurface(screen);
 	Mix_FreeMusic(musica);
 	Mix_FreeChunk(sonido);

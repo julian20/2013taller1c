@@ -79,7 +79,7 @@ void Map::CameraUpdate() {
 
 void Map::SetUpPersonajes() {
 	// Setea la posicion por unica vez de los personajes (y en un futuro posiblemente
-	// todo lo representable) en el mapa.
+	// lo representable) en el mapa.
 	SDL_Rect posTile;
 
 	for (int col = 0; col < data->GetNCols(); col++) {

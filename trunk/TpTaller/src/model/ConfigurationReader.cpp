@@ -68,6 +68,7 @@ struct AuxTile {
 struct AuxMap {
 	std::vector<AuxTile> tileList;
 };
+
 /* ************************************** *
  * *********** ENTITY PARSING *********** *
  * ************************************** */

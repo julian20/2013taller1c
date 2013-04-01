@@ -28,7 +28,6 @@ Personaje* personaje;
 PersonajeVista* personajeVista;
 
 Game::Game(ConfigurationReader* cfgReader) {
-	// TODO Auto-generated constructor stub
 
 	MapData* mapData = new MapData(50, 30);
 
@@ -95,7 +94,7 @@ void startDrawing() {
 }
 
 void draw() {
-	//Borramos y redibujamos todo en cada ciclo
+	//Borramos y redibujamos en cada ciclo
 	SDL_FillRect(pantalla, NULL, 0);
 	SDL_BlitSurface(fondo, NULL, pantalla, &posFondo);
 
