@@ -9,10 +9,12 @@
 
 PersistentConfiguration::PersistentConfiguration() {
 	this->textureHolder = NULL;
+	this->mapData = NULL;
 }
 
 PersistentConfiguration::~PersistentConfiguration() {
 	delete this->textureHolder;
+	delete this->mapData;
 	for (unsigned int i = 0; i < this->entityList.size(); i++) {
 		delete this->entityList[i];
 	}
@@ -34,3 +36,10 @@ void PersistentConfiguration::setEntityList(std::vector<Entity*> entityList) {
 	this->entityList = entityList;
 }
 
+MapData* PersistentConfiguration::getMapData() {
+	return this->mapData;
+}
+
+void PersistentConfiguration::setMapData(MapData* mapData) {
+	this->mapData = mapData;
+}
