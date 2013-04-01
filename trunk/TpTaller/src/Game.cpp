@@ -9,7 +9,7 @@
 #include <view/Map.h>
 #include <view/PersonajeVista.h>
 #include <model/Personaje.h>
-#include <model/ConfigurationReader.h>
+#include <model/persistence/ConfigurationReader.h>
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>

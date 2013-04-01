@@ -10,7 +10,7 @@
 
 #include <Events.h>
 
-#include <model/ConfigurationReader.h>
+#include <model/persistence/ConfigurationReader.h>
 
 #include <view/MenuView.h>
 
