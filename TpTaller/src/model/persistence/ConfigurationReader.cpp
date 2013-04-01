@@ -9,11 +9,12 @@
 #include <model/entityProperties/Speed.h>
 #include <model/entityProperties/Position.h>
 #include <model/entityProperties/Power.h>
-#include <model/ConfigurationReader.h>
+#include <model/persistence/ConfigurationReader.h>
 #include <model/entities/Entity.h>
 #include <model/map/Tile.h>
 #include <model/map/TileDefinition.h>
 #include <model/map/TextureHolder.h>
+#include <model/persistence/PersistentConfiguration.h>
 
 #include <iostream>
 #include <fstream>
@@ -281,7 +282,8 @@ void printTextureHolder(TextureHolder* parsedTileDefinition) {
  * Loads the configuration and prints its output.
  */
 
-void ConfigurationReader::loadConfiguration(std::string configurationFile) {
+PersistentConfiguration* ConfigurationReader::loadConfiguration(std::string configurationFile) {
+
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
 
 	// Error Check
@@ -314,7 +316,11 @@ void ConfigurationReader::loadConfiguration(std::string configurationFile) {
 		printTile(mapConfiguration.tileList[j]);
 	}
 
-	delete textureHolder;
+	PersistentConfiguration* configuration = new PersistentConfiguration();
+	configuration->setEntityList(entities.entities);
+	configuration->setTextureHolder(textureHolder);
+
+	return configuration;
 
 }
 

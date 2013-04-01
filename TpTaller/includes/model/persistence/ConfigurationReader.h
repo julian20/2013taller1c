@@ -8,14 +8,16 @@
 #ifndef CONFIGURATIONREADER_H
 #define	CONFIGURATIONREADER_H
 
-#include <string>
 #include <model/entities/Entity.h>
+#include <model/persistence/PersistentConfiguration.h>
+
+#include <string>
 
 class ConfigurationReader {
 public:
     ConfigurationReader();
     ConfigurationReader(const ConfigurationReader& orig);
-    void loadConfiguration(std::string configurationFile);
+    PersistentConfiguration* loadConfiguration(std::string configurationFile);
     virtual ~ConfigurationReader();
 
 private:

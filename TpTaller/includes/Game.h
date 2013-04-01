@@ -8,7 +8,7 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include <model/ConfigurationReader.h>
+#include <model/persistence/ConfigurationReader.h>
 #include <SDL/SDL_events.h>
 #include <Events.h>
 
