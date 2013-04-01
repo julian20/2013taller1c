@@ -30,7 +30,8 @@ using namespace std;
  */
 #define CONFIGURATION_ENTITIES_DEFINITION 0
 #define CONFIGURATION_TILES_DEFINITION 1
-#define CONFIGURATION_MAP_DEFINITION 2
+#define CONFIGURATION_MAPDIMENSION_DEFINITION 2
+#define CONFIGURATION_TILELOCATION_DEFINITION 3
 
 /* ************************************** *
  * *********** AUX STRUCTURES *********** *
@@ -51,10 +52,18 @@ struct AuxTileDefinitionList {
 };
 
 /**
+ * Dimensions of a map.
+ */
+struct AuxMapDimension {
+	int nrows, ncols;
+};
+
+/**
  * Map: list of tiles.
  */
 struct AuxMap {
 	std::vector<Tile*> tileList;
+	AuxMapDimension dimension;
 };
 
 /* ************************************** *
@@ -201,13 +210,23 @@ void operator >>(const YAML::Node& yamlNode, Tile* tile) {
 /**
  * Extraction operator of a map.
  */
-void operator >>(const YAML::Node& yamlNode, AuxMap& entity) {
-	const YAML::Node& tileList = yamlNode["map"];
+void operator >>(const YAML::Node& yamlNode, AuxMap& destMap) {
+	const YAML::Node& tileList = yamlNode["tileLocations"];
 	for (unsigned i = 0; i < tileList.size(); i++) {
 		Tile* tile = new Tile(NULL, "");
 		tileList[i] >> tile;
-		entity.tileList.push_back(tile);
+		destMap.tileList.push_back(tile);
 	}
+}
+
+/**
+ * Extraction operator of a map.
+ */
+void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
+	const YAML::Node& yamlDimensions = yamlNode["mapDimensions"];
+
+	yamlDimensions[0] >> dimension.nrows;
+	yamlDimensions[1] >> dimension.ncols;
 }
 
 /* *************************************************** *
@@ -278,10 +297,18 @@ void printTextureHolder(TextureHolder* parsedTileDefinition) {
 
 }
 
-/**
- * Loads the configuration and prints its output.
- */
+void printMapDimensions(AuxMap &mapConfiguration) {
 
+	std::cout << "Map Dimensions: " << "\n";
+	std::cout << "     Rows: " << mapConfiguration.dimension.nrows << "\n";
+	std::cout << "     Columns: " << mapConfiguration.dimension.ncols << "\n";
+
+}
+
+/**
+ * Loads the configuration, prints its output and returns
+ * a persistent configuration object.
+ */
 PersistentConfiguration* ConfigurationReader::loadConfiguration(std::string configurationFile) {
 
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
@@ -309,13 +336,20 @@ PersistentConfiguration* ConfigurationReader::loadConfiguration(std::string conf
 	yamlNode[CONFIGURATION_TILES_DEFINITION] >> textureHolder;
 	printTextureHolder(textureHolder);
 
-	// Parsing map tile locations.
+	// Parsing map dimensions.
 	AuxMap mapConfiguration;
-	yamlNode[CONFIGURATION_MAP_DEFINITION] >> mapConfiguration;
+	AuxMapDimension mapDimension;
+	yamlNode[CONFIGURATION_MAPDIMENSION_DEFINITION] >> mapDimension;
+	mapConfiguration.dimension = mapDimension;
+	printMapDimensions(mapConfiguration);
+
+	// Parsing map tile locations.
+	yamlNode[CONFIGURATION_TILELOCATION_DEFINITION] >> mapConfiguration;
 	for (unsigned j = 0; j < mapConfiguration.tileList.size(); j++) {
 		printTile(mapConfiguration.tileList[j]);
 	}
 
+	// Packing parser results.
 	PersistentConfiguration* configuration = new PersistentConfiguration();
 	configuration->setEntityList(entities.entities);
 	configuration->setTextureHolder(textureHolder);
