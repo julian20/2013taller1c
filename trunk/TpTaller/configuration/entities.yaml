@@ -36,16 +36,20 @@
         damage: 9
         range: 1
 - tiles:
-  - identifier: dirt
-    imageSrc: ./dirt.png
-  - identifier: grass
-    imageSrc: ./grass.png
+  - identifier: soil
+    imageSrc: texturesTiles/dirtTile.png
+  - identifier: neutral
+    imageSrc: texturesTiles/sand.png
+  - identifier: water
+    imageSrc: texturesTiles/Water.png
+  - identifier: tree
+    imageSrc: texturesTiles/stonebrick.png
 - map:
   - position: [0, 0, 0]
-    texture: grass
+    texture: neutral
   - position: [0, 1, 0]
     texture: grass
   - position: [1, 0, 0]
-    texture: dirt
+    texture: soil
   - position: [1, 1, 0]
-    texture: dirt
+    texture: tree
