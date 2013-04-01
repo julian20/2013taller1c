@@ -29,6 +29,7 @@ SDL_Rect clipsAbajoIzq[4];
 SDL_Rect clipsAbajoDer[4];
 SDL_Rect clipsArribaDer[4];
 SDL_Rect clipsArribaIzq[4];
+SDL_Rect clipsQuieto[4];
 
 SDL_Surface *load_image(char* urlImagen) {
 	//The image that's loaded
@@ -67,6 +68,7 @@ void PersonajeVista::Draw(float x, float y, SDL_Surface* source,
 	offset.w = clip->w;
 	offset.h = clip->h;
 	SDL_BlitSurface(source, clip, screen, &offset);
+	SDL_Delay(60);
 }
 
 void PersonajeVista::UpdateCameraPos(int x, int y) {
@@ -147,8 +149,10 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	if (miPersonaje->IsMoving())
 		this->marco++;	// Move to the next marco in the animation
 	else
-		marco = 0;	// Stop Animation, unit standing.
-
+	{
+		clipToDraw= &clipsQuieto[marco];
+		marco++;	// Stop Animation, unit standing.
+	}
 	if (marco >= 4)
 		marco = 0;    // Loop the animation
 
@@ -205,6 +209,11 @@ void PersonajeVista::EstablecerLosClips(int cantidadPorLado) {
 		clipsAbajoDer[cantidadDePosiciones].w = PERSONAJE_ANCHO;
 		clipsAbajoDer[cantidadDePosiciones].h = PERSONAJE_ALTO;
 
+		clipsQuieto[cantidadDePosiciones].x = PERSONAJE_ANCHO
+						* cantidadDePosiciones;
+		clipsQuieto[cantidadDePosiciones].y = PERSONAJE_ALTO * 8;
+		clipsQuieto[cantidadDePosiciones].w = PERSONAJE_ANCHO;
+		clipsQuieto[cantidadDePosiciones].h = PERSONAJE_ALTO;
 	}
 }
 /*
