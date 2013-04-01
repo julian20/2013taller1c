@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <string.h>
 #include <stdio.h>
-#include <model/ConfigurationReader.h>
+#include <model/persistence/ConfigurationReader.h>
 #include <Game.h>
 #include <Menu.h>
 
@@ -22,20 +22,19 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 	// Lectura del archivo de configuracion
-	ConfigurationReader* cfgReader = new ConfigurationReader();
+	ConfigurationReader cfgReader = ConfigurationReader();
 //	cfgReader->loadConfiguration(CONFIGURATION_FILE);
 
-	Menu* menu = new Menu();
-	Game* game = new Game(cfgReader);
+	Menu menu = Menu();
+	Game game = Game(&cfgReader);
 
-	delete cfgReader;
 
 	MenuEvent event;
 	bool gameRunning = false;
 
 	while (event != EXIT_EVENT) {
 
-		event = (gameRunning) ? game->run() : menu->run();
+		event = (gameRunning) ? game.run() : menu.run();
 		switch (event) {
 		case NOTHING_EVENT:
 			break;
@@ -53,9 +52,6 @@ int main(int argc, char** argv) {
 		}
 
 	}
-
-	delete game;
-//	delete menu;		// Tira un segmentation fault medio loco
 
 	return 0;
 }

@@ -23,7 +23,7 @@ Menu::Menu() {
 	view = new MenuView();
 	view->initScreen();
 	view->initButtons(NUM_BUTTONS,buttons_released,buttons_pressed,buttons_events);
-	//view->initMusic();
+	view->initMusic();
 }
 
 /*

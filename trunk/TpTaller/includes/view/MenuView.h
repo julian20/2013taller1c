@@ -32,7 +32,6 @@ public:
 private:
 
 	Mix_Music *musica;
-	Mix_Chunk *sonido;
 	Mix_Chunk *darknessVoice;
 
 
