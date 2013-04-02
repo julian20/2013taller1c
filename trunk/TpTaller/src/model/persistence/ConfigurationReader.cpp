@@ -139,27 +139,24 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 		auxPowers.push_back(power);
 	}
 
-	/* Lucas: muuy viejo, commented out, siguiente metodo idem
 	entity->setName(auxName);
 	entity->setPosition(auxPosition);
 	entity->setSpeed(auxSpeed);
 	entity->setPowers(auxPowers);
-	*/
 }
 
 /**
  * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
-
+ */
 void operator >>(const YAML::Node& yamlNode, AuxEntityList& entityList) {
 	const YAML::Node& entities = yamlNode["entities"];
 	for (unsigned i = 0; i < entities.size(); i++) {
 		std::vector<Power*> auxPowers;
-		//Entity* entity = new Entity("", NULL, NULL, auxPowers);
+		Entity* entity = new Entity("", NULL, NULL, auxPowers);
 		entities[i] >> entity;
 		entityList.entities.push_back(entity);
 	}
 }
-*/
 
 /* *********************************************** *
  * *********** TILE DEFINITION PARSING *********** *
@@ -251,7 +248,6 @@ void printTile(Tile* tile) {
  * Prints an entity to check if it was parsed correctly.
  */
 
-/* Lucas: estabas usando una clase que nadie tenia en cuenta, en este refactor la cambie
 void printEntity(Entity* parsedEntity) {
 
 	std::cout << "Name: ";
@@ -278,7 +274,6 @@ void printEntity(Entity* parsedEntity) {
 	}
 
 }
-*/
 /**
  * Prints an entity to check if it was parsed correctly.
  */
@@ -331,13 +326,11 @@ PersistentConfiguration* ConfigurationReader::loadConfiguration(
 
 	// Parsing entities.
 	AuxEntityList entities;
-	/*
-	 * Lucas: idem que antes, entidades viejas
-	  yamlNode[CONFIGURATION_ENTITIES_DEFINITION] >> entities;
+	yamlNode[CONFIGURATION_ENTITIES_DEFINITION] >> entities;
 	for (unsigned j = 0; j < entities.entities.size(); j++) {
 		printEntity(entities.entities[j]);
 	}
-*/
+
 	// Parsing tile definition.
 	TextureHolder* textureHolder = new TextureHolder();
 	yamlNode[CONFIGURATION_TILES_DEFINITION] >> textureHolder;

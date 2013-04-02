@@ -23,7 +23,7 @@ using namespace std;
 int main(int argc, char** argv) {
 	// Lectura del archivo de configuracion
 	ConfigurationReader cfgReader = ConfigurationReader();
-//	cfgReader->loadConfiguration(CONFIGURATION_FILE);
+//	cfgReader.loadConfiguration(CONFIGURATION_FILE);
 
 	Menu menu = Menu();
 	Game game = Game(&cfgReader);
