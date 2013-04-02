@@ -15,21 +15,25 @@ MapView::MapView(MapData* _data) {
 	GraphicalSetup();
 }
 
-void MapView::DefineTexturePaths() {
-	texturesPaths[MapData::NEUTRAL] = "texturesTiles/sand.png";
-	texturesPaths[MapData::SOIL] = "texturesTiles/dirtTile.png";
-	texturesPaths[MapData::WATER] = "texturesTiles/Water.png";
-	texturesPaths[MapData::TREE] = "texturesTiles/stonebrick.png";
-
-	backgroundPath = "./background.png";
-}
-
 Vector2* MapView::GetCamera() {
 	return new Vector2(cameraX, cameraY);
 }
 
+void MapView::DefineTexturePaths() {
+	/**
+	 * TODO: Esto no tiene que estar (TextureHolder lo maneja)
+	 */
+	texturesPaths[MapData::NEUTRAL] = "texturesTiles/sand.png";
+	texturesPaths[MapData::SOIL] = "texturesTiles/dirtTile.png";
+	texturesPaths[MapData::WATER] = "texturesTiles/Water.png";
+	texturesPaths[MapData::TREE] = "texturesTiles/stonebrick.png";
+	backgroundPath = "./background.png";
+}
+
 void MapView::GraphicalSetup() {
-	//Cargamos las textura de los tiles
+	/**
+	 * TODO: Esto no tiene que estar (TextureHolder lo maneja)
+	 */
 	for (int i = 0; i < MapData::AMOUNT_TYPES; i++) {
 		tilesTextures[i] = IMG_Load(texturesPaths[i].c_str());
 		if (tilesTextures[i] == NULL) {
@@ -38,16 +42,11 @@ void MapView::GraphicalSetup() {
 			exit(1);
 		}
 	}
-
-	// Convertimos las imagenes a display format para que
-	// se muestre mas rapido por pantalla
-
 	for (int i = 0; i < MapData::AMOUNT_TYPES; i++) {
 		tilesTextures[i] = rotozoomSurfaceXY(tilesTextures[i], 0, TilesScale,
 				TilesScale, 0);
 		tilesTextures[i] = SDL_DisplayFormatAlpha(tilesTextures[i]);
 	}
-
 }
 
 MapView::~MapView() {
@@ -107,17 +106,26 @@ void MapView::Draw(SDL_Surface* screen) {
 
 			posTile = TILE_POS_FUNC(row, col);
 
+			/**
+			 * TODO: El manejo de texturas se da aca (con el TextureHolder seteado).
+			 */
+//			std::string textureId = data->GetTileType(row, col);
+//			SDL_Surface* textureImage = getTextureHolder().getImage(textureId);
+//			textureImage = rotozoomSurfaceXY(textureImage, 0, TilesScale,
+//					TilesScale, 0);
+//			textureImage = SDL_DisplayFormatAlpha(textureImage);
+
 			SDL_BlitSurface(tilesTextures[data->GetTileType(row, col)], NULL,
 					screen, &posTile);
 
 			TileData* tileData = data->GetTileData(row, col);
 
-			for (int i=0;i<(tileData->contentAmount);i++){
-				Entity* entity=tileData->content[i];
+			for (int i = 0; i < (tileData->contentAmount); i++) {
+				Entity* entity = tileData->content[i];
 				/*Lucas: TODO!
-				if (entity)
-					entity->draw();
-			*/
+				 if (entity)
+				 entity->draw();
+				 */
 			}
 		}
 	}
@@ -171,7 +179,8 @@ void MapView::ClickOn(int x, int y, int button) {
 
 	printf("row: %d, col: %d\n", row, col);
 
-	if (personaje != NULL) personaje->MoveTo(x - cameraX, y - cameraY);
+	if (personaje != NULL)
+		personaje->MoveTo(x - cameraX, y - cameraY);
 }
 
 void MapView::AssignPersonaje(Personaje* _personaje) {

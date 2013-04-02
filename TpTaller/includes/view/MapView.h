@@ -5,6 +5,8 @@
 #include <controller/MapController.h>
 #include <model/entities/personaje/Personaje.h>
 #include <view/entities/PersonajeVista.h>
+#include <model/map/TextureHolder.h>
+
 #include <string>
 #include <iostream>
 #include <SDL/SDL.h>
@@ -24,7 +26,13 @@ public:
 	void SetUpPersonajes();
     void AssignPersonaje(Personaje* _personaje);
 	Vector2* GetCamera();
+//	TextureHolder getTextureHolder();
+//	void setTextureHolder(TextureHolder textureHolder);
 private:
+	/**
+	 * TODO: descomentar lo relativo al texture holder y hacer que ande.
+	 */
+//	TextureHolder textureHolder;
 	MapData* data;
 	string texturesPaths[MapData::AMOUNT_TYPES];
 	SDL_Surface* tilesTextures[MapData::AMOUNT_TYPES];
