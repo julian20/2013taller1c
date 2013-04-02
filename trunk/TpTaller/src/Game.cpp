@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 #include <Game.h>
-#include <view/Map.h>
+#include <view/MapView.h>
 #include <view/entities/PersonajeVista.h>
 #include <model/entities/personaje/Personaje.h>
 #include <model/persistence/ConfigurationReader.h>
@@ -26,7 +26,7 @@
 SDL_Surface* pantalla;
 SDL_Rect posFondo;
 SDL_Surface* fondo;
-Map* map;
+MapView* map;
 Personaje* personaje;
 PersonajeVista* personajeVista;
 
@@ -37,7 +37,7 @@ Game::Game(ConfigurationReader* cfgReader) {
 	mapData->SetTileType(MapData::SOIL, 5, 5);
 	mapData->SetTileType(MapData::WATER, 7, 5);
 
-	map = new Map(mapData);
+	map = new MapView(mapData);
 
 	setUpCharacters(map,mapData);
 
@@ -50,7 +50,7 @@ void getEvent() {
 void refreshMap() {
 }
 
-void Game::setUpCharacters(Map* map,MapData* mapData){
+void Game::setUpCharacters(MapView* map,MapData* mapData){
 	//TODO: Posiblemente se levante del cfg reader esto
 	personaje = new Personaje();
 	personajeVista = new PersonajeVista(personaje, "resources/foo4.png");
