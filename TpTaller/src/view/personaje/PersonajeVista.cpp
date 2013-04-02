@@ -19,7 +19,7 @@
 //#define SCALE				0.2
 
 //como es animado necesito la cantidad de clips por lado.
-#define NUMERODECLIPS 4
+#define NUMERODECLIPS 8
 
 SDL_Rect clipsDerecha[NUMERODECLIPS];
 SDL_Rect clipsIzquierda[NUMERODECLIPS];
