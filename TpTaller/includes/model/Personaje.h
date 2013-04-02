@@ -21,9 +21,9 @@ const int PERSONAJE_ABAJOIZQ = 5;
 const int PERSONAJE_ARRIBADER = 7;
 const int PERSONAJE_ARRIBAIZQ = 6;
 
-class Personaje : public IRepresentable{
+class Personaje: public IRepresentable {
 public:
-	void MoveTo(int x , int y);
+	void MoveTo(int x, int y);
 	Personaje();
 	void SetPos(float x, float y);
 	void Update();

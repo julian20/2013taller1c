@@ -12,15 +12,15 @@
 
 class Player {
 public:
-    Player* createInPosition(int x, int y, int z);
+	Player* createInPosition(int x, int y, int z);
 
 private:
 //Metodos
-    Player();
+	Player();
 
 //Atributos
-    Position *currentLocation, *destinyLocation;
-    float speed; //esto hay que cambiarlo cuando veamos como se mueve
+	Position *currentLocation, *destinyLocation;
+	float speed; //esto hay que cambiarlo cuando veamos como se mueve
 
 };
 

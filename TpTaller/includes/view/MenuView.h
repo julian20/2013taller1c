@@ -25,7 +25,8 @@ public:
 	vector<Button*> buttons;
 
 	void initScreen();
-	void initButtons(int numButtons,const char** buttons_released,const char** buttons_pressed,const MenuEvent* buttons_events);
+	void initButtons(int numButtons, const char** buttons_released,
+			const char** buttons_pressed, const MenuEvent* buttons_events);
 	void initMusic();
 
 	virtual ~MenuView();
@@ -33,7 +34,6 @@ private:
 
 	Mix_Music *musica;
 	Mix_Chunk *darknessVoice;
-
 
 	void startLaugh();
 	void startVoice();

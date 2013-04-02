@@ -24,19 +24,18 @@
 #define PERSONAJE_ANCHO  96
 #define PERSONAJE_ALTO  96
 
-
 //APerfiles de la vista del personaje.
-
 
 class PersonajeVista {
 public:
-    PersonajeVista(Personaje* unPersonaje,std::string urlImagen);
-    SDL_Surface* CargarImagen(std::string path);
-    void Mostrar(SDL_Surface* fondo);
-    void UpdateCameraPos(int x, int y);
-    virtual ~PersonajeVista();
+	PersonajeVista(Personaje* unPersonaje, std::string urlImagen);
+	SDL_Surface* CargarImagen(std::string path);
+	void Mostrar(SDL_Surface* fondo);
+	void UpdateCameraPos(int x, int y);
+	virtual ~PersonajeVista();
 private:
-    void Draw( float x, float y, SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip );
+	void Draw(float x, float y, SDL_Surface* source, SDL_Surface* screen,
+			SDL_Rect* clip);
 	void EstablecerLosClips(int cantidadPorLado);
 	Personaje* miPersonaje;
 	//SDL_Surface* fondo;

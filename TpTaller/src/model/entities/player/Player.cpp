@@ -9,19 +9,18 @@
 #include <model/entityProperties/Position.h>
 
 //Lucas: agregar mas parametros (level, armas que tiene, etc)?
-Player::Player(){
-	speed=0;
-	currentLocation=NULL;
-	destinyLocation=NULL;
+Player::Player() {
+	speed = 0;
+	currentLocation = NULL;
+	destinyLocation = NULL;
 }
 
-Player* Player::createInPosition(int x, int y, int z){
+Player* Player::createInPosition(int x, int y, int z) {
 	Player* aPlayer = new Player();
-	Position *initialLocation= new Position(x,y,z);
+	Position *initialLocation = new Position(x, y, z);
 
-	aPlayer->currentLocation=initialLocation;
-	aPlayer->destinyLocation=initialLocation;
-
+	aPlayer->currentLocation = initialLocation;
+	aPlayer->destinyLocation = initialLocation;
 
 	return aPlayer;
 }

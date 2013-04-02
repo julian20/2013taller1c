@@ -16,7 +16,6 @@
 #include <SDL/SDL_rotozoom.h>
 #include <SDL/SDL_mixer.h>
 
-
 #define DEFAULT_W	800		// px
 #define DEFAULT_H	600		// px
 #define DEFAULT_BPP 0		// px
@@ -64,16 +63,16 @@ void startDrawing() {
 
 	//Buscamos info sobre la resolucion del escritorio y creamos la pantalla
 	const SDL_VideoInfo *info = SDL_GetVideoInfo();
-		if (!info) {
-			pantalla = SDL_SetVideoMode(DEFAULT_W, DEFAULT_H, DEFAULT_BPP,
-					SDL_HWSURFACE | SDL_RESIZABLE);
-		} else {
-			pantalla = SDL_SetVideoMode(info->current_w, info->current_h,
-					info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE | SDL_RESIZABLE);
+	if (!info) {
+		pantalla = SDL_SetVideoMode(DEFAULT_W, DEFAULT_H, DEFAULT_BPP,
+				SDL_HWSURFACE | SDL_RESIZABLE);
+	} else {
+		pantalla = SDL_SetVideoMode(info->current_w, info->current_h,
+				info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE | SDL_RESIZABLE);
 
-		}
+	}
 	//La hacemos fullscreen
-	 /*int flag = 1;
+	/*int flag = 1;
 	 flag = SDL_WM_ToggleFullScreen(pantalla);
 	 if (flag == 0) {
 	 printf("Unable to go fullscreen: %s\n", SDL_GetError());
@@ -96,7 +95,6 @@ void draw() {
 	SDL_Flip(pantalla);
 	SDL_Delay(20);
 }
-
 
 MenuEvent Game::run() {
 
@@ -133,13 +131,11 @@ MenuEvent Game::run() {
 
 		// Dibujo
 		draw();
-		SDL_Delay(1000/FRAMES_PER_SECOND);
+		SDL_Delay(1000 / FRAMES_PER_SECOND);
 	}
-
 
 	return EXIT_EVENT;
 }
-
 
 void Game::initMusic() {
 	// Inicializamos la librería SDL_Mixer

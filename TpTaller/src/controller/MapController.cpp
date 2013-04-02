@@ -8,7 +8,6 @@
 #include <controller/MapController.h>
 
 #define MovementMargin		50	// px
-
 MapController::MapController() {
 	desktop = SDL_GetVideoInfo();
 	UpdateMouseState();
@@ -26,7 +25,8 @@ bool MapController::MoveScreenLeft() {
 	UpdateMouseState();
 
 	if (mouseX < MovementMargin) {
-		if (mouseY > MovementMargin && mouseY < desktop->current_h - MovementMargin) {
+		if (mouseY > MovementMargin
+				&& mouseY < desktop->current_h - MovementMargin) {
 			return true;
 		}
 	}
@@ -38,7 +38,8 @@ bool MapController::MoveScreenRight() {
 	UpdateMouseState();
 
 	if (mouseX > desktop->current_w - MovementMargin) {
-		if (mouseY > MovementMargin && mouseY < desktop->current_h - MovementMargin) {
+		if (mouseY > MovementMargin
+				&& mouseY < desktop->current_h - MovementMargin) {
 			return true;
 		}
 	}
@@ -50,7 +51,8 @@ bool MapController::MoveScreenUp() {
 	UpdateMouseState();
 
 	if (mouseY < MovementMargin) {
-		if (mouseX > MovementMargin && mouseX < desktop->current_w - MovementMargin) {
+		if (mouseX > MovementMargin
+				&& mouseX < desktop->current_w - MovementMargin) {
 			return true;
 		}
 	}
@@ -62,7 +64,8 @@ bool MapController::MoveScreenDown() {
 	UpdateMouseState();
 
 	if (mouseY > desktop->current_h - MovementMargin) {
-		if (mouseX > MovementMargin && mouseX < desktop->current_w - MovementMargin) {
+		if (mouseX > MovementMargin
+				&& mouseX < desktop->current_w - MovementMargin) {
 			return true;
 		}
 	}
@@ -97,7 +100,7 @@ bool MapController::MoveScreenLeftDown() {
 bool MapController::MoveScreenRightUp() {
 	UpdateMouseState();
 
-	if (mouseX >  desktop->current_w - MovementMargin) {
+	if (mouseX > desktop->current_w - MovementMargin) {
 		if (mouseY < MovementMargin) {
 			return true;
 		}
@@ -109,7 +112,7 @@ bool MapController::MoveScreenRightUp() {
 bool MapController::MoveScreenRightDown() {
 	UpdateMouseState();
 
-	if (mouseX >  desktop->current_w - MovementMargin) {
+	if (mouseX > desktop->current_w - MovementMargin) {
 		if (mouseY > desktop->current_h - MovementMargin) {
 			return true;
 		}
@@ -117,5 +120,4 @@ bool MapController::MoveScreenRightDown() {
 
 	return false;
 }
-
 
