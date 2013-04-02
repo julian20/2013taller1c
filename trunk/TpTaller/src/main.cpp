@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 	Menu menu = Menu();
 	Game game = Game(&cfgReader);
 
-	MenuEvent event;
+	MenuEvent event = NOTHING_EVENT;
 	bool gameRunning = false;
 
 	while (event != EXIT_EVENT) {
