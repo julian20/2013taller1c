@@ -78,6 +78,59 @@ Personaje* MapData::GetPersonaje(int row, int col) {
 	return data[row + nrows * col].personaje;
 }
 
+list<Tile *> *MapData::GetPath(Tile* from, Tile* to){
+	/*list<Tile *> closedSet;
+	list<Tile *> openSet;
+	openSet.insert( openSet.end(), from );
+	list<Tile *> cameFrom;
+
+	map<Tile *, float> g_score;
+	map[from] = 0.0f;
+	map<Tile *, float> f_score;
+	f_score[from] = g_score[from] + heuristic_cost_estimate(from, to);
+
+	while( openSet.size() > 0 ){
+	}*/
+
+	list<Tile *> *path = new list<Tile *>();
+	Tile* nextTile;
+
+	nextTile = from;
+	int row, col;
+	Coordinates* nextTileCords = nextTile->getCoordinates();
+	Coordinates* toCords = to->getCoordinates();
+
+	while (	nextTileCords->getCol() != toCords->getCol() ||
+			nextTileCords->getRow() != toCords->getRow()) {
+
+		int nextTileCol = nextTileCords->getCol();
+		int nextTileRow = nextTileCords->getRow();
+		int toCol = toCords->getCol();
+		int toRow = toCords->getRow();
+
+		if (toCol > nextTileCol) col = nextTileCol + 1;
+		else if (toCol < nextTileCol) col = nextTileCol - 1;
+		else col = nextTileCol;
+
+		if (toRow > nextTileRow) row = nextTileRow + 1;
+		else if (toRow < nextTileRow) row = nextTileRow - 1;
+		else row = nextTileRow;
+
+		nextTile = new Tile(new Position(row, col, 0), "");
+		path->insert( path->end(), nextTile );
+	}
+
+	return path;
+}
+
+/*float heuristic_cost_estimate(Tile* from, Tile* to) {
+	Coordinates* fromPos = from->getCoordinates();
+	Coordinates* toPos = to->getCoordinates();
+
+	// Devuelvo la norma del vector que une ambos puntos
+	return sqrt( pow(toPos->row - fromPos->row, 2) + pow(toPos->col - fromPos->col, 2));
+}*/
+
 int MapData::GetNRows() {
 	return nrows;
 }

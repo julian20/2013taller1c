@@ -22,12 +22,14 @@ public:
 	void ClickOn(int x, int y, int button);
 	void Update();
 	void SetUpPersonajes();
+    void AssignPersonaje(Personaje* _personaje);
 	Vector2* GetCamera();
 private:
 	MapData* data;
 	string texturesPaths[MapData::AMOUNT_TYPES];
 	SDL_Surface* tilesTextures[MapData::AMOUNT_TYPES];
 	string backgroundPath;
+    Personaje* personaje;
 
 	MapController* mapController;
 	int cameraX, cameraY;
