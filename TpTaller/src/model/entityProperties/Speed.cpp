@@ -7,22 +7,22 @@
 
 #include <model/entityProperties/Speed.h>
 #include <model/entityProperties/Position.h>
+#include <model/Vector2.h>
 
 Speed::Speed() {
 	this->magnitude = 0;
-	this->direction = new Position(0, 0, 0);
+	this->direction = Vector2(0, 0);
 }
 
-Speed::Speed(int magnitude, Position* direction) {
+Speed::Speed(int magnitude, Vector2 direction) {
 	this->magnitude = magnitude;
 	this->direction = direction;
 }
 
 Speed::~Speed() {
-	delete this->direction;
 }
 
-int Speed::getMagnitude() const {
+int Speed::getMagnitude() {
 	return magnitude;
 }
 
@@ -30,10 +30,10 @@ void Speed::setMagnitude(int magnitude) {
 	this->magnitude = magnitude;
 }
 
-const Position* Speed::getDirection() const {
+Vector2 Speed::getDirection() {
 	return direction;
 }
 
-void Speed::setDirection(Position* direction) {
+void Speed::setDirection(Vector2 direction) {
 	this->direction = direction;
 }

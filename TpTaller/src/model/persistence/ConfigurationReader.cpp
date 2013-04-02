@@ -6,6 +6,7 @@
  */
 
 #include <yaml-cpp/yaml.h>
+#include <model/Vector2.h>
 #include <model/entityProperties/Speed.h>
 #include <model/entityProperties/Position.h>
 #include <model/entityProperties/Power.h>
@@ -89,6 +90,20 @@ void operator >>(const YAML::Node& yamlNode, Position* vector) {
 
 /**
  * Sobrecarga de operador >> para llenar los datos de un puntero
+ * a Position.
+ */
+void operator >>(const YAML::Node& yamlNode, Vector2* vector) {
+	int auxX, auxY, auxZ;
+
+	yamlNode[0] >> auxX;
+	yamlNode[1] >> auxY;
+	yamlNode[2] >> auxZ;
+
+	vector->SetValues(auxX, auxY);
+}
+
+/**
+ * Sobrecarga de operador >> para llenar los datos de un puntero
  * a Power.
  */
 void operator >>(const YAML::Node& yamlNode, Power* power) {
@@ -113,9 +128,10 @@ void operator >>(const YAML::Node& yamlNode, Speed* speed) {
 	yamlNode["magnitude"] >> auxMagnitude;
 	speed->setMagnitude(auxMagnitude);
 
-	Position* auxPosition = new Position(0, 0, 0);
+	Vector2* auxPosition = new Vector2(0, 0);
 	yamlNode["direction"] >> auxPosition;
-	speed->setDirection(auxPosition);
+	speed->setDirection(Vector2(auxPosition->GetX(),auxPosition->GetY()));
+	delete auxPosition;
 }
 
 /**
@@ -261,9 +277,8 @@ void printPersonaje(Personaje* parsedPersonaje) {
 	std::cout << "      " << "Magnitude: ";
 	std::cout << parsedPersonaje->getSpeed()->getMagnitude() << "\n";
 	std::cout << "      " << "Direction: (";
-	std::cout << parsedPersonaje->getSpeed()->getDirection()->getX() << ", ";
-	std::cout << parsedPersonaje->getSpeed()->getDirection()->getY() << ", ";
-	std::cout << parsedPersonaje->getSpeed()->getDirection()->getZ() << ")\n";
+	std::cout << parsedPersonaje->getSpeed()->getDirection().GetX() << ", ";
+	std::cout << parsedPersonaje->getSpeed()->getDirection().GetY() <<  ")\n";
 	std::cout << "Powers:\n";
 	for (unsigned i = 0; i < parsedPersonaje->getPowers().size(); i++) {
 		std::cout << "       " << "- Name: "

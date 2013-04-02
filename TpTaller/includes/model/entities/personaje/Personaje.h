@@ -33,11 +33,11 @@ public:
 	Vector2* GetMovementDirection();
 	bool IsMoving();
 	virtual ~Personaje();
-	const Position* getPosition() const;
+	Position* getPosition();
 	void setPosition(Position* position);
-	const Speed* getSpeed() const;
+	Speed* getSpeed();
 	void setSpeed(Speed* speed);
-	const std::string getName() const;
+	std::string getName();
 	void setName(std::string name);
 	std::vector<Power*> getPowers();
 	void setPowers(std::vector<Power*> powers);
