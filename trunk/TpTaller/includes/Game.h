@@ -21,7 +21,17 @@ public:
 	virtual ~Game();
 private:
 	Mix_Music* musica;
+
+	SDL_Surface* pantalla;
+	SDL_Rect posFondo;
+	SDL_Surface* fondo;
+	MapView* map;
+	Personaje* personaje;
+	PersonajeVista* personajeVista;
+
 	void initMusic();
+	void initScreen();
+	void draw();
 	void setUpCharacters(MapView* map,MapData* mapData);
 };
 

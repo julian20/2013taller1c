@@ -6,8 +6,9 @@
  */
 
 #include <controller/MapController.h>
+#include <iostream>
 
-#define MovementMargin		50	// px
+#define MovementMargin	50	// px
 MapController::MapController() {
 	desktop = SDL_GetVideoInfo();
 	UpdateMouseState();
