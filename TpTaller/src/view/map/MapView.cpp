@@ -1,4 +1,4 @@
-#include <view/Map.h>
+#include <view/MapView.h>
 
 #define TILE_POS_FUNC	GetSquaredMapTilePos
 
@@ -6,7 +6,7 @@
 #define TilesOverlap	2		// px
 #define TilesScale  	1
 #define CameraSpeed		5		// px
-Map::Map(MapData* _data) {
+MapView::MapView(MapData* _data) {
 	data = _data;
 	cameraX = cameraY = 0;
 	mapController = new MapController();
@@ -15,7 +15,7 @@ Map::Map(MapData* _data) {
 	GraphicalSetup();
 }
 
-void Map::DefineTexturePaths() {
+void MapView::DefineTexturePaths() {
 	texturesPaths[MapData::NEUTRAL] = "texturesTiles/sand.png";
 	texturesPaths[MapData::SOIL] = "texturesTiles/dirtTile.png";
 	texturesPaths[MapData::WATER] = "texturesTiles/Water.png";
@@ -24,11 +24,11 @@ void Map::DefineTexturePaths() {
 	backgroundPath = "./background.png";
 }
 
-Vector2* Map::GetCamera() {
+Vector2* MapView::GetCamera() {
 	return new Vector2(cameraX, cameraY);
 }
 
-void Map::GraphicalSetup() {
+void MapView::GraphicalSetup() {
 	//Cargamos las textura de los tiles
 	for (int i = 0; i < MapData::AMOUNT_TYPES; i++) {
 		tilesTextures[i] = IMG_Load(texturesPaths[i].c_str());
@@ -50,10 +50,10 @@ void Map::GraphicalSetup() {
 
 }
 
-Map::~Map() {
+MapView::~MapView() {
 }
 
-void Map::CameraUpdate() {
+void MapView::CameraUpdate() {
 	if (mapController->MoveScreenUp()) {
 		cameraY += CameraSpeed;
 	} else if (mapController->MoveScreenDown()) {
@@ -77,7 +77,7 @@ void Map::CameraUpdate() {
 	}
 }
 
-void Map::SetUpPersonajes() {
+void MapView::SetUpPersonajes() {
 	// Setea la posicion por unica vez de los personajes (y en un futuro posiblemente
 	// lo representable) en el mapa.
 	SDL_Rect posTile;
@@ -94,7 +94,7 @@ void Map::SetUpPersonajes() {
 	}
 }
 
-void Map::Draw(SDL_Surface* screen) {
+void MapView::Draw(SDL_Surface* screen) {
 
 	CameraUpdate();
 
@@ -133,7 +133,7 @@ void Map::Draw(SDL_Surface* screen) {
 	 }*/
 }
 
-SDL_Rect Map::GetSquaredMapTilePos(int row, int col) {
+SDL_Rect MapView::GetSquaredMapTilePos(int row, int col) {
 	int widthTexture = tilesTextures[0]->w - TilesOverlap;
 	int heightTexture = tilesTextures[0]->h - TilesOverlap;
 
@@ -148,7 +148,7 @@ SDL_Rect Map::GetSquaredMapTilePos(int row, int col) {
 	return posTile;
 }
 
-SDL_Rect Map::GetDiamondShapeMapTilePos(int row, int col) {
+SDL_Rect MapView::GetDiamondShapeMapTilePos(int row, int col) {
 	int widthTexture = tilesTextures[0]->w - TilesOverlap;
 	int heightTexture = tilesTextures[0]->h - TilesOverlap;
 
@@ -162,7 +162,7 @@ SDL_Rect Map::GetDiamondShapeMapTilePos(int row, int col) {
 	return posTile;
 }
 
-void Map::ClickOn(int x, int y, int button) {
+void MapView::ClickOn(int x, int y, int button) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
 	SDL_Rect firstTile = TILE_POS_FUNC(0, 0);
 
@@ -174,10 +174,10 @@ void Map::ClickOn(int x, int y, int button) {
 	if (personaje != NULL) personaje->MoveTo(x - cameraX, y - cameraY);
 }
 
-void Map::AssignPersonaje(Personaje* _personaje) {
+void MapView::AssignPersonaje(Personaje* _personaje) {
 	personaje = _personaje;
 }
 
-void Map::Update() {
+void MapView::Update() {
 
 }

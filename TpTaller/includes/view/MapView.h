@@ -1,5 +1,5 @@
-#ifndef MAP_H
-#define	MAP_H
+#ifndef MAPVIEW_H
+#define	MAPVIEW_H
 
 #include <model/map/MapData.h>
 #include <controller/MapController.h>
@@ -13,10 +13,10 @@
 
 using namespace std;
 
-class Map {
+class MapView {
 public:
-	Map(MapData* data);
-	virtual ~Map();
+	MapView(MapData* data);
+	virtual ~MapView();
 
 	void Draw(SDL_Surface* pantalla);
 	void ClickOn(int x, int y, int button);
