@@ -11,6 +11,7 @@
 #include <model/persistence/ConfigurationReader.h>
 #include <SDL/SDL_events.h>
 #include <SDL/SDL_mixer.h>
+#include <view/Map.h>
 #include <Events.h>
 
 class Game {
@@ -21,6 +22,7 @@ public:
 private:
 	Mix_Music* musica;
 	void initMusic();
+	void setUpCharacters(Map* map,MapData* mapData);
 };
 
 #endif /* GAME_H_ */

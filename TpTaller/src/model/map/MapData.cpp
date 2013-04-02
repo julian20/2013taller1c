@@ -1,5 +1,5 @@
 #include <model/map/MapData.h>
-
+#include <model/entityProperties/Position.h>
 /**
  * TODO: agregar clases Tile y TileDefinition, cuyos structs
  * son parseados utilizando YAML.
@@ -13,7 +13,7 @@ MapData::MapData(int _nrows, int _ncols) {
 		// TODO: tirar error al log
 	}
 
-	data = (tileData*) malloc(sizeof(tileData) * nrows * ncols);
+	data = (TileData*) malloc(sizeof(TileData) * nrows * ncols);
 	if (!data) {
 		// TODO: tirar error al log
 	}
@@ -29,6 +29,8 @@ void MapData::InitializeData() {
 		data[i].tileType = NEUTRAL;
 		data[i].contentAmount = 0;
 		data[i].personaje = NULL;
+		for (int j=0; j<MAX_TILE_CONTENT;j++)
+			data[i].content[j]=NULL;
 	}
 }
 
@@ -55,8 +57,8 @@ void MapData::CheckRowColsValue(int row, int col) {
 	}
 }
 
-void MapData::AddRepresentable(int row, int col, IRepresentable* object) {
-	tileData currentData = data[row + nrows * col];
+void MapData::addRepresentable(int row, int col, Entity* object) {
+	TileData currentData = data[row + nrows * col];
 
 	currentData.content[currentData.contentAmount] = object;
 	currentData.contentAmount++;
@@ -66,11 +68,11 @@ void MapData::AddRepresentable(int row, int col, IRepresentable* object) {
 	}
 }
 
-tileData* MapData::GetTileData(int row, int col) {
+TileData* MapData::GetTileData(int row, int col) {
 	return &data[row + nrows * col];
 }
 
-void MapData::AddPersonaje(int row, int col, Personaje* personaje) {
+void MapData::addPersonaje(int row, int col, Personaje* personaje) {
 	data[row + nrows * col].personaje = personaje;
 }
 

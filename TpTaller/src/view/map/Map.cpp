@@ -88,7 +88,7 @@ void Map::SetUpPersonajes() {
 			Personaje* personaje = data->GetPersonaje(row, col);
 			if (personaje != NULL) {
 				posTile = TILE_POS_FUNC(row, col);
-				personaje->SetPos((float) posTile.x, (float) posTile.y);
+				personaje->setPos((float) posTile.x, (float) posTile.y);
 			}
 		}
 	}
@@ -110,14 +110,15 @@ void Map::Draw(SDL_Surface* screen) {
 			SDL_BlitSurface(tilesTextures[data->GetTileType(row, col)], NULL,
 					screen, &posTile);
 
-			tileData* tileData = data->GetTileData(row, col);
+			TileData* tileData = data->GetTileData(row, col);
 
-			// TODO: Dibujar las cosas de tileData
-			// En esta parte deberia agregarlo a una lista, como solo hay uno por
-			// ahora solo se guarda en una variable
-
-			// Personaje* personaje = data->GetPersonaje(row, col);
-			// if (personaje != NULL) personajes = personaje;
+			for (int i=0;i<(tileData->contentAmount);i++){
+				Entity* entity=tileData->content[i];
+				/*Lucas: TODO!
+				if (entity)
+					entity->draw();
+			*/
+			}
 		}
 	}
 

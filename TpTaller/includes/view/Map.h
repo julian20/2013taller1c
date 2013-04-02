@@ -3,8 +3,8 @@
 
 #include <model/map/MapData.h>
 #include <controller/MapController.h>
-#include <model/Personaje.h>
-#include <view/PersonajeVista.h>
+#include <model/entities/personaje/Personaje.h>
+#include <view/entities/PersonajeVista.h>
 #include <string>
 #include <iostream>
 #include <SDL/SDL.h>
