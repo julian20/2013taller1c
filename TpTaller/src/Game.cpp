@@ -23,13 +23,6 @@
 #define FRAMES_PER_SECOND	30
 #define GAME_MUSIC "resources/sound/gameMusic.ogg"
 
-SDL_Surface* pantalla;
-SDL_Rect posFondo;
-SDL_Surface* fondo;
-MapView* map;
-Personaje* personaje;
-PersonajeVista* personajeVista;
-
 Game::Game(ConfigurationReader* cfgReader) {
 
 	MapData* mapData = new MapData(50, 30);
@@ -70,17 +63,17 @@ void refreshEntities() {
 void refreshCharacters() {
 }
 
-void startDrawing() {
+void Game::initScreen() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	//Buscamos info sobre la resolucion del escritorio y creamos la pantalla
 	const SDL_VideoInfo *info = SDL_GetVideoInfo();
 		if (!info) {
 			pantalla = SDL_SetVideoMode(DEFAULT_W, DEFAULT_H, DEFAULT_BPP,
-					SDL_HWSURFACE | SDL_RESIZABLE);
+					SDL_HWSURFACE);
 		} else {
 			pantalla = SDL_SetVideoMode(info->current_w, info->current_h,
-					info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE | SDL_RESIZABLE);
+					info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
 
 		}
 	//La hacemos fullscreen
@@ -94,7 +87,7 @@ void startDrawing() {
 
 }
 
-void draw() {
+void Game::draw() {
 	//Borramos y redibujamos en cada ciclo
 	SDL_FillRect(pantalla, NULL, 0);
 	map->Draw(pantalla);
@@ -110,7 +103,7 @@ void draw() {
 
 MenuEvent Game::run() {
 
-	startDrawing();
+	initScreen();
 
 	SDL_Event event;
 	bool exit = false;
