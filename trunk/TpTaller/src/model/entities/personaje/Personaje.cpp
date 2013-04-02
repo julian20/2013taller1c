@@ -13,7 +13,7 @@ Personaje::Personaje() {
 	endPos = new Vector2(0, 0);
 	velocity = 3;
 	this->position = new Position(0, 0, 0);
-	this->speed = new Speed(0, new Position(0, 0, 0));
+	this->speed = new Speed(0, Vector2(0, 0));
 	this->name = "";
 }
 
@@ -74,7 +74,7 @@ Personaje::~Personaje() {
 	delete this->speed;
 }
 
-const Position* Personaje::getPosition() const {
+Position* Personaje::getPosition() {
 	return position;
 }
 
@@ -82,7 +82,7 @@ void Personaje::setPosition(Position* position) {
 	this->position = position;
 }
 
-const Speed* Personaje::getSpeed() const {
+Speed* Personaje::getSpeed() {
 	return speed;
 }
 
@@ -90,7 +90,7 @@ void Personaje::setSpeed(Speed* speed) {
 	this->speed = speed;
 }
 
-const std::string Personaje::getName() const {
+std::string Personaje::getName() {
 	return name;
 }
 
@@ -102,7 +102,7 @@ std::vector<Power*> Personaje::getPowers() {
 	return powers;
 }
 
-void Personaje::setPowers(const std::vector<Power*> powers) {
+void Personaje::setPowers(std::vector<Power*> powers) {
 	this->powers = powers;
 }
 

@@ -8,7 +8,7 @@
 #ifndef SPEED_H_
 #define SPEED_H_
 
-#include <model/entityProperties/Position.h>
+#include <model/Vector2.h>
 
 /**
  * TODO Uso la posicion como un vector para definir la direccion, en realidad
@@ -20,15 +20,15 @@
 class Speed {
 public:
 	virtual ~Speed();
-	Speed(int magnitude, Position* direction);
-	int getMagnitude() const;
+	Speed(int magnitude, Vector2 direction);
+	int getMagnitude();
 	void setMagnitude(int magnitude);
-	const Position* getDirection() const;
-	void setDirection(Position* direction);
+	Vector2 getDirection();
+	void setDirection(Vector2 direction);
 
 private:
 	Speed();
-	Position* direction;
+	Vector2 direction;
 	int magnitude;
 };
 
