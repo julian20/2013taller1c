@@ -153,7 +153,7 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 		clipToDraw= &clipsQuieto[marco];
 		marco++;	// Stop Animation, unit standing.
 	}
-	if (marco >= 4)
+	if (marco >= NUMERODECLIPS)
 		marco = 0;    // Loop the animation
 
 	Draw(x, y, this->personajeImagen, fondo, clipToDraw);
