@@ -7,14 +7,15 @@
 
 #include <Game.h>
 #include <view/Map.h>
-#include <view/PersonajeVista.h>
-#include <model/Personaje.h>
+#include <view/entities/PersonajeVista.h>
+#include <model/entities/personaje/Personaje.h>
 #include <model/persistence/ConfigurationReader.h>
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_rotozoom.h>
 #include <SDL/SDL_mixer.h>
+
 
 #define DEFAULT_W	800		// px
 #define DEFAULT_H	600		// px
@@ -36,14 +37,10 @@ Game::Game(ConfigurationReader* cfgReader) {
 	mapData->SetTileType(MapData::SOIL, 5, 5);
 	mapData->SetTileType(MapData::WATER, 7, 5);
 
-	personaje = new Personaje();
-
 	map = new Map(mapData);
-	map->AssignPersonaje(personaje);
-	map->SetUpPersonajes();
 
-	personajeVista = new PersonajeVista(personaje, "resources/foo4.png");
-	mapData->AddPersonaje(0, 0, personaje);
+	setUpCharacters(map,mapData);
+
 	initMusic();
 }
 
@@ -52,6 +49,20 @@ void getEvent() {
 
 void refreshMap() {
 }
+
+void Game::setUpCharacters(Map* map,MapData* mapData){
+	//TODO: Posiblemente se levante del cfg reader esto
+	personaje = new Personaje();
+	personajeVista = new PersonajeVista(personaje, "resources/foo4.png");
+	mapData->addPersonaje(0, 0, personaje);
+
+	/* Lucas: La linea siguiente antes estaba antes de lo de arriba, pero
+	 * yo creo que va despues, como vas a iterar la matriz de personajes
+	 * seteandolos si no hiciste addpersonaje?
+	 */
+	map->SetUpPersonajes();
+}
+
 
 void refreshEntities() {
 }
@@ -64,16 +75,16 @@ void startDrawing() {
 
 	//Buscamos info sobre la resolucion del escritorio y creamos la pantalla
 	const SDL_VideoInfo *info = SDL_GetVideoInfo();
-	if (!info) {
-		pantalla = SDL_SetVideoMode(DEFAULT_W, DEFAULT_H, DEFAULT_BPP,
-				SDL_HWSURFACE | SDL_RESIZABLE);
-	} else {
-		pantalla = SDL_SetVideoMode(info->current_w, info->current_h,
-				info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE | SDL_RESIZABLE);
+		if (!info) {
+			pantalla = SDL_SetVideoMode(DEFAULT_W, DEFAULT_H, DEFAULT_BPP,
+					SDL_HWSURFACE | SDL_RESIZABLE);
+		} else {
+			pantalla = SDL_SetVideoMode(info->current_w, info->current_h,
+					info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE | SDL_RESIZABLE);
 
-	}
+		}
 	//La hacemos fullscreen
-	/*int flag = 1;
+	 /*int flag = 1;
 	 flag = SDL_WM_ToggleFullScreen(pantalla);
 	 if (flag == 0) {
 	 printf("Unable to go fullscreen: %s\n", SDL_GetError());
@@ -94,8 +105,8 @@ void draw() {
 	delete cam;
 	// Actualiza la pantalla
 	SDL_Flip(pantalla);
-	SDL_Delay(20);
 }
+
 
 MenuEvent Game::run() {
 
@@ -108,8 +119,10 @@ MenuEvent Game::run() {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == 1) {
 				Vector2* camera = map->GetCamera();
-				map->ClickOn(	event.button.x, event.button.y,
-								event.button.button);
+				personaje->MoveTo(event.button.x - camera->GetX(),
+						event.button.y - camera->GetY());
+				map->ClickOn(event.button.x, event.button.y,
+						event.button.button);
 			}
 
 			if (event.type == SDL_QUIT)
@@ -130,11 +143,13 @@ MenuEvent Game::run() {
 
 		// Dibujo
 		draw();
-		SDL_Delay(1000 / FRAMES_PER_SECOND);
+		SDL_Delay(1000/FRAMES_PER_SECOND);
 	}
+
 
 	return EXIT_EVENT;
 }
+
 
 void Game::initMusic() {
 	// Inicializamos la librería SDL_Mixer

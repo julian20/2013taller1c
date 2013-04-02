@@ -7,7 +7,8 @@
 #ifndef PERSONAJEVISTA_H
 #define	PERSONAJEVISTA_H
 
-#include <model/Personaje.h>
+#include <model/entities/personaje/Personaje.h>
+#include <view/entities/EntityView.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <model/Vector2.h>
@@ -24,18 +25,19 @@
 #define PERSONAJE_ANCHO  96
 #define PERSONAJE_ALTO  96
 
+
 //APerfiles de la vista del personaje.
 
-class PersonajeVista {
+
+class PersonajeVista : public EntityView {
 public:
-	PersonajeVista(Personaje* unPersonaje, std::string urlImagen);
-	SDL_Surface* CargarImagen(std::string path);
-	void Mostrar(SDL_Surface* fondo);
-	void UpdateCameraPos(int x, int y);
-	virtual ~PersonajeVista();
+    PersonajeVista(Personaje* unPersonaje,std::string urlImagen);
+    SDL_Surface* CargarImagen(std::string path);
+    void Mostrar(SDL_Surface* fondo);
+    void UpdateCameraPos(int x, int y);
+    virtual ~PersonajeVista();
 private:
-	void Draw(float x, float y, SDL_Surface* source, SDL_Surface* screen,
-			SDL_Rect* clip);
+    void Draw( float x, float y, SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip );
 	void EstablecerLosClips(int cantidadPorLado);
 	Personaje* miPersonaje;
 	//SDL_Surface* fondo;
