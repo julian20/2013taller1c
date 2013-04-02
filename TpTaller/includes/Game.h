@@ -10,6 +10,7 @@
 
 #include <model/persistence/ConfigurationReader.h>
 #include <SDL/SDL_events.h>
+#include <SDL/SDL_mixer.h>
 #include <Events.h>
 
 class Game {
@@ -17,6 +18,9 @@ public:
 	Game(ConfigurationReader* cfgReader);
 	MenuEvent run();
 	virtual ~Game();
+private:
+	Mix_Music* musica;
+	void initMusic();
 };
 
 #endif /* GAME_H_ */

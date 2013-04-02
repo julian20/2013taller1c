@@ -158,7 +158,7 @@ MenuView::~MenuView() {
 	Mix_FreeMusic(musica);
 	Mix_FreeChunk(darknessVoice);
 	Mix_CloseAudio();
-	SDL_Quit();
+	//SDL_Quit();
 }
 
 } /* namespace std */

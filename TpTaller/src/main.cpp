@@ -42,6 +42,7 @@ int main(int argc, char** argv) {
 			break;
 		case NEWGAME_EVENT:
 			//Aca inicio el juego
+			menu.~Menu();
 			gameRunning = true;	// QUE CODIGO LOCOOOO PAPÁ
 			break;
 		case CONFIG_EVENT:

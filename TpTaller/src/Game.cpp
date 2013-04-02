@@ -14,11 +14,14 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_rotozoom.h>
+#include <SDL/SDL_mixer.h>
 
 
 #define DEFAULT_W	800		// px
 #define DEFAULT_H	600		// px
 #define DEFAULT_BPP 0		// px
+#define FRAMES_PER_SECOND	30
+#define GAME_MUSIC "resources/sound/gameMusic.mp3"
 
 SDL_Surface* pantalla;
 SDL_Rect posFondo;
@@ -41,7 +44,7 @@ Game::Game(ConfigurationReader* cfgReader) {
 
 	personajeVista = new PersonajeVista(personaje, "resources/foo4.png");
 	mapData->AddPersonaje(0, 0, personaje);
-
+	initMusic();
 }
 
 void getEvent() {
@@ -69,7 +72,6 @@ void startDrawing() {
 					info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE | SDL_RESIZABLE);
 
 		}
-
 	//La hacemos fullscreen
 	 /*int flag = 1;
 	 flag = SDL_WM_ToggleFullScreen(pantalla);
@@ -131,13 +133,38 @@ MenuEvent Game::run() {
 
 		// Dibujo
 		draw();
+		SDL_Delay(1000/FRAMES_PER_SECOND);
 	}
 
 
 	return EXIT_EVENT;
 }
 
+
+void Game::initMusic() {
+	// Inicializamos la librería SDL_Mixer
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
+			MIX_DEFAULT_CHANNELS, 4096) < 0) {
+		cerr << "Subsistema de Audio no disponible" << SDL_GetError() << endl;
+		exit(1);
+	}
+	//startLaugh();
+
+	// Cargamos la musica
+	musica = Mix_LoadMUS(GAME_MUSIC);
+
+	if (!musica) {
+		cerr << "No se puede cargar el sonido:" << SDL_GetError() << endl;
+		exit(1);
+	}
+	Mix_VolumeMusic(500);
+	Mix_FadeInMusic(musica, -1, 3000);
+
+}
+
 Game::~Game() {
+	Mix_FreeMusic(musica);
+	Mix_CloseAudio();
 	// TODO Auto-generated destructor stub
 }
 

@@ -15,22 +15,21 @@
 #define OFFSET_X	40
 #define OFFSET_Y	10
 
-#define FRAMES_PER_SECOND	5
 
 //#define SCALE				0.2
 
 //como es animado necesito la cantidad de clips por lado.
-int NUMERODECLIPS = 4;
+#define NUMERODECLIPS 4
 
-SDL_Rect clipsDerecha[4];
-SDL_Rect clipsIzquierda[4];
-SDL_Rect clipsArriba[4];
-SDL_Rect clipsAbajo[4];
-SDL_Rect clipsAbajoIzq[4];
-SDL_Rect clipsAbajoDer[4];
-SDL_Rect clipsArribaDer[4];
-SDL_Rect clipsArribaIzq[4];
-SDL_Rect clipsQuieto[4];
+SDL_Rect clipsDerecha[NUMERODECLIPS];
+SDL_Rect clipsIzquierda[NUMERODECLIPS];
+SDL_Rect clipsArriba[NUMERODECLIPS];
+SDL_Rect clipsAbajo[NUMERODECLIPS];
+SDL_Rect clipsAbajoIzq[NUMERODECLIPS];
+SDL_Rect clipsAbajoDer[NUMERODECLIPS];
+SDL_Rect clipsArribaDer[NUMERODECLIPS];
+SDL_Rect clipsArribaIzq[NUMERODECLIPS];
+SDL_Rect clipsQuieto[NUMERODECLIPS];
 
 SDL_Surface* load_image(std::string urlImagen) {
 	//The image that's loaded
@@ -59,8 +58,7 @@ SDL_Surface* load_image(std::string urlImagen) {
 	return optimizedImage;
 }
 
-void PersonajeVista::Draw(float x, float y, SDL_Surface* source,
-		SDL_Surface* screen, SDL_Rect* clip) {
+void PersonajeVista::Draw(float x, float y, SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
 	SDL_Rect offset;
 
 	//offset.x = (int)x + cameraX - (clip->w/SCALE)/2;
@@ -68,8 +66,9 @@ void PersonajeVista::Draw(float x, float y, SDL_Surface* source,
 	offset.y = (int) y + cameraY - clip->h;
 	offset.w = clip->w;
 	offset.h = clip->h;
+
+
 	SDL_BlitSurface(source, clip, screen, &offset);
-	SDL_Delay(60);
 }
 
 void PersonajeVista::UpdateCameraPos(int x, int y) {
@@ -160,61 +159,51 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	Draw(x, y, this->personajeImagen, fondo, clipToDraw);
 }
 void PersonajeVista::EstablecerLosClips(int cantidadPorLado) {
-	for (int cantidadDePosiciones = 0; cantidadDePosiciones < 4;
-			cantidadDePosiciones++) {
-		clipsDerecha[cantidadDePosiciones].x = PERSONAJE_ANCHO
-				* cantidadDePosiciones;
-		clipsDerecha[cantidadDePosiciones].y = 0;
-		clipsDerecha[cantidadDePosiciones].w = PERSONAJE_ANCHO;
-		clipsDerecha[cantidadDePosiciones].h = PERSONAJE_ALTO;
+	for (int i = 0; i < cantidadPorLado;i++) {
+		clipsDerecha[i].x = PERSONAJE_ANCHO* i;
+		clipsDerecha[i].y = 0;
+		clipsDerecha[i].w = PERSONAJE_ANCHO;
+		clipsDerecha[i].h = PERSONAJE_ALTO;
 
-		clipsIzquierda[cantidadDePosiciones].x = PERSONAJE_ANCHO
-				* cantidadDePosiciones;
-		clipsIzquierda[cantidadDePosiciones].y = PERSONAJE_ALTO;
-		clipsIzquierda[cantidadDePosiciones].w = PERSONAJE_ANCHO;
-		clipsIzquierda[cantidadDePosiciones].h = PERSONAJE_ALTO;
+		clipsIzquierda[i].x = PERSONAJE_ANCHO* i;
+		clipsIzquierda[i].y = PERSONAJE_ALTO;
+		clipsIzquierda[i].w = PERSONAJE_ANCHO;
+		clipsIzquierda[i].h = PERSONAJE_ALTO;
 
-		clipsArriba[cantidadDePosiciones].x = PERSONAJE_ANCHO
-				* cantidadDePosiciones;
-		clipsArriba[cantidadDePosiciones].y = PERSONAJE_ALTO * 2;
-		clipsArriba[cantidadDePosiciones].w = PERSONAJE_ANCHO;
-		clipsArriba[cantidadDePosiciones].h = PERSONAJE_ALTO;
+		clipsArriba[i].x = PERSONAJE_ANCHO* i;
+		clipsArriba[i].y = PERSONAJE_ALTO * 2;
+		clipsArriba[i].w = PERSONAJE_ANCHO;
+		clipsArriba[i].h = PERSONAJE_ALTO;
 
-		clipsAbajo[cantidadDePosiciones].x = PERSONAJE_ANCHO
-				* cantidadDePosiciones;
-		clipsAbajo[cantidadDePosiciones].y = PERSONAJE_ALTO * 3;
-		clipsAbajo[cantidadDePosiciones].w = PERSONAJE_ANCHO;
-		clipsAbajo[cantidadDePosiciones].h = PERSONAJE_ALTO;
+		clipsAbajo[i].x = PERSONAJE_ANCHO* i;
+		clipsAbajo[i].y = PERSONAJE_ALTO * 3;
+		clipsAbajo[i].w = PERSONAJE_ANCHO;
+		clipsAbajo[i].h = PERSONAJE_ALTO;
 
-		clipsArribaIzq[cantidadDePosiciones].x = PERSONAJE_ANCHO
-				* cantidadDePosiciones;
-		clipsArribaIzq[cantidadDePosiciones].y = PERSONAJE_ALTO * 6;
-		clipsArribaIzq[cantidadDePosiciones].w = PERSONAJE_ANCHO;
-		clipsArribaIzq[cantidadDePosiciones].h = PERSONAJE_ALTO;
+		clipsArribaIzq[i].x = PERSONAJE_ANCHO* i;
+		clipsArribaIzq[i].y = PERSONAJE_ALTO * 6;
+		clipsArribaIzq[i].w = PERSONAJE_ANCHO;
+		clipsArribaIzq[i].h = PERSONAJE_ALTO;
 
-		clipsArribaDer[cantidadDePosiciones].x = PERSONAJE_ANCHO
-				* cantidadDePosiciones;
-		clipsArribaDer[cantidadDePosiciones].y = PERSONAJE_ALTO * 7;
-		clipsArribaDer[cantidadDePosiciones].w = PERSONAJE_ANCHO;
-		clipsArribaDer[cantidadDePosiciones].h = PERSONAJE_ALTO;
+		clipsArribaDer[i].x = PERSONAJE_ANCHO* i;
+		clipsArribaDer[i].y = PERSONAJE_ALTO * 7;
+		clipsArribaDer[i].w = PERSONAJE_ANCHO;
+		clipsArribaDer[i].h = PERSONAJE_ALTO;
 
-		clipsAbajoIzq[cantidadDePosiciones].x = PERSONAJE_ANCHO
-				* cantidadDePosiciones;
-		clipsAbajoIzq[cantidadDePosiciones].y = PERSONAJE_ALTO * 5;
-		clipsAbajoIzq[cantidadDePosiciones].w = PERSONAJE_ANCHO;
-		clipsAbajoIzq[cantidadDePosiciones].h = PERSONAJE_ALTO;
+		clipsAbajoIzq[i].x = PERSONAJE_ANCHO* i;
+		clipsAbajoIzq[i].y = PERSONAJE_ALTO * 5;
+		clipsAbajoIzq[i].w = PERSONAJE_ANCHO;
+		clipsAbajoIzq[i].h = PERSONAJE_ALTO;
 
-		clipsAbajoDer[cantidadDePosiciones].x = PERSONAJE_ANCHO
-				* cantidadDePosiciones;
-		clipsAbajoDer[cantidadDePosiciones].y = PERSONAJE_ALTO * 4;
-		clipsAbajoDer[cantidadDePosiciones].w = PERSONAJE_ANCHO;
-		clipsAbajoDer[cantidadDePosiciones].h = PERSONAJE_ALTO;
+		clipsAbajoDer[i].x = PERSONAJE_ANCHO* i;
+		clipsAbajoDer[i].y = PERSONAJE_ALTO * 4;
+		clipsAbajoDer[i].w = PERSONAJE_ANCHO;
+		clipsAbajoDer[i].h = PERSONAJE_ALTO;
 
-		clipsQuieto[cantidadDePosiciones].x = PERSONAJE_ANCHO
-						* cantidadDePosiciones;
-		clipsQuieto[cantidadDePosiciones].y = PERSONAJE_ALTO * 8;
-		clipsQuieto[cantidadDePosiciones].w = PERSONAJE_ANCHO;
-		clipsQuieto[cantidadDePosiciones].h = PERSONAJE_ALTO;
+		clipsQuieto[i].x = PERSONAJE_ANCHO * i;
+		clipsQuieto[i].y = PERSONAJE_ALTO * 8;
+		clipsQuieto[i].w = PERSONAJE_ANCHO;
+		clipsQuieto[i].h = PERSONAJE_ALTO;
 	}
 }
 /*
