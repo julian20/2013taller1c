@@ -3,12 +3,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <view/IRepresentable.h>
 #include <model/Personaje.h>
+#include <model/map/Tile.h>
+#include <list>
 
 #define MAX_TILE_CONTENT	5
 
-struct tileData {
+using namespace std;
+
+struct tileData{
 	int tileType;
 	Personaje* personaje;
 	IRepresentable *content[MAX_TILE_CONTENT];
@@ -34,6 +39,7 @@ public:
 	tileData * GetTileData(int row, int col);
 	void AddPersonaje(int row, int col, Personaje* personaje);
 	Personaje* GetPersonaje(int row, int col);
+    list<Tile *> *GetPath(Tile* from, Tile* to);
 private:
 	tileData *data;
 	int nrows;

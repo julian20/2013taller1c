@@ -39,6 +39,7 @@ Game::Game(ConfigurationReader* cfgReader) {
 	personaje = new Personaje();
 
 	map = new Map(mapData);
+	map->AssignPersonaje(personaje);
 	map->SetUpPersonajes();
 
 	personajeVista = new PersonajeVista(personaje, "resources/foo4.png");
@@ -107,10 +108,8 @@ MenuEvent Game::run() {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == 1) {
 				Vector2* camera = map->GetCamera();
-				personaje->MoveTo(event.button.x - camera->GetX(),
-						event.button.y - camera->GetY());
-				map->ClickOn(event.button.x, event.button.y,
-						event.button.button);
+				map->ClickOn(	event.button.x, event.button.y,
+								event.button.button);
 			}
 
 			if (event.type == SDL_QUIT)

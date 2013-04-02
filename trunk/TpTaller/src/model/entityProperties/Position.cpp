@@ -24,7 +24,6 @@ void Position::changeTo(int newX, int newY, int newZ) {
 	x = newX;
 	y = newY;
 	z = newZ;
-
 }
 
 int Position::getX() const {

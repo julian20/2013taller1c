@@ -169,9 +169,14 @@ void Map::ClickOn(int x, int y, int button) {
 	int col = (x - firstTile.x) / firstTile.w;
 
 	printf("row: %d, col: %d\n", row, col);
+
+	if (personaje != NULL) personaje->MoveTo(x - cameraX, y - cameraY);
+}
+
+void Map::AssignPersonaje(Personaje* _personaje) {
+	personaje = _personaje;
 }
 
 void Map::Update() {
 
 }
-
