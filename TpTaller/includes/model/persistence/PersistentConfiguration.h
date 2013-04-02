@@ -9,6 +9,7 @@
 #define PERSISTENTCONFIGURATION_H_
 
 #include <model/entities/Entity.h>
+#include <model/entities/personaje/Personaje.h>
 #include <model/map/TextureHolder.h>
 #include <model/map/MapData.h>
 
@@ -20,13 +21,13 @@ public:
 	virtual ~PersistentConfiguration();
 	TextureHolder* getTextureHolder();
 	void setTextureHolder(TextureHolder* textureHolder);
-	std::vector<Entity*> getEntityList();
-	void setEntityList(std::vector<Entity*> entityList);
+	std::vector<Personaje*> getPersonajeList();
+	void setPersonajeList(std::vector<Personaje*> entityList);
 	MapData* getMapData();
 	void setMapData(MapData* mapData);
 
 private:
-	std::vector<Entity*> entityList;
+	std::vector<Personaje*> entityList;
 	TextureHolder* textureHolder;
 	MapData* mapData;
 };

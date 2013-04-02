@@ -1,4 +1,4 @@
-- entities:
+- players:
   - name: Ogre
     position: [3, 2, 1]
     speed:

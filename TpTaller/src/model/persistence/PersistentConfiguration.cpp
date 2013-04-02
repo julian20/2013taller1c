@@ -28,11 +28,11 @@ void PersistentConfiguration::setTextureHolder(TextureHolder* textureHolder) {
 	this->textureHolder = textureHolder;
 }
 
-std::vector<Entity*> PersistentConfiguration::getEntityList() {
+std::vector<Personaje*> PersistentConfiguration::getPersonajeList() {
 	return this->entityList;
 }
 
-void PersistentConfiguration::setEntityList(std::vector<Entity*> entityList) {
+void PersistentConfiguration::setPersonajeList(std::vector<Personaje*> entityList) {
 	this->entityList = entityList;
 }
 
