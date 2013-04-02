@@ -11,6 +11,7 @@
 #include <model/entityProperties/Power.h>
 #include <model/persistence/ConfigurationReader.h>
 #include <model/entities/Entity.h>
+#include <model/entities/personaje/Personaje.h>
 #include <model/map/Tile.h>
 #include <model/map/TileDefinition.h>
 #include <model/map/TextureHolder.h>
@@ -38,10 +39,10 @@ using namespace std;
  * ************************************** */
 
 /**
- * Structure to represent an entity.
+ * Structure to represent an personaje.
  */
-struct AuxEntityList {
-	std::vector<Entity*> entities;
+struct AuxPersonajeList {
+	std::vector<Personaje*> entities;
 };
 
 /**
@@ -119,9 +120,9 @@ void operator >>(const YAML::Node& yamlNode, Speed* speed) {
 
 /**
  * Sobrecarga de operador >> para llenar los datos de un puntero
- * a Entity.
+ * a Personaje.
  */
-void operator >>(const YAML::Node& yamlNode, Entity* entity) {
+void operator >>(const YAML::Node& yamlNode, Personaje* personaje) {
 
 	Position* auxPosition = new Position(0, 0, 0);
 	Speed* auxSpeed = new Speed(0, NULL);
@@ -139,22 +140,22 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 		auxPowers.push_back(power);
 	}
 
-	entity->setName(auxName);
-	entity->setPosition(auxPosition);
-	entity->setSpeed(auxSpeed);
-	entity->setPowers(auxPowers);
+	personaje->setName(auxName);
+	personaje->setPosition(auxPosition);
+	personaje->setSpeed(auxSpeed);
+	personaje->setPowers(auxPowers);
 }
 
 /**
  * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
  */
-void operator >>(const YAML::Node& yamlNode, AuxEntityList& entityList) {
-	const YAML::Node& entities = yamlNode["entities"];
+void operator >>(const YAML::Node& yamlNode, AuxPersonajeList& entityList) {
+	const YAML::Node& entities = yamlNode["players"];
 	for (unsigned i = 0; i < entities.size(); i++) {
 		std::vector<Power*> auxPowers;
-		Entity* entity = new Entity("", NULL, NULL, auxPowers);
-		entities[i] >> entity;
-		entityList.entities.push_back(entity);
+		Personaje* personaje = new Personaje("", NULL, NULL, auxPowers);
+		entities[i] >> personaje;
+		entityList.entities.push_back(personaje);
 	}
 }
 
@@ -245,37 +246,37 @@ void printTile(Tile* tile) {
 }
 
 /**
- * Prints an entity to check if it was parsed correctly.
+ * Prints an personaje to check if it was parsed correctly.
  */
 
-void printEntity(Entity* parsedEntity) {
+void printPersonaje(Personaje* parsedPersonaje) {
 
 	std::cout << "Name: ";
-	std::cout << parsedEntity->getName() << "\n";
+	std::cout << parsedPersonaje->getName() << "\n";
 	std::cout << "Position: (";
-	std::cout << parsedEntity->getPosition()->getX() << ", ";
-	std::cout << parsedEntity->getPosition()->getY() << ", ";
-	std::cout << parsedEntity->getPosition()->getZ() << ")\n";
+	std::cout << parsedPersonaje->getPosition()->getX() << ", ";
+	std::cout << parsedPersonaje->getPosition()->getY() << ", ";
+	std::cout << parsedPersonaje->getPosition()->getZ() << ")\n";
 	std::cout << "Speed:\n";
 	std::cout << "      " << "Magnitude: ";
-	std::cout << parsedEntity->getSpeed()->getMagnitude() << "\n";
+	std::cout << parsedPersonaje->getSpeed()->getMagnitude() << "\n";
 	std::cout << "      " << "Direction: (";
-	std::cout << parsedEntity->getSpeed()->getDirection()->getX() << ", ";
-	std::cout << parsedEntity->getSpeed()->getDirection()->getY() << ", ";
-	std::cout << parsedEntity->getSpeed()->getDirection()->getZ() << ")\n";
+	std::cout << parsedPersonaje->getSpeed()->getDirection()->getX() << ", ";
+	std::cout << parsedPersonaje->getSpeed()->getDirection()->getY() << ", ";
+	std::cout << parsedPersonaje->getSpeed()->getDirection()->getZ() << ")\n";
 	std::cout << "Powers:\n";
-	for (unsigned i = 0; i < parsedEntity->getPowers().size(); i++) {
+	for (unsigned i = 0; i < parsedPersonaje->getPowers().size(); i++) {
 		std::cout << "       " << "- Name: "
-				<< parsedEntity->getPowers()[i]->getName() << "\n";
+				<< parsedPersonaje->getPowers()[i]->getName() << "\n";
 		std::cout << "       " << "  Damage: "
-				<< parsedEntity->getPowers()[i]->getDamage() << "\n";
+				<< parsedPersonaje->getPowers()[i]->getDamage() << "\n";
 		std::cout << "       " << "  Range: "
-				<< parsedEntity->getPowers()[i]->getRange() << "\n";
+				<< parsedPersonaje->getPowers()[i]->getRange() << "\n";
 	}
 
 }
 /**
- * Prints an entity to check if it was parsed correctly.
+ * Prints an personaje to check if it was parsed correctly.
  */
 void printTextureHolder(TextureHolder* parsedTileDefinition) {
 
@@ -325,10 +326,10 @@ PersistentConfiguration* ConfigurationReader::loadConfiguration(
 	parser.GetNextDocument(yamlNode);
 
 	// Parsing entities.
-	AuxEntityList entities;
+	AuxPersonajeList entities;
 	yamlNode[CONFIGURATION_ENTITIES_DEFINITION] >> entities;
 	for (unsigned j = 0; j < entities.entities.size(); j++) {
-		printEntity(entities.entities[j]);
+		printPersonaje(entities.entities[j]);
 	}
 
 	// Parsing tile definition.
@@ -354,7 +355,7 @@ PersistentConfiguration* ConfigurationReader::loadConfiguration(
 
 	// Packing parser results.
 	PersistentConfiguration* configuration = new PersistentConfiguration();
-	configuration->setEntityList(entities.entities);
+	configuration->setPersonajeList(entities.entities);
 	configuration->setTextureHolder(textureHolder);
 	configuration->setMapData(mapData);
 

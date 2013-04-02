@@ -21,19 +21,33 @@ const int PERSONAJE_ABAJOIZQ = 5;
 const int PERSONAJE_ARRIBADER = 7;
 const int PERSONAJE_ARRIBAIZQ = 6;
 
-class Personaje : public Entity{
+class Personaje: public Entity {
 public:
-	void MoveTo(int x , int y);
+	void MoveTo(int x, int y);
 	Personaje();
+	Personaje(std::string name, Position* position, Speed* speed,
+			std::vector<Power*> powers);
 	void setPos(float x, float y);
 	void Update();
 	Vector2* GetCurrentPos();
 	Vector2* GetMovementDirection();
 	bool IsMoving();
 	virtual ~Personaje();
+	const Position* getPosition() const;
+	void setPosition(Position* position);
+	const Speed* getSpeed() const;
+	void setSpeed(Speed* speed);
+	const std::string getName() const;
+	void setName(std::string name);
+	std::vector<Power*> getPowers();
+	void setPowers(std::vector<Power*> powers);
 private:
 	Vector2* endPos;
 	float velocity;
+	Position* position;
+	Speed* speed;
+	std::vector<Power*> powers;
+	std::string name;
 };
 
 #endif	/* PERSONAJE_H */
