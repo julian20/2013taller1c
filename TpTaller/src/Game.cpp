@@ -21,7 +21,7 @@
 #define DEFAULT_H	600		// px
 #define DEFAULT_BPP 0		// px
 #define FRAMES_PER_SECOND	30
-#define GAME_MUSIC "resources/sound/gameMusic.mp3"
+#define GAME_MUSIC "resources/sound/gameMusic.ogg"
 
 SDL_Surface* pantalla;
 SDL_Rect posFondo;
