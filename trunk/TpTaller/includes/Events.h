@@ -9,11 +9,7 @@
 #define EVENTS_H_
 
 typedef enum {
-	NEWGAME_EVENT,
-	EXIT_EVENT,
-	CONFIG_EVENT,
-	NOTHING_EVENT
-}MenuEvent;
-
+	NEWGAME_EVENT, EXIT_EVENT, CONFIG_EVENT, NOTHING_EVENT
+} MenuEvent;
 
 #endif /* EVENTS_H_ */

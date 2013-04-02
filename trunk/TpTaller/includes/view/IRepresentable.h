@@ -15,5 +15,4 @@ public:
 	virtual bool Transitable();
 };
 
-
 #endif /* IREPRESENTABLE_H_ */

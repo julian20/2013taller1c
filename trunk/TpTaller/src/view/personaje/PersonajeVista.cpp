@@ -15,7 +15,6 @@
 #define OFFSET_X	40
 #define OFFSET_Y	10
 
-
 //#define SCALE				0.2
 
 //como es animado necesito la cantidad de clips por lado.
@@ -58,7 +57,8 @@ SDL_Surface* load_image(std::string urlImagen) {
 	return optimizedImage;
 }
 
-void PersonajeVista::Draw(float x, float y, SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
+void PersonajeVista::Draw(float x, float y, SDL_Surface* source,
+		SDL_Surface* screen, SDL_Rect* clip) {
 	SDL_Rect offset;
 
 	//offset.x = (int)x + cameraX - (clip->w/SCALE)/2;
@@ -66,7 +66,6 @@ void PersonajeVista::Draw(float x, float y, SDL_Surface* source, SDL_Surface* sc
 	offset.y = (int) y + cameraY - clip->h;
 	offset.w = clip->w;
 	offset.h = clip->h;
-
 
 	SDL_BlitSurface(source, clip, screen, &offset);
 }
@@ -148,9 +147,8 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 
 	if (miPersonaje->IsMoving())
 		this->marco++;	// Move to the next marco in the animation
-	else
-	{
-		clipToDraw= &clipsQuieto[marco];
+	else {
+		clipToDraw = &clipsQuieto[marco];
 		marco++;	// Stop Animation, unit standing.
 	}
 	if (marco >= NUMERODECLIPS)
@@ -159,43 +157,43 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	Draw(x, y, this->personajeImagen, fondo, clipToDraw);
 }
 void PersonajeVista::EstablecerLosClips(int cantidadPorLado) {
-	for (int i = 0; i < cantidadPorLado;i++) {
-		clipsDerecha[i].x = PERSONAJE_ANCHO* i;
+	for (int i = 0; i < cantidadPorLado; i++) {
+		clipsDerecha[i].x = PERSONAJE_ANCHO * i;
 		clipsDerecha[i].y = 0;
 		clipsDerecha[i].w = PERSONAJE_ANCHO;
 		clipsDerecha[i].h = PERSONAJE_ALTO;
 
-		clipsIzquierda[i].x = PERSONAJE_ANCHO* i;
+		clipsIzquierda[i].x = PERSONAJE_ANCHO * i;
 		clipsIzquierda[i].y = PERSONAJE_ALTO;
 		clipsIzquierda[i].w = PERSONAJE_ANCHO;
 		clipsIzquierda[i].h = PERSONAJE_ALTO;
 
-		clipsArriba[i].x = PERSONAJE_ANCHO* i;
+		clipsArriba[i].x = PERSONAJE_ANCHO * i;
 		clipsArriba[i].y = PERSONAJE_ALTO * 2;
 		clipsArriba[i].w = PERSONAJE_ANCHO;
 		clipsArriba[i].h = PERSONAJE_ALTO;
 
-		clipsAbajo[i].x = PERSONAJE_ANCHO* i;
+		clipsAbajo[i].x = PERSONAJE_ANCHO * i;
 		clipsAbajo[i].y = PERSONAJE_ALTO * 3;
 		clipsAbajo[i].w = PERSONAJE_ANCHO;
 		clipsAbajo[i].h = PERSONAJE_ALTO;
 
-		clipsArribaIzq[i].x = PERSONAJE_ANCHO* i;
+		clipsArribaIzq[i].x = PERSONAJE_ANCHO * i;
 		clipsArribaIzq[i].y = PERSONAJE_ALTO * 6;
 		clipsArribaIzq[i].w = PERSONAJE_ANCHO;
 		clipsArribaIzq[i].h = PERSONAJE_ALTO;
 
-		clipsArribaDer[i].x = PERSONAJE_ANCHO* i;
+		clipsArribaDer[i].x = PERSONAJE_ANCHO * i;
 		clipsArribaDer[i].y = PERSONAJE_ALTO * 7;
 		clipsArribaDer[i].w = PERSONAJE_ANCHO;
 		clipsArribaDer[i].h = PERSONAJE_ALTO;
 
-		clipsAbajoIzq[i].x = PERSONAJE_ANCHO* i;
+		clipsAbajoIzq[i].x = PERSONAJE_ANCHO * i;
 		clipsAbajoIzq[i].y = PERSONAJE_ALTO * 5;
 		clipsAbajoIzq[i].w = PERSONAJE_ANCHO;
 		clipsAbajoIzq[i].h = PERSONAJE_ALTO;
 
-		clipsAbajoDer[i].x = PERSONAJE_ANCHO* i;
+		clipsAbajoDer[i].x = PERSONAJE_ANCHO * i;
 		clipsAbajoDer[i].y = PERSONAJE_ALTO * 4;
 		clipsAbajoDer[i].w = PERSONAJE_ANCHO;
 		clipsAbajoDer[i].h = PERSONAJE_ALTO;

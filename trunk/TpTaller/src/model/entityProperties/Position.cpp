@@ -7,23 +7,23 @@
 
 #include <model/entityProperties/Position.h>
 
-Position::Position(){
+Position::Position() {
 	x = 0;
 	y = 0;
 	z = 0;
 }
 
 Position::Position(int coordX, int coordY, int coordZ) {
-    x = coordX;
-    y = coordY;
-    z = coordZ;
+	x = coordX;
+	y = coordY;
+	z = coordZ;
 
 }
 
 void Position::changeTo(int newX, int newY, int newZ) {
-    x = newX;
-    y = newY;
-    z = newZ;
+	x = newX;
+	y = newY;
+	z = newZ;
 
 }
 

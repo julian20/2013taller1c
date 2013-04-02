@@ -35,7 +35,5 @@ private:
 
 };
 
-
-
 } /* namespace std */
 #endif /* MENU_H_ */

@@ -11,7 +11,7 @@
 #define _USE_MATH_DEFINES	// To use math.h constants
 #include <math.h>
 
-class Vector2{
+class Vector2 {
 public:
 	Vector2(float _x = 0, float _y = 0);
 	void SetValues(float _x, float _y);
@@ -27,6 +27,5 @@ public:
 private:
 	float x, y;
 };
-
 
 #endif /* VECTOR_H_ */

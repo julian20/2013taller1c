@@ -6,7 +6,6 @@
 #define TilesOverlap	2		// px
 #define TilesScale  	1
 #define CameraSpeed		5		// px
-
 Map::Map(MapData* _data) {
 	data = _data;
 	cameraX = cameraY = 0;

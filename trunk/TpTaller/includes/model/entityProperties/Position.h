@@ -10,8 +10,8 @@
 
 class Position {
 public:
-    Position(int x, int y, int z);
-    void changeTo(int nuevaX, int nuevaY, int nuevaZ);
+	Position(int x, int y, int z);
+	void changeTo(int nuevaX, int nuevaY, int nuevaZ);
 	int getX() const;
 	void setX(int x);
 	int getY() const;
@@ -20,8 +20,8 @@ public:
 	void setZ(int z);
 
 private:
-    Position();
-    int x, y, z;
+	Position();
+	int x, y, z;
 };
 
 #endif	/* POSITION_H */

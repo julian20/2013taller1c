@@ -133,8 +133,6 @@ void MenuView::initMusic() {
 
 }
 
-
-
 void MenuView::startVoice() {
 	// Cargamos un sonido
 	darknessVoice = Mix_LoadWAV(START_TAUNT);

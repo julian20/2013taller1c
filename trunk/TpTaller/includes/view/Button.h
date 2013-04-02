@@ -17,14 +17,14 @@
 
 namespace std {
 
-typedef enum{
-	BUTTON_PRESSED,
-	BUTTON_RELEASED
-}ButtonState;
+typedef enum {
+	BUTTON_PRESSED, BUTTON_RELEASED
+} ButtonState;
 
 class Button {
 public:
-	Button(SDL_Surface* pressed, SDL_Surface* released, SDL_Rect pos, MenuEvent event);
+	Button(SDL_Surface* pressed, SDL_Surface* released, SDL_Rect pos,
+			MenuEvent event);
 
 	SDL_Rect pos;
 	SDL_Surface* released;

@@ -28,7 +28,6 @@ int main(int argc, char** argv) {
 	Menu menu = Menu();
 	Game game = Game(&cfgReader);
 
-
 	MenuEvent event;
 	bool gameRunning = false;
 
