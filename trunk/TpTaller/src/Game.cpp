@@ -120,6 +120,9 @@ MenuEvent Game::run() {
 
 			if (event.type == SDL_QUIT)
 				exit = true;
+
+			if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
+				exit = true;
 			//personajeVista->Mostrar();
 		}
 
