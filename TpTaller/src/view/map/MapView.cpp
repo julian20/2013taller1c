@@ -1,9 +1,5 @@
 #include <view/MapView.h>
 
-#define TILE_POS_FUNC	GetSquaredMapTilePos
-
-#define MapMargin		40		// px
-#define TilesOverlap	2		// px
 #define TilesScale  	1
 #define CameraSpeed		5		// px
 MapView::MapView(MapData* _data) {
@@ -86,7 +82,10 @@ void MapView::SetUpPersonajes() {
 
 			Personaje* personaje = data->GetPersonaje(row, col);
 			if (personaje != NULL) {
-				posTile = TILE_POS_FUNC(row, col);
+				posTile = Tile::computePosition(row, col);
+				posTile.x = camera->getX() + posTile.x;
+				posTile.y = camera->getY() + posTile.y;
+
 				personaje->setPos((float) posTile.x, (float) posTile.y);
 			}
 		}
@@ -104,8 +103,9 @@ void MapView::Draw(SDL_Surface* screen) {
 
 		for (int row = 0; row < data->GetNRows(); row++) {
 
-			posTile = TILE_POS_FUNC(row, col);
-
+			posTile = Tile::computePosition(row, col);
+			posTile.x = camera->getX() + posTile.x;
+			posTile.y = camera->getY() + posTile.y;
 			/**
 			 * TODO: El manejo de texturas se da aca (con el TextureHolder seteado).
 			 */
@@ -141,38 +141,11 @@ void MapView::Draw(SDL_Surface* screen) {
 	 }*/
 }
 
-SDL_Rect MapView::GetSquaredMapTilePos(int row, int col) {
-	int widthTexture = tilesTextures[0]->w - TilesOverlap;
-	int heightTexture = tilesTextures[0]->h - TilesOverlap;
-
-	SDL_Rect posTile;
-
-	posTile.x = camera->getX() - MapMargin + (row % 2) * widthTexture / 2
-			+ col * widthTexture;
-	posTile.y = camera->getY() - MapMargin + row * heightTexture / 2;
-	posTile.w = widthTexture;
-	posTile.h = heightTexture;
-
-	return posTile;
-}
-
-SDL_Rect MapView::GetDiamondShapeMapTilePos(int row, int col) {
-	int widthTexture = tilesTextures[0]->w - TilesOverlap;
-	int heightTexture = tilesTextures[0]->h - TilesOverlap;
-
-	SDL_Rect posTile;
-
-	posTile.x = camera->getX() + (col + row) * widthTexture / 2;
-	posTile.y = camera->getY() + (col - row) * heightTexture / 2;
-	posTile.w = widthTexture;
-	posTile.h = heightTexture;
-
-	return posTile;
-}
-
 void MapView::ClickOn(int x, int y, int button) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
-	SDL_Rect firstTile = TILE_POS_FUNC(0, 0);
+	SDL_Rect firstTile = Tile::computePosition(0, 0);
+	firstTile.x = camera->getX() + firstTile.x;
+	firstTile.y = camera->getY() + firstTile.y;
 
 	int row = (y - firstTile.y) * 2 / firstTile.h;
 	int col = (x - firstTile.x) / firstTile.w;

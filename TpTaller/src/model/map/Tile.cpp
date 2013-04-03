@@ -9,6 +9,11 @@
 #include <model/entityProperties/Position.h>
 #include <string>
 
+#define MapMargin		40		// px
+#define TilesOverlap	2		// px
+#define TextureWidth	70		// px
+#define TextureHeight	50		// px
+
 Tile::Tile(Position* position, std::string textureId) {
 	this->coordinates = new Coordinates(0, 0);
 	this->position = position;
@@ -50,5 +55,38 @@ std::string Tile::getTextureIdentifier() {
 
 void Tile::setTextureIdentifier(std::string textureId) {
 	this->textureIdentifier = textureId;
+}
+
+SDL_Rect Tile::computePosition(int row, int col) {
+	return getSquaredMapTilePos(row, col);
+}
+
+SDL_Rect Tile::getSquaredMapTilePos(int row, int col) {
+	int widthTexture = TextureWidth - TilesOverlap;
+	int heightTexture = TextureHeight - TilesOverlap;
+
+	SDL_Rect posTile;
+
+	posTile.x = MapMargin + (row % 2) * widthTexture / 2
+			+ col * widthTexture;
+	posTile.y = MapMargin + row * heightTexture / 2;
+	posTile.w = widthTexture;
+	posTile.h = heightTexture;
+
+	return posTile;
+}
+
+SDL_Rect Tile::getDiamondShapeMapTilePos(int row, int col) {
+	int widthTexture = TextureWidth - TilesOverlap;
+	int heightTexture = TextureHeight - TilesOverlap;
+
+	SDL_Rect posTile;
+
+	posTile.x = (col + row) * widthTexture / 2;
+	posTile.y = (col - row) * heightTexture / 2;
+	posTile.w = widthTexture;
+	posTile.h = heightTexture;
+
+	return posTile;
 }
 
