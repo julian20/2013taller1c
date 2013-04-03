@@ -17,32 +17,35 @@
 
 using namespace std;
 
+void initGame(){
+	//Aca inicio el juego
+	// Lectura del archivo de configuracion
+	ConfigurationReader cfgReader = ConfigurationReader();
+	cfgReader.loadConfiguration(CONFIGURATION_FILE);
+	Game game = Game(&cfgReader);
+	game.run();
+}
+
 /*
  *
  */
 int main(int argc, char** argv) {
-	// Lectura del archivo de configuracion
-	ConfigurationReader cfgReader = ConfigurationReader();
-	cfgReader.loadConfiguration(CONFIGURATION_FILE);
 
 	Menu menu = Menu();
-	Game game = Game(&cfgReader);
 
 	MenuEvent event = NOTHING_EVENT;
-	bool gameRunning = false;
 
 	while (event != EXIT_EVENT) {
 
-		event = (gameRunning) ? game.run() : menu.run();
+		event = menu.run();
 		switch (event) {
 		case NOTHING_EVENT:
 			break;
 		case EXIT_EVENT:
 			break;
 		case NEWGAME_EVENT:
-			//Aca inicio el juego
 			menu.~Menu();
-			gameRunning = true;	// QUE CODIGO LOCOOOO PAPÁ
+			initGame();
 			break;
 		case CONFIG_EVENT:
 			//Aca inicio el menu de configuraciones

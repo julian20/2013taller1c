@@ -6,11 +6,9 @@
 #include <stdio.h>
 
 #include <Game.h>
-#include <view/MapView.h>
 #include <view/entities/PersonajeVista.h>
 #include <model/entities/personaje/Personaje.h>
 #include <model/persistence/ConfigurationReader.h>
-
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_rotozoom.h>
@@ -27,14 +25,19 @@ Game::Game(ConfigurationReader* cfgReader) {
 
 	MapData* mapData = new MapData(50, 30);
 
+	// TODO sacar esto **Tomi**
 	mapData->SetTileType(MapData::SOIL, 5, 5);
 	mapData->SetTileType(MapData::WATER, 7, 5);
 
-	map = new MapView(mapData);
-
-	setUpCharacters(map,mapData);
-
 	initMusic();
+	initScreen();
+
+	mapView = new MapView(mapData,screen);
+	mapController = new MapController(mapView);
+
+	setUpCharacters(mapView,mapData);
+
+
 }
 
 void getEvent() {
@@ -64,15 +67,14 @@ void refreshCharacters() {
 }
 
 void Game::initScreen() {
-	SDL_Init(SDL_INIT_EVERYTHING);
 
-	//Buscamos info sobre la resolucion del escritorio y creamos la pantalla
+	//Buscamos info sobre la resolucion del escritorio y creamos la screen
 	const SDL_VideoInfo *info = SDL_GetVideoInfo();
 		if (!info) {
-			pantalla = SDL_SetVideoMode(DEFAULT_W, DEFAULT_H, DEFAULT_BPP,
+			screen = SDL_SetVideoMode(DEFAULT_W, DEFAULT_H, DEFAULT_BPP,
 					SDL_HWSURFACE);
 		} else {
-			pantalla = SDL_SetVideoMode(info->current_w, info->current_h,
+			screen = SDL_SetVideoMode(info->current_w, info->current_h,
 					info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
 
 		}
@@ -89,15 +91,18 @@ void Game::initScreen() {
 
 void Game::draw() {
 	//Borramos y redibujamos en cada ciclo
-	SDL_FillRect(pantalla, NULL, 0);
-	map->Draw(pantalla);
 
-	Position* cam = map->GetCamera();
+	mapController->cameraMoveListener();
+
+	SDL_FillRect(screen, NULL, 0);
+	mapView->Draw();
+
+	Position* cam = mapView->GetCamera();
 	personajeVista->UpdateCameraPos(cam->getX(), cam->getY());
-	personajeVista->Mostrar(pantalla);
+	personajeVista->Mostrar(screen);
 	delete cam;
-	// Actualiza la pantalla
-	SDL_Flip(pantalla);
+	// Actualiza la screen
+	SDL_Flip(screen);
 }
 
 
@@ -111,13 +116,13 @@ MenuEvent Game::run() {
 
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == 1) {
-				Position* camera = map->GetCamera();
-				map->ClickOn(event.button.x, event.button.y,
+				Position* camera = mapView->GetCamera();
+				mapView->ClickOn(event.button.x, event.button.y,
 						event.button.button);
 			}
 
 			if (event.type == SDL_QUIT)
-				exit = true;
+				return EXIT_EVENT;
 
 			if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
 				exit = true;
@@ -126,7 +131,7 @@ MenuEvent Game::run() {
 
 		//Actualizo la parte visual, sin mostrarla todavia
 		//1. Mapa
-		map->Update();
+		mapView->Update();
 		// 2. Entidades estaticas
 		//       refreshEntities();
 		// 3. Personaje/s
@@ -140,8 +145,8 @@ MenuEvent Game::run() {
 		SDL_Delay(1000/FRAMES_PER_SECOND);
 	}
 
-
 	return EXIT_EVENT;
+
 }
 
 
