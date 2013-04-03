@@ -19,7 +19,7 @@
 //#define SCALE				0.2
 
 //como es animado necesito la cantidad de clips por lado.
-#define NUMERODECLIPS 8
+#define NUMERODECLIPS 9
 
 SDL_Rect clipsDerecha[NUMERODECLIPS];
 SDL_Rect clipsIzquierda[NUMERODECLIPS];
@@ -148,32 +148,32 @@ void PersonajeVista::EstablecerLosClips(int cantidadPorLado) {
 		clipsIzquierda[i].h = PERSONAJE_ALTO;
 
 		clipsArriba[i].x = PERSONAJE_ANCHO* i;
-		clipsArriba[i].y = PERSONAJE_ALTO * 2;
+		clipsArriba[i].y = PERSONAJE_ALTO * 3;
 		clipsArriba[i].w = PERSONAJE_ANCHO;
 		clipsArriba[i].h = PERSONAJE_ALTO;
 
 		clipsAbajo[i].x = PERSONAJE_ANCHO* i;
-		clipsAbajo[i].y = PERSONAJE_ALTO * 3;
+		clipsAbajo[i].y = PERSONAJE_ALTO * 2;
 		clipsAbajo[i].w = PERSONAJE_ANCHO;
 		clipsAbajo[i].h = PERSONAJE_ALTO;
 
 		clipsArribaIzq[i].x = PERSONAJE_ANCHO* i;
-		clipsArribaIzq[i].y = PERSONAJE_ALTO * 6;
+		clipsArribaIzq[i].y = PERSONAJE_ALTO * 5;
 		clipsArribaIzq[i].w = PERSONAJE_ANCHO;
 		clipsArribaIzq[i].h = PERSONAJE_ALTO;
 
 		clipsArribaDer[i].x = PERSONAJE_ANCHO* i;
-		clipsArribaDer[i].y = PERSONAJE_ALTO * 7;
+		clipsArribaDer[i].y = PERSONAJE_ALTO * 4;
 		clipsArribaDer[i].w = PERSONAJE_ANCHO;
 		clipsArribaDer[i].h = PERSONAJE_ALTO;
 
 		clipsAbajoIzq[i].x = PERSONAJE_ANCHO* i;
-		clipsAbajoIzq[i].y = PERSONAJE_ALTO * 5;
+		clipsAbajoIzq[i].y = PERSONAJE_ALTO * 7;
 		clipsAbajoIzq[i].w = PERSONAJE_ANCHO;
 		clipsAbajoIzq[i].h = PERSONAJE_ALTO;
 
 		clipsAbajoDer[i].x = PERSONAJE_ANCHO* i;
-		clipsAbajoDer[i].y = PERSONAJE_ALTO * 4;
+		clipsAbajoDer[i].y = PERSONAJE_ALTO * 6;
 		clipsAbajoDer[i].w = PERSONAJE_ANCHO;
 		clipsAbajoDer[i].h = PERSONAJE_ALTO;
 
@@ -183,92 +183,6 @@ void PersonajeVista::EstablecerLosClips(int cantidadPorLado) {
 		clipsQuieto[i].h = PERSONAJE_ALTO;
 	}
 }
-/*
- void PersonajeVista::EstablecerLosClips(int cantidadPorLado)
- {
- //Clip the sprites
- clipsDerecha[ 0 ].x = 0;
- clipsDerecha[ 0 ].y = 0;
- clipsDerecha[ 0 ].w = PERSONAJE_ANCHO*SCALE;
- clipsDerecha[ 0 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsDerecha[ 1 ].x = PERSONAJE_ANCHO*SCALE;
- clipsDerecha[ 1 ].y = 0;
- clipsDerecha[ 1 ].w = PERSONAJE_ANCHO*SCALE;
- clipsDerecha[ 1 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsDerecha[ 2 ].x = PERSONAJE_ANCHO * 2*SCALE;
- clipsDerecha[ 2 ].y = 0;
- clipsDerecha[ 2 ].w = PERSONAJE_ANCHO*SCALE;
- clipsDerecha[ 2 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsDerecha[ 3 ].x = PERSONAJE_ANCHO * 3*SCALE;
- clipsDerecha[ 3 ].y = 0;
- clipsDerecha[ 3 ].w = PERSONAJE_ANCHO*SCALE;
- clipsDerecha[ 3 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsIzquierda[ 0 ].x = 0;
- clipsIzquierda[ 0 ].y = PERSONAJE_ALTO*SCALE;
- clipsIzquierda[ 0 ].w = PERSONAJE_ANCHO*SCALE;
- clipsIzquierda[ 0 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsIzquierda[ 1 ].x = PERSONAJE_ANCHO*SCALE;
- clipsIzquierda[ 1 ].y = PERSONAJE_ALTO*SCALE;
- clipsIzquierda[ 1 ].w = PERSONAJE_ANCHO*SCALE;
- clipsIzquierda[ 1 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsIzquierda[ 2 ].x = PERSONAJE_ANCHO * 2*SCALE;
- clipsIzquierda[ 2 ].y = PERSONAJE_ALTO*SCALE;
- clipsIzquierda[ 2 ].w = PERSONAJE_ANCHO*SCALE;
- clipsIzquierda[ 2 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsIzquierda[ 3 ].x = PERSONAJE_ANCHO * 3*SCALE;
- clipsIzquierda[ 3 ].y = PERSONAJE_ALTO*SCALE;
- clipsIzquierda[ 3 ].w = PERSONAJE_ANCHO*SCALE;
- clipsIzquierda[ 3 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsArriba[ 0 ].x = 0;
- clipsArriba[ 0 ].y = PERSONAJE_ALTO * 2*SCALE;
- clipsArriba[ 0 ].w = PERSONAJE_ANCHO*SCALE;
- clipsArriba[ 0 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsArriba[ 1 ].x = PERSONAJE_ANCHO*SCALE;
- clipsArriba[ 1 ].y = PERSONAJE_ALTO * 2*SCALE;
- clipsArriba[ 1 ].w = PERSONAJE_ANCHO*SCALE;
- clipsArriba[ 1 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsArriba[ 2 ].x = PERSONAJE_ANCHO * 2*SCALE;
- clipsArriba[ 2 ].y = PERSONAJE_ALTO * 2*SCALE;
- clipsArriba[ 2 ].w = PERSONAJE_ANCHO*SCALE;
- clipsArriba[ 2 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsArriba[ 3 ].x = PERSONAJE_ANCHO * 3*SCALE;
- clipsArriba[ 3 ].y = PERSONAJE_ALTO * 2*SCALE;
- clipsArriba[ 3 ].w = PERSONAJE_ANCHO*SCALE;
- clipsArriba[ 3 ].h = PERSONAJE_ALTO*SCALE;
-
-
- clipsAbajo[ 0 ].x = 0;
- clipsAbajo[ 0 ].y = PERSONAJE_ALTO * 3*SCALE;
- clipsAbajo[ 0 ].w = PERSONAJE_ANCHO*SCALE;
- clipsAbajo[ 0 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsAbajo[ 1 ].x = PERSONAJE_ANCHO*SCALE;
- clipsAbajo[ 1 ].y = PERSONAJE_ALTO * 3*SCALE;
- clipsAbajo[ 1 ].w = PERSONAJE_ANCHO*SCALE;
- clipsAbajo[ 1 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsAbajo[ 2 ].x = PERSONAJE_ANCHO * 2*SCALE;
- clipsAbajo[ 2 ].y = PERSONAJE_ALTO * 3*SCALE;
- clipsAbajo[ 2 ].w = PERSONAJE_ANCHO*SCALE;
- clipsAbajo[ 2 ].h = PERSONAJE_ALTO*SCALE;
-
- clipsAbajo[ 3 ].x = PERSONAJE_ANCHO * 3*SCALE;
- clipsAbajo[ 3 ].y = PERSONAJE_ALTO * 3*SCALE;
- clipsAbajo[ 3 ].w = PERSONAJE_ANCHO*SCALE;
- clipsAbajo[ 3 ].h = PERSONAJE_ALTO*SCALE;
-
- }*/
 
 PersonajeVista::~PersonajeVista() {
 	//libera la memoria que pide para La imagen
