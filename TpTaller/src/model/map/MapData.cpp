@@ -13,11 +13,6 @@ MapData::MapData(int _nrows, int _ncols) {
 		// TODO: tirar error al log
 	}
 
-	data = (TileData*) malloc(sizeof(TileData) * nrows * ncols);
-	if (!data) {
-		// TODO: tirar error al log
-	}
-
 	InitializeData();
 }
 
@@ -26,11 +21,9 @@ MapData::~MapData() {
 
 void MapData::InitializeData() {
 	for (int i = 0; i < nrows * ncols; i++) {
-		data[i].tileType = NEUTRAL;
-		data[i].contentAmount = 0;
-		data[i].personaje = NULL;
-		for (int j=0; j<MAX_TILE_CONTENT;j++)
-			data[i].content[j]=NULL;
+		TileData tempData;
+		tempData.setType(NEUTRAL);
+		data.push_back(tempData);
 	}
 }
 
@@ -39,13 +32,13 @@ void MapData::SetTileType(int tileType, int row, int col) {
 	// creo q ya va a estar en en YAML
 	CheckRowColsValue(row, col);
 
-	data[row + nrows * col].tileType = tileType;
+	data[row + nrows * col].setType(tileType);
 }
 
 int MapData::GetTileType(int row, int col) {
 	CheckRowColsValue(row, col);
 
-	return data[row + nrows * col].tileType;
+	return data[row + nrows * col].getType();
 }
 
 void MapData::CheckRowColsValue(int row, int col) {
@@ -60,12 +53,8 @@ void MapData::CheckRowColsValue(int row, int col) {
 void MapData::addRepresentable(int row, int col, Entity* object) {
 	TileData currentData = data[row + nrows * col];
 
-	currentData.content[currentData.contentAmount] = object;
-	currentData.contentAmount++;
+	currentData.addEntity(object);
 
-	if (currentData.contentAmount++ >= MAX_TILE_CONTENT) {
-		printf("Error en MapData\n");
-	}
 }
 
 TileData* MapData::GetTileData(int row, int col) {
@@ -73,15 +62,16 @@ TileData* MapData::GetTileData(int row, int col) {
 }
 
 void MapData::addPersonaje(int row, int col, Personaje* personaje) {
-	data[row + nrows * col].personaje = personaje;
+	data[row + nrows * col].setPersonaje(personaje);
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
 	personaje->setTile(personajeTile);
 }
 
 Personaje* MapData::GetPersonaje(int row, int col) {
-	return data[row + nrows * col].personaje;
+	return data[row + nrows * col].getPersonaje();
 }
+
 
 list<Tile *> *MapData::GetPath(Tile* from, Tile* to){
 	/*list<Tile *> closedSet;
