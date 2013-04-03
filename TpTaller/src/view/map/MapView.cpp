@@ -4,16 +4,17 @@
 #define TilesScale  	1
 #define CameraSpeed		15		// px
 
-MapView::MapView(MapData* _data) {
+MapView::MapView(MapData* _data, SDL_Surface* screen) {
+	this->screen = screen;
 	data = _data;
-	camera = new Position(0, 0);
-	mapController = new MapController();
+	camera = new Position(data->GetNCols()/2, data->GetNRows()/2);
 
 	SDL_Rect posTile = Tile::computePosition(data->GetNRows(), data->GetNCols());
 	lastTilePos = new Position(posTile.x, posTile.y);
 
 	DefineTexturePaths();
 	GraphicalSetup();
+	checkBoundaries();
 }
 
 Position* MapView::GetCamera() {
@@ -53,35 +54,6 @@ void MapView::GraphicalSetup() {
 MapView::~MapView() {
 }
 
-void MapView::CameraUpdate() {
-	if (mapController->MoveScreenUp()) {
-		camera->setY( camera->getY() + CameraSpeed );
-	} else if (mapController->MoveScreenDown()) {
-		camera->setY( camera->getY() - CameraSpeed );
-	} else if (mapController->MoveScreenLeft()) {
-		camera->setX( camera->getX() + CameraSpeed );
-	} else if (mapController->MoveScreenRight()) {
-		camera->setX( camera->getX() - CameraSpeed );
-	} else if (mapController->MoveScreenLeftUp()) {
-		camera->setX( camera->getX() + CameraSpeed );
-		camera->setY( camera->getY() + CameraSpeed );
-	} else if (mapController->MoveScreenLeftDown()) {
-		camera->setX( camera->getX() + CameraSpeed );
-		camera->setY( camera->getY() - CameraSpeed );
-	} else if (mapController->MoveScreenRightUp()) {
-		camera->setX( camera->getX() - CameraSpeed );
-		camera->setY( camera->getY() + CameraSpeed );
-	} else if (mapController->MoveScreenRightDown()) {
-		camera->setX( camera->getX() - CameraSpeed );
-		camera->setY( camera->getY() - CameraSpeed );
-	}
-
-	if (camera->getX() > -MapMargin) camera->setX(-MapMargin);
-	if (camera->getY() > -MapMargin) camera->setY(-MapMargin);
-	if (camera->getX() < -lastTilePos->getX() + 1280) camera->setX(-lastTilePos->getX() + 1280);
-	if (camera->getY() < -lastTilePos->getY() + 1024) camera->setY(-lastTilePos->getY() + 1024);
-}
-
 void MapView::SetUpPersonajes() {
 	// Setea la posicion por unica vez de los personajes (y en un futuro posiblemente
 	// lo representable) en el mapa.
@@ -102,9 +74,9 @@ void MapView::SetUpPersonajes() {
 	}
 }
 
-void MapView::Draw(SDL_Surface* screen) {
+void MapView::Draw() {
 
-	CameraUpdate();
+//	CameraUpdate();
 
 	//Personaje* personajes = NULL;
 	SDL_Rect posTile;
@@ -178,5 +150,39 @@ void MapView::AssignPersonaje(Personaje* _personaje) {
 }
 
 void MapView::Update() {
+
+}
+
+SDL_Surface* MapView::getDrawingSurface(){
+	return screen;
+}
+
+
+void MapView::checkBoundaries(){
+	if (camera->getX() > -MapMargin) camera->setX(-MapMargin);
+	if (camera->getY() > -MapMargin) camera->setY(-MapMargin);
+	if (camera->getX() < -lastTilePos->getX() + screen->w) camera->setX(-lastTilePos->getX() + screen->w);
+	if (camera->getY() < -lastTilePos->getY() + screen->h) camera->setY(-lastTilePos->getY() + screen->h);
+}
+
+
+void MapView::moveCamera(CameraMove move){
+
+	switch(move){
+	case MOVE_UP:
+		camera->setY( camera->getY() + CameraSpeed );
+		break;
+	case MOVE_DOWN:
+		camera->setY( camera->getY() - CameraSpeed );
+		break;
+	case MOVE_LEFT:
+		camera->setX( camera->getX() + CameraSpeed );
+		break;
+	case MOVE_RIGHT:
+		camera->setX( camera->getX() - CameraSpeed );
+		break;
+	}
+
+	checkBoundaries();
 
 }

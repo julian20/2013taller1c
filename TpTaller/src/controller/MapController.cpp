@@ -9,25 +9,27 @@
 #include <iostream>
 
 #define MovementMargin	50	// px
-MapController::MapController() {
-	desktop = SDL_GetVideoInfo();
-	UpdateMouseState();
+MapController::MapController(MapView* mapView){
+
+	this->mapView = mapView;
+	this->screen = mapView->getDrawingSurface();
 }
 
-MapController::~MapController() {
-
-}
-
-void MapController::UpdateMouseState() {
+MouseState MapController::getMouseState() {
 	SDL_GetMouseState(&mouseX, &mouseY);
+	if (mouseAtLeft()) return MOUSE_LEFT;
+	if (mouseAtRight()) return MOUSE_RIGHT;
+	if (mouseAtTop()) return MOUSE_TOP;
+	if (mouseAtBottom()) return MOUSE_BOTTOM;
+
+	return MOUSE_CENTER;
 }
 
-bool MapController::MoveScreenLeft() {
-	UpdateMouseState();
+bool MapController::mouseAtLeft() {
 
 	if (mouseX < MovementMargin) {
 		if (mouseY > MovementMargin
-				&& mouseY < desktop->current_h - MovementMargin) {
+				&& mouseY < screen->h - MovementMargin) {
 			return true;
 		}
 	}
@@ -35,12 +37,11 @@ bool MapController::MoveScreenLeft() {
 	return false;
 }
 
-bool MapController::MoveScreenRight() {
-	UpdateMouseState();
+bool MapController::mouseAtRight() {
 
-	if (mouseX > desktop->current_w - MovementMargin) {
+	if (mouseX > screen->w - MovementMargin) {
 		if (mouseY > MovementMargin
-				&& mouseY < desktop->current_h - MovementMargin) {
+				&& mouseY < screen->h - MovementMargin) {
 			return true;
 		}
 	}
@@ -48,12 +49,11 @@ bool MapController::MoveScreenRight() {
 	return false;
 }
 
-bool MapController::MoveScreenUp() {
-	UpdateMouseState();
+bool MapController::mouseAtTop() {
 
 	if (mouseY < MovementMargin) {
 		if (mouseX > MovementMargin
-				&& mouseX < desktop->current_w - MovementMargin) {
+				&& mouseX < screen->w - MovementMargin) {
 			return true;
 		}
 	}
@@ -61,18 +61,19 @@ bool MapController::MoveScreenUp() {
 	return false;
 }
 
-bool MapController::MoveScreenDown() {
-	UpdateMouseState();
+bool MapController::mouseAtBottom() {
 
-	if (mouseY > desktop->current_h - MovementMargin) {
+	if (mouseY > screen->h - MovementMargin) {
 		if (mouseX > MovementMargin
-				&& mouseX < desktop->current_w - MovementMargin) {
+				&& mouseX < screen->w - MovementMargin) {
 			return true;
 		}
 	}
 
 	return false;
 }
+
+/* Deprecated (or trying to **TODO** tomi)
 
 bool MapController::MoveScreenLeftUp() {
 	UpdateMouseState();
@@ -121,4 +122,31 @@ bool MapController::MoveScreenRightDown() {
 
 	return false;
 }
+*/
 
+void MapController::cameraMoveListener(){
+
+	MouseState state = getMouseState();
+	switch (state){
+	case MOUSE_TOP:
+		mapView->moveCamera(MOVE_UP);
+		break;
+	case MOUSE_BOTTOM:
+		mapView->moveCamera(MOVE_DOWN);
+		break;
+	case MOUSE_LEFT:
+		mapView->moveCamera(MOVE_LEFT);
+		break;
+	case MOUSE_RIGHT:
+		mapView->moveCamera(MOVE_RIGHT);
+		break;
+	case MOUSE_CENTER:
+		break;
+	}
+
+}
+
+
+MapController::~MapController() {
+
+}

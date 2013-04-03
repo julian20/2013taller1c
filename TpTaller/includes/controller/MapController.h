@@ -8,24 +8,28 @@
 #ifndef MAPCONTROLLER_H_
 #define MAPCONTROLLER_H_
 
+#include <view/MapView.h>
 #include <SDL/SDL.h>
+
+
+
+typedef enum {MOUSE_TOP,MOUSE_BOTTOM,MOUSE_RIGHT,MOUSE_LEFT,MOUSE_CENTER} MouseState;
 
 class MapController {
 public:
-	MapController();
+	MapController(MapView* mapView);
 	virtual ~MapController();
 
-	bool MoveScreenLeft();
-	bool MoveScreenRight();
-	bool MoveScreenUp();
-	bool MoveScreenDown();
-	bool MoveScreenLeftUp();
-	bool MoveScreenLeftDown();
-	bool MoveScreenRightUp();
-	bool MoveScreenRightDown();
+	void cameraMoveListener();
+
+	bool mouseAtLeft();
+	bool mouseAtRight();
+	bool mouseAtTop();
+	bool mouseAtBottom();
 private:
-	const SDL_VideoInfo* desktop;
-	void UpdateMouseState();
+	SDL_Surface* screen;
+	MapView* mapView;
+	MouseState getMouseState();
 	int mouseX, mouseY;
 };
 
