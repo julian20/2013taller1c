@@ -1,20 +1,20 @@
 #include <view/MapView.h>
-#include <model/map/TextureHolder.h>
 
-#define MapMargin		40		// px
-#define TilesScale  	1
-#define CameraSpeed		15		// px
-MapView::MapView(MapData* _data) {
+#define MapMargin               40              // px
+#define TilesScale      1
+#define CameraSpeed             15              // px
+
+MapView::MapView(MapData* _data, SDL_Surface* screen) {
+	this->screen = screen;
 	data = _data;
-	camera = new Position(0, 0);
-	mapController = new MapController();
-	personaje = NULL;
-	textureHolder = NULL;
+	camera = new Position(data->GetNCols() / 2, data->GetNRows() / 2);
 
 	SDL_Rect posTile = Tile::computePosition(data->GetNRows(),
 			data->GetNCols());
 	lastTilePos = new Position(posTile.x, posTile.y);
+	textureHolder = NULL;
 
+	checkBoundaries();
 }
 
 Position* MapView::GetCamera() {
@@ -22,39 +22,6 @@ Position* MapView::GetCamera() {
 }
 
 MapView::~MapView() {
-}
-
-void MapView::CameraUpdate() {
-	if (mapController->MoveScreenUp()) {
-		camera->setY(camera->getY() + CameraSpeed);
-	} else if (mapController->MoveScreenDown()) {
-		camera->setY(camera->getY() - CameraSpeed);
-	} else if (mapController->MoveScreenLeft()) {
-		camera->setX(camera->getX() + CameraSpeed);
-	} else if (mapController->MoveScreenRight()) {
-		camera->setX(camera->getX() - CameraSpeed);
-	} else if (mapController->MoveScreenLeftUp()) {
-		camera->setX(camera->getX() + CameraSpeed);
-		camera->setY(camera->getY() + CameraSpeed);
-	} else if (mapController->MoveScreenLeftDown()) {
-		camera->setX(camera->getX() + CameraSpeed);
-		camera->setY(camera->getY() - CameraSpeed);
-	} else if (mapController->MoveScreenRightUp()) {
-		camera->setX(camera->getX() - CameraSpeed);
-		camera->setY(camera->getY() + CameraSpeed);
-	} else if (mapController->MoveScreenRightDown()) {
-		camera->setX(camera->getX() - CameraSpeed);
-		camera->setY(camera->getY() - CameraSpeed);
-	}
-
-	if (camera->getX() > -MapMargin)
-		camera->setX(-MapMargin);
-	if (camera->getY() > -MapMargin)
-		camera->setY(-MapMargin);
-	if (camera->getX() < -lastTilePos->getX() + 1280)
-		camera->setX(-lastTilePos->getX() + 1280);
-	if (camera->getY() < -lastTilePos->getY() + 1024)
-		camera->setY(-lastTilePos->getY() + 1024);
 }
 
 void MapView::SetUpPersonajes() {
@@ -77,9 +44,71 @@ void MapView::SetUpPersonajes() {
 	}
 }
 
-void MapView::Draw(SDL_Surface* screen) {
+void MapView::ClickOn(int x, int y, int button) {
+	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
+	SDL_Rect firstTile = Tile::computePosition(0, 0);
+	firstTile.x = camera->getX() + firstTile.x;
+	firstTile.y = camera->getY() + firstTile.y;
 
-	CameraUpdate();
+	int row = (y - firstTile.y) * 2 / firstTile.h;
+	int col = (x - firstTile.x) / firstTile.w;
+
+	printf("A\n");
+	if (personaje != NULL) {
+		Tile* toTile = new Tile(new Coordinates(row, col));
+		data->movePersonaje(personaje, toTile);
+		printf("B\n");
+		//personaje->MoveTo(x - camera->getX(), y - camera->getY());
+	}
+
+	//printf("row: %d, col: %d\n", row, col);
+}
+
+void MapView::AssignPersonaje(Personaje* _personaje) {
+	personaje = _personaje;
+}
+
+void MapView::Update() {
+
+}
+
+SDL_Surface* MapView::getDrawingSurface() {
+	return screen;
+}
+
+void MapView::checkBoundaries() {
+	if (camera->getX() > -MapMargin)
+		camera->setX(-MapMargin);
+	if (camera->getY() > -MapMargin)
+		camera->setY(-MapMargin);
+	if (camera->getX() < -lastTilePos->getX() + screen->w)
+		camera->setX(-lastTilePos->getX() + screen->w);
+	if (camera->getY() < -lastTilePos->getY() + screen->h)
+		camera->setY(-lastTilePos->getY() + screen->h);
+}
+
+void MapView::moveCamera(CameraMove move) {
+
+	switch (move) {
+	case MOVE_UP:
+		camera->setY(camera->getY() + CameraSpeed);
+		break;
+	case MOVE_DOWN:
+		camera->setY(camera->getY() - CameraSpeed);
+		break;
+	case MOVE_LEFT:
+		camera->setX(camera->getX() + CameraSpeed);
+		break;
+	case MOVE_RIGHT:
+		camera->setX(camera->getX() - CameraSpeed);
+		break;
+	}
+
+	checkBoundaries();
+
+}
+
+void MapView::Draw() {
 
 	//Personaje* personajes = NULL;
 	SDL_Rect posTile;
@@ -122,38 +151,11 @@ void MapView::Draw(SDL_Surface* screen) {
 	 }*/
 }
 
-void MapView::ClickOn(int x, int y, int button) {
-	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
-	SDL_Rect firstTile = Tile::computePosition(0, 0);
-	firstTile.x = camera->getX() + firstTile.x;
-	firstTile.y = camera->getY() + firstTile.y;
-
-	int row = (y - firstTile.y) * 2 / firstTile.h;
-	int col = (x - firstTile.x) / firstTile.w;
-
-	printf("A\n");
-	if (personaje != NULL) {
-		Tile* toTile = new Tile(new Coordinates(row, col));
-		data->movePersonaje(personaje, toTile);
-		printf("B\n");
-		//personaje->MoveTo(x - camera->getX(), y - camera->getY());
-	}
-
-	//printf("row: %d, col: %d\n", row, col);
-}
-
-void MapView::AssignPersonaje(Personaje* _personaje) {
-	personaje = _personaje;
-}
-
-void MapView::Update() {
-
+TextureHolder* MapView::getTextureHolder() {
+	return this->textureHolder;
 }
 
 void MapView::setTextureHolder(TextureHolder* textureHolder) {
 	this->textureHolder = textureHolder;
 }
 
-TextureHolder* MapView::getTextureHolder() {
-	return this->textureHolder;
-}

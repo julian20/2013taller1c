@@ -17,20 +17,20 @@ typedef enum {MOUSE_TOP,MOUSE_BOTTOM,MOUSE_RIGHT,MOUSE_LEFT,MOUSE_CENTER} MouseS
 
 class MapController {
 public:
-	MapController(MapView* mapView);
-	virtual ~MapController();
+        MapController(MapView* mapView);
+        virtual ~MapController();
 
-	void cameraMoveListener();
+        void cameraMoveListener();
 
-	bool mouseAtLeft();
-	bool mouseAtRight();
-	bool mouseAtTop();
-	bool mouseAtBottom();
+        bool mouseAtLeft();
+        bool mouseAtRight();
+        bool mouseAtTop();
+        bool mouseAtBottom();
 private:
-	SDL_Surface* screen;
-	MapView* mapView;
-	MouseState getMouseState();
-	int mouseX, mouseY;
+        SDL_Surface* screen;
+        MapView* mapView;
+        MouseState getMouseState();
+        int mouseX, mouseY;
 };
 
 #endif /* MAPCONTROLLER_H_ */

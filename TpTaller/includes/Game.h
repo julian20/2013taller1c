@@ -17,27 +17,27 @@
 
 class Game {
 public:
-	Game(PersistentConfiguration* configuration);
-	MenuEvent run();
-	virtual ~Game();
+        Game(PersistentConfiguration* configuration);
+        MenuEvent run();
+        virtual ~Game();
 private:
-	Mix_Music* musica;
+        Mix_Music* musica;
 
-	SDL_Surface* screen;
-	SDL_Rect posFondo;
-	SDL_Surface* fondo;
+        SDL_Surface* screen;
+        SDL_Rect posFondo;
+        SDL_Surface* fondo;
 
 
-	MapView* mapView;
-	MapController* mapController;
+        MapView* mapView;
+        MapController* mapController;
 
-	Personaje* personaje;
-	PersonajeVista* personajeVista;
+        Personaje* personaje;
+        PersonajeVista* personajeVista;
 
-	void initMusic();
-	void initScreen();
-	void draw();
-	void setUpCharacters(MapView* map,MapData* mapData);
+        void initMusic();
+        void initScreen();
+        void draw();
+        void setUpCharacters(MapView* map,MapData* mapData);
 };
 
 #endif /* GAME_H_ */
