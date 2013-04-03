@@ -23,11 +23,7 @@
 
 Game::Game(PersistentConfiguration* configuration) {
 
-        MapData* mapData = new MapData(50, 30);
-
-        // TODO sacar esto **Tomi**
-        mapData->SetTileType("soil", 5, 5);
-        mapData->SetTileType("water", 7, 5);
+        MapData* mapData = configuration->getMapData();
 
         initMusic();
         initScreen();

@@ -130,7 +130,7 @@ void operator >>(const YAML::Node& yamlNode, Speed* speed) {
 
 	Vector2* auxPosition = new Vector2(0, 0);
 	yamlNode["direction"] >> auxPosition;
-	speed->setDirection(Vector2(auxPosition->GetX(),auxPosition->GetY()));
+	speed->setDirection(Vector2(auxPosition->GetX(), auxPosition->GetY()));
 	delete auxPosition;
 }
 
@@ -278,7 +278,7 @@ void printPersonaje(Personaje* parsedPersonaje) {
 	std::cout << parsedPersonaje->getSpeed()->getMagnitude() << "\n";
 	std::cout << "      " << "Direction: (";
 	std::cout << parsedPersonaje->getSpeed()->getDirection().GetX() << ", ";
-	std::cout << parsedPersonaje->getSpeed()->getDirection().GetY() <<  ")\n";
+	std::cout << parsedPersonaje->getSpeed()->getDirection().GetY() << ")\n";
 	std::cout << "Powers:\n";
 	for (unsigned i = 0; i < parsedPersonaje->getPowers().size(); i++) {
 		std::cout << "       " << "- Name: "
@@ -361,6 +361,11 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 
 	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
 			mapConfiguration.dimension.ncols);
+	for (unsigned int i = 0; i < mapConfiguration.tileList.size(); i++) {
+		Tile* auxTile = mapConfiguration.tileList[i];
+		mapData->SetTileType(auxTile->getTextureIdentifier(),
+				auxTile->getCoordinates()->getRow(),auxTile->getCoordinates()->getCol());
+	}
 
 	// Parsing map tile locations.
 	yamlNode[CONFIGURATION_TILELOCATION_DEFINITION] >> mapConfiguration;
