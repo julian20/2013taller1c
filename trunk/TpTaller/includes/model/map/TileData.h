@@ -20,19 +20,19 @@ public:
 	virtual ~TileData();
 
 	//Getters
-	int getType();
+	std::string getType();
 	Personaje* getPersonaje();
 	Entity* getNextEntity();
 	int getNumberOfEntitiesOnTile();
 
 	//Setters
-	void setType(int type);
+	void setType(std::string type);
 	void setPersonaje(Personaje* newPersonaje);
 
 	void addEntity(Entity* entity);
 
 private:
-	int tileType;
+	std::string tileType;
 	Personaje* personaje;
 	std::list<Entity*> entities;
 	std::list<Entity*>::iterator iterator;

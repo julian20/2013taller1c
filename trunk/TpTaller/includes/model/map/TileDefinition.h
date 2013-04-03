@@ -24,7 +24,9 @@ public:
 	SDL_Surface* getDefaultTileImage();
 private:
 	std::string id, imageSrc, defaultImgSrc;
+	SDL_Surface* openImage;
 	void setDefaultTileImage(std::string imageSrc);
+	SDL_Surface* prepareImage(SDL_Surface* loadedImage);
 };
 
 #endif /* TILEDEFINITION_H_ */

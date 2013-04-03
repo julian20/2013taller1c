@@ -22,12 +22,12 @@ MapData::~MapData() {
 void MapData::InitializeData() {
 	for (int i = 0; i < nrows * ncols; i++) {
 		TileData tempData;
-		tempData.setType(NEUTRAL);
+		tempData.setType("neutral");
 		data.push_back(tempData);
 	}
 }
 
-void MapData::SetTileType(int tileType, int row, int col) {
+void MapData::SetTileType(std::string tileType, int row, int col) {
 	// ACA deberia ir una comprobacion de si el tileType ese existe pero
 	// creo q ya va a estar en en YAML
 	CheckRowColsValue(row, col);
@@ -35,7 +35,7 @@ void MapData::SetTileType(int tileType, int row, int col) {
 	data[row + nrows * col].setType(tileType);
 }
 
-int MapData::GetTileType(int row, int col) {
+std::string MapData::GetTileType(int row, int col) {
 	CheckRowColsValue(row, col);
 
 	return data[row + nrows * col].getType();

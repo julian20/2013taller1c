@@ -8,7 +8,7 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include <model/persistence/ConfigurationReader.h>
+#include <model/persistence/PersistentConfiguration.h>
 #include <SDL/SDL_events.h>
 #include <SDL/SDL_mixer.h>
 #include <controller/MapController.h>
@@ -17,7 +17,7 @@
 
 class Game {
 public:
-	Game(ConfigurationReader* cfgReader);
+	Game(PersistentConfiguration* configuration);
 	MenuEvent run();
 	virtual ~Game();
 private:

@@ -1,57 +1,60 @@
 #include <view/MapView.h>
+#include <model/map/TextureHolder.h>
 
 #define MapMargin		40		// px
 #define TilesScale  	1
 #define CameraSpeed		15		// px
-
-MapView::MapView(MapData* _data, SDL_Surface* screen) {
-	this->screen = screen;
+MapView::MapView(MapData* _data) {
 	data = _data;
-	camera = new Position(data->GetNCols()/2, data->GetNRows()/2);
+	camera = new Position(0, 0);
+	mapController = new MapController();
+	personaje = NULL;
+	textureHolder = NULL;
 
-	SDL_Rect posTile = Tile::computePosition(data->GetNRows(), data->GetNCols());
+	SDL_Rect posTile = Tile::computePosition(data->GetNRows(),
+			data->GetNCols());
 	lastTilePos = new Position(posTile.x, posTile.y);
 
-	DefineTexturePaths();
-	GraphicalSetup();
-	checkBoundaries();
 }
 
 Position* MapView::GetCamera() {
-	return new Position( camera->getX(), camera->getY() );
-}
-
-void MapView::DefineTexturePaths() {
-	/**
-	 * TODO: Esto no tiene que estar (TextureHolder lo maneja)
-	 */
-	texturesPaths[MapData::NEUTRAL] = "texturesTiles/sand.png";
-	texturesPaths[MapData::SOIL] = "texturesTiles/dirtTile.png";
-	texturesPaths[MapData::WATER] = "texturesTiles/Water.png";
-	texturesPaths[MapData::TREE] = "texturesTiles/stonebrick.png";
-	backgroundPath = "./background.png";
-}
-
-void MapView::GraphicalSetup() {
-	/**
-	 * TODO: Esto no tiene que estar (TextureHolder lo maneja)
-	 */
-	for (int i = 0; i < MapData::AMOUNT_TYPES; i++) {
-		tilesTextures[i] = IMG_Load(texturesPaths[i].c_str());
-		if (tilesTextures[i] == NULL) {
-			printf("Unable to load tile texture n°:%d: %s\n", i,
-					SDL_GetError());
-			exit(1);
-		}
-	}
-	for (int i = 0; i < MapData::AMOUNT_TYPES; i++) {
-		tilesTextures[i] = rotozoomSurfaceXY(tilesTextures[i], 0, TilesScale,
-				TilesScale, 0);
-		tilesTextures[i] = SDL_DisplayFormatAlpha(tilesTextures[i]);
-	}
+	return new Position(camera->getX(), camera->getY());
 }
 
 MapView::~MapView() {
+}
+
+void MapView::CameraUpdate() {
+	if (mapController->MoveScreenUp()) {
+		camera->setY(camera->getY() + CameraSpeed);
+	} else if (mapController->MoveScreenDown()) {
+		camera->setY(camera->getY() - CameraSpeed);
+	} else if (mapController->MoveScreenLeft()) {
+		camera->setX(camera->getX() + CameraSpeed);
+	} else if (mapController->MoveScreenRight()) {
+		camera->setX(camera->getX() - CameraSpeed);
+	} else if (mapController->MoveScreenLeftUp()) {
+		camera->setX(camera->getX() + CameraSpeed);
+		camera->setY(camera->getY() + CameraSpeed);
+	} else if (mapController->MoveScreenLeftDown()) {
+		camera->setX(camera->getX() + CameraSpeed);
+		camera->setY(camera->getY() - CameraSpeed);
+	} else if (mapController->MoveScreenRightUp()) {
+		camera->setX(camera->getX() - CameraSpeed);
+		camera->setY(camera->getY() + CameraSpeed);
+	} else if (mapController->MoveScreenRightDown()) {
+		camera->setX(camera->getX() - CameraSpeed);
+		camera->setY(camera->getY() - CameraSpeed);
+	}
+
+	if (camera->getX() > -MapMargin)
+		camera->setX(-MapMargin);
+	if (camera->getY() > -MapMargin)
+		camera->setY(-MapMargin);
+	if (camera->getX() < -lastTilePos->getX() + 1280)
+		camera->setX(-lastTilePos->getX() + 1280);
+	if (camera->getY() < -lastTilePos->getY() + 1024)
+		camera->setY(-lastTilePos->getY() + 1024);
 }
 
 void MapView::SetUpPersonajes() {
@@ -74,9 +77,9 @@ void MapView::SetUpPersonajes() {
 	}
 }
 
-void MapView::Draw() {
+void MapView::Draw(SDL_Surface* screen) {
 
-//	CameraUpdate();
+	CameraUpdate();
 
 	//Personaje* personajes = NULL;
 	SDL_Rect posTile;
@@ -88,28 +91,22 @@ void MapView::Draw() {
 			posTile = Tile::computePosition(row, col);
 			posTile.x = camera->getX() + posTile.x;
 			posTile.y = camera->getY() + posTile.y;
-			/**
-			 * TODO: El manejo de texturas se da aca (con el TextureHolder seteado).
-			 */
-//			std::string textureId = data->GetTileType(row, col);
-//			SDL_Surface* textureImage = getTextureHolder().getImage(textureId);
-//			textureImage = rotozoomSurfaceXY(textureImage, 0, TilesScale,
-//					TilesScale, 0);
-//			textureImage = SDL_DisplayFormatAlpha(textureImage);
 
-			SDL_BlitSurface(tilesTextures[data->GetTileType(row, col)], NULL,
-					screen, &posTile);
+			std::string textureId = data->GetTileType(row, col);
+			SDL_Surface* textureImage = getTextureHolder()->getTexture(
+					textureId);
+
+			SDL_BlitSurface(textureImage, NULL, screen, &posTile);
 
 			TileData* tileData = data->GetTileData(row, col);
 
 			Entity* entity = tileData->getNextEntity();
-			while (entity!=NULL){
+			while (entity != NULL) {
 				/*Lucas: TODO!
-					entity->draw();
-				*/
+				 entity->draw();
+				 */
 				entity = tileData->getNextEntity();
 			}
-
 
 		}
 	}
@@ -153,36 +150,10 @@ void MapView::Update() {
 
 }
 
-SDL_Surface* MapView::getDrawingSurface(){
-	return screen;
+void MapView::setTextureHolder(TextureHolder* textureHolder) {
+	this->textureHolder = textureHolder;
 }
 
-
-void MapView::checkBoundaries(){
-	if (camera->getX() > -MapMargin) camera->setX(-MapMargin);
-	if (camera->getY() > -MapMargin) camera->setY(-MapMargin);
-	if (camera->getX() < -lastTilePos->getX() + screen->w) camera->setX(-lastTilePos->getX() + screen->w);
-	if (camera->getY() < -lastTilePos->getY() + screen->h) camera->setY(-lastTilePos->getY() + screen->h);
-}
-
-
-void MapView::moveCamera(CameraMove move){
-
-	switch(move){
-	case MOVE_UP:
-		camera->setY( camera->getY() + CameraSpeed );
-		break;
-	case MOVE_DOWN:
-		camera->setY( camera->getY() - CameraSpeed );
-		break;
-	case MOVE_LEFT:
-		camera->setX( camera->getX() + CameraSpeed );
-		break;
-	case MOVE_RIGHT:
-		camera->setX( camera->getX() - CameraSpeed );
-		break;
-	}
-
-	checkBoundaries();
-
+TextureHolder* MapView::getTextureHolder() {
+	return this->textureHolder;
 }
