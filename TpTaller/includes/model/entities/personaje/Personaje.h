@@ -8,8 +8,12 @@
 #define	PERSONAJE_H
 
 #include <stdio.h>
+#include <list>
+#include <model/map/Tile.h>
 #include <model/entities/Entity.h>
 #include <model/Vector2.h>
+
+using namespace std;
 
 //Constantes para definir la direccion. Faltan los laterales.
 const int PERSONAJE_DERECHA = 0;
@@ -41,13 +45,20 @@ public:
 	void setName(std::string name);
 	std::vector<Power*> getPowers();
 	void setPowers(std::vector<Power*> powers);
+	void setTile( Tile* _tile );
+	Tile* getTile();
+	void assignPath(list<Tile *> *_path);
 private:
+	void setNextPosition();
+
 	Vector2* endPos;
 	float velocity;
 	Position* position;
 	Speed* speed;
 	std::vector<Power*> powers;
 	std::string name;
+	Tile* currentTile;
+	list<Tile *> *path;
 };
 
 #endif	/* PERSONAJE_H */

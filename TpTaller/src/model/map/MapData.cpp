@@ -118,8 +118,10 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* to){
 		else if (toRow < nextTileRow) row = nextTileRow - 1;
 		else row = nextTileRow;
 
-		nextTile = new Tile(new Position(row, col, 0), "");
+		nextTile = new Tile(new Coordinates(row, col));
+		nextTileCords = nextTile->getCoordinates();
 		path->insert( path->end(), nextTile );
+
 	}
 
 	return path;
@@ -132,6 +134,13 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* to){
 	// Devuelvo la norma del vector que une ambos puntos
 	return sqrt( pow(toPos->row - fromPos->row, 2) + pow(toPos->col - fromPos->col, 2));
 }*/
+
+void MapData::movePersonaje(Personaje* personaje, Tile* toTile) {
+	Tile* fromTile = personaje->getTile();
+
+	list<Tile *> *path = GetPath(fromTile, toTile);
+	personaje->assignPath(path);
+}
 
 int MapData::GetNRows() {
 	return nrows;

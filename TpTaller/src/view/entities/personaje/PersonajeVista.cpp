@@ -12,8 +12,8 @@
 #include <cmath>
 #include <string>
 
-#define OFFSET_X	40
-#define OFFSET_Y	10
+#define OFFSET_X	78
+#define OFFSET_Y	55
 
 
 //#define SCALE				0.2

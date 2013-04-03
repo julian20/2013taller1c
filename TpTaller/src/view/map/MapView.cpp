@@ -2,6 +2,7 @@
 
 #define TilesScale  	1
 #define CameraSpeed		5		// px
+
 MapView::MapView(MapData* _data) {
 	data = _data;
 	camera = new Position(0, 0);
@@ -150,10 +151,15 @@ void MapView::ClickOn(int x, int y, int button) {
 	int row = (y - firstTile.y) * 2 / firstTile.h;
 	int col = (x - firstTile.x) / firstTile.w;
 
-	printf("row: %d, col: %d\n", row, col);
+	printf("A\n");
+	if (personaje != NULL) {
+		Tile* toTile = new Tile(new Coordinates(row, col));
+		data->movePersonaje(personaje, toTile);
+		printf("B\n");
+		//personaje->MoveTo(x - camera->getX(), y - camera->getY());
+	}
 
-	if (personaje != NULL)
-		personaje->MoveTo(x - camera->getX(), y - camera->getY());
+	//printf("row: %d, col: %d\n", row, col);
 }
 
 void MapView::AssignPersonaje(Personaje* _personaje) {

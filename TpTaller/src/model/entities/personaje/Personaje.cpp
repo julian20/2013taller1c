@@ -15,6 +15,8 @@ Personaje::Personaje() {
 	this->position = new Position(0, 0, 0);
 	this->speed = new Speed(0, Vector2(0, 0));
 	this->name = "";
+	this->path = new list<Tile *>();
+	this->currentTile = new Tile( new Coordinates(0, 0) );
 }
 
 void Personaje::setPos(float x, float y) {
@@ -31,7 +33,10 @@ void Personaje::MoveTo(int x, int y) {
 
 void Personaje::Update() {
 	if (IsMoving() == false)
-		return;
+	{
+		if (path->size() == 0) return;
+		else setNextPosition();
+	}
 
 	Vector2* moveDirection = new Vector2(endPos->GetX() - currentPos->GetX(),
 			endPos->GetY() - currentPos->GetY());
@@ -45,6 +50,16 @@ void Personaje::Update() {
 
 		currentPos->Add(moveDirection);
 	}
+}
+
+void Personaje::setNextPosition() {
+	Tile* tile = path->front();
+	path->remove(tile);
+
+	Position* tilePos = tile->getPosition();
+	MoveTo(tilePos->getX(), tilePos->getY());
+
+	delete tile;
 }
 
 Vector2* Personaje::GetCurrentPos() {
@@ -65,6 +80,7 @@ Personaje::Personaje(std::string name, Position* position, Speed* speed,
 	this->speed = speed;
 	this->name = name;
 	this->powers = powers;
+	this->currentTile = new Tile(new Coordinates(0, 0));
 	endPos = new Vector2(0, 0);
 	velocity = 3;
 }
@@ -108,5 +124,19 @@ void Personaje::setPowers(std::vector<Power*> powers) {
 
 bool Personaje::IsMoving() {
 	return !(currentPos->IsEqual(endPos));
+}
+
+void Personaje::assignPath(list<Tile *> *_path) {
+	delete this->path;
+	this->path = _path;
+}
+
+void Personaje::setTile( Tile* _tile ) {
+	delete this->currentTile;
+	this->currentTile = _tile;
+}
+
+Tile* Personaje::getTile() {
+	return currentTile;
 }
 
