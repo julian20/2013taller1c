@@ -5,21 +5,15 @@
 #include <stdlib.h>
 #include <model/entities/Entity.h>
 #include <model/entities/personaje/Personaje.h>
+
 #include <model/map/Tile.h>
+#include <model/map/TileData.h>
 #include <list>
 
 
-#define MAX_TILE_CONTENT	5
 
 using namespace std;
 
-struct TileData{
-	//Lucas: TODO : ESTO NO ES OO AMIGO!!
-	int tileType;
-	Personaje* personaje;
-	Entity *content[MAX_TILE_CONTENT];
-	int contentAmount;
-};
 
 class MapData {
 public:
@@ -44,7 +38,7 @@ public:
 	list<Tile *> *GetPath(Tile* from, Tile* to);
 	void movePersonaje(Personaje* personaje, Tile* toTile);
 private:
-    TileData *data;
+    vector<TileData> data;
     int nrows;
     int ncols;
 

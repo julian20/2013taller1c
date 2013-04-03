@@ -130,13 +130,15 @@ void MapView::Draw(SDL_Surface* screen) {
 
 			TileData* tileData = data->GetTileData(row, col);
 
-			for (int i = 0; i < (tileData->contentAmount); i++) {
-				Entity* entity = tileData->content[i];
+			Entity* entity = tileData->getNextEntity();
+			while (entity!=NULL){
 				/*Lucas: TODO!
-				 if (entity)
-				 entity->draw();
-				 */
+					entity->draw();
+				*/
+				entity = tileData->getNextEntity();
 			}
+
+
 		}
 	}
 
