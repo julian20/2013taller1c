@@ -47,7 +47,7 @@ void Game::setUpCharacters(MapView* map,MapData* mapData){
 	//TODO: Posiblemente se levante del cfg reader esto
 	personaje = new Personaje();
 	personajeVista = new PersonajeVista(personaje, "resources/foo5.png");
-	mapData->addPersonaje(0, 0, personaje);
+	mapData->addPersonaje(5, 5, personaje);
 	map->AssignPersonaje(personaje);
 	/* Lucas: La linea siguiente antes estaba antes de lo de arriba, pero
 	 * yo creo que va despues, como vas a iterar la matriz de personajes

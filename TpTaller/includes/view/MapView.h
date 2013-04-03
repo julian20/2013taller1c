@@ -38,6 +38,7 @@ private:
 	SDL_Surface* tilesTextures[MapData::AMOUNT_TYPES];
 	string backgroundPath;
     Personaje* personaje;
+    Position* lastTilePos;
 
 	MapController* mapController;
 	Position* camera;

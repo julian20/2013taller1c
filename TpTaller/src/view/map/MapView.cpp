@@ -1,12 +1,16 @@
 #include <view/MapView.h>
 
+#define MapMargin		40		// px
 #define TilesScale  	1
-#define CameraSpeed		5		// px
+#define CameraSpeed		15		// px
 
 MapView::MapView(MapData* _data) {
 	data = _data;
 	camera = new Position(0, 0);
 	mapController = new MapController();
+
+	SDL_Rect posTile = Tile::computePosition(data->GetNRows(), data->GetNCols());
+	lastTilePos = new Position(posTile.x, posTile.y);
 
 	DefineTexturePaths();
 	GraphicalSetup();
@@ -71,6 +75,11 @@ void MapView::CameraUpdate() {
 		camera->setX( camera->getX() - CameraSpeed );
 		camera->setY( camera->getY() - CameraSpeed );
 	}
+
+	if (camera->getX() > -MapMargin) camera->setX(-MapMargin);
+	if (camera->getY() > -MapMargin) camera->setY(-MapMargin);
+	if (camera->getX() < -lastTilePos->getX() + 1280) camera->setX(-lastTilePos->getX() + 1280);
+	if (camera->getY() < -lastTilePos->getY() + 1024) camera->setY(-lastTilePos->getY() + 1024);
 }
 
 void MapView::SetUpPersonajes() {

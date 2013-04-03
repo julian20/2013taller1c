@@ -74,6 +74,9 @@ TileData* MapData::GetTileData(int row, int col) {
 
 void MapData::addPersonaje(int row, int col, Personaje* personaje) {
 	data[row + nrows * col].personaje = personaje;
+
+	Tile* personajeTile = new Tile(new Coordinates(row, col));
+	personaje->setTile(personajeTile);
 }
 
 Personaje* MapData::GetPersonaje(int row, int col) {

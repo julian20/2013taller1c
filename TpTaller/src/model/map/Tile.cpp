@@ -9,7 +9,6 @@
 #include <model/entityProperties/Position.h>
 #include <string>
 
-#define MapMargin		40		// px
 #define TilesOverlap	2		// px
 #define TextureWidth	70		// px
 #define TextureHeight	50		// px
@@ -75,9 +74,9 @@ SDL_Rect Tile::getSquaredMapTilePos(int row, int col) {
 
 	SDL_Rect posTile;
 
-	posTile.x = MapMargin + (row % 2) * widthTexture / 2
+	posTile.x = (row % 2) * widthTexture / 2
 			+ col * widthTexture;
-	posTile.y = MapMargin + row * heightTexture / 2;
+	posTile.y = row * heightTexture / 2;
 	posTile.w = widthTexture;
 	posTile.h = heightTexture;
 
