@@ -70,22 +70,21 @@ void Game::initScreen() {
 
         //Buscamos info sobre la resolucion del escritorio y creamos la screen
         const SDL_VideoInfo *info = SDL_GetVideoInfo();
-                if (!info) {
-                        screen = SDL_SetVideoMode(DEFAULT_W, DEFAULT_H, DEFAULT_BPP,
-                                        SDL_HWSURFACE);
-                } else {
-                        screen = SDL_SetVideoMode(info->current_w, info->current_h,
-                                        info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
+        if (!info) {
+        	screen = SDL_SetVideoMode(DEFAULT_W, DEFAULT_H, DEFAULT_BPP,
+        			SDL_HWSURFACE);
+        } else {
+        	screen = SDL_SetVideoMode(info->current_w, info->current_h,
+        			info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
 
-                }
-        //La hacemos fullscreen
-         /*int flag = 1;
-         flag = SDL_WM_ToggleFullScreen(pantalla);
-         if (flag == 0) {
-         printf("Unable to go fullscreen: %s\n", SDL_GetError());
-         exit(1);
-         }
-         */
+        }
+    //La hacemos fullscreen
+	int flag = 1;
+	 flag = SDL_WM_ToggleFullScreen(screen);
+	 if (flag == 0) {
+	 printf("Unable to go fullscreen: %s\n", SDL_GetError());
+	 exit(1);
+	 }
 
 }
 
@@ -121,8 +120,9 @@ MenuEvent Game::run() {
                                                 event.button.button);
                         }
 
-                        if (event.type == SDL_QUIT)
-                                return EXIT_EVENT;
+			if (event.type == SDL_QUIT)
+				exit = true;
+
 
                         if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
                                 exit = true;
