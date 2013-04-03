@@ -11,6 +11,7 @@
 #include <model/map/Tile.h>
 #include <model/entityProperties/Position.h>
 #include <model/entityProperties/Coordinates.h>
+#include <SDL/SDL.h>
 #include <string>
 
 class Tile {
@@ -24,8 +25,13 @@ public:
 	void setCoordinates(int _row, int _col);
 	std::string getTextureIdentifier();
 	void setTextureIdentifier(std::string textureId);
+	static SDL_Rect computePosition(int row, int col);
 private:
 	Tile();
+
+	static SDL_Rect getSquaredMapTilePos(int row, int col);
+	static SDL_Rect getDiamondShapeMapTilePos(int row, int col);
+
 	Position* position;
 	Coordinates* coordinates;
 	std::string textureIdentifier;
