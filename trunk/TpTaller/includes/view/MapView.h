@@ -25,7 +25,7 @@ public:
 	void Update();
 	void SetUpPersonajes();
     void AssignPersonaje(Personaje* _personaje);
-	Vector2* GetCamera();
+	Position* GetCamera();
 //	TextureHolder getTextureHolder();
 //	void setTextureHolder(TextureHolder textureHolder);
 private:
@@ -40,7 +40,7 @@ private:
     Personaje* personaje;
 
 	MapController* mapController;
-	int cameraX, cameraY;
+	Position* camera;
 
 	void DefineTexturePaths();
 	void GraphicalSetup();
