@@ -48,7 +48,7 @@ void Game::setUpCharacters(MapView* map,MapData* mapData){
 	personaje = new Personaje();
 	personajeVista = new PersonajeVista(personaje, "resources/foo5.png");
 	mapData->addPersonaje(0, 0, personaje);
-
+	map->AssignPersonaje(personaje);
 	/* Lucas: La linea siguiente antes estaba antes de lo de arriba, pero
 	 * yo creo que va despues, como vas a iterar la matriz de personajes
 	 * seteandolos si no hiciste addpersonaje?
@@ -112,8 +112,6 @@ MenuEvent Game::run() {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == 1) {
 				Position* camera = map->GetCamera();
-				personaje->MoveTo(event.button.x - camera->getX(),
-						event.button.y - camera->getY());
 				map->ClickOn(event.button.x, event.button.y,
 						event.button.button);
 			}

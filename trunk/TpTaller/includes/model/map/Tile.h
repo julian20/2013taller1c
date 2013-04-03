@@ -17,6 +17,7 @@
 class Tile {
 public:
 	Tile(Position* position, std::string textureId);
+	Tile(Coordinates* _coordinates);
 	virtual ~Tile();
 	Position* getPosition();
 	void setPosition(int x, int y, int z);

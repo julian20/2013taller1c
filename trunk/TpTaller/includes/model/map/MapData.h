@@ -42,6 +42,7 @@ public:
     void addPersonaje(int row, int col, Personaje* personaje);
     Personaje* GetPersonaje(int row, int col);
 	list<Tile *> *GetPath(Tile* from, Tile* to);
+	void movePersonaje(Personaje* personaje, Tile* toTile);
 private:
     TileData *data;
     int nrows;

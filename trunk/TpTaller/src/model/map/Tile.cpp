@@ -20,6 +20,14 @@ Tile::Tile(Position* position, std::string textureId) {
 	this->textureIdentifier = textureId;
 }
 
+Tile::Tile(Coordinates* _coordinates) {
+	this->coordinates = _coordinates;
+	this->textureIdentifier = "";
+
+	SDL_Rect pos = this->computePosition(coordinates->getRow(), coordinates->getCol());
+	this->position = new Position(pos.x, pos.y);
+}
+
 Tile::Tile() {
 	this->position = new Position(0, 0, 0);
 	this->coordinates = new Coordinates(0, 0);
