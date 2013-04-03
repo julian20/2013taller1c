@@ -17,7 +17,12 @@ Position::Position(int coordX, int coordY, int coordZ) {
 	x = coordX;
 	y = coordY;
 	z = coordZ;
+}
 
+Position::Position(int coordX, int coordY) {
+	x = coordX;
+	y = coordY;
+	z = 0;
 }
 
 void Position::changeTo(int newX, int newY, int newZ) {

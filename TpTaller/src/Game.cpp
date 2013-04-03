@@ -92,8 +92,8 @@ void Game::draw() {
 	SDL_FillRect(pantalla, NULL, 0);
 	map->Draw(pantalla);
 
-	Vector2* cam = map->GetCamera();
-	personajeVista->UpdateCameraPos(cam->GetX(), cam->GetY());
+	Position* cam = map->GetCamera();
+	personajeVista->UpdateCameraPos(cam->getX(), cam->getY());
 	personajeVista->Mostrar(pantalla);
 	delete cam;
 	// Actualiza la pantalla
@@ -111,9 +111,9 @@ MenuEvent Game::run() {
 
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == 1) {
-				Vector2* camera = map->GetCamera();
-				personaje->MoveTo(event.button.x - camera->GetX(),
-						event.button.y - camera->GetY());
+				Position* camera = map->GetCamera();
+				personaje->MoveTo(event.button.x - camera->getX(),
+						event.button.y - camera->getY());
 				map->ClickOn(event.button.x, event.button.y,
 						event.button.button);
 			}

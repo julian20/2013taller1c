@@ -8,15 +8,15 @@
 #define CameraSpeed		5		// px
 MapView::MapView(MapData* _data) {
 	data = _data;
-	cameraX = cameraY = 0;
+	camera = new Position(0, 0);
 	mapController = new MapController();
 
 	DefineTexturePaths();
 	GraphicalSetup();
 }
 
-Vector2* MapView::GetCamera() {
-	return new Vector2(cameraX, cameraY);
+Position* MapView::GetCamera() {
+	return new Position( camera->getX(), camera->getY() );
 }
 
 void MapView::DefineTexturePaths() {
@@ -54,25 +54,25 @@ MapView::~MapView() {
 
 void MapView::CameraUpdate() {
 	if (mapController->MoveScreenUp()) {
-		cameraY += CameraSpeed;
+		camera->setY( camera->getY() + CameraSpeed );
 	} else if (mapController->MoveScreenDown()) {
-		cameraY -= CameraSpeed;
+		camera->setY( camera->getY() - CameraSpeed );
 	} else if (mapController->MoveScreenLeft()) {
-		cameraX += CameraSpeed;
+		camera->setX( camera->getX() + CameraSpeed );
 	} else if (mapController->MoveScreenRight()) {
-		cameraX -= CameraSpeed;
+		camera->setX( camera->getX() - CameraSpeed );
 	} else if (mapController->MoveScreenLeftUp()) {
-		cameraX += CameraSpeed;
-		cameraY += CameraSpeed;
+		camera->setX( camera->getX() + CameraSpeed );
+		camera->setY( camera->getY() + CameraSpeed );
 	} else if (mapController->MoveScreenLeftDown()) {
-		cameraX += CameraSpeed;
-		cameraY -= CameraSpeed;
+		camera->setX( camera->getX() + CameraSpeed );
+		camera->setY( camera->getY() - CameraSpeed );
 	} else if (mapController->MoveScreenRightUp()) {
-		cameraX -= CameraSpeed;
-		cameraY += CameraSpeed;
+		camera->setX( camera->getX() - CameraSpeed );
+		camera->setY( camera->getY() + CameraSpeed );
 	} else if (mapController->MoveScreenRightDown()) {
-		cameraX -= CameraSpeed;
-		cameraY -= CameraSpeed;
+		camera->setX( camera->getX() - CameraSpeed );
+		camera->setY( camera->getY() - CameraSpeed );
 	}
 }
 
@@ -147,9 +147,9 @@ SDL_Rect MapView::GetSquaredMapTilePos(int row, int col) {
 
 	SDL_Rect posTile;
 
-	posTile.x = cameraX - MapMargin + (row % 2) * widthTexture / 2
+	posTile.x = camera->getX() - MapMargin + (row % 2) * widthTexture / 2
 			+ col * widthTexture;
-	posTile.y = cameraY - MapMargin + row * heightTexture / 2;
+	posTile.y = camera->getY() - MapMargin + row * heightTexture / 2;
 	posTile.w = widthTexture;
 	posTile.h = heightTexture;
 
@@ -162,8 +162,8 @@ SDL_Rect MapView::GetDiamondShapeMapTilePos(int row, int col) {
 
 	SDL_Rect posTile;
 
-	posTile.x = cameraX + (col + row) * widthTexture / 2;
-	posTile.y = cameraY + (col - row) * heightTexture / 2;
+	posTile.x = camera->getX() + (col + row) * widthTexture / 2;
+	posTile.y = camera->getY() + (col - row) * heightTexture / 2;
 	posTile.w = widthTexture;
 	posTile.h = heightTexture;
 
@@ -180,7 +180,7 @@ void MapView::ClickOn(int x, int y, int button) {
 	printf("row: %d, col: %d\n", row, col);
 
 	if (personaje != NULL)
-		personaje->MoveTo(x - cameraX, y - cameraY);
+		personaje->MoveTo(x - camera->getX(), y - camera->getY());
 }
 
 void MapView::AssignPersonaje(Personaje* _personaje) {
