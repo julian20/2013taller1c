@@ -12,11 +12,11 @@ namespace std {
 TileData::TileData() {
 	personaje = NULL;
 	//TODO: cambiar tileType de int a string
-	tileType = 0;
+	tileType = "neutral";
 	iterator = entities.begin();
 }
 
-int TileData::getType(){
+std::string TileData::getType(){
 	return tileType;
 }
 
@@ -37,7 +37,7 @@ int TileData::getNumberOfEntitiesOnTile(){
 	return entities.size();
 }
 
-void TileData::setType(int type){
+void TileData::setType(std::string type){
 	tileType=type;
 }
 

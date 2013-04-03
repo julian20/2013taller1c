@@ -21,7 +21,7 @@ TextureHolder::~TextureHolder() {
 bool TextureHolder::duplicateTexture(std::string id) {
 	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
 		TileDefinition* auxTileDefinition = this->listOfTextures[i];
-		if (id.compare(auxTileDefinition->getTileId())) {
+		if (id.compare(auxTileDefinition->getTileId()) == 0) {
 			return true;
 		}
 	}
@@ -40,7 +40,7 @@ void TextureHolder::addTexture(TileDefinition* tileDefinition) {
 std::string TextureHolder::getTextureSrc(std::string id) {
 	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
 		TileDefinition* auxTileDefinition = this->listOfTextures[i];
-		if (id.compare(auxTileDefinition->getTileId())) {
+		if (id.compare(auxTileDefinition->getTileId()) == 0) {
 			return auxTileDefinition->getTileImageSrc();
 		}
 	}
@@ -51,7 +51,7 @@ std::string TextureHolder::getTextureSrc(std::string id) {
 SDL_Surface* TextureHolder::getTexture(std::string id) {
 	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
 		TileDefinition* auxTileDefinition = this->listOfTextures[i];
-		if (id.compare(auxTileDefinition->getTileId())) {
+		if (id.compare(auxTileDefinition->getTileId()) == 0) {
 			return auxTileDefinition->getTileImage();
 		}
 	}
