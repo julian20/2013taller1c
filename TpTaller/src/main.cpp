@@ -20,8 +20,8 @@ using namespace std;
 void initGame(){
 	// Lectura del archivo de configuracion
 	ConfigurationReader cfgReader = ConfigurationReader();
-	PersistentConfiguration* configuration = cfgReader.loadConfiguration(CONFIGURATION_FILE);
-	Game game = Game(configuration);
+	PersistentConfiguration configuration = cfgReader.loadConfiguration(CONFIGURATION_FILE);
+	Game game = Game(&configuration);
 	game.run();
 	game.~Game();
 }
