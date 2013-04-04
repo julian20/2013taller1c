@@ -89,42 +89,40 @@ void printHeader(std::string title) {
  * Prints a tile to check for parsing integrity.
  */
 void printTile(Tile* tile) {
-	std::cout << "Position: ";
-	std::cout << "(" << tile->getPosition()->getX() << ", "
+	std::cout << "  - position: [" << tile->getPosition()->getX() << ", "
 			<< tile->getPosition()->getY() << ", "
-			<< tile->getPosition()->getZ() << ")\n";
-	std::cout << "Texture: ";
-	std::cout << tile->getTextureIdentifier() << std::endl;
+			<< tile->getPosition()->getZ() << "]" << std::endl;
+	std::cout << "    texture: " << tile->getTextureIdentifier() << std::endl;
 }
 
 /**
  * Prints an personaje to check if it was parsed correctly.
  */
 void printPersonajes(std::vector<Personaje*> entities) {
-	printHeader("PERSONAJES");
+	std::cout << "- players:\n";
 	for (unsigned j = 0; j < entities.size(); j++) {
 		Personaje* parsedPersonaje = entities[j];
-		std::cout << "Name: ";
+		std::cout << "  - name: ";
 		std::cout << parsedPersonaje->getName() << std::endl;
-		std::cout << "Position: (";
+		std::cout << "    position: [";
 		std::cout << parsedPersonaje->getPosition()->getX() << ", ";
 		std::cout << parsedPersonaje->getPosition()->getY() << ", ";
-		std::cout << parsedPersonaje->getPosition()->getZ() << ")\n";
-		std::cout << "Speed:\n";
-		std::cout << "      " << "Magnitude: ";
+		std::cout << parsedPersonaje->getPosition()->getZ() << "]\n";
+		std::cout << "    speed:\n";
+		std::cout << "      magnitude: ";
 		std::cout << parsedPersonaje->getSpeed()->getMagnitude() << std::endl;
-		std::cout << "      " << "Direction: (";
+		std::cout << "      direction: [";
 		std::cout << parsedPersonaje->getSpeed()->getDirection().GetX() << ", ";
-		std::cout << parsedPersonaje->getSpeed()->getDirection().GetY()
-				<< ")\n";
-		std::cout << "Powers:\n";
+		std::cout << parsedPersonaje->getSpeed()->getDirection().GetY() << "]";
+		std::cout << std::endl;
+		std::cout << "    powers:\n";
 		for (unsigned i = 0; i < parsedPersonaje->getPowers().size(); i++) {
-			std::cout << "       " << "- Name: "
+			std::cout << "      - name: "
 					<< parsedPersonaje->getPowers()[i]->getName() << std::endl;
-			std::cout << "       " << "  Damage: "
+			std::cout << "        damage: "
 					<< parsedPersonaje->getPowers()[i]->getDamage()
 					<< std::endl;
-			std::cout << "       " << "  Range: "
+			std::cout << "        range: "
 					<< parsedPersonaje->getPowers()[i]->getRange() << std::endl;
 		}
 	}
@@ -136,8 +134,6 @@ void printPersonajes(std::vector<Personaje*> entities) {
  */
 void printTextureHolder(TextureHolder* parsedTileDefinition) {
 
-	printHeader("TEXTURE HOLDER");
-
 	std::vector<std::string> textureIds;
 
 	textureIds.push_back("soil");
@@ -145,10 +141,12 @@ void printTextureHolder(TextureHolder* parsedTileDefinition) {
 	textureIds.push_back("water");
 	textureIds.push_back("tree");
 
+	std::cout << "- tiles:" << std::endl;
+
 	for (unsigned int i = 0; i < textureIds.size(); i++) {
-		std::cout << "Identifier: ";
+		std::cout << "  - identifier: ";
 		std::cout << textureIds[i] << std::endl;
-		std::cout << "Image Source: ";
+		std::cout << "    imageSrc: ";
 		std::cout << parsedTileDefinition->getTextureSrc(textureIds[i]);
 		std::cout << std::endl;
 	}
@@ -160,10 +158,9 @@ void printTextureHolder(TextureHolder* parsedTileDefinition) {
  */
 void printMapDimensions(AuxMap &mapConfiguration) {
 
-	std::cout << "Map Dimensions: " << std::endl;
-	std::cout << "     Rows: " << mapConfiguration.dimension.nrows << std::endl;
-	std::cout << "     Columns: " << mapConfiguration.dimension.ncols
-			<< std::endl;
+	std::cout << "- mapDimensions: ";
+	std::cout << "[" << mapConfiguration.dimension.nrows;
+	std::cout << ", " << mapConfiguration.dimension.ncols << "]" << std::endl;
 
 }
 
@@ -171,6 +168,9 @@ void printMapDimensions(AuxMap &mapConfiguration) {
  * Prints the configured tiles of a map.
  */
 void printConfiguredTiles(AuxMap &mapConfiguration) {
+
+	std::cout << "- tileLocations:" << std::endl;
+
 	for (unsigned int i = 0; i < mapConfiguration.tileList.size(); i++) {
 		printTile(mapConfiguration.tileList[i]);
 	}
@@ -180,8 +180,6 @@ void printConfiguredTiles(AuxMap &mapConfiguration) {
  * Prints the map configuration.
  */
 void printMapConfiguration(AuxMap &mapConfiguration) {
-
-	printHeader("MAP CONFIGURATION");
 
 	printMapDimensions(mapConfiguration);
 	printConfiguredTiles(mapConfiguration);
@@ -193,11 +191,9 @@ void printMapConfiguration(AuxMap &mapConfiguration) {
  */
 void printAnimationConfiguration(AnimationConfiguration* aConfig) {
 
-	printHeader("ANIMATION CONFIGURATION");
-
-	std::cout << "Animation Configuration: " << std::endl;
-	std::cout << "     FPS: " << aConfig->getFps() << std::endl;
-	std::cout << "     Delay: " << aConfig->getDelay() << std::endl;
+	std::cout << "- animation:" << std::endl;
+	std::cout << "    fps: " << aConfig->getFps() << std::endl;
+	std::cout << "    delay: " << aConfig->getDelay() << std::endl;
 
 }
 
@@ -226,11 +222,10 @@ void operator >>(const YAML::Node& yamlNode, Position* vector) {
  * a Position.
  */
 void operator >>(const YAML::Node& yamlNode, Vector2* vector) {
-	int auxX, auxY, auxZ;
+	int auxX, auxY;
 
 	yamlNode[0] >> auxX;
 	yamlNode[1] >> auxY;
-	yamlNode[2] >> auxZ;
 
 	vector->SetValues(auxX, auxY);
 }
