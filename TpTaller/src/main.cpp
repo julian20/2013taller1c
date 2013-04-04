@@ -23,6 +23,7 @@ void initGame(){
 	PersistentConfiguration configuration = cfgReader.loadConfiguration(CONFIGURATION_FILE);
 	Game game = Game(&configuration);
 	game.run();
+	game.~Game();
 }
 
 /*

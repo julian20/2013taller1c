@@ -75,19 +75,17 @@ void Game::initScreen() {
 
         }
     //La hacemos fullscreen
-	int flag = 1;
+/*	int flag = 1;
 	 flag = SDL_WM_ToggleFullScreen(screen);
 	 if (flag == 0) {
 	 printf("Unable to go fullscreen: %s\n", SDL_GetError());
 	 exit(1);
-	 }
+	 } */
 
 }
 
 void Game::draw() {
         //Borramos y redibujamos en cada ciclo
-
-        mapController->cameraMoveListener();
 
         SDL_FillRect(screen, NULL, 0);
         mapView->Draw();
@@ -108,37 +106,33 @@ MenuEvent Game::run() {
         SDL_Event event;
         bool exit = false;
         while (!exit) {
+        	mapController->cameraMoveListener();
+        	while (SDL_PollEvent(&event)) {
 
-                while (SDL_PollEvent(&event)) {
-                        if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == 1) {
-                                Position* camera = mapView->GetCamera();
-                                mapView->ClickOn(event.button.x, event.button.y,
-                                                event.button.button);
-                        }
+        		mapController->clickListener(event);
 
-			if (event.type == SDL_QUIT)
-				exit = true;
+        		if (event.type == SDL_QUIT)
+        			exit = true;
 
+        		if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
+        			exit = true;
+        		//personajeVista->Mostrar();
+        	}
 
-                        if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
-                                exit = true;
-                        //personajeVista->Mostrar();
-                }
+        	//Actualizo la parte visual, sin mostrarla todavia
+        	//1. Mapa
+        	mapView->Update();
+        	// 2. Entidades estaticas
+        	//       refreshEntities();
+        	// 3. Personaje/s
+        	personaje->Update();
 
-                //Actualizo la parte visual, sin mostrarla todavia
-                //1. Mapa
-                mapView->Update();
-                // 2. Entidades estaticas
-                //       refreshEntities();
-                // 3. Personaje/s
-                personaje->Update();
+        	// En un futuro, aca se comprueban las colisiones.
+        	// y se corrige la posicion del personaje.
 
-                // En un futuro, aca se comprueban las colisiones.
-                // y se corrige la posicion del personaje.
-
-                // Dibujo
-                draw();
-                SDL_Delay(1000/FRAMES_PER_SECOND);
+        	// Dibujo
+        	draw();
+        	SDL_Delay(1000/FRAMES_PER_SECOND);
         }
 
         return EXIT_EVENT;

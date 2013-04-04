@@ -22,15 +22,16 @@ public:
         virtual ~MapController();
 
         void cameraMoveListener();
+        void clickListener(SDL_Event event);
 
-        bool mouseAtLeft();
-        bool mouseAtRight();
-        bool mouseAtTop();
-        bool mouseAtBottom();
 private:
         SDL_Surface* screen;
         MapView* mapView;
         MouseState getMouseState();
+        bool mouseAtLeft();
+        bool mouseAtRight();
+        bool mouseAtTop();
+        bool mouseAtBottom();
         int mouseX, mouseY;
 };
 

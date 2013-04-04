@@ -44,7 +44,7 @@ void MapView::SetUpPersonajes() {
 	}
 }
 
-void MapView::ClickOn(int x, int y, int button) {
+void MapView::movePlayer(int x, int y) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
 	SDL_Rect firstTile = Tile::computePosition(0, 0);
 	firstTile.x = camera->getX() + firstTile.x;

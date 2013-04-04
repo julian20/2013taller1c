@@ -100,6 +100,10 @@ void MapController::cameraMoveListener(){
 	}
 }
 
+void MapController::clickListener(SDL_Event event){
+	if (SDL_MOUSEBUTTONUP && (event.button.button == 1))
+		mapView->movePlayer(event.button.x, event.button.y);
+}
 
 MapController::~MapController() {
 

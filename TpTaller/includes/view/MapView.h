@@ -26,7 +26,7 @@ public:
 	SDL_Surface* getDrawingSurface();
 
 	void Draw();
-	void ClickOn(int x, int y, int button);
+	void movePlayer(int x, int y);
 	void Update();
 	void SetUpPersonajes();
 	void AssignPersonaje(Personaje* _personaje);
