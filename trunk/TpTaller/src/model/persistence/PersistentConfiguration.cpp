@@ -10,11 +10,13 @@
 PersistentConfiguration::PersistentConfiguration() {
 	this->textureHolder = NULL;
 	this->mapData = NULL;
+	this->animationConfiguration = NULL;
 }
 
 PersistentConfiguration::~PersistentConfiguration() {
 	delete this->textureHolder;
 	delete this->mapData;
+	delete this->animationConfiguration;
 	for (unsigned int i = 0; i < this->entityList.size(); i++) {
 		delete this->entityList[i];
 	}
@@ -32,7 +34,8 @@ std::vector<Personaje*> PersistentConfiguration::getPersonajeList() {
 	return this->entityList;
 }
 
-void PersistentConfiguration::setPersonajeList(std::vector<Personaje*> entityList) {
+void PersistentConfiguration::setPersonajeList(
+		std::vector<Personaje*> entityList) {
 	this->entityList = entityList;
 }
 
@@ -42,4 +45,13 @@ MapData* PersistentConfiguration::getMapData() {
 
 void PersistentConfiguration::setMapData(MapData* mapData) {
 	this->mapData = mapData;
+}
+
+AnimationConfiguration* PersistentConfiguration::getAnimationConfiguration() {
+	return this->animationConfiguration;
+}
+
+void PersistentConfiguration::setAnimationConfiguration(
+		AnimationConfiguration* aConfig) {
+	this->animationConfiguration = aConfig;
 }
