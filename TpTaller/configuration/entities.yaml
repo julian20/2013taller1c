@@ -35,6 +35,9 @@
       - name: Staff
         damage: 9
         range: 1
+- animation:
+    fps: 30
+    delay: 10
 - tiles:
   - identifier: soil
     imageSrc: texturesTiles/dirtTile.png
