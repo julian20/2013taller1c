@@ -17,7 +17,7 @@ class ConfigurationReader {
 public:
 	ConfigurationReader();
 	ConfigurationReader(const ConfigurationReader& orig);
-	PersistentConfiguration loadConfiguration(std::string configurationFile);
+	PersistentConfiguration* loadConfiguration(std::string configurationFile);
 	virtual ~ConfigurationReader();
 
 private:

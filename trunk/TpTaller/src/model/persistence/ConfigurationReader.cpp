@@ -324,7 +324,7 @@ void printMapDimensions(AuxMap &mapConfiguration) {
  * Loads the configuration, prints its output and returns
  * a persistent configuration object.
  */
-PersistentConfiguration ConfigurationReader::loadConfiguration(
+PersistentConfiguration* ConfigurationReader::loadConfiguration(
 		std::string configurationFile) {
 
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
@@ -361,23 +361,25 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 
 	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
 			mapConfiguration.dimension.ncols);
-	for (unsigned int i = 0; i < mapConfiguration.tileList.size(); i++) {
-		Tile* auxTile = mapConfiguration.tileList[i];
-		mapData->SetTileType(auxTile->getTextureIdentifier(),
-				auxTile->getCoordinates()->getRow(),auxTile->getCoordinates()->getCol());
-	}
 
 	// Parsing map tile locations.
 	yamlNode[CONFIGURATION_TILELOCATION_DEFINITION] >> mapConfiguration;
-	for (unsigned j = 0; j < mapConfiguration.tileList.size(); j++) {
-		printTile(mapConfiguration.tileList[j]);
+
+	for (unsigned int i = 0; i < mapConfiguration.tileList.size(); i++) {
+		Tile* auxTile = mapConfiguration.tileList[i];
+		int auxCol = auxTile->getPosition()->getX();
+		int auxRow = auxTile->getPosition()->getY();
+		mapData->SetTileType(auxTile->getTextureIdentifier(), auxRow, auxCol);
+		printTile(auxTile);
 	}
 
 	// Packing parser results.
-	PersistentConfiguration configuration = PersistentConfiguration();
-	configuration.setPersonajeList(entities.entities);
-	configuration.setTextureHolder(textureHolder);
-	configuration.setMapData(mapData);
+	PersistentConfiguration* configuration = new PersistentConfiguration();
+	configuration->setPersonajeList(entities.entities);
+	configuration->setTextureHolder(textureHolder);
+	configuration->setMapData(mapData);
+
+	std::cout << configuration->getMapData()->GetTileType(1, 1) << "\n";
 
 	return configuration;
 }
