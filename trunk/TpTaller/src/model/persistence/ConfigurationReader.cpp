@@ -60,6 +60,31 @@ struct AuxMap {
  * *********** PRINTING OF PARSED ELEMENTS *********** *
  * *************************************************** */
 
+void printHeader(std::string title) {
+	unsigned int titleLength = title.size() + 2;
+	std::string output;
+	output.append("*****");
+	for (unsigned j = 0; j < titleLength; j++) {
+		output.append("*");
+	}
+	output.append("*****");
+	output.append("\n");
+
+	output.append("***** ");
+	output.append(title);
+	output.append(" *****");
+	output.append("\n");
+
+	output.append("*****");
+	for (unsigned j = 0; j < titleLength; j++) {
+		output.append("*");
+	}
+	output.append("*****");
+	output.append("\n");
+
+	std::cout << output;
+}
+
 /**
  * Prints a tile to check for parsing integrity.
  */
@@ -76,6 +101,7 @@ void printTile(Tile* tile) {
  * Prints an personaje to check if it was parsed correctly.
  */
 void printPersonajes(std::vector<Personaje*> entities) {
+	printHeader("PERSONAJES");
 	for (unsigned j = 0; j < entities.size(); j++) {
 		Personaje* parsedPersonaje = entities[j];
 		std::cout << "Name: ";
@@ -109,6 +135,8 @@ void printPersonajes(std::vector<Personaje*> entities) {
  * Prints an personaje to check if it was parsed correctly.
  */
 void printTextureHolder(TextureHolder* parsedTileDefinition) {
+
+	printHeader("TEXTURE HOLDER");
 
 	std::vector<std::string> textureIds;
 
@@ -152,14 +180,20 @@ void printConfiguredTiles(AuxMap &mapConfiguration) {
  * Prints the map configuration.
  */
 void printMapConfiguration(AuxMap &mapConfiguration) {
+
+	printHeader("MAP CONFIGURATION");
+
 	printMapDimensions(mapConfiguration);
 	printConfiguredTiles(mapConfiguration);
+
 }
 
 /**
  * Prints the animated configuration.
  */
 void printAnimationConfiguration(AnimationConfiguration* aConfig) {
+
+	printHeader("ANIMATION CONFIGURATION");
 
 	std::cout << "Animation Configuration: " << std::endl;
 	std::cout << "     FPS: " << aConfig->getFps() << std::endl;
@@ -440,6 +474,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	printAnimationConfiguration(animationConfig);
 	printTextureHolder(textureHolder);
 	printMapConfiguration(mapConfiguration);
+	printHeader("END OF PARSER");
 
 	return configuration;
 }
