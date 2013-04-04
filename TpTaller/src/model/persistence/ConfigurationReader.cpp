@@ -42,20 +42,6 @@ using namespace std;
  * ************************************** */
 
 /**
- * Structure to represent an personaje.
- */
-struct AuxPersonajeList {
-	std::vector<Personaje*> entities;
-};
-
-/**
- * List of all tile texture definitions.
- */
-struct AuxTileDefinitionList {
-	std::vector<TileDefinition*> tileDefinitionList;
-};
-
-/**
  * Dimensions of a map.
  */
 struct AuxMapDimension {
@@ -70,6 +56,9 @@ struct AuxMap {
 	AuxMapDimension dimension;
 };
 
+/* *************************************************** *
+ * *********** PRINTING OF PARSED ELEMENTS *********** *
+ * *************************************************** */
 
 /**
  * Prints a tile to check for parsing integrity.
@@ -86,9 +75,9 @@ void printTile(Tile* tile) {
 /**
  * Prints an personaje to check if it was parsed correctly.
  */
-void printPersonajes(AuxPersonajeList entities) {
-	for (unsigned j = 0; j < entities.entities.size(); j++) {
-		Personaje* parsedPersonaje = entities.entities[j];
+void printPersonajes(std::vector<Personaje*> entities) {
+	for (unsigned j = 0; j < entities.size(); j++) {
+		Personaje* parsedPersonaje = entities[j];
 		std::cout << "Name: ";
 		std::cout << parsedPersonaje->getName() << std::endl;
 		std::cout << "Position: (";
@@ -138,6 +127,9 @@ void printTextureHolder(TextureHolder* parsedTileDefinition) {
 
 }
 
+/**
+ * Prints the dimensions of a map.
+ */
 void printMapDimensions(AuxMap &mapConfiguration) {
 
 	std::cout << "Map Dimensions: " << std::endl;
@@ -147,6 +139,26 @@ void printMapDimensions(AuxMap &mapConfiguration) {
 
 }
 
+/**
+ * Prints the configured tiles of a map.
+ */
+void printConfiguredTiles(AuxMap &mapConfiguration) {
+	for (unsigned int i = 0; i < mapConfiguration.tileList.size(); i++) {
+		printTile(mapConfiguration.tileList[i]);
+	}
+}
+
+/**
+ * Prints the map configuration.
+ */
+void printMapConfiguration(AuxMap &mapConfiguration) {
+	printMapDimensions(mapConfiguration);
+	printConfiguredTiles(mapConfiguration);
+}
+
+/**
+ * Prints the animated configuration.
+ */
 void printAnimationConfiguration(AnimationConfiguration* aConfig) {
 
 	std::cout << "Animation Configuration: " << std::endl;
@@ -252,13 +264,14 @@ void operator >>(const YAML::Node& yamlNode, Personaje* personaje) {
 /**
  * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
  */
-void operator >>(const YAML::Node& yamlNode, AuxPersonajeList& entityList) {
+void operator >>(const YAML::Node& yamlNode,
+		std::vector<Personaje*>& entityList) {
 	const YAML::Node& entities = yamlNode["players"];
 	for (unsigned i = 0; i < entities.size(); i++) {
 		std::vector<Power*> auxPowers;
 		Personaje* personaje = new Personaje("", NULL, NULL, auxPowers);
 		entities[i] >> personaje;
-		entityList.entities.push_back(personaje);
+		entityList.push_back(personaje);
 	}
 }
 
@@ -342,16 +355,15 @@ void operator >>(const YAML::Node& yamlNode, AuxMap& destMap) {
 }
 
 /**
-* Extraction operator of a map.
+ * Extraction operator of a map.
  */
 void operator >>(AuxMap& originConfig, MapData* destMap) {
 	for (unsigned int i = 0; i < originConfig.tileList.size(); i++) {
-			Tile* auxTile = originConfig.tileList[i];
-			int auxCol = auxTile->getPosition()->getX();
-			int auxRow = auxTile->getPosition()->getY();
-			destMap->SetTileType(auxTile->getTextureIdentifier(), auxRow, auxCol);
-			printTile(auxTile);
-		}
+		Tile* auxTile = originConfig.tileList[i];
+		int auxCol = auxTile->getPosition()->getX();
+		int auxRow = auxTile->getPosition()->getY();
+		destMap->SetTileType(auxTile->getTextureIdentifier(), auxRow, auxCol);
+	}
 }
 
 /**
@@ -364,9 +376,9 @@ void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
 	yamlDimensions[1] >> dimension.ncols;
 }
 
-/* *************************************************** *
- * *********** PRINTING OF PARSED ELEMENTS *********** *
- * *************************************************** */
+/* ********************************************* *
+ * *********** CONFIGURATION LOADING *********** *
+ * ********************************************* */
 
 /**
  * Loads the configuration, prints its output and returns
@@ -379,7 +391,6 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	 * TODO: hacer free de los structs auxiliares luego
 	 * de parsear.
 	 */
-
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
 
 	// Error Check
@@ -394,27 +405,22 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	parser.GetNextDocument(yamlNode);
 
 	// Parsing entities.
-	AuxPersonajeList entities;
+	std::vector<Personaje*> entities;
 	yamlNode[CONFIGURATION_ENTITIES_DEFINITION] >> entities;
-	printPersonajes(entities);
 
 	// Parsing animation configuration.
 	AnimationConfiguration* animationConfig = new AnimationConfiguration();
 	yamlNode[CONFIGURATION_ANIMATIONPARAMETERS_DEFINITION] >> animationConfig;
-	printAnimationConfiguration(animationConfig);
 
 	// Parsing tile definition.
 	TextureHolder* textureHolder = new TextureHolder();
 	yamlNode[CONFIGURATION_TILES_DEFINITION] >> textureHolder;
-	printTextureHolder(textureHolder);
 
 	// Parsing map dimensions.
 	AuxMap mapConfiguration;
 	AuxMapDimension mapDimension;
 	yamlNode[CONFIGURATION_MAPDIMENSION_DEFINITION] >> mapDimension;
 	mapConfiguration.dimension = mapDimension;
-	printMapDimensions(mapConfiguration);
-
 	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
 			mapConfiguration.dimension.ncols);
 
@@ -424,10 +430,16 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 
 	// Packing parser results.
 	PersistentConfiguration configuration = PersistentConfiguration();
-	configuration.setPersonajeList(entities.entities);
+	configuration.setPersonajeList(entities);
 	configuration.setTextureHolder(textureHolder);
 	configuration.setMapData(mapData);
 	configuration.setAnimationConfiguration(animationConfig);
+
+	// Print parsed elements.
+	printPersonajes(entities);
+	printAnimationConfiguration(animationConfig);
+	printTextureHolder(textureHolder);
+	printMapConfiguration(mapConfiguration);
 
 	return configuration;
 }
