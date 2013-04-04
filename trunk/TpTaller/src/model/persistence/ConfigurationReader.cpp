@@ -324,7 +324,7 @@ void printMapDimensions(AuxMap &mapConfiguration) {
  * Loads the configuration, prints its output and returns
  * a persistent configuration object.
  */
-PersistentConfiguration* ConfigurationReader::loadConfiguration(
+PersistentConfiguration ConfigurationReader::loadConfiguration(
 		std::string configurationFile) {
 
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
@@ -374,12 +374,10 @@ PersistentConfiguration* ConfigurationReader::loadConfiguration(
 	}
 
 	// Packing parser results.
-	PersistentConfiguration* configuration = new PersistentConfiguration();
-	configuration->setPersonajeList(entities.entities);
-	configuration->setTextureHolder(textureHolder);
-	configuration->setMapData(mapData);
-
-	std::cout << configuration->getMapData()->GetTileType(1, 1) << "\n";
+	PersistentConfiguration configuration = PersistentConfiguration();
+	configuration.setPersonajeList(entities.entities);
+	configuration.setTextureHolder(textureHolder);
+	configuration.setMapData(mapData);
 
 	return configuration;
 }
