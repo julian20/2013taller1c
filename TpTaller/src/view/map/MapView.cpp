@@ -6,7 +6,7 @@
 
 MapView::MapView(MapData* _data, SDL_Surface* screen) {
 	this->screen = screen;
-	data = _data;
+	this->data = _data;
 	camera = new Position(data->GetNCols() / 2, data->GetNRows() / 2);
 
 	SDL_Rect posTile = Tile::computePosition(data->GetNRows(),
@@ -55,6 +55,9 @@ void MapView::movePlayer(int x, int y) {
 
 	printf("A\n");
 	if (personaje != NULL) {
+		/**
+		 * TODO: esto no pierde memoria a lo loco?
+		 */
 		Tile* toTile = new Tile(new Coordinates(row, col));
 		data->movePersonaje(personaje, toTile);
 		printf("B\n");
