@@ -22,7 +22,7 @@ public:
     MapData(int _nrows, int _ncols);
     virtual ~MapData();
     
-    void addRepresentable(int row, int col, Entity *object);
+    void addRepresentable(int row, int col, Entity* object);
     void SetTileType(std::string tileType, int row, int col);
     std::string GetTileType(int row, int col);
     int GetNRows();

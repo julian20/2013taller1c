@@ -28,6 +28,7 @@ Menu::Menu(GameConfiguration* configuration) {
 	view->initButtons(NUM_BUTTONS, buttons_released, buttons_pressed,
 			buttons_events);
 	view->initMusic();
+	closed = false;
 
 }
 
@@ -106,10 +107,18 @@ MenuEvent Menu::run() {
  * </run>
  */
 
+void Menu::close(){
+	view->close();
+	closed = true;
+}
+
+
 void Menu::runConfigMenu() {
 }
 
 Menu::~Menu() {
+	if (!closed)
+		close();
 	delete view;
 }
 
