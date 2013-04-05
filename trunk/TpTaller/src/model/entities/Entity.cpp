@@ -29,15 +29,18 @@
  * TODO Player, personaje deben heredar de esta entidad, ya que
  * tendrian los mismos atributos basicos.
  */
+namespace std {
+	Entity::Entity() {
+		currentPos = new Vector2(0, 0);
+	}
 
-Entity::Entity() {
-	currentPos = new Vector2(0, 0);
-}
+	void Entity::setPos(float x, float y) {
+		currentPos->SetValues(x, y);
+	}
 
-void Entity::setPos(float x, float y) {
-	printf("Asd\n");
-	currentPos->SetValues(x, y);
-}
-
-Entity::~Entity() {
+	string Entity::getClassName(){
+		return "Entity";
+	}
+	Entity::~Entity() {
+	}
 }

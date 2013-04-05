@@ -16,15 +16,16 @@
 #include <string>
 #include <vector>
 #include <iostream>
-
-class Entity {
-public:
-	Entity();
-	virtual void setPos(float x, float y);
-	Vector2* GetCurrentPos();
-	virtual ~Entity();
-protected:
-	Vector2* currentPos;
-};
-
+namespace std {
+	class Entity {
+	public:
+		Entity();
+		virtual void setPos(float x, float y);
+		Vector2* GetCurrentPos();
+		virtual string getClassName();
+		virtual ~Entity();
+	protected:
+		Vector2* currentPos;
+	};
+}
 #endif /* ENTITY_H_ */
