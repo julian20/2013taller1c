@@ -15,6 +15,8 @@
 #define OFFSET_X	78
 #define OFFSET_Y	55
 
+#define RUTA_IMAGEN "resources/foo5.png"
+
 
 //#define SCALE				0.2
 
@@ -50,7 +52,7 @@ void PersonajeVista::UpdateCameraPos(int x, int y) {
 	cameraY = y;
 }
 
-PersonajeVista::PersonajeVista(Personaje* unPersonaje, std::string urlImagen)
+PersonajeVista::PersonajeVista(Personaje* unPersonaje)
 	//Llamamos al constructor de la superclase
 	:EntityView(NULL){
 	cameraX = cameraY = 0;
@@ -67,7 +69,7 @@ PersonajeVista::PersonajeVista(Personaje* unPersonaje, std::string urlImagen)
 	// try
 	//{
 	//this->fondo = fondo;
-	personajeImagen = this->CargarImagen(urlImagen);
+	personajeImagen = this->CargarImagen(RUTA_IMAGEN);
 	this->EstablecerLosClips(NUMERODECLIPS);
 	/* }catch(ERROR e)
 	 {
