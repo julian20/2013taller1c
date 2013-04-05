@@ -5,37 +5,17 @@
  * Created on March 21, 2013, 9:25 PM
  */
 
-#include <yaml-cpp/yaml.h>
-#include <model/Vector2.h>
-#include <model/entityProperties/Speed.h>
-#include <model/entityProperties/Position.h>
-#include <model/entityProperties/Power.h>
 #include <model/persistence/ConfigurationReader.h>
-#include <model/entities/Entity.h>
-#include <model/entities/personaje/Personaje.h>
-#include <model/map/Tile.h>
-#include <model/map/TileDefinition.h>
-#include <model/map/TextureHolder.h>
-#include <model/persistence/PersistentConfiguration.h>
-#include <view/configuration/GameConfiguration.h>
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <exception>
-#include <cstdlib>
-#include <stdlib.h>
 
 using namespace std;
 /**
  * YAML Configuration file position.
  */
-#define CONFIGURATION_ENTITIES_DEFINITION 0
-#define CONFIGURATION_ANIMATIONPARAMETERS_DEFINITION 1
-#define CONFIGURATION_TILES_DEFINITION 2
-#define CONFIGURATION_MAPDIMENSION_DEFINITION 3
-#define CONFIGURATION_TILELOCATION_DEFINITION 4
+#define ENTITIES_POSITION 0
+#define GAME_CONFIGURATION_POSITION 1
+#define TILE_DEFINITION_POSITION 2
+#define MAP_DIMENSION_POSITION 3
+#define MAP_TILES_POSITION 4
 
 /* ************************************** *
  * *********** AUX STRUCTURES *********** *
@@ -191,7 +171,7 @@ void printMapConfiguration(AuxMap &mapConfiguration, std::ofstream& outputFile) 
  */
 void printGameConfiguration(GameConfiguration* aConfig, std::ofstream& outputFile) {
 
-	outputFile << "- animation:" << std::endl;
+	outputFile << "- gameConfiguration:" << std::endl;
 	outputFile << "    fps: " << aConfig->getFps() << std::endl;
 	outputFile << "    delay: " << aConfig->getDelay() << std::endl;
 	outputFile << "    gameMusic: " << aConfig->getGameMusicSrc() << std::endl;
@@ -275,7 +255,7 @@ void operator >>(const YAML::Node& yamlNode, Speed* speed) {
 void operator >>(const YAML::Node& yamlNode, Personaje* personaje) {
 
 	Position* auxPosition = new Position(0, 0, 0);
-	Speed* auxSpeed = new Speed(0, NULL);
+	Speed* auxSpeed = new Speed(0, Vector2(0,0));
 	std::string auxName;
 	std::vector<Power*> auxPowers;
 
@@ -319,7 +299,7 @@ void operator >>(const YAML::Node& yamlNode,
  */
 void operator >>(const YAML::Node& yamlNode,
 		GameConfiguration* animationConfig) {
-	const YAML::Node& configuration = yamlNode["animation"];
+	const YAML::Node& configuration = yamlNode["gameConfiguration"];
 	unsigned int auxFps, auxDelay, auxHeight, auxWidth, auxBPP;
 	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic;
 
@@ -455,26 +435,26 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 
 	// Parsing entities.
 	std::vector<Personaje*> entities;
-	yamlNode[CONFIGURATION_ENTITIES_DEFINITION] >> entities;
+	yamlNode[ENTITIES_POSITION] >> entities;
 
 	// Parsing animation configuration.
 	GameConfiguration* animationConfig = new GameConfiguration();
-	yamlNode[CONFIGURATION_ANIMATIONPARAMETERS_DEFINITION] >> animationConfig;
+	yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
 
 	// Parsing tile definition.
 	TextureHolder* textureHolder = new TextureHolder();
-	yamlNode[CONFIGURATION_TILES_DEFINITION] >> textureHolder;
+	yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
 
 	// Parsing map dimensions.
 	AuxMap mapConfiguration;
 	AuxMapDimension mapDimension;
-	yamlNode[CONFIGURATION_MAPDIMENSION_DEFINITION] >> mapDimension;
+	yamlNode[MAP_DIMENSION_POSITION] >> mapDimension;
 	mapConfiguration.dimension = mapDimension;
 	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
 			mapConfiguration.dimension.ncols);
 
 	// Parsing map tile locations.
-	yamlNode[CONFIGURATION_TILELOCATION_DEFINITION] >> mapConfiguration;
+	yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
 	mapConfiguration >> mapData;
 
 	// Packing parser results.
