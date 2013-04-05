@@ -17,7 +17,6 @@
 
 #define RUTA_IMAGEN "resources/foo5.png"
 
-
 //#define SCALE				0.2
 
 //como es animado necesito la cantidad de clips por lado.
@@ -65,6 +64,8 @@ PersonajeVista::PersonajeVista(Personaje* unPersonaje)
 	 }*/
 
 	miPersonaje = unPersonaje;
+	Vector2* anchorPixel = new Vector2(OFFSET_X,OFFSET_Y);
+	miPersonaje->getBase()->setAnchorPixel(anchorPixel);
 
 	// try
 	//{
@@ -102,8 +103,8 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	float direction = movementDirection->GetAngle();
 	Vector2* pos = this->miPersonaje->GetCurrentPos();
 
-	int x = pos->GetX() + OFFSET_X;
-	int y = pos->GetY() + OFFSET_Y;
+	int x = pos->GetX() + this->miPersonaje->getBase()->getAnchorPixel()->GetX();
+	int y = pos->GetY() + this->miPersonaje->getBase()->getAnchorPixel()->GetY();
 
 	SDL_Rect* clipToDraw;
 

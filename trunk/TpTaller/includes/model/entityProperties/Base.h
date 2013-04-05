@@ -16,14 +16,14 @@ public:
 	virtual ~Base();
 	unsigned int getWidth();
 	unsigned int getLength();
-	Vector2 getAnchorPixel();
+	Vector2* getAnchorPixel();
 	void setWidth(unsigned int width);
 	void setLength(unsigned int length);
-	void setAnchorPixel(Vector2& anchorPixel);
+	void setAnchorPixel(Vector2* anchorPixel);
 private:
 	unsigned int width;
 	unsigned int length;
-	Vector2 anchorPixel;
+	Vector2* anchorPixel;
 };
 
 #endif /* BASE_H_ */

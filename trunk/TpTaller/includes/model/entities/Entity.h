@@ -25,11 +25,11 @@ namespace std {
 		Vector2* GetCurrentPos();
 		virtual string getClassName();
 		virtual ~Entity();
-		Base getBase();
-		void setBase(Base& base);
+		Base* getBase();
+		void setBase(Base* base);
 	protected:
 		Vector2* currentPos;
-		Base base;
+		Base* base;
 	};
 }
 #endif /* ENTITY_H_ */
