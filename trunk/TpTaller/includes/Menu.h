@@ -9,9 +9,8 @@
 #define MENU_H_
 
 #include <Events.h>
-
 #include <model/persistence/ConfigurationReader.h>
-
+#include <view/configuration/GameConfiguration.h>
 #include <view/MenuView.h>
 
 #include <SDL/SDL.h>
@@ -23,7 +22,7 @@ namespace std {
 
 class Menu {
 public:
-	Menu();
+	Menu(GameConfiguration* gameConfig);
 	MenuEvent run();
 	void runConfigMenu();
 	virtual ~Menu();

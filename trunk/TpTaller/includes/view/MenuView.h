@@ -9,7 +9,7 @@
 #define MENUVIEW_H_
 
 #include <view/Button.h>
-
+#include <view/configuration/GameConfiguration.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 
@@ -19,7 +19,7 @@ namespace std {
 
 class MenuView {
 public:
-	MenuView();
+	MenuView(GameConfiguration* configuration);
 
 	SDL_Surface *screen;
 	vector<Button*> buttons;
@@ -34,6 +34,7 @@ private:
 
 	Mix_Music *musica;
 	Mix_Chunk *darknessVoice;
+	GameConfiguration* gameConfig;
 
 	void startLaugh();
 	void startVoice();

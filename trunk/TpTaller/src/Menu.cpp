@@ -21,13 +21,14 @@ const char* buttons_pressed[NUM_BUTTONS] = {
 		"resources/buttons/exit_pressed.png" };
 const MenuEvent buttons_events[NUM_BUTTONS] = { NEWGAME_EVENT, EXIT_EVENT };
 
-Menu::Menu() {
+Menu::Menu(GameConfiguration* configuration) {
 
-	view = new MenuView();
+	view = new MenuView(configuration);
 	view->initScreen();
 	view->initButtons(NUM_BUTTONS, buttons_released, buttons_pressed,
 			buttons_events);
 	view->initMusic();
+
 }
 
 /*
@@ -106,7 +107,6 @@ MenuEvent Menu::run() {
  */
 
 void Menu::runConfigMenu() {
-
 }
 
 Menu::~Menu() {

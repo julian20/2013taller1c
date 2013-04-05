@@ -18,12 +18,8 @@
 
 using namespace std;
 
-void initGame() {
-	// Lectura del archivo de configuracion
-	ConfigurationReader cfgReader = ConfigurationReader();
-	PersistentConfiguration configuration = cfgReader.loadConfiguration(
-			CONFIGURATION_FILE, OUTPUT_FILENAME);
-	Game game = Game(&configuration);
+void initGame(PersistentConfiguration* configuration) {
+	Game game = Game(configuration);
 	game.run();
 	game.~Game();
 }
@@ -33,7 +29,12 @@ void initGame() {
  */
 int main(int argc, char** argv) {
 
-	Menu menu = Menu();
+	// Lectura del archivo de configuracion
+	ConfigurationReader cfgReader = ConfigurationReader();
+	PersistentConfiguration configuration = cfgReader.loadConfiguration(
+			CONFIGURATION_FILE, OUTPUT_FILENAME);
+
+	Menu menu = Menu(configuration.getAnimationConfiguration());
 
 	MenuEvent event = NOTHING_EVENT;
 	while (event != EXIT_EVENT) {
@@ -47,7 +48,7 @@ int main(int argc, char** argv) {
 		case NEWGAME_EVENT:
 			//Aca inicio el juego
 			menu.~Menu();
-			initGame();
+			initGame(&configuration);
 			break;
 		case CONFIG_EVENT:
 			//Aca inicio el menu de configuraciones
