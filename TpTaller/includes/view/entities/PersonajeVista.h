@@ -31,7 +31,7 @@
 
 class PersonajeVista : public EntityView {
 public:
-    PersonajeVista(Personaje* unPersonaje,std::string urlImagen);
+    PersonajeVista(Personaje* unPersonaje);
     SDL_Surface* CargarImagen(std::string path);
     void Mostrar(SDL_Surface* fondo);
     void UpdateCameraPos(int x, int y);
