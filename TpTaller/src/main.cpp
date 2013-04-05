@@ -19,9 +19,9 @@
 using namespace std;
 
 void initGame(PersistentConfiguration* configuration) {
-	Game game = Game(configuration);
-	game.run();
-	game.~Game();
+	Game* game = new Game(configuration);
+	game->run();
+	delete game;
 }
 
 /*
@@ -34,12 +34,12 @@ int main(int argc, char** argv) {
 	PersistentConfiguration configuration = cfgReader.loadConfiguration(
 			CONFIGURATION_FILE, OUTPUT_FILENAME);
 
-	Menu menu = Menu(configuration.getAnimationConfiguration());
+	Menu* menu = new Menu(configuration.getAnimationConfiguration());
 
 	MenuEvent event = NOTHING_EVENT;
 	while (event != EXIT_EVENT) {
 
-		event = menu.run();
+		event = menu->run();
 		switch (event) {
 		case NOTHING_EVENT:
 			break;
@@ -47,8 +47,9 @@ int main(int argc, char** argv) {
 			break;
 		case NEWGAME_EVENT:
 			//Aca inicio el juego
-			menu.~Menu();
+			menu->close();
 			initGame(&configuration);
+			event = EXIT_EVENT;
 			break;
 		case CONFIG_EVENT:
 			//Aca inicio el menu de configuraciones
@@ -59,6 +60,7 @@ int main(int argc, char** argv) {
 
 	}
 
+	delete menu;
 	return 0;
 }
 

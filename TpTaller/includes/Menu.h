@@ -24,10 +24,13 @@ class Menu {
 public:
 	Menu(GameConfiguration* gameConfig);
 	MenuEvent run();
+	void close();
 	void runConfigMenu();
 	virtual ~Menu();
 private:
 	MenuView* view;
+
+	bool closed;
 
 	void checkPressedButton(SDL_Event event);
 	MenuEvent checkReleasedButton(SDL_Event event);

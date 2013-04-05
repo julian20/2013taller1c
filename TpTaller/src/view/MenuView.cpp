@@ -93,6 +93,7 @@ void MenuView::initButtons(int numButtons, const char** buttons_released,
 	buttons.resize(numButtons);
 
 	for (int i = 0; i < numButtons; i++) {
+		//TODO chequeo de las imagenes
 		SDL_Surface* released = IMG_Load(buttons_released[i]);
 		SDL_Surface* pressed = IMG_Load(buttons_pressed[i]);
 
@@ -149,12 +150,16 @@ void MenuView::startVoice() {
 	Mix_PlayChannel(0, darknessVoice, 0);
 }
 
-MenuView::~MenuView() {
+void MenuView::close(){
+	for (int i = 0 ; i < buttons.size() ; i++) delete buttons[i];
 	SDL_FreeSurface(screen);
 	Mix_FreeMusic(musica);
 	Mix_FreeChunk(darknessVoice);
 	Mix_CloseAudio();
-	//SDL_Quit();
+}
+
+MenuView::~MenuView() {
+	SDL_Quit();
 }
 
 } /* namespace std */

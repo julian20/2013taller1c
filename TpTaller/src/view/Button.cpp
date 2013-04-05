@@ -50,7 +50,8 @@ void Button::draw(SDL_Surface* screen) {
 }
 
 Button::~Button() {
-
+	SDL_FreeSurface(pressed);
+	SDL_FreeSurface(released);
 }
 
 } /* namespace std */

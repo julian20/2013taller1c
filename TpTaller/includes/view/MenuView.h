@@ -29,6 +29,8 @@ public:
 			const char** buttons_pressed, const MenuEvent* buttons_events);
 	void initMusic();
 
+	void close();
+
 	virtual ~MenuView();
 private:
 
