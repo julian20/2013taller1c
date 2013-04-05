@@ -31,7 +31,8 @@
  */
 namespace std {
 	Entity::Entity() {
-		currentPos = new Vector2(0, 0);
+		this->currentPos = new Vector2(0, 0);
+		this->base = Base();
 	}
 
 	void Entity::setPos(float x, float y) {
@@ -41,6 +42,16 @@ namespace std {
 	string Entity::getClassName(){
 		return "Entity";
 	}
+
+	Base Entity::getBase() {
+		return this->base;
+	}
+
+	void Entity::setBase(Base& base) {
+		this->base = base;
+	}
+
 	Entity::~Entity() {
+		delete this->currentPos;
 	}
 }
