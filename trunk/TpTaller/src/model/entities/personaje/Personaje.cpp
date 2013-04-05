@@ -47,8 +47,9 @@ void Personaje::Update() {
 	} else {
 		moveDirection->Normalize();
 		moveDirection->MultiplyBy(velocity);
-
 		currentPos->Add(moveDirection);
+		if (path->size() == 0) return;
+		else setNextPosition();
 	}
 }
 
@@ -59,7 +60,8 @@ void Personaje::setNextPosition() {
 	Position* tilePos = tile->getPosition();
 	MoveTo(tilePos->getX(), tilePos->getY());
 
-	delete tile;
+	delete currentTile;
+	currentTile = tile;
 }
 
 Vector2* Personaje::GetCurrentPos() {
