@@ -198,6 +198,8 @@ void printGameConfiguration(GameConfiguration* aConfig, std::ofstream& outputFil
 	outputFile << "    defaultScreenHeight: " << aConfig->getDefaultScreenHeight() << std::endl;
 	outputFile << "    defaultScreenWidth: " << aConfig->getDefaultScreenWidth() << std::endl;
 	outputFile << "    defaultBPP: " << aConfig->getDefaultBPP() << std::endl;
+	outputFile << "    menuBackImage: " << aConfig->getMenuBackImageSrc() << std::endl;
+	outputFile << "    menuBackMusic: " << aConfig->getMenuBackMusicSrc() << std::endl;
 
 }
 
@@ -319,7 +321,7 @@ void operator >>(const YAML::Node& yamlNode,
 		GameConfiguration* animationConfig) {
 	const YAML::Node& configuration = yamlNode["animation"];
 	unsigned int auxFps, auxDelay, auxHeight, auxWidth, auxBPP;
-	std::string auxGameMusicSrc;
+	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic;
 
 	configuration["fps"] >> auxFps;
 	configuration["delay"] >> auxDelay;
@@ -327,6 +329,8 @@ void operator >>(const YAML::Node& yamlNode,
 	configuration["defaultScreenHeight"] >> auxHeight;
 	configuration["defaultScreenWidth"] >> auxWidth;
 	configuration["defaultBPP"] >> auxBPP;
+	configuration["menuBackImage"] >> auxMenuImage;
+	configuration["menuBackMusic"] >> auxMenuMusic;
 
 	animationConfig->setDelay(auxDelay);
 	animationConfig->setFps(auxFps);
@@ -334,6 +338,8 @@ void operator >>(const YAML::Node& yamlNode,
 	animationConfig->setDefaultScreenHeight(auxHeight);
 	animationConfig->setDefaultScreenWidth(auxWidth);
 	animationConfig->setDefaultBPP(auxBPP);
+	animationConfig->setMenuBackImageSrc(auxMenuImage);
+	animationConfig->setMenuBackMusicSrc(auxMenuMusic);
 }
 
 /* *********************************************** *

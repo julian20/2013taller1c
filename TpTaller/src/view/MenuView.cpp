@@ -12,23 +12,18 @@
 
 #include <iostream>
 
-#define BACK_IMG "resources/lich.jpg"
-#define BACK_MUSIC  "resources/sound/pirates.ogg"
 #define START_LAUGH "resources/sound/laugh.wav"
 #define START_TAUNT "resources/sound/darkness.wav"
 #define ENVIRONMENT_WINDOW "SDL_VIDEO_CENTERED=1"
 
 namespace std {
 
-int default_w = 1024;
-int default_h = 768;
-int default_bpp = 0;
-
-MenuView::MenuView() {
+MenuView::MenuView(GameConfiguration* configuration) {
 
 	musica = NULL;
 	darknessVoice = NULL;
 	screen = NULL;
+	gameConfig = configuration;
 
 	//La linea siguiente es para que la window se centre
 	char environment_setting[] = ENVIRONMENT_WINDOW;
@@ -38,7 +33,9 @@ MenuView::MenuView() {
 
 	const SDL_VideoInfo *info = SDL_GetVideoInfo();
 	if (!info) {
-		screen = SDL_SetVideoMode(default_w, default_h, default_bpp,
+		screen = SDL_SetVideoMode(this->gameConfig->getDefaultScreenWidth(),
+				this->gameConfig->getDefaultScreenHeight(),
+				this->gameConfig->getDefaultBPP(),
 				SDL_HWSURFACE | SDL_RESIZABLE);
 	} else {
 		screen = SDL_SetVideoMode(info->current_w, info->current_h,
@@ -67,7 +64,8 @@ SDL_Surface* scaleImage(SDL_Surface* screen, SDL_Surface* image) {
 }
 
 void MenuView::initScreen() {
-	SDL_Surface *background_image = IMG_Load(BACK_IMG);
+	SDL_Surface *background_image = IMG_Load(
+			this->gameConfig->getMenuBackImageSrc().c_str());
 	if (!background_image) {
 		cerr << "No se ha podido cargar la imagen de fondo: " << SDL_GetError()
 				<< endl;
@@ -121,7 +119,7 @@ void MenuView::initMusic() {
 	//startLaugh();
 
 	// Cargamos la musica
-	musica = Mix_LoadMUS(BACK_MUSIC);
+	musica = Mix_LoadMUS(this->gameConfig->getMenuBackMusicSrc().c_str());
 
 	if (!musica) {
 		cerr << "No se puede cargar el sonido:" << SDL_GetError() << endl;

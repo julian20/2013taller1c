@@ -13,6 +13,8 @@
 #define DEFAULT_H       	600 // px
 #define DEFAULT_BPP 		0   // px?
 #define DEFAULT_GAME_MUSIC "resources/sound/gameMusic.ogg"
+#define MENU_IMG "resources/lich.jpg"
+#define MENU_MUSIC  "resources/sound/pirates.ogg"
 
 GameConfiguration::GameConfiguration() {
 	this->delay = DEFAULT_DELAY;
@@ -50,6 +52,14 @@ std::string GameConfiguration::getGameMusicSrc() {
 	return this->gameMusicSrc;
 }
 
+std::string GameConfiguration::getMenuBackImageSrc() {
+	return this->menuBackImageSrc;
+}
+
+std::string GameConfiguration::getMenuBackMusicSrc() {
+	return this->menuBackMusicSrc;
+}
+
 void GameConfiguration::setFps(unsigned int fps) {
 	this->fps = fps;
 }
@@ -72,4 +82,12 @@ void GameConfiguration::setDefaultScreenWidth(unsigned int width) {
 
 void GameConfiguration::setDefaultBPP(unsigned int bpp) {
 	this->defaultBPP = bpp;
+}
+
+void GameConfiguration::setMenuBackImageSrc(std::string src) {
+	this->menuBackImageSrc = src;
+}
+
+void GameConfiguration::setMenuBackMusicSrc(std::string src) {
+	this->menuBackMusicSrc = src;
 }

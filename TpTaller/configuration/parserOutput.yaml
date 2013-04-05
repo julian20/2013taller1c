@@ -42,6 +42,8 @@
     defaultScreenHeight: 600
     defaultScreenWidth: 800
     defaultBPP: 0
+    menuBackImage: resources/lich.jpg
+    menuBackMusic: resources/sound/pirates.ogg
 - tiles:
   - identifier: soil
     imageSrc: texturesTiles/dirtTile.png
