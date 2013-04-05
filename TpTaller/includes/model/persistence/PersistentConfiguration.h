@@ -12,7 +12,7 @@
 #include <model/entities/personaje/Personaje.h>
 #include <model/map/TextureHolder.h>
 #include <model/map/MapData.h>
-#include <view/configuration/AnimationConfiguration.h>
+#include <view/configuration/GameConfiguration.h>
 
 #include <vector>
 
@@ -26,14 +26,14 @@ public:
 	void setPersonajeList(std::vector<Personaje*> entityList);
 	MapData* getMapData();
 	void setMapData(MapData* mapData);
-	AnimationConfiguration* getAnimationConfiguration();
-	void setAnimationConfiguration(AnimationConfiguration* animationConfig);
+	GameConfiguration* getAnimationConfiguration();
+	void setAnimationConfiguration(GameConfiguration* animationConfig);
 
 private:
 	std::vector<Personaje*> entityList;
 	TextureHolder* textureHolder;
 	MapData* mapData;
-	AnimationConfiguration* animationConfiguration;
+	GameConfiguration* animationConfiguration;
 };
 
 #endif /* PERSISTENTCONFIGURATION_H_ */

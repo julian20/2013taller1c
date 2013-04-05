@@ -17,7 +17,7 @@
 #include <model/map/TileDefinition.h>
 #include <model/map/TextureHolder.h>
 #include <model/persistence/PersistentConfiguration.h>
-#include <view/configuration/AnimationConfiguration.h>
+#include <view/configuration/GameConfiguration.h>
 
 #include <iostream>
 #include <fstream>
@@ -189,7 +189,7 @@ void printMapConfiguration(AuxMap &mapConfiguration, std::ofstream& outputFile) 
 /**
  * Prints the animated configuration.
  */
-void printAnimationConfiguration(AnimationConfiguration* aConfig, std::ofstream& outputFile) {
+void printAnimationConfiguration(GameConfiguration* aConfig, std::ofstream& outputFile) {
 
 	outputFile << "- animation:" << std::endl;
 	outputFile << "    fps: " << aConfig->getFps() << std::endl;
@@ -312,7 +312,7 @@ void operator >>(const YAML::Node& yamlNode,
  * Sobrecarga de operador >> para parsear un AnimationConfiguration.
  */
 void operator >>(const YAML::Node& yamlNode,
-		AnimationConfiguration* animationConfig) {
+		GameConfiguration* animationConfig) {
 	const YAML::Node& configuration = yamlNode["animation"];
 	unsigned int auxFps, auxDelay;
 
@@ -439,7 +439,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	yamlNode[CONFIGURATION_ENTITIES_DEFINITION] >> entities;
 
 	// Parsing animation configuration.
-	AnimationConfiguration* animationConfig = new AnimationConfiguration();
+	GameConfiguration* animationConfig = new GameConfiguration();
 	yamlNode[CONFIGURATION_ANIMATIONPARAMETERS_DEFINITION] >> animationConfig;
 
 	// Parsing tile definition.
