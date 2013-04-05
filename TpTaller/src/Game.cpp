@@ -14,7 +14,6 @@
 #include <SDL/SDL_rotozoom.h>
 #include <SDL/SDL_mixer.h>
 
-
 #define DEFAULT_W       800             // px
 #define DEFAULT_H       600             // px
 #define DEFAULT_BPP 0           // px
@@ -43,6 +42,7 @@ void refreshMap() {
 }
 
 void Game::setUpCharacters(MapView* map,MapData* mapData){
+
         //TODO: Posiblemente se levante del cfg reader esto
         personaje = new Personaje();
         personajeVista = new PersonajeVista(personaje);
