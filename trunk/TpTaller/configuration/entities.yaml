@@ -38,6 +38,10 @@
 - animation:
     fps: 30
     delay: 10
+    gameMusic: resources/sound/gameMusic.ogg
+    defaultScreenHeight: 600
+    defaultScreenWidth: 800
+    defaultBPP: 0
 - tiles:
   - identifier: soil
     imageSrc: texturesTiles/dirtTile.png

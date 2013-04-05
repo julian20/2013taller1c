@@ -14,22 +14,18 @@
 #include <SDL/SDL_rotozoom.h>
 #include <SDL/SDL_mixer.h>
 
-#define DEFAULT_W       800             // px
-#define DEFAULT_H       600             // px
-#define DEFAULT_BPP 0           // px
-#define GAME_MUSIC "resources/sound/gameMusic.ogg"
-
 Game::Game(PersistentConfiguration* configuration) {
 
-	initMusic();
-	initScreen();
-
 	MapData* mapData = configuration->getMapData();
+
+	this->gameConfig = configuration->getAnimationConfiguration();
+
+	initScreen();
+	initMusic();
 
 	this->mapView = new MapView(mapData, screen);
 	this->mapView->setTextureHolder(configuration->getTextureHolder());
 	this->mapController = new MapController(mapView);
-	this->gameConfig = configuration->getAnimationConfiguration();
 
 	setUpCharacters(mapView, mapData);
 
@@ -66,8 +62,9 @@ void Game::initScreen() {
 	//Buscamos info sobre la resolucion del escritorio y creamos la screen
 	const SDL_VideoInfo *info = SDL_GetVideoInfo();
 	if (!info) {
-		screen = SDL_SetVideoMode(DEFAULT_W, DEFAULT_H, DEFAULT_BPP,
-				SDL_HWSURFACE);
+		screen = SDL_SetVideoMode(this->gameConfig->getDefaultScreenWidth(),
+				this->gameConfig->getDefaultScreenHeight(),
+				this->gameConfig->getDefaultBPP(), SDL_HWSURFACE);
 	} else {
 		screen = SDL_SetVideoMode(info->current_w, info->current_h,
 				info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
@@ -147,7 +144,7 @@ void Game::initMusic() {
 	}
 
 	// Cargamos la musica
-	musica = Mix_LoadMUS(GAME_MUSIC);
+	musica = Mix_LoadMUS(this->gameConfig->getGameMusicSrc().c_str());
 
 	if (!musica) {
 		cerr << "No se puede cargar el sonido:" << SDL_GetError() << endl;
