@@ -1,0 +1,65 @@
+- players:
+  - name: Ogre
+    position: [3, 2, 1]
+    speed:
+      magnitude: 1
+      direction: [1, 2]
+    powers:
+      - name: Club
+        damage: 2
+        range: 1
+      - name: Fist
+        damage: 3
+        range: 1
+  - name: Dragon
+    position: [6, 5, 4]
+    speed:
+      magnitude: 4
+      direction: [4, 5]
+    powers:
+      - name: Fire Breath
+        damage: 5
+        range: 2
+      - name: Claws
+        damage: 6
+        range: 1
+  - name: Wizard
+    position: [9, 8, 7]
+    speed:
+      magnitude: 7
+      direction: [7, 8]
+    powers:
+      - name: Acid Rain
+        damage: 8
+        range: 3
+      - name: Staff
+        damage: 9
+        range: 1
+- animation:
+    fps: 30
+    delay: 10
+- tiles:
+  - identifier: soil
+    imageSrc: texturesTiles/dirtTile.png
+  - identifier: neutral
+    imageSrc: texturesTiles/sand.png
+  - identifier: water
+    imageSrc: texturesTiles/Water.png
+  - identifier: tree
+    imageSrc: texturesTiles/stonebrick.png
+- mapDimensions: [50, 30]
+- tileLocations:
+  - position: [0, 0, 0]
+    texture: neutral
+  - position: [0, 1, 0]
+    texture: water
+  - position: [1, 0, 0]
+    texture: soil
+  - position: [1, 1, 0]
+    texture: tree
+  - position: [5, 5, 0]
+    texture: tree
+  - position: [5, 6, 0]
+    texture: water
+  - position: [6, 6, 0]
+    texture: soil

@@ -88,41 +88,41 @@ void printHeader(std::string title) {
 /**
  * Prints a tile to check for parsing integrity.
  */
-void printTile(Tile* tile) {
-	std::cout << "  - position: [" << tile->getPosition()->getX() << ", "
+void printTile(Tile* tile, std::ofstream& outputFile) {
+	outputFile << "  - position: [" << tile->getPosition()->getX() << ", "
 			<< tile->getPosition()->getY() << ", "
 			<< tile->getPosition()->getZ() << "]" << std::endl;
-	std::cout << "    texture: " << tile->getTextureIdentifier() << std::endl;
+	outputFile << "    texture: " << tile->getTextureIdentifier() << std::endl;
 }
 
 /**
  * Prints an personaje to check if it was parsed correctly.
  */
-void printPersonajes(std::vector<Personaje*> entities) {
-	std::cout << "- players:\n";
+void printPersonajes(std::vector<Personaje*> entities, std::ofstream& outputFile) {
+	outputFile << "- players:\n";
 	for (unsigned j = 0; j < entities.size(); j++) {
 		Personaje* parsedPersonaje = entities[j];
-		std::cout << "  - name: ";
-		std::cout << parsedPersonaje->getName() << std::endl;
-		std::cout << "    position: [";
-		std::cout << parsedPersonaje->getPosition()->getX() << ", ";
-		std::cout << parsedPersonaje->getPosition()->getY() << ", ";
-		std::cout << parsedPersonaje->getPosition()->getZ() << "]\n";
-		std::cout << "    speed:\n";
-		std::cout << "      magnitude: ";
-		std::cout << parsedPersonaje->getSpeed()->getMagnitude() << std::endl;
-		std::cout << "      direction: [";
-		std::cout << parsedPersonaje->getSpeed()->getDirection().GetX() << ", ";
-		std::cout << parsedPersonaje->getSpeed()->getDirection().GetY() << "]";
-		std::cout << std::endl;
-		std::cout << "    powers:\n";
+		outputFile << "  - name: ";
+		outputFile << parsedPersonaje->getName() << std::endl;
+		outputFile << "    position: [";
+		outputFile << parsedPersonaje->getPosition()->getX() << ", ";
+		outputFile << parsedPersonaje->getPosition()->getY() << ", ";
+		outputFile << parsedPersonaje->getPosition()->getZ() << "]\n";
+		outputFile << "    speed:\n";
+		outputFile << "      magnitude: ";
+		outputFile << parsedPersonaje->getSpeed()->getMagnitude() << std::endl;
+		outputFile << "      direction: [";
+		outputFile << parsedPersonaje->getSpeed()->getDirection().GetX() << ", ";
+		outputFile << parsedPersonaje->getSpeed()->getDirection().GetY() << "]";
+		outputFile << std::endl;
+		outputFile << "    powers:\n";
 		for (unsigned i = 0; i < parsedPersonaje->getPowers().size(); i++) {
-			std::cout << "      - name: "
+			outputFile << "      - name: "
 					<< parsedPersonaje->getPowers()[i]->getName() << std::endl;
-			std::cout << "        damage: "
+			outputFile << "        damage: "
 					<< parsedPersonaje->getPowers()[i]->getDamage()
 					<< std::endl;
-			std::cout << "        range: "
+			outputFile << "        range: "
 					<< parsedPersonaje->getPowers()[i]->getRange() << std::endl;
 		}
 	}
@@ -132,7 +132,7 @@ void printPersonajes(std::vector<Personaje*> entities) {
 /**
  * Prints an personaje to check if it was parsed correctly.
  */
-void printTextureHolder(TextureHolder* parsedTileDefinition) {
+void printTextureHolder(TextureHolder* parsedTileDefinition, std::ofstream& outputFile) {
 
 	std::vector<std::string> textureIds;
 
@@ -141,14 +141,14 @@ void printTextureHolder(TextureHolder* parsedTileDefinition) {
 	textureIds.push_back("water");
 	textureIds.push_back("tree");
 
-	std::cout << "- tiles:" << std::endl;
+	outputFile << "- tiles:" << std::endl;
 
 	for (unsigned int i = 0; i < textureIds.size(); i++) {
-		std::cout << "  - identifier: ";
-		std::cout << textureIds[i] << std::endl;
-		std::cout << "    imageSrc: ";
-		std::cout << parsedTileDefinition->getTextureSrc(textureIds[i]);
-		std::cout << std::endl;
+		outputFile << "  - identifier: ";
+		outputFile << textureIds[i] << std::endl;
+		outputFile << "    imageSrc: ";
+		outputFile << parsedTileDefinition->getTextureSrc(textureIds[i]);
+		outputFile << std::endl;
 	}
 
 }
@@ -156,44 +156,44 @@ void printTextureHolder(TextureHolder* parsedTileDefinition) {
 /**
  * Prints the dimensions of a map.
  */
-void printMapDimensions(AuxMap &mapConfiguration) {
+void printMapDimensions(AuxMap &mapConfiguration, std::ofstream& outputFile) {
 
-	std::cout << "- mapDimensions: ";
-	std::cout << "[" << mapConfiguration.dimension.nrows;
-	std::cout << ", " << mapConfiguration.dimension.ncols << "]" << std::endl;
+	outputFile << "- mapDimensions: ";
+	outputFile << "[" << mapConfiguration.dimension.nrows;
+	outputFile << ", " << mapConfiguration.dimension.ncols << "]" << std::endl;
 
 }
 
 /**
  * Prints the configured tiles of a map.
  */
-void printConfiguredTiles(AuxMap &mapConfiguration) {
+void printConfiguredTiles(AuxMap &mapConfiguration, std::ofstream& outputFile) {
 
-	std::cout << "- tileLocations:" << std::endl;
+	outputFile << "- tileLocations:" << std::endl;
 
 	for (unsigned int i = 0; i < mapConfiguration.tileList.size(); i++) {
-		printTile(mapConfiguration.tileList[i]);
+		printTile(mapConfiguration.tileList[i], outputFile);
 	}
 }
 
 /**
  * Prints the map configuration.
  */
-void printMapConfiguration(AuxMap &mapConfiguration) {
+void printMapConfiguration(AuxMap &mapConfiguration, std::ofstream& outputFile) {
 
-	printMapDimensions(mapConfiguration);
-	printConfiguredTiles(mapConfiguration);
+	printMapDimensions(mapConfiguration, outputFile);
+	printConfiguredTiles(mapConfiguration, outputFile);
 
 }
 
 /**
  * Prints the animated configuration.
  */
-void printAnimationConfiguration(AnimationConfiguration* aConfig) {
+void printAnimationConfiguration(AnimationConfiguration* aConfig, std::ofstream& outputFile) {
 
-	std::cout << "- animation:" << std::endl;
-	std::cout << "    fps: " << aConfig->getFps() << std::endl;
-	std::cout << "    delay: " << aConfig->getDelay() << std::endl;
+	outputFile << "- animation:" << std::endl;
+	outputFile << "    fps: " << aConfig->getFps() << std::endl;
+	outputFile << "    delay: " << aConfig->getDelay() << std::endl;
 
 }
 
@@ -414,13 +414,14 @@ void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
  * a persistent configuration object.
  */
 PersistentConfiguration ConfigurationReader::loadConfiguration(
-		std::string configurationFile) {
+		std::string configurationFile, std::string outputFilename) {
 
 	/**
 	 * TODO: hacer free de los structs auxiliares luego
 	 * de parsear.
 	 */
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
+	std::ofstream outputFile(outputFilename.c_str());
 
 	// Error Check
 	if (!inputFile) {
@@ -465,10 +466,10 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	configuration.setAnimationConfiguration(animationConfig);
 
 	// Print parsed elements.
-	printPersonajes(entities);
-	printAnimationConfiguration(animationConfig);
-	printTextureHolder(textureHolder);
-	printMapConfiguration(mapConfiguration);
+	printPersonajes(entities, outputFile);
+	printAnimationConfiguration(animationConfig, outputFile);
+	printTextureHolder(textureHolder, outputFile);
+	printMapConfiguration(mapConfiguration, outputFile);
 	printHeader("END OF PARSER");
 
 	return configuration;

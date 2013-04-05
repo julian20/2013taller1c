@@ -14,13 +14,15 @@
 #include <Menu.h>
 
 #define CONFIGURATION_FILE "./configuration/entities.yaml"
+#define OUTPUT_FILENAME "configuration/parserOutput.yaml"
 
 using namespace std;
 
-void initGame(){
+void initGame() {
 	// Lectura del archivo de configuracion
 	ConfigurationReader cfgReader = ConfigurationReader();
-	PersistentConfiguration configuration = cfgReader.loadConfiguration(CONFIGURATION_FILE);
+	PersistentConfiguration configuration = cfgReader.loadConfiguration(
+			CONFIGURATION_FILE, OUTPUT_FILENAME);
 	Game game = Game(&configuration);
 	game.run();
 	game.~Game();
@@ -31,9 +33,7 @@ void initGame(){
  */
 int main(int argc, char** argv) {
 
-
 	Menu menu = Menu();
-
 
 	MenuEvent event = NOTHING_EVENT;
 	while (event != EXIT_EVENT) {
