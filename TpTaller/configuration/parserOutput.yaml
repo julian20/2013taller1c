@@ -36,7 +36,7 @@
         damage: 9
         range: 1
 - animation:
-    fps: 30
+    fps: 5
     delay: 10
 - tiles:
   - identifier: soil

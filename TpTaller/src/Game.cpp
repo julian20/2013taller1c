@@ -17,19 +17,19 @@
 #define DEFAULT_W       800             // px
 #define DEFAULT_H       600             // px
 #define DEFAULT_BPP 0           // px
-#define FRAMES_PER_SECOND       30
 #define GAME_MUSIC "resources/sound/gameMusic.ogg"
 
 Game::Game(PersistentConfiguration* configuration) {
 
-        MapData* mapData = configuration->getMapData();
-
         initMusic();
         initScreen();
 
-        mapView = new MapView(mapData,screen);
-        mapView->setTextureHolder(configuration->getTextureHolder());
-        mapController = new MapController(mapView);
+        MapData* mapData = configuration->getMapData();
+
+        this->mapView = new MapView(mapData,screen);
+        this->mapView->setTextureHolder(configuration->getTextureHolder());
+        this->mapController = new MapController(mapView);
+        this->animationConfig = configuration->getAnimationConfiguration();
 
         setUpCharacters(mapView,mapData);
 
@@ -132,7 +132,8 @@ MenuEvent Game::run() {
 
         	// Dibujo
         	draw();
-        	SDL_Delay(1000/FRAMES_PER_SECOND);
+        	unsigned int fps = this->animationConfig->getFps();
+        	SDL_Delay(1000/fps);
         }
 
         return EXIT_EVENT;
