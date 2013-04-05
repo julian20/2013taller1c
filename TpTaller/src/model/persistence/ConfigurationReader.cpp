@@ -189,11 +189,15 @@ void printMapConfiguration(AuxMap &mapConfiguration, std::ofstream& outputFile) 
 /**
  * Prints the animated configuration.
  */
-void printAnimationConfiguration(GameConfiguration* aConfig, std::ofstream& outputFile) {
+void printGameConfiguration(GameConfiguration* aConfig, std::ofstream& outputFile) {
 
 	outputFile << "- animation:" << std::endl;
 	outputFile << "    fps: " << aConfig->getFps() << std::endl;
 	outputFile << "    delay: " << aConfig->getDelay() << std::endl;
+	outputFile << "    gameMusic: " << aConfig->getGameMusicSrc() << std::endl;
+	outputFile << "    defaultScreenHeight: " << aConfig->getDefaultScreenHeight() << std::endl;
+	outputFile << "    defaultScreenWidth: " << aConfig->getDefaultScreenWidth() << std::endl;
+	outputFile << "    defaultBPP: " << aConfig->getDefaultBPP() << std::endl;
 
 }
 
@@ -314,13 +318,22 @@ void operator >>(const YAML::Node& yamlNode,
 void operator >>(const YAML::Node& yamlNode,
 		GameConfiguration* animationConfig) {
 	const YAML::Node& configuration = yamlNode["animation"];
-	unsigned int auxFps, auxDelay;
+	unsigned int auxFps, auxDelay, auxHeight, auxWidth, auxBPP;
+	std::string auxGameMusicSrc;
 
 	configuration["fps"] >> auxFps;
 	configuration["delay"] >> auxDelay;
+	configuration["gameMusic"] >> auxGameMusicSrc;
+	configuration["defaultScreenHeight"] >> auxHeight;
+	configuration["defaultScreenWidth"] >> auxWidth;
+	configuration["defaultBPP"] >> auxBPP;
 
 	animationConfig->setDelay(auxDelay);
 	animationConfig->setFps(auxFps);
+	animationConfig->setGameMusicSrc(auxGameMusicSrc);
+	animationConfig->setDefaultScreenHeight(auxHeight);
+	animationConfig->setDefaultScreenWidth(auxWidth);
+	animationConfig->setDefaultBPP(auxBPP);
 }
 
 /* *********************************************** *
@@ -467,7 +480,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 
 	// Print parsed elements.
 	printPersonajes(entities, outputFile);
-	printAnimationConfiguration(animationConfig, outputFile);
+	printGameConfiguration(animationConfig, outputFile);
 	printTextureHolder(textureHolder, outputFile);
 	printMapConfiguration(mapConfiguration, outputFile);
 	printHeader("END OF PARSER");
