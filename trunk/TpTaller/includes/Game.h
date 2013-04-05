@@ -12,7 +12,7 @@
 #include <SDL/SDL_events.h>
 #include <SDL/SDL_mixer.h>
 #include <controller/MapController.h>
-#include <view/configuration/AnimationConfiguration.h>
+#include <view/configuration/GameConfiguration.h>
 #include <view/MapView.h>
 #include <Events.h>
 
@@ -28,7 +28,7 @@ private:
         SDL_Rect posFondo;
         SDL_Surface* fondo;
 
-        AnimationConfiguration* animationConfig;
+        GameConfiguration* gameConfig;
 
         MapView* mapView;
         MapController* mapController;

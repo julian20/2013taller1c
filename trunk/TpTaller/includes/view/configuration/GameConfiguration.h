@@ -1,17 +1,17 @@
 /*
- * AnimationConfiguration.h
+ * GameConfiguration.h
  *
  *  Created on: Apr 4, 2013
  *      Author: gonchub
  */
 
-#ifndef ANIMATIONCONFIGURATION_H_
-#define ANIMATIONCONFIGURATION_H_
+#ifndef GAMECONFIGURATION_H_
+#define GAMECONFIGURATION_H_
 
-class AnimationConfiguration {
+class GameConfiguration {
 public:
-	AnimationConfiguration();
-	virtual ~AnimationConfiguration();
+	GameConfiguration();
+	virtual ~GameConfiguration();
 	unsigned int getFps();
 	unsigned int getDelay();
 	void setFps(unsigned int fps);
@@ -21,4 +21,4 @@ private:
 	unsigned int delay;
 };
 
-#endif /* ANIMATIONCONFIGURATION_H_ */
+#endif /* GAMECONFIGURATION_H_ */

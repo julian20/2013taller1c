@@ -47,11 +47,11 @@ void PersistentConfiguration::setMapData(MapData* mapData) {
 	this->mapData = mapData;
 }
 
-AnimationConfiguration* PersistentConfiguration::getAnimationConfiguration() {
+GameConfiguration* PersistentConfiguration::getAnimationConfiguration() {
 	return this->animationConfiguration;
 }
 
 void PersistentConfiguration::setAnimationConfiguration(
-		AnimationConfiguration* aConfig) {
+		GameConfiguration* aConfig) {
 	this->animationConfiguration = aConfig;
 }

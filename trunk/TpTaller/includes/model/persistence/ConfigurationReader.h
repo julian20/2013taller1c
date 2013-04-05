@@ -12,7 +12,7 @@
 #include <model/persistence/PersistentConfiguration.h>
 #include <model/map/Tile.h>
 #include <model/map/TextureHolder.h>
-#include <view/configuration/AnimationConfiguration.h>
+#include <view/configuration/GameConfiguration.h>
 
 #include <string>
 
