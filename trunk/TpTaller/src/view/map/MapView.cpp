@@ -42,7 +42,6 @@ void MapView::SetUpPersonajes() {
 			if (personaje != NULL) {
 
 				posTile = Tile::computePosition(row, col, true);
-				printf("personaje x: %d, y: %d\n", posTile.x, posTile.y);
 				personaje->setPos((float) posTile.x, (float) posTile.y);
 			}
 		}

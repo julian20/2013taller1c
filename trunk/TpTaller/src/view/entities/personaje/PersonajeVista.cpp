@@ -42,7 +42,6 @@ void PersonajeVista::Draw(float x, float y, SDL_Surface* source, SDL_Surface* sc
 	offset.w = clip->w;
 	offset.h = clip->h;
 
-	printf("personajeIn x: %d, y: %d\n", offset.x, offset.y);
 	SDL_BlitSurface(source, clip, screen, &offset);
 }
 
