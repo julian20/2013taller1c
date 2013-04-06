@@ -19,44 +19,43 @@ int main(){
 	EntityViewMap map = EntityViewMap(7,5);
 	print_test("Cantidad de filas es 7", map.getNRows() == 7);
 	print_test("Cantidad de columnas es 5", map.getNCols() == 5);
+	map.getNextEntityView();
+	print_test("Iterador esta al final", map.iteratorAtEnd());
 
 	Entity* entity = new Entity();
 	EntityView* view = new EntityView(entity);
 	map.positionEntityView(view, Coordinates(6,2));
 
-	ViewMapIterator* it = map.getViewMapIterator(Coordinates(6,2));
-	print_test("Elemento insertado es correcto", it->getActual() == view);
-	print_test("Iterador no esta al final", !(it->isAtEnd()));
-	it->next();
-	print_test("Iterador esta al final", it->isAtEnd());
+	map.initIterator();
+	print_test("Elemento insertado es correcto", map.getNextEntityView() == view);
+	print_test("Iterador no esta al final", !map.iteratorAtEnd());
+	map.getNextEntityView();
+	print_test("Iterador esta al final", map.iteratorAtEnd());
 
 	EntityView* view2 = new EntityView(entity);
 	map.positionEntityView(view2, Coordinates(6,2));
-	delete it;
+	map.initIterator();
 
-	it = map.getViewMapIterator(Coordinates(6,2));
-	//print_test("Iterador no esta al final", !(it.isAtEnd()));
-	print_test("Elemento 1 insertado no es el 2", it->getActual() != view2);
-	it->next();
-	print_test("Elemento 2 insertado es correcto", it->getActual() == view2);
-	print_test("Iterador no esta al final", !(it->isAtEnd()));
-	it->next();
-	print_test("Iterador esta al final", it->isAtEnd());
-	delete it;
+	print_test("Elemento insertado es correcto", map.getNextEntityView() == view);
+	print_test("Elemento 2 insertado es correcto", map.getNextEntityView() == view2);
+	print_test("Iterador no esta al final", !map.iteratorAtEnd());
+	map.getNextEntityView();
+	print_test("Iterador esta al final", map.iteratorAtEnd());
 
-	it = map.getViewMapIterator(Coordinates(5,3));
-	print_test("Iterador esta al final en 5,3", it->isAtEnd());
+
+
 	EntityView* view3 = new EntityView(entity);
 	map.positionEntityView(view3, Coordinates(5,3));
-	print_test("Iterador esta al final en 5,3 despues de haber insertado uno sin actualizar el iterador", it->isAtEnd());
-	delete it;
-	it = map.getViewMapIterator(Coordinates(5,3));
-	print_test("Iterador no esta al final en 5,3 despues de actualizar el iterador", !(it->isAtEnd()));
-	print_test("Elemento insertado en 5,3 es correcto", it->getActual() == view3);
-	it->next();
-	print_test("Iterador esta al final despues de ir al siguiente en 5,3", it->isAtEnd());
+	map.initIterator();
 
-	delete it;
+	print_test("Elemento insertado en 5,3 es correcto", map.getNextEntityView() == view3);
+	print_test("Elemento insertado es correcto", map.getNextEntityView() == view);
+	print_test("Elemento 2 insertado es correcto", map.getNextEntityView() == view2);
+	print_test("Iterador no esta al final", !map.iteratorAtEnd());
+	map.getNextEntityView();
+	print_test("Iterador esta al final", map.iteratorAtEnd());
+
+
 	delete entity;
 	delete view;
 	delete view2;

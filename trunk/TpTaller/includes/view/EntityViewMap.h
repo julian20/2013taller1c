@@ -27,7 +27,7 @@ class ViewMapIterator {
 public:
 	ViewMapIterator(const EntityViewMap* viewMap,Coordinates coordinates);
 	bool isAtEnd();
-	EntityView* getActual();
+	EntityView* getCurrent();
 	void next();
 	virtual ~ViewMapIterator();
 private:
@@ -41,11 +41,33 @@ public:
 	int getNCols();
 	int getNRows();
 	void positionEntityView (EntityView* entity, Coordinates coordinates);
-	 ViewMapIterator* getViewMapIterator(Coordinates coordinates);
+
+	/*
+	 * Inicializa el iterador en la posicion 0,0 del ViewMap
+	 */
+	void initIterator();
+
+	/*
+	 * Devuelve la proxima entidad que encuentre en el mapa recorriendo por filas. En caso de llegar al final y
+	 * no encontrar otra entidad, devuelve NULL
+	 */
+	EntityView* getNextEntityView();
+
+	/*
+	 * Devuelve true si el itereador ha llegado al final del mapa y false en otro caso.
+	 */
+	bool iteratorAtEnd();
+
 	virtual ~EntityViewMap();
 private:
-	friend class ViewMapIterator;
+	int rows, cols;
+	int currentRow, currentCol;
+	ViewMapIterator* it;
 	vector< vector< list<EntityView*> > > entities;
+
+	friend class ViewMapIterator;
+
+	ViewMapIterator* getViewMapIterator(Coordinates coordinates);
 };
 
 } /* namespace std */

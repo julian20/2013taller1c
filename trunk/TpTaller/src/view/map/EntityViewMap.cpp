@@ -9,6 +9,7 @@
 
 namespace std {
 
+
 ViewMapIterator::ViewMapIterator(const EntityViewMap* viewMap,Coordinates coordinates){
 	int row = coordinates.getRow();
 	int col = coordinates.getCol();
@@ -21,7 +22,7 @@ void ViewMapIterator::next(){
 	it++;
 }
 
-EntityView* ViewMapIterator::getActual(){
+EntityView* ViewMapIterator::getCurrent(){
 	return *it;
 }
 
@@ -32,6 +33,11 @@ bool ViewMapIterator::isAtEnd(){
 ViewMapIterator::~ViewMapIterator(){
 }
 
+/* ************************************************************************** */
+/* ****************            ENTITYVIEWMAP					************* */
+/* ************************************************************************** */
+
+
 EntityViewMap::EntityViewMap(int rows, int cols) {
 
 	for (int i = 0 ; i < cols ; i ++){
@@ -39,6 +45,12 @@ EntityViewMap::EntityViewMap(int rows, int cols) {
 		vector< list<EntityView*> > row (rows, EntityList);
 		entities.push_back(row);
 	}
+
+	this->rows = rows;
+	this->cols = cols;
+	currentRow = 0;
+	currentCol = 0;
+	it = new ViewMapIterator(this,Coordinates(currentRow,currentCol));
 }
 
 void EntityViewMap::positionEntityView (EntityView* entity, Coordinates coordinates){
@@ -52,14 +64,48 @@ ViewMapIterator* EntityViewMap::getViewMapIterator(Coordinates coordinates){
 }
 
 int EntityViewMap::getNCols(){
-	return entities.size();
+	return cols;
 }
 
 int EntityViewMap::getNRows(){
-	return entities.at(0).size();
+	return rows;
+}
+
+void EntityViewMap::initIterator(){
+	currentRow = 0;
+	currentCol = 0;
+	delete it;
+	it = new ViewMapIterator(this,Coordinates(currentRow,currentCol));
+}
+
+EntityView* EntityViewMap::getNextEntityView(){
+
+	if (!it->isAtEnd()) it->next();
+
+	while (it->isAtEnd()){
+
+		currentCol++;
+		if (currentCol == cols){
+			currentCol = 0;
+			currentRow++;
+		}
+
+		if ( iteratorAtEnd() ) return NULL;
+
+		delete it;
+		it = new ViewMapIterator(this,Coordinates(currentRow,currentCol));
+
+	}
+
+	return it->getCurrent();
+}
+
+bool EntityViewMap::iteratorAtEnd(){
+	return ((currentCol == cols) || (currentRow == rows));
 }
 
 EntityViewMap::~EntityViewMap() {
+	delete it;
 	// TODO Auto-generated destructor stub
 	// TODO definir si aca se destruyen las EntityViews o no.
 }
