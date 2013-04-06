@@ -20,7 +20,6 @@ Personaje::Personaje() {
 }
 
 void Personaje::setPos(float x, float y) {
-	printf("personaje\n");
 	//Llamamos al super
 	Entity::setPos(x, y);
 

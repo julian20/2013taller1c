@@ -61,7 +61,7 @@ void Game::initScreen() {
 
 	//Buscamos info sobre la resolucion del escritorio y creamos la screen
 	const SDL_VideoInfo *info = SDL_GetVideoInfo();
-	if (!info) {
+	/*if (!info) {
 		screen = SDL_SetVideoMode(this->gameConfig->getDefaultScreenWidth(),
 				this->gameConfig->getDefaultScreenHeight(),
 				this->gameConfig->getDefaultBPP(), SDL_HWSURFACE);
@@ -69,7 +69,10 @@ void Game::initScreen() {
 		screen = SDL_SetVideoMode(info->current_w, info->current_h,
 				info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
 
-	}
+	}*/
+	screen = SDL_SetVideoMode(800,
+			600,
+			this->gameConfig->getDefaultBPP(), SDL_HWSURFACE);
 	//La hacemos fullscreen
 	/*	int flag = 1;
 	 flag = SDL_WM_ToggleFullScreen(screen);
