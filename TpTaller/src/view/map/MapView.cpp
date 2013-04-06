@@ -1,20 +1,26 @@
 #include <view/MapView.h>
 
-#define MapMargin               40              // px
-#define TilesScale      1
-#define CameraSpeed             15              // px
+#define TilesScale     		1
+#define CameraSpeed         15         // px
 
 MapView::MapView(MapData* _data, SDL_Surface* screen) {
 	this->screen = screen;
 	this->data = _data;
-	camera = new Position(data->GetNCols() / 2, data->GetNRows() / 2);
+	camera = new Position(screen->w / 2, screen->h / 2);
 
-	SDL_Rect posTile = Tile::computePosition(data->GetNRows(),
-			data->GetNCols());
-	lastTilePos = new Position(posTile.x, posTile.y);
+	setLimitTiles();
 	textureHolder = NULL;
+}
 
-	checkBoundaries();
+void MapView::setLimitTiles() {
+	SDL_Rect posTile = Tile::computePosition(data->GetNRows(), data->GetNCols());
+	lastTilePosY = new Position(posTile.x, posTile.y);
+
+	posTile = Tile::computePosition(0, data->GetNCols());
+	lastTilePosXDer = new Position(posTile.x, posTile.y);
+
+	posTile = Tile::computePosition(data->GetNRows(), 0);
+	lastTilePosXIzq = new Position(posTile.x, posTile.y);
 }
 
 Position* MapView::GetCamera() {
@@ -50,18 +56,17 @@ void MapView::movePlayer(int x, int y) {
 	firstTile.x = camera->getX() + firstTile.x;
 	firstTile.y = camera->getY() + firstTile.y;
 
-	int row = (y - firstTile.y) * 2 / firstTile.h;
-	int col = (x - firstTile.x) / firstTile.w;
+	// Squared Map
+	//int row = (y - firstTile.y) * 2 / firstTile.h;
+	//int col = (x - firstTile.x) / firstTile.w;
 
-	printf("A\n");
 	if (personaje != NULL) {
 		/**
 		 * TODO: esto no pierde memoria a lo loco?
 		 */
-		Tile* toTile = new Tile(new Coordinates(row, col));
-		data->movePersonaje(personaje, toTile);
-		printf("B\n");
-		//personaje->MoveTo(x - camera->getX(), y - camera->getY());
+		//Tile* toTile = new Tile(new Coordinates(row, col));
+		//data->movePersonaje(personaje, toTile);
+		personaje->MoveTo(x - camera->getX(), y - camera->getY());
 	}
 
 	//printf("row: %d, col: %d\n", row, col);
@@ -80,14 +85,14 @@ SDL_Surface* MapView::getDrawingSurface() {
 }
 
 void MapView::checkBoundaries() {
-	if (camera->getX() > -MapMargin)
-		camera->setX(-MapMargin);
-	if (camera->getY() > -MapMargin)
-		camera->setY(-MapMargin);
-	if (camera->getX() < -lastTilePos->getX() + screen->w)
-		camera->setX(-lastTilePos->getX() + screen->w);
-	if (camera->getY() < -lastTilePos->getY() + screen->h)
-		camera->setY(-lastTilePos->getY() + screen->h);
+	if (camera->getX() > -lastTilePosXIzq->getX() + screen->w / 2)
+		camera->setX(-lastTilePosXIzq->getX() + screen->w / 2);
+	if (camera->getX() < -lastTilePosXDer->getX() + screen->w / 2)
+		camera->setX(-lastTilePosXDer->getX() + screen->w / 2);
+	if (camera->getY() > screen->h / 2)
+		camera->setY(screen->h / 2);
+	if (camera->getY() < -lastTilePosY->getY() + screen->h / 2)
+		camera->setY(-lastTilePosY->getY() + screen->h / 2);
 }
 
 void MapView::moveCamera(CameraMove move) {
@@ -108,7 +113,6 @@ void MapView::moveCamera(CameraMove move) {
 	}
 
 	checkBoundaries();
-
 }
 
 void MapView::Draw() {

@@ -45,7 +45,9 @@ private:
 	SDL_Surface* tilesTextures[MapData::AMOUNT_TYPES];
 	string backgroundPath;
 	Personaje* personaje;
-	Position* lastTilePos;
+	Position* lastTilePosY;
+	Position* lastTilePosXIzq;
+	Position* lastTilePosXDer;
 
 	Position* camera;
 
@@ -55,6 +57,7 @@ private:
 	void CameraUpdate();
 	SDL_Rect GetSquaredMapTilePos(int row, int col);
 	SDL_Rect GetDiamondShapeMapTilePos(int row, int col);
+	void setLimitTiles();
 };
 
 #endif  /* MAP_H */
