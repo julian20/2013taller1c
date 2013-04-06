@@ -14,6 +14,7 @@ Base::Base() {
 }
 
 Base::~Base() {
+	delete anchorPixel;
 }
 
 unsigned int Base::getLength() {
