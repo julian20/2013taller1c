@@ -12,8 +12,8 @@
 #include <cmath>
 #include <string>
 
-#define OFFSET_X	78
-#define OFFSET_Y	55
+#define OFFSET_X	47
+#define OFFSET_Y	30
 
 #define RUTA_IMAGEN "resources/foo5.png"
 
@@ -42,7 +42,7 @@ void PersonajeVista::Draw(float x, float y, SDL_Surface* source, SDL_Surface* sc
 	offset.w = clip->w;
 	offset.h = clip->h;
 
-
+	printf("personajeIn x: %d, y: %d\n", offset.x, offset.y);
 	SDL_BlitSurface(source, clip, screen, &offset);
 }
 

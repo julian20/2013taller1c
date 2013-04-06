@@ -64,8 +64,24 @@ void Tile::setTextureIdentifier(std::string textureId) {
 	this->textureIdentifier = textureId;
 }
 
-SDL_Rect Tile::computePosition(int row, int col) {
+SDL_Rect Tile::computePosition(int row, int col /*, toTileCenter = false*/) {
 	return getDiamondShapeMapTilePos(row, col);
+}
+
+SDL_Rect Tile::computePosition(int row, int col, bool toTileCenter) {
+	SDL_Rect pos = getDiamondShapeMapTilePos(row, col);
+
+	if (toTileCenter) {
+		SDL_Rect retval;
+		retval.x = pos.x + TextureWidth/2;
+		retval.y = pos.y + TextureHeight/2;
+		retval.w = pos.w;
+		retval.h = pos.h;
+
+		return retval;
+	} else {
+		return pos;
+	}
 }
 
 SDL_Rect Tile::getSquaredMapTilePos(int row, int col) {
