@@ -27,6 +27,7 @@ public:
 	std::string getTextureIdentifier();
 	void setTextureIdentifier(std::string textureId);
 	static SDL_Rect computePosition(int row, int col);
+	static SDL_Rect computePosition(int row, int col, bool toTileCenter);
 private:
 	Tile();
 

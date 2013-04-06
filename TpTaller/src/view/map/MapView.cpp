@@ -40,10 +40,9 @@ void MapView::SetUpPersonajes() {
 
 			Personaje* personaje = data->GetPersonaje(row, col);
 			if (personaje != NULL) {
-				posTile = Tile::computePosition(row, col);
-				posTile.x = camera->getX() + posTile.x;
-				posTile.y = camera->getY() + posTile.y;
 
+				posTile = Tile::computePosition(row, col, true);
+				printf("personaje x: %d, y: %d\n", posTile.x, posTile.y);
 				personaje->setPos((float) posTile.x, (float) posTile.y);
 			}
 		}
@@ -64,7 +63,7 @@ void MapView::movePlayer(int x, int y) {
 		/**
 		 * TODO: esto no pierde memoria a lo loco?
 		 */
-		//Tile* toTile = new Tile(new Coordinates(row, col));
+		//Tile* toTile = new Tile(new Coordinates(row, col, true));
 		//data->movePersonaje(personaje, toTile);
 		personaje->MoveTo(x - camera->getX(), y - camera->getY());
 	}
