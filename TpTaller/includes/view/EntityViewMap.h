@@ -18,6 +18,11 @@ namespace std {
 
 class EntityViewMap;
 
+/* Iterador de una coordenada del mapa. Se itera sobre la lista de entities en una posicion dada.
+ * Si se tiene activo un iterador en la posicion x,y y se agrega o se quita una entity de esa posicion, el iterador
+ * queda en un estado invalido, por lo que hay que reinicializarlo para esa posicion.
+ */
+
 class ViewMapIterator {
 public:
 	ViewMapIterator(const EntityViewMap* viewMap,Coordinates coordinates);
