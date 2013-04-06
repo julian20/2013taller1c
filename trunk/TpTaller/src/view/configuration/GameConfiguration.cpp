@@ -7,6 +7,8 @@
 
 #include <view/configuration/GameConfiguration.h>
 
+#define SCREEN_AUTOCONFIG   false
+#define FULLSCREEN          false
 #define DEFAULT_DELAY 		30  //ms supongo?
 #define DEFAULT_FPS 		30  //frames
 #define DEFAULT_W       	800 // px
@@ -26,6 +28,14 @@ GameConfiguration::GameConfiguration() {
 }
 
 GameConfiguration::~GameConfiguration() {
+}
+
+bool GameConfiguration::screenAutoConfig(){
+	return SCREEN_AUTOCONFIG || FULLSCREEN;
+}
+
+bool GameConfiguration::fullscreen(){
+	return FULLSCREEN;
 }
 
 unsigned int GameConfiguration::getFps() {
