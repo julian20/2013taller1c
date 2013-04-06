@@ -60,26 +60,32 @@ void refreshCharacters() {
 void Game::initScreen() {
 
 	//Buscamos info sobre la resolucion del escritorio y creamos la screen
-	const SDL_VideoInfo *info = SDL_GetVideoInfo();
-	/*if (!info) {
+	bool configured = false;
+
+	if (gameConfig->screenAutoConfig()){
+		const SDL_VideoInfo *info = SDL_GetVideoInfo();
+		screen = SDL_SetVideoMode(info->current_w, info->current_h,
+					info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
+		configured = true;
+	}
+
+	if (!configured) {
 		screen = SDL_SetVideoMode(this->gameConfig->getDefaultScreenWidth(),
 				this->gameConfig->getDefaultScreenHeight(),
 				this->gameConfig->getDefaultBPP(), SDL_HWSURFACE);
-	} else {
-		screen = SDL_SetVideoMode(info->current_w, info->current_h,
-				info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
+	}
 
-	}*/
-	screen = SDL_SetVideoMode(800,
-			600,
-			this->gameConfig->getDefaultBPP(), SDL_HWSURFACE);
-	//La hacemos fullscreen
-	/*	int flag = 1;
-	 flag = SDL_WM_ToggleFullScreen(screen);
-	 if (flag == 0) {
-	 printf("Unable to go fullscreen: %s\n", SDL_GetError());
-	 exit(1);
-	 } */
+
+	if (gameConfig->fullscreen()){
+		//La hacemos fullscreen
+		int flag = 1;
+		flag = SDL_WM_ToggleFullScreen(screen);
+		if (flag == 0) {
+			//TODO escribir en el log
+			printf("Unable to go fullscreen: %s\n", SDL_GetError());
+			exit(1);
+		}
+	 }
 
 }
 

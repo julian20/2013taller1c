@@ -14,6 +14,8 @@ class GameConfiguration {
 public:
 	GameConfiguration();
 	virtual ~GameConfiguration();
+	bool screenAutoConfig();
+	bool fullscreen();
 	unsigned int getFps();
 	unsigned int getDelay();
 	unsigned int getDefaultScreenHeight();
