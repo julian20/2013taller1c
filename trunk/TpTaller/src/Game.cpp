@@ -48,7 +48,8 @@ void Game::setUpCharacters(MapView* map, MapData* mapData) {
 	//TODO: Posiblemente se levante del cfg reader esto
 
 	personajeVista = new PersonajeVista();
-	personajeVista->setPersonaje( new Personaje());
+	personaje = new Personaje();
+	personajeVista->setPersonaje(personaje );
 
 	mapData->addPersonaje(0, 0, personaje);
 	map->AssignPersonaje(personaje);
