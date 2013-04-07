@@ -159,3 +159,11 @@ int MapData::GetNRows() {
 int MapData::GetNCols() {
 	return ncols;
 }
+
+void MapData::IdentifyTile(int x, int y)
+{
+	Tile* tileAux= new Tile();
+	Coordinates coor=tileAux->getTileCoordinates(x,y);
+	delete tileAux;
+	printf("%i........%i\n",coor.getRow(),coor.getCol());
+}

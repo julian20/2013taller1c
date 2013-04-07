@@ -25,12 +25,17 @@ Game::Game(PersistentConfiguration* configuration) {
 
 	this->mapView = new MapView(mapData, screen);
 	this->mapView->setTextureHolder(configuration->getTextureHolder());
-	this->mapController = new MapController(mapView);
+	this->mapController = new MapController(mapView,mapData);
 
 	setUpCharacters(mapView, mapData);
-
+	setUpEntities(mapView,mapData);
 }
 
+void Game::setUpEntities(MapView* map,MapData* mapData)
+{
+	//Dami:Aca necesito que el parser traiga los datos de todas las entidades
+
+}
 void getEvent() {
 }
 

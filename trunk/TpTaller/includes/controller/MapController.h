@@ -18,13 +18,14 @@ typedef enum {MOUSE_TOP,MOUSE_BOTTOM,MOUSE_RIGHT,MOUSE_LEFT,
 
 class MapController {
 public:
-        MapController(MapView* mapView);
+        MapController(MapView* mapView,MapData* mapData);
         virtual ~MapController();
 
         void cameraMoveListener();
         void clickListener(SDL_Event event);
 
 private:
+        MapData* mapData;
         SDL_Surface* screen;
         MapView* mapView;
         MouseState getMouseState();

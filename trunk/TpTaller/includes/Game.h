@@ -40,6 +40,7 @@ private:
         void initScreen();
         void draw();
         void setUpCharacters(MapView* map,MapData* mapData);
+        void setUpEntities(MapView* map,MapData* mapData);
 };
 
 #endif /* GAME_H_ */

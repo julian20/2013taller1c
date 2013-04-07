@@ -31,7 +31,9 @@ public:
     void addPersonaje(int row, int col, Personaje* personaje);
     Personaje* GetPersonaje(int row, int col);
 	list<Tile *> *GetPath(Tile* from, Tile* to);
+	list<Entity *> *Entities;
 	void movePersonaje(Personaje* personaje, Tile* toTile);
+	void IdentifyTile(int x, int y);
 private:
     vector<TileData> data;
     int nrows;

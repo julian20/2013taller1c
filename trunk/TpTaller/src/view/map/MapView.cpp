@@ -64,6 +64,7 @@ void MapView::movePlayer(int x, int y) {
 		 */
 		//Tile* toTile = new Tile(new Coordinates(row, col, true));
 		//data->movePersonaje(personaje, toTile);
+	//	printf("%i--%i\n",firstTile.x , firstTile.y );
 		personaje->MoveTo(x - camera->getX(), y - camera->getY());
 	}
 
