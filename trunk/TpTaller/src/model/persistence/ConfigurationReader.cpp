@@ -117,6 +117,8 @@ void printPlayerViews(std::vector<EntityView*> entityViews,
 		EntityView* parsedEntityView = entityViews[j];
 		outputFile << "  - imageSrc: " << parsedEntityView->getImagePath()
 				<< std::endl;
+		outputFile << "    anchorPixel: " << "[" << parsedEntityView->getAnchorPixel()->GetX()
+				<< ", " << parsedEntityView->getAnchorPixel()->GetY() << "]" <<  std::endl;
 		printPersonaje((Personaje*) parsedEntityView->getEntity(), outputFile);
 	}
 
@@ -304,11 +306,14 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	std::vector<Power*> auxPowers;
 	Personaje* personaje = new Personaje("", NULL, NULL, auxPowers);
 	std::string auxImageSrc;
+	Vector2* auxAnchorPixel = new Vector2(0,0);
 
 	yamlNode["imageSrc"] >> auxImageSrc;
+	yamlNode["anchorPixel"] >> auxAnchorPixel;
 	yamlNode["player"] >> personaje;
 
 	entityView->setImagePath(auxImageSrc);
+	entityView->setAnchorPixel(auxAnchorPixel);
 	entityView->setEntity(personaje);
 
 }
