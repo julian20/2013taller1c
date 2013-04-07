@@ -46,8 +46,10 @@ void refreshMap() {
 void Game::setUpCharacters(MapView* map, MapData* mapData) {
 
 	//TODO: Posiblemente se levante del cfg reader esto
-	personaje = new Personaje();
-	personajeVista = new PersonajeVista(personaje);
+
+	personajeVista = new PersonajeVista();
+	personajeVista->setPersonaje( new Personaje());
+
 	mapData->addPersonaje(0, 0, personaje);
 	map->AssignPersonaje(personaje);
 	/* Lucas: La linea siguiente antes estaba antes de lo de arriba, pero
