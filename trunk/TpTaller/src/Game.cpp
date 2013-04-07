@@ -27,6 +27,7 @@ Game::Game(PersistentConfiguration* configuration) {
 	this->mapView = new MapView(mapData, screen, viewMap);
 	this->mapView->setTextureHolder(configuration->getTextureHolder());
 	this->mapController = new MapController(mapView,mapData);
+	this->cameraController = new MapCameraController(this->mapView->getCamera());
 
 	setUpCharacters(mapView, mapData, viewMap);
 	setUpEntities(mapView,mapData);
@@ -118,7 +119,7 @@ void Game::draw() {
 	//Borramos y redibujamos en cada ciclo
 
 	SDL_FillRect(screen, NULL, 0);
-	Position* cam = mapView->GetCamera();
+	Position* cam = mapView->getCamera()->getPosition();
 	mapView->draw(cam);
 	delete cam;
 	// Actualiza la screen
@@ -132,7 +133,7 @@ MenuEvent Game::run() {
 	SDL_Event event;
 	bool exit = false;
 	while (!exit) {
-		mapController->cameraMoveListener();
+		cameraController->cameraMoveListener();
 		while (SDL_PollEvent(&event)) {
 
 			mapController->clickListener(event);
@@ -187,6 +188,9 @@ void Game::initMusic() {
 }
 
 Game::~Game() {
+	delete mapView;
+	delete mapController;
+	delete cameraController;
 	Mix_FreeMusic(musica);
 	Mix_CloseAudio();
 	// TODO Auto-generated destructor stub
