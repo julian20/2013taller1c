@@ -13,13 +13,10 @@
 #include <string>
 namespace std {
 
-EntityView::EntityView(Entity* entity, string path) {
-	this->entity = entity;
-	this->imagePath = path;
-	this->image = load_image(path);
-	if (!image) { //TODO al log / loadear alternativa
-		cout << "Error al cargar imagen de la vista" << endl;
-	}
+EntityView::EntityView() {
+	this->imagePath = "";
+	this->entity = NULL;
+	this->image = NULL;
 }
 
 SDL_Surface* EntityView::load_image(std::string urlImagen) {
