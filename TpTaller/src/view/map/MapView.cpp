@@ -52,25 +52,26 @@ void MapView::SetUpPersonajes() {
 
 void MapView::movePlayer(int x, int y) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
-	Coordinates* coor=this->IdentifyTile(x,y);
-	if(! (coor->getCol()<0 || coor->getRow()<0))
-	{
-	SDL_Rect firstTile = Tile::computePosition(0, 0);
-	firstTile.x = camera->getX() + firstTile.x;
-	firstTile.y = camera->getY() + firstTile.y;
+	// TODO: Que seleccione la casilla bien!
+	Coordinates* coor = Tile::getTileCoordinates(	x - this->camera->getX(),
+													y - this->camera->getY());
 
-	// Squared Map
-	//int row = (y - firstTile.y) * 2 / firstTile.h;
-	//int col = (x - firstTile.x) / firstTile.w;
+	if( !(coor->getCol() < 0 || coor->getRow() < 0) &&
+		!(coor->getCol() > data->GetNCols() - 1 || coor->getRow() > data->GetNRows() - 1)) {
+		SDL_Rect firstTile = Tile::computePosition(0, 0);
+		firstTile.x = camera->getX() + firstTile.x;
+		firstTile.y = camera->getY() + firstTile.y;
 
-	if (personaje != NULL) {
-		/**
-		 * TODO: esto no pierde memoria a lo loco?
-		 */
-		//Tile* toTile = new Tile(new Coordinates(row, col, true));
-		//data->movePersonaje(personaje, toTile);
-	//	printf("%i--%i\n",firstTile.x , firstTile.y );
-		personaje->MoveTo(x - camera->getX(), y - camera->getY());
+		// Squared Map
+		//int row = (y - firstTile.y) * 2 / firstTile.h;
+		//int col = (x - firstTile.x) / firstTile.w;
+
+		if (personaje != NULL) {
+			// TODO: esto no pierde memoria a lo loco?
+			// Tile* toTile = new Tile(new Coordinates(row, col, true));
+			// data->movePersonaje(personaje, toTile);
+			// printf("%i--%i\n",firstTile.x , firstTile.y );
+			personaje->MoveTo(x - camera->getX(), y - camera->getY());
 	}
 
 	//printf("row: %d, col: %d\n", row, col);
@@ -231,14 +232,6 @@ TextureHolder* MapView::getTextureHolder() {
 	return this->textureHolder;
 }
 
-Coordinates* MapView::IdentifyTile(int x, int y)
-{
-	Tile* tileAux= new Tile();
-	Coordinates* coor=tileAux->getTileCoordinates(x-this->camera->getX(),y-this->camera->getY());
-	delete tileAux;
-	printf("%i........%i\n",coor->getRow(),coor->getCol());
-	return coor;
-}
 void MapView::setTextureHolder(TextureHolder* textureHolder) {
 	this->textureHolder = textureHolder;
 }
