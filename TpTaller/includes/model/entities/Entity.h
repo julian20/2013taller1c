@@ -27,9 +27,12 @@ using namespace std;
 		virtual ~Entity();
 		Base* getBase();
 		void setBase(Base* base);
+		std::string getName();
+		void setName(std::string name);
 	protected:
 		Vector2* currentPos;
 		Base* base;
+		std::string name;
 	};
 
 #endif /* ENTITY_H_ */
