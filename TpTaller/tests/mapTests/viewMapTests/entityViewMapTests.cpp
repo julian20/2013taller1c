@@ -22,8 +22,7 @@ int main(){
 	map.getNextEntityView();
 	print_test("Iterador esta al final", map.iteratorAtEnd());
 
-	Entity* entity = new Entity();
-	EntityView* view = new EntityView(entity);
+	EntityView* view = new EntityView();
 	map.positionEntityView(view, Coordinates(6,2));
 
 	map.initIterator();
@@ -32,7 +31,7 @@ int main(){
 	map.getNextEntityView();
 	print_test("Iterador esta al final", map.iteratorAtEnd());
 
-	EntityView* view2 = new EntityView(entity);
+	EntityView* view2 = new EntityView();
 	map.positionEntityView(view2, Coordinates(6,2));
 	map.initIterator();
 
@@ -44,7 +43,7 @@ int main(){
 
 
 
-	EntityView* view3 = new EntityView(entity);
+	EntityView* view3 = new EntityView();
 	map.positionEntityView(view3, Coordinates(5,3));
 	map.initIterator();
 
@@ -55,8 +54,6 @@ int main(){
 	map.getNextEntityView();
 	print_test("Iterador esta al final", map.iteratorAtEnd());
 
-
-	delete entity;
 	delete view;
 	delete view2;
 	delete view3;
