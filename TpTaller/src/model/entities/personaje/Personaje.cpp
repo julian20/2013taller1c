@@ -75,14 +75,17 @@ Vector2* Personaje::GetMovementDirection() {
 	return moveDirection;
 }
 
-Personaje::Personaje(std::string name, Position* position, Speed* speed,
-		std::vector<Power*> powers) {
+Personaje::Personaje(string name, Position* position, Speed* speed, vector<Power*> powers){
 	this->position = position;
 	this->speed = speed;
 	this->name = name;
 	this->powers = powers;
-	this->currentTile = new Tile(new Coordinates(0, 0));
-	endPos = new Vector2(0, 0);
+	this->path = new list<Tile *>();
+	currentTile = new Tile(new Coordinates(0, 0));
+	this->currentPos = new Vector2(0, 0);
+	this->base = new Base();
+	endPos = new Vector2(0,0);
+	endPos->SetValues(currentPos->GetX(),currentPos->GetY());
 	velocity = 3;
 }
 
@@ -128,16 +131,22 @@ bool Personaje::IsMoving() {
 }
 
 void Personaje::assignPath(list<Tile *> *_path) {
-	delete this->path;
+	if (path) delete path;
 	this->path = _path;
 }
 
 void Personaje::setTile( Tile* _tile ) {
-	delete this->currentTile;
-	this->currentTile = _tile;
+
+	if (this->currentTile) delete this->currentTile;
+	currentTile = _tile;
 }
 
 Tile* Personaje::getTile() {
 	return currentTile;
+}
+
+
+string Personaje::getClassName(){
+	return "Personaje";
 }
 

@@ -48,6 +48,8 @@ public:
 	void setTile( Tile* _tile );
 	Tile* getTile();
 	void assignPath(list<Tile *> *_path);
+
+	string getClassName();
 private:
 	void setNextPosition();
 

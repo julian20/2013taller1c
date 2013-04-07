@@ -37,9 +37,12 @@ public:
     void setPersonaje(Personaje* personaje);
     Personaje* getPersonaje();
     void UpdateCameraPos(int x, int y);
+    Personaje* getEntity();
+    void setEntity(Entity* entity);
     virtual ~PersonajeVista();
+    void draw(SDL_Surface* screen, Position* camera);
 private:
-    void draw(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
+    void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
 	void EstablecerLosClips(int cantidadPorLado);
 	Personaje* miPersonaje;
 	//SDL_Surface* fondo;
@@ -48,6 +51,7 @@ private:
 	int cameraY;
 	int marco; 	// Current frame
 	int estado; // Animation status
+	SDL_Rect* clipToDraw;
 };
 
 #endif	/* PERSONAJEVISTA_H */

@@ -39,7 +39,7 @@ private:
         void initMusic();
         void initScreen();
         void draw();
-        void setUpCharacters(MapView* map,MapData* mapData);
+        void setUpCharacters(MapView* map,MapData* mapData,EntityViewMap* viewMap);
         void setUpEntities(MapView* map,MapData* mapData);
 };
 

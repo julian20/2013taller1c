@@ -18,6 +18,7 @@ Entity::Entity() {
 	this->currentPos = new Vector2(0, 0);
 	this->base = new Base();
 	this->name = "";
+	cout <<"WARNING"<<endl;
 }
 
 void Entity::setPos(float x, float y) {
