@@ -109,16 +109,18 @@ void printPersonaje(Personaje* parsedPersonaje, std::ofstream& outputFile) {
 /**
  * Prints a list of player views.
  */
-void printPlayerViews(std::vector<EntityView*> entityViews,
+void printPlayerViews(std::vector<PersonajeVista*> entityViews,
 		std::ofstream& outputFile) {
 
 	outputFile << "- playerViews:" << std::endl;
 	for (unsigned int j = 0; j < entityViews.size(); j++) {
-		EntityView* parsedEntityView = entityViews[j];
+		PersonajeVista* parsedEntityView = entityViews[j];
 		outputFile << "  - imageSrc: " << parsedEntityView->getImagePath()
 				<< std::endl;
-		outputFile << "    anchorPixel: " << "[" << parsedEntityView->getAnchorPixel()->GetX()
-				<< ", " << parsedEntityView->getAnchorPixel()->GetY() << "]" <<  std::endl;
+		outputFile << "    anchorPixel: " << "["
+				<< parsedEntityView->getAnchorPixel()->GetX() << ", "
+				<< parsedEntityView->getAnchorPixel()->GetY() << "]"
+				<< std::endl;
 		printPersonaje((Personaje*) parsedEntityView->getEntity(), outputFile);
 	}
 
@@ -299,14 +301,14 @@ void operator >>(const YAML::Node& yamlNode, Personaje* personaje) {
 }
 
 /**
- * Sobrecarga de operador >> para llenar los campos de una EntityView.
+ * Sobrecarga de operador >> para llenar los campos de una PersonajeVista.
  */
-void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
+void operator >>(const YAML::Node& yamlNode, PersonajeVista* entityView) {
 
 	std::vector<Power*> auxPowers;
 	Personaje* personaje = new Personaje("", NULL, NULL, auxPowers);
 	std::string auxImageSrc;
-	Vector2* auxAnchorPixel = new Vector2(0,0);
+	Vector2* auxAnchorPixel = new Vector2(0, 0);
 
 	yamlNode["imageSrc"] >> auxImageSrc;
 	yamlNode["anchorPixel"] >> auxAnchorPixel;
@@ -322,10 +324,10 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
  * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
  */
 void operator >>(const YAML::Node& yamlNode,
-		std::vector<EntityView*>& entityList) {
+		std::vector<PersonajeVista*>& entityList) {
 	const YAML::Node& playerViews = yamlNode["playerViews"];
 	for (unsigned i = 0; i < playerViews.size(); i++) {
-		EntityView* entityView = new EntityView();
+		PersonajeVista* entityView = new PersonajeVista();
 		playerViews[i] >> entityView;
 		entityList.push_back(entityView);
 	}
@@ -449,14 +451,11 @@ void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
  * *********** ENTITY VIEW MAP CREATION *********** *
  * ************************************************ */
 
-EntityViewMap* createEntityViewMap(std::vector<EntityView*> entityViewVector,
-		MapData* mapData) {
-
-	EntityViewMap* entityViewMap = new EntityViewMap(mapData->GetNRows(),
-			mapData->GetNCols());
+void loadEntityViewMap(EntityViewMap* entityViewMap,
+		std::vector<PersonajeVista*> entityViewVector, MapData* mapData) {
 
 	for (unsigned int j = 0; j < entityViewVector.size(); j++) {
-		EntityView* parsedEntityView = entityViewVector[j];
+		PersonajeVista* parsedEntityView = entityViewVector[j];
 		Personaje* personaje = (Personaje*) parsedEntityView->getEntity();
 
 		/**
@@ -468,8 +467,6 @@ EntityViewMap* createEntityViewMap(std::vector<EntityView*> entityViewVector,
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}
-
-	return entityViewMap;
 
 }
 
@@ -503,7 +500,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	parser.GetNextDocument(yamlNode);
 
 	// Parsing entities.
-	std::vector<EntityView*> playerViewVector;
+	std::vector<PersonajeVista*> playerViewVector;
 	yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
 
 	// Parsing animation configuration.
@@ -527,7 +524,9 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	mapConfiguration >> mapData;
 
 	// Create entityViewMap:
-	EntityViewMap* entityViewMap = createEntityViewMap(playerViewVector, mapData);
+	EntityViewMap* entityViewMap = new EntityViewMap(mapData->GetNRows(),
+			mapData->GetNCols());
+	loadEntityViewMap(entityViewMap, playerViewVector, mapData);
 
 	// Packing parser results.
 	PersistentConfiguration configuration = PersistentConfiguration();
