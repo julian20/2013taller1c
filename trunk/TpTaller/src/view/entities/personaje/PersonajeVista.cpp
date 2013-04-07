@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>
+
 #include <cmath>
 #include <string>
 
@@ -33,12 +34,14 @@ SDL_Rect clipsArribaIzq[NUMERODECLIPS];
 SDL_Rect clipsQuieto[NUMERODECLIPS];
 
 
-void PersonajeVista::Draw(float x, float y, SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
+void PersonajeVista::draw(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
 	SDL_Rect offset;
 
-	//offset.x = (int)x + cameraX - (clip->w/SCALE)/2;
-	offset.x = (int) x + cameraX - clip->w;
-	offset.y = (int) y + cameraY - clip->h;
+	Vector2* position = miPersonaje->GetCurrentPos();
+	float x = position->GetX();
+	float y = position->GetY();
+	offset.x = (int) x + cameraX - clip->w + OFFSET_X;
+	offset.y = (int) y + cameraY - clip->h + OFFSET_Y;
 	offset.w = clip->w;
 	offset.h = clip->h;
 
@@ -104,9 +107,6 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	float direction = movementDirection->GetAngle();
 	Vector2* pos = this->miPersonaje->GetCurrentPos();
 
-	int x = pos->GetX() + this->miPersonaje->getBase()->getAnchorPixel()->GetX();
-	int y = pos->GetY() + this->miPersonaje->getBase()->getAnchorPixel()->GetY();
-
 	SDL_Rect* clipToDraw;
 
 	if (M_PI * 15 / 8 < direction || direction < M_PI * 1 / 8)
@@ -136,7 +136,7 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	if (marco >= NUMERODECLIPS)
 		marco = 0;    // Loop the animation
 
-	Draw(x, y, this->personajeImagen, fondo, clipToDraw);
+	draw(this->personajeImagen, fondo, clipToDraw);
 }
 
 void PersonajeVista::EstablecerLosClips(int cantidadPorLado) {

@@ -37,7 +37,7 @@ public:
     void UpdateCameraPos(int x, int y);
     virtual ~PersonajeVista();
 private:
-    void Draw( float x, float y, SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip );
+    void draw(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
 	void EstablecerLosClips(int cantidadPorLado);
 	Personaje* miPersonaje;
 	//SDL_Surface* fondo;

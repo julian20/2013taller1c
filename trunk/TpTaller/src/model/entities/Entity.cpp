@@ -29,7 +29,7 @@
  * TODO Player, personaje deben heredar de esta entidad, ya que
  * tendrian los mismos atributos basicos.
  */
-namespace std {
+using namespace std;
 	Entity::Entity() {
 		this->currentPos = new Vector2(0, 0);
 		this->base = new Base();
@@ -37,6 +37,10 @@ namespace std {
 
 	void Entity::setPos(float x, float y) {
 		currentPos->SetValues(x, y);
+	}
+
+	Vector2* Entity::getCurrentPos() {
+			return currentPos;
 	}
 
 	string Entity::getClassName(){
@@ -55,4 +59,4 @@ namespace std {
 		delete this->currentPos;
 		delete this->base;
 	}
-}
+

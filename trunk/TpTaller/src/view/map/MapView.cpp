@@ -3,6 +3,7 @@
 #define TilesScale     		1
 #define CameraSpeed         15         // px
 
+using namespace std;
 MapView::MapView(MapData* inputData, SDL_Surface* inputScreen, EntityViewMap* map) {
 	screen = inputScreen;
 	data = inputData;
@@ -178,6 +179,11 @@ void MapView::Draw() {
 	//Personaje* personajes = NULL;
 	SDL_Rect posTile;
 
+
+	/*
+	 * Dibujamos los tiles
+	 * TODO: agregar un metodo getEntities(row,col) a entityviewmap para dibujar toodo en el mismo for!
+	 */
 	for (int col = 0; col < data->GetNCols(); col++) {
 
 		for (int row = 0; row < data->GetNRows(); row++) {
@@ -192,18 +198,19 @@ void MapView::Draw() {
 
 			SDL_BlitSurface(textureImage, NULL, screen, &posTile);
 
-			TileData* tileData = data->GetTileData(row, col);
-
-			Entity* entity = tileData->getNextEntity();
-			while (entity != NULL) {
-				/*Lucas: TODO!
-				 entity->draw();
-				 */
-				entity = tileData->getNextEntity();
+			list<EntityView*>aList = viewMap->getListAtRowAndCol(row,col);
+			if(!aList.empty()){
+				list<EntityView*>::iterator it;
+				for (it = aList.begin(); it != aList.end(); ++it) {
+				   EntityView* view = *it;
+				   if (!view) continue;
+				   view->draw(screen);
+				}
 			}
-
 		}
+
 	}
+
 
 	// Luego se blitean todos los personajes despues de haber bliteado el piso
 	// para que el piso no tape a los flacos.

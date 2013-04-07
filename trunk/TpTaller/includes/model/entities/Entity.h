@@ -17,12 +17,12 @@
 #include <string>
 #include <vector>
 #include <iostream>
-namespace std {
+using namespace std;
 	class Entity {
 	public:
 		Entity();
 		virtual void setPos(float x, float y);
-		Vector2* GetCurrentPos();
+		Vector2* getCurrentPos();
 		virtual string getClassName();
 		virtual ~Entity();
 		Base* getBase();
@@ -31,5 +31,5 @@ namespace std {
 		Vector2* currentPos;
 		Base* base;
 	};
-}
+
 #endif /* ENTITY_H_ */

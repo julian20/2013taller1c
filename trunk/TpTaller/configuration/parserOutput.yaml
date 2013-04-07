@@ -1,9 +1,9 @@
 - playerViews:
-  - imageSrc: ./pathToImage.png
+  - imageSrc: resources/foo5.png
     anchorPixel: [0, 0]
     player:
       name: Personaje
-      position: [3, 2, 1]
+      position: [33, 32, 1]
       speed:
         magnitude: 1
         direction: [1, 2]
