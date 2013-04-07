@@ -11,12 +11,14 @@ PersistentConfiguration::PersistentConfiguration() {
 	this->textureHolder = NULL;
 	this->mapData = NULL;
 	this->animationConfiguration = NULL;
+	this->entityViewMap = NULL;
 }
 
 PersistentConfiguration::~PersistentConfiguration() {
 	delete this->textureHolder;
 	delete this->mapData;
 	delete this->animationConfiguration;
+	delete this->entityViewMap;
 	for (unsigned int i = 0; i < this->entityList.size(); i++) {
 		delete this->entityList[i];
 	}
@@ -54,4 +56,12 @@ GameConfiguration* PersistentConfiguration::getAnimationConfiguration() {
 void PersistentConfiguration::setAnimationConfiguration(
 		GameConfiguration* aConfig) {
 	this->animationConfiguration = aConfig;
+}
+
+EntityViewMap* PersistentConfiguration::getEntityViewMap() {
+	return this->entityViewMap;
+}
+
+void PersistentConfiguration::setEntityViewMap(EntityViewMap* entityViewMap) {
+	this->entityViewMap = entityViewMap;
 }
