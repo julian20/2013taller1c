@@ -58,6 +58,9 @@ public:
 	 */
 	bool iteratorAtEnd();
 
+
+	list<EntityView*> getListAtRowAndCol(int row, int col);
+
 	virtual ~EntityViewMap();
 private:
 	int rows, cols;

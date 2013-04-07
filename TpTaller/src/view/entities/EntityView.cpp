@@ -11,7 +11,8 @@
 #include <SDL/SDL_rotozoom.h>
 #include <cmath>
 #include <string>
-namespace std {
+
+using namespace std;
 
 EntityView::EntityView() {
 	this->imagePath = "";
@@ -20,8 +21,9 @@ EntityView::EntityView() {
 	this->anchorPixel = new Vector2(0, 0);
 }
 
-SDL_Surface* EntityView::load_image(std::string urlImagen) {
+SDL_Surface* EntityView::load_image(string urlImagen) {
 	//The image that's loaded
+	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Surface* loadedImage = NULL;
 
 	//The optimized surface that will be used
@@ -30,32 +32,36 @@ SDL_Surface* EntityView::load_image(std::string urlImagen) {
 	loadedImage = IMG_Load(urlImagen.c_str());
 
 	if (loadedImage != NULL) {
-		//loadedImage = rotozoomSurfaceXY(loadedImage, 0, SCALE, SCALE, 0);
+		//loadedImage = rotozoomSurfaceXY(loadedImage, 0, 2, 2, 0);
 
 		//Create an optimized surface
 		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
 
-		SDL_FreeSurface(loadedImage);
+
 
 		if (optimizedImage != NULL) {
 			//Color key surface
+			SDL_FreeSurface(loadedImage);
 			SDL_SetColorKey(optimizedImage, SDL_SRCCOLORKEY,
 					SDL_MapRGB(optimizedImage->format, 0, 0xFF, 0xFF));
 		}
+		else
+			optimizedImage = loadedImage;
 	}
 
 	return optimizedImage;
 }
 
-void EntityView::setImagePath(std::string image_path) {
+void EntityView::setImagePath(string image_path) {
 	this->imagePath = image_path;
+	cout << image_path << endl;
 	this->image = load_image(image_path);
 	if (!image) { //TODO al log / loadear alternativa
-		cout << "Error al cargar imagen de la vista" << endl;
+		cout << "Error al cargar imagen de la vista " << image_path << endl;
 	}
 }
 
-std::string EntityView::getImagePath() {
+string EntityView::getImagePath() {
 	return this->imagePath;
 }
 
@@ -76,6 +82,29 @@ Vector2* EntityView::getAnchorPixel() {
 	return this->anchorPixel;
 }
 
+void EntityView::draw(SDL_Surface* screen){
+	SDL_Rect offset;
+	SDL_Rect clip;
+
+	clip.x=0;
+	clip.y=0;
+	clip.w=image->w;
+	clip.h=image->h;
+
+	Vector2* position = entity->getCurrentPos();
+	float x = position->GetX();
+	float y = position->GetY();
+	offset.x = (int) x - clip.w;
+	offset.y = (int) y - clip.h;
+	offset.w = clip.w;
+	offset.h = clip.h;
+
+	SDL_BlitSurface(image, &clip, screen, &offset);
+
+
+
+}
+
 EntityView::~EntityView() {
 }
-}
+

@@ -100,6 +100,13 @@ EntityView* EntityViewMap::getNextEntityView(){
 	return it->getCurrent();
 }
 
+
+list<EntityView*> EntityViewMap::getListAtRowAndCol(int row, int col){
+
+	return entities.at(col).at(row);
+}
+
+
 bool EntityViewMap::iteratorAtEnd(){
 	return ((currentCol == cols) || (currentRow == rows));
 }

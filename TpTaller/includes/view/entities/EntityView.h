@@ -16,7 +16,7 @@
 
 #include <string>
 
-namespace std {
+using namespace std;
 class EntityView {
 public:
 	EntityView();
@@ -27,14 +27,14 @@ public:
 	virtual ~EntityView();
 	Vector2* getAnchorPixel();
 	void setAnchorPixel(Vector2* anchorPixel);
-
+	virtual void draw(SDL_Surface* screen);
 protected:
 	SDL_Surface* load_image(std::string urlImagen);
 	Entity* entity;
 	SDL_Surface* image;
 	Vector2* anchorPixel;
-	std::string imagePath;
+	string imagePath;
 };
-}
+
 
 #endif /* ENTITYVIEW_H */
