@@ -14,8 +14,12 @@
 namespace std{
 
 
-	EntityView::EntityView(Entity* entity){
+	EntityView::EntityView(Entity* entity,string path){
 		this->entity=entity;
+		this->image = load_image(path);
+		if (!image){//TODO al log / loadear alternativa
+			cout << "Error al cargar imagen de la vista"<< endl;
+		}
 	}
 
 	SDL_Surface* EntityView::load_image(std::string urlImagen) {

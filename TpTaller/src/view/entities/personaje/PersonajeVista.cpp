@@ -52,7 +52,7 @@ void PersonajeVista::UpdateCameraPos(int x, int y) {
 
 PersonajeVista::PersonajeVista(Personaje* unPersonaje)
 	//Llamamos al constructor de la superclase
-	:EntityView(NULL){
+	:EntityView(NULL,RUTA_IMAGEN){
 	cameraX = cameraY = 0;
 	marco = 0;
 	estado = 0;
