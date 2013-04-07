@@ -5,6 +5,7 @@
 #include <model/entities/personaje/Personaje.h>
 #include <view/entities/PersonajeVista.h>
 #include <model/map/TextureHolder.h>
+#include <view/EntityViewMap.h>
 
 #include <string>
 #include <iostream>
@@ -20,7 +21,7 @@ typedef enum {
 
 class MapView {
 public:
-	MapView(MapData* data, SDL_Surface* screen);
+	MapView(MapData* data, SDL_Surface* screen, EntityViewMap* viewMap);
 	virtual ~MapView();
 
 	SDL_Surface* getDrawingSurface();
@@ -40,6 +41,7 @@ private:
 	TextureHolder* textureHolder;
 	MapData* data;
 	SDL_Surface* screen;
+	EntityViewMap* viewMap;
 
 	string texturesPaths[MapData::AMOUNT_TYPES];
 	SDL_Surface* tilesTextures[MapData::AMOUNT_TYPES];
