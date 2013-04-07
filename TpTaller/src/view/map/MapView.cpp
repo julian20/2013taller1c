@@ -3,9 +3,10 @@
 #define TilesScale     		1
 #define CameraSpeed         15         // px
 
-MapView::MapView(MapData* _data, SDL_Surface* screen) {
-	this->screen = screen;
-	this->data = _data;
+MapView::MapView(MapData* inputData, SDL_Surface* inputScreen, EntityViewMap* map) {
+	screen = inputScreen;
+	data = inputData;
+	viewMap = map;
 	camera = new Position(screen->w / 2, screen->h / 2);
 
 	setLimitTiles();

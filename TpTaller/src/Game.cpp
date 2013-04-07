@@ -23,7 +23,8 @@ Game::Game(PersistentConfiguration* configuration) {
 	initScreen();
 	initMusic();
 
-	this->mapView = new MapView(mapData, screen);
+	EntityViewMap* viewMap = configuration->getEntityViewMap();
+	this->mapView = new MapView(mapData, screen,viewMap);
 	this->mapView->setTextureHolder(configuration->getTextureHolder());
 	this->mapController = new MapController(mapView,mapData);
 

@@ -163,7 +163,7 @@ int MapData::GetNCols() {
 void MapData::IdentifyTile(int x, int y)
 {
 	Tile* tileAux= new Tile();
-	Coordinates coor=tileAux->getTileCoordinates(x,y);
+	Coordinates* coor=tileAux->getTileCoordinates(x,y);
 	delete tileAux;
-	printf("%i........%i\n",coor.getRow(),coor.getCol());
+	printf("%i........%i\n",coor->getRow(),coor->getCol());
 }
