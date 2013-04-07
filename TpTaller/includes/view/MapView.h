@@ -6,6 +6,7 @@
 #include <view/entities/PersonajeVista.h>
 #include <model/map/TextureHolder.h>
 #include <view/EntityViewMap.h>
+#include <view/MapCameraView.h>
 
 #include <string>
 #include <iostream>
@@ -14,10 +15,6 @@
 #include <SDL/SDL_rotozoom.h>
 
 using namespace std;
-
-typedef enum {
-	MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT
-} CameraMove;
 
 class MapView {
 public:
@@ -31,9 +28,7 @@ public:
 	void Update();
 	void SetUpPersonajes();
 	void AssignPersonaje(Personaje* _personaje);
-	Position* GetCamera();
-
-	void moveCamera(CameraMove move);
+	MapCameraView* getCamera();
 
 	TextureHolder* getTextureHolder();
 	void setTextureHolder(TextureHolder* textureHolder);
@@ -47,21 +42,8 @@ private:
 	SDL_Surface* tilesTextures[MapData::AMOUNT_TYPES];
 	string backgroundPath;
 	Personaje* personaje;
-	Position* lastTilePosY;
-	Position* lastTilePosXIzq;
-	Position* lastTilePosXDer;
 
-	Position* camera;
-
-	void DefineTexturePaths();
-	void checkBoundaries();
-	void GraphicalSetup();
-	void CameraUpdate();
-	SDL_Rect GetSquaredMapTilePos(int row, int col);
-	SDL_Rect GetDiamondShapeMapTilePos(int row, int col);
-	void setLimitTiles();
-	void checkBasicBoundaries();
-	void checkAdvancedBoundaries();
+	MapCameraView* camera;
 };
 
 #endif  /* MAP_H */

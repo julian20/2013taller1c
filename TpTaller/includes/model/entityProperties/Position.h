@@ -10,6 +10,7 @@
 
 class Position {
 public:
+	Position();
 	Position(int x, int y, int z);
 	Position(int coordX, int coordY);
 	void changeTo(int nuevaX, int nuevaY, int nuevaZ);
@@ -21,7 +22,6 @@ public:
 	void setZ(int z);
 
 private:
-	Position();
 	int x, y, z;
 };
 

@@ -8,25 +8,10 @@ MapView::MapView(MapData* inputData, SDL_Surface* inputScreen, EntityViewMap* ma
 	screen = inputScreen;
 	data = inputData;
 	viewMap = map;
-	camera = new Position(screen->w / 2, screen->h / 2);
+	Position* cameraPos = new Position(screen->w / 2, screen->h / 2);
+	camera = new MapCameraView( cameraPos, screen , data->GetNRows() , data->GetNCols());
 
-	setLimitTiles();
 	textureHolder = NULL;
-}
-
-void MapView::setLimitTiles() {
-	SDL_Rect posTile = Tile::computePosition(data->GetNRows(), data->GetNCols());
-	lastTilePosY = new Position(posTile.x, posTile.y);
-
-	posTile = Tile::computePosition(0, data->GetNCols());
-	lastTilePosXDer = new Position(posTile.x, posTile.y);
-
-	posTile = Tile::computePosition(data->GetNRows(), 0);
-	lastTilePosXIzq = new Position(posTile.x, posTile.y);
-}
-
-Position* MapView::GetCamera() {
-	return new Position(camera->getX(), camera->getY());
 }
 
 MapView::~MapView() {
@@ -53,14 +38,17 @@ void MapView::SetUpPersonajes() {
 void MapView::movePlayer(int x, int y) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
 	// TODO: Que seleccione la casilla bien!
-	Coordinates* coor = Tile::getTileCoordinates(	x - this->camera->getX(),
-													y - this->camera->getY());
+
+	Position* cameraPos = this->camera->getPosition();
+
+	Coordinates* coor = Tile::getTileCoordinates(	x - cameraPos->getX(),
+													y - cameraPos->getY());
 
 	if( !(coor->getCol() < 0 || coor->getRow() < 0) &&
 		!(coor->getCol() > data->GetNCols() - 1 || coor->getRow() > data->GetNRows() - 1)) {
 		SDL_Rect firstTile = Tile::computePosition(0, 0);
-		firstTile.x = camera->getX() + firstTile.x;
-		firstTile.y = camera->getY() + firstTile.y;
+		firstTile.x = cameraPos->getX() + firstTile.x;
+		firstTile.y = cameraPos->getY() + firstTile.y;
 
 		// Squared Map
 		//int row = (y - firstTile.y) * 2 / firstTile.h;
@@ -71,7 +59,8 @@ void MapView::movePlayer(int x, int y) {
 			// Tile* toTile = new Tile(new Coordinates(row, col, true));
 			// data->movePersonaje(personaje, toTile);
 			// printf("%i--%i\n",firstTile.x , firstTile.y );
-			personaje->MoveTo(x - camera->getX(), y - camera->getY());
+			personaje->MoveTo(x - cameraPos->getX(), y - cameraPos->getY());
+
 	}
 
 	//printf("row: %d, col: %d\n", row, col);
@@ -86,97 +75,12 @@ void MapView::Update() {
 
 }
 
+MapCameraView* MapView::getCamera(){
+	return camera;
+}
+
 SDL_Surface* MapView::getDrawingSurface() {
 	return screen;
-}
-
-void MapView::checkBasicBoundaries() {
-	// Basic boundaries checking
-	if (camera->getX() > -lastTilePosXIzq->getX() + screen->w / 2)
-		camera->setX(-lastTilePosXIzq->getX() + screen->w / 2);
-
-	if (camera->getX() < -lastTilePosXDer->getX() + screen->w / 2)
-		camera->setX(-lastTilePosXDer->getX() + screen->w / 2);
-
-	if (camera->getY() > screen->h / 2)
-		camera->setY(screen->h / 2);
-
-	if (camera->getY() < -lastTilePosY->getY() + screen->h / 2)
-		camera->setY(-lastTilePosY->getY() + screen->h / 2);
-}
-
-void MapView::checkAdvancedBoundaries() {
-	// Advanced boundaries checking
-	float XTopRightCondition = (float) ((screen->w / 2));
-	float XBotRightCondition = (float) ((screen->w / 2 - lastTilePosY->getX()));
-	float YTopRightCondition = (float) ((screen->h / 2 - lastTilePosXDer->getY()));
-	float YTopLeftCondition = (float) ((screen->h / 2 - lastTilePosXIzq->getY()));
-
-	bool cameraAtRightForTop = camera->getX() < XTopRightCondition;
-	bool cameraAtRightForBot = camera->getX() < XBotRightCondition;
-	bool cameraAtTopForRight = camera->getY() > YTopRightCondition;
-	bool cameraAtTopForLeft = camera->getY() > YTopLeftCondition;
-
-	if (cameraAtRightForTop && cameraAtTopForRight) {
-
-		float m = (YTopRightCondition - (float) ((screen->h / 2)))
-				/ ((float) ((-lastTilePosXDer->getX() + screen->w / 2))
-						- XTopRightCondition);
-		float b = (float) ((screen->h / 2)) - XTopRightCondition * m;
-		float eval = camera->getX() * m + b;
-		if (eval < camera->getY())	camera->setY(eval);
-	} else if (cameraAtRightForBot && !cameraAtTopForRight) {
-
-		float m = (YTopRightCondition
-				- (float) ((-lastTilePosY->getY() + screen->h / 2)))
-				/ ((float) ((screen->w / 2 - lastTilePosXDer->getX()))
-						- XBotRightCondition);
-		float b = (float) ((-lastTilePosY->getY() + screen->h / 2)) - XBotRightCondition * m;
-		float eval = camera->getX() * m + b;
-		if (eval > camera->getY())	camera->setY(eval);
-	} else if (!cameraAtRightForTop && cameraAtTopForLeft) {
-
-		float m = (YTopLeftCondition - (float) ((screen->h / 2)))
-				/ ((float) ((-lastTilePosXIzq->getX() + screen->w / 2))
-						- XTopRightCondition);
-		float b = (float) ((screen->h / 2)) - XTopRightCondition * m;
-		float eval = camera->getX() * m + b;
-		if (eval < camera->getY()) camera->setY(eval);
-	} else if (!cameraAtRightForBot && !cameraAtTopForLeft) {
-
-		float m = (YTopLeftCondition
-				- (float) ((-lastTilePosY->getY() + screen->h / 2)))
-				/ ((float) ((screen->w / 2 - lastTilePosXIzq->getX()))
-						- XBotRightCondition);
-		float b = (float) ((-lastTilePosY->getY() + screen->h / 2)) - XBotRightCondition * m;
-		float eval = camera->getX() * m + b;
-		if (eval > camera->getY()) camera->setY(eval);
-	}
-}
-
-void MapView::checkBoundaries() {
-	checkBasicBoundaries();
-	checkAdvancedBoundaries();
-}
-
-void MapView::moveCamera(CameraMove move) {
-
-	switch (move) {
-	case MOVE_UP:
-		camera->setY(camera->getY() + CameraSpeed);
-		break;
-	case MOVE_DOWN:
-		camera->setY(camera->getY() - CameraSpeed);
-		break;
-	case MOVE_LEFT:
-		camera->setX(camera->getX() + CameraSpeed);
-		break;
-	case MOVE_RIGHT:
-		camera->setX(camera->getX() - CameraSpeed);
-		break;
-	}
-
-	checkBoundaries();
 }
 
 void MapView::draw(Position* cam) {
@@ -194,8 +98,9 @@ void MapView::draw(Position* cam) {
 		for (int row = 0; row < data->GetNRows(); row++) {
 
 			posTile = Tile::computePosition(row, col);
-			posTile.x = camera->getX() + posTile.x;
-			posTile.y = camera->getY() + posTile.y;
+			Position* cameraPos = this->camera->getPosition();
+			posTile.x = cameraPos->getX() + posTile.x;
+			posTile.y = cameraPos->getY() + posTile.y;
 
 			std::string textureId = data->GetTileType(row, col);
 			SDL_Surface* textureImage = getTextureHolder()->getTexture(
