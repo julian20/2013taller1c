@@ -58,6 +58,8 @@ private:
 	SDL_Rect GetSquaredMapTilePos(int row, int col);
 	SDL_Rect GetDiamondShapeMapTilePos(int row, int col);
 	void setLimitTiles();
+	void checkBasicBoundaries();
+	void checkAdvancedBoundaries();
 };
 
 #endif  /* MAP_H */
