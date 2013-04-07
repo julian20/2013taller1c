@@ -179,7 +179,7 @@ void MapView::moveCamera(CameraMove move) {
 	checkBoundaries();
 }
 
-void MapView::Draw() {
+void MapView::draw(Position* cam) {
 
 	//Personaje* personajes = NULL;
 	SDL_Rect posTile;
@@ -203,18 +203,27 @@ void MapView::Draw() {
 
 			SDL_BlitSurface(textureImage, NULL, screen, &posTile);
 
-			list<EntityView*>aList = viewMap->getListAtRowAndCol(row,col);
-			if(!aList.empty()){
-				list<EntityView*>::iterator it;
-				for (it = aList.begin(); it != aList.end(); ++it) {
-				   EntityView* view = *it;
-				   if (!view) continue;
-				   view->draw(screen);
-				}
-			}
 		}
 
 	}
+
+	for (int col = 0; col < data->GetNCols(); col++) {
+
+			for (int row = 0; row < data->GetNRows(); row++) {
+
+
+				list<EntityView*>aList = viewMap->getListAtRowAndCol(row,col);
+				if(!aList.empty()){
+					list<EntityView*>::iterator it;
+					for (it = aList.begin(); it != aList.end(); ++it) {
+						EntityView* view = *it;
+						if (!view) continue;
+						view->draw(screen,cam);
+					}
+				}
+			}
+
+		}
 
 
 	// Luego se blitean todos los personajes despues de haber bliteado el piso

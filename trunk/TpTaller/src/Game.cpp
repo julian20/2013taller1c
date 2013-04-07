@@ -28,7 +28,7 @@ Game::Game(PersistentConfiguration* configuration) {
 	this->mapView->setTextureHolder(configuration->getTextureHolder());
 	this->mapController = new MapController(mapView,mapData);
 
-	setUpCharacters(mapView, mapData);
+	setUpCharacters(mapView, mapData, viewMap);
 	setUpEntities(mapView,mapData);
 }
 
@@ -43,21 +43,37 @@ void getEvent() {
 void refreshMap() {
 }
 
-void Game::setUpCharacters(MapView* map, MapData* mapData) {
+void Game::setUpCharacters(MapView* map, MapData* mapData, EntityViewMap* viewMap) {
 
-	//TODO: Posiblemente se levante del cfg reader esto
+	for (int i=0; i < viewMap->getNCols(); i++){
 
-	personajeVista = new PersonajeVista();
-	personaje = new Personaje();
-	personajeVista->setPersonaje(personaje );
+		for (int j=0; j < viewMap->getNRows(); j++){
 
-	mapData->addPersonaje(0, 0, personaje);
-	map->AssignPersonaje(personaje);
-	/* Lucas: La linea siguiente antes estaba antes de lo de arriba, pero
-	 * yo creo que va despues, como vas a iterar la matriz de personajes
-	 * seteandolos si no hiciste addpersonaje?
-	 */
+			list<EntityView*>aList = viewMap->getListAtRowAndCol(j,i);
+			if(!aList.empty()){
+				list<EntityView*>::iterator it;
+				for (it = aList.begin(); it != aList.end(); ++it) {
+					EntityView* view = *it;
+					if (!view) continue;
+					Entity* entity = view->getEntity();
+					if (entity->getClassName()=="Personaje"){
+						//TODO - Lucas: "personaje" deberia ser una lista de personajes
+						personaje = (Personaje*)entity;
+
+						Vector2* pos = personaje->getCurrentPos();
+						float x= pos->GetX();
+						float y = pos->GetY();
+						cout<<x<<"  "<<y<<endl;
+						mapData->addPersonaje((int) x, (int) y, personaje);
+						map->AssignPersonaje(personaje);
+					}
+				}
+			}
+		}
+	}
+
 	map->SetUpPersonajes();
+
 }
 
 void refreshEntities() {
@@ -102,11 +118,8 @@ void Game::draw() {
 	//Borramos y redibujamos en cada ciclo
 
 	SDL_FillRect(screen, NULL, 0);
-	mapView->Draw();
-
 	Position* cam = mapView->GetCamera();
-	personajeVista->UpdateCameraPos(cam->getX(), cam->getY());
-	personajeVista->Mostrar(screen);
+	mapView->draw(cam);
 	delete cam;
 	// Actualiza la screen
 	SDL_Flip(screen);

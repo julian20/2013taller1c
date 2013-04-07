@@ -82,7 +82,7 @@ Vector2* EntityView::getAnchorPixel() {
 	return this->anchorPixel;
 }
 
-void EntityView::draw(SDL_Surface* screen){
+void EntityView::draw(SDL_Surface* screen,Position* cam){
 	SDL_Rect offset;
 	SDL_Rect clip;
 
@@ -94,8 +94,8 @@ void EntityView::draw(SDL_Surface* screen){
 	Vector2* position = entity->getCurrentPos();
 	float x = position->GetX();
 	float y = position->GetY();
-	offset.x = (int) x - clip.w;
-	offset.y = (int) y - clip.h;
+	offset.x = (int) x + cam->getX() - clip.w;
+	offset.y = (int) y + cam->getY() - clip.h;
 	offset.w = clip.w;
 	offset.h = clip.h;
 

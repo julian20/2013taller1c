@@ -34,7 +34,7 @@ SDL_Rect clipsArribaIzq[NUMERODECLIPS];
 SDL_Rect clipsQuieto[NUMERODECLIPS];
 
 
-void PersonajeVista::draw(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
+void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
 	SDL_Rect offset;
 
 	Vector2* position = miPersonaje->GetCurrentPos();
@@ -48,6 +48,12 @@ void PersonajeVista::draw(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* cl
 	SDL_BlitSurface(source, clip, screen, &offset);
 }
 
+
+void PersonajeVista::draw(SDL_Surface* screen,Position* cam) {
+	UpdateCameraPos(cam->getX(),cam->getY());
+	Mostrar(screen);
+}
+
 void PersonajeVista::UpdateCameraPos(int x, int y) {
 	cameraX = x;
 	cameraY = y;
@@ -56,17 +62,12 @@ void PersonajeVista::UpdateCameraPos(int x, int y) {
 PersonajeVista::PersonajeVista()
 	//Llamamos al constructor de la superclase
 	:EntityView(){
-
-	setImagePath(RUTA_IMAGEN);
+	cout << "I made it" << endl;
 	cameraX = cameraY = 0;
+	miPersonaje = NULL;
 	marco = 0;
 	estado = 0;
-	/* TODO: Faltaria lanzar una excepcion en caso de que no recieba alguno de los parametros
-	 if(!unPersonaje)
-	 {
-	 throw new FaltaParametroException("PersonajeVista");
-	 }*/
-
+	clipToDraw=0;
 	// try
 	//{
 	//this->fondo = fondo;
@@ -108,12 +109,24 @@ SDL_Surface* PersonajeVista::CargarImagen(std::string img) {
 	return miPersonajeImagen;
 }
 
+
+Personaje* PersonajeVista::getEntity(){
+	return miPersonaje;
+
+}
+
+void PersonajeVista::setEntity(Entity* entity) {
+	//TODO: Error check (si no es un personaje)
+	Personaje* aux = (Personaje*)entity;
+	miPersonaje = aux;
+}
+
+
 void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
 	float direction = movementDirection->GetAngle();
 	Vector2* pos = this->miPersonaje->GetCurrentPos();
 
-	SDL_Rect* clipToDraw;
 
 	if (M_PI * 15 / 8 < direction || direction < M_PI * 1 / 8)
 		clipToDraw = &clipsDerecha[marco];
@@ -142,7 +155,7 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	if (marco >= NUMERODECLIPS)
 		marco = 0;    // Loop the animation
 
-	draw(this->personajeImagen, fondo, clipToDraw);
+	showFrame(this->personajeImagen, fondo, clipToDraw);
 }
 
 void PersonajeVista::EstablecerLosClips(int cantidadPorLado) {
