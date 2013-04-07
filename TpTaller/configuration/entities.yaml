@@ -1,5 +1,6 @@
 - playerViews:
   - imageSrc: ./pathToImage.png
+    anchorPixel: [0, 0]
     player:
       name: Personaje
       position: [3, 2, 1]
