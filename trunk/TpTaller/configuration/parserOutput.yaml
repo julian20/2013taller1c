@@ -14,6 +14,12 @@
         - name: Fist
           damage: 3
           range: 1
+- entityViews:
+  - imageSrc: ./pathToImage.png
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [3, 2, 0]
 - gameConfiguration:
     fps: 30
     delay: 10

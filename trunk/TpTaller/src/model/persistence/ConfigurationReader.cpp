@@ -13,10 +13,11 @@ using namespace std;
  * YAML Configuration file position.
  */
 #define PLAYERVIEWS_POSITION 0
-#define GAME_CONFIGURATION_POSITION 1
-#define TILE_DEFINITION_POSITION 2
-#define MAP_DIMENSION_POSITION 3
-#define MAP_TILES_POSITION 4
+#define ENTITYVIEWS_POSITION 1
+#define GAME_CONFIGURATION_POSITION 2
+#define TILE_DEFINITION_POSITION 3
+#define MAP_DIMENSION_POSITION 4
+#define MAP_TILES_POSITION 5
 
 /* ************************************** *
  * *********** AUX STRUCTURES *********** *
@@ -107,6 +108,19 @@ void printPersonaje(Personaje* parsedPersonaje, std::ofstream& outputFile) {
 }
 
 /**
+ * Prints an personaje to check if it was parsed correctly.
+ */
+void printEntity(Entity* parsedPersonaje, std::ofstream& outputFile) {
+	outputFile << "    entity:\n";
+	outputFile << "      name: ";
+	outputFile << parsedPersonaje->getName() << std::endl;
+	outputFile << "      position: [";
+	outputFile << parsedPersonaje->getCurrentPos()->GetX() << ", ";
+	outputFile << parsedPersonaje->getCurrentPos()->GetY() << ", ";
+	outputFile << "0" << "]\n";
+}
+
+/**
  * Prints a list of player views.
  */
 void printPlayerViews(std::vector<PersonajeVista*> entityViews,
@@ -122,6 +136,26 @@ void printPlayerViews(std::vector<PersonajeVista*> entityViews,
 				<< parsedEntityView->getAnchorPixel()->GetY() << "]"
 				<< std::endl;
 		printPersonaje((Personaje*) parsedEntityView->getEntity(), outputFile);
+	}
+
+}
+
+/**
+ * Prints a list of player views.
+ */
+void printEntityViews(std::vector<EntityView*> entityViews,
+		std::ofstream& outputFile) {
+
+	outputFile << "- entityViews:" << std::endl;
+	for (unsigned int j = 0; j < entityViews.size(); j++) {
+		EntityView* parsedEntityView = entityViews[j];
+		outputFile << "  - imageSrc: " << parsedEntityView->getImagePath()
+				<< std::endl;
+		outputFile << "    anchorPixel: " << "["
+				<< parsedEntityView->getAnchorPixel()->GetX() << ", "
+				<< parsedEntityView->getAnchorPixel()->GetY() << "]"
+				<< std::endl;
+		printEntity(parsedEntityView->getEntity(), outputFile);
 	}
 
 }
@@ -301,9 +335,25 @@ void operator >>(const YAML::Node& yamlNode, Personaje* personaje) {
 }
 
 /**
+ * Sobrecarga de operador >> para llenar los datos de un puntero
+ * a Personaje.
+ */
+void operator >>(const YAML::Node& yamlNode, Entity* entity) {
+
+	Position* auxPosition = new Position(0, 0, 0);
+	std::string auxName;
+
+	yamlNode["name"] >> auxName;
+	yamlNode["position"] >> auxPosition;
+
+	entity->setName(auxName);
+	entity->setPos(auxPosition->getX(), auxPosition->getY());
+}
+
+/**
  * Sobrecarga de operador >> para llenar los campos de una PersonajeVista.
  */
-void operator >>(const YAML::Node& yamlNode, PersonajeVista* entityView) {
+void operator >>(const YAML::Node& yamlNode, PersonajeVista* playerView) {
 
 	std::vector<Power*> auxPowers;
 	Personaje* personaje = new Personaje("", NULL, NULL, auxPowers);
@@ -314,9 +364,29 @@ void operator >>(const YAML::Node& yamlNode, PersonajeVista* entityView) {
 	yamlNode["anchorPixel"] >> auxAnchorPixel;
 	yamlNode["player"] >> personaje;
 
+	playerView->setImagePath(auxImageSrc);
+	playerView->setAnchorPixel(auxAnchorPixel);
+	playerView->setEntity(personaje);
+
+}
+
+/**
+ * Sobrecarga de operador >> para llenar los campos de una EntityView.
+ */
+void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
+
+	Entity* auxEntity = new Entity();
+	Vector2* auxAnchorPixel = new Vector2(0, 0);
+	std::vector<Power*> auxPowers;
+	std::string auxImageSrc;
+
+	yamlNode["imageSrc"] >> auxImageSrc;
+	yamlNode["anchorPixel"] >> auxAnchorPixel;
+	yamlNode["entity"] >> auxEntity;
+
 	entityView->setImagePath(auxImageSrc);
 	entityView->setAnchorPixel(auxAnchorPixel);
-	entityView->setEntity(personaje);
+	entityView->setEntity(auxEntity);
 
 }
 
@@ -329,6 +399,18 @@ void operator >>(const YAML::Node& yamlNode,
 	for (unsigned i = 0; i < playerViews.size(); i++) {
 		PersonajeVista* entityView = new PersonajeVista();
 		playerViews[i] >> entityView;
+		entityList.push_back(entityView);
+	}
+}
+/**
+ * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
+ */
+void operator >>(const YAML::Node& yamlNode,
+		std::vector<EntityView*>& entityList) {
+	const YAML::Node& entityViews = yamlNode["entityViews"];
+	for (unsigned i = 0; i < entityViews.size(); i++) {
+		EntityView* entityView = new EntityView();
+		entityViews[i] >> entityView;
 		entityList.push_back(entityView);
 	}
 }
@@ -499,9 +581,13 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	YAML::Node yamlNode;
 	parser.GetNextDocument(yamlNode);
 
-	// Parsing entities.
+	// Parsing PersonajeVista.
 	std::vector<PersonajeVista*> playerViewVector;
 	yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
+
+	// Parsing EntityViews.
+	std::vector<EntityView*> entityViewVector;
+	yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
 
 	// Parsing animation configuration.
 	GameConfiguration* animationConfig = new GameConfiguration();
@@ -538,6 +624,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 
 	// Print parsed elements.
 	printPlayerViews(playerViewVector, outputFile);
+	printEntityViews(entityViewVector, outputFile);
 	printGameConfiguration(animationConfig, outputFile);
 	printTextureHolder(textureHolder, outputFile);
 	printMapConfiguration(mapConfiguration, outputFile);
