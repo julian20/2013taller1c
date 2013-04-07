@@ -29,7 +29,7 @@ public:
 	void setTextureIdentifier(std::string textureId);
 	static SDL_Rect computePosition(int row, int col);
 	static SDL_Rect computePosition(int row, int col, bool toTileCenter);
-	Coordinates* getTileCoordinates(int x, int y);
+	static Coordinates* getTileCoordinates(int x, int y);
 private:
 
 

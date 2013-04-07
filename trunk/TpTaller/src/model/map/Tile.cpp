@@ -120,7 +120,9 @@ Coordinates* Tile::getTileCoordinates(int x, int y)
 
 	int col= x/widthTexture + y/heightTexture;
 	int row= y/ heightTexture - x/widthTexture;
-	printf("x: %i   Y: %i\n",x,y);
+
+	// printf("x: %i   Y: %i\n",x,y);
+
 	Coordinates* coor = new Coordinates(row,col);
 	return coor;
 }
