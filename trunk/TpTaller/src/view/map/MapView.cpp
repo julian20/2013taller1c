@@ -52,6 +52,9 @@ void MapView::SetUpPersonajes() {
 
 void MapView::movePlayer(int x, int y) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
+	Coordinates* coor=this->IdentifyTile(x,y);
+	if(! (coor->getCol()<0 || coor->getRow()<0))
+	{
 	SDL_Rect firstTile = Tile::computePosition(0, 0);
 	firstTile.x = camera->getX() + firstTile.x;
 	firstTile.y = camera->getY() + firstTile.y;
@@ -71,6 +74,7 @@ void MapView::movePlayer(int x, int y) {
 	}
 
 	//printf("row: %d, col: %d\n", row, col);
+	}delete coor;
 }
 
 void MapView::AssignPersonaje(Personaje* _personaje) {
@@ -227,6 +231,14 @@ TextureHolder* MapView::getTextureHolder() {
 	return this->textureHolder;
 }
 
+Coordinates* MapView::IdentifyTile(int x, int y)
+{
+	Tile* tileAux= new Tile();
+	Coordinates* coor=tileAux->getTileCoordinates(x-this->camera->getX(),y-this->camera->getY());
+	delete tileAux;
+	printf("%i........%i\n",coor->getRow(),coor->getCol());
+	return coor;
+}
 void MapView::setTextureHolder(TextureHolder* textureHolder) {
 	this->textureHolder = textureHolder;
 }

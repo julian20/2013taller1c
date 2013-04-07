@@ -33,7 +33,7 @@ public:
 	list<Tile *> *GetPath(Tile* from, Tile* to);
 	list<Entity *> *Entities;
 	void movePersonaje(Personaje* personaje, Tile* toTile);
-	void IdentifyTile(int x, int y);
+	//void IdentifyTile(int x, int y);
 private:
     vector<TileData> data;
     int nrows;

@@ -104,7 +104,7 @@ void MapController::cameraMoveListener(){
 void MapController::clickListener(SDL_Event event){
 	if ((event.type == SDL_MOUSEBUTTONUP) && (event.button.button == 1))
 		{
-			this->mapData->IdentifyTile(event.button.x,event.button.y);
+			//this->mapView->IdentifyTile(event.button.x,event.button.y);
 			mapView->movePlayer(event.button.x, event.button.y);
 		}
 }
