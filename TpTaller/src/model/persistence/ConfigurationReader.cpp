@@ -534,7 +534,7 @@ void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
  * ************************************************ */
 
 void loadEntityViewMap(EntityViewMap* entityViewMap,
-		std::vector<PersonajeVista*> entityViewVector, MapData* mapData) {
+		std::vector<PersonajeVista*> entityViewVector) {
 
 	for (unsigned int j = 0; j < entityViewVector.size(); j++) {
 		PersonajeVista* parsedEntityView = entityViewVector[j];
@@ -546,6 +546,25 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		Coordinates coordinates = Coordinates(
 				personaje->GetCurrentPos()->GetX(),
 				personaje->GetCurrentPos()->GetY());
+
+		entityViewMap->positionEntityView(parsedEntityView, coordinates);
+	}
+
+}
+
+void loadEntityViewMap(EntityViewMap* entityViewMap,
+		std::vector<EntityView*> entityViewVector) {
+
+	for (unsigned int j = 0; j < entityViewVector.size(); j++) {
+		EntityView* parsedEntityView = entityViewVector[j];
+		Entity* personaje = parsedEntityView->getEntity();
+
+		/**
+		 * TODO: hacer conversion entre Posicion y Coordinates.
+		 */
+		Coordinates coordinates = Coordinates(
+				personaje->getCurrentPos()->GetX(),
+				personaje->getCurrentPos()->GetY());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}
@@ -612,11 +631,11 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	// Create entityViewMap:
 	EntityViewMap* entityViewMap = new EntityViewMap(mapData->GetNRows(),
 			mapData->GetNCols());
-	loadEntityViewMap(entityViewMap, playerViewVector, mapData);
+	loadEntityViewMap(entityViewMap, playerViewVector);
+	loadEntityViewMap(entityViewMap, playerViewVector);
 
 	// Packing parser results.
 	PersistentConfiguration configuration = PersistentConfiguration();
-//	configuration.setPersonajeList(playerViewVector);
 	configuration.setEntityViewMap(entityViewMap);
 	configuration.setTextureHolder(textureHolder);
 	configuration.setMapData(mapData);
