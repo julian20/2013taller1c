@@ -17,6 +17,7 @@ EntityView::EntityView() {
 	this->imagePath = "";
 	this->entity = NULL;
 	this->image = NULL;
+	this->anchorPixel = new Vector2(0, 0);
 }
 
 SDL_Surface* EntityView::load_image(std::string urlImagen) {
@@ -64,6 +65,15 @@ void EntityView::setEntity(Entity* entity) {
 
 Entity* EntityView::getEntity() {
 	return this->entity;
+}
+
+void EntityView::setAnchorPixel(Vector2* anchorPixel) {
+	delete this->anchorPixel;
+	this->anchorPixel = anchorPixel;
+}
+
+Vector2* EntityView::getAnchorPixel() {
+	return this->anchorPixel;
 }
 
 EntityView::~EntityView() {
