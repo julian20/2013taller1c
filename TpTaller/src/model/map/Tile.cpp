@@ -113,3 +113,13 @@ SDL_Rect Tile::getDiamondShapeMapTilePos(int row, int col) {
 	return posTile;
 }
 
+Coordinates* Tile::getTileCoordinates(int x, int y)
+{
+	int widthTexture = TextureWidth - TilesOverlap;
+	int heightTexture = TextureHeight - TilesOverlap;
+	int col= x/widthTexture + y/heightTexture;
+	int row= y/ heightTexture - x/widthTexture;
+
+	Coordinates* coor = new Coordinates(row,col);
+	return coor;
+}

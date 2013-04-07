@@ -16,6 +16,7 @@
 
 class Tile {
 public:
+	Tile();
 	Tile(Position* position, std::string textureId);
 	Tile(Coordinates* _coordinates);
 	virtual ~Tile();
@@ -28,8 +29,9 @@ public:
 	void setTextureIdentifier(std::string textureId);
 	static SDL_Rect computePosition(int row, int col);
 	static SDL_Rect computePosition(int row, int col, bool toTileCenter);
+	Coordinates* getTileCoordinates(int x, int y);
 private:
-	Tile();
+
 
 	static SDL_Rect getSquaredMapTilePos(int row, int col);
 	static SDL_Rect getDiamondShapeMapTilePos(int row, int col);

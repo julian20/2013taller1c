@@ -9,8 +9,9 @@
 #include <iostream>
 
 #define MovementMargin  50      // px
-MapController::MapController(MapView* mapView){
+MapController::MapController(MapView* mapView,MapData* mapData){
         this->mapView = mapView;
+        this->mapData = mapData;
         this->screen = mapView->getDrawingSurface();
 }
 
@@ -102,7 +103,10 @@ void MapController::cameraMoveListener(){
 
 void MapController::clickListener(SDL_Event event){
 	if ((event.type == SDL_MOUSEBUTTONUP) && (event.button.button == 1))
-		mapView->movePlayer(event.button.x, event.button.y);
+		{
+			this->mapData->IdentifyTile(event.button.x,event.button.y);
+			mapView->movePlayer(event.button.x, event.button.y);
+		}
 }
 
 MapController::~MapController() {
