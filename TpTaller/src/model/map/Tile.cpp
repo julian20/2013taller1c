@@ -117,9 +117,10 @@ Coordinates* Tile::getTileCoordinates(int x, int y)
 {
 	int widthTexture = TextureWidth - TilesOverlap;
 	int heightTexture = TextureHeight - TilesOverlap;
+
 	int col= x/widthTexture + y/heightTexture;
 	int row= y/ heightTexture - x/widthTexture;
-
+	printf("x: %i   Y: %i\n",x,y);
 	Coordinates* coor = new Coordinates(row,col);
 	return coor;
 }

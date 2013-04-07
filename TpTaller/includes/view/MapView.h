@@ -62,6 +62,7 @@ private:
 	void setLimitTiles();
 	void checkBasicBoundaries();
 	void checkAdvancedBoundaries();
+	Coordinates* IdentifyTile(int x, int y);
 };
 
 #endif  /* MAP_H */

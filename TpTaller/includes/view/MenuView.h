@@ -37,7 +37,6 @@ private:
 	Mix_Music *musica;
 	Mix_Chunk *darknessVoice;
 	GameConfiguration* gameConfig;
-
 	void startLaugh();
 	void startVoice();
 };
