@@ -53,7 +53,7 @@ void PersonajeVista::UpdateCameraPos(int x, int y) {
 	cameraY = y;
 }
 
-PersonajeVista::PersonajeVista(Personaje* unPersonaje)
+PersonajeVista::PersonajeVista()
 	//Llamamos al constructor de la superclase
 	:EntityView(){
 
@@ -67,10 +67,6 @@ PersonajeVista::PersonajeVista(Personaje* unPersonaje)
 	 throw new FaltaParametroException("PersonajeVista");
 	 }*/
 
-	miPersonaje = unPersonaje;
-	Vector2* anchorPixel = new Vector2(OFFSET_X,OFFSET_Y);
-	miPersonaje->getBase()->setAnchorPixel(anchorPixel);
-
 	// try
 	//{
 	//this->fondo = fondo;
@@ -80,6 +76,16 @@ PersonajeVista::PersonajeVista(Personaje* unPersonaje)
 	 {
 	 //TODO:cargo una imagen alternativa.
 	 }*/
+}
+
+void PersonajeVista::setPersonaje(Personaje* personaje) {
+	this->miPersonaje = personaje;
+	Vector2* anchorPixel = new Vector2(OFFSET_X, OFFSET_Y);
+	miPersonaje->getBase()->setAnchorPixel(anchorPixel);
+}
+
+Personaje* PersonajeVista::getPersonaje() {
+	return this->miPersonaje;
 }
 
 SDL_Surface* PersonajeVista::CargarImagen(std::string img) {

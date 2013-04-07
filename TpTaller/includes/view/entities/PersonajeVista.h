@@ -31,9 +31,11 @@
 
 class PersonajeVista : public EntityView {
 public:
-    PersonajeVista(Personaje* unPersonaje);
+    PersonajeVista();
     SDL_Surface* CargarImagen(std::string path);
     void Mostrar(SDL_Surface* fondo);
+    void setPersonaje(Personaje* personaje);
+    Personaje* getPersonaje();
     void UpdateCameraPos(int x, int y);
     virtual ~PersonajeVista();
 private:
