@@ -320,7 +320,7 @@ void operator >>(const YAML::Node& yamlNode,
 		std::vector<EntityView*>& entityList) {
 	const YAML::Node& playerViews = yamlNode["playerViews"];
 	for (unsigned i = 0; i < playerViews.size(); i++) {
-		EntityView* entityView = new EntityView(NULL, "");
+		EntityView* entityView = new EntityView();
 		playerViews[i] >> entityView;
 		entityList.push_back(entityView);
 	}
