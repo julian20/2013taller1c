@@ -11,44 +11,64 @@
 #include <SDL/SDL_rotozoom.h>
 #include <cmath>
 #include <string>
-namespace std{
+namespace std {
 
+EntityView::EntityView(Entity* entity, string path) {
+	this->entity = entity;
+	this->imagePath = path;
+	this->image = load_image(path);
+	if (!image) { //TODO al log / loadear alternativa
+		cout << "Error al cargar imagen de la vista" << endl;
+	}
+}
 
-	EntityView::EntityView(Entity* entity,string path){
-		this->entity=entity;
-		this->image = load_image(path);
-		if (!image){//TODO al log / loadear alternativa
-			cout << "Error al cargar imagen de la vista"<< endl;
+SDL_Surface* EntityView::load_image(std::string urlImagen) {
+	//The image that's loaded
+	SDL_Surface* loadedImage = NULL;
+
+	//The optimized surface that will be used
+	SDL_Surface* optimizedImage = NULL;
+
+	loadedImage = IMG_Load(urlImagen.c_str());
+
+	if (loadedImage != NULL) {
+		//loadedImage = rotozoomSurfaceXY(loadedImage, 0, SCALE, SCALE, 0);
+
+		//Create an optimized surface
+		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
+
+		SDL_FreeSurface(loadedImage);
+
+		if (optimizedImage != NULL) {
+			//Color key surface
+			SDL_SetColorKey(optimizedImage, SDL_SRCCOLORKEY,
+					SDL_MapRGB(optimizedImage->format, 0, 0xFF, 0xFF));
 		}
 	}
 
-	SDL_Surface* EntityView::load_image(std::string urlImagen) {
-		//The image that's loaded
-		SDL_Surface* loadedImage = NULL;
+	return optimizedImage;
+}
 
-		//The optimized surface that will be used
-		SDL_Surface* optimizedImage = NULL;
-
-		loadedImage = IMG_Load(urlImagen.c_str());
-
-		if (loadedImage != NULL) {
-			//loadedImage = rotozoomSurfaceXY(loadedImage, 0, SCALE, SCALE, 0);
-
-			//Create an optimized surface
-			optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
-
-			SDL_FreeSurface(loadedImage);
-
-			if (optimizedImage != NULL) {
-				//Color key surface
-				SDL_SetColorKey(optimizedImage, SDL_SRCCOLORKEY,
-						SDL_MapRGB(optimizedImage->format, 0, 0xFF, 0xFF));
-			}
-		}
-
-		return optimizedImage;
+void EntityView::setImagePath(std::string image_path) {
+	this->imagePath = image_path;
+	this->image = load_image(image_path);
+	if (!image) { //TODO al log / loadear alternativa
+		cout << "Error al cargar imagen de la vista" << endl;
 	}
+}
 
-	EntityView::~EntityView(){
-	}
+std::string EntityView::getImagePath() {
+	return this->imagePath;
+}
+
+void EntityView::setEntity(Entity* entity) {
+	this->entity = entity;
+}
+
+Entity* EntityView::getEntity() {
+	return this->entity;
+}
+
+EntityView::~EntityView() {
+}
 }

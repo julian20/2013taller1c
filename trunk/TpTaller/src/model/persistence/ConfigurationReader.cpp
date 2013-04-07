@@ -11,7 +11,7 @@ using namespace std;
 /**
  * YAML Configuration file position.
  */
-#define ENTITIES_POSITION 0
+#define PLAYERVIEWS_POSITION 0
 #define GAME_CONFIGURATION_POSITION 1
 #define TILE_DEFINITION_POSITION 2
 #define MAP_DIMENSION_POSITION 3
@@ -78,33 +78,45 @@ void printTile(Tile* tile, std::ofstream& outputFile) {
 /**
  * Prints an personaje to check if it was parsed correctly.
  */
-void printPersonajes(std::vector<Personaje*> entities, std::ofstream& outputFile) {
-	outputFile << "- players:\n";
-	for (unsigned j = 0; j < entities.size(); j++) {
-		Personaje* parsedPersonaje = entities[j];
-		outputFile << "  - name: ";
-		outputFile << parsedPersonaje->getName() << std::endl;
-		outputFile << "    position: [";
-		outputFile << parsedPersonaje->getPosition()->getX() << ", ";
-		outputFile << parsedPersonaje->getPosition()->getY() << ", ";
-		outputFile << parsedPersonaje->getPosition()->getZ() << "]\n";
-		outputFile << "    speed:\n";
-		outputFile << "      magnitude: ";
-		outputFile << parsedPersonaje->getSpeed()->getMagnitude() << std::endl;
-		outputFile << "      direction: [";
-		outputFile << parsedPersonaje->getSpeed()->getDirection().GetX() << ", ";
-		outputFile << parsedPersonaje->getSpeed()->getDirection().GetY() << "]";
-		outputFile << std::endl;
-		outputFile << "    powers:\n";
-		for (unsigned i = 0; i < parsedPersonaje->getPowers().size(); i++) {
-			outputFile << "      - name: "
-					<< parsedPersonaje->getPowers()[i]->getName() << std::endl;
-			outputFile << "        damage: "
-					<< parsedPersonaje->getPowers()[i]->getDamage()
-					<< std::endl;
-			outputFile << "        range: "
-					<< parsedPersonaje->getPowers()[i]->getRange() << std::endl;
-		}
+void printPersonaje(Personaje* parsedPersonaje, std::ofstream& outputFile) {
+	outputFile << "    player:\n";
+	outputFile << "      name: ";
+	outputFile << parsedPersonaje->getName() << std::endl;
+	outputFile << "      position: [";
+	outputFile << parsedPersonaje->getPosition()->getX() << ", ";
+	outputFile << parsedPersonaje->getPosition()->getY() << ", ";
+	outputFile << parsedPersonaje->getPosition()->getZ() << "]\n";
+	outputFile << "      speed:\n";
+	outputFile << "        magnitude: ";
+	outputFile << parsedPersonaje->getSpeed()->getMagnitude() << std::endl;
+	outputFile << "        direction: [";
+	outputFile << parsedPersonaje->getSpeed()->getDirection().GetX() << ", ";
+	outputFile << parsedPersonaje->getSpeed()->getDirection().GetY() << "]";
+	outputFile << std::endl;
+	outputFile << "      powers:\n";
+	for (unsigned i = 0; i < parsedPersonaje->getPowers().size(); i++) {
+		outputFile << "        - name: "
+				<< parsedPersonaje->getPowers()[i]->getName() << std::endl;
+		outputFile << "          damage: "
+				<< parsedPersonaje->getPowers()[i]->getDamage() << std::endl;
+		outputFile << "          range: "
+				<< parsedPersonaje->getPowers()[i]->getRange() << std::endl;
+	}
+
+}
+
+/**
+ * Prints a list of player views.
+ */
+void printPlayerViews(std::vector<EntityView*> entityViews,
+		std::ofstream& outputFile) {
+
+	outputFile << "- playerViews:" << std::endl;
+	for (unsigned int j = 0; j < entityViews.size(); j++) {
+		EntityView* parsedEntityView = entityViews[j];
+		outputFile << "  - imageSrc: " << parsedEntityView->getImagePath()
+				<< std::endl;
+		printPersonaje((Personaje*) parsedEntityView->getEntity(), outputFile);
 	}
 
 }
@@ -112,7 +124,8 @@ void printPersonajes(std::vector<Personaje*> entities, std::ofstream& outputFile
 /**
  * Prints an personaje to check if it was parsed correctly.
  */
-void printTextureHolder(TextureHolder* parsedTileDefinition, std::ofstream& outputFile) {
+void printTextureHolder(TextureHolder* parsedTileDefinition,
+		std::ofstream& outputFile) {
 
 	std::vector<std::string> textureIds;
 
@@ -159,7 +172,8 @@ void printConfiguredTiles(AuxMap &mapConfiguration, std::ofstream& outputFile) {
 /**
  * Prints the map configuration.
  */
-void printMapConfiguration(AuxMap &mapConfiguration, std::ofstream& outputFile) {
+void printMapConfiguration(AuxMap &mapConfiguration,
+		std::ofstream& outputFile) {
 
 	printMapDimensions(mapConfiguration, outputFile);
 	printConfiguredTiles(mapConfiguration, outputFile);
@@ -169,17 +183,22 @@ void printMapConfiguration(AuxMap &mapConfiguration, std::ofstream& outputFile) 
 /**
  * Prints the animated configuration.
  */
-void printGameConfiguration(GameConfiguration* aConfig, std::ofstream& outputFile) {
+void printGameConfiguration(GameConfiguration* aConfig,
+		std::ofstream& outputFile) {
 
 	outputFile << "- gameConfiguration:" << std::endl;
 	outputFile << "    fps: " << aConfig->getFps() << std::endl;
 	outputFile << "    delay: " << aConfig->getDelay() << std::endl;
 	outputFile << "    gameMusic: " << aConfig->getGameMusicSrc() << std::endl;
-	outputFile << "    defaultScreenHeight: " << aConfig->getDefaultScreenHeight() << std::endl;
-	outputFile << "    defaultScreenWidth: " << aConfig->getDefaultScreenWidth() << std::endl;
+	outputFile << "    defaultScreenHeight: "
+			<< aConfig->getDefaultScreenHeight() << std::endl;
+	outputFile << "    defaultScreenWidth: " << aConfig->getDefaultScreenWidth()
+			<< std::endl;
 	outputFile << "    defaultBPP: " << aConfig->getDefaultBPP() << std::endl;
-	outputFile << "    menuBackImage: " << aConfig->getMenuBackImageSrc() << std::endl;
-	outputFile << "    menuBackMusic: " << aConfig->getMenuBackMusicSrc() << std::endl;
+	outputFile << "    menuBackImage: " << aConfig->getMenuBackImageSrc()
+			<< std::endl;
+	outputFile << "    menuBackMusic: " << aConfig->getMenuBackMusicSrc()
+			<< std::endl;
 
 }
 
@@ -255,7 +274,7 @@ void operator >>(const YAML::Node& yamlNode, Speed* speed) {
 void operator >>(const YAML::Node& yamlNode, Personaje* personaje) {
 
 	Position* auxPosition = new Position(0, 0, 0);
-	Speed* auxSpeed = new Speed(0, Vector2(0,0));
+	Speed* auxSpeed = new Speed(0, Vector2(0, 0));
 	std::string auxName;
 	std::vector<Power*> auxPowers;
 
@@ -277,16 +296,32 @@ void operator >>(const YAML::Node& yamlNode, Personaje* personaje) {
 }
 
 /**
+ * Sobrecarga de operador >> para llenar los campos de una EntityView.
+ */
+void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
+
+	std::vector<Power*> auxPowers;
+	Personaje* personaje = new Personaje("", NULL, NULL, auxPowers);
+	std::string auxImageSrc;
+
+	yamlNode["imageSrc"] >> auxImageSrc;
+	yamlNode["player"] >> personaje;
+
+	entityView->setImagePath(auxImageSrc);
+	entityView->setEntity(personaje);
+
+}
+
+/**
  * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
  */
 void operator >>(const YAML::Node& yamlNode,
-		std::vector<Personaje*>& entityList) {
-	const YAML::Node& entities = yamlNode["players"];
-	for (unsigned i = 0; i < entities.size(); i++) {
-		std::vector<Power*> auxPowers;
-		Personaje* personaje = new Personaje("", NULL, NULL, auxPowers);
-		entities[i] >> personaje;
-		entityList.push_back(personaje);
+		std::vector<EntityView*>& entityList) {
+	const YAML::Node& playerViews = yamlNode["playerViews"];
+	for (unsigned i = 0; i < playerViews.size(); i++) {
+		EntityView* entityView = new EntityView(NULL, "");
+		playerViews[i] >> entityView;
+		entityList.push_back(entityView);
 	}
 }
 
@@ -404,6 +439,25 @@ void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
 	yamlDimensions[1] >> dimension.ncols;
 }
 
+EntityViewMap* createEntityViewMap(std::vector<EntityView*> entityViewVector,
+		MapData* mapData) {
+
+	EntityViewMap* entityViewMap = new EntityViewMap(mapData->GetNRows(),
+			mapData->GetNCols());
+
+	for (unsigned int j = 0; j < entityViewVector.size(); j++) {
+		EntityView* parsedEntityView = entityViewVector[j];
+		Coordinates coordinates = Coordinates(
+				parsedEntityView->getEntity()->GetCurrentPos()->GetX(),
+				parsedEntityView->getEntity()->GetCurrentPos()->GetY());
+
+		entityViewMap->positionEntityView(parsedEntityView, coordinates);
+	}
+
+	return entityViewMap;
+
+}
+
 /* ********************************************* *
  * *********** CONFIGURATION LOADING *********** *
  * ********************************************* */
@@ -434,8 +488,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	parser.GetNextDocument(yamlNode);
 
 	// Parsing entities.
-	std::vector<Personaje*> entities;
-	yamlNode[ENTITIES_POSITION] >> entities;
+	std::vector<EntityView*> playerViewVector;
+	yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
 
 	// Parsing animation configuration.
 	GameConfiguration* animationConfig = new GameConfiguration();
@@ -457,15 +511,18 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
 	mapConfiguration >> mapData;
 
+	// Create entityViewMap:
+	EntityViewMap* entityViewMap = createEntityViewMap(playerViewVector mapData);
+
 	// Packing parser results.
 	PersistentConfiguration configuration = PersistentConfiguration();
-	configuration.setPersonajeList(entities);
+//	configuration.setPersonajeList(playerViewVector);
 	configuration.setTextureHolder(textureHolder);
 	configuration.setMapData(mapData);
 	configuration.setAnimationConfiguration(animationConfig);
 
 	// Print parsed elements.
-	printPersonajes(entities, outputFile);
+	printPlayerViews(playerViewVector, outputFile);
 	printGameConfiguration(animationConfig, outputFile);
 	printTextureHolder(textureHolder, outputFile);
 	printMapConfiguration(mapConfiguration, outputFile);

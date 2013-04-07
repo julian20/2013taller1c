@@ -13,6 +13,7 @@
 #include <model/map/TextureHolder.h>
 #include <model/map/MapData.h>
 #include <view/configuration/GameConfiguration.h>
+#include <view/EntityViewMap.h>
 
 #include <vector>
 
@@ -28,12 +29,15 @@ public:
 	void setMapData(MapData* mapData);
 	GameConfiguration* getAnimationConfiguration();
 	void setAnimationConfiguration(GameConfiguration* animationConfig);
+	EntityViewMap* getEntityViewMap();
+	void setEntityViewMap(EntityViewMap* entityViewMap);
 
 private:
 	std::vector<Personaje*> entityList;
 	TextureHolder* textureHolder;
 	MapData* mapData;
 	GameConfiguration* animationConfiguration;
+	EntityViewMap* entityViewMap;
 };
 
 #endif /* PERSISTENTCONFIGURATION_H_ */
