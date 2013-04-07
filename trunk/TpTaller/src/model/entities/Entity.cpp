@@ -12,11 +12,8 @@
 #include <stdio.h>
 #include <vector>
 
-/**
- * TODO Player, personaje deben heredar de esta entidad, ya que
- * tendrian los mismos atributos basicos.
- */
 using namespace std;
+
 Entity::Entity() {
 	this->currentPos = new Vector2(0, 0);
 	this->base = new Base();
