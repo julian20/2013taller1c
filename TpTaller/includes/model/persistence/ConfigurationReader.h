@@ -21,6 +21,8 @@
 #include <model/map/TextureHolder.h>
 #include <model/persistence/PersistentConfiguration.h>
 #include <view/configuration/GameConfiguration.h>
+#include <view/EntityViewMap.h>
+#include <view/entities/EntityView.h>
 
 #include <iostream>
 #include <fstream>
