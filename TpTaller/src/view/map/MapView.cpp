@@ -61,10 +61,12 @@ void MapView::movePlayer(int x, int y) {
 			// printf("%i--%i\n",firstTile.x , firstTile.y );
 			personaje->MoveTo(x - cameraPos->getX(), y - cameraPos->getY());
 
-	}
+		}
 
 	//printf("row: %d, col: %d\n", row, col);
-	}delete coor;
+	}
+	delete coor;
+	delete cameraPos;
 }
 
 void MapView::AssignPersonaje(Personaje* _personaje) {
@@ -101,6 +103,7 @@ void MapView::draw(Position* cam) {
 			Position* cameraPos = this->camera->getPosition();
 			posTile.x = cameraPos->getX() + posTile.x;
 			posTile.y = cameraPos->getY() + posTile.y;
+			delete cameraPos;
 
 			std::string textureId = data->GetTileType(row, col);
 			SDL_Surface* textureImage = getTextureHolder()->getTexture(
@@ -112,24 +115,7 @@ void MapView::draw(Position* cam) {
 
 	}
 
-	for (int col = 0; col < data->GetNCols(); col++) {
-
-			for (int row = 0; row < data->GetNRows(); row++) {
-
-
-				list<EntityView*>aList = viewMap->getListAtRowAndCol(row,col);
-				if(!aList.empty()){
-					list<EntityView*>::iterator it;
-					for (it = aList.begin(); it != aList.end(); ++it) {
-						EntityView* view = *it;
-						if (!view) continue;
-						view->draw(screen,cam);
-					}
-				}
-			}
-
-		}
-
+	viewMap->drawViews(screen,cam);
 
 	// Luego se blitean todos los personajes despues de haber bliteado el piso
 	// para que el piso no tape a los flacos.

@@ -106,5 +106,8 @@ void EntityView::draw(SDL_Surface* screen,Position* cam){
 }
 
 EntityView::~EntityView() {
+	SDL_FreeSurface(this->image);
+	delete anchorPixel;
+
 }
 
