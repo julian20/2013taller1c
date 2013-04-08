@@ -24,18 +24,22 @@ EntityView::EntityView() {
 	this->currentClip=0;
 	this->anchorPixel = new Vector2(0, 0);
 }
+
 void EntityView::setImageWidth(int width)
 {
 	this->imageWidth = width;
 }
+
 void EntityView::setNClips(int clips)
 {
 	this->nClips=clips;
 }
+
 void EntityView::setImageHeight(int height)
 {
 	this->imageHeight = height;
 }
+
 SDL_Surface* EntityView::load_image(string urlImagen) {
 	//The image that's loaded
 	SDL_Init(SDL_INIT_EVERYTHING);

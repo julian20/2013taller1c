@@ -16,7 +16,7 @@
 #define OFFSET_X	47
 #define OFFSET_Y	30
 
-#define RUTA_IMAGEN "resources/foo5.png"
+#define RUTA_IMAGEN "resources/soldierSheet.png"
 #define ANIMATION_CHANGE_DELAY 4
 
 //#define SCALE				0.2
@@ -69,10 +69,10 @@ PersonajeVista::PersonajeVista()
 	estado = 0;
 	clipToDraw=0;
 	animationChangeRate=0;
+	personajeImagen=NULL;
 	// try
 	//{
 	//this->fondo = fondo;
-	personajeImagen = this->CargarImagen(RUTA_IMAGEN);
 	this->EstablecerLosClips(NUMERODECLIPS);
 	/* }catch(ERROR e)
 	 {
@@ -90,7 +90,7 @@ Personaje* PersonajeVista::getPersonaje() {
 	return this->miPersonaje;
 }
 
-SDL_Surface* PersonajeVista::CargarImagen(std::string img) {
+void PersonajeVista::cargarImagen(std::string img) {
 	//Load the sprite sheet
 	if (img.compare("")) {
 		//  throw new FaltaParametroException();
@@ -100,14 +100,15 @@ SDL_Surface* PersonajeVista::CargarImagen(std::string img) {
 
 	//If there was a problem in loading the sprite
 	if (!miPersonajeImagen) {
-		printf("NO SE HA ENCONTRADO LA IMAGEN\n");
+		printf("NO SE HA ENCONTRADO LA IMAGEN DEL PERSONAJE\n");
 		//return false;
 		//TODO: cargo una alternativa
+		miPersonajeImagen = load_image(RUTA_IMAGEN);
 	}
 
 	marco = 0;
 	estado = PERSONAJE_DERECHA;
-	return miPersonajeImagen;
+	personajeImagen = miPersonajeImagen;
 }
 
 

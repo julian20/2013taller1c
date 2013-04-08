@@ -26,13 +26,12 @@
 #define PERSONAJE_ALTO  96
 
 
-//APerfiles de la vista del personaje.
-
+using namespace std;
 
 class PersonajeVista : public EntityView {
 public:
     PersonajeVista();
-    SDL_Surface* CargarImagen(std::string path);
+    void cargarImagen(string path);
     void Mostrar(SDL_Surface* fondo);
     void setPersonaje(Personaje* personaje);
     Personaje* getPersonaje();

@@ -364,7 +364,7 @@ void operator >>(const YAML::Node& yamlNode, PersonajeVista* playerView) {
 	yamlNode["anchorPixel"] >> auxAnchorPixel;
 	yamlNode["player"] >> personaje;
 
-	playerView->setImagePath(auxImageSrc);
+	playerView->cargarImagen(auxImageSrc);
 	playerView->setAnchorPixel(auxAnchorPixel);
 	playerView->setEntity(personaje);
 
