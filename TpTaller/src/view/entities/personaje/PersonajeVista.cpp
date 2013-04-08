@@ -17,11 +17,12 @@
 #define OFFSET_Y	30
 
 #define RUTA_IMAGEN "resources/foo5.png"
+#define ANIMATION_CHANGE_DELAY 4
 
 //#define SCALE				0.2
 
 //como es animado necesito la cantidad de clips por lado.
-#define NUMERODECLIPS 9
+#define NUMERODECLIPS 8
 
 SDL_Rect clipsDerecha[NUMERODECLIPS];
 SDL_Rect clipsIzquierda[NUMERODECLIPS];
@@ -32,7 +33,6 @@ SDL_Rect clipsAbajoDer[NUMERODECLIPS];
 SDL_Rect clipsArribaDer[NUMERODECLIPS];
 SDL_Rect clipsArribaIzq[NUMERODECLIPS];
 SDL_Rect clipsQuieto[NUMERODECLIPS];
-
 
 void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
 	SDL_Rect offset;
@@ -68,6 +68,7 @@ PersonajeVista::PersonajeVista()
 	marco = 0;
 	estado = 0;
 	clipToDraw=0;
+	animationChangeRate=0;
 	// try
 	//{
 	//this->fondo = fondo;
@@ -125,8 +126,6 @@ void PersonajeVista::setEntity(Entity* entity) {
 void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
 	float direction = movementDirection->GetAngle();
-	Vector2* pos = this->miPersonaje->GetCurrentPos();
-
 
 	if (M_PI * 15 / 8 < direction || direction < M_PI * 1 / 8)
 		clipToDraw = &clipsDerecha[marco];
@@ -145,12 +144,23 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	else if (M_PI * 13 / 8 < direction && direction < M_PI * 15 / 8)
 		clipToDraw = &clipsArribaDer[marco];
 
-	if (miPersonaje->IsMoving())
-		this->marco++;	// Move to the next marco in the animation
+	if (miPersonaje->IsMoving()){
+		if (animationChangeRate==ANIMATION_CHANGE_DELAY){
+			this->marco++;
+			animationChangeRate=0;// Move to the next marco in the animation
+		}
+		else
+			animationChangeRate++;
+	}
 	else
 	{
 		clipToDraw= &clipsQuieto[marco];
-		marco++;	// Stop Animation, unit standing.
+		if (animationChangeRate==ANIMATION_CHANGE_DELAY){
+					this->marco++;
+					animationChangeRate=0;// Move to the next marco in the animation
+				}
+				else
+					animationChangeRate++;
 	}
 	if (marco >= NUMERODECLIPS)
 		marco = 0;    // Loop the animation
