@@ -1,5 +1,5 @@
 - playerViews:
-  - imageSrc: resources/foo5.png
+  - imageSrc: resources/soldierSheet.png
     anchorPixel: [0, 0]
     player:
       name: Personaje
