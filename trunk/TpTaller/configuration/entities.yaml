@@ -54,3 +54,5 @@
     texture: water
   - position: [6, 6, 0]
     texture: soil
+  - position: [20, 20, 0]
+    texture: soil

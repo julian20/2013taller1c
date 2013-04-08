@@ -37,6 +37,7 @@ void Game::setUpEntities(MapView* map,MapData* mapData)
 {
 	//Dami:Aca necesito que el parser traiga los datos de todas las entidades
 	Entity* molino=new Entity();
+	molino->setPos(20,20);
 	EntityView* molinoView = new EntityView();
 	molinoView->setEntity(molino);
 	molinoView->setImagePath("resources/windmill.png");
