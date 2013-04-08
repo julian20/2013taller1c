@@ -118,23 +118,19 @@ void EntityView::draw(SDL_Surface* screen,Position* cam){
 	clip.w=this->imageWidth;
 	clip.h=this->imageHeight;
 	Vector2* position = entity->getCurrentPos();
-	float x = position->GetX();
-	float y = position->GetY();
+	int x = (int) position->GetX();
+	int y = (int) position->GetY();
 
-	offset.x = (int) x + cam->getX() - clip.w;
-	offset.y = (int) y + cam->getY() - clip.h;
-	offset.w = clip.w;
+
+	offset.x = (int) (Tile::computePosition(x,y).x + cam->getX() - clip.w/2);
+	offset.y = (int) (Tile::computePosition(x,y).y + cam->getY() - clip.h/2);
 	offset.h = clip.h;
+	offset.w = clip.w;
 
 	SDL_BlitSurface(image, &clip, screen, &offset);
-	if(currentClip < this->nClips)
-		{
-			currentClip++;
-		}
-	else
-	{
-		currentClip=0;
-	}
+
+	if(currentClip < this->nClips)currentClip++;
+	else currentClip=0;
 
 }
 

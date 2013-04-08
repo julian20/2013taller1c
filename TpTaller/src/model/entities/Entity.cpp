@@ -7,6 +7,7 @@
 
 #include <model/entities/Entity.h>
 #include <model/entities/Entity.h>
+#include <model/map/Tile.h>
 
 #include <vector>
 #include <stdio.h>
@@ -18,11 +19,10 @@ Entity::Entity() {
 	this->currentPos = new Vector2(0, 0);
 	this->base = new Base();
 	this->name = "";
-	cout <<"WARNING"<<endl;
 }
 
 void Entity::setPos(float x, float y) {
-	currentPos->SetValues(x, y);
+	currentPos->SetValues(x,y);
 }
 
 Vector2* Entity::getCurrentPos() {
