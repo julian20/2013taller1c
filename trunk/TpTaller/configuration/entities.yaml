@@ -21,7 +21,7 @@
       name: Entity
       position: [3, 2, 1]
 - gameConfiguration:
-    fps: 50
+    fps: 30
     delay: 10
     gameMusic: resources/sound/gameMusic.ogg
     defaultScreenHeight: 600
