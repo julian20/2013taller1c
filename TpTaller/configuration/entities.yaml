@@ -1,5 +1,8 @@
 - playerViews:
   - imageSrc: resources/soldierSheet.png
+    imageWidth: 96
+    imageHeight: 96
+    numberOfClips: 8
     anchorPixel: [0, 0]
     player:
       name: Personaje
@@ -15,17 +18,52 @@
           damage: 3
           range: 1
 - entityViews:
-  - imageSrc: ./pathToImage.png
+  - imageSrc: resources/windmill.png
+    imageWidth: 224
+    imageHeight: 240
+    numberOfClips: 23
     anchorPixel: [0, 0]
     entity:
       name: Entity
-      position: [3, 2, 1]
+      position: [20, 20, 0]
+  - imageSrc: resources/trees.bmp
+    imageWidth: 129
+    imageHeight: 122
+    numberOfClips: 0
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [21, 21, 0]
+  - imageSrc: resources/trees.bmp
+    imageWidth: 129
+    imageHeight: 122
+    numberOfClips: 0
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [24, 21, 0]
+  - imageSrc: resources/trees.bmp
+    imageWidth: 129
+    imageHeight: 122
+    numberOfClips: 0
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [18, 21, 0]
+  - imageSrc: resources/trees.bmp
+    imageWidth: 129
+    imageHeight: 122
+    numberOfClips: 0
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [18, 19, 0]
 - gameConfiguration:
     fps: 30
     delay: 10
     gameMusic: resources/sound/gameMusic.ogg
     defaultScreenHeight: 600
-    defaultScreenWidth: 800
+    defaultScreenWidth: 1280
     defaultBPP: 0
     menuBackImage: resources/lich.jpg
     menuBackMusic: resources/sound/pirates.ogg

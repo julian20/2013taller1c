@@ -15,17 +15,37 @@
           damage: 3
           range: 1
 - entityViews:
-  - imageSrc: ./pathToImage.png
+  - imageSrc: resources/windmill.png
     anchorPixel: [0, 0]
     entity:
       name: Entity
-      position: [3, 2, 0]
+      position: [20, 20, 0]
+  - imageSrc: resources/trees.bmp
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [21, 21, 0]
+  - imageSrc: resources/trees.bmp
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [24, 21, 0]
+  - imageSrc: resources/trees.bmp
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [18, 21, 0]
+  - imageSrc: resources/trees.bmp
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [18, 19, 0]
 - gameConfiguration:
-    fps: 30
+    fps: 1000
     delay: 10
     gameMusic: resources/sound/gameMusic.ogg
     defaultScreenHeight: 600
-    defaultScreenWidth: 800
+    defaultScreenWidth: 1280
     defaultBPP: 0
     menuBackImage: resources/lich.jpg
     menuBackMusic: resources/sound/pirates.ogg

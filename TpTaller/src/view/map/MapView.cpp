@@ -1,7 +1,6 @@
 #include <view/MapView.h>
 
 #define TilesScale     		1
-#define CameraSpeed         15         // px
 
 using namespace std;
 
@@ -11,6 +10,8 @@ MapView::MapView(MapData* inputData, SDL_Surface* inputScreen, EntityViewMap* ma
 	viewMap = map;
 	Position* cameraPos = new Position(screen->w / 2, screen->h / 2);
 	camera = new MapCameraView( cameraPos, screen , data->GetNRows() , data->GetNCols());
+	entitiesView = NULL;
+	personaje = NULL;
 
 	textureHolder = NULL;
 }

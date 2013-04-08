@@ -73,23 +73,6 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam){
 
 
 EntityViewMap::~EntityViewMap() {
-	for (int col = 0; col < cols; col++) {
-
-			for (int row = 0; row < rows; row++) {
-
-
-				list<EntityView*>aList = entities.at(col).at(row);
-				if(!aList.empty()){
-					list<EntityView*>::iterator it;
-					for (it = aList.begin(); it != aList.end(); ++it) {
-						EntityView* view = *it;
-						if (!view) continue;
-						delete view;
-					}
-				}
-			}
-
-		}
 }
 
 } /* namespace std */

@@ -359,12 +359,20 @@ void operator >>(const YAML::Node& yamlNode, PersonajeVista* playerView) {
 	Personaje* personaje = new Personaje("", NULL, NULL, auxPowers);
 	std::string auxImageSrc;
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
+	int auxImageWidth, auxImageHeight, auxNumberOfClips;
 
 	yamlNode["imageSrc"] >> auxImageSrc;
 	yamlNode["anchorPixel"] >> auxAnchorPixel;
 	yamlNode["player"] >> personaje;
+	yamlNode["imageWidth"] >> auxImageWidth;
+	yamlNode["imageHeight"] >> auxImageHeight;
+	yamlNode["numberOfClips"] >> auxNumberOfClips;
 
 	playerView->cargarImagen(auxImageSrc);
+	playerView->setImageHeight(auxImageHeight);
+	playerView->setImageWidth(auxImageWidth);
+	playerView->setNClips(auxNumberOfClips);
+	playerView->EstablecerLosClips();
 	playerView->setAnchorPixel(auxAnchorPixel);
 	playerView->setEntity(personaje);
 
@@ -379,12 +387,19 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
 	std::vector<Power*> auxPowers;
 	std::string auxImageSrc;
+	int auxImageWidth, auxImageHeight, auxNumberOfClips;
 
 	yamlNode["imageSrc"] >> auxImageSrc;
 	yamlNode["anchorPixel"] >> auxAnchorPixel;
 	yamlNode["entity"] >> auxEntity;
+	yamlNode["imageWidth"] >> auxImageWidth;
+	yamlNode["imageHeight"] >> auxImageHeight;
+	yamlNode["numberOfClips"] >> auxNumberOfClips;
 
 	entityView->setImagePath(auxImageSrc);
+	entityView->setImageHeight(auxImageHeight);
+	entityView->setImageWidth(auxImageWidth);
+	entityView->setNClips(auxNumberOfClips);
 	entityView->setAnchorPixel(auxAnchorPixel);
 	entityView->setEntity(auxEntity);
 
@@ -632,7 +647,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	EntityViewMap* entityViewMap = new EntityViewMap(mapData->GetNRows(),
 			mapData->GetNCols());
 	loadEntityViewMap(entityViewMap, playerViewVector);
-	loadEntityViewMap(entityViewMap, playerViewVector);
+	loadEntityViewMap(entityViewMap, entityViewVector);
 
 	// Packing parser results.
 	PersistentConfiguration configuration = PersistentConfiguration();
