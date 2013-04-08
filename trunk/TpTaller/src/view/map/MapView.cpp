@@ -4,6 +4,7 @@
 #define CameraSpeed         15         // px
 
 using namespace std;
+
 MapView::MapView(MapData* inputData, SDL_Surface* inputScreen, EntityViewMap* map) {
 	screen = inputScreen;
 	data = inputData;
@@ -34,10 +35,14 @@ void MapView::SetUpPersonajes() {
 		}
 	}
 }
+
+//TODO - este metodo iria en cfg reader
 void MapView::SetUpEntity(EntityView* entityView,Coordinates coor)
 {
 	this->viewMap->positionEntityView(entityView,coor);
 }
+
+
 void MapView::movePlayer(int x, int y) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
 	// TODO: Que seleccione la casilla bien!
@@ -53,21 +58,13 @@ void MapView::movePlayer(int x, int y) {
 		firstTile.x = cameraPos->getX() + firstTile.x;
 		firstTile.y = cameraPos->getY() + firstTile.y;
 
-		// Squared Map
-		//int row = (y - firstTile.y) * 2 / firstTile.h;
-		//int col = (x - firstTile.x) / firstTile.w;
-
 		if (personaje != NULL) {
 			// TODO: esto no pierde memoria a lo loco?
 			 Tile* toTile = new Tile(new Coordinates(coor->getRow(), coor->getCol()));
 			 data->movePersonaje(personaje, toTile);
-			// printf("%i--%i\n",firstTile.x , firstTile.y );
-			// personaje->MoveTo(x - cameraPos->getX(), y - cameraPos->getY());
-
 		}
-
-	//printf("row: %d, col: %d\n", row, col);
 	}
+
 	delete coor;
 	delete cameraPos;
 }
@@ -109,8 +106,7 @@ void MapView::draw(Position* cam) {
 			delete cameraPos;
 
 			std::string textureId = data->GetTileType(row, col);
-			SDL_Surface* textureImage = getTextureHolder()->getTexture(
-					textureId);
+			SDL_Surface* textureImage = getTextureHolder()->getTexture(textureId);
 
 			SDL_BlitSurface(textureImage, NULL, screen, &posTile);
 
