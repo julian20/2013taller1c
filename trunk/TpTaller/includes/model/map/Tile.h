@@ -13,6 +13,7 @@
 #include <model/entityProperties/Coordinates.h>
 #include <SDL/SDL.h>
 #include <string>
+#include <math.h>
 
 class Tile {
 public:

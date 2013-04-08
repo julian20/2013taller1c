@@ -69,19 +69,14 @@ SDL_Rect Tile::computePosition(int row, int col /*, toTileCenter = false*/) {
 }
 
 SDL_Rect Tile::computePosition(int row, int col, bool toTileCenter) {
-	SDL_Rect pos = getDiamondShapeMapTilePos(row, col);
+	SDL_Rect pos = computePosition(row, col);
 
 	if (toTileCenter) {
-		SDL_Rect retval;
-		retval.x = pos.x + TextureWidth/2;
-		retval.y = pos.y + TextureHeight/2;
-		retval.w = pos.w;
-		retval.h = pos.h;
-
-		return retval;
-	} else {
-		return pos;
+		pos.x = pos.x + TextureWidth/2;
+		pos.y = pos.y + TextureHeight/2;
 	}
+
+	return pos;
 }
 
 SDL_Rect Tile::getSquaredMapTilePos(int row, int col) {
@@ -115,11 +110,14 @@ SDL_Rect Tile::getDiamondShapeMapTilePos(int row, int col) {
 
 Coordinates* Tile::getTileCoordinates(int x, int y)
 {
-	int widthTexture = TextureWidth - TilesOverlap;
-	int heightTexture = TextureHeight - TilesOverlap;
+	float xF = (float)x;
+	float yF = (float)y;
 
-	int col= x/widthTexture + y/heightTexture;
-	int row= y/ heightTexture - x/widthTexture;
+	float widthTexture = (float)TextureWidth - (float)TilesOverlap;
+	float heightTexture = (float)TextureHeight - (float)TilesOverlap;
+
+	int col = (int)(roundf(xF / widthTexture + yF / heightTexture));
+	int row = (int)(roundf(yF / heightTexture - xF / widthTexture));
 
 	// printf("x: %i   Y: %i\n",x,y);
 

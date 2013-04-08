@@ -107,7 +107,7 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* to) {
 	Coordinates* toCords = to->getCoordinates();
 
 	while (nextTileCords->getCol() != toCords->getCol()
-			|| nextTileCords->getRow() != toCords->getRow()) {
+		|| nextTileCords->getRow() != toCords->getRow()) {
 
 		int nextTileCol = nextTileCords->getCol();
 		int nextTileRow = nextTileCords->getRow();
@@ -131,7 +131,6 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* to) {
 		nextTile = new Tile(new Coordinates(row, col));
 		nextTileCords = nextTile->getCoordinates();
 		path->insert(path->end(), nextTile);
-
 	}
 
 	return path;
