@@ -13,8 +13,8 @@
 #include <cmath>
 #include <string>
 
-#define OFFSET_X	47
-#define OFFSET_Y	30
+//Posicion de los pies del personaje respecto de la base de la imagen
+#define OFFSET_Y	15
 
 #define RUTA_IMAGEN "resources/soldierSheet.png"
 #define ANIMATION_CHANGE_DELAY 4
@@ -40,7 +40,7 @@ void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rec
 	Vector2* position = miPersonaje->GetCurrentPos();
 	float x = position->GetX();
 	float y = position->GetY();
-	offset.x = (int) x + cameraX - clip->w + OFFSET_X;
+	offset.x = (int) x + cameraX - clip->w/2;
 	offset.y = (int) y + cameraY - clip->h + OFFSET_Y;
 	offset.w = clip->w;
 	offset.h = clip->h;
@@ -82,7 +82,7 @@ PersonajeVista::PersonajeVista()
 
 void PersonajeVista::setPersonaje(Personaje* personaje) {
 	this->miPersonaje = personaje;
-	Vector2* anchorPixel = new Vector2(OFFSET_X, OFFSET_Y);
+	Vector2* anchorPixel = new Vector2(clip.w/2, OFFSET_Y);
 	miPersonaje->getBase()->setAnchorPixel(anchorPixel);
 }
 

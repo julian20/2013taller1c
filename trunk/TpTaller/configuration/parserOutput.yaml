@@ -3,7 +3,7 @@
     anchorPixel: [0, 0]
     player:
       name: Personaje
-      position: [33, 32, 1]
+      position: [0, 0, 0]
       speed:
         magnitude: 1
         direction: [1, 2]
