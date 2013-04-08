@@ -28,14 +28,25 @@ public:
 	virtual ~EntityView();
 	Vector2* getAnchorPixel();
 	void setAnchorPixel(Vector2* anchorPixel);
-
+	void setImageWidth(int width);
+	void setImageHeight(int height);
 	virtual void draw(SDL_Surface* screen, Position* camera);
+	void setNClips(int clips);
 protected:
+
+	int nClips;
+
 	SDL_Surface* load_image(std::string urlImagen);
 	Entity* entity;
 	SDL_Surface* image;
 	Vector2* anchorPixel;
 	string imagePath;
+	int imageHeight;
+	int imageWidth;
+	//void EstablecerClips();
+
+	int currentClip;
+	SDL_Rect clip;
 };
 
 

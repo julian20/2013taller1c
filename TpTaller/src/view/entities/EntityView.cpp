@@ -16,11 +16,26 @@ using namespace std;
 
 EntityView::EntityView() {
 	this->imagePath = "";
+	this->imageHeight=0;
+	this->imageWidth=0;
 	this->entity = NULL;
 	this->image = NULL;
+	this->nClips = 1;
+	this->currentClip=0;
 	this->anchorPixel = new Vector2(0, 0);
 }
-
+void EntityView::setImageWidth(int width)
+{
+	this->imageWidth = width;
+}
+void EntityView::setNClips(int clips)
+{
+	this->nClips=clips;
+}
+void EntityView::setImageHeight(int height)
+{
+	this->imageHeight = height;
+}
 SDL_Surface* EntityView::load_image(string urlImagen) {
 	//The image that's loaded
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -81,27 +96,45 @@ void EntityView::setAnchorPixel(Vector2* anchorPixel) {
 Vector2* EntityView::getAnchorPixel() {
 	return this->anchorPixel;
 }
+/*
+void EntityView::EstablecerClips()
+{
+	for(int x=0; x < this->nClips ; x++)
+	{
+		clip[x].x =this->imageWidth*x;
+		clip[x].y =0;
+		clip[x].w=this->imageWidth;
+		clip[x].h=this->imageHeight;
+
+	}
+}*/
 
 void EntityView::draw(SDL_Surface* screen,Position* cam){
 	SDL_Rect offset;
-	SDL_Rect clip;
 
-	clip.x=0;
-	clip.y=0;
-	clip.w=image->w;
-	clip.h=image->h;
 
+	clip.x =this->imageWidth*this->currentClip;
+	clip.y =0;
+	clip.w=this->imageWidth;
+	clip.h=this->imageHeight;
 	Vector2* position = entity->getCurrentPos();
 	float x = position->GetX();
 	float y = position->GetY();
+
 	offset.x = (int) x + cam->getX() - clip.w;
 	offset.y = (int) y + cam->getY() - clip.h;
 	offset.w = clip.w;
 	offset.h = clip.h;
 
 	SDL_BlitSurface(image, &clip, screen, &offset);
-
-
+	if(currentClip < this->nClips)
+		{
+			currentClip++;
+		}
+	else
+	{
+		currentClip=0;
+	}
 
 }
 
