@@ -34,7 +34,10 @@ void MapView::SetUpPersonajes() {
 		}
 	}
 }
-
+void MapView::SetUpEntity(EntityView* entityView,Coordinates coor)
+{
+	this->viewMap->positionEntityView(entityView,coor);
+}
 void MapView::movePlayer(int x, int y) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
 	// TODO: Que seleccione la casilla bien!

@@ -28,8 +28,9 @@ public:
 	void Update();
 	void SetUpPersonajes();
 	void AssignPersonaje(Personaje* _personaje);
+	void SetUpEntity(EntityView* entityView, Coordinates coor);
 	MapCameraView* getCamera();
-
+	list<EntityView *> *entitiesView;
 	TextureHolder* getTextureHolder();
 	void setTextureHolder(TextureHolder* textureHolder);
 private:
