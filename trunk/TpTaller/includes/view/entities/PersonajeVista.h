@@ -52,6 +52,7 @@ private:
 	int marco; 	// Current frame
 	int estado; // Animation status
 	SDL_Rect* clipToDraw;
+	int animationChangeRate;
 };
 
 #endif	/* PERSONAJEVISTA_H */
