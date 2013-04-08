@@ -59,10 +59,10 @@ void MapView::movePlayer(int x, int y) {
 
 		if (personaje != NULL) {
 			// TODO: esto no pierde memoria a lo loco?
-			// Tile* toTile = new Tile(new Coordinates(row, col, true));
-			// data->movePersonaje(personaje, toTile);
+			 Tile* toTile = new Tile(new Coordinates(coor->getRow(), coor->getCol()));
+			 data->movePersonaje(personaje, toTile);
 			// printf("%i--%i\n",firstTile.x , firstTile.y );
-			personaje->MoveTo(x - cameraPos->getX(), y - cameraPos->getY());
+			// personaje->MoveTo(x - cameraPos->getX(), y - cameraPos->getY());
 
 		}
 

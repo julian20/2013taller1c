@@ -38,7 +38,7 @@
     imageSrc: texturesTiles/Water.png
   - identifier: tree
     imageSrc: texturesTiles/stonebrick.png
-- mapDimensions: [10, 10]
+- mapDimensions: [50, 30]
 - tileLocations:
   - position: [0, 0, 0]
     texture: neutral
