@@ -38,11 +38,18 @@ public:
     void UpdateCameraPos(int x, int y);
     Personaje* getEntity();
     void setEntity(Entity* entity);
+    int getImageHeight();
+    void setImageHeight(int height);
+    int getImageWidth();
+    void setImageWidth(int width);
+    int getNClips();
+    void setNClips(int clips);
     virtual ~PersonajeVista();
+    void EstablecerLosClips();
     void draw(SDL_Surface* screen, Position* camera);
 private:
     void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
-	void EstablecerLosClips(int cantidadPorLado);
+
 	Personaje* miPersonaje;
 	//SDL_Surface* fondo;
 	SDL_Surface* personajeImagen;
@@ -52,6 +59,20 @@ private:
 	int estado; // Animation status
 	SDL_Rect* clipToDraw;
 	int animationChangeRate;
+	int imageWidth;
+	int imageHeight;
+	int numberOfClips;
+
+	//Vectores de clips
+	vector<SDL_Rect> clipsDerecha;
+	vector<SDL_Rect> clipsIzquierda;
+	vector<SDL_Rect> clipsArriba;
+	vector<SDL_Rect> clipsAbajo;
+	vector<SDL_Rect> clipsAbajoIzq;
+	vector<SDL_Rect> clipsAbajoDer;
+	vector<SDL_Rect> clipsArribaDer;
+	vector<SDL_Rect> clipsArribaIzq;
+	vector<SDL_Rect> clipsQuieto;
 };
 
 #endif	/* PERSONAJEVISTA_H */

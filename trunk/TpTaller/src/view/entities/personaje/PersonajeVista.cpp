@@ -17,30 +17,19 @@
 #define OFFSET_Y	15
 
 #define RUTA_IMAGEN "resources/soldierSheet.png"
-#define ANIMATION_CHANGE_DELAY 4
+#define ANIMATION_CHANGE_DELAY 1
 
 //#define SCALE				0.2
 
 //como es animado necesito la cantidad de clips por lado.
-#define NUMERODECLIPS 8
-
-SDL_Rect clipsDerecha[NUMERODECLIPS];
-SDL_Rect clipsIzquierda[NUMERODECLIPS];
-SDL_Rect clipsArriba[NUMERODECLIPS];
-SDL_Rect clipsAbajo[NUMERODECLIPS];
-SDL_Rect clipsAbajoIzq[NUMERODECLIPS];
-SDL_Rect clipsAbajoDer[NUMERODECLIPS];
-SDL_Rect clipsArribaDer[NUMERODECLIPS];
-SDL_Rect clipsArribaIzq[NUMERODECLIPS];
-SDL_Rect clipsQuieto[NUMERODECLIPS];
-
-void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
+void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen,
+		SDL_Rect* clip) {
 	SDL_Rect offset;
 
 	Vector2* position = miPersonaje->GetCurrentPos();
 	float x = position->GetX();
 	float y = position->GetY();
-	offset.x = (int) x + cameraX - clip->w/2;
+	offset.x = (int) x + cameraX - clip->w / 2;
 	offset.y = (int) y + cameraY - clip->h + OFFSET_Y;
 	offset.w = clip->w;
 	offset.h = clip->h;
@@ -48,9 +37,8 @@ void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rec
 	SDL_BlitSurface(source, clip, screen, &offset);
 }
 
-
-void PersonajeVista::draw(SDL_Surface* screen,Position* cam) {
-	UpdateCameraPos(cam->getX(),cam->getY());
+void PersonajeVista::draw(SDL_Surface* screen, Position* cam) {
+	UpdateCameraPos(cam->getX(), cam->getY());
 	Mostrar(screen);
 }
 
@@ -60,20 +48,23 @@ void PersonajeVista::UpdateCameraPos(int x, int y) {
 }
 
 PersonajeVista::PersonajeVista()
-	//Llamamos al constructor de la superclase
-	:EntityView(){
+//Llamamos al constructor de la superclase
+:
+		EntityView() {
 	cout << "I made it" << endl;
 	cameraX = cameraY = 0;
 	miPersonaje = NULL;
 	marco = 0;
 	estado = 0;
-	clipToDraw=0;
-	animationChangeRate=0;
-	personajeImagen=NULL;
+	clipToDraw = NULL;
+	animationChangeRate = 0;
+	personajeImagen = NULL;
+	imageHeight = 0;
+	imageWidth = 0;
+	numberOfClips = 0;
 	// try
 	//{
 	//this->fondo = fondo;
-	this->EstablecerLosClips(NUMERODECLIPS);
 	/* }catch(ERROR e)
 	 {
 	 //TODO:cargo una imagen alternativa.
@@ -82,7 +73,7 @@ PersonajeVista::PersonajeVista()
 
 void PersonajeVista::setPersonaje(Personaje* personaje) {
 	this->miPersonaje = personaje;
-	Vector2* anchorPixel = new Vector2(clip.w/2, OFFSET_Y);
+	Vector2* anchorPixel = new Vector2(clip.w / 2, OFFSET_Y);
 	miPersonaje->getBase()->setAnchorPixel(anchorPixel);
 }
 
@@ -111,18 +102,16 @@ void PersonajeVista::cargarImagen(std::string img) {
 	personajeImagen = miPersonajeImagen;
 }
 
-
-Personaje* PersonajeVista::getEntity(){
+Personaje* PersonajeVista::getEntity() {
 	return miPersonaje;
 
 }
 
 void PersonajeVista::setEntity(Entity* entity) {
 	//TODO: Error check (si no es un personaje)
-	Personaje* aux = (Personaje*)entity;
+	Personaje* aux = (Personaje*) entity;
 	miPersonaje = aux;
 }
-
 
 void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
@@ -145,76 +134,84 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	else if (M_PI * 13 / 8 < direction && direction < M_PI * 15 / 8)
 		clipToDraw = &clipsArribaDer[marco];
 
-	if (miPersonaje->IsMoving()){
-		if (animationChangeRate==ANIMATION_CHANGE_DELAY){
+	if (miPersonaje->IsMoving()) {
+		if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
 			this->marco++;
-			animationChangeRate=0;// Move to the next marco in the animation
-		}
-		else
+			animationChangeRate = 0;// Move to the next marco in the animation
+		} else
+			animationChangeRate++;
+	} else {
+		clipToDraw = &clipsQuieto[marco];
+		if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
+			this->marco++;
+			animationChangeRate = 0;// Move to the next marco in the animation
+		} else
 			animationChangeRate++;
 	}
-	else
-	{
-		clipToDraw= &clipsQuieto[marco];
-		if (animationChangeRate==ANIMATION_CHANGE_DELAY){
-					this->marco++;
-					animationChangeRate=0;// Move to the next marco in the animation
-				}
-				else
-					animationChangeRate++;
-	}
-	if (marco >= NUMERODECLIPS)
+	if (marco >= numberOfClips)
 		marco = 0;    // Loop the animation
 
 	showFrame(this->personajeImagen, fondo, clipToDraw);
 }
 
-void PersonajeVista::EstablecerLosClips(int cantidadPorLado) {
-	for (int i = 0; i < cantidadPorLado;i++) {
-		clipsDerecha[i].x = PERSONAJE_ANCHO* i;
+void PersonajeVista::EstablecerLosClips() {
+
+	for (int i = 0; i < numberOfClips; i++) {
+		SDL_Rect rect;
+
+		clipsDerecha.push_back(rect);
+		clipsDerecha[i].x = imageWidth * i;
 		clipsDerecha[i].y = 0;
-		clipsDerecha[i].w = PERSONAJE_ANCHO;
-		clipsDerecha[i].h = PERSONAJE_ALTO;
+		clipsDerecha[i].w = imageWidth;
+		clipsDerecha[i].h = imageHeight;
 
-		clipsIzquierda[i].x = PERSONAJE_ANCHO* i;
-		clipsIzquierda[i].y = PERSONAJE_ALTO;
-		clipsIzquierda[i].w = PERSONAJE_ANCHO;
-		clipsIzquierda[i].h = PERSONAJE_ALTO;
+		clipsIzquierda.push_back(rect);
+		clipsIzquierda[i].x = imageWidth * i;
+		clipsIzquierda[i].y = imageHeight;
+		clipsIzquierda[i].w = imageWidth;
+		clipsIzquierda[i].h = imageHeight;
 
-		clipsArriba[i].x = PERSONAJE_ANCHO* i;
-		clipsArriba[i].y = PERSONAJE_ALTO * 3;
-		clipsArriba[i].w = PERSONAJE_ANCHO;
-		clipsArriba[i].h = PERSONAJE_ALTO;
+		clipsArriba.push_back(rect);
+		clipsArriba[i].x = imageWidth * i;
+		clipsArriba[i].y = imageHeight * 3;
+		clipsArriba[i].w = imageWidth;
+		clipsArriba[i].h = imageHeight;
 
-		clipsAbajo[i].x = PERSONAJE_ANCHO* i;
-		clipsAbajo[i].y = PERSONAJE_ALTO * 2;
-		clipsAbajo[i].w = PERSONAJE_ANCHO;
-		clipsAbajo[i].h = PERSONAJE_ALTO;
+		clipsAbajo.push_back(rect);
+		clipsAbajo[i].x = imageWidth * i;
+		clipsAbajo[i].y = imageHeight * 2;
+		clipsAbajo[i].w = imageWidth;
+		clipsAbajo[i].h = imageHeight;
 
-		clipsArribaIzq[i].x = PERSONAJE_ANCHO* i;
-		clipsArribaIzq[i].y = PERSONAJE_ALTO * 5;
-		clipsArribaIzq[i].w = PERSONAJE_ANCHO;
-		clipsArribaIzq[i].h = PERSONAJE_ALTO;
+		clipsArribaIzq.push_back(rect);
+		clipsArribaIzq[i].x = imageWidth * i;
+		clipsArribaIzq[i].y = imageHeight * 5;
+		clipsArribaIzq[i].w = imageWidth;
+		clipsArribaIzq[i].h = imageHeight;
 
-		clipsArribaDer[i].x = PERSONAJE_ANCHO* i;
-		clipsArribaDer[i].y = PERSONAJE_ALTO * 4;
-		clipsArribaDer[i].w = PERSONAJE_ANCHO;
-		clipsArribaDer[i].h = PERSONAJE_ALTO;
+		clipsArribaDer.push_back(rect);
+		clipsArribaDer[i].x = imageWidth * i;
+		clipsArribaDer[i].y = imageHeight * 4;
+		clipsArribaDer[i].w = imageWidth;
+		clipsArribaDer[i].h = imageHeight;
 
-		clipsAbajoIzq[i].x = PERSONAJE_ANCHO* i;
-		clipsAbajoIzq[i].y = PERSONAJE_ALTO * 7;
-		clipsAbajoIzq[i].w = PERSONAJE_ANCHO;
-		clipsAbajoIzq[i].h = PERSONAJE_ALTO;
+		clipsAbajoIzq.push_back(rect);
+		clipsAbajoIzq[i].x = imageWidth * i;
+		clipsAbajoIzq[i].y = imageHeight * 7;
+		clipsAbajoIzq[i].w = imageWidth;
+		clipsAbajoIzq[i].h = imageHeight;
 
-		clipsAbajoDer[i].x = PERSONAJE_ANCHO* i;
-		clipsAbajoDer[i].y = PERSONAJE_ALTO * 6;
-		clipsAbajoDer[i].w = PERSONAJE_ANCHO;
-		clipsAbajoDer[i].h = PERSONAJE_ALTO;
+		clipsAbajoDer.push_back(rect);
+		clipsAbajoDer[i].x = imageWidth * i;
+		clipsAbajoDer[i].y = imageHeight * 6;
+		clipsAbajoDer[i].w = imageWidth;
+		clipsAbajoDer[i].h = imageHeight;
 
-		clipsQuieto[i].x = PERSONAJE_ANCHO * i;
-		clipsQuieto[i].y = PERSONAJE_ALTO * 8;
-		clipsQuieto[i].w = PERSONAJE_ANCHO;
-		clipsQuieto[i].h = PERSONAJE_ALTO;
+		clipsQuieto.push_back(rect);
+		clipsQuieto[i].x = imageWidth * i;
+		clipsQuieto[i].y = imageHeight * 8;
+		clipsQuieto[i].w = imageWidth;
+		clipsQuieto[i].h = imageHeight;
 	}
 }
 
@@ -224,5 +221,29 @@ PersonajeVista::~PersonajeVista() {
 
 	//Quita SDL
 	SDL_Quit();
+}
+
+int PersonajeVista::getImageHeight() {
+	return this->imageHeight;
+}
+
+void PersonajeVista::setImageHeight(int height) {
+	this->imageHeight = height;
+}
+
+int PersonajeVista::getImageWidth() {
+	return this->imageWidth;
+}
+
+void PersonajeVista::setImageWidth(int width) {
+	this->imageWidth = width;
+}
+
+int PersonajeVista::getNClips() {
+	return this->numberOfClips;
+}
+
+void PersonajeVista::setNClips(int clips) {
+	this->numberOfClips = clips;
 }
 
