@@ -73,6 +73,7 @@ private:
 	vector<SDL_Rect> clipsArribaDer;
 	vector<SDL_Rect> clipsArribaIzq;
 	vector<SDL_Rect> clipsQuieto;
+
 };
 
 #endif	/* PERSONAJEVISTA_H */

@@ -17,7 +17,7 @@ MapController::MapController(MapView* mapView,MapData* mapData){
 }
 
 void MapController::clickListener(SDL_Event event){
-	if ((event.type == SDL_MOUSEBUTTONUP) && (event.button.button == 1))
+	if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == 1))
 		{
 			//this->mapView->IdentifyTile(event.button.x,event.button.y);
 			mapView->movePlayer(event.button.x, event.button.y);
