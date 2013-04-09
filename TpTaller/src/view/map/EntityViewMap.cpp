@@ -49,7 +49,7 @@ list<EntityView*> EntityViewMap::getListAtRowAndCol(int row,int col){
 	return entities.at(col).at(row);
 }
 
-void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam){
+void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam, Timer* timer){
 
 	for (int col = 0; col < cols; col++) {
 
@@ -62,7 +62,7 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam){
 				for (it = aList.begin(); it != aList.end(); ++it) {
 					EntityView* view = *it;
 					if (!view) continue;
-					view->draw(screen,cam);
+					view->draw(screen,cam,timer);
 				}
 			}
 		}

@@ -12,31 +12,36 @@
 #include <cmath>
 #include <string>
 
+#define DELAY 4 //seconds
+
 using namespace std;
 
 EntityView::EntityView() {
 	this->imagePath = "";
-	this->imageHeight=0;
-	this->imageWidth=0;
+	this->imageHeight = 0;
+	this->imageWidth = 0;
 	this->entity = NULL;
 	this->image = NULL;
 	this->nClips = 1;
-	this->currentClip=0;
+	this->currentClip = 0;
 	this->anchorPixel = new Vector2(0, 0);
+	timeSinceLastAnimation = 1000;
+
 }
 
-void EntityView::setImageWidth(int width)
-{
+void EntityView::setImageWidth(int width) {
 	this->imageWidth = width;
 }
 
-void EntityView::setNClips(int clips)
-{
-	this->nClips=clips;
+void EntityView::setTimer(Timer timer){
+	this->timer=timer;
 }
 
-void EntityView::setImageHeight(int height)
-{
+void EntityView::setNClips(int clips) {
+	this->nClips = clips;
+}
+
+void EntityView::setImageHeight(int height) {
 	this->imageHeight = height;
 }
 
@@ -56,15 +61,12 @@ SDL_Surface* EntityView::load_image(string urlImagen) {
 		//Create an optimized surface
 		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
 
-
-
 		if (optimizedImage != NULL) {
 			//Color key surface
 			SDL_FreeSurface(loadedImage);
 			SDL_SetColorKey(optimizedImage, SDL_SRCCOLORKEY,
 					SDL_MapRGB(optimizedImage->format, 0, 0xFF, 0xFF));
-		}
-		else
+		} else
 			optimizedImage = loadedImage;
 	}
 
@@ -101,41 +103,46 @@ Vector2* EntityView::getAnchorPixel() {
 	return this->anchorPixel;
 }
 /*
-void EntityView::EstablecerClips()
-{
-	for(int x=0; x < this->nClips ; x++)
-	{
-		clip[x].x =this->imageWidth*x;
-		clip[x].y =0;
-		clip[x].w=this->imageWidth;
-		clip[x].h=this->imageHeight;
+ void EntityView::EstablecerClips()
+ {
+ for(int x=0; x < this->nClips ; x++)
+ {
+ clip[x].x =this->imageWidth*x;
+ clip[x].y =0;
+ clip[x].w=this->imageWidth;
+ clip[x].h=this->imageHeight;
 
-	}
-}*/
+ }
+ }*/
 
-void EntityView::draw(SDL_Surface* screen,Position* cam){
-	SDL_Rect offset;
+void EntityView::draw(SDL_Surface* screen, Position* cam, Timer* globalTimer) {
 
+	timeSinceLastAnimation = globalTimer->getTimeIntervalSinceStart();
 
-	clip.x =this->imageWidth*this->currentClip;
-	clip.y =0;
-	clip.w=this->imageWidth;
-	clip.h=this->imageHeight;
+	clip.x = this->imageWidth * this->currentClip;
+	clip.y = 0;
+	clip.w = this->imageWidth;
+	clip.h = this->imageHeight;
 	Vector2* position = entity->getCurrentPos();
 	int x = (int) position->GetX();
 	int y = (int) position->GetY();
 
-
-	offset.x = (int) (Tile::computePosition(x,y).x + cam->getX() - clip.w/2);
-	offset.y = (int) (Tile::computePosition(x,y).y + cam->getY() - clip.h/2);
+	SDL_Rect offset;
+	offset.x = (int) (Tile::computePosition(x, y).x + cam->getX() - clip.w / 2);
+	offset.y = (int) (Tile::computePosition(x, y).y + cam->getY() - clip.h / 2);
 	offset.h = clip.h;
 	offset.w = clip.w;
 
 	SDL_BlitSurface(image, &clip, screen, &offset);
 
-	if(currentClip < this->nClips)currentClip++;
-	else currentClip=0;
 
+	if (currentClip < this->nClips && timeSinceLastAnimation >= timer.getDelay()) {
+		currentClip++;
+	} else {
+		if (currentClip>= this->nClips)
+			currentClip = 0;
+	}
+	globalTimer->setTimeSinceLastAnimation(timeSinceLastAnimation);
 }
 
 EntityView::~EntityView() {
