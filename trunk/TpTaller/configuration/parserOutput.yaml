@@ -20,6 +20,11 @@
     entity:
       name: Entity
       position: [20, 20, 0]
+  - imageSrc: resources/watermill tileset.png
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [10, 10, 0]
   - imageSrc: resources/trees.bmp
     anchorPixel: [0, 0]
     entity:
@@ -40,11 +45,35 @@
     entity:
       name: Entity
       position: [18, 19, 0]
+  - imageSrc: resources/trees.bmp
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [1, 1, 0]
+  - imageSrc: resources/trees.bmp
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [1, 2, 0]
+  - imageSrc: resources/trees.bmp
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [3, 2, 0]
+  - imageSrc: resources/trees.bmp
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [4, 5, 0]
 - gameConfiguration:
+<<<<<<< .mine
+    fps: 30
+=======
     fps: 24
+>>>>>>> .r175
     delay: 10
     gameMusic: resources/sound/gameMusic.ogg
-    defaultScreenHeight: 600
+    defaultScreenHeight: 700
     defaultScreenWidth: 1280
     defaultBPP: 0
     menuBackImage: resources/lich.jpg
