@@ -36,7 +36,7 @@ void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen,
 	SDL_BlitSurface(source, clip, screen, &offset);
 }
 
-void PersonajeVista::draw(SDL_Surface* screen, Position* cam) {
+void PersonajeVista::draw(SDL_Surface* screen, Position* cam, Timer* timer) {
 	UpdateCameraPos(cam->getX(), cam->getY());
 	Mostrar(screen);
 }

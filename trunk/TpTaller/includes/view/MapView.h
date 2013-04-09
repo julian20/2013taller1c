@@ -7,6 +7,7 @@
 #include <model/map/TextureHolder.h>
 #include <view/EntityViewMap.h>
 #include <view/MapCameraView.h>
+#include <view/timer/Timer.h>
 
 #include <string>
 #include <iostream>
@@ -46,6 +47,7 @@ private:
 	Personaje* personaje;
 
 	MapCameraView* camera;
+	Timer timer;
 };
 
 #endif  /* MAP_H */

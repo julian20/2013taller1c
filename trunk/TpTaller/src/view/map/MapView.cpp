@@ -14,6 +14,7 @@ MapView::MapView(MapData* inputData, SDL_Surface* inputScreen, EntityViewMap* ma
 	personaje = NULL;
 
 	textureHolder = NULL;
+	timer.start();
 }
 
 MapView::~MapView() {
@@ -115,8 +116,8 @@ void MapView::draw(Position* cam) {
 
 	}
 
-	viewMap->drawViews(screen,cam);
-
+	viewMap->drawViews(screen,cam,&timer);
+	if (timer.getTimeSinceLastAnimation()>= 2*timer.getDelay()) timer.start();
 	// Luego se blitean todos los personajes despues de haber bliteado el piso
 	// para que el piso no tape a los flacos.
 	/*  if (personajes != NULL){

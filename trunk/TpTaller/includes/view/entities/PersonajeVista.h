@@ -9,6 +9,7 @@
 
 #include <model/entities/personaje/Personaje.h>
 #include <view/entities/EntityView.h>
+#include <view/timer/Timer.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <model/Vector2.h>
@@ -46,7 +47,7 @@ public:
     void setNClips(int clips);
     virtual ~PersonajeVista();
     void EstablecerLosClips();
-    void draw(SDL_Surface* screen, Position* camera);
+    void draw(SDL_Surface* screen, Position* camera, Timer* timer);
 private:
     void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
 

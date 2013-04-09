@@ -14,6 +14,7 @@
 #include <model/entities/Entity.h>
 #include <model/Vector2.h>
 #include <model/entityProperties/Position.h>
+#include <view/timer/Timer.h>
 
 #include <string>
 
@@ -30,8 +31,9 @@ public:
 	void setAnchorPixel(Vector2* anchorPixel);
 	void setImageWidth(int width);
 	void setImageHeight(int height);
-	virtual void draw(SDL_Surface* screen, Position* camera);
+	virtual void draw(SDL_Surface* screen, Position* camera, Timer* globalTimer);
 	void setNClips(int clips);
+	void setTimer(Timer timer);
 protected:
 
 	int nClips;
@@ -47,6 +49,8 @@ protected:
 
 	int currentClip;
 	SDL_Rect clip;
+	Timer timer;
+	int timeSinceLastAnimation;
 };
 
 
