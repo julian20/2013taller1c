@@ -8,16 +8,22 @@
 #ifndef GAME_H_
 #define GAME_H_
 
+//STL
 #include <ctime>
 
-#include <model/persistence/PersistentConfiguration.h>
+//SDL
 #include <SDL/SDL_events.h>
 #include <SDL/SDL_mixer.h>
+#include <SDL/SDL_ttf.h>
+#include <Events.h>
+
+//Ours
+#include <model/persistence/PersistentConfiguration.h>
 #include <controller/MapController.h>
 #include <controller/MapCameraController.h>
 #include <view/configuration/GameConfiguration.h>
 #include <view/MapView.h>
-#include <Events.h>
+#include <view/TextHandler.h>
 
 class Game {
 public:
@@ -45,7 +51,15 @@ private:
         void draw();
         void setUpCharacters(MapView* map,MapData* mapData,EntityViewMap* viewMap);
         void setUpEntities(MapView* map,MapData* mapData);
-        void applyFPS(clock_t timer);
+
+
+
+        //FPS Crap
+        void applyFPS(int timer);
+        TextHandler* textHandler;
+        int fps;
+        int tempFps;
+        int fpsUpdatingTimer;
 };
 
 #endif /* GAME_H_ */
