@@ -149,7 +149,7 @@ void Game::draw() {
 		tempFps = fps;
 		fpsUpdatingTimer = 0;
 	}
-	textHandler->applyTextOnSurface("FPS:"+intToString(tempFps),screen,30,40,"lazy",textHandler->getColor(255,0,0));
+	textHandler->applyTextOnSurface("FPS:"+intToString(tempFps),screen,30,40,"baramond",textHandler->getColor(255,0,0));
 	// Actualiza la screen
 	SDL_Flip(screen);
 }
