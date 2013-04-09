@@ -116,7 +116,6 @@ void Game::initScreen() {
 
 void Game::draw() {
 	//Borramos y redibujamos en cada ciclo
-
 	SDL_FillRect(screen, NULL, 0);
 	Position* cam = mapView->getCamera()->getPosition();
 	mapView->draw(cam);
@@ -128,10 +127,10 @@ void Game::draw() {
 MenuEvent Game::run() {
 
 	initScreen();
-
 	SDL_Event event;
 	bool exit = false;
 	while (!exit) {
+		clock_t timer = clock();
 		cameraController->cameraMoveListener();
 		while (SDL_PollEvent(&event)) {
 
@@ -158,14 +157,24 @@ MenuEvent Game::run() {
 
 		// Dibujo
 		draw();
-		unsigned int fps = this->gameConfig->getFps();
-		SDL_Delay(1000 / fps);
+		applyFPS(timer);
 	}
 
 	return EXIT_EVENT;
 
 }
 
+void Game::applyFPS(clock_t timer){
+	timer = clock()-timer;
+	float elapsedMiliseconds = ((float)timer)/CLOCKS_PER_SEC*1000;
+	unsigned int fps = this->gameConfig->getFps();
+
+	float delay = 1000/fps;
+
+	if (delay - elapsedMiliseconds > 0) {
+		SDL_Delay(delay - elapsedMiliseconds);
+	}
+}
 void Game::initMusic() {
 	// Inicializamos la librería SDL_Mixer
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,

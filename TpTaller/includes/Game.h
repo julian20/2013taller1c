@@ -8,6 +8,8 @@
 #ifndef GAME_H_
 #define GAME_H_
 
+#include <ctime>
+
 #include <model/persistence/PersistentConfiguration.h>
 #include <SDL/SDL_events.h>
 #include <SDL/SDL_mixer.h>
@@ -43,6 +45,7 @@ private:
         void draw();
         void setUpCharacters(MapView* map,MapData* mapData,EntityViewMap* viewMap);
         void setUpEntities(MapView* map,MapData* mapData);
+        void applyFPS(clock_t timer);
 };
 
 #endif /* GAME_H_ */
