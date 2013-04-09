@@ -25,42 +25,42 @@
     entity:
       name: Entity
       position: [10, 10, 0]
-  - imageSrc: resources/trees.bmp
+  - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
     entity:
       name: Entity
       position: [21, 21, 0]
-  - imageSrc: resources/trees.bmp
+  - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
     entity:
       name: Entity
       position: [24, 21, 0]
-  - imageSrc: resources/trees.bmp
+  - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
     entity:
       name: Entity
       position: [18, 21, 0]
-  - imageSrc: resources/trees.bmp
+  - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
     entity:
       name: Entity
       position: [18, 19, 0]
-  - imageSrc: resources/trees.bmp
+  - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
     entity:
       name: Entity
       position: [1, 1, 0]
-  - imageSrc: resources/trees.bmp
+  - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
     entity:
       name: Entity
       position: [1, 2, 0]
-  - imageSrc: resources/trees.bmp
+  - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
     entity:
       name: Entity
       position: [3, 2, 0]
-  - imageSrc: resources/trees.bmp
+  - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
     entity:
       name: Entity
