@@ -3,9 +3,9 @@
     anchorPixel: [0, 0]
     player:
       name: Personaje
-      position: [0, 0, 0]
+      position: [20, 21, 0]
       speed:
-        magnitude: 1
+        magnitude: 5
         direction: [1, 2]
       powers:
         - name: Club
@@ -65,29 +65,47 @@
     entity:
       name: Entity
       position: [4, 5, 0]
+  - imageSrc: resources/barracks.png
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [10, 24, 0]
+  - imageSrc: resources/farmhouse.png
+    anchorPixel: [0, 0]
+    entity:
+      name: Entity
+      position: [26, 5, 0]
 - gameConfiguration:
     fps: 24
     delay: 10
     gameMusic: resources/sound/gameMusic.ogg
-    defaultScreenHeight: 700
+    defaultScreenHeight: 690
     defaultScreenWidth: 1280
     defaultBPP: 0
     menuBackImage: resources/lich.jpg
     menuBackMusic: resources/sound/pirates.ogg
 - tiles:
   - identifier: soil
-    imageSrc: texturesTiles/dirtTile.png
+    imageSrc: resources/texturesTiles/dirtTile.png
   - identifier: neutral
-    imageSrc: texturesTiles/sand.png
+    imageSrc: resources/texturesTiles/grass.png
   - identifier: water
-    imageSrc: texturesTiles/Water.png
+    imageSrc: resources/texturesTiles/Water.png
   - identifier: tree
-    imageSrc: texturesTiles/stonebrick.png
-- mapDimensions: [200, 200]
+    imageSrc: resources/texturesTiles/stonebrick.png
+- mapDimensions: [30, 30]
 - tileLocations:
   - position: [0, 0, 0]
-    texture: neutral
+    texture: water
   - position: [0, 1, 0]
+    texture: water
+  - position: [9, 12, 0]
+    texture: water
+  - position: [8, 12, 0]
+    texture: water
+  - position: [10, 12, 0]
+    texture: water
+  - position: [11, 12, 0]
     texture: water
   - position: [1, 0, 0]
     texture: soil

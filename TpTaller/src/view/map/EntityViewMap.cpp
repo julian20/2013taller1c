@@ -6,6 +6,7 @@
  */
 
 #include <view/EntityViewMap.h>
+#include <model/map/Tile.h>
 
 #include <iostream>
 
@@ -21,7 +22,7 @@ EntityViewMap::EntityViewMap(int rows, int cols) {
 	for (int i = 0 ; i < cols ; i ++){
 		list<EntityView*> EntityList;
 		vector< list<EntityView*> > row (rows, EntityList);
-		entities.push_back(row);
+		map.push_back(row);
 	}
 
 	this->rows = rows;
@@ -31,7 +32,10 @@ EntityViewMap::EntityViewMap(int rows, int cols) {
 void EntityViewMap::positionEntityView (EntityView* entity, Coordinates coordinates){
 	int row = coordinates.getRow();
 	int col = coordinates.getCol();
-	entities.at(col).at(row).push_back(entity);
+	map.at(col).at(row).push_back(entity);
+	if (entity->isMovable()){
+		movableEntities.push_back(entity);
+	}
 }
 
 
@@ -46,17 +50,47 @@ int EntityViewMap::getNRows(){
 
 
 list<EntityView*> EntityViewMap::getListAtRowAndCol(int row,int col){
-	return entities.at(col).at(row);
+	return map.at(col).at(row);
+}
+
+void EntityViewMap::updateMovablePos(){
+
+	for (list<EntityView*>::iterator it = movableEntities.begin() ; it != movableEntities.end() ; ++it){
+
+		EntityView* entityView = *it;
+		Entity* entity = entityView->getEntity();
+
+		int initRow = entity->getCoordinates()->getRow();
+		int initCol = entity->getCoordinates()->getCol();
+		int currentRow = (int) entity->getCurrentPos()->GetX();
+		int currentCol = (int) entity->getCurrentPos()->GetY();
+		Coordinates* c = Tile::getTileCoordinates(currentRow,currentCol);
+		currentRow = c->getRow();
+		currentCol = c->getCol() - 1;
+
+		if (initRow == currentRow && initCol == currentCol) return;
+
+		list<EntityView*> coord = getListAtRowAndCol(initRow,initCol);
+		if (coord.empty()) continue;
+		coord.remove(entityView);
+		map[initCol][initRow] = coord;
+		map.at(currentCol).at(currentRow).push_back(entityView);
+		entity->setCoordinates(currentRow,currentCol);
+
+	}
+
 }
 
 void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam, Timer* timer){
+
+	updateMovablePos();
 
 	for (int col = 0; col < cols; col++) {
 
 		for (int row = 0; row < rows; row++) {
 
 
-			list<EntityView*>aList = entities.at(col).at(row);
+			list<EntityView*>aList = map.at(col).at(row);
 			if(!aList.empty()){
 				list<EntityView*>::iterator it;
 				for (it = aList.begin(); it != aList.end(); ++it) {

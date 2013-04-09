@@ -26,7 +26,11 @@ EntityView::EntityView() {
 	this->currentClip = 0;
 	this->anchorPixel = new Vector2(0, 0);
 	timeSinceLastAnimation = 1000;
+	this->movable = false;
+}
 
+bool EntityView::isMovable(){
+	return movable;
 }
 
 void EntityView::setImageWidth(int width) {

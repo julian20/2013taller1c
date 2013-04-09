@@ -30,7 +30,10 @@ public:
 	virtual ~EntityViewMap();
 private:
 	int rows, cols;
-	vector< vector< list<EntityView*> > > entities;
+	vector< vector< list<EntityView*> > > map;
+	list<EntityView*> movableEntities;
+
+	void updateMovablePos();
 
 };
 

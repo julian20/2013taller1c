@@ -11,7 +11,6 @@
 
 Personaje::Personaje() {
 	endPos = new Vector2(0, 0);
-	velocity = 3;
 	this->position = new Position(0, 0, 0);
 	this->speed = new Speed(0, Vector2(0, 0));
 	this->name = "";
@@ -20,8 +19,7 @@ Personaje::Personaje() {
 }
 
 void Personaje::setPos(float x, float y) {
-	//Llamamos al super
-	Entity::setPos(x, y);
+	currentPos->SetValues(x,y);
 
 	endPos->SetValues(currentPos->GetX(), currentPos->GetY());
 }
@@ -40,12 +38,12 @@ void Personaje::Update() {
 	Vector2* moveDirection = new Vector2(endPos->GetX() - currentPos->GetX(),
 			endPos->GetY() - currentPos->GetY());
 
-	if (moveDirection->GetNorm() < velocity + 1) {
+	if (moveDirection->GetNorm() < getSpeed()->getMagnitude() + 1) {
 		// Close enough to the end position to move in one step.
 		currentPos->SetValues(endPos->GetX(), endPos->GetY());
 	} else {
 		moveDirection->Normalize();
-		moveDirection->MultiplyBy(velocity);
+		moveDirection->MultiplyBy(getSpeed()->getMagnitude());
 		currentPos->Add(moveDirection);
 		if (path->size() == 0) return;
 		else setNextPosition();
@@ -86,7 +84,6 @@ Personaje::Personaje(string name, Position* position, Speed* speed, vector<Power
 	this->base = new Base();
 	endPos = new Vector2(0,0);
 	endPos->SetValues(currentPos->GetX(),currentPos->GetY());
-	velocity = 3;
 }
 
 Personaje::~Personaje() {
@@ -100,6 +97,9 @@ Position* Personaje::getPosition() {
 
 void Personaje::setPosition(Position* position) {
 	this->position = position;
+	int x = position->getX();
+	int y = position->getY();
+	//currentPos->SetValues(Tile::computePosition(x,y).x , Tile::computePosition(x,y).y);
 }
 
 Speed* Personaje::getSpeed() {

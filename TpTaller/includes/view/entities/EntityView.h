@@ -34,6 +34,7 @@ public:
 	virtual void draw(SDL_Surface* screen, Position* camera, Timer* globalTimer);
 	void setNClips(int clips);
 	void setTimer(Timer timer);
+	virtual bool isMovable();
 protected:
 
 	int nClips;
@@ -49,6 +50,7 @@ protected:
 
 	int currentClip;
 	SDL_Rect clip;
+	bool movable;
 	Timer timer;
 	int timeSinceLastAnimation;
 };
