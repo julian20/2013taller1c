@@ -21,8 +21,8 @@
 
 //#define SCALE				0.2
 
-
-void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
+void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen,
+		SDL_Rect* clip) {
 	SDL_Rect offset;
 
 	Vector2* position = miPersonaje->GetCurrentPos();
@@ -158,59 +158,60 @@ void PersonajeVista::EstablecerLosClips() {
 	for (int i = 0; i < numberOfClips; i++) {
 		SDL_Rect rect;
 
-		clipsDerecha.push_back(rect);
-		clipsDerecha[i].x = imageWidth * i;
-		clipsDerecha[i].y = 0;
-		clipsDerecha[i].w = imageWidth;
-		clipsDerecha[i].h = imageHeight;
-
 		clipsIzquierda.push_back(rect);
 		clipsIzquierda[i].x = imageWidth * i;
-		clipsIzquierda[i].y = imageHeight;
+		clipsIzquierda[i].y = imageHeight * 0;
 		clipsIzquierda[i].w = imageWidth;
 		clipsIzquierda[i].h = imageHeight;
 
-		clipsArriba.push_back(rect);
-		clipsArriba[i].x = imageWidth * i;
-		clipsArriba[i].y = imageHeight * 3;
-		clipsArriba[i].w = imageWidth;
-		clipsArriba[i].h = imageHeight;
-
-		clipsAbajo.push_back(rect);
-		clipsAbajo[i].x = imageWidth * i;
-		clipsAbajo[i].y = imageHeight * 2;
-		clipsAbajo[i].w = imageWidth;
-		clipsAbajo[i].h = imageHeight;
-
-		clipsArribaIzq.push_back(rect);
-		clipsArribaIzq[i].x = imageWidth * i;
-		clipsArribaIzq[i].y = imageHeight * 5;
-		clipsArribaIzq[i].w = imageWidth;
-		clipsArribaIzq[i].h = imageHeight;
-
-		clipsArribaDer.push_back(rect);
-		clipsArribaDer[i].x = imageWidth * i;
-		clipsArribaDer[i].y = imageHeight * 4;
-		clipsArribaDer[i].w = imageWidth;
-		clipsArribaDer[i].h = imageHeight;
-
 		clipsAbajoIzq.push_back(rect);
 		clipsAbajoIzq[i].x = imageWidth * i;
-		clipsAbajoIzq[i].y = imageHeight * 7;
+		clipsAbajoIzq[i].y = imageHeight * 1;
 		clipsAbajoIzq[i].w = imageWidth;
 		clipsAbajoIzq[i].h = imageHeight;
 
 		clipsAbajoDer.push_back(rect);
 		clipsAbajoDer[i].x = imageWidth * i;
-		clipsAbajoDer[i].y = imageHeight * 6;
+		clipsAbajoDer[i].y = imageHeight * 2;
 		clipsAbajoDer[i].w = imageWidth;
 		clipsAbajoDer[i].h = imageHeight;
+
+		clipsAbajo.push_back(rect);
+		clipsAbajo[i].x = imageWidth * i;
+		clipsAbajo[i].y = imageHeight * 3;
+		clipsAbajo[i].w = imageWidth;
+		clipsAbajo[i].h = imageHeight;
+
+		clipsArribaIzq.push_back(rect);
+		clipsArribaIzq[i].x = imageWidth * i;
+		clipsArribaIzq[i].y = imageHeight * 4;
+		clipsArribaIzq[i].w = imageWidth;
+		clipsArribaIzq[i].h = imageHeight;
+
+		clipsArribaDer.push_back(rect);
+		clipsArribaDer[i].x = imageWidth * i;
+		clipsArribaDer[i].y = imageHeight * 5;
+		clipsArribaDer[i].w = imageWidth;
+		clipsArribaDer[i].h = imageHeight;
+
+		clipsArriba.push_back(rect);
+		clipsArriba[i].x = imageWidth * i;
+		clipsArriba[i].y = imageHeight * 6;
+		clipsArriba[i].w = imageWidth;
+		clipsArriba[i].h = imageHeight;
+
+		clipsDerecha.push_back(rect);
+		clipsDerecha[i].x = imageWidth * i;
+		clipsDerecha[i].y = imageHeight * 7;
+		clipsDerecha[i].w = imageWidth;
+		clipsDerecha[i].h = imageHeight;
 
 		clipsQuieto.push_back(rect);
 		clipsQuieto[i].x = imageWidth * i;
 		clipsQuieto[i].y = imageHeight * 8;
 		clipsQuieto[i].w = imageWidth;
 		clipsQuieto[i].h = imageHeight;
+
 	}
 }
 

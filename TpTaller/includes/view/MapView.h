@@ -33,6 +33,7 @@ public:
 	list<EntityView *> *entitiesView;
 	TextureHolder* getTextureHolder();
 	void setTextureHolder(TextureHolder* textureHolder);
+	void setRunningPlayer();
 private:
 	TextureHolder* textureHolder;
 	MapData* data;
