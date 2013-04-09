@@ -61,6 +61,7 @@ PersonajeVista::PersonajeVista()
 	imageHeight = 0;
 	imageWidth = 0;
 	numberOfClips = 0;
+	movable = true;
 	// try
 	//{
 	//this->fondo = fondo;

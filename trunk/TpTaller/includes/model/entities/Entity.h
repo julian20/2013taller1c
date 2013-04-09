@@ -9,6 +9,7 @@
 #define ENTITY_H_
 
 #include <model/Vector2.h>
+#include <model/entityProperties/Coordinates.h>
 #include <model/entityProperties/Position.h>
 #include <model/entityProperties/Speed.h>
 #include <model/entityProperties/Power.h>
@@ -29,10 +30,13 @@ using namespace std;
 		void setBase(Base* base);
 		std::string getName();
 		void setName(std::string name);
+		Coordinates* getCoordinates();
+		void setCoordinates(int x, int y);
 	protected:
 		Vector2* currentPos;
 		Base* base;
 		std::string name;
+		Coordinates* coord;
 	};
 
 #endif /* ENTITY_H_ */
