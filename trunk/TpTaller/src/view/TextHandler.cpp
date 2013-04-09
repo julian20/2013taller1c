@@ -14,6 +14,7 @@ TextHandler::TextHandler() {
 	// TODO Auto-generated constructor stub
 	TTF_Init();
 	fontMap["lazy"]=TTF_OpenFont( "resources/fonts/lazy.ttf", 28 );
+	fontMap["baramond"]=TTF_OpenFont( "resources/fonts/Baramond.ttf", 28 );
 
 }
 
