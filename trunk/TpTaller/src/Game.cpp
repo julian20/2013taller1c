@@ -3,22 +3,34 @@
  *
  *  Created on: 22/03/2013
  */
+//STL
 #include <stdio.h>
+#include <sstream>
 
-#include <Game.h>
-#include <view/entities/PersonajeVista.h>
-#include <model/entities/personaje/Personaje.h>
-#include <model/persistence/PersistentConfiguration.h>
+//SDL
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_rotozoom.h>
 #include <SDL/SDL_mixer.h>
+#include <SDL/SDL_ttf.h>
+
+//Ours
+#include <Game.h>
+#include <view/entities/PersonajeVista.h>
+#include <model/entities/personaje/Personaje.h>
+#include <model/persistence/PersistentConfiguration.h>
+
+
 
 Game::Game(PersistentConfiguration* configuration) {
 
 	MapData* mapData = configuration->getMapData();
 
 	this->gameConfig = configuration->getAnimationConfiguration();
+	this->textHandler = new TextHandler();
+	this->fps = 0;
+	this->fpsUpdatingTimer= 0;
+	this->tempFps=0;
 
 	initScreen();
 	initMusic();
@@ -31,12 +43,14 @@ Game::Game(PersistentConfiguration* configuration) {
 
 	setUpCharacters(mapView, mapData, viewMap);
 	setUpEntities(mapView,mapData);
-}
 
-void Game::setUpEntities(MapView* map,MapData* mapData)
-{
 
 }
+
+void Game::setUpEntities(MapView* map,MapData* mapData){
+
+}
+
 void getEvent() {
 }
 
@@ -114,12 +128,28 @@ void Game::initScreen() {
 
 }
 
+string intToString(int number)
+{
+   stringstream ss;//create a stringstream
+   ss << number;//add number to the stream
+   return ss.str();//return a string with the contents of the stream
+}
+
+
 void Game::draw() {
 	//Borramos y redibujamos en cada ciclo
 	SDL_FillRect(screen, NULL, 0);
 	Position* cam = mapView->getCamera()->getPosition();
 	mapView->draw(cam);
 	delete cam;
+
+	fpsUpdatingTimer++;
+
+	if (fpsUpdatingTimer == 10){
+		tempFps = fps;
+		fpsUpdatingTimer = 0;
+	}
+	textHandler->applyTextOnSurface("FPS:"+intToString(tempFps),screen,30,40,"lazy",textHandler->getColor(255,0,0));
 	// Actualiza la screen
 	SDL_Flip(screen);
 }
@@ -130,7 +160,7 @@ MenuEvent Game::run() {
 	SDL_Event event;
 	bool exit = false;
 	while (!exit) {
-		clock_t timer = clock();
+		int ticks = SDL_GetTicks();
 		cameraController->cameraMoveListener();
 		while (SDL_PollEvent(&event)) {
 
@@ -155,25 +185,33 @@ MenuEvent Game::run() {
 		// En un futuro, aca se comprueban las colisiones.
 		// y se corrige la posicion del personaje.
 
-		// Dibujo
+		// Dibujo}
+
 		draw();
-		applyFPS(timer);
+
+		applyFPS(ticks);
 	}
 
 	return EXIT_EVENT;
 
 }
 
-void Game::applyFPS(clock_t timer){
-	timer = clock()-timer;
-	float elapsedMiliseconds = ((float)timer)/CLOCKS_PER_SEC*1000;
-	unsigned int fps = this->gameConfig->getFps();
 
-	float delay = 1000/fps;
+
+void Game::applyFPS(int timer){
+	timer = SDL_GetTicks()-timer;
+	float elapsedMiliseconds = timer;
+	unsigned int FPS = this->gameConfig->getFps();
+
+	float delay = (float)1000/FPS;
 
 	if (delay - elapsedMiliseconds > 0) {
 		SDL_Delay(delay - elapsedMiliseconds);
+		fps = (float)1000/delay;
+
 	}
+	else
+		fps = 1000/elapsedMiliseconds;
 }
 void Game::initMusic() {
 	// Inicializamos la librería SDL_Mixer
@@ -199,6 +237,7 @@ Game::~Game() {
 	delete mapView;
 	delete mapController;
 	delete cameraController;
+	delete textHandler;
 	Mix_FreeMusic(musica);
 	Mix_CloseAudio();
 	// TODO Auto-generated destructor stub

@@ -21,9 +21,8 @@
 
 //#define SCALE				0.2
 
-//como es animado necesito la cantidad de clips por lado.
-void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen,
-		SDL_Rect* clip) {
+
+void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
 	SDL_Rect offset;
 
 	Vector2* position = miPersonaje->GetCurrentPos();
