@@ -31,7 +31,7 @@ public:
 	void setAnchorPixel(Vector2* anchorPixel);
 	void setImageWidth(int width);
 	void setImageHeight(int height);
-	virtual void draw(SDL_Surface* screen, Position* camera, Timer* globalTimer);
+	virtual void draw(SDL_Surface* screen, Position* camera);
 	void setNClips(int clips);
 	void setTimer(Timer timer);
 	virtual bool isMovable();

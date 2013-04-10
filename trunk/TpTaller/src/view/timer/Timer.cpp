@@ -26,7 +26,7 @@ void Timer::setTimeSinceLastAnimation(int time){
 }
 
 int Timer::getTimeSinceLastAnimation(){
-	return timeSinceLastAnimation;
+	return SDL_GetTicks() - startTime;
 }
 
 int Timer::getTimeIntervalSinceStart(){

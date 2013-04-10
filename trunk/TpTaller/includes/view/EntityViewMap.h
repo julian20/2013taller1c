@@ -10,7 +10,6 @@
 
 #include <view/entities/EntityView.h>
 #include <model/entityProperties/Coordinates.h>
-#include <view/timer/Timer.h>
 
 #include <SDL/SDL.h>
 
@@ -25,7 +24,7 @@ public:
 	int getNCols();
 	int getNRows();
 	void positionEntityView (EntityView* entity, Coordinates coordinates);
-	void drawViews(SDL_Surface* screen, Position* cam, Timer* timer);
+	void drawViews(SDL_Surface* screen, Position* cam);
 	list<EntityView*> getListAtRowAndCol(int row,int col);
 	virtual ~EntityViewMap();
 private:

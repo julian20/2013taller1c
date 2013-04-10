@@ -12,7 +12,7 @@
 #include <cmath>
 #include <string>
 
-#define DELAY 4 //seconds
+#define DELAY 2 //seconds
 
 using namespace std;
 
@@ -25,8 +25,10 @@ EntityView::EntityView() {
 	this->nClips = 1;
 	this->currentClip = 0;
 	this->anchorPixel = new Vector2(0, 0);
-	timeSinceLastAnimation = 1000;
 	this->movable = false;
+	timer.start();
+	timeSinceLastAnimation = 1000;
+
 }
 
 bool EntityView::isMovable(){
@@ -37,9 +39,6 @@ void EntityView::setImageWidth(int width) {
 	this->imageWidth = width;
 }
 
-void EntityView::setTimer(Timer timer){
-	this->timer=timer;
-}
 
 void EntityView::setNClips(int clips) {
 	this->nClips = clips;
@@ -118,9 +117,7 @@ Vector2* EntityView::getAnchorPixel() {
  }
  }*/
 
-void EntityView::draw(SDL_Surface* screen, Position* cam, Timer* globalTimer) {
-
-	timeSinceLastAnimation = globalTimer->getTimeIntervalSinceStart();
+void EntityView::draw(SDL_Surface* screen, Position* cam) {
 
 	clip.x = this->imageWidth * this->currentClip;
 	clip.y = 0;
@@ -138,14 +135,15 @@ void EntityView::draw(SDL_Surface* screen, Position* cam, Timer* globalTimer) {
 
 	SDL_BlitSurface(image, &clip, screen, &offset);
 
-
-	if (currentClip < this->nClips && timeSinceLastAnimation >= timer.getDelay()) {
+	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
+	if (currentClip < this->nClips && timeSinceLastAnimation >= DELAY*1000) {
 		currentClip++;
-	} else {
-		if (currentClip>= this->nClips)
-			currentClip = 0;
 	}
-	globalTimer->setTimeSinceLastAnimation(timeSinceLastAnimation);
+	else {
+		if (timeSinceLastAnimation >= DELAY*1000)timer.start();
+		currentClip = 0;
+	}
+	cout<<timer.getTimeSinceLastAnimation()<< endl;
 }
 
 EntityView::~EntityView() {
