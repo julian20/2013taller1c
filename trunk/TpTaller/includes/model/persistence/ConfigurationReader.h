@@ -23,7 +23,7 @@
 #include <view/configuration/GameConfiguration.h>
 #include <view/EntityViewMap.h>
 #include <view/entities/EntityView.h>
-#include <view/entities/PersonajeVista.h>
+#include <view/entities/PlayerView.h>
 
 #include <iostream>
 #include <fstream>
