@@ -15,8 +15,9 @@
 #include <model/Vector2.h>
 #include <model/entityProperties/Position.h>
 #include <view/timer/Timer.h>
-
 #include <string>
+#include <model/map/Tile.h>
+
 
 using namespace std;
 class EntityView {
@@ -27,32 +28,42 @@ public:
 	virtual void setEntity(Entity* entity);
 	virtual Entity* getEntity();
 	virtual ~EntityView();
+	SDL_Surface* load_image(std::string urlImagen);
 	Vector2* getAnchorPixel();
 	void setAnchorPixel(Vector2* anchorPixel);
 	void setImageWidth(int width);
 	void setImageHeight(int height);
+	void setTileWidth(int width);
+	void setTileHeight(int height);
+	void setBaseWidth(int width);
+	void setBaseHeight(int height);
 	virtual void draw(SDL_Surface* screen, Position* camera);
 	void setNClips(int clips);
 	void setTimer(Timer timer);
-	virtual bool isMovable();
+	void setScale();
+	bool isMovable();
 protected:
 
 	int nClips;
-
-	SDL_Surface* load_image(std::string urlImagen);
+	int timeSinceLastAnimation;
+	bool movable;
 	Entity* entity;
 	SDL_Surface* image;
 	Vector2* anchorPixel;
 	string imagePath;
 	int imageHeight;
 	int imageWidth;
+	int baseWidth;
+	int baseHeight;
+	float scaleWidth;
+	float scaleHeight;
+	int tileHeight;
+	int tileWidth;
 	//void EstablecerClips();
 
 	int currentClip;
 	SDL_Rect clip;
-	bool movable;
 	Timer timer;
-	int timeSinceLastAnimation;
 };
 
 

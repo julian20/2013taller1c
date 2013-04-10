@@ -471,13 +471,13 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
 		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
 	}
-	entityView->setImagePath(auxImageSrc);
+
 	entityView->setImageHeight(auxImageHeight);
 	entityView->setImageWidth(auxImageWidth);
 	entityView->setNClips(auxNumberOfClips);
 	entityView->setAnchorPixel(auxAnchorPixel);
 	entityView->setEntity(auxEntity);
-
+	entityView->setImagePath(auxImageSrc);
 }
 
 /**

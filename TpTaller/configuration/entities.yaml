@@ -25,7 +25,7 @@
     anchorPixel: [0, 0]
     entity:
       name: Entity
-      position: [20, 20, 0]
+      position: [10, 20, 0]
   - imageSrc: resources/watermill tileset.png
     imageWidth: 242
     imageHeight: 235
