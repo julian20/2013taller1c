@@ -13,7 +13,7 @@
 #include <iostream>
 #include <time.h>
 
-#define ruta "LogsDeErrores/errores.log"
+#define ruta "errores.log"
 using namespace std;
 
 class Logs {

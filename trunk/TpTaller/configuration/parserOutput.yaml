@@ -19,7 +19,7 @@
           damage: 3
           range: 1
 - entityViews:
-  - imageSrc: resources/windmill.png
+  - imageSrc: resources/windmil.png
     anchorPixel: [0, 0]
     baseWidth: 1
     baseHeight: 1
