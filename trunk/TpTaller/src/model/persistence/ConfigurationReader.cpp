@@ -19,6 +19,27 @@ using namespace std;
 #define MAP_DIMENSION_POSITION 4
 #define MAP_TILES_POSITION 5
 
+#define DEFAULT_ROWS 20
+#define DEFAULT_COLS 20
+#define DEFAULT_POSITION 0 // [0, 0, 0]
+#define DEFAULT_DAMAGE 5
+#define DEFAULT_RANGE 1
+#define DEFAULT_SPEED 5
+#define DEFAULT_NUMBER_CLIPS 0
+#define DEFAULT_IMAGE_WIDTH 50
+#define DEFAULT_IMAGE_HEIGHT 50
+#define DEFAULT_FPS 30
+#define DEFAULT_DELAY 300
+#define DEFAULT_SCREEN_HEIGHT 600;
+#define DEFAULT_SCREEN_WIDTH 800;
+#define DEFAULT_BPP 1
+#define DEFAULT_TEXTURE "grass"
+#define DEFAULT_GAME_MUSIC "/path/to/music.ogg"
+#define DEFAULT_MENU_IMAGE "/path/to/image.png"
+#define DEFAULT_MENU_MUSIC "/path/to/music.ogg"
+#define DEFAULT_IMAGE_SRC "/path/to/image.png"
+#define DEFAULT_NAME "UndefinedName"
+
 /* ************************************** *
  * *********** AUX STRUCTURES *********** *
  * ************************************** */
@@ -251,11 +272,18 @@ void printGameConfiguration(GameConfiguration* aConfig,
  */
 void operator >>(const YAML::Node& yamlNode, Position* vector) {
 	int auxX, auxY, auxZ;
+	try {
+		yamlNode[0] >> auxX;
+		yamlNode[1] >> auxY;
+		yamlNode[2] >> auxZ;
 
-	yamlNode[0] >> auxX;
-	yamlNode[1] >> auxY;
-	yamlNode[2] >> auxZ;
-
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing Position" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxX = DEFAULT_POSITION;
+		auxY = DEFAULT_POSITION;
+		auxZ = DEFAULT_POSITION;
+	}
 	vector->setX(auxX);
 	vector->setY(auxY);
 	vector->setZ(auxZ);
@@ -267,10 +295,16 @@ void operator >>(const YAML::Node& yamlNode, Position* vector) {
  */
 void operator >>(const YAML::Node& yamlNode, Vector2* vector) {
 	int auxX, auxY;
+	try {
+		yamlNode[0] >> auxX;
+		yamlNode[1] >> auxY;
 
-	yamlNode[0] >> auxX;
-	yamlNode[1] >> auxY;
-
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing Vector2" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxX = DEFAULT_POSITION;
+		auxY = DEFAULT_POSITION;
+	}
 	vector->SetValues(auxX, auxY);
 }
 
@@ -281,10 +315,17 @@ void operator >>(const YAML::Node& yamlNode, Vector2* vector) {
 void operator >>(const YAML::Node& yamlNode, Power* power) {
 	std::string auxName;
 	int auxDamage, auxRange;
-
-	yamlNode["name"] >> auxName;
-	yamlNode["damage"] >> auxDamage;
-	yamlNode["range"] >> auxRange;
+	try {
+		yamlNode["name"] >> auxName;
+		yamlNode["damage"] >> auxDamage;
+		yamlNode["range"] >> auxRange;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing Power" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxDamage = DEFAULT_DAMAGE;
+		auxRange = DEFAULT_RANGE;
+		auxName = DEFAULT_NAME;
+	}
 
 	power->setName(auxName);
 	power->setDamage(auxDamage);
@@ -297,11 +338,16 @@ void operator >>(const YAML::Node& yamlNode, Power* power) {
  */
 void operator >>(const YAML::Node& yamlNode, Speed* speed) {
 	int auxMagnitude;
-	yamlNode["magnitude"] >> auxMagnitude;
-	speed->setMagnitude(auxMagnitude);
-
 	Vector2* auxPosition = new Vector2(0, 0);
-	yamlNode["direction"] >> auxPosition;
+	try {
+		yamlNode["magnitude"] >> auxMagnitude;
+		yamlNode["direction"] >> auxPosition;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing Speed" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxMagnitude = DEFAULT_SPEED;
+	}
+	speed->setMagnitude(auxMagnitude);
 	speed->setDirection(Vector2(auxPosition->GetX(), auxPosition->GetY()));
 	delete auxPosition;
 }
@@ -317,21 +363,29 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 	std::string auxName;
 	std::vector<Power*> auxPowers;
 
-	yamlNode["name"] >> auxName;
-	yamlNode["position"] >> auxPosition;
-	yamlNode["speed"] >> auxSpeed;
+	try {
+		yamlNode["name"] >> auxName;
+		yamlNode["position"] >> auxPosition;
+		yamlNode["speed"] >> auxSpeed;
 
-	const YAML::Node& powers = yamlNode["powers"];
-	for (unsigned i = 0; i < powers.size(); i++) {
-		Power* power = new Power("", 0, 0);
-		powers[i] >> power;
-		auxPowers.push_back(power);
+		const YAML::Node& powers = yamlNode["powers"];
+		for (unsigned i = 0; i < powers.size(); i++) {
+			Power* power = new Power("", 0, 0);
+			powers[i] >> power;
+			auxPowers.push_back(power);
+		}
+
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing Player" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxName = DEFAULT_NAME;
+		auxSpeed->setMagnitude(DEFAULT_SPEED);
+		auxSpeed->setDirection(Vector2(0, 0));
 	}
-
 	personaje->setName(auxName);
+	personaje->setPowers(auxPowers);
 	personaje->setPosition(auxPosition);
 	personaje->setSpeed(auxSpeed);
-	personaje->setPowers(auxPowers);
 }
 
 /**
@@ -342,10 +396,15 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 
 	Position* auxPosition = new Position(0, 0, 0);
 	std::string auxName;
+	try {
+		yamlNode["name"] >> auxName;
+		yamlNode["position"] >> auxPosition;
 
-	yamlNode["name"] >> auxName;
-	yamlNode["position"] >> auxPosition;
-
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing Entity" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxName = DEFAULT_NAME;
+	}
 	entity->setName(auxName);
 	entity->setPos(auxPosition->getX(), auxPosition->getY());
 }
@@ -361,12 +420,22 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
 	int auxImageWidth, auxImageHeight, auxNumberOfClips;
 
-	yamlNode["imageSrc"] >> auxImageSrc;
-	yamlNode["anchorPixel"] >> auxAnchorPixel;
-	yamlNode["player"] >> personaje;
-	yamlNode["imageWidth"] >> auxImageWidth;
-	yamlNode["imageHeight"] >> auxImageHeight;
-	yamlNode["numberOfClips"] >> auxNumberOfClips;
+	try {
+		yamlNode["imageSrc"] >> auxImageSrc;
+		yamlNode["anchorPixel"] >> auxAnchorPixel;
+		yamlNode["player"] >> personaje;
+		yamlNode["imageWidth"] >> auxImageWidth;
+		yamlNode["imageHeight"] >> auxImageHeight;
+		yamlNode["numberOfClips"] >> auxNumberOfClips;
+
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing PlayerView" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxImageSrc = DEFAULT_IMAGE_SRC;
+		auxImageWidth = DEFAULT_IMAGE_WIDTH;
+		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
+		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
+	}
 
 	playerView->cargarImagen(auxImageSrc);
 	playerView->setImageHeight(auxImageHeight);
@@ -375,7 +444,6 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	playerView->EstablecerLosClips();
 	playerView->setAnchorPixel(auxAnchorPixel);
 	playerView->setEntity(personaje);
-
 }
 
 /**
@@ -388,14 +456,22 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	std::vector<Power*> auxPowers;
 	std::string auxImageSrc;
 	int auxImageWidth, auxImageHeight, auxNumberOfClips;
+	try {
+		yamlNode["imageSrc"] >> auxImageSrc;
+		yamlNode["anchorPixel"] >> auxAnchorPixel;
+		yamlNode["entity"] >> auxEntity;
+		yamlNode["imageWidth"] >> auxImageWidth;
+		yamlNode["imageHeight"] >> auxImageHeight;
+		yamlNode["numberOfClips"] >> auxNumberOfClips;
 
-	yamlNode["imageSrc"] >> auxImageSrc;
-	yamlNode["anchorPixel"] >> auxAnchorPixel;
-	yamlNode["entity"] >> auxEntity;
-	yamlNode["imageWidth"] >> auxImageWidth;
-	yamlNode["imageHeight"] >> auxImageHeight;
-	yamlNode["numberOfClips"] >> auxNumberOfClips;
-
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing EntityView" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxImageSrc = DEFAULT_IMAGE_SRC;
+		auxImageWidth = DEFAULT_IMAGE_WIDTH;
+		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
+		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
+	}
 	entityView->setImagePath(auxImageSrc);
 	entityView->setImageHeight(auxImageHeight);
 	entityView->setImageWidth(auxImageWidth);
@@ -413,10 +489,16 @@ void operator >>(const YAML::Node& yamlNode,
 	const YAML::Node& playerViews = yamlNode["playerViews"];
 	for (unsigned i = 0; i < playerViews.size(); i++) {
 		PlayerView* entityView = new PlayerView();
-		playerViews[i] >> entityView;
-		entityList.push_back(entityView);
+		try {
+			playerViews[i] >> entityView;
+			entityList.push_back(entityView);
+		} catch (YAML::Exception& yamlException) {
+			std::cout << "Error parsing PlayerView List" << std::endl;
+			std::cout << yamlException.what() << "\n";
+		}
 	}
 }
+
 /**
  * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
  */
@@ -425,8 +507,13 @@ void operator >>(const YAML::Node& yamlNode,
 	const YAML::Node& entityViews = yamlNode["entityViews"];
 	for (unsigned i = 0; i < entityViews.size(); i++) {
 		EntityView* entityView = new EntityView();
-		entityViews[i] >> entityView;
-		entityList.push_back(entityView);
+		try {
+			entityViews[i] >> entityView;
+			entityList.push_back(entityView);
+		} catch (YAML::Exception& yamlException) {
+			std::cout << "Error parsing EntityView List" << std::endl;
+			std::cout << yamlException.what() << "\n";
+		}
 	}
 }
 
@@ -442,16 +529,28 @@ void operator >>(const YAML::Node& yamlNode,
 	const YAML::Node& configuration = yamlNode["gameConfiguration"];
 	unsigned int auxFps, auxDelay, auxHeight, auxWidth, auxBPP;
 	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic;
+	try {
+		configuration["fps"] >> auxFps;
+		configuration["delay"] >> auxDelay;
+		configuration["gameMusic"] >> auxGameMusicSrc;
+		configuration["defaultScreenHeight"] >> auxHeight;
+		configuration["defaultScreenWidth"] >> auxWidth;
+		configuration["defaultBPP"] >> auxBPP;
+		configuration["menuBackImage"] >> auxMenuImage;
+		configuration["menuBackMusic"] >> auxMenuMusic;
 
-	configuration["fps"] >> auxFps;
-	configuration["delay"] >> auxDelay;
-	configuration["gameMusic"] >> auxGameMusicSrc;
-	configuration["defaultScreenHeight"] >> auxHeight;
-	configuration["defaultScreenWidth"] >> auxWidth;
-	configuration["defaultBPP"] >> auxBPP;
-	configuration["menuBackImage"] >> auxMenuImage;
-	configuration["menuBackMusic"] >> auxMenuMusic;
-
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing GameConfiguration" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxFps = DEFAULT_FPS;
+		auxDelay = DEFAULT_DELAY;
+		auxGameMusicSrc = DEFAULT_GAME_MUSIC;
+		auxHeight = DEFAULT_SCREEN_HEIGHT;
+		auxWidth = DEFAULT_SCREEN_WIDTH;
+		auxBPP = DEFAULT_BPP;
+		auxMenuImage = DEFAULT_MENU_IMAGE;
+		auxMenuMusic = DEFAULT_MENU_MUSIC;
+	}
 	animationConfig->setDelay(auxDelay);
 	animationConfig->setFps(auxFps);
 	animationConfig->setGameMusicSrc(auxGameMusicSrc);
@@ -472,10 +571,14 @@ void operator >>(const YAML::Node& yamlNode,
 void operator >>(const YAML::Node& yamlNode, TileDefinition* tileDefinition) {
 
 	std::string auxId, auxSrc;
+	try {
+		yamlNode["identifier"] >> auxId;
+		yamlNode["imageSrc"] >> auxSrc;
 
-	yamlNode["identifier"] >> auxId;
-	yamlNode["imageSrc"] >> auxSrc;
-
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing TileDefinition" << std::endl;
+		std::cout << yamlException.what() << "\n";
+	}
 	tileDefinition->setTileId(auxId);
 	tileDefinition->setTileImageSrc(auxSrc);
 }
@@ -487,8 +590,13 @@ void operator >>(const YAML::Node& yamlNode, TextureHolder* textureHolder) {
 	const YAML::Node& yamlTileDefinitions = yamlNode["tiles"];
 	for (unsigned i = 0; i < yamlTileDefinitions.size(); i++) {
 		TileDefinition* tileDef = new TileDefinition("", "");
-		yamlTileDefinitions[i] >> tileDef;
-		textureHolder->addTexture(tileDef);
+		try {
+			yamlTileDefinitions[i] >> tileDef;
+			textureHolder->addTexture(tileDef);
+		} catch (YAML::Exception& yamlException) {
+			std::cout << "Error parsing TextureHolder" << std::endl;
+			std::cout << yamlException.what() << "\n";
+		}
 	}
 }
 
@@ -502,10 +610,15 @@ void operator >>(const YAML::Node& yamlNode, TextureHolder* textureHolder) {
 void operator >>(const YAML::Node& yamlNode, Tile* tile) {
 	std::string auxId;
 	Position* auxPosition = new Position(0, 0, 0);
+	try {
+		yamlNode["position"] >> auxPosition;
+		yamlNode["texture"] >> auxId;
 
-	yamlNode["position"] >> auxPosition;
-	yamlNode["texture"] >> auxId;
-
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing Tile" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxId = DEFAULT_TEXTURE;
+	}
 	tile->setPosition(auxPosition);
 	tile->setTextureIdentifier(auxId);
 }
@@ -517,8 +630,13 @@ void operator >>(const YAML::Node& yamlNode, AuxMap& destMap) {
 	const YAML::Node& tileList = yamlNode["tileLocations"];
 	for (unsigned i = 0; i < tileList.size(); i++) {
 		Tile* tile = new Tile(NULL, "");
-		tileList[i] >> tile;
-		destMap.tileList.push_back(tile);
+		try {
+			tileList[i] >> tile;
+			destMap.tileList.push_back(tile);
+		} catch (YAML::Exception& yamlException) {
+			std::cout << "Error parsing tile locations" << std::endl;
+			std::cout << yamlException.what() << "\n";
+		}
 	}
 }
 
@@ -539,9 +657,15 @@ void operator >>(AuxMap& originConfig, MapData* destMap) {
  */
 void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
 	const YAML::Node& yamlDimensions = yamlNode["mapDimensions"];
-
-	yamlDimensions[0] >> dimension.nrows;
-	yamlDimensions[1] >> dimension.ncols;
+	try {
+		yamlDimensions[0] >> dimension.nrows;
+		yamlDimensions[1] >> dimension.ncols;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing map dimensions" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		dimension.nrows = DEFAULT_ROWS;
+		dimension.ncols = DEFAULT_COLS;
+	}
 }
 
 /* ************************************************ *
@@ -617,30 +741,55 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 
 	// Parsing PersonajeVista.
 	std::vector<PlayerView*> playerViewVector;
-	yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
+	try {
+		yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << yamlException.what() << "\n";
+	}
 
 	// Parsing EntityViews.
 	std::vector<EntityView*> entityViewVector;
-	yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
+	try {
+		yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << yamlException.what() << "\n";
+	}
 
 	// Parsing animation configuration.
 	GameConfiguration* animationConfig = new GameConfiguration();
-	yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
+	try {
+		yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << yamlException.what() << "\n";
+	}
 
 	// Parsing tile definition.
 	TextureHolder* textureHolder = new TextureHolder();
-	yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
+	try {
+		yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << yamlException.what() << "\n";
+	}
 
 	// Parsing map dimensions.
 	AuxMap mapConfiguration;
 	AuxMapDimension mapDimension;
-	yamlNode[MAP_DIMENSION_POSITION] >> mapDimension;
-	mapConfiguration.dimension = mapDimension;
+	try {
+		yamlNode[MAP_DIMENSION_POSITION] >> mapDimension;
+		mapConfiguration.dimension = mapDimension;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << yamlException.what() << "\n";
+	}
+
 	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
 			mapConfiguration.dimension.ncols);
 
 	// Parsing map tile locations.
-	yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
+	try {
+		yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << yamlException.what() << "\n";
+	}
 	mapConfiguration >> mapData;
 
 	// Create entityViewMap:
