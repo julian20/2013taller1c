@@ -82,7 +82,6 @@ void Game::setUpCharacters(MapView* map, MapData* mapData,
 						Vector2* pos = personaje->getCurrentPos();
 						float x = pos->GetX();
 						float y = pos->GetY();
-						cout << x << "  " << y << endl;
 						mapData->addPersonaje((int) x, (int) y, personaje);
 					}
 				}

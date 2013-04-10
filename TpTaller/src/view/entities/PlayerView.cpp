@@ -50,7 +50,6 @@ PlayerView::PlayerView()
 //Llamamos al constructor de la superclase
 :
 		EntityView() {
-	cout << "I made it" << endl;
 	cameraX = cameraY = 0;
 	miPersonaje = NULL;
 	marco = 0;
