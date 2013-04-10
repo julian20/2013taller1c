@@ -30,13 +30,10 @@ public:
 	virtual ~EntityView();
 	SDL_Surface* load_image(std::string urlImagen);
 	Vector2* getAnchorPixel();
-	void setAnchorPixel(Vector2* anchorPixel);
 	void setImageWidth(int width);
 	void setImageHeight(int height);
 	void setTileWidth(int width);
 	void setTileHeight(int height);
-	void setBaseWidth(int width);
-	void setBaseHeight(int height);
 	virtual void draw(SDL_Surface* screen, Position* camera);
 	void setNClips(int clips);
 

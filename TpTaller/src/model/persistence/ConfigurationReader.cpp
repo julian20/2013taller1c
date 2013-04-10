@@ -155,15 +155,14 @@ void printPlayerViews(std::vector<PlayerView*> entityViews,
 		outputFile << "  - imageSrc: " << playerView->getImagePath()
 				<< std::endl;
 		outputFile << "    anchorPixel: " << "["
-				<< playerView->getAnchorPixel()->GetX() << ", "
-				<< playerView->getAnchorPixel()->GetY() << "]"
-				<< std::endl;
+				<< playerView->getEntity()->getBase()->getAnchorPixel()->GetX()
+				<< ", "
+				<< playerView->getEntity()->getBase()->getAnchorPixel()->GetY()
+				<< "]" << std::endl;
 		outputFile << "    baseWidth: "
-				<< playerView->getEntity()->getBase()->getWidth()
-				<< std::endl;
+				<< playerView->getEntity()->getBase()->getWidth() << std::endl;
 		outputFile << "    baseHeight: "
-				<< playerView->getEntity()->getBase()->getLength()
-				<< std::endl;
+				<< playerView->getEntity()->getBase()->getLength() << std::endl;
 		printPlayer((Player*) playerView->getEntity(), outputFile);
 	}
 
@@ -181,15 +180,14 @@ void printEntityViews(std::vector<EntityView*> entityViews,
 		outputFile << "  - imageSrc: " << entityView->getImagePath()
 				<< std::endl;
 		outputFile << "    anchorPixel: " << "["
-				<< entityView->getAnchorPixel()->GetX() << ", "
-				<< entityView->getAnchorPixel()->GetY() << "]"
-				<< std::endl;
+				<< entityView->getEntity()->getBase()->getAnchorPixel()->GetX()
+				<< ", "
+				<< entityView->getEntity()->getBase()->getAnchorPixel()->GetY()
+				<< "]" << std::endl;
 		outputFile << "    baseWidth: "
-				<< entityView->getEntity()->getBase()->getWidth()
-				<< std::endl;
+				<< entityView->getEntity()->getBase()->getWidth() << std::endl;
 		outputFile << "    baseHeight: "
-				<< entityView->getEntity()->getBase()->getLength()
-				<< std::endl;
+				<< entityView->getEntity()->getBase()->getLength() << std::endl;
 		printEntity(entityView->getEntity(), outputFile);
 	}
 
@@ -458,12 +456,12 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 
 	auxPlayer->getBase()->setLength(auxBaseLength);
 	auxPlayer->getBase()->setWidth(auxBaseWidth);
+	auxPlayer->getBase()->setAnchorPixel(auxAnchorPixel);
 
 	playerView->cargarImagen(auxImageSrc);
 	playerView->setImageHeight(auxImageHeight);
 	playerView->setImageWidth(auxImageWidth);
 	playerView->setNClips(auxNumberOfClips);
-	playerView->setAnchorPixel(auxAnchorPixel);
 	playerView->setEntity(auxPlayer);
 }
 
@@ -501,11 +499,11 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 
 	auxEntity->getBase()->setLength(auxBaseLength);
 	auxEntity->getBase()->setWidth(auxBaseWidth);
+	auxEntity->getBase()->setAnchorPixel(auxAnchorPixel);
 
 	entityView->setImageHeight(auxImageHeight);
 	entityView->setImageWidth(auxImageWidth);
 	entityView->setNClips(auxNumberOfClips);
-	entityView->setAnchorPixel(auxAnchorPixel);
 	entityView->setEntity(auxEntity);
 	entityView->setImagePath(auxImageSrc);
 }
