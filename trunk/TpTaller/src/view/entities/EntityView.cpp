@@ -79,7 +79,6 @@ SDL_Surface* EntityView::load_image(string urlImagen) {
 
 void EntityView::setImagePath(string image_path) {
 	this->imagePath = image_path;
-	cout << image_path << endl;
 	this->image = load_image(image_path);
 	if (!image) { //TODO al log / loadear alternativa
 		cout << "Error al cargar imagen de la vista " << image_path << endl;
