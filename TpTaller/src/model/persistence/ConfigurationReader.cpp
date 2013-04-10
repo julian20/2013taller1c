@@ -29,7 +29,8 @@ using namespace std;
 #define DEFAULT_IMAGE_WIDTH 50
 #define DEFAULT_IMAGE_HEIGHT 50
 #define DEFAULT_FPS 30
-#define DEFAULT_DELAY 300
+#define DEFAULT_DELAY 3
+#define DEFAULT_REPEATS 2
 #define DEFAULT_SCREEN_HEIGHT 600
 #define DEFAULT_SCREEN_WIDTH 800
 #define DEFAULT_BPP 1
@@ -37,6 +38,11 @@ using namespace std;
 #define DEFAULT_BASE_WIDTH 1
 #define DEFAULT_TEXTURE "grass"
 #define DEFAULT_GAME_MUSIC "/path/to/music.ogg"
+#define DEFAULT_MENU_IMAGE "/path/to/image.png"
+#define DEFAULT_MENU_MUSIC "/path/to/music.ogg"
+#define DEFAULT_IMAGE_SRC "/path/to/image.png"
+#define DEFAULT_NAME "UndefinedName"
+
 #define DEFAULT_MENU_IMAGE "/path/to/image.png"
 #define DEFAULT_MENU_MUSIC "/path/to/music.ogg"
 #define DEFAULT_IMAGE_SRC "/path/to/image.png"
@@ -480,12 +486,11 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	Player* auxPlayer = new Player("", NULL, NULL, auxPowers);
 	std::string auxImageSrc;
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
-	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxBaseLength,
-			auxBaseWidth;
+	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay,
+			auxAnimationNumberOfRepeats, auxBaseWidth, auxBaseLength;
 
 	try {
 		yamlNode["imageSrc"] >> auxImageSrc;
-
 	} catch (YAML::Exception& yamlException) {
 		std::cout << "Error parsing PlayerView" << std::endl;
 		std::cout << yamlException.what() << "\n";
@@ -493,6 +498,11 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	}
 	try {
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing PlayerView" << std::endl;
+		std::cout << yamlException.what() << "\n";
+	}
+	try {
 
 	} catch (YAML::Exception& yamlException) {
 		std::cout << "Error parsing PlayerView" << std::endl;
@@ -506,8 +516,12 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 		std::cout << yamlException.what() << "\n";
 	}
 	try {
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing PlayerView" << std::endl;
+		std::cout << yamlException.what() << "\n";
+	}
+	try {
 		yamlNode["imageWidth"] >> auxImageWidth;
-
 	} catch (YAML::Exception& yamlException) {
 		std::cout << "Error parsing PlayerView" << std::endl;
 		std::cout << yamlException.what() << "\n";
@@ -515,7 +529,6 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	}
 	try {
 		yamlNode["imageHeight"] >> auxImageHeight;
-
 	} catch (YAML::Exception& yamlException) {
 		std::cout << "Error parsing PlayerView" << std::endl;
 		std::cout << yamlException.what() << "\n";
@@ -523,11 +536,31 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	}
 	try {
 		yamlNode["numberOfClips"] >> auxNumberOfClips;
-
 	} catch (YAML::Exception& yamlException) {
 		std::cout << "Error parsing PlayerView" << std::endl;
 		std::cout << yamlException.what() << "\n";
 		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
+	}
+	try {
+		yamlNode["fps"] >> auxFps;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing PlayerView" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxFps = DEFAULT_FPS;
+	}
+	try {
+		yamlNode["delay"] >> auxDelay;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing PlayerView" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxDelay = DEFAULT_DELAY;
+	}
+	try {
+		yamlNode["animationRepeats"] >> auxAnimationNumberOfRepeats;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing PlayerView" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxAnimationNumberOfRepeats = DEFAULT_REPEATS;
 	}
 	try {
 		yamlNode["baseWidth"] >> auxBaseWidth;
@@ -554,7 +587,11 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	playerView->setImageHeight(auxImageHeight);
 	playerView->setImageWidth(auxImageWidth);
 	playerView->setNClips(auxNumberOfClips);
+	playerView->setFps(auxFps);
+	playerView->setDelay(auxDelay);
+	playerView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
 	playerView->setEntity(auxPlayer);
+
 }
 
 /**
@@ -566,8 +603,9 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
 	std::vector<Power*> auxPowers;
 	std::string auxImageSrc;
-	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxBaseLength,
-			auxBaseWidth;
+	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay, auxAnimationNumberOfRepeats, auxBaseLength,
+			auxBaseWidth;;
+
 	try {
 		yamlNode["imageSrc"] >> auxImageSrc;
 	} catch (YAML::Exception& yamlException) {
@@ -609,6 +647,27 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
 	}
 	try {
+		yamlNode["fps"] >> auxFps;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing EntityView" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxFps = DEFAULT_FPS;
+	}
+	try {
+		yamlNode["delay"] >> auxDelay;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing EntityView" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxDelay = DEFAULT_DELAY;
+	}
+	try {
+		yamlNode["animationRepeats"] >> auxAnimationNumberOfRepeats;
+	} catch (YAML::Exception& yamlException) {
+		std::cout << "Error parsing EntityView" << std::endl;
+		std::cout << yamlException.what() << "\n";
+		auxAnimationNumberOfRepeats = DEFAULT_REPEATS;
+	}
+	try {
 		yamlNode["baseWidth"] >> auxBaseWidth;
 	} catch (YAML::Exception& yamlException) {
 		std::cout << "Error parsing EntityView" << std::endl;
@@ -622,7 +681,9 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 		std::cout << yamlException.what() << "\n";
 		auxBaseLength = DEFAULT_BASE_LENGTH;
 	}
+	
 
+//TODO - default fps and delay
 	auxEntity->getBase()->setLength(auxBaseLength);
 	auxEntity->getBase()->setWidth(auxBaseWidth);
 	auxEntity->getBase()->setAnchorPixel(auxAnchorPixel);
@@ -632,6 +693,9 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	entityView->setNClips(auxNumberOfClips);
 	entityView->setEntity(auxEntity);
 	entityView->setImagePath(auxImageSrc);
+	entityView->setFps(auxFps);
+	entityView->setDelay(auxDelay);
+	entityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
 }
 
 /**

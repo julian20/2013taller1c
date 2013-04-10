@@ -42,6 +42,9 @@ public:
 	void setNumberOfRepeats(int repeats);
 	void setScale();
 	bool isMovable();
+
+	void setBaseWidth(int width);
+	void setBaseHeight(int height);
 protected:
 
 	int nClips;
