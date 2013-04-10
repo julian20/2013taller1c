@@ -33,6 +33,8 @@ using namespace std;
 #define DEFAULT_SCREEN_HEIGHT 600;
 #define DEFAULT_SCREEN_WIDTH 800;
 #define DEFAULT_BPP 1
+#define DEFAULT_BASE_LENGTH 1
+#define DEFAULT_BASE_WIDTH 1
 #define DEFAULT_TEXTURE "grass"
 #define DEFAULT_GAME_MUSIC "/path/to/music.ogg"
 #define DEFAULT_MENU_IMAGE "/path/to/image.png"
@@ -101,29 +103,29 @@ void printTile(Tile* tile, std::ofstream& outputFile) {
 /**
  * Prints an personaje to check if it was parsed correctly.
  */
-void printPersonaje(Player* parsedPersonaje, std::ofstream& outputFile) {
+void printPlayer(Player* player, std::ofstream& outputFile) {
 	outputFile << "    player:\n";
 	outputFile << "      name: ";
-	outputFile << parsedPersonaje->getName() << std::endl;
+	outputFile << player->getName() << std::endl;
 	outputFile << "      position: [";
-	outputFile << parsedPersonaje->getPosition()->getX() << ", ";
-	outputFile << parsedPersonaje->getPosition()->getY() << ", ";
-	outputFile << parsedPersonaje->getPosition()->getZ() << "]\n";
+	outputFile << player->getPosition()->getX() << ", ";
+	outputFile << player->getPosition()->getY() << ", ";
+	outputFile << player->getPosition()->getZ() << "]\n";
 	outputFile << "      speed:\n";
 	outputFile << "        magnitude: ";
-	outputFile << parsedPersonaje->getSpeed()->getMagnitude() << std::endl;
+	outputFile << player->getSpeed()->getMagnitude() << std::endl;
 	outputFile << "        direction: [";
-	outputFile << parsedPersonaje->getSpeed()->getDirection().GetX() << ", ";
-	outputFile << parsedPersonaje->getSpeed()->getDirection().GetY() << "]";
+	outputFile << player->getSpeed()->getDirection().GetX() << ", ";
+	outputFile << player->getSpeed()->getDirection().GetY() << "]";
 	outputFile << std::endl;
 	outputFile << "      powers:\n";
-	for (unsigned i = 0; i < parsedPersonaje->getPowers().size(); i++) {
-		outputFile << "        - name: "
-				<< parsedPersonaje->getPowers()[i]->getName() << std::endl;
+	for (unsigned i = 0; i < player->getPowers().size(); i++) {
+		outputFile << "        - name: " << player->getPowers()[i]->getName()
+				<< std::endl;
 		outputFile << "          damage: "
-				<< parsedPersonaje->getPowers()[i]->getDamage() << std::endl;
-		outputFile << "          range: "
-				<< parsedPersonaje->getPowers()[i]->getRange() << std::endl;
+				<< player->getPowers()[i]->getDamage() << std::endl;
+		outputFile << "          range: " << player->getPowers()[i]->getRange()
+				<< std::endl;
 	}
 
 }
@@ -149,14 +151,20 @@ void printPlayerViews(std::vector<PlayerView*> entityViews,
 
 	outputFile << "- playerViews:" << std::endl;
 	for (unsigned int j = 0; j < entityViews.size(); j++) {
-		PlayerView* parsedEntityView = entityViews[j];
-		outputFile << "  - imageSrc: " << parsedEntityView->getImagePath()
+		PlayerView* playerView = entityViews[j];
+		outputFile << "  - imageSrc: " << playerView->getImagePath()
 				<< std::endl;
 		outputFile << "    anchorPixel: " << "["
-				<< parsedEntityView->getAnchorPixel()->GetX() << ", "
-				<< parsedEntityView->getAnchorPixel()->GetY() << "]"
+				<< playerView->getAnchorPixel()->GetX() << ", "
+				<< playerView->getAnchorPixel()->GetY() << "]"
 				<< std::endl;
-		printPersonaje((Player*) parsedEntityView->getEntity(), outputFile);
+		outputFile << "    baseWidth: "
+				<< playerView->getEntity()->getBase()->getWidth()
+				<< std::endl;
+		outputFile << "    baseHeight: "
+				<< playerView->getEntity()->getBase()->getLength()
+				<< std::endl;
+		printPlayer((Player*) playerView->getEntity(), outputFile);
 	}
 
 }
@@ -169,14 +177,20 @@ void printEntityViews(std::vector<EntityView*> entityViews,
 
 	outputFile << "- entityViews:" << std::endl;
 	for (unsigned int j = 0; j < entityViews.size(); j++) {
-		EntityView* parsedEntityView = entityViews[j];
-		outputFile << "  - imageSrc: " << parsedEntityView->getImagePath()
+		EntityView* entityView = entityViews[j];
+		outputFile << "  - imageSrc: " << entityView->getImagePath()
 				<< std::endl;
 		outputFile << "    anchorPixel: " << "["
-				<< parsedEntityView->getAnchorPixel()->GetX() << ", "
-				<< parsedEntityView->getAnchorPixel()->GetY() << "]"
+				<< entityView->getAnchorPixel()->GetX() << ", "
+				<< entityView->getAnchorPixel()->GetY() << "]"
 				<< std::endl;
-		printEntity(parsedEntityView->getEntity(), outputFile);
+		outputFile << "    baseWidth: "
+				<< entityView->getEntity()->getBase()->getWidth()
+				<< std::endl;
+		outputFile << "    baseHeight: "
+				<< entityView->getEntity()->getBase()->getLength()
+				<< std::endl;
+		printEntity(entityView->getEntity(), outputFile);
 	}
 
 }
@@ -415,18 +429,21 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 
 	std::vector<Power*> auxPowers;
-	Player* personaje = new Player("", NULL, NULL, auxPowers);
+	Player* auxPlayer = new Player("", NULL, NULL, auxPowers);
 	std::string auxImageSrc;
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
-	int auxImageWidth, auxImageHeight, auxNumberOfClips;
+	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxBaseLength,
+			auxBaseWidth;
 
 	try {
 		yamlNode["imageSrc"] >> auxImageSrc;
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
-		yamlNode["player"] >> personaje;
+		yamlNode["player"] >> auxPlayer;
 		yamlNode["imageWidth"] >> auxImageWidth;
 		yamlNode["imageHeight"] >> auxImageHeight;
 		yamlNode["numberOfClips"] >> auxNumberOfClips;
+		yamlNode["baseWidth"] >> auxBaseWidth;
+		yamlNode["baseHeight"] >> auxBaseLength;
 
 	} catch (YAML::Exception& yamlException) {
 		std::cout << "Error parsing PlayerView" << std::endl;
@@ -435,14 +452,19 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 		auxImageWidth = DEFAULT_IMAGE_WIDTH;
 		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
 		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
+		auxBaseLength = DEFAULT_BASE_LENGTH;
+		auxBaseWidth = DEFAULT_BASE_WIDTH;
 	}
+
+	auxPlayer->getBase()->setLength(auxBaseLength);
+	auxPlayer->getBase()->setWidth(auxBaseWidth);
 
 	playerView->cargarImagen(auxImageSrc);
 	playerView->setImageHeight(auxImageHeight);
 	playerView->setImageWidth(auxImageWidth);
 	playerView->setNClips(auxNumberOfClips);
 	playerView->setAnchorPixel(auxAnchorPixel);
-	playerView->setEntity(personaje);
+	playerView->setEntity(auxPlayer);
 }
 
 /**
@@ -454,7 +476,8 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
 	std::vector<Power*> auxPowers;
 	std::string auxImageSrc;
-	int auxImageWidth, auxImageHeight, auxNumberOfClips;
+	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxBaseLength,
+			auxBaseWidth;
 	try {
 		yamlNode["imageSrc"] >> auxImageSrc;
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
@@ -462,6 +485,8 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 		yamlNode["imageWidth"] >> auxImageWidth;
 		yamlNode["imageHeight"] >> auxImageHeight;
 		yamlNode["numberOfClips"] >> auxNumberOfClips;
+		yamlNode["baseWidth"] >> auxBaseWidth;
+		yamlNode["baseHeight"] >> auxBaseLength;
 
 	} catch (YAML::Exception& yamlException) {
 		std::cout << "Error parsing EntityView" << std::endl;
@@ -470,7 +495,12 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 		auxImageWidth = DEFAULT_IMAGE_WIDTH;
 		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
 		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
+		auxBaseLength = DEFAULT_BASE_LENGTH;
+		auxBaseWidth = DEFAULT_BASE_WIDTH;
 	}
+
+	auxEntity->getBase()->setLength(auxBaseLength);
+	auxEntity->getBase()->setWidth(auxBaseWidth);
 
 	entityView->setImageHeight(auxImageHeight);
 	entityView->setImageWidth(auxImageWidth);
@@ -544,8 +574,10 @@ void operator >>(const YAML::Node& yamlNode,
 		auxFps = DEFAULT_FPS;
 		auxDelay = DEFAULT_DELAY;
 		auxGameMusicSrc = DEFAULT_GAME_MUSIC;
-		auxHeight = DEFAULT_SCREEN_HEIGHT;
-		auxWidth = DEFAULT_SCREEN_WIDTH;
+		auxHeight = DEFAULT_SCREEN_HEIGHT
+		;
+		auxWidth = DEFAULT_SCREEN_WIDTH
+		;
 		auxBPP = DEFAULT_BPP;
 		auxMenuImage = DEFAULT_MENU_IMAGE;
 		auxMenuMusic = DEFAULT_MENU_MUSIC;

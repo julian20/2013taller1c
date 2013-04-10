@@ -1,6 +1,8 @@
 - playerViews:
   - imageSrc: 
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     player:
       name: Personaje
       position: [20, 21, 0]
@@ -17,61 +19,85 @@
 - entityViews:
   - imageSrc: resources/windmill.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [10, 20, 0]
   - imageSrc: resources/watermill tileset.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [10, 10, 0]
   - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [21, 21, 0]
   - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [24, 21, 0]
   - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [18, 21, 0]
   - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [18, 19, 0]
   - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [1, 1, 0]
   - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [1, 2, 0]
   - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [3, 2, 0]
   - imageSrc: resources/trees.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [4, 5, 0]
   - imageSrc: resources/barracks.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [10, 24, 0]
   - imageSrc: resources/farmhouse.png
     anchorPixel: [0, 0]
+    baseWidth: 1
+    baseHeight: 1
     entity:
       name: Entity
       position: [26, 5, 0]
