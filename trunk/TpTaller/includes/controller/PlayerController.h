@@ -23,6 +23,7 @@ public:
 	MapCameraView* getMapCameraView();
 	MapData* getMapData();
 	Player* getPlayer();
+	void toggleRunning();
 private:
 	MapCameraView* camera;
 	MapData* data;

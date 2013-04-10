@@ -21,6 +21,9 @@ void MapController::clickListener(SDL_Event event) {
 		//this->mapView->IdentifyTile(event.button.x,event.button.y);
 		playerController->movePlayer(event.button.x, event.button.y);
 	}
+	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_LSHIFT)){
+		playerController->toggleRunning();
+	}
 }
 
 MapController::~MapController() {

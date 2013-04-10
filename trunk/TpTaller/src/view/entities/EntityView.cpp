@@ -14,9 +14,10 @@
 #include <string>
 #include <SDL/SDL_rotozoom.h>
 
+#define DELAY 3 //seconds
+#define FPS 100
 
 using namespace std;
-#define DELAY 2
 
 EntityView::EntityView() {
 	this->baseHeight=1;
@@ -31,11 +32,14 @@ EntityView::EntityView() {
 	this->entity = NULL;
 	this->image = NULL;
 	this->nClips = 1;
-	this->currentClip=0;
+	this->currentClip = 0;
 	this->anchorPixel = new Vector2(0, 0);
 	this->movable = false;
 	timer.start();
 	timeSinceLastAnimation = 1000;
+	setDelay(DELAY);
+	animationRateTimer.start();
+	setFps(FPS);
 
 }
 
@@ -51,15 +55,15 @@ void EntityView::setScale()
 	printf("ancho %f---- alto %f",scaleWidth,scaleHeight);
 }
 
-void EntityView::setImageWidth(int width)
-{
+void EntityView::setImageWidth(int width) {
 	this->imageWidth = width;
 }
 
-void EntityView::setNClips(int clips)
-{
-	this->nClips=clips;
+
+void EntityView::setNClips(int clips) {
+	this->nClips = clips;
 }
+
 
 void EntityView::setTileWidth(int width)
 {
@@ -78,20 +82,19 @@ void EntityView::setBaseHeight(int height)
 	this->baseHeight=height;
 }
 
-void EntityView::setImageHeight(int height)
-{
+
+void EntityView::setImageHeight(int height) {
 	this->imageHeight = height;
 }
 
 SDL_Surface* EntityView::load_image(string urlImagen) {
-
 	//The image that's loaded
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Surface* loadedImage = NULL;
 
 	//The optimized surface that will be used
 	SDL_Surface* optimizedImage = NULL;
-	//this->setScale();
+
 	loadedImage = IMG_Load(urlImagen.c_str());
 	loadedImage = rotozoomSurfaceXY( loadedImage, 0, scaleWidth, scaleHeight, 0 );
 	if (loadedImage != NULL) {
@@ -100,32 +103,32 @@ SDL_Surface* EntityView::load_image(string urlImagen) {
 		//Create an optimized surface
 		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
 
-
-
 		if (optimizedImage != NULL) {
 			//Color key surface
 			SDL_FreeSurface(loadedImage);
 			SDL_SetColorKey(optimizedImage, SDL_SRCCOLORKEY,
 					SDL_MapRGB(optimizedImage->format, 0, 0xFF, 0xFF));
-		}
-		else
+		} else
 			optimizedImage = loadedImage;
 	}
 
 	return optimizedImage;
 }
-/*void EntityView::Draw()
-{
-	SDL_BlitSurface(source, clip, screen, &offset);
-}*/
 
 void EntityView::setImagePath(string image_path) {
 	this->imagePath = image_path;
-	cout << image_path << endl;
 	this->image = load_image(image_path);
 	if (!image) { //TODO al log / loadear alternativa
 		cout << "Error al cargar imagen de la vista " << image_path << endl;
 	}
+}
+
+void EntityView::setDelay(int nuevoDelay){
+	delay = DELAY;
+}
+
+void EntityView::setFps(int nuevasFps){
+	fps = FPS;
 }
 
 string EntityView::getImagePath() {
@@ -149,17 +152,17 @@ Vector2* EntityView::getAnchorPixel() {
 	return this->anchorPixel;
 }
 /*
-void EntityView::EstablecerClips()
-{
-	for(int x=0; x < this->nClips ; x++)
-	{
-		clip[x].x =this->imageWidth*x;
-		clip[x].y =0;
-		clip[x].w=this->imageWidth;
-		clip[x].h=this->imageHeight;
+ void EntityView::EstablecerClips()
+ {
+ for(int x=0; x < this->nClips ; x++)
+ {
+ clip[x].x =this->imageWidth*x;
+ clip[x].y =0;
+ clip[x].w=this->imageWidth;
+ clip[x].h=this->imageHeight;
 
-	}
-}*/
+ }
+ }*/
 
 void EntityView::draw(SDL_Surface* screen, Position* cam) {
 
@@ -178,15 +181,21 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 	offset.w = clip.w;
 
 	SDL_BlitSurface(image, &clip, screen, &offset);
+
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
+
+	//Apply delay
 	if (currentClip < this->nClips && timeSinceLastAnimation >= DELAY*1000) {
-		currentClip++;
+		//Apply FPS cap
+		if (animationRateTimer.getTimeSinceLastAnimation() >= 1000/fps){
+			currentClip++;
+			animationRateTimer.start();
+		}
 	}
 	else {
 		if (timeSinceLastAnimation >= DELAY*1000)timer.start();
 		currentClip = 0;
 	}
-	cout<<timer.getTimeSinceLastAnimation()<< endl;
 }
 
 EntityView::~EntityView() {

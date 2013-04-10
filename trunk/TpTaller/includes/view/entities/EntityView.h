@@ -39,7 +39,10 @@ public:
 	void setBaseHeight(int height);
 	virtual void draw(SDL_Surface* screen, Position* camera);
 	void setNClips(int clips);
-	void setTimer(Timer timer);
+
+	void setDelay(int nuevoDelay);
+	void setFps(int nuevasFps);
+
 	void setScale();
 	bool isMovable();
 protected:
@@ -64,6 +67,10 @@ protected:
 	int currentClip;
 	SDL_Rect clip;
 	Timer timer;
+	Timer animationRateTimer;
+
+	int delay;
+	int fps;
 };
 
 

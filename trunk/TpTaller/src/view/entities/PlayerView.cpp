@@ -19,6 +19,8 @@
 #define RUTA_IMAGEN "resources/soldierSheet.png"
 #define ANIMATION_CHANGE_DELAY 1
 
+#define STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE 16
+
 //#define SCALE				0.2
 
 void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
@@ -60,6 +62,7 @@ PlayerView::PlayerView()
 	numberOfClips = 0;
 	movable = true;
 	direction = STANDING;
+	wasStanding = true;
 	// try
 	//{
 	//this->fondo = fondo;
@@ -109,6 +112,37 @@ void PlayerView::setEntity(Entity* entity) {
 	miPersonaje = aux;
 }
 
+void PlayerView::showStandingAnimation(float direction,SDL_Surface* fondo){
+
+	SDL_Rect clipToDraw;
+	clipToDraw.x = imageWidth*currentClip*scaleWidth;;
+	clipToDraw.y = imageHeight*STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE;
+	clipToDraw.w = imageWidth*scaleWidth;;
+	clipToDraw.h = imageHeight*scaleHeight;
+
+
+	showFrame(this->personajeImagen, fondo, &clipToDraw);
+
+	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
+	//TODO - deberia ser numberOfClips-1 pero parece q esta mal la imagen ?¿
+
+	//Apply delay
+	if (currentClip < (numberOfClips-2) && timeSinceLastAnimation >= delay * 1000) {
+		//Apply FPS cap
+		if (animationRateTimer.getTimeSinceLastAnimation() >= 1000 / fps) {
+			currentClip++;
+			animationRateTimer.start();
+		}
+
+	} else {
+		if (timeSinceLastAnimation >= delay * 1000)
+			timer.start();
+		currentClip = 0;
+	}
+
+
+}
+
 void PlayerView::Mostrar(SDL_Surface* fondo) {
 	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
 	float direction = movementDirection->GetAngle();
@@ -142,15 +176,23 @@ void PlayerView::Mostrar(SDL_Surface* fondo) {
 		animationChangeRate++;
 	}
 
-	if (! miPersonaje->IsMoving())  direction = STANDING;
+	if (!miPersonaje->IsMoving()){
+		if (!wasStanding){
+			timer.start();
+			wasStanding = true;
+		}
+		showStandingAnimation(direction,fondo);
+		return;
+	}
 
+	wasStanding = false;
 	if (marco >= numberOfClips) marco = 0;    // Loop the animation
 
 	SDL_Rect clipToDraw;
-	clipToDraw.x = imageWidth*marco;
+	clipToDraw.x = imageWidth*marco*scaleWidth;
 	clipToDraw.y = imageHeight*direction;
-	clipToDraw.w = imageWidth;
-	clipToDraw.h = imageHeight;
+	clipToDraw.w = imageWidth*scaleWidth;
+	clipToDraw.h = imageHeight*scaleHeight;
 
 	showFrame(this->personajeImagen, fondo, &clipToDraw);
 }

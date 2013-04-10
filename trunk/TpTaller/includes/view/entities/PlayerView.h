@@ -48,7 +48,7 @@ public:
 	void draw(SDL_Surface* screen, Position* camera);
 private:
 	void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
-
+	void showStandingAnimation(float direction, SDL_Surface* fondo);
 	Player* miPersonaje;
 	//SDL_Surface* fondo;
 	SDL_Surface* personajeImagen;
@@ -60,7 +60,7 @@ private:
 	int imageHeight;
 	int numberOfClips;
 	int direction;
-
+	bool wasStanding;
 	enum {	LEFT, DOWN_LEFT, DOWN_RIGHT, DOWN, UP_LEFT, UP_RIGHT, UP, RIGHT,
 			LEFT_RUN, DOWN_LEFT_RUN, DOWN_RIGHT_RUN, DOWN_RUN, UP_LEFT_RUN,
 			UP_RIGHT_RUN, UP_RUN, RIGHT_RUN, STANDING};
