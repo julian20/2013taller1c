@@ -30,7 +30,9 @@ void Player::MoveTo(int x, int y) {
 
 
 bool Player::isRunning(){
-	return true;
+	if (speed->getMagnitude() >= 5)
+		return true;
+	return false;
 }
 
 void Player::Update() {
@@ -155,3 +157,6 @@ string Player::getClassName(){
 	return "Personaje";
 }
 
+void Player::setSpeedMagnitude(int mag){
+	speed->setMagnitude(mag);
+}

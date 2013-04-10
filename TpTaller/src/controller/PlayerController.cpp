@@ -69,3 +69,11 @@ void PlayerController::setMapData(MapData* mapData) {
 MapData* PlayerController::getMapData() {
 	return this->data;
 }
+
+//TODO - hardcoded
+void PlayerController::toggleRunning() {
+	if (player->isRunning())
+		player->setSpeedMagnitude(3);
+	else
+		player->setSpeedMagnitude(5);
+}

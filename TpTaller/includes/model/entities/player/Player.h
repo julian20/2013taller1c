@@ -39,13 +39,12 @@ public:
 	Tile* getTile();
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
-
+	void setSpeedMagnitude(int mag);
 	string getClassName();
 private:
 	void setNextPosition();
 
 	Vector2* endPos;
-	float velocity;
 	Position* position;
 	Speed* speed;
 	std::vector<Power*> powers;
