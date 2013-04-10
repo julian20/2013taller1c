@@ -9,7 +9,9 @@
 
 Logs::Logs(string msj) {
 
+//	printf("entra al log\n");
 	this->msj=msj;
+//	printf("msj = %s",msj.c_str());
 	this->archivo=NULL;
 	this->GenerateLogMsj();
 //	this->~Logs();

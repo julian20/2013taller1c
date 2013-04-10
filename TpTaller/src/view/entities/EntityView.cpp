@@ -13,9 +13,11 @@
 #include <cmath>
 #include <string>
 #include <SDL/SDL_rotozoom.h>
+#include <model/Logs/Logs.h>
 
 #define DELAY 3 //seconds
 #define FPS 30
+#define DEFAULT_IMAGE "resources/questionMark.png"
 
 //the amount of times the animation is played before stopping
 #define NUMBER_OF_REPEATS 4
@@ -126,7 +128,11 @@ void EntityView::setImagePath(string image_path) {
 	this->imagePath = image_path;
 	this->image = load_image(image_path);
 	if (!image) { //TODO al log / loadear alternativa
-		cout << "Error al cargar imagen de la vista " << image_path << endl;
+
+		//Logs(string("Error al cargar imagen de la vista ") + image_path);
+		this->image=load_image(DEFAULT_IMAGE);
+		this->nClips=0;
+		//printf("cargo la imagen\n");
 	}
 }
 
