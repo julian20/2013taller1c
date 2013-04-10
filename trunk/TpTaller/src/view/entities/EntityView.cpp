@@ -34,17 +34,19 @@ EntityView::EntityView() {
 	this->imageWidth = 0;
 	this->entity = NULL;
 	this->image = NULL;
+	this->delay = 0;
+	this->fps = 0;
 	this->nClips = 1;
 	this->currentClip = 0;
 	this->anchorPixel = new Vector2(0, 0);
 	this->movable = false;
 	timer.start();
 	timeSinceLastAnimation = 1000;
-	setDelay(DELAY);
+
 	animationRateTimer.start();
-	setFps(FPS);
+
 	currentRepeat = 0;
-	setNumberOfRepeats(NUMBER_OF_REPEATS);
+	setNumberOfRepeats(0);
 
 }
 
@@ -77,9 +79,15 @@ void EntityView::setNClips(int clips) {
 void EntityView::setTileWidth(int width) {
 	this->tileWidth = width;
 }
-
 void EntityView::setTileHeight(int height) {
 	this->tileHeight = height;
+}
+
+void EntityView::setBaseWidth(int width) {
+	this->baseWidth = width;
+}
+void EntityView::setBaseHeight(int height) {
+	this->baseHeight = height;
 }
 
 void EntityView::setImageHeight(int height) {
@@ -123,11 +131,11 @@ void EntityView::setImagePath(string image_path) {
 }
 
 void EntityView::setDelay(int nuevoDelay) {
-	delay = DELAY;
+	this->delay = nuevoDelay;
 }
 
 void EntityView::setFps(int nuevasFps) {
-	fps = FPS;
+	this->fps = nuevasFps;
 }
 
 string EntityView::getImagePath() {
@@ -174,19 +182,21 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 	SDL_BlitSurface(image, &clip, screen, &offset);
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
-
+//	cout<<timeSinceLastAnimation<<endl;
 	//Apply delay
-	if (currentClip < this->nClips
-			&& timeSinceLastAnimation * numberOfRepeats >= DELAY * 1000) {
+	if (currentClip < this->nClips && timeSinceLastAnimation >= delay * 1000) {
 		//Apply FPS cap
 		if (animationRateTimer.getTimeSinceLastAnimation() >= 1000 / fps) {
 			currentClip++;
 			animationRateTimer.start();
 		}
 	} else {
-		if (timeSinceLastAnimation >= DELAY * 1000)
+		if ((timeSinceLastAnimation >= delay * 1000)) {
 			timer.start();
+			currentRepeat = 0;
+		}
 		currentClip = 0;
+		currentRepeat++;
 	}
 }
 

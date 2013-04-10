@@ -124,6 +124,7 @@ void PlayerView::showStandingAnimation(float direction,SDL_Surface* fondo){
 	showFrame(this->personajeImagen, fondo, &clipToDraw);
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
+
 	//TODO - deberia ser numberOfClips-1 pero parece q esta mal la imagen ?¿
 
 	//Apply delay

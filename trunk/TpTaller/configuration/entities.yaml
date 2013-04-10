@@ -27,6 +27,9 @@
     entity:
       name: Entity
       position: [10, 20, 0]
+    fps: 5
+    delay: 3 
+    animationRepeats: 4
   - imageSrc: resources/watermill tileset.png
     imageWidth: 242
     imageHeight: 235
