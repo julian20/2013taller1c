@@ -9,7 +9,7 @@
 #define PLAYERCONTROLLER_H_
 
 #include <model/map/MapData.h>
-#include <model/entities/personaje/Personaje.h>
+#include <model/entities/player/Player.h>
 #include <view/MapCameraView.h>
 
 class PlayerController {
@@ -19,14 +19,14 @@ public:
 	void movePlayer(int x, int y);
 	void setMapCameraView(MapCameraView* cameraView);
 	void setMapData(MapData* mapData);
-	void setPlayer(Personaje* personaje);
+	void setPlayer(Player* personaje);
 	MapCameraView* getMapCameraView();
 	MapData* getMapData();
-	Personaje* getPlayer();
+	Player* getPlayer();
 private:
 	MapCameraView* camera;
 	MapData* data;
-	Personaje* player;
+	Player* player;
 };
 
 #endif /* PLAYERCONTROLLER_H_ */

@@ -5,11 +5,11 @@
  * Created on 23 de marzo de 2013, 12:13
  */
 
-#include <model/entities/personaje/Personaje.h>
+#include <model/entities/player/Player.h>
 #include <model/entities/Entity.h>
 #include <stdio.h>
 
-Personaje::Personaje() {
+Player::Player() {
 	endPos = new Vector2(0, 0);
 	this->position = new Position(0, 0, 0);
 	this->speed = new Speed(0, Vector2(0, 0));
@@ -18,22 +18,22 @@ Personaje::Personaje() {
 	this->currentTile = new Tile( new Coordinates(0, 0) );
 }
 
-void Personaje::setPos(float x, float y) {
+void Player::setPos(float x, float y) {
 	currentPos->SetValues(x,y);
 
 	endPos->SetValues(currentPos->GetX(), currentPos->GetY());
 }
 
-void Personaje::MoveTo(int x, int y) {
+void Player::MoveTo(int x, int y) {
 	endPos = new Vector2(x, y);
 }
 
 
-bool Personaje::isRunning(){
+bool Player::isRunning(){
 	return true;
 }
 
-void Personaje::Update() {
+void Player::Update() {
 	if (IsMoving() == false)
 	{
 		if (path->size() == 0) return;
@@ -55,7 +55,7 @@ void Personaje::Update() {
 	}
 }
 
-void Personaje::setNextPosition() {
+void Player::setNextPosition() {
 	Tile* tile = path->front();
 	path->remove(tile);
 
@@ -66,11 +66,11 @@ void Personaje::setNextPosition() {
 	currentTile = tile;
 }
 
-Vector2* Personaje::GetCurrentPos() {
+Vector2* Player::GetCurrentPos() {
 	return new Vector2(currentPos->GetX(), currentPos->GetY());
 }
 
-Vector2* Personaje::GetMovementDirection() {
+Vector2* Player::GetMovementDirection() {
 	Vector2* moveDirection = new Vector2(endPos->GetX() - currentPos->GetX(),
 			endPos->GetY() - currentPos->GetY());
 	moveDirection->Normalize();
@@ -78,7 +78,7 @@ Vector2* Personaje::GetMovementDirection() {
 	return moveDirection;
 }
 
-Personaje::Personaje(string name, Position* position, Speed* speed, vector<Power*> powers){
+Player::Player(string name, Position* position, Speed* speed, vector<Power*> powers){
 	this->position = position;
 	this->speed = speed;
 	this->name = name;
@@ -91,67 +91,67 @@ Personaje::Personaje(string name, Position* position, Speed* speed, vector<Power
 	endPos->SetValues(currentPos->GetX(),currentPos->GetY());
 }
 
-Personaje::~Personaje() {
+Player::~Player() {
 	delete this->position;
 	delete this->speed;
 }
 
-Position* Personaje::getPosition() {
+Position* Player::getPosition() {
 	return position;
 }
 
-void Personaje::setPosition(Position* position) {
+void Player::setPosition(Position* position) {
 	this->position = position;
 	int x = position->getX();
 	int y = position->getY();
 	//currentPos->SetValues(Tile::computePosition(x,y).x , Tile::computePosition(x,y).y);
 }
 
-Speed* Personaje::getSpeed() {
+Speed* Player::getSpeed() {
 	return speed;
 }
 
-void Personaje::setSpeed(Speed* speed) {
+void Player::setSpeed(Speed* speed) {
 	this->speed = speed;
 }
 
-std::string Personaje::getName() {
+std::string Player::getName() {
 	return name;
 }
 
-void Personaje::setName(std::string name) {
+void Player::setName(std::string name) {
 	this->name = name;
 }
 
-std::vector<Power*> Personaje::getPowers() {
+std::vector<Power*> Player::getPowers() {
 	return powers;
 }
 
-void Personaje::setPowers(std::vector<Power*> powers) {
+void Player::setPowers(std::vector<Power*> powers) {
 	this->powers = powers;
 }
 
-bool Personaje::IsMoving() {
+bool Player::IsMoving() {
 	return !(currentPos->IsEqual(endPos));
 }
 
-void Personaje::assignPath(list<Tile *> *_path) {
+void Player::assignPath(list<Tile *> *_path) {
 	if (path) delete path;
 	this->path = _path;
 }
 
-void Personaje::setTile( Tile* _tile ) {
+void Player::setTile( Tile* _tile ) {
 
 	if (this->currentTile) delete this->currentTile;
 	currentTile = _tile;
 }
 
-Tile* Personaje::getTile() {
+Tile* Player::getTile() {
 	return currentTile;
 }
 
 
-string Personaje::getClassName(){
+string Player::getClassName(){
 	return "Personaje";
 }
 

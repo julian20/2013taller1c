@@ -44,7 +44,7 @@ private:
         MapController* mapController;
         MapCameraController* cameraController;
 
-        Personaje* personaje;
+        Player* personaje;
         PersonajeVista* personajeVista;
 
         void initMusic();

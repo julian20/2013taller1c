@@ -21,7 +21,7 @@ std::string TileData::getType(){
 	return tileType;
 }
 
-Personaje* TileData::getPersonaje(){
+Player* TileData::getPersonaje(){
 	return personaje;
 }
 
@@ -42,7 +42,7 @@ void TileData::setType(std::string type){
 	tileType=type;
 }
 
-void TileData::setPersonaje(Personaje* newPersonaje){
+void TileData::setPersonaje(Player* newPersonaje){
 	personaje=newPersonaje;
 }
 

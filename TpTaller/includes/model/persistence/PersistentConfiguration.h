@@ -9,7 +9,7 @@
 #define PERSISTENTCONFIGURATION_H_
 
 #include <model/entities/Entity.h>
-#include <model/entities/personaje/Personaje.h>
+#include <model/entities/player/Player.h>
 #include <model/map/TextureHolder.h>
 #include <model/map/MapData.h>
 #include <view/configuration/GameConfiguration.h>
@@ -23,8 +23,8 @@ public:
 	virtual ~PersistentConfiguration();
 	TextureHolder* getTextureHolder();
 	void setTextureHolder(TextureHolder* textureHolder);
-	std::vector<Personaje*> getPersonajeList();
-	void setPersonajeList(std::vector<Personaje*> entityList);
+	std::vector<Player*> getPersonajeList();
+	void setPersonajeList(std::vector<Player*> entityList);
 	MapData* getMapData();
 	void setMapData(MapData* mapData);
 	GameConfiguration* getAnimationConfiguration();
@@ -33,7 +33,7 @@ public:
 	void setEntityViewMap(EntityViewMap* entityViewMap);
 
 private:
-	std::vector<Personaje*> entityList;
+	std::vector<Player*> entityList;
 	TextureHolder* textureHolder;
 	MapData* mapData;
 	GameConfiguration* animationConfiguration;

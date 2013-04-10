@@ -32,12 +32,12 @@ void PersistentConfiguration::setTextureHolder(TextureHolder* textureHolder) {
 	this->textureHolder = textureHolder;
 }
 
-std::vector<Personaje*> PersistentConfiguration::getPersonajeList() {
+std::vector<Player*> PersistentConfiguration::getPersonajeList() {
 	return this->entityList;
 }
 
 void PersistentConfiguration::setPersonajeList(
-		std::vector<Personaje*> entityList) {
+		std::vector<Player*> entityList) {
 	this->entityList = entityList;
 }
 

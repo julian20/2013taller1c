@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <model/entities/Entity.h>
-#include <model/entities/personaje/Personaje.h>
+#include <model/entities/player/Player.h>
 
 #include <model/map/Tile.h>
 #include <model/map/TileData.h>
@@ -25,11 +25,11 @@ public:
     int GetNRows();
     int GetNCols();
     TileData * GetTileData(int row, int col);
-    void addPersonaje(int row, int col, Personaje* personaje);
-    Personaje* GetPersonaje(int row, int col);
+    void addPersonaje(int row, int col, Player* personaje);
+    Player* GetPersonaje(int row, int col);
 	list<Tile *> *GetPath(Tile* from, Tile* to);
 	list<Entity *> *Entities;
-	void movePersonaje(Personaje* personaje, Tile* toTile);
+	void movePersonaje(Player* personaje, Tile* toTile);
 	//void IdentifyTile(int x, int y);
 private:
     vector<TileData> data;

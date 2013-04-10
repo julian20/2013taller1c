@@ -80,7 +80,7 @@ void printTile(Tile* tile, std::ofstream& outputFile) {
 /**
  * Prints an personaje to check if it was parsed correctly.
  */
-void printPersonaje(Personaje* parsedPersonaje, std::ofstream& outputFile) {
+void printPersonaje(Player* parsedPersonaje, std::ofstream& outputFile) {
 	outputFile << "    player:\n";
 	outputFile << "      name: ";
 	outputFile << parsedPersonaje->getName() << std::endl;
@@ -135,7 +135,7 @@ void printPlayerViews(std::vector<PersonajeVista*> entityViews,
 				<< parsedEntityView->getAnchorPixel()->GetX() << ", "
 				<< parsedEntityView->getAnchorPixel()->GetY() << "]"
 				<< std::endl;
-		printPersonaje((Personaje*) parsedEntityView->getEntity(), outputFile);
+		printPersonaje((Player*) parsedEntityView->getEntity(), outputFile);
 	}
 
 }
@@ -310,7 +310,7 @@ void operator >>(const YAML::Node& yamlNode, Speed* speed) {
  * Sobrecarga de operador >> para llenar los datos de un puntero
  * a Personaje.
  */
-void operator >>(const YAML::Node& yamlNode, Personaje* personaje) {
+void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 
 	Position* auxPosition = new Position(0, 0, 0);
 	Speed* auxSpeed = new Speed(0, Vector2(0, 0));
@@ -356,7 +356,7 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 void operator >>(const YAML::Node& yamlNode, PersonajeVista* playerView) {
 
 	std::vector<Power*> auxPowers;
-	Personaje* personaje = new Personaje("", NULL, NULL, auxPowers);
+	Player* personaje = new Player("", NULL, NULL, auxPowers);
 	std::string auxImageSrc;
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
 	int auxImageWidth, auxImageHeight, auxNumberOfClips;
@@ -553,7 +553,7 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 
 	for (unsigned int j = 0; j < entityViewVector.size(); j++) {
 		PersonajeVista* parsedEntityView = entityViewVector[j];
-		Personaje* personaje = (Personaje*) parsedEntityView->getEntity();
+		Player* personaje = (Player*) parsedEntityView->getEntity();
 
 		/**
 		 * TODO: hacer conversion entre Posicion y Coordinates.

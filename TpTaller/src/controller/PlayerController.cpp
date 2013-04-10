@@ -54,11 +54,11 @@ MapCameraView* PlayerController::getMapCameraView() {
 	return this->camera;
 }
 
-void PlayerController::setPlayer(Personaje* personaje) {
+void PlayerController::setPlayer(Player* personaje) {
 	this->player = personaje;
 }
 
-Personaje* PlayerController::getPlayer() {
+Player* PlayerController::getPlayer() {
 	return this->player;
 }
 

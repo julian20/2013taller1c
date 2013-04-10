@@ -61,14 +61,14 @@ TileData* MapData::GetTileData(int row, int col) {
 	return &data[row + nrows * col];
 }
 
-void MapData::addPersonaje(int row, int col, Personaje* personaje) {
+void MapData::addPersonaje(int row, int col, Player* personaje) {
 	data[row + nrows * col].setPersonaje(personaje);
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
 	//personaje->setTile(personajeTile);
 }
 
-Personaje* MapData::GetPersonaje(int row, int col) {
+Player* MapData::GetPersonaje(int row, int col) {
 	return data[row + nrows * col].getPersonaje();
 }
 
@@ -144,7 +144,7 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* to) {
  return sqrt( pow(toPos->row - fromPos->row, 2) + pow(toPos->col - fromPos->col, 2));
  }*/
 
-void MapData::movePersonaje(Personaje* personaje, Tile* toTile) {
+void MapData::movePersonaje(Player* personaje, Tile* toTile) {
 	Tile* fromTile = personaje->getTile();
 
 	list<Tile *> *path = GetPath(fromTile, toTile);
