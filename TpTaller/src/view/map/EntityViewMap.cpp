@@ -81,7 +81,7 @@ void EntityViewMap::updateMovablePos(){
 
 }
 
-void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam, Timer* timer){
+void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam){
 
 	updateMovablePos();
 
@@ -96,7 +96,7 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam, Timer* timer){
 				for (it = aList.begin(); it != aList.end(); ++it) {
 					EntityView* view = *it;
 					if (!view) continue;
-					view->draw(screen,cam,timer);
+					view->draw(screen,cam);
 				}
 			}
 		}

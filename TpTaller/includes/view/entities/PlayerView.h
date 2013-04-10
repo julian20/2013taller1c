@@ -9,7 +9,6 @@
 
 #include <model/entities/player/Player.h>
 #include <view/entities/EntityView.h>
-#include <view/timer/Timer.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <model/Vector2.h>
@@ -46,7 +45,7 @@ public:
 	void setNClips(int clips);
 	virtual ~PlayerView();
 	void EstablecerLosClips();
-	void draw(SDL_Surface* screen, Position* camera, Timer* timer);
+	void draw(SDL_Surface* screen, Position* camera);
 private:
 	void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
 

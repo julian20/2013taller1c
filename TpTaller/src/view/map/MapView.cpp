@@ -85,7 +85,7 @@ void MapView::draw(Position* cam) {
 
 	}
 
-	viewMap->drawViews(screen,cam,&timer);
+	viewMap->drawViews(screen,cam);
 	if (timer.getTimeSinceLastAnimation()>= 2*timer.getDelay()) timer.start();
 	// Luego se blitean todos los personajes despues de haber bliteado el piso
 	// para que el piso no tape a los flacos.

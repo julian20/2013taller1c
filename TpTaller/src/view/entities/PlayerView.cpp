@@ -36,7 +36,7 @@ void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
 	SDL_BlitSurface(source, clip, screen, &offset);
 }
 
-void PlayerView::draw(SDL_Surface* screen, Position* cam, Timer* timer) {
+void PlayerView::draw(SDL_Surface* screen, Position* cam) {
 	UpdateCameraPos(cam->getX(), cam->getY());
 	Mostrar(screen);
 }
