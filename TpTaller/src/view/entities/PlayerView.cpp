@@ -53,14 +53,13 @@ PlayerView::PlayerView()
 	cameraX = cameraY = 0;
 	miPersonaje = NULL;
 	marco = 0;
-	estado = 0;
-	clipToDraw = NULL;
 	animationChangeRate = 0;
 	personajeImagen = NULL;
 	imageHeight = 0;
 	imageWidth = 0;
 	numberOfClips = 0;
 	movable = true;
+	direction = STANDING;
 	// try
 	//{
 	//this->fondo = fondo;
@@ -97,13 +96,11 @@ void PlayerView::cargarImagen(std::string img) {
 	}
 
 	marco = 0;
-	estado = PERSONAJE_DERECHA;
 	personajeImagen = miPersonajeImagen;
 }
 
 Player* PlayerView::getEntity() {
 	return miPersonaje;
-
 }
 
 void PlayerView::setEntity(Entity* entity) {
@@ -116,191 +113,48 @@ void PlayerView::Mostrar(SDL_Surface* fondo) {
 	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
 	float direction = movementDirection->GetAngle();
 
-	if ((M_PI * 15 / 8 < direction || direction < M_PI * 1 / 8)
-			&& miPersonaje->isRunning())
-		clipToDraw = &clipsDerechaRun[marco];
-	else if (M_PI * 15 / 8 < direction || direction < M_PI * 1 / 8)
-		clipToDraw = &clipsDerecha[marco];
-	else if ((M_PI * 1 / 8 < direction && direction < M_PI * 3 / 8)
-			&& miPersonaje->isRunning())
-		clipToDraw = &clipsAbajoDerRun[marco];
-	else if (M_PI * 1 / 8 < direction && direction < M_PI * 3 / 8)
-		clipToDraw = &clipsAbajoDer[marco];
-	else if ((M_PI * 3 / 8 < direction && direction < M_PI * 5 / 8)
-			&& miPersonaje->isRunning())
-		clipToDraw = &clipsAbajoRun[marco];
-	else if (M_PI * 3 / 8 < direction && direction < M_PI * 5 / 8)
-		clipToDraw = &clipsAbajo[marco];
-	else if ((M_PI * 5 / 8 < direction && direction < M_PI * 7 / 8)
-			&& miPersonaje->isRunning())
-		clipToDraw = &clipsAbajoIzqRun[marco];
-	else if (M_PI * 5 / 8 < direction && direction < M_PI * 7 / 8)
-		clipToDraw = &clipsAbajoIzq[marco];
-	else if ((M_PI * 7 / 8 < direction && direction < M_PI * 9 / 8)
-			&& miPersonaje->isRunning())
-		clipToDraw = &clipsIzquierdaRun[marco];
-	else if (M_PI * 7 / 8 < direction && direction < M_PI * 9 / 8)
-		clipToDraw = &clipsIzquierda[marco];
-	else if ((M_PI * 9 / 8 < direction && direction < M_PI * 11 / 8)
-			&& miPersonaje->isRunning())
-		clipToDraw = &clipsArribaIzqRun[marco];
-	else if (M_PI * 9 / 8 < direction && direction < M_PI * 11 / 8)
-		clipToDraw = &clipsArribaIzq[marco];
-	else if ((M_PI * 11 / 8 < direction && direction < M_PI * 13 / 8)
-			&& miPersonaje->isRunning())
-		clipToDraw = &clipsArribaRun[marco];
-	else if (M_PI * 11 / 8 < direction && direction < M_PI * 13 / 8)
-		clipToDraw = &clipsArriba[marco];
-	else if ((M_PI * 13 / 8 < direction && direction < M_PI * 15 / 8)
-			&& miPersonaje->isRunning())
-		clipToDraw = &clipsArribaDerRun[marco];
-	else if (M_PI * 13 / 8 < direction && direction < M_PI * 15 / 8)
-		clipToDraw = &clipsArribaDer[marco];
+	const float step = M_PI * 1 / 8;
 
-	if (miPersonaje->IsMoving()) {
-		if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
-			this->marco++;
-			animationChangeRate = 0;// Move to the next marco in the animation
-		} else
-			animationChangeRate++;
+	if (step * 15 < direction || direction < step)			direction = RIGHT;
+	else if (step < direction && direction < step * 3)		direction = DOWN_RIGHT;
+	else if (step * 3 < direction && direction < step * 5)	direction = DOWN;
+	else if (step * 5 < direction && direction < step * 7)	direction = DOWN_LEFT;
+	else if (step * 7 < direction && direction < step * 9)	direction = LEFT;
+	else if (step * 9 < direction && direction < step * 11)	direction = UP_LEFT;
+	else if (step * 11 < direction && direction < step * 13)direction = UP;
+	else if (step * 13 < direction && direction < step * 15)direction = UP_RIGHT;
+
+	if (miPersonaje->isRunning()){
+		if (direction == RIGHT) 	direction = RIGHT_RUN;
+		if (direction == DOWN_RIGHT)direction = DOWN_RIGHT_RUN;
+		if (direction == DOWN) 		direction = DOWN_RUN;
+		if (direction == DOWN_LEFT) direction = DOWN_LEFT_RUN;
+		if (direction == LEFT) 		direction = LEFT_RUN;
+		if (direction == UP_LEFT) 	direction = UP_LEFT_RUN;
+		if (direction == UP) 		direction = UP_RUN;
+		if (direction == UP_RIGHT) 	direction = UP_RIGHT_RUN;
+	}
+
+	if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
+		this->marco++;
+		animationChangeRate = 0;// Move to the next marco in the animation
 	} else {
-		clipToDraw = &clipsQuieto[marco];
-		if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
-			this->marco++;
-			animationChangeRate = 0;// Move to the next marco in the animation
-		} else
-			animationChangeRate++;
+		animationChangeRate++;
 	}
-	if (marco >= numberOfClips)
-		marco = 0;    // Loop the animation
 
-	showFrame(this->personajeImagen, fondo, clipToDraw);
+	if (! miPersonaje->IsMoving())  direction = STANDING;
+
+	if (marco >= numberOfClips) marco = 0;    // Loop the animation
+
+	SDL_Rect clipToDraw;
+	clipToDraw.x = imageWidth*marco;
+	clipToDraw.y = imageHeight*direction;
+	clipToDraw.w = imageWidth;
+	clipToDraw.h = imageHeight;
+
+	showFrame(this->personajeImagen, fondo, &clipToDraw);
 }
 
-void PlayerView::EstablecerLosClips() {
-
-	for (int i = 0; i < numberOfClips; i++) {
-		SDL_Rect rect;
-		int j = 0;
-		clipsIzquierda.push_back(rect);
-		clipsIzquierda[i].x = imageWidth * i;
-		clipsIzquierda[i].y = imageHeight * j;
-		clipsIzquierda[i].w = imageWidth;
-		clipsIzquierda[i].h = imageHeight;
-		j++;
-
-		clipsAbajoIzq.push_back(rect);
-		clipsAbajoIzq[i].x = imageWidth * i;
-		clipsAbajoIzq[i].y = imageHeight * j;
-		clipsAbajoIzq[i].w = imageWidth;
-		clipsAbajoIzq[i].h = imageHeight;
-		j++;
-
-		clipsAbajoDer.push_back(rect);
-		clipsAbajoDer[i].x = imageWidth * i;
-		clipsAbajoDer[i].y = imageHeight * j;
-		clipsAbajoDer[i].w = imageWidth;
-		clipsAbajoDer[i].h = imageHeight;
-		j++;
-
-		clipsAbajo.push_back(rect);
-		clipsAbajo[i].x = imageWidth * i;
-		clipsAbajo[i].y = imageHeight * j;
-		clipsAbajo[i].w = imageWidth;
-		clipsAbajo[i].h = imageHeight;
-		j++;
-
-		clipsArribaIzq.push_back(rect);
-		clipsArribaIzq[i].x = imageWidth * i;
-		clipsArribaIzq[i].y = imageHeight * j;
-		clipsArribaIzq[i].w = imageWidth;
-		clipsArribaIzq[i].h = imageHeight;
-		j++;
-
-		clipsArribaDer.push_back(rect);
-		clipsArribaDer[i].x = imageWidth * i;
-		clipsArribaDer[i].y = imageHeight * j;
-		clipsArribaDer[i].w = imageWidth;
-		clipsArribaDer[i].h = imageHeight;
-		j++;
-
-		clipsArriba.push_back(rect);
-		clipsArriba[i].x = imageWidth * i;
-		clipsArriba[i].y = imageHeight * j;
-		clipsArriba[i].w = imageWidth;
-		clipsArriba[i].h = imageHeight;
-		j++;
-
-		clipsDerecha.push_back(rect);
-		clipsDerecha[i].x = imageWidth * i;
-		clipsDerecha[i].y = imageHeight * j;
-		clipsDerecha[i].w = imageWidth;
-		clipsDerecha[i].h = imageHeight;
-		j++;
-
-		clipsIzquierdaRun.push_back(rect);
-		clipsIzquierdaRun[i].x = imageWidth * i;
-		clipsIzquierdaRun[i].y = imageHeight * j;
-		clipsIzquierdaRun[i].w = imageWidth;
-		clipsIzquierdaRun[i].h = imageHeight;
-		j++;
-
-		clipsAbajoIzqRun.push_back(rect);
-		clipsAbajoIzqRun[i].x = imageWidth * i;
-		clipsAbajoIzqRun[i].y = imageHeight * j;
-		clipsAbajoIzqRun[i].w = imageWidth;
-		clipsAbajoIzqRun[i].h = imageHeight;
-		j++;
-
-		clipsAbajoDerRun.push_back(rect);
-		clipsAbajoDerRun[i].x = imageWidth * i;
-		clipsAbajoDerRun[i].y = imageHeight * j;
-		clipsAbajoDerRun[i].w = imageWidth;
-		clipsAbajoDerRun[i].h = imageHeight;
-		j++;
-
-		clipsAbajoRun.push_back(rect);
-		clipsAbajoRun[i].x = imageWidth * i;
-		clipsAbajoRun[i].y = imageHeight * j;
-		clipsAbajoRun[i].w = imageWidth;
-		clipsAbajoRun[i].h = imageHeight;
-		j++;
-
-		clipsArribaIzqRun.push_back(rect);
-		clipsArribaIzqRun[i].x = imageWidth * i;
-		clipsArribaIzqRun[i].y = imageHeight * j;
-		clipsArribaIzqRun[i].w = imageWidth;
-		clipsArribaIzqRun[i].h = imageHeight;
-		j++;
-
-		clipsArribaDerRun.push_back(rect);
-		clipsArribaDerRun[i].x = imageWidth * i;
-		clipsArribaDerRun[i].y = imageHeight * j;
-		clipsArribaDerRun[i].w = imageWidth;
-		clipsArribaDerRun[i].h = imageHeight;
-		j++;
-
-		clipsArribaRun.push_back(rect);
-		clipsArribaRun[i].x = imageWidth * i;
-		clipsArribaRun[i].y = imageHeight * j;
-		clipsArribaRun[i].w = imageWidth;
-		clipsArribaRun[i].h = imageHeight;
-		j++;
-
-		clipsDerechaRun.push_back(rect);
-		clipsDerechaRun[i].x = imageWidth * i;
-		clipsDerechaRun[i].y = imageHeight * j;
-		clipsDerechaRun[i].w = imageWidth;
-		clipsDerechaRun[i].h = imageHeight;
-		j++;
-
-		clipsQuieto.push_back(rect);
-		clipsQuieto[i].x = imageWidth * i;
-		clipsQuieto[i].y = imageHeight * j;
-		clipsQuieto[i].w = imageWidth;
-		clipsQuieto[i].h = imageHeight;
-	}
-}
 
 PlayerView::~PlayerView() {
 	//libera la memoria que pide para La imagen
@@ -333,4 +187,3 @@ int PlayerView::getNClips() {
 void PlayerView::setNClips(int clips) {
 	this->numberOfClips = clips;
 }
-

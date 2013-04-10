@@ -441,7 +441,6 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	playerView->setImageHeight(auxImageHeight);
 	playerView->setImageWidth(auxImageWidth);
 	playerView->setNClips(auxNumberOfClips);
-	playerView->EstablecerLosClips();
 	playerView->setAnchorPixel(auxAnchorPixel);
 	playerView->setEntity(personaje);
 }
