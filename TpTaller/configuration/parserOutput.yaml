@@ -6,7 +6,7 @@
       position: [20, 21, 0]
       speed:
         magnitude: 5
-        direction: [0, 0]
+        direction: [1, 2]
       powers:
         - name: Club
           damage: 2
