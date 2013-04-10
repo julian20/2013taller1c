@@ -26,30 +26,29 @@
 #define PERSONAJE_ANCHO  96
 #define PERSONAJE_ALTO  96
 
-
 using namespace std;
 
-class PersonajeVista : public EntityView {
+class PersonajeVista: public EntityView {
 public:
-    PersonajeVista();
-    void cargarImagen(string path);
-    void Mostrar(SDL_Surface* fondo);
-    void setPersonaje(Personaje* personaje);
-    Personaje* getPersonaje();
-    void UpdateCameraPos(int x, int y);
-    Personaje* getEntity();
-    void setEntity(Entity* entity);
-    int getImageHeight();
-    void setImageHeight(int height);
-    int getImageWidth();
-    void setImageWidth(int width);
-    int getNClips();
-    void setNClips(int clips);
-    virtual ~PersonajeVista();
-    void EstablecerLosClips();
-    void draw(SDL_Surface* screen, Position* camera, Timer* timer);
+	PersonajeVista();
+	void cargarImagen(string path);
+	void Mostrar(SDL_Surface* fondo);
+	void setPersonaje(Personaje* personaje);
+	Personaje* getPersonaje();
+	void UpdateCameraPos(int x, int y);
+	Personaje* getEntity();
+	void setEntity(Entity* entity);
+	int getImageHeight();
+	void setImageHeight(int height);
+	int getImageWidth();
+	void setImageWidth(int width);
+	int getNClips();
+	void setNClips(int clips);
+	virtual ~PersonajeVista();
+	void EstablecerLosClips();
+	void draw(SDL_Surface* screen, Position* camera, Timer* timer);
 private:
-    void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
+	void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
 
 	Personaje* miPersonaje;
 	//SDL_Surface* fondo;
@@ -74,6 +73,14 @@ private:
 	vector<SDL_Rect> clipsArribaDer;
 	vector<SDL_Rect> clipsArribaIzq;
 	vector<SDL_Rect> clipsQuieto;
+	vector<SDL_Rect> clipsDerechaRun;
+	vector<SDL_Rect> clipsIzquierdaRun;
+	vector<SDL_Rect> clipsArribaRun;
+	vector<SDL_Rect> clipsAbajoRun;
+	vector<SDL_Rect> clipsAbajoIzqRun;
+	vector<SDL_Rect> clipsAbajoDerRun;
+	vector<SDL_Rect> clipsArribaDerRun;
+	vector<SDL_Rect> clipsArribaIzqRun;
 
 };
 

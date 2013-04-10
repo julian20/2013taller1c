@@ -28,6 +28,11 @@ void Personaje::MoveTo(int x, int y) {
 	endPos = new Vector2(x, y);
 }
 
+
+bool Personaje::isRunning(){
+	return true;
+}
+
 void Personaje::Update() {
 	if (IsMoving() == false)
 	{
