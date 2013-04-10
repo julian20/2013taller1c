@@ -56,32 +56,15 @@ private:
 	int cameraX;
 	int cameraY;
 	int marco; 	// Current frame
-	int estado; // Animation status
-	SDL_Rect* clipToDraw;
 	int animationChangeRate;
 	int imageWidth;
 	int imageHeight;
 	int numberOfClips;
+	int direction;
 
-	//Vectores de clips
-	vector<SDL_Rect> clipsDerecha;
-	vector<SDL_Rect> clipsIzquierda;
-	vector<SDL_Rect> clipsArriba;
-	vector<SDL_Rect> clipsAbajo;
-	vector<SDL_Rect> clipsAbajoIzq;
-	vector<SDL_Rect> clipsAbajoDer;
-	vector<SDL_Rect> clipsArribaDer;
-	vector<SDL_Rect> clipsArribaIzq;
-	vector<SDL_Rect> clipsQuieto;
-	vector<SDL_Rect> clipsDerechaRun;
-	vector<SDL_Rect> clipsIzquierdaRun;
-	vector<SDL_Rect> clipsArribaRun;
-	vector<SDL_Rect> clipsAbajoRun;
-	vector<SDL_Rect> clipsAbajoIzqRun;
-	vector<SDL_Rect> clipsAbajoDerRun;
-	vector<SDL_Rect> clipsArribaDerRun;
-	vector<SDL_Rect> clipsArribaIzqRun;
-
+	enum {	LEFT, DOWN_LEFT, DOWN_RIGHT, DOWN, UP_LEFT, UP_RIGHT, UP, RIGHT,
+			LEFT_RUN, DOWN_LEFT_RUN, DOWN_RIGHT_RUN, DOWN_RUN, UP_LEFT_RUN,
+			UP_RIGHT_RUN, UP_RUN, RIGHT_RUN, STANDING};
 };
 
 #endif	/* PERSONAJEVISTA_H */
