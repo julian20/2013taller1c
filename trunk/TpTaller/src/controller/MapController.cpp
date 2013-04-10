@@ -8,22 +8,20 @@
 #include <controller/MapController.h>
 #include <iostream>
 
-
-
-MapController::MapController(MapView* mapView,MapData* mapData){
-        this->mapView = mapView;
-        this->mapData = mapData;
-        this->screen = mapView->getDrawingSurface();
+MapController::MapController(MapView* mapView, MapData* mapData,
+		PlayerController* controller) {
+	this->mapView = mapView;
+	this->mapData = mapData;
+	this->screen = mapView->getDrawingSurface();
+	this->playerController = controller;
 }
 
-void MapController::clickListener(SDL_Event event){
-	if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == 1))
-		{
-			//this->mapView->IdentifyTile(event.button.x,event.button.y);
-			mapView->movePlayer(event.button.x, event.button.y);
-		}
+void MapController::clickListener(SDL_Event event) {
+	if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == 1)) {
+		//this->mapView->IdentifyTile(event.button.x,event.button.y);
+		playerController->movePlayer(event.button.x, event.button.y);
+	}
 }
 
 MapController::~MapController() {
-
 }

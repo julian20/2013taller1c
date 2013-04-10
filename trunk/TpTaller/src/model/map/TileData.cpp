@@ -7,7 +7,8 @@
 
 #include <model/map/TileData.h>
 #include <stdio.h>
-namespace std {
+
+using namespace std;
 
 TileData::TileData() {
 	personaje = NULL;
@@ -54,5 +55,3 @@ void TileData::addEntity(Entity* entity){
 TileData::~TileData() {
 	// TODO Auto-generated destructor stub
 }
-
-} /* namespace std */

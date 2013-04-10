@@ -9,24 +9,22 @@
 #define MAPCONTROLLER_H_
 
 #include <view/MapView.h>
+#include <controller/PlayerController.h>
+
 #include <SDL/SDL.h>
-
-
-
-
 
 class MapController {
 public:
-        MapController(MapView* mapView,MapData* mapData);
-        virtual ~MapController();
-
-
-        void clickListener(SDL_Event event);
+	MapController(MapView* mapView, MapData* mapData,
+			PlayerController* controller);
+	virtual ~MapController();
+	void clickListener(SDL_Event event);
 
 private:
-        MapData* mapData;
-        SDL_Surface* screen;
-        MapView* mapView;
+	MapData* mapData;
+	SDL_Surface* screen;
+	MapView* mapView;
+	PlayerController* playerController;
 };
 
 #endif /* MAPCONTROLLER_H_ */
