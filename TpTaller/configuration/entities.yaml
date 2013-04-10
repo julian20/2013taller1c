@@ -110,7 +110,7 @@
   - identifier: soil
     imageSrc: resources/texturesTiles/dirtTile.png
   - identifier: neutral
-    imageSrc: resources/texturesTiles/grass.png
+    imageSrc: resources/texturesTiles/grass2.png
   - identifier: water
     imageSrc: resources/texturesTiles/Water.png
   - identifier: tree
