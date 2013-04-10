@@ -23,15 +23,15 @@
 using namespace std;
 
 EntityView::EntityView() {
-	this->baseHeight=1;
-	this->baseWidth=1;
-	this->scaleWidth=1;
-	this->scaleHeight=1;
+	this->baseHeight = 1;
+	this->baseWidth = 1;
+	this->scaleWidth = 1;
+	this->scaleHeight = 1;
 	this->imagePath = "";
-	this->tileHeight=50;
-	this->tileWidth=70;
-	this->imageHeight=0;
-	this->imageWidth=0;
+	this->tileHeight = 50;
+	this->tileWidth = 70;
+	this->imageHeight = 0;
+	this->imageWidth = 0;
 	this->entity = NULL;
 	this->image = NULL;
 	this->nClips = 1;
@@ -48,51 +48,39 @@ EntityView::EntityView() {
 
 }
 
-bool EntityView::isMovable(){
+bool EntityView::isMovable() {
 	return movable;
 }
 
-void EntityView::setNumberOfRepeats(int repeats){
+void EntityView::setNumberOfRepeats(int repeats) {
 	numberOfRepeats = repeats;
 }
 
-
-void EntityView::setScale()
-{
+void EntityView::setScale() {
 	//baseHeight = entity->getBase()->getLength();
 	//baseWidth = entity->getBase()->getWidth();
-	this->scaleHeight=(float)(this->tileHeight)*float(this->baseHeight)/(float)(this->imageHeight);
-	this->scaleWidth=(float)(this->tileWidth)*(float)(this->baseWidth)/(float)(this->imageWidth);
-	printf("ancho %f---- alto %f",scaleWidth,scaleHeight);
+	this->scaleHeight = (float) (this->tileHeight) * float(this->baseHeight)
+			/ (float) (this->imageHeight);
+	this->scaleWidth = (float) (this->tileWidth) * (float) (this->baseWidth)
+			/ (float) (this->imageWidth);
+	printf("ancho %f---- alto %f", scaleWidth, scaleHeight);
 }
 
 void EntityView::setImageWidth(int width) {
 	this->imageWidth = width;
 }
 
-
 void EntityView::setNClips(int clips) {
 	this->nClips = clips;
 }
 
-
-void EntityView::setTileWidth(int width)
-{
-	this->tileWidth=width;
-}
-void EntityView::setTileHeight(int height)
-{
-	this->tileHeight=height;
-}
-void EntityView::setBaseWidth(int width)
-{
-	this->baseWidth=width;
-}
-void EntityView::setBaseHeight(int height)
-{
-	this->baseHeight=height;
+void EntityView::setTileWidth(int width) {
+	this->tileWidth = width;
 }
 
+void EntityView::setTileHeight(int height) {
+	this->tileHeight = height;
+}
 
 void EntityView::setImageHeight(int height) {
 	this->imageHeight = height;
@@ -107,7 +95,7 @@ SDL_Surface* EntityView::load_image(string urlImagen) {
 	SDL_Surface* optimizedImage = NULL;
 
 	loadedImage = IMG_Load(urlImagen.c_str());
-	loadedImage = rotozoomSurfaceXY( loadedImage, 0, scaleWidth, scaleHeight, 0 );
+	loadedImage = rotozoomSurfaceXY(loadedImage, 0, scaleWidth, scaleHeight, 0);
 	if (loadedImage != NULL) {
 		//loadedImage = rotozoomSurfaceXY(loadedImage, 0, 2, 2, 0);
 
@@ -134,11 +122,11 @@ void EntityView::setImagePath(string image_path) {
 	}
 }
 
-void EntityView::setDelay(int nuevoDelay){
+void EntityView::setDelay(int nuevoDelay) {
 	delay = DELAY;
 }
 
-void EntityView::setFps(int nuevasFps){
+void EntityView::setFps(int nuevasFps) {
 	fps = FPS;
 }
 
@@ -154,14 +142,6 @@ Entity* EntityView::getEntity() {
 	return this->entity;
 }
 
-void EntityView::setAnchorPixel(Vector2* anchorPixel) {
-	delete this->anchorPixel;
-	this->anchorPixel = anchorPixel;
-}
-
-Vector2* EntityView::getAnchorPixel() {
-	return this->anchorPixel;
-}
 /*
  void EntityView::EstablecerClips()
  {
@@ -177,17 +157,17 @@ Vector2* EntityView::getAnchorPixel() {
 
 void EntityView::draw(SDL_Surface* screen, Position* cam) {
 
-	clip.x =this->imageWidth*this->currentClip*scaleWidth;
-	clip.y =0;
-	clip.w=this->imageWidth*scaleWidth;
-	clip.h=this->imageHeight*scaleHeight;
+	clip.x = this->imageWidth * this->currentClip * scaleWidth;
+	clip.y = 0;
+	clip.w = this->imageWidth * scaleWidth;
+	clip.h = this->imageHeight * scaleHeight;
 	Vector2* position = entity->getCurrentPos();
 	int x = (int) position->GetX();
 	int y = (int) position->GetY();
 
 	SDL_Rect offset;
-	offset.x = (int) (Tile::computePosition(x,y).x + cam->getX() - clip.w/2);
-	offset.y = (int) (Tile::computePosition(x,y).y + cam->getY() - clip.h/2);
+	offset.x = (int) (Tile::computePosition(x, y).x + cam->getX() - clip.w / 2);
+	offset.y = (int) (Tile::computePosition(x, y).y + cam->getY() - clip.h / 2);
 	offset.h = clip.h;
 	offset.w = clip.w;
 
@@ -196,15 +176,16 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 
 	//Apply delay
-	if (currentClip < this->nClips && timeSinceLastAnimation*numberOfRepeats >= DELAY*1000) {
+	if (currentClip < this->nClips
+			&& timeSinceLastAnimation * numberOfRepeats >= DELAY * 1000) {
 		//Apply FPS cap
-		if (animationRateTimer.getTimeSinceLastAnimation() >= 1000/fps){
+		if (animationRateTimer.getTimeSinceLastAnimation() >= 1000 / fps) {
 			currentClip++;
 			animationRateTimer.start();
 		}
-	}
-	else {
-		if (timeSinceLastAnimation >= DELAY*1000)timer.start();
+	} else {
+		if (timeSinceLastAnimation >= DELAY * 1000)
+			timer.start();
 		currentClip = 0;
 	}
 }
