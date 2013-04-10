@@ -24,19 +24,16 @@
     imageWidth: 224
     imageHeight: 240
     numberOfClips: 23
-    entity:
-      name: Entity
-      position: [10, 20, 0]
     fps: 5
     delay: 3 
     animationRepeats: 4
+    entity:
+      name: Entity
+      position: [10, 20, 0]
   - imageSrc: resources/watermill tileset.png
     imageWidth: 242
     imageHeight: 235
     numberOfClips: 31
-    anchorPixel: [0, 0]
-    baseWidth: 1
-    baseHeight: 1
     entity:
       name: Entity
       position: [10, 10, 0]
@@ -49,7 +46,6 @@
   - imageSrc: resources/trees.png
     imageWidth: 129
     imageHeight: 122
-    numberOfClips: 0
     entity:
       name: Entity
       position: [24, 21, 0]

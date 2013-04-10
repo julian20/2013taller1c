@@ -169,6 +169,8 @@ void printPlayerViews(std::vector<PlayerView*> entityViews,
 				<< playerView->getEntity()->getBase()->getWidth() << std::endl;
 		outputFile << "    baseHeight: "
 				<< playerView->getEntity()->getBase()->getLength() << std::endl;
+		outputFile << "    fps: " << playerView->getFps() << std::endl;
+		outputFile << "    delay: " << playerView->getDelay() << std::endl;
 		printPlayer((Player*) playerView->getEntity(), outputFile);
 	}
 
@@ -194,6 +196,8 @@ void printEntityViews(std::vector<EntityView*> entityViews,
 				<< entityView->getEntity()->getBase()->getWidth() << std::endl;
 		outputFile << "    baseHeight: "
 				<< entityView->getEntity()->getBase()->getLength() << std::endl;
+		outputFile << "    fps: " << entityView->getFps() << std::endl;
+		outputFile << "    delay: " << entityView->getDelay() << std::endl;
 		printEntity(entityView->getEntity(), outputFile);
 	}
 
@@ -603,8 +607,9 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
 	std::vector<Power*> auxPowers;
 	std::string auxImageSrc;
-	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay, auxAnimationNumberOfRepeats, auxBaseLength,
-			auxBaseWidth;;
+	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay,
+			auxAnimationNumberOfRepeats, auxBaseLength, auxBaseWidth;
+	;
 
 	try {
 		yamlNode["imageSrc"] >> auxImageSrc;
@@ -681,7 +686,6 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 		std::cout << yamlException.what() << "\n";
 		auxBaseLength = DEFAULT_BASE_LENGTH;
 	}
-	
 
 //TODO - default fps and delay
 	auxEntity->getBase()->setLength(auxBaseLength);

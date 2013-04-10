@@ -37,6 +37,8 @@ public:
 	virtual void draw(SDL_Surface* screen, Position* camera);
 	void setNClips(int clips);
 
+	int getFps();
+	int getDelay();
 	void setDelay(int nuevoDelay);
 	void setFps(int nuevasFps);
 	void setNumberOfRepeats(int repeats);
@@ -45,6 +47,9 @@ public:
 
 	void setBaseWidth(int width);
 	void setBaseHeight(int height);
+	std::string getName();
+	void setName(std::string name);
+
 protected:
 
 	int nClips;
@@ -54,6 +59,7 @@ protected:
 	SDL_Surface* image;
 	Vector2* anchorPixel;
 	string imagePath;
+	std::string name;
 	int imageHeight;
 	int imageWidth;
 	int baseWidth;

@@ -134,8 +134,16 @@ void EntityView::setDelay(int nuevoDelay) {
 	this->delay = nuevoDelay;
 }
 
+int EntityView::getDelay() {
+	return this->delay;
+}
+
 void EntityView::setFps(int nuevasFps) {
 	this->fps = nuevasFps;
+}
+
+int EntityView::getFps() {
+	return this->fps;
 }
 
 string EntityView::getImagePath() {
@@ -206,3 +214,10 @@ EntityView::~EntityView() {
 
 }
 
+std::string EntityView::getName() {
+	return name;
+}
+
+void EntityView::setName(std::string name) {
+	this->name = name;
+}
