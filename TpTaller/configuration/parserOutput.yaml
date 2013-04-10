@@ -78,7 +78,7 @@
 - gameConfiguration:
     fps: 24
     delay: 10
-    gameMusic: resources/sound/gameMusic.ogg
+    gameMusic: resources/sound/NamiLogin.ogg
     defaultScreenHeight: 690
     defaultScreenWidth: 1280
     defaultBPP: 0
