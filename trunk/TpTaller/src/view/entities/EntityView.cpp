@@ -190,7 +190,7 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 	SDL_BlitSurface(image, &clip, screen, &offset);
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
-//	cout<<timeSinceLastAnimation<<endl;
+
 	//Apply delay
 	if (currentClip < this->nClips && timeSinceLastAnimation >= delay * 1000) {
 		//Apply FPS cap
