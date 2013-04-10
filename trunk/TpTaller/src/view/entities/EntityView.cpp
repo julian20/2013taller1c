@@ -15,7 +15,10 @@
 #include <SDL/SDL_rotozoom.h>
 
 #define DELAY 3 //seconds
-#define FPS 100
+#define FPS 30
+
+//the amount of times the animation is played before stopping
+#define NUMBER_OF_REPEATS 4
 
 using namespace std;
 
@@ -40,12 +43,20 @@ EntityView::EntityView() {
 	setDelay(DELAY);
 	animationRateTimer.start();
 	setFps(FPS);
+	currentRepeat = 0;
+	setNumberOfRepeats(NUMBER_OF_REPEATS);
 
 }
 
 bool EntityView::isMovable(){
 	return movable;
 }
+
+void EntityView::setNumberOfRepeats(int repeats){
+	numberOfRepeats = repeats;
+}
+
+
 void EntityView::setScale()
 {
 	//baseHeight = entity->getBase()->getLength();
@@ -185,7 +196,7 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 
 	//Apply delay
-	if (currentClip < this->nClips && timeSinceLastAnimation >= DELAY*1000) {
+	if (currentClip < this->nClips && timeSinceLastAnimation*numberOfRepeats >= DELAY*1000) {
 		//Apply FPS cap
 		if (animationRateTimer.getTimeSinceLastAnimation() >= 1000/fps){
 			currentClip++;

@@ -42,7 +42,7 @@ public:
 
 	void setDelay(int nuevoDelay);
 	void setFps(int nuevasFps);
-
+	void setNumberOfRepeats(int repeats);
 	void setScale();
 	bool isMovable();
 protected:
@@ -71,6 +71,9 @@ protected:
 
 	int delay;
 	int fps;
+
+	int numberOfRepeats;
+	int currentRepeat;
 };
 
 
