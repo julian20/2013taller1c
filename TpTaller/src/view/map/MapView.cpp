@@ -44,37 +44,6 @@ void MapView::SetUpEntity(EntityView* entityView,Coordinates coor)
 	this->viewMap->positionEntityView(entityView,coor);
 }
 
-
-void MapView::movePlayer(int x, int y) {
-	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
-	// TODO: Que seleccione la casilla bien!
-
-	Position* cameraPos = this->camera->getPosition();
-
-	Coordinates* coor = Tile::getTileCoordinates(	x - cameraPos->getX(),
-													y - cameraPos->getY());
-
-	if( !(coor->getCol() <= 0 || coor->getRow() < 0) &&
-		!(coor->getCol() > data->GetNCols() || coor->getRow() > data->GetNRows())) {
-		SDL_Rect firstTile = Tile::computePosition(0, 0);
-		firstTile.x = cameraPos->getX() + firstTile.x;
-		firstTile.y = cameraPos->getY() + firstTile.y;
-
-		if (personaje != NULL) {
-			// TODO: esto no pierde memoria a lo loco?
-			 Tile* toTile = new Tile(new Coordinates(coor->getRow(), coor->getCol()));
-			 data->movePersonaje(personaje, toTile);
-		}
-	}
-
-	delete coor;
-	delete cameraPos;
-}
-
-void MapView::AssignPersonaje(Personaje* _personaje) {
-	personaje = _personaje;
-}
-
 void MapView::Update() {
 
 }

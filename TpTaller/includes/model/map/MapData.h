@@ -10,10 +10,7 @@
 #include <model/map/TileData.h>
 #include <list>
 
-
-
 using namespace std;
-
 
 class MapData {
 public:
