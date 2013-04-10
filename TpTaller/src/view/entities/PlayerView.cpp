@@ -5,7 +5,7 @@
  * Created on 23 de marzo de 2013, 12:25
  */
 
-#include <view/entities/PersonajeVista.h>
+#include <view/entities/PlayerView.h>
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>
@@ -21,7 +21,7 @@
 
 //#define SCALE				0.2
 
-void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen,
+void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
 		SDL_Rect* clip) {
 	SDL_Rect offset;
 
@@ -36,17 +36,17 @@ void PersonajeVista::showFrame(SDL_Surface* source, SDL_Surface* screen,
 	SDL_BlitSurface(source, clip, screen, &offset);
 }
 
-void PersonajeVista::draw(SDL_Surface* screen, Position* cam, Timer* timer) {
+void PlayerView::draw(SDL_Surface* screen, Position* cam, Timer* timer) {
 	UpdateCameraPos(cam->getX(), cam->getY());
 	Mostrar(screen);
 }
 
-void PersonajeVista::UpdateCameraPos(int x, int y) {
+void PlayerView::UpdateCameraPos(int x, int y) {
 	cameraX = x;
 	cameraY = y;
 }
 
-PersonajeVista::PersonajeVista()
+PlayerView::PlayerView()
 //Llamamos al constructor de la superclase
 :
 		EntityView() {
@@ -71,17 +71,17 @@ PersonajeVista::PersonajeVista()
 	 }*/
 }
 
-void PersonajeVista::setPersonaje(Player* personaje) {
+void PlayerView::setPersonaje(Player* personaje) {
 	this->miPersonaje = personaje;
 	Vector2* anchorPixel = new Vector2(clip.w / 2, OFFSET_Y);
 	miPersonaje->getBase()->setAnchorPixel(anchorPixel);
 }
 
-Player* PersonajeVista::getPersonaje() {
+Player* PlayerView::getPersonaje() {
 	return this->miPersonaje;
 }
 
-void PersonajeVista::cargarImagen(std::string img) {
+void PlayerView::cargarImagen(std::string img) {
 	//Load the sprite sheet
 	if (img.compare("")) {
 		//  throw new FaltaParametroException();
@@ -102,18 +102,18 @@ void PersonajeVista::cargarImagen(std::string img) {
 	personajeImagen = miPersonajeImagen;
 }
 
-Player* PersonajeVista::getEntity() {
+Player* PlayerView::getEntity() {
 	return miPersonaje;
 
 }
 
-void PersonajeVista::setEntity(Entity* entity) {
+void PlayerView::setEntity(Entity* entity) {
 	//TODO: Error check (si no es un personaje)
 	Player* aux = (Player*) entity;
 	miPersonaje = aux;
 }
 
-void PersonajeVista::Mostrar(SDL_Surface* fondo) {
+void PlayerView::Mostrar(SDL_Surface* fondo) {
 	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
 	float direction = movementDirection->GetAngle();
 
@@ -178,7 +178,7 @@ void PersonajeVista::Mostrar(SDL_Surface* fondo) {
 	showFrame(this->personajeImagen, fondo, clipToDraw);
 }
 
-void PersonajeVista::EstablecerLosClips() {
+void PlayerView::EstablecerLosClips() {
 
 	for (int i = 0; i < numberOfClips; i++) {
 		SDL_Rect rect;
@@ -303,7 +303,7 @@ void PersonajeVista::EstablecerLosClips() {
 	}
 }
 
-PersonajeVista::~PersonajeVista() {
+PlayerView::~PlayerView() {
 	//libera la memoria que pide para La imagen
 	SDL_FreeSurface(this->personajeImagen);
 
@@ -311,27 +311,27 @@ PersonajeVista::~PersonajeVista() {
 	SDL_Quit();
 }
 
-int PersonajeVista::getImageHeight() {
+int PlayerView::getImageHeight() {
 	return this->imageHeight;
 }
 
-void PersonajeVista::setImageHeight(int height) {
+void PlayerView::setImageHeight(int height) {
 	this->imageHeight = height;
 }
 
-int PersonajeVista::getImageWidth() {
+int PlayerView::getImageWidth() {
 	return this->imageWidth;
 }
 
-void PersonajeVista::setImageWidth(int width) {
+void PlayerView::setImageWidth(int width) {
 	this->imageWidth = width;
 }
 
-int PersonajeVista::getNClips() {
+int PlayerView::getNClips() {
 	return this->numberOfClips;
 }
 
-void PersonajeVista::setNClips(int clips) {
+void PlayerView::setNClips(int clips) {
 	this->numberOfClips = clips;
 }
 

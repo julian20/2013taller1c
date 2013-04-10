@@ -123,12 +123,12 @@ void printEntity(Entity* parsedPersonaje, std::ofstream& outputFile) {
 /**
  * Prints a list of player views.
  */
-void printPlayerViews(std::vector<PersonajeVista*> entityViews,
+void printPlayerViews(std::vector<PlayerView*> entityViews,
 		std::ofstream& outputFile) {
 
 	outputFile << "- playerViews:" << std::endl;
 	for (unsigned int j = 0; j < entityViews.size(); j++) {
-		PersonajeVista* parsedEntityView = entityViews[j];
+		PlayerView* parsedEntityView = entityViews[j];
 		outputFile << "  - imageSrc: " << parsedEntityView->getImagePath()
 				<< std::endl;
 		outputFile << "    anchorPixel: " << "["
@@ -353,7 +353,7 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 /**
  * Sobrecarga de operador >> para llenar los campos de una PersonajeVista.
  */
-void operator >>(const YAML::Node& yamlNode, PersonajeVista* playerView) {
+void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 
 	std::vector<Power*> auxPowers;
 	Player* personaje = new Player("", NULL, NULL, auxPowers);
@@ -409,10 +409,10 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
  * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
  */
 void operator >>(const YAML::Node& yamlNode,
-		std::vector<PersonajeVista*>& entityList) {
+		std::vector<PlayerView*>& entityList) {
 	const YAML::Node& playerViews = yamlNode["playerViews"];
 	for (unsigned i = 0; i < playerViews.size(); i++) {
-		PersonajeVista* entityView = new PersonajeVista();
+		PlayerView* entityView = new PlayerView();
 		playerViews[i] >> entityView;
 		entityList.push_back(entityView);
 	}
@@ -549,10 +549,10 @@ void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
  * ************************************************ */
 
 void loadEntityViewMap(EntityViewMap* entityViewMap,
-		std::vector<PersonajeVista*> entityViewVector) {
+		std::vector<PlayerView*> entityViewVector) {
 
 	for (unsigned int j = 0; j < entityViewVector.size(); j++) {
-		PersonajeVista* parsedEntityView = entityViewVector[j];
+		PlayerView* parsedEntityView = entityViewVector[j];
 		Player* personaje = (Player*) parsedEntityView->getEntity();
 
 		/**
@@ -616,7 +616,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	parser.GetNextDocument(yamlNode);
 
 	// Parsing PersonajeVista.
-	std::vector<PersonajeVista*> playerViewVector;
+	std::vector<PlayerView*> playerViewVector;
 	yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
 
 	// Parsing EntityViews.

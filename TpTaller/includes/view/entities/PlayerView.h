@@ -1,5 +1,5 @@
 /* 
- * File:   PersonajeVista.h
+ * File:   PlayerView.h
  * Author: damian
  *
  * Created on 23 de marzo de 2013, 12:25
@@ -28,9 +28,9 @@
 
 using namespace std;
 
-class PersonajeVista: public EntityView {
+class PlayerView: public EntityView {
 public:
-	PersonajeVista();
+	PlayerView();
 	void cargarImagen(string path);
 	void Mostrar(SDL_Surface* fondo);
 	void setPersonaje(Player* personaje);
@@ -44,7 +44,7 @@ public:
 	void setImageWidth(int width);
 	int getNClips();
 	void setNClips(int clips);
-	virtual ~PersonajeVista();
+	virtual ~PlayerView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, Timer* timer);
 private:

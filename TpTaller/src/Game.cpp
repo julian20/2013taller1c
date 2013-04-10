@@ -16,7 +16,7 @@
 
 //Ours
 #include <Game.h>
-#include <view/entities/PersonajeVista.h>
+#include <view/entities/PlayerView.h>
 #include <model/entities/player/Player.h>
 #include <model/persistence/PersistentConfiguration.h>
 

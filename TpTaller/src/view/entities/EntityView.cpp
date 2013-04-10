@@ -5,7 +5,7 @@
  * Created on 23 de marzo de 2013, 12:25
  */
 
-#include <view/entities/PersonajeVista.h>
+#include <view/entities/PlayerView.h>
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>

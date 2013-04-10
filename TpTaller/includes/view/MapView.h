@@ -3,7 +3,7 @@
 
 #include <model/map/MapData.h>
 #include <model/entities/player/Player.h>
-#include <view/entities/PersonajeVista.h>
+#include <view/entities/PlayerView.h>
 #include <model/map/TextureHolder.h>
 #include <view/EntityViewMap.h>
 #include <view/MapCameraView.h>

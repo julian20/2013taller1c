@@ -45,7 +45,7 @@ private:
         MapCameraController* cameraController;
 
         Player* personaje;
-        PersonajeVista* personajeVista;
+        PlayerView* personajeVista;
 
         void initMusic();
         void initScreen();
