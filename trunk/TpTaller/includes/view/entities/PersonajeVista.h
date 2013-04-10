@@ -7,7 +7,7 @@
 #ifndef PERSONAJEVISTA_H
 #define	PERSONAJEVISTA_H
 
-#include <model/entities/personaje/Personaje.h>
+#include <model/entities/player/Player.h>
 #include <view/entities/EntityView.h>
 #include <view/timer/Timer.h>
 #include <SDL/SDL.h>
@@ -33,10 +33,10 @@ public:
 	PersonajeVista();
 	void cargarImagen(string path);
 	void Mostrar(SDL_Surface* fondo);
-	void setPersonaje(Personaje* personaje);
-	Personaje* getPersonaje();
+	void setPersonaje(Player* personaje);
+	Player* getPersonaje();
 	void UpdateCameraPos(int x, int y);
-	Personaje* getEntity();
+	Player* getEntity();
 	void setEntity(Entity* entity);
 	int getImageHeight();
 	void setImageHeight(int height);
@@ -50,7 +50,7 @@ public:
 private:
 	void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
 
-	Personaje* miPersonaje;
+	Player* miPersonaje;
 	//SDL_Surface* fondo;
 	SDL_Surface* personajeImagen;
 	int cameraX;

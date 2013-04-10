@@ -71,13 +71,13 @@ PersonajeVista::PersonajeVista()
 	 }*/
 }
 
-void PersonajeVista::setPersonaje(Personaje* personaje) {
+void PersonajeVista::setPersonaje(Player* personaje) {
 	this->miPersonaje = personaje;
 	Vector2* anchorPixel = new Vector2(clip.w / 2, OFFSET_Y);
 	miPersonaje->getBase()->setAnchorPixel(anchorPixel);
 }
 
-Personaje* PersonajeVista::getPersonaje() {
+Player* PersonajeVista::getPersonaje() {
 	return this->miPersonaje;
 }
 
@@ -102,14 +102,14 @@ void PersonajeVista::cargarImagen(std::string img) {
 	personajeImagen = miPersonajeImagen;
 }
 
-Personaje* PersonajeVista::getEntity() {
+Player* PersonajeVista::getEntity() {
 	return miPersonaje;
 
 }
 
 void PersonajeVista::setEntity(Entity* entity) {
 	//TODO: Error check (si no es un personaje)
-	Personaje* aux = (Personaje*) entity;
+	Player* aux = (Player*) entity;
 	miPersonaje = aux;
 }
 

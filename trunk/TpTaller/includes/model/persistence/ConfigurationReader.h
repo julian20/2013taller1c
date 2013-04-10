@@ -15,7 +15,7 @@
 #include <model/entityProperties/Power.h>
 #include <model/persistence/ConfigurationReader.h>
 #include <model/entities/Entity.h>
-#include <model/entities/personaje/Personaje.h>
+#include <model/entities/player/Player.h>
 #include <model/map/Tile.h>
 #include <model/map/TileDefinition.h>
 #include <model/map/TextureHolder.h>

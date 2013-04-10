@@ -9,7 +9,7 @@
 #define TILEDATA_H_
 
 #include <model/entities/Entity.h>
-#include <model/entities/personaje/Personaje.h>
+#include <model/entities/player/Player.h>
 #include <vector>
 
 namespace std {
@@ -21,19 +21,19 @@ public:
 
 	//Getters
 	std::string getType();
-	Personaje* getPersonaje();
+	Player* getPersonaje();
 	Entity* getNextEntity();
 	int getNumberOfEntitiesOnTile();
 
 	//Setters
 	void setType(std::string type);
-	void setPersonaje(Personaje* newPersonaje);
+	void setPersonaje(Player* newPersonaje);
 
 	void addEntity(Entity* entity);
 
 private:
 	std::string tileType;
-	Personaje* personaje;
+	Player* personaje;
 	std::list<Entity*> entities;
 	std::list<Entity*>::iterator iterator;
 };

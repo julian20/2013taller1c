@@ -17,7 +17,7 @@
 //Ours
 #include <Game.h>
 #include <view/entities/PersonajeVista.h>
-#include <model/entities/personaje/Personaje.h>
+#include <model/entities/player/Player.h>
 #include <model/persistence/PersistentConfiguration.h>
 
 Game::Game(PersistentConfiguration* configuration) {
@@ -77,7 +77,7 @@ void Game::setUpCharacters(MapView* map, MapData* mapData,
 					Entity* entity = view->getEntity();
 					if (entity->getClassName() == "Personaje") {
 						//TODO - Lucas: "personaje" deberia ser una lista de personajes
-						personaje = (Personaje*) entity;
+						personaje = (Player*) entity;
 
 						Vector2* pos = personaje->getCurrentPos();
 						float x = pos->GetX();

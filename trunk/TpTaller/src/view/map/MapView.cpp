@@ -28,7 +28,7 @@ void MapView::SetUpPersonajes() {
 	for (int col = 0; col < data->GetNCols(); col++) {
 		for (int row = 0; row < data->GetNRows(); row++) {
 
-			Personaje* personaje = data->GetPersonaje(row, col);
+			Player* personaje = data->GetPersonaje(row, col);
 			if (personaje != NULL) {
 
 				posTile = Tile::computePosition(row, col, true);

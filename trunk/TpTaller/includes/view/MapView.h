@@ -2,7 +2,7 @@
 #define MAPVIEW_H
 
 #include <model/map/MapData.h>
-#include <model/entities/personaje/Personaje.h>
+#include <model/entities/player/Player.h>
 #include <view/entities/PersonajeVista.h>
 #include <model/map/TextureHolder.h>
 #include <view/EntityViewMap.h>
@@ -28,7 +28,7 @@ public:
 	void movePlayer(int x, int y);
 	void Update();
 	void SetUpPersonajes();
-	void AssignPersonaje(Personaje* _personaje);
+	void AssignPersonaje(Player* _personaje);
 	void SetUpEntity(EntityView* entityView, Coordinates coor);
 	MapCameraView* getCamera();
 	list<EntityView *> *entitiesView;
@@ -44,7 +44,7 @@ private:
 	string texturesPaths[MapData::AMOUNT_TYPES];
 	SDL_Surface* tilesTextures[MapData::AMOUNT_TYPES];
 	string backgroundPath;
-	Personaje* personaje;
+	Player* personaje;
 
 	MapCameraView* camera;
 	Timer timer;
