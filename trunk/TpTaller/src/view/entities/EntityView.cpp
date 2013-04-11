@@ -96,6 +96,14 @@ void EntityView::setImageHeight(int height) {
 	this->imageHeight = height;
 }
 
+Vector2* EntityView::getAnchorPixel(){
+	return this->anchorPixel;
+}
+
+void EntityView::setAnchorPixel(Vector2* anchorPixel){
+	this->anchorPixel = anchorPixel;
+}
+
 SDL_Surface* EntityView::load_image(string urlImagen) {
 	//The image that's loaded
 	SDL_Init(SDL_INIT_EVERYTHING);
