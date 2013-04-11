@@ -208,8 +208,8 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 	int y = (int) position->GetY();
 
 	SDL_Rect offset;
-	offset.x = (int) (Tile::computePosition(x, y).x + cam->getX() - clip.w / 2);
-	offset.y = (int) (Tile::computePosition(x, y).y + cam->getY() - clip.h / 2);
+	offset.x = (int) (Tile::computePosition(x, y, true).x + cam->getX() - clip.w / 2);
+	offset.y = (int) (Tile::computePosition(x, y, true).y + cam->getY() - clip.h / 2);
 	offset.h = clip.h;
 	offset.w = clip.w;
 
@@ -236,7 +236,7 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 			currentRepeat++;
 		}
 	}
-	std::cout << currentRepeat << endl;
+
 }
 
 EntityView::~EntityView() {
