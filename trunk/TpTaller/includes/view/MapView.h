@@ -8,7 +8,9 @@
 #include <view/EntityViewMap.h>
 #include <view/MapCameraView.h>
 #include <view/timer/Timer.h>
+#include <model/entityProperties/Coordinates.h>
 
+#include <map>
 #include <string>
 #include <iostream>
 #include <SDL/SDL.h>
@@ -36,6 +38,8 @@ public:
 	void setTextureHolder(TextureHolder* textureHolder);
 	void setRunningPlayer();
 private:
+	map<string, int> getVisibleTilesLimit(Position* cam);
+
 	TextureHolder* textureHolder;
 	MapData* data;
 	SDL_Surface* screen;

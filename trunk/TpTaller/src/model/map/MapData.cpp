@@ -91,7 +91,7 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* to) {
 	 list<Tile *> cameFrom;
 
 	 map<Tile *, float> g_score;
-	 map[from] = 0.0f;
+	 g_score[from] = 0.0f;
 	 map<Tile *, float> f_score;
 	 f_score[from] = g_score[from] + heuristic_cost_estimate(from, to);
 

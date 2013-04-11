@@ -1,6 +1,7 @@
 #include <view/MapView.h>
 
 #define TilesScale     		1
+#define TilesVisibleMargin	3
 
 using namespace std;
 
@@ -89,8 +90,38 @@ SDL_Surface* MapView::getDrawingSurface() {
 	return screen;
 }
 
-void MapView::draw(Position* cam) {
+map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
+// TODO: Esto en vez de devolver un diccionario capas q estaria bueno q devuelva una clase, q dicen?
 
+	Coordinates *supLeft = Tile::getTileCoordinates( -cam->getX(), -cam->getY());
+	Coordinates *supRight = Tile::getTileCoordinates( screen->w - cam->getX(), - cam->getY());
+	Coordinates *infLeft = Tile::getTileCoordinates( -cam->getX(), screen->h - cam->getY());
+	Coordinates *infRight = Tile::getTileCoordinates( screen->w - cam->getX(), screen->h - cam->getY());
+
+	if (supLeft->getCol() < 0) supLeft->setCol(0);
+	if (supRight->getRow() < 0) supRight->setRow(0);
+	if (infLeft->getRow() > data->GetNRows()) infLeft->setRow(data->GetNRows());
+	if (infRight->getCol() > data->GetNCols()) infRight->setCol(data->GetNCols());
+
+	/*if (supLeft->getCol() >= TilesVisibleMargin)
+		supLeft->setCol(supLeft->getCol() - TilesVisibleMargin);
+	if (supRight->getRow() >= TilesVisibleMargin)
+		supRight->setRow(supRight->getRow() - TilesVisibleMargin);
+	if (infRight->getCol() <= data->GetNCols() - TilesVisibleMargin)
+		infRight->setCol(infRight->getCol() + TilesVisibleMargin);
+	if (infLeft->getRow() <= data->GetNRows() - TilesVisibleMargin)
+		infLeft->setRow(infLeft->getRow() + TilesVisibleMargin);*/
+
+	std::map<std::string, int> mapVisibleLimits;
+	mapVisibleLimits["StartCol"] = supLeft->getCol();
+	mapVisibleLimits["EndCol"] = infRight->getCol();
+	mapVisibleLimits["StartRow"] = supRight->getRow();
+	mapVisibleLimits["EndRow"] = infLeft->getRow();
+
+	return mapVisibleLimits;
+}
+
+void MapView::draw(Position* cam) {
 	//Personaje* personajes = NULL;
 	SDL_Rect posTile;
 
@@ -99,9 +130,12 @@ void MapView::draw(Position* cam) {
 	 * Dibujamos los tiles
 	 * TODO: agregar un metodo getEntities(row,col) a entityviewmap para dibujar toodo en el mismo for!
 	 */
-	for (int col = 0; col < data->GetNCols(); col++) {
 
-		for (int row = 0; row < data->GetNRows(); row++) {
+	map<string, int> mapVisibleLimits = getVisibleTilesLimit(cam);
+
+	for (int col = mapVisibleLimits["StartCol"]; col < mapVisibleLimits["EndCol"]; col++) {
+
+		for (int row = mapVisibleLimits["StartRow"]; row < mapVisibleLimits["EndRow"]; row++) {
 
 			posTile = Tile::computePosition(row, col);
 			Position* cameraPos = this->camera->getPosition();
