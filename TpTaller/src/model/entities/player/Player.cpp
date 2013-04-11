@@ -19,9 +19,9 @@ Player::Player() {
 }
 
 void Player::setPos(float x, float y) {
-	currentPos->SetValues(x,y);
+	currentPos->setValues(x,y);
 
-	endPos->SetValues(currentPos->GetX(), currentPos->GetY());
+	endPos->setValues(currentPos->getX(), currentPos->getY());
 }
 
 void Player::MoveTo(int x, int y) {
@@ -35,23 +35,23 @@ bool Player::isRunning(){
 	return false;
 }
 
-void Player::Update() {
+void Player::update() {
 	if (IsMoving() == false)
 	{
 		if (path->size() == 0) return;
 		else setNextPosition();
 	}
 
-	Vector2* moveDirection = new Vector2(endPos->GetX() - currentPos->GetX(),
-			endPos->GetY() - currentPos->GetY());
+	Vector2* moveDirection = new Vector2(endPos->getX() - currentPos->getX(),
+			endPos->getY() - currentPos->getY());
 
-	if (moveDirection->GetNorm() < getSpeed()->getMagnitude() + 1) {
+	if (moveDirection->getNorm() < getSpeed()->getMagnitude() + 1) {
 		// Close enough to the end position to move in one step.
-		currentPos->SetValues(endPos->GetX(), endPos->GetY());
+		currentPos->setValues(endPos->getX(), endPos->getY());
 	} else {
-		moveDirection->Normalize();
-		moveDirection->MultiplyBy(getSpeed()->getMagnitude());
-		currentPos->Add(moveDirection);
+		moveDirection->normalize();
+		moveDirection->multiplyBy(getSpeed()->getMagnitude());
+		currentPos->add(moveDirection);
 		if (path->size() == 0) return;
 		else setNextPosition();
 	}
@@ -69,13 +69,13 @@ void Player::setNextPosition() {
 }
 
 Vector2* Player::GetCurrentPos() {
-	return new Vector2(currentPos->GetX(), currentPos->GetY());
+	return new Vector2(currentPos->getX(), currentPos->getY());
 }
 
 Vector2* Player::GetMovementDirection() {
-	Vector2* moveDirection = new Vector2(endPos->GetX() - currentPos->GetX(),
-			endPos->GetY() - currentPos->GetY());
-	moveDirection->Normalize();
+	Vector2* moveDirection = new Vector2(endPos->getX() - currentPos->getX(),
+			endPos->getY() - currentPos->getY());
+	moveDirection->normalize();
 
 	return moveDirection;
 }
@@ -90,7 +90,7 @@ Player::Player(string name, Position* position, Speed* speed, vector<Power*> pow
 	this->currentPos = new Vector2(0, 0);
 	this->base = new Base();
 	endPos = new Vector2(0,0);
-	endPos->SetValues(currentPos->GetX(),currentPos->GetY());
+	endPos->setValues(currentPos->getX(),currentPos->getY());
 }
 
 Player::~Player() {
@@ -134,7 +134,7 @@ void Player::setPowers(std::vector<Power*> powers) {
 }
 
 bool Player::IsMoving() {
-	return !(currentPos->IsEqual(endPos));
+	return !(currentPos->isEqual(endPos));
 }
 
 void Player::assignPath(list<Tile *> *_path) {

@@ -22,7 +22,7 @@ Entity::Entity() {
 }
 
 void Entity::setPos(float x, float y) {
-        currentPos->SetValues(x,y);
+        currentPos->setValues(x,y);
         coord->changeTo((int) x/Tile::computePosition(0,0).w , (int) y/Tile::computePosition(0,0).h);
 }
 

@@ -14,17 +14,17 @@
 class Vector3 {
 public:
 	Vector3(float _x = 0, float _y = 0, float _z = 0);
-	void SetValues(float _x, float _y, float _z = 0);
-	float GetX();
-	float GetY();
-	float GetZ();
-	void Normalize();
-	float GetNorm();
-	void MultiplyBy(float val);
-	void Add(Vector3 *other);
-	void Sub(Vector3 *other);
-	bool IsEqual(Vector3 *other);
-	float GetAngle();
+	void setValues(float _x, float _y, float _z = 0);
+	float getX();
+	float getY();
+	float getZ();
+	void normalize();
+	float getNorm();
+	void multiplyBy(float val);
+	void add(Vector3 *other);
+	void sub(Vector3 *other);
+	bool isEqual(Vector3 *other);
+	float getAngle();
 private:
 	float x, y, z;
 };

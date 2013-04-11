@@ -9,6 +9,7 @@
 
 #include <model/entities/player/Player.h>
 #include <view/entities/EntityView.h>
+#include <model/entityProperties/Position.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <model/Vector2.h>
@@ -34,7 +35,7 @@ public:
 	void Mostrar(SDL_Surface* fondo);
 	void setPersonaje(Player* personaje);
 	Player* getPersonaje();
-	void UpdateCameraPos(int x, int y);
+	void UpdateCameraPos(Position* _camPos);
 	Player* getEntity();
 	void setEntity(Entity* entity);
 	int getImageHeight();
@@ -49,11 +50,10 @@ public:
 private:
 	void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
 	void showStandingAnimation(float direction, SDL_Surface* fondo);
-	Player* miPersonaje;
+	Player* player;
 	//SDL_Surface* fondo;
-	SDL_Surface* personajeImagen;
-	int cameraX;
-	int cameraY;
+	SDL_Surface* characterImage;
+	Position* camPos;
 	int marco; 	// Current frame
 	int animationChangeRate;
 	int imageWidth;

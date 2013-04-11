@@ -123,8 +123,8 @@ void printPlayer(Player* player, std::ofstream& outputFile) {
 	outputFile << "        magnitude: ";
 	outputFile << player->getSpeed()->getMagnitude() << std::endl;
 	outputFile << "        direction: [";
-	outputFile << player->getSpeed()->getDirection().GetX() << ", ";
-	outputFile << player->getSpeed()->getDirection().GetY() << "]";
+	outputFile << player->getSpeed()->getDirection().getX() << ", ";
+	outputFile << player->getSpeed()->getDirection().getY() << "]";
 	outputFile << std::endl;
 	outputFile << "      powers:\n";
 	for (unsigned i = 0; i < player->getPowers().size(); i++) {
@@ -146,8 +146,8 @@ void printEntity(Entity* parsedPersonaje, std::ofstream& outputFile) {
 	outputFile << "      name: ";
 	outputFile << parsedPersonaje->getName() << std::endl;
 	outputFile << "      position: [";
-	outputFile << parsedPersonaje->getCurrentPos()->GetX() << ", ";
-	outputFile << parsedPersonaje->getCurrentPos()->GetY() << ", ";
+	outputFile << parsedPersonaje->getCurrentPos()->getX() << ", ";
+	outputFile << parsedPersonaje->getCurrentPos()->getY() << ", ";
 	outputFile << "0" << "]\n";
 }
 
@@ -332,7 +332,7 @@ void operator >>(const YAML::Node& yamlNode, Vector2* vector) {
 		auxY = DEFAULT_POSITION;
 	}
 
-	vector->SetValues(auxX, auxY);
+	vector->setValues(auxX, auxY);
 }
 
 /**
@@ -393,7 +393,7 @@ void operator >>(const YAML::Node& yamlNode, Speed* speed) {
 	}
 
 	speed->setMagnitude(auxMagnitude);
-	speed->setDirection(Vector2(auxPosition->GetX(), auxPosition->GetY()));
+	speed->setDirection(Vector2(auxPosition->getX(), auxPosition->getY()));
 	delete auxPosition;
 }
 
@@ -952,8 +952,8 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		 * TODO: hacer conversion entre Posicion y Coordinates.
 		 */
 		Coordinates coordinates = Coordinates(
-				personaje->GetCurrentPos()->GetX(),
-				personaje->GetCurrentPos()->GetY());
+				personaje->GetCurrentPos()->getX(),
+				personaje->GetCurrentPos()->getY());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}
@@ -971,8 +971,8 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		 * TODO: hacer conversion entre Posicion y Coordinates.
 		 */
 		Coordinates coordinates = Coordinates(
-				personaje->getCurrentPos()->GetX(),
-				personaje->getCurrentPos()->GetY());
+				personaje->getCurrentPos()->getX(),
+				personaje->getCurrentPos()->getY());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}

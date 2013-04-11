@@ -10,59 +10,59 @@
 #define TOLERANCE 0.1
 
 Vector2::Vector2(float _x, float _y) {
-	SetValues(_x, _y);
+	setValues(_x, _y);
 }
 
-float Vector2::GetX() {
+float Vector2::getX() {
 	return x;
 }
 
-float Vector2::GetY() {
+float Vector2::getY() {
 	return y;
 }
 
-void Vector2::SetValues(float _x, float _y) {
+void Vector2::setValues(float _x, float _y) {
 	x = _x;
 	y = _y;
 }
 
-void Vector2::Normalize() {
-	float norm = GetNorm();
+void Vector2::normalize() {
+	float norm = getNorm();
 
 	x /= norm;
 	y /= norm;
 }
 
-float Vector2::GetNorm() {
+float Vector2::getNorm() {
 	// sqrt( x² + y² );
 	return (float) sqrt(pow((double) x, 2) + pow((double) y, 2));
 }
 
-void Vector2::MultiplyBy(float val) {
+void Vector2::multiplyBy(float val) {
 	x *= val;
 	y *= val;
 }
 
-void Vector2::Add(Vector2 *other) {
-	x += other->GetX();
-	y += other->GetY();
+void Vector2::add(Vector2 *other) {
+	x += other->getX();
+	y += other->getY();
 }
 
-void Vector2::Sub(Vector2 *other) {
-	x -= other->GetX();
-	y -= other->GetY();
+void Vector2::sub(Vector2 *other) {
+	x -= other->getX();
+	y -= other->getY();
 }
 
-bool Vector2::IsEqual(Vector2 *other) {
-	bool XEquality = (x >= other->GetX() - TOLERANCE
-			&& x <= other->GetX() + TOLERANCE);
-	bool YEquality = (y >= other->GetY() - TOLERANCE
-			&& y <= other->GetY() + TOLERANCE);
+bool Vector2::isEqual(Vector2 *other) {
+	bool XEquality = (x >= other->getX() - TOLERANCE
+			&& x <= other->getX() + TOLERANCE);
+	bool YEquality = (y >= other->getY() - TOLERANCE
+			&& y <= other->getY() + TOLERANCE);
 
 	return (XEquality && YEquality);
 }
 
-float Vector2::GetAngle() {
+float Vector2::getAngle() {
 	if (x > 0 && y >= 0) {
 		return atan(y / x);
 	} else if (x < 0) {
