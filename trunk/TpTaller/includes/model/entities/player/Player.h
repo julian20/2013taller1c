@@ -11,23 +11,22 @@
 #include <list>
 #include <model/map/Tile.h>
 #include <model/entities/Entity.h>
-#include <model/Vector2.h>
+#include <model/Vector2.h>	// Capas hay q volarlo
+#include <model/Vector3.h>
 
 using namespace std;
 
 class Player: public Entity {
 public:
-	void MoveTo(int x, int y);
 	Player();
 	Player(std::string name, Position* position, Speed* speed,
 			std::vector<Power*> powers);
 	virtual ~Player();
-	void setPos(float x, float y);
+	void moveTo(int x, int y, int z = 0);
+	void setPos(float x, float y, float z = 0);
 	void update();
-	Vector2* GetCurrentPos();
-	Vector2* GetMovementDirection();
+	Vector2* getMovementDirection();
 	bool IsMoving();
-	Position* getPosition();
 	void setPosition(Position* position);
 	Speed* getSpeed();
 	void setSpeed(Speed* speed);
@@ -44,8 +43,7 @@ public:
 private:
 	void setNextPosition();
 
-	Vector2* endPos;
-	Position* position;
+	Vector3* endPos;
 	Speed* speed;
 	std::vector<Power*> powers;
 	std::string name;

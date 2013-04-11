@@ -116,9 +116,9 @@ void printPlayer(Player* player, std::ofstream& outputFile) {
 	outputFile << "      name: ";
 	outputFile << player->getName() << std::endl;
 	outputFile << "      position: [";
-	outputFile << player->getPosition()->getX() << ", ";
-	outputFile << player->getPosition()->getY() << ", ";
-	outputFile << player->getPosition()->getZ() << "]\n";
+	outputFile << player->getCurrentPos()->getX() << ", ";
+	outputFile << player->getCurrentPos()->getY() << ", ";
+	outputFile << player->getCurrentPos()->getZ() << "]\n";
 	outputFile << "      speed:\n";
 	outputFile << "        magnitude: ";
 	outputFile << player->getSpeed()->getMagnitude() << std::endl;
@@ -952,8 +952,8 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		 * TODO: hacer conversion entre Posicion y Coordinates.
 		 */
 		Coordinates coordinates = Coordinates(
-				personaje->GetCurrentPos()->getX(),
-				personaje->GetCurrentPos()->getY());
+				personaje->getCurrentPos()->getX(),
+				personaje->getCurrentPos()->getY());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}

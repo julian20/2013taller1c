@@ -5,8 +5,8 @@
  *      Author: fede
  */
 
-#ifndef VECTOR_H_
-#define VECTOR_H_
+#ifndef VECTOR3_H_
+#define VECTOR3_H_
 
 #define _USE_MATH_DEFINES	// To use math.h constants
 #include <math.h>
