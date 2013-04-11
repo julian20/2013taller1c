@@ -127,13 +127,12 @@ map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
 	else
 		infLeft->setRow(infLeft->getRow() + TilesVisibleMargin);
 
+
 	std::map<std::string, int> mapVisibleLimits;
 	mapVisibleLimits["StartCol"] = supLeft->getCol();
 	mapVisibleLimits["EndCol"] = infRight->getCol();
 	mapVisibleLimits["StartRow"] = supRight->getRow();
 	mapVisibleLimits["EndRow"] = infLeft->getRow();
-
-	std::cout << mapVisibleLimits["StartCol"] << endl;
 
 	return mapVisibleLimits;
 }

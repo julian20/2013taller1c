@@ -42,14 +42,13 @@ EntityView::EntityView() {
 	this->currentClip = 0;
 	this->anchorPixel = new Vector2(0, 0);
 	this->movable = false;
+	this->currentRepeat = 0;
 	timer.start();
-	timeSinceLastAnimation = 1000;
-
 	animationRateTimer.start();
 
-	currentRepeat = 0;
-	setNumberOfRepeats(0);
+	timeSinceLastAnimation = 1000;
 
+	setNumberOfRepeats(0);
 }
 
 bool EntityView::isMovable() {
@@ -200,7 +199,6 @@ Entity* EntityView::getEntity() {
  }*/
 
 void EntityView::draw(SDL_Surface* screen, Position* cam) {
-
 	clip.x = this->imageWidth * this->currentClip * scaleWidth;
 	clip.y = 0;
 	clip.w = this->imageWidth * scaleWidth;
@@ -227,13 +225,18 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 			animationRateTimer.start();
 		}
 	} else {
-		if ((timeSinceLastAnimation >= delay * 1000)) {
+		if ((currentRepeat >= numberOfRepeats) && (timeSinceLastAnimation >= delay * 1000)) {
 			timer.start();
 			currentRepeat = 0;
 		}
-		currentClip = 0;
-		currentRepeat++;
+		// Se agrega la condicion this->nClips != 0 para que en las animaciones staticas
+		// currentRepeat no sume en cada ciclo
+		if (currentClip >= this->nClips && this->nClips != 0) {
+			currentClip = 0;
+			currentRepeat++;
+		}
 	}
+	std::cout << currentRepeat << endl;
 }
 
 EntityView::~EntityView() {
