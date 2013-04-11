@@ -26,7 +26,7 @@ Player* TileData::getPersonaje(){
 }
 
 Entity* TileData::getNextEntity(){
-	if (iterator== entities.end() || getNumberOfEntitiesOnTile()<=0)
+	if (iterator == entities.end() || getNumberOfEntitiesOnTile()<=0)
 		return NULL;
 	Entity* entity = *iterator;
 	++iterator;
@@ -39,11 +39,11 @@ int TileData::getNumberOfEntitiesOnTile(){
 }
 
 void TileData::setType(std::string type){
-	tileType=type;
+	tileType = type;
 }
 
 void TileData::setPersonaje(Player* newPersonaje){
-	personaje=newPersonaje;
+	personaje = newPersonaje;
 }
 
 void TileData::addEntity(Entity* entity){

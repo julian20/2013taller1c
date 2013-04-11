@@ -63,8 +63,7 @@ void Player::setNextPosition() {
 	Position* tilePos = tile->getPosition();
 	moveTo(tilePos->getX(), tilePos->getY());
 
-	delete currentTile;
-	currentTile = tile;
+	setTile(tile);
 }
 
 Vector2* Player::getMovementDirection() {
@@ -130,9 +129,10 @@ void Player::assignPath(list<Tile *> *_path) {
 }
 
 void Player::setTile( Tile* _tile ) {
-
 	if (this->currentTile) delete this->currentTile;
 	currentTile = _tile;
+
+	// Las coordinates se actualizan en EntityViewMap
 }
 
 Tile* Player::getTile() {

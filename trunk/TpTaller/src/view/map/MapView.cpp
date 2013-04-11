@@ -1,7 +1,7 @@
 #include <view/MapView.h>
 
 #define TilesScale     		1
-#define TilesVisibleMargin	3
+#define TilesVisibleMargin	5
 
 using namespace std;
 
