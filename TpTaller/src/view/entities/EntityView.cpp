@@ -60,6 +60,10 @@ void EntityView::setNumberOfRepeats(int repeats) {
 	numberOfRepeats = repeats;
 }
 
+int EntityView::getNumberOfRepeats() {
+	return this->numberOfRepeats;
+}
+
 void EntityView::setScale() {
 	//baseHeight = entity->getBase()->getLength();
 	//baseWidth = entity->getBase()->getWidth();
@@ -102,6 +106,16 @@ Vector2* EntityView::getAnchorPixel(){
 
 void EntityView::setAnchorPixel(Vector2* anchorPixel){
 	this->anchorPixel = anchorPixel;
+}
+
+int EntityView::getNClips() {
+	return this->nClips;
+}
+int EntityView::getImageHeight() {
+	return this->imageHeight;
+}
+int EntityView::getImageWidth() {
+	return this->imageWidth;
 }
 
 SDL_Surface* EntityView::load_image(string urlImagen) {

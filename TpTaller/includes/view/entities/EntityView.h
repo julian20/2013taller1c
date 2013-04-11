@@ -46,6 +46,9 @@ public:
 	int getNumberOfRepeats();
 	void setScale();
 	bool isMovable();
+	int getNClips();
+	int getImageHeight();
+	int getImageWidth();
 
 	void setBaseWidth(int width);
 	void setBaseHeight(int height);
