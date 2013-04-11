@@ -10,22 +10,21 @@
 #include <stdio.h>
 
 Player::Player() {
-	endPos = new Vector2(0, 0);
-	this->position = new Position(0, 0, 0);
+	endPos = new Vector3(0, 0);
 	this->speed = new Speed(0, Vector2(0, 0));
 	this->name = "";
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile( new Coordinates(0, 0) );
 }
 
-void Player::setPos(float x, float y) {
-	currentPos->setValues(x,y);
+void Player::setPos(float x, float y, float z) {
+	currentPos->setValues(x, y, z);
 
 	endPos->setValues(currentPos->getX(), currentPos->getY());
 }
 
-void Player::MoveTo(int x, int y) {
-	endPos = new Vector2(x, y);
+void Player::moveTo(int x, int y, int z) {
+	endPos = new Vector3(x, y, z);
 }
 
 
@@ -42,8 +41,8 @@ void Player::update() {
 		else setNextPosition();
 	}
 
-	Vector2* moveDirection = new Vector2(endPos->getX() - currentPos->getX(),
-			endPos->getY() - currentPos->getY());
+	Vector3* moveDirection = new Vector3(endPos->getX() - currentPos->getX(),
+			endPos->getY() - currentPos->getY(), endPos->getZ() - currentPos->getZ());
 
 	if (moveDirection->getNorm() < getSpeed()->getMagnitude() + 1) {
 		// Close enough to the end position to move in one step.
@@ -62,17 +61,13 @@ void Player::setNextPosition() {
 	path->remove(tile);
 
 	Position* tilePos = tile->getPosition();
-	MoveTo(tilePos->getX(), tilePos->getY());
+	moveTo(tilePos->getX(), tilePos->getY());
 
 	delete currentTile;
 	currentTile = tile;
 }
 
-Vector2* Player::GetCurrentPos() {
-	return new Vector2(currentPos->getX(), currentPos->getY());
-}
-
-Vector2* Player::GetMovementDirection() {
+Vector2* Player::getMovementDirection() {
 	Vector2* moveDirection = new Vector2(endPos->getX() - currentPos->getX(),
 			endPos->getY() - currentPos->getY());
 	moveDirection->normalize();
@@ -81,31 +76,23 @@ Vector2* Player::GetMovementDirection() {
 }
 
 Player::Player(string name, Position* position, Speed* speed, vector<Power*> powers){
-	this->position = position;
 	this->speed = speed;
 	this->name = name;
 	this->powers = powers;
 	this->path = new list<Tile *>();
 	currentTile = new Tile(new Coordinates(0, 0));
-	this->currentPos = new Vector2(0, 0);
+	this->currentPos = new Vector3(0, 0, 0);
 	this->base = new Base();
-	endPos = new Vector2(0,0);
+	endPos = new Vector3(0, 0, 0);
 	endPos->setValues(currentPos->getX(),currentPos->getY());
 }
 
 Player::~Player() {
-	delete this->position;
 	delete this->speed;
 }
 
-Position* Player::getPosition() {
-	return position;
-}
-
 void Player::setPosition(Position* position) {
-	this->position = position;
-	int x = position->getX();
-	int y = position->getY();
+	currentPos->setValues(position->getX(), position->getY());
 	//currentPos->SetValues(Tile::computePosition(x,y).x , Tile::computePosition(x,y).y);
 }
 

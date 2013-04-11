@@ -203,7 +203,7 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 	clip.y = 0;
 	clip.w = this->imageWidth * scaleWidth;
 	clip.h = this->imageHeight * scaleHeight;
-	Vector2* position = entity->getCurrentPos();
+	Vector3* position = entity->getCurrentPos();
 	int x = (int) position->getX();
 	int y = (int) position->getY();
 

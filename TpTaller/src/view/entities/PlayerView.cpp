@@ -27,7 +27,7 @@ void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
 		SDL_Rect* clip) {
 	SDL_Rect offset;
 
-	Vector2* position = player->GetCurrentPos();
+	Vector3* position = player->getCurrentPos();
 	float x = position->getX();
 	float y = position->getY();
 	offset.x = (int) x + camPos->getX() - clip->w / 2;
@@ -144,7 +144,7 @@ void PlayerView::showStandingAnimation(float direction,SDL_Surface* fondo){
 }
 
 void PlayerView::Mostrar(SDL_Surface* fondo) {
-	Vector2* movementDirection = this->player->GetMovementDirection();
+	Vector2* movementDirection = this->player->getMovementDirection();
 	float direction = movementDirection->getAngle();
 
 	const float step = M_PI * 1 / 8;

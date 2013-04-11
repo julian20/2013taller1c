@@ -15,18 +15,18 @@
 using namespace std;
 
 Entity::Entity() {
-        this->currentPos = new Vector2(0, 0);
+        this->currentPos = new Vector3(0, 0, 0);
         this->coord = new Coordinates(0,0);
         this->base = new Base();
         this->name = "";
 }
 
-void Entity::setPos(float x, float y) {
-        currentPos->setValues(x,y);
+void Entity::setPos(float x, float y, float z) {
+        currentPos->setValues(x, y, z);
         coord->changeTo((int) x/Tile::computePosition(0,0).w , (int) y/Tile::computePosition(0,0).h);
 }
 
-Vector2* Entity::getCurrentPos() {
+Vector3* Entity::getCurrentPos() {
         return currentPos;
 }
 

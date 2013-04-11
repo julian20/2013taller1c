@@ -8,7 +8,8 @@
 #ifndef ENTITY_H_
 #define ENTITY_H_
 
-#include <model/Vector2.h>
+#include <model/Vector2.h>	// Capas hay que volarlo
+#include <model/Vector3.h>
 #include <model/entityProperties/Coordinates.h>
 #include <model/entityProperties/Position.h>
 #include <model/entityProperties/Speed.h>
@@ -22,8 +23,8 @@ using namespace std;
 	class Entity {
 	public:
 		Entity();
-		virtual void setPos(float x, float y);
-		Vector2* getCurrentPos();
+		virtual void setPos(float x, float y, float z = 0);
+		Vector3* getCurrentPos();
 		virtual string getClassName();
 		virtual ~Entity();
 		Base* getBase();
@@ -33,7 +34,7 @@ using namespace std;
 		Coordinates* getCoordinates();
 		void setCoordinates(int x, int y);
 	protected:
-		Vector2* currentPos;
+		Vector3* currentPos;
 		Base* base;
 		std::string name;
 		Coordinates* coord;
