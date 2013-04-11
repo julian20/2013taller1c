@@ -1,102 +1,38 @@
 - playerViews:
-  - imageSrc: resources/black_knight.png
+  - name: player
+    imageSrc: resources/black_knight.png
     imageWidth: 96
     imageHeight: 96
     numberOfClips: 8
     anchorPixel: [0, 0]
     baseWidth: 1
     baseHeight: 1
-    player:
-      name: Personaje
-      position: [20, 21, 0]
-      speed:
-        magnitude: 2
-        direction: [1, 2]
-      powers:
-        - name: Club
-          damage: 2
-          range: 1
-        - name: Fist
-          damage: 3
-          range: 1
 - entityViews:
-  - imageSrc: resources/windmil.png
+  - name: windmill
+    imageSrc: resources/windmill.png
     imageWidth: 224
     imageHeight: 240
     numberOfClips: 23
     fps: 5
     delay: 3 
     animationRepeats: 4
-    entity:
-      name: Entity
-      position: [10, 20, 0]
-  - imageSrc: resources/watermill tileset.png
+  - name: watermill
+    imageSrc: resources/watermill tileset.png
     imageWidth: 242
     imageHeight: 235
     numberOfClips: 31
-    entity:
-      name: Entity
-      position: [10, 10, 0]
-  - imageSrc: resources/trees.png
+  - name: tree
+    imageSrc: resources/trees.png
     imageWidth: 129
     imageHeight: 122
-    entity:
-      name: Entity
-      position: [21, 21, 0]
-  - imageSrc: resources/trees.png
-    imageWidth: 129
-    imageHeight: 122
-    entity:
-      name: Entity
-      position: [24, 21, 0]
-  - imageSrc: resources/trees.png
-    imageWidth: 129
-    imageHeight: 122
-    entity:
-      name: Entity
-      position: [18, 21, 0]
-  - imageSrc: resources/trees.png
-    imageWidth: 129
-    imageHeight: 122
-    entity:
-      name: Entity
-      position: [18, 19, 0]
-  - imageSrc: resources/trees.png
-    imageWidth: 129
-    imageHeight: 122
-    entity:
-      name: Entity
-      position: [1, 1, 0]
-  - imageSrc: resources/trees.png
-    imageWidth: 129
-    imageHeight: 122
-    entity:
-      name: Entity
-      position: [1, 2, 0]
-  - imageSrc: resources/trees.png
-    imageWidth: 129
-    imageHeight: 122
-    entity:
-      name: Entity
-      position: [3, 2, 0]
-  - imageSrc: resources/trees.png
-    imageWidth: 129
-    imageHeight: 122
-    entity:
-      name: Entity
-      position: [4, 5, 0]
-  - imageSrc: resources/barracks.png
+  - name: barracks
+    imageSrc: resources/barracks.png
     imageWidth: 320
     imageHeight: 290
-    entity:
-      name: Entity
-      position: [10, 24, 0]
-  - imageSrc: resources/farmhouse.png
+  - name: farmhouse
+    imageSrc: resources/farmhouse.png
     imageWidth: 238
-    imageHeight: 290
-    entity:
-      name: Entity
-      position: [26, 5, 0]      
+    imageHeight: 290      
 - gameConfiguration:
     fps: 70
     delay: 10
@@ -110,12 +46,40 @@
   - identifier: soil
     imageSrc: resources/texturesTiles/dirtTile.png
   - identifier: neutral
-    imageSrc: resources/texturesTiles/grass2.png
+    imageSrc: resources/texturesTiles/grass.png
   - identifier: water
     imageSrc: resources/texturesTiles/Water.png
   - identifier: tree
     imageSrc: resources/texturesTiles/stonebrick.png
 - mapDimensions: [30, 30]
+- playerLocations:
+  - name: player
+    position: [2, 2, 0]
+    speed:
+      magnitude: 2
+      direction: [1, 2]
+    powers:
+      - name: Club
+        damage: 2
+        range: 1
+      - name: Fist
+        damage: 3
+        range: 1
+- entityLocations:
+  - name: windmill
+    position: [10, 20, 0]
+  - name: tree
+    position: [2, 4, 0]
+  - name: tree
+    position: [3, 8, 0]
+  - name: tree
+    position: [15, 10, 0]
+  - name: barracks
+    position: [12, 5, 0]
+  - name: watermill
+    position: [5, 5, 0]
+  - name: farmhouse
+    position: [13, 13, 0]
 - tileLocations:
   - position: [0, 0, 0]
     texture: water
