@@ -30,6 +30,7 @@ public:
 	virtual ~EntityView();
 	SDL_Surface* load_image(std::string urlImagen);
 	Vector2* getAnchorPixel();
+	void setAnchorPixel(Vector2* anchorPixel);
 	void setImageWidth(int width);
 	void setImageHeight(int height);
 	void setTileWidth(int width);
@@ -42,6 +43,7 @@ public:
 	void setDelay(int nuevoDelay);
 	void setFps(int nuevasFps);
 	void setNumberOfRepeats(int repeats);
+	int getNumberOfRepeats();
 	void setScale();
 	bool isMovable();
 
