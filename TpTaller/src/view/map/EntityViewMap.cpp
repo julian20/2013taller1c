@@ -81,13 +81,14 @@ void EntityViewMap::updateMovablePos(){
 
 }
 
-void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam){
+void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
+		std::map<string, int> visibleTiles){
 
 	updateMovablePos();
 
-	for (int col = 0; col < cols; col++) {
+	for (int col = visibleTiles["StartCol"]; col < visibleTiles["EndCol"]; col++) {
 
-		for (int row = 0; row < rows; row++) {
+		for (int row = visibleTiles["StartRow"]; row < visibleTiles["EndRow"]; row++) {
 
 
 			list<EntityView*>aList = map.at(col).at(row);
