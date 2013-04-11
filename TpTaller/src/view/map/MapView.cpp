@@ -160,7 +160,7 @@ void MapView::draw(Position* cam) {
 			delete cameraPos;
 
 			std::string textureId = data->GetTileType(row, col);
-			SDL_Surface* textureImage = getTextureHolder()->getTexture(textureId);
+			SDL_Surface* textureImage = textureHolder->getTexture(textureId);
 
 			SDL_BlitSurface(textureImage, NULL, screen, &posTile);
 

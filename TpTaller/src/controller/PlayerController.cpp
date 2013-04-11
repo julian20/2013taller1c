@@ -6,7 +6,7 @@
  */
 
 #include <controller/PlayerController.h>
-
+#include <stdio.h>
 PlayerController::PlayerController() {
 	this->data = NULL;
 	this->player = NULL;

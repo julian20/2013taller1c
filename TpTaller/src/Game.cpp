@@ -79,10 +79,8 @@ void Game::setUpCharacters(MapView* map, MapData* mapData,
 						//TODO - Lucas: "personaje" deberia ser una lista de personajes
 						personaje = (Player*) entity;
 
-						Vector2* pos = personaje->getCurrentPos();
-						float x = pos->GetX();
-						float y = pos->GetY();
-						mapData->addPersonaje((int) x, (int) y, personaje);
+						Coordinates* coord = personaje->getCoordinates();
+						mapData->addPersonaje(coord->getRow(), coord->getCol(), personaje);
 					}
 				}
 			}
