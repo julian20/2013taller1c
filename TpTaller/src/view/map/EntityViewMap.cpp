@@ -9,7 +9,6 @@
 #include <model/map/Tile.h>
 
 #include <iostream>
-
 namespace std {
 
 /* ************************************************************************** */
@@ -70,13 +69,11 @@ void EntityViewMap::updateMovablePos(){
 
 		if (initRow == currentRow && initCol == currentCol) return;
 
-		list<EntityView*> coord = getListAtRowAndCol(initRow,initCol);
-		if (coord.empty()) continue;
-		coord.remove(entityView);
+		list<EntityView*> coord = getListAtRowAndCol(initRow, initCol);
+		if (!coord.empty()) coord.remove(entityView);
 		map[initCol][initRow] = coord;
 		map.at(currentCol).at(currentRow).push_back(entityView);
 		entity->setCoordinates(currentRow,currentCol);
-
 	}
 
 }
@@ -89,7 +86,6 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
 	for (int col = visibleTiles["StartCol"]; col < visibleTiles["EndCol"]; col++) {
 
 		for (int row = visibleTiles["StartRow"]; row < visibleTiles["EndRow"]; row++) {
-
 
 			list<EntityView*>aList = map.at(col).at(row);
 			if(!aList.empty()){

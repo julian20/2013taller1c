@@ -32,7 +32,7 @@ using namespace std;
 		std::string getName();
 		void setName(std::string name);
 		Coordinates* getCoordinates();
-		void setCoordinates(int x, int y);
+		void setCoordinates(int row, int col);
 	protected:
 		Vector3* currentPos;
 		Base* base;

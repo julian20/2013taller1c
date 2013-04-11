@@ -34,8 +34,8 @@ Coordinates* Entity::getCoordinates() {
         return coord;
 }
 
-void Entity::setCoordinates(int x, int y){
-        coord->changeTo(x,y);
+void Entity::setCoordinates(int row, int col){
+        coord->changeTo(row, col);
 }
 
 string Entity::getClassName() {
