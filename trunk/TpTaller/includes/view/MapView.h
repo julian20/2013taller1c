@@ -28,10 +28,9 @@ public:
 
 	void draw(Position* cam);
 	void movePlayer(int x, int y);
-	void Update();
-	void SetUpPersonajes();
-	void AssignPersonaje(Player* _personaje);
-	void SetUpEntity(EntityView* entityView, Coordinates coor);
+	void setUpPersonajes();
+	void assignPersonaje(Player* _personaje);
+	void setUpEntity(EntityView* entityView, Coordinates coor);
 	MapCameraView* getCamera();
 	list<EntityView *> *entitiesView;
 	TextureHolder* getTextureHolder();
@@ -48,7 +47,7 @@ private:
 	string texturesPaths[MapData::AMOUNT_TYPES];
 	SDL_Surface* tilesTextures[MapData::AMOUNT_TYPES];
 	string backgroundPath;
-	Player* personaje;
+	Player* player;
 
 	MapCameraView* camera;
 	Timer timer;

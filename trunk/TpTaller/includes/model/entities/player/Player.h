@@ -21,12 +21,12 @@ public:
 	Player();
 	Player(std::string name, Position* position, Speed* speed,
 			std::vector<Power*> powers);
+	virtual ~Player();
 	void setPos(float x, float y);
-	void Update();
+	void update();
 	Vector2* GetCurrentPos();
 	Vector2* GetMovementDirection();
 	bool IsMoving();
-	virtual ~Player();
 	Position* getPosition();
 	void setPosition(Position* position);
 	Speed* getSpeed();

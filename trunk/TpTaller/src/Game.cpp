@@ -87,7 +87,7 @@ void Game::setUpCharacters(MapView* map, MapData* mapData,
 		}
 	}
 
-	map->SetUpPersonajes();
+	map->setUpPersonajes();
 
 }
 
@@ -175,11 +175,11 @@ MenuEvent Game::run() {
 
 		//Actualizo la parte visual, sin mostrarla todavia
 		//1. Mapa
-		mapView->Update();
+		// mapView->update();
 		// 2. Entidades estaticas
 		//       refreshEntities();
 		// 3. Personaje/s
-		personaje->Update();
+		personaje->update();
 
 		// En un futuro, aca se comprueban las colisiones.
 		// y se corrige la posicion del personaje.

@@ -204,8 +204,8 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 	clip.w = this->imageWidth * scaleWidth;
 	clip.h = this->imageHeight * scaleHeight;
 	Vector2* position = entity->getCurrentPos();
-	int x = (int) position->GetX();
-	int y = (int) position->GetY();
+	int x = (int) position->getX();
+	int y = (int) position->getY();
 
 	SDL_Rect offset;
 	offset.x = (int) (Tile::computePosition(x, y, true).x + cam->getX() - clip.w / 2);

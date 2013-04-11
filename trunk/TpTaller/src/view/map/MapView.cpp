@@ -12,7 +12,7 @@ MapView::MapView(MapData* inputData, SDL_Surface* inputScreen, EntityViewMap* ma
 	Position* cameraPos = new Position(screen->w / 2, screen->h / 2);
 	camera = new MapCameraView( cameraPos, screen , data->GetNRows() , data->GetNCols());
 	entitiesView = NULL;
-	personaje = NULL;
+	player = NULL;
 
 	textureHolder = NULL;
 	timer.start();
@@ -21,7 +21,7 @@ MapView::MapView(MapData* inputData, SDL_Surface* inputScreen, EntityViewMap* ma
 MapView::~MapView() {
 }
 
-void MapView::SetUpPersonajes() {
+void MapView::setUpPersonajes() {
 	// Setea la posicion por unica vez de los personajes (y en un futuro posiblemente
 	// lo representable) en el mapa.
 	SDL_Rect posTile;
@@ -40,7 +40,7 @@ void MapView::SetUpPersonajes() {
 }
 
 //TODO - este metodo iria en cfg reader
-void MapView::SetUpEntity(EntityView* entityView,Coordinates coor)
+void MapView::setUpEntity(EntityView* entityView,Coordinates coor)
 {
 	this->viewMap->positionEntityView(entityView,coor);
 }
@@ -63,10 +63,10 @@ void MapView::movePlayer(int x, int y) {
 		firstTile.x = cameraPos->getX() + firstTile.x;
 		firstTile.y = cameraPos->getY() + firstTile.y;
 
-		if (personaje != NULL) {
+		if (player != NULL) {
 			// TODO: esto no pierde memoria a lo loco?
 			 Tile* toTile = new Tile(new Coordinates(coor->getRow(), coor->getCol()));
-			 data->movePersonaje(personaje, toTile);
+			 data->movePersonaje(player, toTile);
 		}
 	}
 
@@ -74,12 +74,8 @@ void MapView::movePlayer(int x, int y) {
 	delete cameraPos;
 }
 
-void MapView::AssignPersonaje(Player* _personaje) {
-	personaje = _personaje;
-}
-
-void MapView::Update() {
-
+void MapView::assignPersonaje(Player* _personaje) {
+	player = _personaje;
 }
 
 MapCameraView* MapView::getCamera(){

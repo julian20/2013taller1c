@@ -27,11 +27,11 @@ void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
 		SDL_Rect* clip) {
 	SDL_Rect offset;
 
-	Vector2* position = miPersonaje->GetCurrentPos();
-	float x = position->GetX();
-	float y = position->GetY();
-	offset.x = (int) x + cameraX - clip->w / 2;
-	offset.y = (int) y + cameraY - clip->h + OFFSET_Y;
+	Vector2* position = player->GetCurrentPos();
+	float x = position->getX();
+	float y = position->getY();
+	offset.x = (int) x + camPos->getX() - clip->w / 2;
+	offset.y = (int) y + camPos->getY() - clip->h + OFFSET_Y;
 	offset.w = clip->w;
 	offset.h = clip->h;
 
@@ -39,24 +39,23 @@ void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
 }
 
 void PlayerView::draw(SDL_Surface* screen, Position* cam) {
-	UpdateCameraPos(cam->getX(), cam->getY());
+	UpdateCameraPos(cam);
 	Mostrar(screen);
 }
 
-void PlayerView::UpdateCameraPos(int x, int y) {
-	cameraX = x;
-	cameraY = y;
+void PlayerView::UpdateCameraPos(Position* _camPos) {
+	delete camPos;
+	camPos = new Position(_camPos->getX(), _camPos->getY());
 }
 
 PlayerView::PlayerView()
 //Llamamos al constructor de la superclase
 :
 		EntityView() {
-	cameraX = cameraY = 0;
-	miPersonaje = NULL;
+	camPos = new Position(0, 0);
 	marco = 0;
 	animationChangeRate = 0;
-	personajeImagen = NULL;
+	characterImage = NULL;
 	imageHeight = 0;
 	imageWidth = 0;
 	numberOfClips = 0;
@@ -73,13 +72,13 @@ PlayerView::PlayerView()
 }
 
 void PlayerView::setPersonaje(Player* personaje) {
-	this->miPersonaje = personaje;
+	this->player = personaje;
 	Vector2* anchorPixel = new Vector2(clip.w / 2, OFFSET_Y);
-	miPersonaje->getBase()->setAnchorPixel(anchorPixel);
+	player->getBase()->setAnchorPixel(anchorPixel);
 }
 
 Player* PlayerView::getPersonaje() {
-	return this->miPersonaje;
+	return this->player;
 }
 
 void PlayerView::cargarImagen(std::string img) {
@@ -99,17 +98,17 @@ void PlayerView::cargarImagen(std::string img) {
 	}
 
 	marco = 0;
-	personajeImagen = miPersonajeImagen;
+	characterImage = miPersonajeImagen;
 }
 
 Player* PlayerView::getEntity() {
-	return miPersonaje;
+	return player;
 }
 
 void PlayerView::setEntity(Entity* entity) {
 	//TODO: Error check (si no es un personaje)
 	Player* aux = (Player*) entity;
-	miPersonaje = aux;
+	player = aux;
 }
 
 void PlayerView::showStandingAnimation(float direction,SDL_Surface* fondo){
@@ -121,7 +120,7 @@ void PlayerView::showStandingAnimation(float direction,SDL_Surface* fondo){
 	clipToDraw.h = imageHeight*scaleHeight;
 
 
-	showFrame(this->personajeImagen, fondo, &clipToDraw);
+	showFrame(this->characterImage, fondo, &clipToDraw);
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 
@@ -145,8 +144,8 @@ void PlayerView::showStandingAnimation(float direction,SDL_Surface* fondo){
 }
 
 void PlayerView::Mostrar(SDL_Surface* fondo) {
-	Vector2* movementDirection = this->miPersonaje->GetMovementDirection();
-	float direction = movementDirection->GetAngle();
+	Vector2* movementDirection = this->player->GetMovementDirection();
+	float direction = movementDirection->getAngle();
 
 	const float step = M_PI * 1 / 8;
 
@@ -159,7 +158,7 @@ void PlayerView::Mostrar(SDL_Surface* fondo) {
 	else if (step * 11 < direction && direction < step * 13)direction = UP;
 	else if (step * 13 < direction && direction < step * 15)direction = UP_RIGHT;
 
-	if (miPersonaje->isRunning()){
+	if (player->isRunning()){
 		if (direction == RIGHT) 	direction = RIGHT_RUN;
 		if (direction == DOWN_RIGHT)direction = DOWN_RIGHT_RUN;
 		if (direction == DOWN) 		direction = DOWN_RUN;
@@ -177,7 +176,7 @@ void PlayerView::Mostrar(SDL_Surface* fondo) {
 		animationChangeRate++;
 	}
 
-	if (!miPersonaje->IsMoving()){
+	if (!player->IsMoving()){
 		if (!wasStanding){
 			timer.start();
 			wasStanding = true;
@@ -195,13 +194,13 @@ void PlayerView::Mostrar(SDL_Surface* fondo) {
 	clipToDraw.w = imageWidth*scaleWidth;
 	clipToDraw.h = imageHeight*scaleHeight;
 
-	showFrame(this->personajeImagen, fondo, &clipToDraw);
+	showFrame(this->characterImage, fondo, &clipToDraw);
 }
 
 
 PlayerView::~PlayerView() {
 	//libera la memoria que pide para La imagen
-	SDL_FreeSurface(this->personajeImagen);
+	SDL_FreeSurface(this->characterImage);
 
 	//Quita SDL
 	SDL_Quit();

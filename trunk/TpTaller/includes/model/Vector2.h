@@ -14,16 +14,16 @@
 class Vector2 {
 public:
 	Vector2(float _x = 0, float _y = 0);
-	void SetValues(float _x, float _y);
-	float GetX();
-	float GetY();
-	void Normalize();
-	float GetNorm();
-	void MultiplyBy(float val);
-	void Add(Vector2 *other);
-	void Sub(Vector2 *other);
-	bool IsEqual(Vector2 *other);
-	float GetAngle();
+	void setValues(float _x, float _y);
+	float getX();
+	float getY();
+	void normalize();
+	float getNorm();
+	void multiplyBy(float val);
+	void add(Vector2 *other);
+	void sub(Vector2 *other);
+	bool isEqual(Vector2 *other);
+	float getAngle();
 private:
 	float x, y;
 };
