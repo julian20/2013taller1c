@@ -93,30 +93,47 @@ SDL_Surface* MapView::getDrawingSurface() {
 map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
 // TODO: Esto en vez de devolver un diccionario capas q estaria bueno q devuelva una clase, q dicen?
 
+	// Obtiene las casillas de los extremos de la pantalla
 	Coordinates *supLeft = Tile::getTileCoordinates( -cam->getX(), -cam->getY());
 	Coordinates *supRight = Tile::getTileCoordinates( screen->w - cam->getX(), - cam->getY());
 	Coordinates *infLeft = Tile::getTileCoordinates( -cam->getX(), screen->h - cam->getY());
 	Coordinates *infRight = Tile::getTileCoordinates( screen->w - cam->getX(), screen->h - cam->getY());
+
 
 	if (supLeft->getCol() < 0) supLeft->setCol(0);
 	if (supRight->getRow() < 0) supRight->setRow(0);
 	if (infLeft->getRow() > data->GetNRows()) infLeft->setRow(data->GetNRows());
 	if (infRight->getCol() > data->GetNCols()) infRight->setCol(data->GetNCols());
 
-	/*if (supLeft->getCol() >= TilesVisibleMargin)
+	// Se agregan los tiles de margen
+	if (supLeft->getCol() <= TilesVisibleMargin)
+		supLeft->setCol( 0 );
+	else
 		supLeft->setCol(supLeft->getCol() - TilesVisibleMargin);
-	if (supRight->getRow() >= TilesVisibleMargin)
+
+	if (supRight->getRow() <= TilesVisibleMargin)
+		supRight->setRow( 0 );
+	else
 		supRight->setRow(supRight->getRow() - TilesVisibleMargin);
-	if (infRight->getCol() <= data->GetNCols() - TilesVisibleMargin)
+
+
+	if (infRight->getCol() >= data->GetNCols() - TilesVisibleMargin)
+		infRight->setCol( data->GetNCols() );
+	else
 		infRight->setCol(infRight->getCol() + TilesVisibleMargin);
-	if (infLeft->getRow() <= data->GetNRows() - TilesVisibleMargin)
-		infLeft->setRow(infLeft->getRow() + TilesVisibleMargin);*/
+
+	if (infLeft->getRow() >= data->GetNRows() - TilesVisibleMargin)
+		infLeft->setRow( data->GetNRows() );
+	else
+		infLeft->setRow(infLeft->getRow() + TilesVisibleMargin);
 
 	std::map<std::string, int> mapVisibleLimits;
 	mapVisibleLimits["StartCol"] = supLeft->getCol();
 	mapVisibleLimits["EndCol"] = infRight->getCol();
 	mapVisibleLimits["StartRow"] = supRight->getRow();
 	mapVisibleLimits["EndRow"] = infLeft->getRow();
+
+	std::cout << mapVisibleLimits["StartCol"] << endl;
 
 	return mapVisibleLimits;
 }
