@@ -30,6 +30,7 @@ TileDefinition::TileDefinition(std::string id, std::string imageSrc) {
 }
 
 TileDefinition::~TileDefinition() {
+	SDL_FreeSurface(openImage);
 }
 
 std::string TileDefinition::getTileId() {

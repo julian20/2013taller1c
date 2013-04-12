@@ -17,8 +17,7 @@
 #include <vector>
 #include <list>
 
-namespace std {
-
+using namespace std;
 class EntityViewMap {
 public:
 	EntityViewMap(int rows, int cols);
@@ -37,5 +36,4 @@ private:
 
 };
 
-} /* namespace std */
 #endif /* ENTITYVIEWMAP_H_ */

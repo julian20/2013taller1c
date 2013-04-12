@@ -102,9 +102,7 @@ void printHeader(std::string title) {
  * Prints a tile to check for parsing integrity.
  */
 void printTile(Tile* tile, std::ofstream& outputFile) {
-	outputFile << "  - position: [" << tile->getPosition()->getX() << ", "
-			<< tile->getPosition()->getY() << ", "
-			<< tile->getPosition()->getZ() << "]" << std::endl;
+	outputFile << "  - position: [" << tile->getPosition()->getX() << ", " << tile->getPosition()->getY() << ", " << tile->getPosition()->getZ() << "]" << std::endl;
 	outputFile << "    texture: " << tile->getTextureIdentifier() << std::endl;
 }
 
@@ -128,12 +126,9 @@ void printPlayer(Player* player, std::ofstream& outputFile) {
 	outputFile << std::endl;
 	outputFile << "      powers:\n";
 	for (unsigned i = 0; i < player->getPowers().size(); i++) {
-		outputFile << "        - name: " << player->getPowers()[i]->getName()
-				<< std::endl;
-		outputFile << "          damage: "
-				<< player->getPowers()[i]->getDamage() << std::endl;
-		outputFile << "          range: " << player->getPowers()[i]->getRange()
-				<< std::endl;
+		outputFile << "        - name: " << player->getPowers()[i]->getName() << std::endl;
+		outputFile << "          damage: " << player->getPowers()[i]->getDamage() << std::endl;
+		outputFile << "          range: " << player->getPowers()[i]->getRange() << std::endl;
 	}
 
 }
@@ -154,14 +149,12 @@ void printEntity(Entity* parsedPersonaje, std::ofstream& outputFile) {
 /**
  * Prints a list of player views.
  */
-void printPlayerViews(std::vector<PlayerView*> entityViews,
-		std::ofstream& outputFile) {
+void printPlayerViews(std::vector<PlayerView*> entityViews, std::ofstream& outputFile) {
 
 	outputFile << "- playerViews:" << std::endl;
 	for (unsigned int j = 0; j < entityViews.size(); j++) {
 		PlayerView* playerView = entityViews[j];
-		outputFile << "  - imageSrc: " << playerView->getImagePath()
-				<< std::endl;
+		outputFile << "  - imageSrc: " << playerView->getImagePath() << std::endl;
 		outputFile << "    fps: " << playerView->getFps() << std::endl;
 		outputFile << "    delay: " << playerView->getDelay() << std::endl;
 		printPlayer((Player*) playerView->getEntity(), outputFile);
@@ -172,14 +165,12 @@ void printPlayerViews(std::vector<PlayerView*> entityViews,
 /**
  * Prints a list of player views.
  */
-void printEntityViews(std::vector<EntityView*> entityViews,
-		std::ofstream& outputFile) {
+void printEntityViews(std::vector<EntityView*> entityViews, std::ofstream& outputFile) {
 
 	outputFile << "- entityViews:" << std::endl;
 	for (unsigned int j = 0; j < entityViews.size(); j++) {
 		EntityView* entityView = entityViews[j];
-		outputFile << "  - imageSrc: " << entityView->getImagePath()
-				<< std::endl;
+		outputFile << "  - imageSrc: " << entityView->getImagePath() << std::endl;
 		outputFile << "    fps: " << entityView->getFps() << std::endl;
 		outputFile << "    delay: " << entityView->getDelay() << std::endl;
 		printEntity(entityView->getEntity(), outputFile);
@@ -190,8 +181,7 @@ void printEntityViews(std::vector<EntityView*> entityViews,
 /**
  * Prints an personaje to check if it was parsed correctly.
  */
-void printTextureHolder(TextureHolder* parsedTileDefinition,
-		std::ofstream& outputFile) {
+void printTextureHolder(TextureHolder* parsedTileDefinition, std::ofstream& outputFile) {
 
 	std::vector<std::string> textureIds;
 
@@ -238,8 +228,7 @@ void printConfiguredTiles(AuxMap &mapConfiguration, std::ofstream& outputFile) {
 /**
  * Prints the map configuration.
  */
-void printMapConfiguration(AuxMap &mapConfiguration,
-		std::ofstream& outputFile) {
+void printMapConfiguration(AuxMap &mapConfiguration, std::ofstream& outputFile) {
 
 	printMapDimensions(mapConfiguration, outputFile);
 	printConfiguredTiles(mapConfiguration, outputFile);
@@ -249,22 +238,17 @@ void printMapConfiguration(AuxMap &mapConfiguration,
 /**
  * Prints the animated configuration.
  */
-void printGameConfiguration(GameConfiguration* aConfig,
-		std::ofstream& outputFile) {
+void printGameConfiguration(GameConfiguration* aConfig, std::ofstream& outputFile) {
 
 	outputFile << "- gameConfiguration:" << std::endl;
 	outputFile << "    fps: " << aConfig->getFps() << std::endl;
 	outputFile << "    delay: " << aConfig->getDelay() << std::endl;
 	outputFile << "    gameMusic: " << aConfig->getGameMusicSrc() << std::endl;
-	outputFile << "    defaultScreenHeight: "
-			<< aConfig->getDefaultScreenHeight() << std::endl;
-	outputFile << "    defaultScreenWidth: " << aConfig->getDefaultScreenWidth()
-			<< std::endl;
+	outputFile << "    defaultScreenHeight: " << aConfig->getDefaultScreenHeight() << std::endl;
+	outputFile << "    defaultScreenWidth: " << aConfig->getDefaultScreenWidth() << std::endl;
 	outputFile << "    defaultBPP: " << aConfig->getDefaultBPP() << std::endl;
-	outputFile << "    menuBackImage: " << aConfig->getMenuBackImageSrc()
-			<< std::endl;
-	outputFile << "    menuBackMusic: " << aConfig->getMenuBackMusicSrc()
-			<< std::endl;
+	outputFile << "    menuBackImage: " << aConfig->getMenuBackImageSrc() << std::endl;
+	outputFile << "    menuBackMusic: " << aConfig->getMenuBackMusicSrc() << std::endl;
 
 }
 
@@ -475,8 +459,7 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	std::string auxImageSrc;
 	std::string auxName;
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
-	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay,
-			auxAnimationNumberOfRepeats, auxBaseWidth, auxBaseLength;
+	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay, auxAnimationNumberOfRepeats, auxBaseWidth, auxBaseLength;
 
 	try {
 		yamlNode["name"] >> auxName;
@@ -581,8 +564,7 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	std::vector<Power*> auxPowers;
 	std::string auxImageSrc;
 	std::string auxName;
-	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay,
-			auxAnimationNumberOfRepeats, auxBaseLength, auxBaseWidth;
+	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay, auxAnimationNumberOfRepeats, auxBaseLength, auxBaseWidth;
 
 	try {
 		yamlNode["name"] >> auxName;
@@ -675,8 +657,7 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	entityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
 }
 
-void operator >>(const YAML::Node& yamlNode,
-		std::vector<Entity*>& entityVector) {
+void operator >>(const YAML::Node& yamlNode, std::vector<Entity*>& entityVector) {
 	const YAML::Node& entityLocations = yamlNode["entityLocations"];
 	for (unsigned i = 0; i < entityLocations.size(); i++) {
 		Entity* entity = new Entity();
@@ -690,8 +671,7 @@ void operator >>(const YAML::Node& yamlNode,
 	}
 }
 
-void operator >>(const YAML::Node& yamlNode,
-		std::vector<Player*>& playerVector) {
+void operator >>(const YAML::Node& yamlNode, std::vector<Player*>& playerVector) {
 	const YAML::Node& playerLocations = yamlNode["playerLocations"];
 	for (unsigned i = 0; i < playerLocations.size(); i++) {
 		Player* player = new Player();
@@ -708,8 +688,7 @@ void operator >>(const YAML::Node& yamlNode,
 /**
  * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
  */
-void operator >>(const YAML::Node& yamlNode,
-		std::vector<PlayerView*>& entityList) {
+void operator >>(const YAML::Node& yamlNode, std::vector<PlayerView*>& entityList) {
 	const YAML::Node& playerViews = yamlNode["playerViews"];
 	for (unsigned i = 0; i < playerViews.size(); i++) {
 		PlayerView* entityView = new PlayerView();
@@ -726,8 +705,7 @@ void operator >>(const YAML::Node& yamlNode,
 /**
  * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
  */
-void operator >>(const YAML::Node& yamlNode,
-		std::vector<EntityView*>& entityList) {
+void operator >>(const YAML::Node& yamlNode, std::vector<EntityView*>& entityList) {
 	const YAML::Node& entityViews = yamlNode["entityViews"];
 	for (unsigned i = 0; i < entityViews.size(); i++) {
 		EntityView* entityView = new EntityView();
@@ -748,8 +726,7 @@ void operator >>(const YAML::Node& yamlNode,
 /**
  * Sobrecarga de operador >> para parsear un AnimationConfiguration.
  */
-void operator >>(const YAML::Node& yamlNode,
-		GameConfiguration* animationConfig) {
+void operator >>(const YAML::Node& yamlNode, GameConfiguration* animationConfig) {
 	const YAML::Node& configuration = yamlNode["gameConfiguration"];
 	unsigned int auxFps, auxDelay, auxHeight, auxWidth, auxBPP;
 	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic;
@@ -941,8 +918,7 @@ void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
  * *********** ENTITY VIEW MAP CREATION *********** *
  * ************************************************ */
 
-void loadEntityViewMap(EntityViewMap* entityViewMap,
-		std::vector<PlayerView*> entityViewVector) {
+void loadEntityViewMap(EntityViewMap* entityViewMap, std::vector<PlayerView*> entityViewVector) {
 
 	for (unsigned int j = 0; j < entityViewVector.size(); j++) {
 		PlayerView* parsedEntityView = entityViewVector[j];
@@ -951,17 +927,14 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		/**
 		 * TODO: hacer conversion entre Posicion y Coordinates.
 		 */
-		Coordinates coordinates = Coordinates(
-				personaje->getCurrentPos()->getX(),
-				personaje->getCurrentPos()->getY());
+		Coordinates coordinates = Coordinates(personaje->getCurrentPos()->getX(), personaje->getCurrentPos()->getY());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}
 
 }
 
-void loadEntityViewMap(EntityViewMap* entityViewMap,
-		std::vector<EntityView*> entityViewVector) {
+void loadEntityViewMap(EntityViewMap* entityViewMap, std::vector<EntityView*> entityViewVector) {
 
 	for (unsigned int j = 0; j < entityViewVector.size(); j++) {
 		EntityView* parsedEntityView = entityViewVector[j];
@@ -970,9 +943,7 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		/**
 		 * TODO: hacer conversion entre Posicion y Coordinates.
 		 */
-		Coordinates coordinates = Coordinates(
-				personaje->getCurrentPos()->getX(),
-				personaje->getCurrentPos()->getY());
+		Coordinates coordinates = Coordinates(personaje->getCurrentPos()->getX(), personaje->getCurrentPos()->getY());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}
@@ -981,7 +952,11 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 
 void duplicateView(EntityView* sourceView, EntityView* destView) {
 
-	destView->setAnchorPixel(sourceView->getAnchorPixel());
+	//Duplico el anchor
+	Vector2* anchor = sourceView->getAnchorPixel();
+	Vector2* anchorCopy = new Vector2(anchor->getX(), anchor->getY());
+
+	destView->setAnchorPixel(anchorCopy);
 	destView->setName(sourceView->getName());
 	destView->setImageHeight(sourceView->getImageHeight());
 	destView->setImageWidth(sourceView->getImageWidth());
@@ -996,7 +971,11 @@ void duplicateView(EntityView* sourceView, EntityView* destView) {
 
 void duplicateView(PlayerView* sourceView, PlayerView* destView) {
 
-	destView->setAnchorPixel(sourceView->getAnchorPixel());
+	//Duplico el anchor
+	Vector2* anchor = sourceView->getAnchorPixel();
+	Vector2* anchorCopy = new Vector2(anchor->getX(), anchor->getY());
+
+	destView->setAnchorPixel(anchorCopy);
 	destView->setName(sourceView->getName());
 	destView->setImageHeight(sourceView->getImageHeight());
 	destView->setImageWidth(sourceView->getImageWidth());
@@ -1010,8 +989,7 @@ void duplicateView(PlayerView* sourceView, PlayerView* destView) {
 
 }
 
-std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
-		std::vector<Entity*> entities) {
+std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews, std::vector<Entity*> entities) {
 	std::vector<EntityView*> completeViews;
 	for (unsigned i = 0; i < entities.size(); i++) {
 		Entity* actualEntity = entities[i];
@@ -1029,8 +1007,7 @@ std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
 	return completeViews;
 }
 
-std::vector<PlayerView*> assignPlayers(std::vector<PlayerView*> playerViews,
-		std::vector<Player*> players) {
+std::vector<PlayerView*> assignPlayers(std::vector<PlayerView*> playerViews, std::vector<Player*> players) {
 	std::vector<PlayerView*> completeViews;
 	for (unsigned i = 0; i < players.size(); i++) {
 		Player* actualPlayer = players[i];
@@ -1079,8 +1056,7 @@ void cleanUnusedViews(std::vector<EntityView*> viewVector) {
  * Loads the configuration, prints its output and returns
  * a persistent configuration object.
  */
-PersistentConfiguration ConfigurationReader::loadConfiguration(
-		std::string configurationFile, std::string outputFilename) {
+PersistentConfiguration ConfigurationReader::loadConfiguration(std::string configurationFile, std::string outputFilename) {
 
 	/**
 	 * TODO: hacer free de los structs auxiliares luego
@@ -1142,8 +1118,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 		std::cout << yamlException.what() << "\n";
 	}
 
-	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
-			mapConfiguration.dimension.ncols);
+	MapData* mapData = new MapData(mapConfiguration.dimension.nrows, mapConfiguration.dimension.ncols);
 
 // Parsing player locations.
 	std::vector<Player*> playerVector;
@@ -1161,10 +1136,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 		std::cout << yamlException.what() << "\n";
 	}
 
-	std::vector<EntityView*> cleanEntityViews = assignEntities(entityViewVector,
-			entityVector);
-	std::vector<PlayerView*> cleanPlayerViews = assignPlayers(playerViewVector,
-			playerVector);
+	std::vector<EntityView*> cleanEntityViews = assignEntities(entityViewVector, entityVector);
+	std::vector<PlayerView*> cleanPlayerViews = assignPlayers(playerViewVector, playerVector);
 
 	cleanUnusedViews(entityViewVector);
 	cleanUnusedViews(playerViewVector);
@@ -1178,8 +1151,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	mapConfiguration >> mapData;
 
 // Create entityViewMap:
-	EntityViewMap* entityViewMap = new EntityViewMap(mapData->GetNRows(),
-			mapData->GetNCols());
+	EntityViewMap* entityViewMap = new EntityViewMap(mapData->GetNRows(), mapData->GetNCols());
 	loadEntityViewMap(entityViewMap, cleanPlayerViews);
 	loadEntityViewMap(entityViewMap, cleanEntityViews);
 

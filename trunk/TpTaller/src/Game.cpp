@@ -36,8 +36,7 @@ Game::Game(PersistentConfiguration* configuration) {
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->mapView = new MapView(mapData, screen, viewMap);
 	this->mapView->setTextureHolder(configuration->getTextureHolder());
-	this->cameraController = new MapCameraController(
-			this->mapView->getCamera());
+	this->cameraController = new MapCameraController(this->mapView->getCamera());
 
 	setUpCharacters(mapView, mapData, viewMap);
 	setUpEntities(mapView, mapData);
@@ -60,8 +59,7 @@ void getEvent() {
 void refreshMap() {
 }
 
-void Game::setUpCharacters(MapView* map, MapData* mapData,
-		EntityViewMap* viewMap) {
+void Game::setUpCharacters(MapView* map, MapData* mapData, EntityViewMap* viewMap) {
 
 	for (int i = 0; i < viewMap->getNCols(); i++) {
 
@@ -104,15 +102,12 @@ void Game::initScreen() {
 
 	if (gameConfig->screenAutoConfig()) {
 		const SDL_VideoInfo *info = SDL_GetVideoInfo();
-		screen = SDL_SetVideoMode(info->current_w, info->current_h,
-				info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
+		screen = SDL_SetVideoMode(info->current_w, info->current_h, info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
 		configured = true;
 	}
 
 	if (!configured) {
-		screen = SDL_SetVideoMode(this->gameConfig->getDefaultScreenWidth(),
-				this->gameConfig->getDefaultScreenHeight(),
-				this->gameConfig->getDefaultBPP(), SDL_HWSURFACE);
+		screen = SDL_SetVideoMode(this->gameConfig->getDefaultScreenWidth(), this->gameConfig->getDefaultScreenHeight(), this->gameConfig->getDefaultBPP(), SDL_HWSURFACE);
 	}
 
 	if (gameConfig->fullscreen()) {
@@ -147,8 +142,7 @@ void Game::draw() {
 		tempFps = fps;
 		fpsUpdatingTimer = 0;
 	}
-	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 30,
-			40, "baramond", textHandler->getColor(255, 0, 0));
+	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 30, 40, "baramond", textHandler->getColor(255, 0, 0));
 	// Actualiza la screen
 	SDL_Flip(screen);
 }
@@ -211,8 +205,7 @@ void Game::applyFPS(int timer) {
 }
 void Game::initMusic() {
 	// Inicializamos la librería SDL_Mixer
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-			MIX_DEFAULT_CHANNELS, 4096) < 0) {
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096) < 0) {
 		cerr << "Subsistema de Audio no disponible" << SDL_GetError() << endl;
 		exit(1);
 	}

@@ -62,6 +62,7 @@ PlayerView::PlayerView()
 	movable = true;
 	direction = STANDING;
 	wasStanding = true;
+	player = NULL;
 	// try
 	//{
 	//this->fondo = fondo;
@@ -201,9 +202,6 @@ void PlayerView::Mostrar(SDL_Surface* fondo) {
 PlayerView::~PlayerView() {
 	//libera la memoria que pide para La imagen
 	SDL_FreeSurface(this->characterImage);
-
-	//Quita SDL
-	SDL_Quit();
 }
 
 int PlayerView::getImageHeight() {
