@@ -130,6 +130,10 @@ map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
 	mapVisibleLimits["StartRow"] = supRight->getRow();
 	mapVisibleLimits["EndRow"] = infLeft->getRow();
 
+	delete supLeft;
+	delete supRight;
+	delete infLeft;
+	delete infRight;
 	return mapVisibleLimits;
 }
 
