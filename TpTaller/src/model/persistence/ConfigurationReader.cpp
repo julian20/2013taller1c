@@ -424,7 +424,7 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 
 	personaje->setName(auxName);
 	personaje->setPowers(auxPowers);
-	personaje->setPosition(auxPosition);
+	personaje->setCoordinates(auxPosition->getX(),auxPosition->getY());
 	personaje->setSpeed(auxSpeed);
 }
 

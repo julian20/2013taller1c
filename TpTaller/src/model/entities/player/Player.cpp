@@ -91,7 +91,8 @@ Player::~Player() {
 }
 
 void Player::setPosition(Position* position) {
-	currentPos->setValues(position->getX(), position->getY());
+	Position pos = Tile::computePosition(position->getX(),position->getY());
+	currentPos->setValues(pos.getX(), pos.getY());
 	//currentPos->SetValues(Tile::computePosition(x,y).x , Tile::computePosition(x,y).y);
 }
 

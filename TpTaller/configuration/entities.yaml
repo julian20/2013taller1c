@@ -54,7 +54,7 @@
 - mapDimensions: [1000, 1000]
 - playerLocations:
   - name: player
-    position: [2, 2, 0]
+    position: [20, 20, 0]
     speed:
       magnitude: 2
       direction: [1, 2]
