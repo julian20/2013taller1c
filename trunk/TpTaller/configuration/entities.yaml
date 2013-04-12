@@ -51,7 +51,7 @@
     imageSrc: resources/texturesTiles/Water.png
   - identifier: tree
     imageSrc: resources/texturesTiles/stonebrick.png
-- mapDimensions: [100, 100]
+- mapDimensions: [1000, 1000]
 - playerLocations:
   - name: player
     position: [2, 2, 0]

@@ -32,7 +32,7 @@ void MapView::setUpPersonajes() {
 			Player* personaje = data->GetPersonaje(row, col);
 			if (personaje != NULL) {
 
-				posTile = Tile::computePosition(row, col, true);
+				posTile = Tile::computePositionTile(row, col, true);
 				personaje->setPos((float) posTile.x, (float) posTile.y);
 			}
 		}
@@ -59,7 +59,7 @@ void MapView::movePlayer(int x, int y) {
 
 	if( !(coor->getCol() <= 0 || coor->getRow() < 0) &&
 		!(coor->getCol() > data->GetNCols() || coor->getRow() > data->GetNRows())) {
-		SDL_Rect firstTile = Tile::computePosition(0, 0);
+		SDL_Rect firstTile = Tile::computePositionTile(0, 0);
 		firstTile.x = cameraPos->getX() + firstTile.x;
 		firstTile.y = cameraPos->getY() + firstTile.y;
 
@@ -149,7 +149,7 @@ void MapView::draw(Position* cam) {
 
 		for (int row = mapVisibleLimits["StartRow"]; row < mapVisibleLimits["EndRow"]; row++) {
 
-			posTile = Tile::computePosition(row, col);
+			posTile = Tile::computePositionTile(row, col);
 			Position* cameraPos = this->camera->getPosition();
 			posTile.x = cameraPos->getX() + posTile.x;
 			posTile.y = cameraPos->getY() + posTile.y;

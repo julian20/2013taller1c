@@ -208,8 +208,8 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 	int y = (int) position->getY();
 
 	SDL_Rect offset;
-	offset.x = (int) (Tile::computePosition(x, y, true).x + cam->getX() - clip.w / 2);
-	offset.y = (int) (Tile::computePosition(x, y, true).y + cam->getY() - clip.h / 2);
+	offset.x = (int) (Tile::computePositionTile(x, y, true).x + cam->getX() - clip.w / 2);
+	offset.y = (int) (Tile::computePositionTile(x, y, true).y + cam->getY() - clip.h / 2);
 	offset.h = clip.h;
 	offset.w = clip.w;
 
