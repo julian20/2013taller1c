@@ -9,18 +9,17 @@
 #include <model/map/Tile.h>
 
 #include <iostream>
-namespace std {
 
+using namespace std;
 /* ************************************************************************** */
 /* ****************            ENTITYVIEWMAP					************* */
 /* ************************************************************************** */
 
-
 EntityViewMap::EntityViewMap(int rows, int cols) {
 
-	for (int i = 0 ; i < cols ; i ++){
+	for (int i = 0; i < cols; i++) {
 		list<EntityView*> EntityList;
-		vector< list<EntityView*> > row (rows, EntityList);
+		vector<list<EntityView*> > row(rows, EntityList);
 		map.push_back(row);
 	}
 
@@ -28,33 +27,30 @@ EntityViewMap::EntityViewMap(int rows, int cols) {
 	this->cols = cols;
 }
 
-void EntityViewMap::positionEntityView (EntityView* entity, Coordinates coordinates){
+void EntityViewMap::positionEntityView(EntityView* entity, Coordinates coordinates) {
 	int row = coordinates.getRow();
 	int col = coordinates.getCol();
 	map.at(col).at(row).push_back(entity);
-	if (entity->isMovable()){
+	if (entity->isMovable()) {
 		movableEntities.push_back(entity);
 	}
 }
 
-
-
-int EntityViewMap::getNCols(){
+int EntityViewMap::getNCols() {
 	return cols;
 }
 
-int EntityViewMap::getNRows(){
+int EntityViewMap::getNRows() {
 	return rows;
 }
 
-
-list<EntityView*> EntityViewMap::getListAtRowAndCol(int row,int col){
+list<EntityView*> EntityViewMap::getListAtRowAndCol(int row, int col) {
 	return map.at(col).at(row);
 }
 
-void EntityViewMap::updateMovablePos(){
+void EntityViewMap::updateMovablePos() {
 
-	for (list<EntityView*>::iterator it = movableEntities.begin() ; it != movableEntities.end() ; ++it){
+	for (list<EntityView*>::iterator it = movableEntities.begin(); it != movableEntities.end(); ++it) {
 
 		EntityView* entityView = *it;
 		Entity* entity = entityView->getEntity();
@@ -63,23 +59,24 @@ void EntityViewMap::updateMovablePos(){
 		int initCol = entity->getCoordinates()->getCol();
 		int currentRow = (int) entity->getCurrentPos()->getX();
 		int currentCol = (int) entity->getCurrentPos()->getY();
-		Coordinates* c = Tile::getTileCoordinates(currentRow,currentCol);
+		Coordinates* c = Tile::getTileCoordinates(currentRow, currentCol);
 		currentRow = c->getRow();
 		currentCol = c->getCol() - 1;
 
-		if (initRow == currentRow && initCol == currentCol) return;
+		if (initRow == currentRow && initCol == currentCol)
+			return;
 
 		list<EntityView*> coord = getListAtRowAndCol(initRow, initCol);
-		if (!coord.empty()) coord.remove(entityView);
+		if (!coord.empty())
+			coord.remove(entityView);
 		map[initCol][initRow] = coord;
 		map.at(currentCol).at(currentRow).push_back(entityView);
-		entity->setCoordinates(currentRow,currentCol);
+		entity->setCoordinates(currentRow, currentCol);
 	}
 
 }
 
-void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
-		std::map<string, int> visibleTiles){
+void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam, std::map<string, int> visibleTiles) {
 
 	updateMovablePos();
 
@@ -87,13 +84,14 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
 
 		for (int row = visibleTiles["StartRow"]; row < visibleTiles["EndRow"]; row++) {
 
-			list<EntityView*>aList = map.at(col).at(row);
-			if(!aList.empty()){
+			list<EntityView*> aList = map.at(col).at(row);
+			if (!aList.empty()) {
 				list<EntityView*>::iterator it;
 				for (it = aList.begin(); it != aList.end(); ++it) {
 					EntityView* view = *it;
-					if (!view) continue;
-					view->draw(screen,cam);
+					if (!view)
+						continue;
+					view->draw(screen, cam);
 				}
 			}
 		}
@@ -102,8 +100,20 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
 
 }
 
-
 EntityViewMap::~EntityViewMap() {
-}
 
-} /* namespace std */
+	for (int i = 0; i < cols; i++) {
+		for (int j = 0; j < rows; j++) {
+			list<EntityView*> aList = map.at(i).at(j);
+			if (!aList.empty()) {
+				list<EntityView*>::iterator it;
+				for (it = aList.begin(); it != aList.end(); ++it) {
+					EntityView* view = *it;
+					if (!view)
+						continue;
+					delete view;
+				}
+			}
+		}
+	}
+}

@@ -134,14 +134,8 @@ map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
 }
 
 void MapView::draw(Position* cam) {
-	//Personaje* personajes = NULL;
+
 	SDL_Rect posTile;
-
-
-	/*
-	 * Dibujamos los tiles
-	 * TODO: agregar un metodo getEntities(row,col) a entityviewmap para dibujar toodo en el mismo for!
-	 */
 
 	map<string, int> mapVisibleLimits = getVisibleTilesLimit(cam);
 

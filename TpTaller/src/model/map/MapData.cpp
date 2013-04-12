@@ -148,6 +148,7 @@ void MapData::movePersonaje(Player* personaje, Tile* toTile) {
 	Tile* fromTile = personaje->getTile();
 
 	list<Tile *> *path = GetPath(fromTile, toTile);
+	delete (toTile);
 	personaje->assignPath(path);
 }
 
