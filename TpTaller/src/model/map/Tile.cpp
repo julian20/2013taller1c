@@ -34,7 +34,10 @@ Tile::Tile() {
 
 Tile::~Tile() {
 	delete this->position;
+	if (coordinates)
+			delete coordinates;
 }
+
 
 Position* Tile::getPosition() {
 	return this->position;

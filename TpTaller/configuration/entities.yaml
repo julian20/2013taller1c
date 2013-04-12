@@ -13,7 +13,7 @@
     imageWidth: 224
     imageHeight: 240
     numberOfClips: 23
-    fps: 5
+    fps: 30
     delay: 3 
     animationRepeats: 4
   - name: watermill
