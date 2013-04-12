@@ -23,7 +23,7 @@ Tile::Tile(Coordinates* _coordinates) {
 	this->coordinates = _coordinates;
 	this->textureIdentifier = "";
 
-	SDL_Rect pos = this->computePosition(coordinates->getRow(), coordinates->getCol());
+	SDL_Rect pos = this->computePositionTile(coordinates->getRow(), coordinates->getCol());
 	this->position = new Position(pos.x, pos.y);
 }
 
@@ -64,12 +64,27 @@ void Tile::setTextureIdentifier(std::string textureId) {
 	this->textureIdentifier = textureId;
 }
 
-SDL_Rect Tile::computePosition(int row, int col /*, toTileCenter = false*/) {
+Position Tile::computePosition(int row, int col /*, toTileCenter = false*/) {
+	return getDiamondShapeMapPos(row, col);
+}
+
+Position Tile::computePosition(int row, int col, bool toTileCenter) {
+	Position pos = computePosition(row, col);
+
+	if (toTileCenter) {
+		pos.setX(pos.getX() + TextureWidth/2);
+		pos.setY(pos.getY() + TextureHeight/2);
+	}
+
+	return pos;
+}
+
+SDL_Rect Tile::computePositionTile(int row, int col /*, toTileCenter = false*/) {
 	return getDiamondShapeMapTilePos(row, col);
 }
 
-SDL_Rect Tile::computePosition(int row, int col, bool toTileCenter) {
-	SDL_Rect pos = computePosition(row, col);
+SDL_Rect Tile::computePositionTile(int row, int col, bool toTileCenter) {
+	SDL_Rect pos = computePositionTile(row, col);
 
 	if (toTileCenter) {
 		pos.x = pos.x + TextureWidth/2;
@@ -98,14 +113,27 @@ SDL_Rect Tile::getDiamondShapeMapTilePos(int row, int col) {
 	int widthTexture = TextureWidth - TilesOverlap;
 	int heightTexture = TextureHeight - TilesOverlap;
 
+	Position pos = getDiamondShapeMapPos(row, col);
 	SDL_Rect posTile;
 
-	posTile.x = (col - row) * widthTexture / 2;
-	posTile.y = (col + row) * heightTexture / 2;
+	posTile.x = pos.getX();
+	posTile.y = pos.getY();
 	posTile.w = widthTexture;
 	posTile.h = heightTexture;
 
 	return posTile;
+}
+
+Position Tile::getDiamondShapeMapPos(int row, int col) {
+	int widthTexture = TextureWidth - TilesOverlap;
+	int heightTexture = TextureHeight - TilesOverlap;
+
+	Position pos;
+
+	pos.setX((col - row) * widthTexture / 2);
+	pos.setY((col + row) * heightTexture / 2);
+
+	return pos;
 }
 
 Coordinates* Tile::getTileCoordinates(int x, int y)

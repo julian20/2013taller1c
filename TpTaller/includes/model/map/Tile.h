@@ -28,14 +28,17 @@ public:
 	void setCoordinates(int _row, int _col);
 	std::string getTextureIdentifier();
 	void setTextureIdentifier(std::string textureId);
-	static SDL_Rect computePosition(int row, int col);
-	static SDL_Rect computePosition(int row, int col, bool toTileCenter);
+	static Position computePosition(int row, int col);
+	static Position computePosition(int row, int col, bool toTileCenter);
+	static SDL_Rect computePositionTile(int row, int col);
+	static SDL_Rect computePositionTile(int row, int col, bool toTileCenter);
 	static Coordinates* getTileCoordinates(int x, int y);
 private:
 
 
 	static SDL_Rect getSquaredMapTilePos(int row, int col);
 	static SDL_Rect getDiamondShapeMapTilePos(int row, int col);
+	static Position getDiamondShapeMapPos(int row, int col);
 
 	Position* position;
 	Coordinates* coordinates;

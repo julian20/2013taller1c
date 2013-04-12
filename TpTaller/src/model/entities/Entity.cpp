@@ -23,7 +23,7 @@ Entity::Entity() {
 
 void Entity::setPos(float x, float y, float z) {
         currentPos->setValues(x, y, z);
-        coord->changeTo((int) x/Tile::computePosition(0,0).w , (int) y/Tile::computePosition(0,0).h);
+        coord->changeTo((int) x/Tile::computePositionTile(0,0).w , (int) y/Tile::computePositionTile(0,0).h);
 }
 
 Vector3* Entity::getCurrentPos() {

@@ -54,14 +54,9 @@ void MapCameraView::moveCamera(CameraMove move, int cameraSpeed) {
 
 
 void MapCameraView::setLimitTiles(int mapRows,int mapCols) {
-	SDL_Rect posTile = Tile::computePosition(mapRows, mapCols);
-	lastTilePosY = Position(posTile.x, posTile.y);
-
-	posTile = Tile::computePosition(0, mapCols);
-	lastTilePosXDer = Position(posTile.x, posTile.y);
-
-	posTile = Tile::computePosition(mapRows, 0);
-	lastTilePosXIzq = Position(posTile.x, posTile.y);
+	lastTilePosY = Tile::computePosition(mapRows, mapCols);
+	lastTilePosXDer = Tile::computePosition(0, mapCols);
+	lastTilePosXIzq = Tile::computePosition(mapRows, 0);
 }
 
 
@@ -71,18 +66,18 @@ void MapCameraView::checkBoundaries(){
 }
 
 void MapCameraView::checkBasicBoundaries() {
-		// Basic boundaries checking
-		if (camera->getX() > -lastTilePosXIzq.getX() + screen->w / 2)
-			camera->setX(-lastTilePosXIzq.getX() + screen->w / 2);
+	// Basic boundaries checking
+	if (camera->getX() > -lastTilePosXIzq.getX() + screen->w / 2)
+		camera->setX(-lastTilePosXIzq.getX() + screen->w / 2);
 
-		if (camera->getX() < -lastTilePosXDer.getX() + screen->w / 2)
-			camera->setX(-lastTilePosXDer.getX() + screen->w / 2);
+	if (camera->getX() < -lastTilePosXDer.getX() + screen->w / 2)
+		camera->setX(-lastTilePosXDer.getX() + screen->w / 2);
 
-		if (camera->getY() > screen->h / 2)
-			camera->setY(screen->h / 2);
+	if (camera->getY() > screen->h / 2)
+		camera->setY(screen->h / 2);
 
-		if (camera->getY() < -lastTilePosY.getY() + screen->h / 2)
-			camera->setY(-lastTilePosY.getY() + screen->h / 2);
+	if (camera->getY() < -lastTilePosY.getY() + screen->h / 2)
+		camera->setY(-lastTilePosY.getY() + screen->h / 2);
 }
 
 void MapCameraView::checkAdvancedBoundaries() {
