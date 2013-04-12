@@ -24,6 +24,7 @@
 #include <view/EntityViewMap.h>
 #include <view/entities/EntityView.h>
 #include <view/entities/PlayerView.h>
+#include <model/Logs/Logs.h>
 
 #include <iostream>
 #include <fstream>
@@ -42,6 +43,7 @@ public:
 	virtual ~ConfigurationReader();
 
 private:
+
 };
 
 #endif	/* CONFIGURATIONREADER_H */
