@@ -13,7 +13,7 @@
     imageWidth: 224
     imageHeight: 240
     numberOfClips: 23
-    fps: 30
+    fps: 12
     delay: 3 
     animationRepeats: 4
   - name: watermill
@@ -51,7 +51,7 @@
     imageSrc: resources/texturesTiles/Water.png
   - identifier: tree
     imageSrc: resources/texturesTiles/stonebrick.png
-- mapDimensions: [100, 100]
+- mapDimensions: [200, 200]
 - playerLocations:
   - name: player
     position: [2, 2, 0]

@@ -119,14 +119,14 @@ int EntityView::getImageWidth() {
 
 SDL_Surface* EntityView::load_image(string urlImagen) {
 	//The image that's loaded
-	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_Surface* loadedImage = NULL;
+	SDL_Surface* loadedImageTmp = NULL;
 
 	//The optimized surface that will be used
 	SDL_Surface* optimizedImage = NULL;
 
-	loadedImage = IMG_Load(urlImagen.c_str());
-	loadedImage = rotozoomSurfaceXY(loadedImage, 0, scaleWidth, scaleHeight, 0);
+	loadedImageTmp = IMG_Load(urlImagen.c_str());
+	SDL_Surface* loadedImage = rotozoomSurfaceXY(loadedImageTmp, 0, scaleWidth, scaleHeight, 0);
+	SDL_FreeSurface(loadedImageTmp);
 	if (loadedImage != NULL) {
 		//loadedImage = rotozoomSurfaceXY(loadedImage, 0, 2, 2, 0);
 
@@ -138,10 +138,10 @@ SDL_Surface* EntityView::load_image(string urlImagen) {
 			SDL_FreeSurface(loadedImage);
 			SDL_SetColorKey(optimizedImage, SDL_SRCCOLORKEY,
 					SDL_MapRGB(optimizedImage->format, 0, 0xFF, 0xFF));
-		} else
+		} else {
 			optimizedImage = loadedImage;
+		}
 	}
-
 	return optimizedImage;
 }
 

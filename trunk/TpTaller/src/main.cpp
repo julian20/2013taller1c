@@ -13,6 +13,8 @@
 #include <Game.h>
 #include <Menu.h>
 
+#include <SDL/SDL.h>
+
 #define CONFIGURATION_FILE "./configuration/entities.yaml"
 #define OUTPUT_FILENAME "configuration/parserOutput.yaml"
 
@@ -28,6 +30,8 @@ void initGame(PersistentConfiguration* configuration) {
  *
  */
 int main(int argc, char** argv) {
+
+	SDL_Init(SDL_INIT_EVERYTHING);
 
 	// Lectura del archivo de configuracion
 	ConfigurationReader cfgReader = ConfigurationReader();
@@ -61,6 +65,9 @@ int main(int argc, char** argv) {
 //	}
 //
 //	delete menu;
+
+	SDL_Quit();
+
 	return 0;
 }
 
