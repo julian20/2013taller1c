@@ -47,14 +47,17 @@ std::string TileDefinition::getTileImageSrc() {
 
 SDL_Surface* TileDefinition::getTileImage() {
 	if (this->openImage == NULL) {
-		SDL_Surface* loadedImage = IMG_Load(this->imageSrc.c_str());
-		if (loadedImage == NULL) {
+		SDL_Surface* loadedImageTmp = IMG_Load(this->imageSrc.c_str());
+		if (loadedImageTmp == NULL) {
 			printf("Unable to load tile texture. %s\n", SDL_GetError());
-			loadedImage = this->getDefaultTileImage();
+			loadedImageTmp = this->getDefaultTileImage();
 		}
-		loadedImage = rotozoomSurfaceXY(loadedImage, 0, TilesScale,
+
+		SDL_Surface* loadedImageRot = rotozoomSurfaceXY(loadedImageTmp, 0, TilesScale,
 				TilesScale, 0);
-		loadedImage = SDL_DisplayFormatAlpha(loadedImage);
+		SDL_FreeSurface(loadedImageTmp);
+		SDL_Surface* loadedImage = SDL_DisplayFormatAlpha(loadedImageRot);
+		SDL_FreeSurface(loadedImageRot);
 		this->openImage = loadedImage;
 	}
 	return this->openImage;
@@ -65,8 +68,12 @@ void TileDefinition::setTileImageSrc(std::string imageSrc) {
 }
 
 SDL_Surface* TileDefinition::prepareImage(SDL_Surface* loadedImage) {
-	loadedImage = rotozoomSurfaceXY(loadedImage, 0, TilesScale, TilesScale, 0);
-	loadedImage = SDL_DisplayFormatAlpha(loadedImage);
+	SDL_Surface* tmp = loadedImage;
+	loadedImage = rotozoomSurfaceXY(tmp, 0, TilesScale, TilesScale, 0);
+	SDL_FreeSurface(tmp);
+	tmp = loadedImage;
+	loadedImage = SDL_DisplayFormatAlpha(tmp);
+	SDL_FreeSurface(tmp);
 	return loadedImage;
 }
 

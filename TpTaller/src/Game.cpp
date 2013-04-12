@@ -96,7 +96,6 @@ void refreshCharacters() {
 }
 
 void Game::initScreen() {
-
 	//Buscamos info sobre la resolucion del escritorio y creamos la screen
 	bool configured = false;
 
