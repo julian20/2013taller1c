@@ -6,7 +6,7 @@
  */
 
 #include <model/persistence/ConfigurationReader.h>
-
+#include <model/Logs/Logs.h>
 using namespace std;
 
 /**
@@ -53,7 +53,7 @@ using namespace std;
 /* ************************************** *
  * *********** AUX STRUCTURES *********** *
  * ************************************** */
-
+Logs unLog;
 /**
  * Dimensions of a map.
  */
@@ -583,8 +583,7 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	try {
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing EntityView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(yamlException.what());
 	}
 	try {
 		yamlNode["imageWidth"] >> auxImageWidth;

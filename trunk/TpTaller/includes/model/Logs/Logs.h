@@ -13,15 +13,16 @@
 #include <iostream>
 #include <time.h>
 
-#define ruta "errores.log"
+#define RUTA_LOG "errores.log"
 using namespace std;
 
 class Logs {
 public:
-	Logs(string msj);
+	Logs();
 	virtual ~Logs();
+	void logErrorMessage(string msg);
 private:
-	void GenerateLogMsj();
+
 	string Date();
 	string msj;
 	FILE* archivo;

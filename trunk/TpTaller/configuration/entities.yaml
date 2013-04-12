@@ -13,7 +13,7 @@
     imageWidth: 224
     imageHeight: 240
     numberOfClips: 23
-    fps: 12
+    fps: 5
     delay: 3 
     animationRepeats: 4
   - name: watermill
@@ -34,7 +34,7 @@
     imageWidth: 238
     imageHeight: 290      
 - gameConfiguration:
-    fps: 70
+    fps: 30
     delay: 10
     gameMusic: resources/sound/NamiLogin.ogg
     defaultScreenHeight: 690
@@ -51,7 +51,7 @@
     imageSrc: resources/texturesTiles/Water.png
   - identifier: tree
     imageSrc: resources/texturesTiles/stonebrick.png
-- mapDimensions: [200, 200]
+- mapDimensions: [1000, 1000]
 - playerLocations:
   - name: player
     position: [2, 2, 0]
@@ -81,17 +81,17 @@
   - name: farmhouse
     position: [13, 13, 0]
 - tileLocations:
-  - position: [0, 0, 0]
+  - position: [3, 7, 0]
     texture: water
-  - position: [0, 1, 0]
+  - position: [7, 7, 0]
     texture: water
-  - position: [9, 12, 0]
+  - position: [6, 7, 0]
     texture: water
-  - position: [8, 12, 0]
+  - position: [5, 7, 0]
     texture: water    
-  - position: [10, 12, 0]
+  - position: [4, 7, 0]
     texture: water
-  - position: [11, 12, 0]
+  - position: [8, 7, 0]
     texture: water
   - position: [1, 0, 0]
     texture: soil
