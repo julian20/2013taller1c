@@ -50,7 +50,7 @@ private:
 	Player* player;
 
 	MapCameraView* camera;
-	Timer timer;
+
 };
 
 #endif  /* MAP_H */
