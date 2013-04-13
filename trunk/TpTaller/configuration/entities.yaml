@@ -25,14 +25,17 @@
     imageSrc: resources/trees.png
     imageWidth: 129
     imageHeight: 122
+    numberOfClips: 0
   - name: barracks
     imageSrc: resources/barracks.png
     imageWidth: 320
     imageHeight: 290
+    numberOfClips: 0
   - name: farmhouse
     imageSrc: resources/farmhouse.png
     imageWidth: 238
-    imageHeight: 290      
+    imageHeight: 290
+    numberOfClips: 0
 - gameConfiguration:
     fps: 30
     delay: 10
