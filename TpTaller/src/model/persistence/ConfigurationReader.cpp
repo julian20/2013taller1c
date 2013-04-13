@@ -425,6 +425,8 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 	personaje->setName(auxName);
 	personaje->setPowers(auxPowers);
 	personaje->setCoordinates(auxPosition->getX(),auxPosition->getY());
+	Tile* newTile = new Tile( personaje->getCoordinates() );
+	//personaje->setTile(newTile);
 	personaje->setSpeed(auxSpeed);
 }
 
@@ -923,12 +925,7 @@ void loadEntityViewMap(EntityViewMap* entityViewMap, std::vector<PlayerView*> en
 		PlayerView* parsedEntityView = entityViewVector[j];
 		Player* personaje = (Player*) parsedEntityView->getEntity();
 
-		/**
-		 * TODO: hacer conversion entre Posicion y Coordinates.
-		 */
-		Coordinates coordinates = Coordinates(personaje->getCurrentPos()->getX(), personaje->getCurrentPos()->getY());
-
-		entityViewMap->positionEntityView(parsedEntityView, coordinates);
+		entityViewMap->positionEntityView(parsedEntityView, *personaje->getCoordinates());
 	}
 
 }
