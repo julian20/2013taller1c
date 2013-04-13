@@ -8,8 +8,13 @@
 #include <model/map/TextureHolder.h>
 
 #define DEFAULT_TEXTURE_ID "default"
+#define DEFAULT_TEXTURE_PATH "resources/texturesTiles/grass.png"
 
 TextureHolder::TextureHolder() {
+	TileDefinition* defaultTile = new TileDefinition();
+	defaultTile->setTileId(DEFAULT_TEXTURE_ID);
+	defaultTile->setTileImageSrc(DEFAULT_TEXTURE_PATH);
+	this->listOfTextures.push_back(defaultTile);
 }
 
 TextureHolder::~TextureHolder() {

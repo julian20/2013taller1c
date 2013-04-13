@@ -93,7 +93,7 @@
     position: [13, 13, 0]
 - tileLocations:
   - position: [0, 7, 0]
-    texture: water 
+    texture: water
   - position: [1, 7, 0]
     texture: water   
   - position: [2, 7, 0]
