@@ -20,12 +20,14 @@ class Logs {
 public:
 	Logs();
 	virtual ~Logs();
-	void logErrorMessage(string msg);
+	static void openFile();
+	static void logErrorMessage(string msg);
+	static void closeFile();
 private:
 
-	string Date();
+	static string Date();
 	string msj;
-	FILE* archivo;
+	static FILE* archivo;
 };
 
 #endif /* LOGS_H_ */

@@ -1,13 +1,13 @@
 - playerViews:
   - name: player
     imageSrc: resources/black_knight.png
-    imageWidth: 96
+    imageWidth: 96a
     imageHeight: 96
     numberOfClips: 8
     anchorPixel: [48, 50]
     baseWidth: 1
     baseHeight: 1
-- entityViews:gasdk
+- entityViews:
   - name: windmill
     imageSrc: resources/windmill.png
     imageWidth: 224
