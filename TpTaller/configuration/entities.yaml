@@ -4,7 +4,7 @@
     imageWidth: 96
     imageHeight: 96
     numberOfClips: 8
-    anchorPixel: [0, 0]
+    anchorPixel: [48, 50]
     baseWidth: 1
     baseHeight: 1
 - entityViews:
@@ -13,6 +13,7 @@
     imageWidth: 224
     imageHeight: 240
     numberOfClips: 23
+    anchorPixel: [112, 120]
     fps: 5
     delay: 3 
     animationRepeats: 4
@@ -21,21 +22,25 @@
     imageWidth: 242
     imageHeight: 235
     numberOfClips: 31
+    anchorPixel: [121, 105]
   - name: tree
     imageSrc: resources/trees.png
     imageWidth: 129
     imageHeight: 122
     numberOfClips: 0
+    anchorPixel: [65, 61]
   - name: barracks
     imageSrc: resources/barracks.png
     imageWidth: 320
     imageHeight: 290
     numberOfClips: 0
+    anchorPixel: [180, 195]
   - name: farmhouse
     imageSrc: resources/farmhouse.png
     imageWidth: 238
     imageHeight: 290
     numberOfClips: 0
+    anchorPixel: [119, 145]   
 - gameConfiguration:
     fps: 30
     delay: 10
@@ -72,17 +77,9 @@
   - name: windmill
     position: [10, 20, 0]
   - name: tree
-    position: [2, 5, 0]
+    position: [2, 4, 0]
   - name: tree
-    position: [0, 1, 0]
-  - name: tree
-    position: [3, 0, 0]
-  - name: tree
-    position: [3, 7, 0]
-  - name: tree
-    position: [5, 2, 0]
-  - name: tree
-    position: [8, 3, 0]
+    position: [3, 8, 0]
   - name: tree
     position: [15, 10, 0]
   - name: barracks
