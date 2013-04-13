@@ -33,7 +33,8 @@ void initGame(PersistentConfiguration* configuration) {
  */
 int main(int argc, char** argv) {
 	Logs unLog;
-	unLog.logErrorMessage(string("************Program Starting**************** "));
+	Logs::openFile();
+	Logs::logErrorMessage(string("************Program Starting**************** "));
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	// Lectura del archivo de configuracion
@@ -76,7 +77,8 @@ int main(int argc, char** argv) {
 //	delete menu;
 
 	SDL_Quit();
-	unLog.logErrorMessage(string("************Program Ended**************** "));
+	Logs::logErrorMessage(string("************Program Ended**************** "));
+	Logs::closeFile();
 //	unLog.logErrorMessage(string("******************Program Finished***************"));
 	return 0;
 }

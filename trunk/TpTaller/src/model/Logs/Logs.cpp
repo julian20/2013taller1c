@@ -6,19 +6,22 @@
  */
 
 #include <model/Logs/Logs.h>
-
+FILE* Logs::archivo = NULL;
 Logs::Logs() {
-	this->archivo = fopen(RUTA_LOG, "a");
-	if (!this->archivo) {
-		printf(
-				"Error al crear archivo de logs\n");
-	}
+}
 
+void Logs::openFile(){
+
+	archivo = fopen(RUTA_LOG, "a");
+		if (!archivo) {
+			printf(
+					"Error al crear archivo de logs\n");
+		}
 }
 
 void Logs::logErrorMessage(string msg) {
 
-	string hora = this->Date();
+	string hora = Date();
 	string errorLog = hora + string("--------") + msg + string("\n");
 	fprintf(archivo,"%s",errorLog.c_str());
 }
@@ -32,6 +35,9 @@ string Logs::Date() {
 	return string(salida);
 }
 Logs::~Logs() {
+}
+
+void Logs::closeFile() {
 	fclose(archivo);
 }
 
