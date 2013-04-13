@@ -28,8 +28,8 @@ using namespace std;
 #define DEFAULT_RANGE 1
 #define DEFAULT_SPEED 5
 #define DEFAULT_NUMBER_CLIPS 0
-#define DEFAULT_IMAGE_WIDTH 50
-#define DEFAULT_IMAGE_HEIGHT 50
+#define DEFAULT_IMAGE_WIDTH 250
+#define DEFAULT_IMAGE_HEIGHT 250
 #define DEFAULT_FPS 30
 #define DEFAULT_DELAY 3
 #define DEFAULT_REPEATS 2
@@ -39,15 +39,10 @@ using namespace std;
 #define DEFAULT_BASE_LENGTH 1
 #define DEFAULT_BASE_WIDTH 1
 #define DEFAULT_TEXTURE "grass"
-#define DEFAULT_GAME_MUSIC "/path/to/music.ogg"
-#define DEFAULT_MENU_IMAGE "/path/to/image.png"
-#define DEFAULT_MENU_MUSIC "/path/to/music.ogg"
-#define DEFAULT_IMAGE_SRC "/path/to/image.png"
-#define DEFAULT_NAME "UndefinedName"
-
-#define DEFAULT_MENU_IMAGE "/path/to/image.png"
-#define DEFAULT_MENU_MUSIC "/path/to/music.ogg"
-#define DEFAULT_IMAGE_SRC "/path/to/image.png"
+#define DEFAULT_GAME_MUSIC "resources/sound/NamiLogin.ogg"
+#define DEFAULT_MENU_IMAGE "resources/lich.jpg"
+#define DEFAULT_MENU_MUSIC "resources/sound/pirates.ogg"
+#define DEFAULT_IMAGE_SRC "resources/questionMark.png"
 #define DEFAULT_NAME "UndefinedName"
 
 // Error Log.
@@ -617,39 +612,23 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	}
 	try {
 		yamlNode["imageSrc"] >> auxImageSrc;
+		yamlNode["imageWidth"] >> auxImageWidth;
+		yamlNode["imageHeight"] >> auxImageHeight;
+		yamlNode["numberOfClips"] >> auxNumberOfClips;
 	} catch (YAML::Exception& yamlException) {
 		errorLog.logErrorMessage(
-				string("Error parsing EntityView image source: ")
+				string("Error parsing EntityView: ")
 						+ yamlException.what());
 		auxImageSrc = DEFAULT_IMAGE_SRC;
+		auxImageWidth = DEFAULT_IMAGE_WIDTH;
+		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
+		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
 	}
 	try {
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
 	} catch (YAML::Exception& yamlException) {
 //		errorLog.logErrorMessage(
 //				string("Error parsing EntityView: ") + yamlException.what());
-	}
-	try {
-		yamlNode["imageWidth"] >> auxImageWidth;
-	} catch (YAML::Exception& yamlException) {
-		errorLog.logErrorMessage(
-				string("Error parsing EntityView image width: ")
-						+ yamlException.what());
-		auxImageWidth = DEFAULT_IMAGE_WIDTH;
-	}
-	try {
-		yamlNode["imageHeight"] >> auxImageHeight;
-	} catch (YAML::Exception& yamlException) {
-		errorLog.logErrorMessage(
-				string("Error parsing EntityView image height: ")
-						+ yamlException.what());
-		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
-	}
-	try {
-		yamlNode["numberOfClips"] >> auxNumberOfClips;
-	} catch (YAML::Exception& yamlException) {
-//		errorLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
-		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
 	}
 	try {
 		yamlNode["fps"] >> auxFps;
