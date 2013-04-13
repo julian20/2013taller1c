@@ -9,7 +9,6 @@
 #define TEXTUREHOLDER_H_
 
 #include <model/map/TileDefinition.h>
-
 #include <vector>
 #include <string>
 
