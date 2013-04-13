@@ -51,7 +51,7 @@
     imageSrc: resources/texturesTiles/Water.png
   - identifier: tree
     imageSrc: resources/texturesTiles/stonebrick.png
-- mapDimensions: [1000, 1000]
+- mapDimensions: [50, 50]
 - playerLocations:
   - name: player
     position: [20, 20, 0]
@@ -69,9 +69,17 @@
   - name: windmill
     position: [10, 20, 0]
   - name: tree
-    position: [2, 4, 0]
+    position: [2, 5, 0]
   - name: tree
-    position: [3, 8, 0]
+    position: [0, 1, 0]
+  - name: tree
+    position: [3, 0, 0]
+  - name: tree
+    position: [3, 7, 0]
+  - name: tree
+    position: [5, 2, 0]
+  - name: tree
+    position: [8, 3, 0]
   - name: tree
     position: [15, 10, 0]
   - name: barracks
@@ -81,22 +89,58 @@
   - name: farmhouse
     position: [13, 13, 0]
 - tileLocations:
+  - position: [0, 7, 0]
+    texture: water 
+  - position: [1, 7, 0]
+    texture: water   
+  - position: [2, 7, 0]
+    texture: water   
   - position: [3, 7, 0]
-    texture: water
-  - position: [7, 7, 0]
-    texture: water
-  - position: [6, 7, 0]
-    texture: water
-  - position: [5, 7, 0]
     texture: water    
   - position: [4, 7, 0]
     texture: water
+  - position: [5, 7, 0]
+    texture: water
+  - position: [6, 7, 0]
+    texture: water
+  - position: [7, 7, 0]
+    texture: water
   - position: [8, 7, 0]
     texture: water
+  - position: [9, 7, 0]
+    texture: water
+  - position: [9, 6, 0]
+    texture: water
+  - position: [9, 5, 0]
+    texture: water
+  - position: [9, 4, 0]
+    texture: water
+  - position: [9, 3, 0]
+    texture: water
+  - position: [9, 2, 0]
+    texture: water
+  - position: [9, 1, 0]
+    texture: water
+  - position: [9, 0, 0]
+    texture: water
+  - position: [0, 0, 0]
+    texture: soil
   - position: [1, 0, 0]
     texture: soil
+  - position: [2, 0, 0]
+    texture: soil
+  - position: [0, 1, 0]
+    texture: soil
+  - position: [0, 2, 0]
+    texture: soil
   - position: [1, 1, 0]
-    texture: tree
+    texture: soil
+  - position: [2, 1, 0]
+    texture: soil
+  - position: [1, 2, 0]
+    texture: soil
+  - position: [2, 2, 0]
+    texture: soil
   - position: [5, 5, 0]
     texture: tree
   - position: [5, 6, 0]
