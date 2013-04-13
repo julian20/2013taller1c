@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <model/persistence/ConfigurationReader.h>
+#include <model/Logs/Logs.h>
 #include <Game.h>
 #include <Menu.h>
 
@@ -30,7 +31,8 @@ void initGame(PersistentConfiguration* configuration) {
  *
  */
 int main(int argc, char** argv) {
-
+	//Logs unLog;
+	//unLog.logErrorMessage(string("************Program Start**************** "));
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	// Lectura del archivo de configuracion
@@ -68,6 +70,7 @@ int main(int argc, char** argv) {
 
 	SDL_Quit();
 
+//	unLog.logErrorMessage(string("******************Program Finished***************"));
 	return 0;
 }
 

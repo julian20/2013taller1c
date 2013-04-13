@@ -266,24 +266,27 @@ void operator >>(const YAML::Node& yamlNode, Position* vector) {
 	try {
 		yamlNode[0] >> auxX;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Position" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Position" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Position: ")+yamlException.what());
 		auxX = DEFAULT_POSITION;
 	}
 	try {
 		yamlNode[1] >> auxY;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Position" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Position" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Position: ")+yamlException.what());
 		auxY = DEFAULT_POSITION;
 	}
 	try {
 		yamlNode[2] >> auxZ;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Position" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Position" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Position: ")+yamlException.what());
 		auxZ = DEFAULT_POSITION;
 	}
 
@@ -303,16 +306,18 @@ void operator >>(const YAML::Node& yamlNode, Vector2* vector) {
 		yamlNode[0] >> auxX;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Vector2" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Vector2" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Vector2: ")+yamlException.what());
 		auxX = DEFAULT_POSITION;
 	}
 	try {
 		yamlNode[1] >> auxY;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Vector2" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Vector2" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Vector2: ")+yamlException.what());
 		auxY = DEFAULT_POSITION;
 	}
 
@@ -330,22 +335,25 @@ void operator >>(const YAML::Node& yamlNode, Power* power) {
 	try {
 		yamlNode["name"] >> auxName;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Power" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Power" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Power: ")+yamlException.what());
 		auxDamage = DEFAULT_DAMAGE;
 	}
 	try {
 		yamlNode["damage"] >> auxDamage;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Power" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Power" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Power: ")+yamlException.what());
 		auxRange = DEFAULT_RANGE;
 	}
 	try {
 		yamlNode["range"] >> auxRange;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Power" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Power" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Power: ")+yamlException.what());
 		auxName = DEFAULT_NAME;
 	}
 
@@ -365,15 +373,17 @@ void operator >>(const YAML::Node& yamlNode, Speed* speed) {
 	try {
 		yamlNode["magnitude"] >> auxMagnitude;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Speed" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Speed" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Speed: ")+yamlException.what());
 		auxMagnitude = DEFAULT_SPEED;
 	}
 	try {
 		yamlNode["direction"] >> auxPosition;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Speed" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Speed" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Speed: ")+yamlException.what());
 	}
 
 	speed->setMagnitude(auxMagnitude);
@@ -395,16 +405,18 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 	try {
 		yamlNode["name"] >> auxName;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Player" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Player" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Player: ")+yamlException.what());
 		auxName = DEFAULT_NAME;
 	}
 	try {
 		yamlNode["position"] >> auxPosition;
 		yamlNode["speed"] >> auxSpeed;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Player" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Player" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Player: ")+yamlException.what());
 		auxName = DEFAULT_NAME;
 		auxSpeed->setMagnitude(DEFAULT_SPEED);
 		auxSpeed->setDirection(Vector2(0, 0));
@@ -418,8 +430,9 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 		}
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Player" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Player" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Player: ")+yamlException.what());
 	}
 
 	personaje->setName(auxName);
@@ -441,8 +454,9 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 	try {
 		yamlNode["name"] >> auxName;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Entity" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Entity" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Entity: ")+yamlException.what());
 		auxName = DEFAULT_NAME;
 	}
 	yamlNode["position"] >> auxPosition;
@@ -466,79 +480,90 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	try {
 		yamlNode["name"] >> auxName;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing PlayerView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+	//	std::cout << "Error parsing PlayerView" << std::endl;
+	//	std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing PlayerView: ")+yamlException.what());
 		auxName = DEFAULT_NAME;
 	}
 	try {
 		yamlNode["imageSrc"] >> auxImageSrc;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing PlayerView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing PlayerView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing PlayerView: ")+yamlException.what());
 		auxImageSrc = DEFAULT_IMAGE_SRC;
 	}
 	try {
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing PlayerView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing PlayerView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing PlayerView: ")+yamlException.what());
 	}
 	try {
 		yamlNode["imageWidth"] >> auxImageWidth;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing PlayerView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing PlayerView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing PlayerView: ")+yamlException.what());
 		auxImageWidth = DEFAULT_IMAGE_WIDTH;
 	}
 	try {
 		yamlNode["imageHeight"] >> auxImageHeight;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing PlayerView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing PlayerView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing PlayerView: ")+yamlException.what());
 		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
 	}
 	try {
 		yamlNode["numberOfClips"] >> auxNumberOfClips;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing PlayerView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing PlayerView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing PlayerView: ")+yamlException.what());
 		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
 	}
 	try {
 		yamlNode["fps"] >> auxFps;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing PlayerView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing PlayerView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing PlayerView: ")+yamlException.what());
 		auxFps = DEFAULT_FPS;
 	}
 	try {
 		yamlNode["delay"] >> auxDelay;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing PlayerView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing PlayerView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing PlayerView: ")+yamlException.what());
 		auxDelay = DEFAULT_DELAY;
 	}
 	try {
 		yamlNode["animationRepeats"] >> auxAnimationNumberOfRepeats;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing PlayerView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing PlayerView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing PlayerView: ")+yamlException.what());
 		auxAnimationNumberOfRepeats = DEFAULT_REPEATS;
 	}
 	try {
 		yamlNode["baseWidth"] >> auxBaseWidth;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing PlayerView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing PlayerView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing PlayerView: ")+yamlException.what());
 		auxBaseWidth = DEFAULT_BASE_WIDTH;
 	}
 	try {
 		yamlNode["baseHeight"] >> auxBaseLength;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing PlayerView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing PlayerView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing PlayerView: ")+yamlException.what());
 		auxBaseLength = DEFAULT_BASE_LENGTH;
 	}
 
@@ -571,76 +596,86 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	try {
 		yamlNode["name"] >> auxName;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing EntityView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing EntityView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
 		auxName = DEFAULT_NAME;
 	}
 	try {
 		yamlNode["imageSrc"] >> auxImageSrc;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing EntityView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing EntityView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
 		auxImageSrc = DEFAULT_IMAGE_SRC;
 	}
 	try {
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
 	} catch (YAML::Exception& yamlException) {
-		unLog.logErrorMessage(yamlException.what());
+		unLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
 	}
 	try {
 		yamlNode["imageWidth"] >> auxImageWidth;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing EntityView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing EntityView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
 		auxImageWidth = DEFAULT_IMAGE_WIDTH;
 	}
 	try {
 		yamlNode["imageHeight"] >> auxImageHeight;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing EntityView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing EntityView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
 		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
 	}
 	try {
 		yamlNode["numberOfClips"] >> auxNumberOfClips;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing EntityView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing EntityView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
 		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
 	}
 	try {
 		yamlNode["fps"] >> auxFps;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing EntityView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing EntityView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
 		auxFps = DEFAULT_FPS;
 	}
 	try {
 		yamlNode["delay"] >> auxDelay;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing EntityView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing EntityView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
 		auxDelay = DEFAULT_DELAY;
 	}
 	try {
 		yamlNode["animationRepeats"] >> auxAnimationNumberOfRepeats;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing EntityView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing EntityView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
 		auxAnimationNumberOfRepeats = DEFAULT_REPEATS;
 	}
 	try {
 		yamlNode["baseWidth"] >> auxBaseWidth;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing EntityView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing EntityView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
 		auxBaseWidth = DEFAULT_BASE_WIDTH;
 	}
 	try {
 		yamlNode["baseHeight"] >> auxBaseLength;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing EntityView" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing EntityView" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
 		auxBaseLength = DEFAULT_BASE_LENGTH;
 	}
 
@@ -666,8 +701,9 @@ void operator >>(const YAML::Node& yamlNode, std::vector<Entity*>& entityVector)
 			entityLocations[i] >> entity;
 			entityVector.push_back(entity);
 		} catch (YAML::Exception& yamlException) {
-			std::cout << "Error parsing Entity Location List" << std::endl;
-			std::cout << yamlException.what() << "\n";
+			//std::cout << "Error parsing Entity Location List" << std::endl;
+			//std::cout << yamlException.what() << "\n";
+			unLog.logErrorMessage(string("Error parsing Entity Location List: ")+yamlException.what());
 		}
 	}
 }
@@ -680,8 +716,9 @@ void operator >>(const YAML::Node& yamlNode, std::vector<Player*>& playerVector)
 			playerLocations[i] >> player;
 			playerVector.push_back(player);
 		} catch (YAML::Exception& yamlException) {
-			std::cout << "Error parsing Player Location List" << std::endl;
-			std::cout << yamlException.what() << "\n";
+			//std::cout << "Error parsing Player Location List" << std::endl;
+			//std::cout << yamlException.what() << "\n";
+			unLog.logErrorMessage(string("Error parsing Player Location List: ")+yamlException.what());
 		}
 	}
 }
@@ -697,8 +734,9 @@ void operator >>(const YAML::Node& yamlNode, std::vector<PlayerView*>& entityLis
 			playerViews[i] >> entityView;
 			entityList.push_back(entityView);
 		} catch (YAML::Exception& yamlException) {
-			std::cout << "Error parsing PlayerView List" << std::endl;
-			std::cout << yamlException.what() << "\n";
+			//std::cout << "Error parsing PlayerView List" << std::endl;
+			//std::cout << yamlException.what() << "\n";
+			unLog.logErrorMessage(string("Error parsing PlayerView List: ")+yamlException.what());
 		}
 	}
 }
@@ -714,8 +752,9 @@ void operator >>(const YAML::Node& yamlNode, std::vector<EntityView*>& entityLis
 			entityViews[i] >> entityView;
 			entityList.push_back(entityView);
 		} catch (YAML::Exception& yamlException) {
-			std::cout << "Error parsing EntityView List" << std::endl;
-			std::cout << yamlException.what() << "\n";
+			//std::cout << "Error parsing EntityView List" << std::endl;
+			//std::cout << yamlException.what() << "\n";
+			unLog.logErrorMessage(string("Error parsing EntityView List: ")+yamlException.what());
 		}
 	}
 }
@@ -735,32 +774,36 @@ void operator >>(const YAML::Node& yamlNode, GameConfiguration* animationConfig)
 		configuration["fps"] >> auxFps;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing GameConfiguration" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing GameConfiguration" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing GameConfiguration: ")+yamlException.what());
 		auxFps = DEFAULT_FPS;
 	}
 	try {
 		configuration["delay"] >> auxDelay;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing GameConfiguration" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing GameConfiguration" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing GameConfiguration: ")+yamlException.what());
 		auxDelay = DEFAULT_DELAY;
 	}
 	try {
 		configuration["gameMusic"] >> auxGameMusicSrc;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing GameConfiguration" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing GameConfiguration" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing GameConfiguration: ")+yamlException.what());
 		auxGameMusicSrc = DEFAULT_GAME_MUSIC;
 	}
 	try {
 		configuration["defaultScreenHeight"] >> auxHeight;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing GameConfiguration" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing GameConfiguration" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing GameConfiguration: ")+yamlException.what());
 		auxHeight = DEFAULT_SCREEN_HEIGHT
 		;
 	}
@@ -768,8 +811,9 @@ void operator >>(const YAML::Node& yamlNode, GameConfiguration* animationConfig)
 		configuration["defaultScreenWidth"] >> auxWidth;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing GameConfiguration" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing GameConfiguration" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing GameConfiguration: ")+yamlException.what());
 		auxWidth = DEFAULT_SCREEN_WIDTH
 		;
 	}
@@ -777,24 +821,27 @@ void operator >>(const YAML::Node& yamlNode, GameConfiguration* animationConfig)
 		configuration["defaultBPP"] >> auxBPP;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing GameConfiguration" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing GameConfiguration" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing GameConfiguration: ")+yamlException.what());
 		auxBPP = DEFAULT_BPP;
 	}
 	try {
 		configuration["menuBackImage"] >> auxMenuImage;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing GameConfiguration" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing GameConfiguration" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing GameConfiguration: ")+yamlException.what());
 		auxMenuImage = DEFAULT_MENU_IMAGE;
 	}
 	try {
 		configuration["menuBackMusic"] >> auxMenuMusic;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing GameConfiguration" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing GameConfiguration" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing GameConfiguration: ")+yamlException.what());
 		auxMenuMusic = DEFAULT_MENU_MUSIC;
 	}
 
@@ -823,8 +870,9 @@ void operator >>(const YAML::Node& yamlNode, TileDefinition* tileDefinition) {
 		yamlNode["imageSrc"] >> auxSrc;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing TileDefinition" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing TileDefinition" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing TileDefinition: ")+yamlException.what());
 	}
 	tileDefinition->setTileId(auxId);
 	tileDefinition->setTileImageSrc(auxSrc);
@@ -841,8 +889,9 @@ void operator >>(const YAML::Node& yamlNode, TextureHolder* textureHolder) {
 			yamlTileDefinitions[i] >> tileDef;
 			textureHolder->addTexture(tileDef);
 		} catch (YAML::Exception& yamlException) {
-			std::cout << "Error parsing TextureHolder" << std::endl;
-			std::cout << yamlException.what() << "\n";
+			//std::cout << "Error parsing TextureHolder" << std::endl;
+			//std::cout << yamlException.what() << "\n";
+			unLog.logErrorMessage(string("Error parsing TextureHolder: ")+yamlException.what());
 		}
 	}
 }
@@ -862,8 +911,9 @@ void operator >>(const YAML::Node& yamlNode, Tile* tile) {
 		yamlNode["texture"] >> auxId;
 
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing Tile" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing Tile" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing Tile: ")+yamlException.what());
 		auxId = DEFAULT_TEXTURE;
 	}
 	tile->setPosition(auxPosition);
@@ -881,8 +931,9 @@ void operator >>(const YAML::Node& yamlNode, AuxMap& destMap) {
 			tileList[i] >> tile;
 			destMap.tileList.push_back(tile);
 		} catch (YAML::Exception& yamlException) {
-			std::cout << "Error parsing tile locations" << std::endl;
-			std::cout << yamlException.what() << "\n";
+			//std::cout << "Error parsing tile locations" << std::endl;
+			//std::cout << yamlException.what() << "\n";
+			unLog.logErrorMessage(string("Error parsing tile locations: ")+yamlException.what());
 		}
 	}
 }
@@ -908,8 +959,9 @@ void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
 		yamlDimensions[0] >> dimension.nrows;
 		yamlDimensions[1] >> dimension.ncols;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << "Error parsing map dimensions" << std::endl;
-		std::cout << yamlException.what() << "\n";
+		//std::cout << "Error parsing map dimensions" << std::endl;
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(string("Error parsing map dimensions: ")+yamlException.what());
 		dimension.nrows = DEFAULT_ROWS;
 		dimension.ncols = DEFAULT_COLS;
 	}
@@ -1063,7 +1115,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(std::string confi
 
 // Error Check
 	if (!inputFile) {
-		cout << "No se encontro el archivo de configuracion" << std::endl;
+		//cout << "No se encontro el archivo de configuracion" << std::endl;
+		unLog.logErrorMessage(string("No se encontro el archivo de configuracion: "));
 		exit(1);
 	}
 
@@ -1077,7 +1130,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(std::string confi
 	try {
 		yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << yamlException.what() << "\n";
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(yamlException.what());
 	}
 
 // Parsing EntityViews.
@@ -1085,7 +1139,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(std::string confi
 	try {
 		yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << yamlException.what() << "\n";
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(yamlException.what());
 	}
 
 // Parsing animation configuration.
@@ -1093,7 +1148,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(std::string confi
 	try {
 		yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << yamlException.what() << "\n";
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(yamlException.what());
 	}
 
 // Parsing tile definition.
@@ -1101,7 +1157,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(std::string confi
 	try {
 		yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << yamlException.what() << "\n";
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(yamlException.what());
 	}
 
 // Parsing map dimensions.
@@ -1111,7 +1168,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(std::string confi
 		yamlNode[MAP_DIMENSION_POSITION] >> mapDimension;
 		mapConfiguration.dimension = mapDimension;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << yamlException.what() << "\n";
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(yamlException.what());
 	}
 
 	MapData* mapData = new MapData(mapConfiguration.dimension.nrows, mapConfiguration.dimension.ncols);
@@ -1121,7 +1179,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(std::string confi
 	try {
 		yamlNode[PLAYER_LOCATIONS_POSITION] >> playerVector;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << yamlException.what() << "\n";
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(yamlException.what());
 	}
 
 // Parsing player locations.
@@ -1129,7 +1188,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(std::string confi
 	try {
 		yamlNode[ENTITY_LOCATIONS_POSITION] >> entityVector;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << yamlException.what() << "\n";
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(yamlException.what());
 	}
 
 	std::vector<EntityView*> cleanEntityViews = assignEntities(entityViewVector, entityVector);
@@ -1142,7 +1202,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(std::string confi
 	try {
 		yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
 	} catch (YAML::Exception& yamlException) {
-		std::cout << yamlException.what() << "\n";
+		//std::cout << yamlException.what() << "\n";
+		unLog.logErrorMessage(yamlException.what());
 	}
 	mapConfiguration >> mapData;
 
