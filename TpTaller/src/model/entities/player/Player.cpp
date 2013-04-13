@@ -46,12 +46,13 @@ void Player::update() {
 	if (moveDirection->getNorm() < getSpeed()->getMagnitude() + 1) {
 		// Close enough to the end position to move in one step.
 		currentPos->setValues(endPos->getX(), endPos->getY());
-		if (path->size() == 0) return;
-		else setNextPosition();
+
 	} else {
 		moveDirection->normalize();
 		moveDirection->multiplyBy(getSpeed()->getMagnitude());
 		currentPos->add(moveDirection);
+		if (path->size() == 0) return;
+				else setNextPosition();
 	}
 }
 
