@@ -7,7 +7,7 @@
  */
 
 #include <cstdlib>
-#include <string.h>
+#include <string>
 #include <stdio.h>
 #include <model/persistence/ConfigurationReader.h>
 #include <model/Logs/Logs.h>
@@ -18,6 +18,7 @@
 
 #define CONFIGURATION_FILE "./configuration/entities.yaml"
 #define OUTPUT_FILENAME "configuration/parserOutput.yaml"
+#define DEFAULT_CONFIGURATION_FILE "./configuration/.entitiesDefault.yaml"
 
 using namespace std;
 
@@ -31,15 +32,21 @@ void initGame(PersistentConfiguration* configuration) {
  *
  */
 int main(int argc, char** argv) {
-	//Logs unLog;
-	//unLog.logErrorMessage(string("************Program Start**************** "));
+	Logs unLog;
+	unLog.logErrorMessage(string("************Program Starting**************** "));
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	// Lectura del archivo de configuracion
 	ConfigurationReader cfgReader = ConfigurationReader();
-	PersistentConfiguration configuration = cfgReader.loadConfiguration(
-			CONFIGURATION_FILE, OUTPUT_FILENAME);
-	initGame(&configuration);
+	try {
+		PersistentConfiguration configuration = cfgReader.loadConfiguration(CONFIGURATION_FILE, OUTPUT_FILENAME);
+		initGame(&configuration);
+	} catch (YAML::ParserException& yamlException) {
+		unLog.logErrorMessage(string("Configuration syntax error, ") + yamlException.what() +string (". Loading default configuration."));
+		PersistentConfiguration configuration = cfgReader.loadConfiguration(DEFAULT_CONFIGURATION_FILE, OUTPUT_FILENAME);
+		initGame(&configuration);
+	}
+
 //	Menu* menu = new Menu(configuration.getAnimationConfiguration());
 
 //	MenuEvent event = NOTHING_EVENT;
@@ -69,7 +76,7 @@ int main(int argc, char** argv) {
 //	delete menu;
 
 	SDL_Quit();
-
+	unLog.logErrorMessage(string("************Program Ended**************** "));
 //	unLog.logErrorMessage(string("******************Program Finished***************"));
 	return 0;
 }
