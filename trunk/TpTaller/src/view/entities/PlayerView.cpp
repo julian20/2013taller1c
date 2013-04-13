@@ -30,8 +30,9 @@ void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
 	Vector3* position = player->getCurrentPos();
 	float x = position->getX();
 	float y = position->getY();
-	offset.x = (int) x + camPos->getX() - clip->w / 2;
-	offset.y = (int) y + camPos->getY() - clip->h + OFFSET_Y;
+	offset.x = (int) x + camPos->getX() - this->anchorPixel->getX();
+	int h = Tile::computePositionTile(0,0).h;
+	offset.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h/2;
 	offset.w = clip->w;
 	offset.h = clip->h;
 
