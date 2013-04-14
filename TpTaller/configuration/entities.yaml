@@ -1,7 +1,7 @@
 - playerViews:
   - name: player
     imageSrc: resources/black_knight.png
-    imageWidth: 96a
+    imageWidth: 96
     imageHeight: 96
     numberOfClips: 8
     anchorPixel: [48, 50]
@@ -23,6 +23,12 @@
     imageHeight: 235
     numberOfClips: 31
     anchorPixel: [121, 105]
+  - name: aniWater
+    imageSrc: resources/aniWater.png
+    imageWidth: 68
+    imageHeight: 49
+    numberOfClips: 6
+    anchorPixel: [34, 0]
   - name: tree
     imageSrc: resources/trees.png
     imageWidth: 129
@@ -76,6 +82,42 @@
 - entityLocations:
   - name: windmill
     position: [10, 20, 0]
+  - name: aniWater
+    position: [0, 0, 0]
+  - name: aniWater
+    position: [0, 7, 0]
+  - name: aniWater
+    position: [1, 7, 0]
+  - name: aniWater 
+    position: [2, 7, 0]
+  - name: aniWater
+    position: [3, 7, 0]
+  - name: aniWater  
+    position: [4, 7, 0]
+  - name: aniWater
+    position: [5, 7, 0]
+  - name: aniWater
+    position: [6, 7, 0]
+  - name: aniWater
+    position: [7, 7, 0]
+  - name: aniWater
+    position: [8, 7, 0]
+  - name: aniWater
+    position: [9, 7, 0]
+  - name: aniWater
+    position: [9, 6, 0]
+  - name: aniWater
+    position: [9, 5, 0]
+  - name: aniWater
+    position: [9, 4, 0]
+  - name: aniWater
+    position: [9, 3, 0]
+  - name: aniWater
+    position: [9, 2, 0]
+  - name: aniWater
+    position: [9, 1, 0]
+  - name: aniWater
+    position: [9, 0, 0]
   - name: tree
     position: [2, 4, 0]
   - name: tree
