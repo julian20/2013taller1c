@@ -28,10 +28,8 @@ public:
 	void setCoordinates(int _row, int _col);
 	std::string getTextureIdentifier();
 	void setTextureIdentifier(std::string textureId);
-	static Position computePosition(int row, int col);
-	static Position computePosition(int row, int col, bool toTileCenter);
-	static SDL_Rect computePositionTile(int row, int col);
-	static SDL_Rect computePositionTile(int row, int col, bool toTileCenter);
+	static Position computePosition(int row, int col, bool toTileZero = false);
+	static SDL_Rect computePositionTile(int row, int col, bool toTileZero = false);
 	static Coordinates* getTileCoordinates(int x, int y);
 private:
 

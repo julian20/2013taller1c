@@ -67,14 +67,14 @@ void Tile::setTextureIdentifier(std::string textureId) {
 	this->textureIdentifier = textureId;
 }
 
-Position Tile::computePosition(int row, int col /*, toTileCenter = false*/) {
-	return getDiamondShapeMapPos(row, col);
-}
+Position Tile::computePosition(int row, int col, bool toTileZero) {
+	SDL_Rect rect = getDiamondShapeMapTilePos(row, col);
 
-Position Tile::computePosition(int row, int col, bool toTileCenter) {
-	Position pos = computePosition(row, col);
+	Position pos;
+	pos.setX( rect.x );
+	pos.setY( rect.y );
 
-	if (toTileCenter) {
+	if (toTileZero) {
 		pos.setX(pos.getX() + TextureWidth/2);
 		pos.setY(pos.getY() + TextureHeight/2);
 	}
@@ -82,19 +82,15 @@ Position Tile::computePosition(int row, int col, bool toTileCenter) {
 	return pos;
 }
 
-SDL_Rect Tile::computePositionTile(int row, int col /*, toTileCenter = false*/) {
-	return getDiamondShapeMapTilePos(row, col);
-}
+SDL_Rect Tile::computePositionTile(int row, int col, bool toTileZero) {
+	SDL_Rect rect = getDiamondShapeMapTilePos(row, col);
 
-SDL_Rect Tile::computePositionTile(int row, int col, bool toTileCenter) {
-	SDL_Rect pos = computePositionTile(row, col);
-
-	if (toTileCenter) {
-		pos.x = pos.x + TextureWidth/2;
-		pos.y = pos.y + TextureHeight/2;
+	if (toTileZero) {
+		rect.x = rect.x + TextureWidth/2;
+		rect.y = rect.y + TextureHeight/2;
 	}
 
-	return pos;
+	return rect;
 }
 
 SDL_Rect Tile::getSquaredMapTilePos(int row, int col) {
