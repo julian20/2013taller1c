@@ -976,14 +976,14 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 
 	for (unsigned int j = 0; j < entityViewVector.size(); j++) {
 		EntityView* parsedEntityView = entityViewVector[j];
-		Entity* personaje = parsedEntityView->getEntity();
+		Entity* entity = parsedEntityView->getEntity();
 
 		/**
 		 * TODO: hacer conversion entre Posicion y Coordinates.
 		 */
 		Coordinates coordinates = Coordinates(
-				personaje->getCurrentPos()->getX(),
-				personaje->getCurrentPos()->getY());
+				entity->getCurrentPos()->getX(),
+				entity->getCurrentPos()->getY());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}
@@ -992,7 +992,7 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 
 void duplicateView(EntityView* sourceView, EntityView* destView) {
 
-//Duplico el anchor
+	//Duplico el anchor
 	Vector2* anchor = sourceView->getAnchorPixel();
 	Vector2* anchorCopy = new Vector2(anchor->getX(), anchor->getY());
 
