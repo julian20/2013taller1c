@@ -136,8 +136,11 @@ void Player::setTile( Tile* _tile ) {
 	// Las coordinates se actualizan en EntityViewMap
 }
 
-Tile* Player::getTile() {
-	return currentTile;
+Tile Player::getTile() {
+	Tile retval;
+	retval.setCoordinates( currentTile->getCoordinates() );
+
+	return retval;
 }
 
 string Player::getClassName(){

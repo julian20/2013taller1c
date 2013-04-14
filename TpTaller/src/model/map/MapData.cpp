@@ -103,16 +103,16 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* to) {
 
 	nextTile = from;
 	int row, col;
-	Coordinates* nextTileCords = nextTile->getCoordinates();
-	Coordinates* toCords = to->getCoordinates();
+	Coordinates nextTileCords = nextTile->getCoordinates();
+	Coordinates toCords = to->getCoordinates();
 
-	while (nextTileCords->getCol() != toCords->getCol()
-		|| nextTileCords->getRow() != toCords->getRow()) {
+	while (nextTileCords.getCol() != toCords.getCol()
+		|| nextTileCords.getRow() != toCords.getRow()) {
 
-		int nextTileCol = nextTileCords->getCol();
-		int nextTileRow = nextTileCords->getRow();
-		int toCol = toCords->getCol();
-		int toRow = toCords->getRow();
+		int nextTileCol = nextTileCords.getCol();
+		int nextTileRow = nextTileCords.getRow();
+		int toCol = toCords.getCol();
+		int toRow = toCords.getRow();
 
 		if (toCol > nextTileCol)
 			col = nextTileCol + 1;

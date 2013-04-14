@@ -77,8 +77,8 @@ void Game::setUpCharacters(MapView* map, MapData* mapData, EntityViewMap* viewMa
 						//TODO - Lucas: "personaje" deberia ser una lista de personajes
 						personaje = (Player*) entity;
 
-						Coordinates* coord = personaje->getCoordinates();
-						mapData->addPersonaje(coord->getRow(), coord->getCol(), personaje);
+						Coordinates coord = personaje->getCoordinates();
+						mapData->addPersonaje(coord.getRow(), coord.getCol(), personaje);
 					}
 				}
 			}

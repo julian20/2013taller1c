@@ -51,12 +51,20 @@ void Tile::setPosition(Position* position) {
 	this->position = position;
 }
 
-Coordinates* Tile::getCoordinates() {
-	return this->coordinates;
+Coordinates Tile::getCoordinates() {
+	Coordinates retval;
+	retval.setRow( coordinates->getRow() );
+	retval.setCol( coordinates->getCol() );
+
+	return retval;
 }
 
 void Tile::setCoordinates(int _row, int _col) {
 	this->coordinates->changeTo(_row, _col);
+}
+
+void Tile::setCoordinates(Coordinates coords) {
+	this->coordinates->changeTo(coords.getRow(), coords.getCol());
 }
 
 std::string Tile::getTextureIdentifier() {

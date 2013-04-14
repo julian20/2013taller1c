@@ -31,7 +31,7 @@ using namespace std;
 		void setBase(Base* base);
 		std::string getName();
 		void setName(std::string name);
-		Coordinates* getCoordinates();
+		Coordinates getCoordinates();
 		void setCoordinates(int row, int col);
 	protected:
 		Vector3* currentPos;
