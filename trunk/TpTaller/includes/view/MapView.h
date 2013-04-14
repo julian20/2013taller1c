@@ -27,7 +27,6 @@ public:
 	SDL_Surface* getDrawingSurface();
 
 	void draw(Position* cam);
-	void movePlayer(int x, int y);
 	void setUpPersonajes();
 	void assignPersonaje(Player* _personaje);
 	void setUpEntity(EntityView* entityView, Coordinates coor);
