@@ -7,6 +7,10 @@
 
 #include <model/entityProperties/Coordinates.h>
 
+Coordinates::Coordinates() {
+	changeTo(0, 0);
+}
+
 Coordinates::Coordinates(int _row, int _col) {
 	changeTo(_row, _col);
 }

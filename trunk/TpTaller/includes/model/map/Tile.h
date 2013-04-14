@@ -24,8 +24,9 @@ public:
 	Position* getPosition();
 	void setPosition(int x, int y, int z);
 	void setPosition(Position* newPosition);
-	Coordinates* getCoordinates();
+	Coordinates getCoordinates();
 	void setCoordinates(int _row, int _col);
+	void setCoordinates(Coordinates coords);
 	std::string getTextureIdentifier();
 	void setTextureIdentifier(std::string textureId);
 	static Position computePosition(int row, int col, bool toTileZero = false);

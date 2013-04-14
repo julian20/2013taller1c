@@ -35,7 +35,7 @@ public:
 	std::vector<Power*> getPowers();
 	void setPowers(std::vector<Power*> powers);
 	void setTile( Tile* _tile );
-	Tile* getTile();
+	Tile getTile();
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
 	void setSpeedMagnitude(int mag);

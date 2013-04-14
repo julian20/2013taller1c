@@ -10,6 +10,7 @@
 
 class Coordinates {
 public:
+	Coordinates();
 	Coordinates(int _row, int _col);
     void changeTo(int _row, int _col);
 	int getRow() const;
