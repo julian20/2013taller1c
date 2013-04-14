@@ -925,8 +925,8 @@ void operator >>(const YAML::Node& yamlNode, AuxMap& destMap) {
 void operator >>(AuxMap& originConfig, MapData* destMap) {
 	for (unsigned int i = 0; i < originConfig.tileList.size(); i++) {
 		Tile* auxTile = originConfig.tileList[i];
-		int auxCol = auxTile->getPosition()->getX();
-		int auxRow = auxTile->getPosition()->getY();
+		int auxRow = auxTile->getPosition()->getX();
+		int auxCol = auxTile->getPosition()->getY();
 		destMap->SetTileType(auxTile->getTextureIdentifier(), auxRow, auxCol);
 	}
 }

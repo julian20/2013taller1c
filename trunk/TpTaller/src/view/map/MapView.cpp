@@ -120,8 +120,8 @@ void MapView::draw(Position* cam) {
 
 			posTile = Tile::computePositionTile(row, col);
 			Position* cameraPos = this->camera->getPosition();
-			posTile.x = cameraPos->getX() + posTile.x;
-			posTile.y = cameraPos->getY() + posTile.y;
+			posTile.x = posTile.x + cameraPos->getX();
+			posTile.y = posTile.y + cameraPos->getY();
 			delete cameraPos;
 
 			std::string textureId = data->GetTileType(row, col);
