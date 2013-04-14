@@ -37,7 +37,7 @@ void Player::update() {
 	if (IsMoving() == false)
 	{
 		if (path->size() == 0) return;
-		else setNextPosition();
+		else loadNextPosition();
 	}
 
 	Vector3* moveDirection = new Vector3(endPos->getX() - currentPos->getX(),
@@ -47,17 +47,17 @@ void Player::update() {
 		// Close enough to the end position to move in one step.
 		currentPos->setValues(endPos->getX(), endPos->getY());
 		if (path->size() == 0) return;
-		else setNextPosition();
+		else loadNextPosition();
 	} else {
 		moveDirection->normalize();
 		moveDirection->multiplyBy(getSpeed()->getMagnitude());
 		currentPos->add(moveDirection);
-		if (path->size() == 0) return;
-				else setNextPosition();
+		//if (path->size() == 0) return;
+		//		else setNextPosition();
 	}
 }
 
-void Player::setNextPosition() {
+void Player::loadNextPosition() {
 	Tile* tile = path->front();
 	path->remove(tile);
 
@@ -128,6 +128,8 @@ bool Player::IsMoving() {
 void Player::assignPath(list<Tile *> *_path) {
 	if (path) delete path;
 	this->path = _path;
+
+	loadNextPosition();
 }
 
 void Player::setTile( Tile* _tile ) {
