@@ -41,7 +41,7 @@ public:
 	void setSpeedMagnitude(int mag);
 	string getClassName();
 private:
-	void setNextPosition();
+	void loadNextPosition();
 
 	Vector3* endPos;
 	Speed* speed;
