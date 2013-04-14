@@ -13,7 +13,7 @@
     imageWidth: 224
     imageHeight: 240
     numberOfClips: 23
-    anchorPixel: [112, 120]
+    anchorPixel: [112, 180]
     fps: 5
     delay: 3 
     animationRepeats: 4
