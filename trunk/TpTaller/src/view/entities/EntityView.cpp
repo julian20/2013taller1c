@@ -64,13 +64,12 @@ int EntityView::getNumberOfRepeats() {
 }
 
 void EntityView::setScale() {
-	//baseHeight = entity->getBase()->getLength();
-	//baseWidth = entity->getBase()->getWidth();
+//	baseHeight = entity->getBase()->getLength();
+//	baseWidth = entity->getBase()->getWidth();
 	this->scaleHeight = (float) (this->tileHeight) * float(this->baseHeight)
 			/ (float) (this->imageHeight);
 	this->scaleWidth = (float) (this->tileWidth) * (float) (this->baseWidth)
 			/ (float) (this->imageWidth);
-	printf("ancho %f---- alto %f", scaleWidth, scaleHeight);
 }
 
 void EntityView::setImageWidth(int width) {
