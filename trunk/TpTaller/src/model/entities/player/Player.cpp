@@ -52,6 +52,8 @@ void Player::update() {
 		moveDirection->normalize();
 		moveDirection->multiplyBy(getSpeed()->getMagnitude());
 		currentPos->add(moveDirection);
+		if (path->size() == 0) return;
+				else setNextPosition();
 	}
 }
 
