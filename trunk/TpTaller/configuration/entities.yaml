@@ -99,6 +99,12 @@
     imageSrc: resources/texturesTiles/sandWater/shallowWater.png
   - identifier: sandWaterCurveLeftIn
     imageSrc: resources/texturesTiles/sandWater/sandWaterCurveLeftIn.png
+  - identifier: sandGrass45
+    imageSrc: resources/texturesTiles/sandGrass/sandGrass45.png
+  - identifier: sandGrass135
+    imageSrc: resources/texturesTiles/sandGrass/sandGrass135.png
+  - identifier: sandGrassCurveIn135
+    imageSrc: resources/texturesTiles/sandGrass/sandGrassCurveIn135.png
 - mapDimensions: [50, 50]
 - playerLocations:
   - name: player
@@ -456,170 +462,199 @@
   - position: [13, 34, 0]
     texture: soil
 #The ocean baby
-#Arena
+#Interfaz arena pasto
   - position: [32, 26, 0]
-    texture: sand
+    texture: sandGrass135
+  - position: [33, 26, 0]
+    texture: sandGrass135
+  - position: [34, 26, 0]
+    texture: sandGrass135
+  - position: [35, 26, 0]
+    texture: sandGrass135
+  - position: [36, 26, 0]
+    texture: sandGrass135
+  - position: [37, 26, 0]
+    texture: sandGrass135
+  - position: [38, 26, 0]
+    texture: sandGrass135
+  - position: [39, 26, 0]
+    texture: sandGrass135
+  - position: [40, 26, 0]
+    texture: sandGrass135
+  - position: [41, 26, 0]
+    texture: sandGrass135
+  - position: [42, 26, 0]
+    texture: sandGrass135
+  - position: [43, 26, 0]
+    texture: sandGrass135
+  - position: [44, 26, 0]
+    texture: sandGrass135
+  - position: [45, 26, 0]
+    texture: sandGrass135
+  - position: [46, 26, 0]
+    texture: sandGrass135
+  - position: [47, 26, 0]
+    texture: sandGrass135
+  - position: [48, 26, 0]
+    texture: sandGrass135
+  - position: [49, 26, 0]
+    texture: sandGrass135
+  - position: [31, 26, 0]
+    texture: sandGrassCurveIn135
+  - position: [31, 27, 0]
+    texture: sandGrass45
+  - position: [31, 28, 0]
+    texture: sandGrass45
+  - position: [31, 29, 0]
+    texture: sandGrass45
+  - position: [31, 30, 0]
+    texture: sandGrass45
+  - position: [31, 31, 0]
+    texture: sandGrass45
+  - position: [31, 32, 0]
+    texture: sandGrass45
+  - position: [31, 33, 0]
+    texture: sandGrass45
+  - position: [31, 34, 0]
+    texture: sandGrass45
+  - position: [31, 35, 0]
+    texture: sandGrass45
+  - position: [31, 36, 0]
+    texture: sandGrass45
+  - position: [31, 37, 0]
+    texture: sandGrass45
+  - position: [31, 38, 0]
+    texture: sandGrass45
+  - position: [31, 39, 0]
+    texture: sandGrass45
+  - position: [31, 40, 0]
+    texture: sandGrass45
+  - position: [31, 41, 0]
+    texture: sandGrass45
+  - position: [31, 42, 0]
+    texture: sandGrass45
+  - position: [31, 43, 0]
+    texture: sandGrass45
+  - position: [31, 44, 0]
+    texture: sandGrass45
+  - position: [31, 45, 0]
+    texture: sandGrass45
+  - position: [31, 46, 0]
+    texture: sandGrass45
+  - position: [31, 47, 0]
+    texture: sandGrass45
+  - position: [31, 48, 0]
+    texture: sandGrass45
+  - position: [31, 49, 0]
+    texture: sandGrass45
+#Arena
   - position: [32, 27, 0]
     texture: sand
   - position: [32, 28, 0]
-    texture: sand
-  - position: [33, 26, 0]
     texture: sand
   - position: [33, 27, 0]
     texture: sand
   - position: [33, 28, 0]
     texture: sand
-  - position: [34, 26, 0]
-    texture: sand
   - position: [34, 27, 0]
     texture: sand
   - position: [34, 28, 0]
-    texture: sand
-  - position: [35, 26, 0]
     texture: sand
   - position: [35, 27, 0]
     texture: sand
   - position: [35, 28, 0]
     texture: sand
-  - position: [36, 26, 0]
-    texture: sand
   - position: [36, 27, 0]
     texture: sand
   - position: [36, 28, 0]
-    texture: sand
-  - position: [37, 26, 0]
     texture: sand
   - position: [37, 27, 0]
     texture: sand
   - position: [37, 28, 0]
     texture: sand
-  - position: [38, 26, 0]
-    texture: sand
   - position: [38, 27, 0]
     texture: sand
   - position: [38, 28, 0]
-    texture: sand
-  - position: [39, 26, 0]
     texture: sand
   - position: [39, 27, 0]
     texture: sand
   - position: [39, 28, 0]
     texture: sand
-  - position: [40, 26, 0]
-    texture: sand
   - position: [40, 27, 0]
     texture: sand
   - position: [40, 28, 0]
-    texture: sand
-  - position: [41, 26, 0]
     texture: sand
   - position: [41, 27, 0]
     texture: sand
   - position: [41, 28, 0]
     texture: sand
-  - position: [42, 26, 0]
-    texture: sand
   - position: [42, 27, 0]
     texture: sand
   - position: [42, 28, 0]
-    texture: sand
-  - position: [43, 26, 0]
     texture: sand
   - position: [43, 27, 0]
     texture: sand
   - position: [43, 28, 0]
     texture: sand
-  - position: [44, 26, 0]
-    texture: sand
   - position: [44, 27, 0]
     texture: sand
   - position: [44, 28, 0]
-    texture: sand
-  - position: [45, 26, 0]
     texture: sand
   - position: [45, 27, 0]
     texture: sand
   - position: [45, 28, 0]
     texture: sand
-  - position: [46, 26, 0]
-    texture: sand
   - position: [46, 27, 0]
     texture: sand
   - position: [46, 28, 0]
-    texture: sand
-  - position: [47, 26, 0]
     texture: sand
   - position: [47, 27, 0]
     texture: sand
   - position: [47, 28, 0]
     texture: sand
-  - position: [48, 26, 0]
-    texture: sand
   - position: [48, 27, 0]
     texture: sand
   - position: [48, 28, 0]
-    texture: sand
-  - position: [49, 26, 0]
     texture: sand
   - position: [49, 27, 0]
     texture: sand
   - position: [49, 28, 0]
     texture: sand
-  - position: [50, 26, 0]
-    texture: sand
   - position: [50, 27, 0]
     texture: sand
   - position: [50, 28, 0]
-    texture: sand
-  - position: [51, 26, 0]
     texture: sand
   - position: [51, 27, 0]
     texture: sand
   - position: [51, 28, 0]
     texture: sand
-  - position: [52, 26, 0]
-    texture: sand
   - position: [52, 27, 0]
     texture: sand
   - position: [52, 28, 0]
-    texture: sand
-  - position: [53, 26, 0]
     texture: sand
   - position: [53, 27, 0]
     texture: sand
   - position: [53, 28, 0]
     texture: sand
-  - position: [54, 26, 0]
-    texture: sand
   - position: [54, 27, 0]
     texture: sand
   - position: [54, 28, 0]
-    texture: sand
-  - position: [55, 26, 0]
     texture: sand
   - position: [55, 27, 0]
     texture: sand
   - position: [55, 28, 0]
     texture: sand
-  - position: [56, 26, 0]
-    texture: sand
   - position: [56, 27, 0]
     texture: sand
   - position: [56, 28, 0]
-    texture: sand
-  - position: [57, 26, 0]
     texture: sand
   - position: [57, 27, 0]
     texture: sand
   - position: [57, 28, 0]
     texture: sand
-  - position: [58, 26, 0]
-    texture: sand
   - position: [58, 27, 0]
     texture: sand
   - position: [58, 28, 0]
-    texture: sand
-  - position: [59, 26, 0]
     texture: sand
   - position: [59, 27, 0]
     texture: sand
