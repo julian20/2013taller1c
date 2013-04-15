@@ -30,9 +30,9 @@
     numberOfClips: 6
     anchorPixel: [34, 0]
   - name: tree
-    imageSrc: resources/trees.png
-    imageWidth: 129
-    imageHeight: 122
+    imageSrc: resources/tree.png
+    imageWidth: 128
+    imageHeight: 133
     numberOfClips: 0
     anchorPixel: [65, 61]
   - name: barracks
@@ -46,7 +46,31 @@
     imageWidth: 238
     imageHeight: 290
     numberOfClips: 0
-    anchorPixel: [119, 145]   
+    anchorPixel: [119, 145]  
+  - name: sawmill
+    imageSrc: resources/sawmill.png
+    imageWidth: 276
+    imageHeight: 249
+    numberOfClips: 0
+    anchorPixel: [138, 125]
+  - name: chapel
+    imageSrc: resources/chapel.png
+    imageWidth: 220
+    imageHeight: 227
+    numberOfClips: 0
+    anchorPixel: [110, 115] 
+  - name: pottery
+    imageSrc: resources/pottery.png
+    imageWidth: 259
+    imageHeight: 247
+    numberOfClips: 0
+    anchorPixel: [180, 125]  
+  - name: portbuilding
+    imageSrc: resources/portbuilding.png
+    imageWidth: 287
+    imageHeight: 299
+    numberOfClips: 0
+    anchorPixel: [195, 150]  
 - gameConfiguration:
     fps: 30
     delay: 10
@@ -80,12 +104,20 @@
         damage: 3
         range: 1
 - entityLocations:
+  - name: chapel
+    position: [23, 20, 0]
+  - name: portbuilding
+    position: [32, 30, 0]
+  - name: pottery
+    position: [20, 40, 0]
   - name: windmill
     position: [10, 20, 0]
   - name: windmill
     position: [10, 25, 0]
   - name: windmill
     position: [10, 30, 0]
+  - name: sawmill
+    position: [42, 12, 0]
   - name: tree
     position: [2, 4, 0]
   - name: tree
@@ -777,14 +809,5 @@
     texture: soil
   - position: [8, 6, 0]
     texture: soil
-  - position: [26, 14, 0]
-    texture:water
-  - position: [26, 15, 0]
-    texture:water
-  - position: [27, 14, 0]
-    texture:water
-  - position: [27, 15, 0]
-    texture:water
-
 
     
