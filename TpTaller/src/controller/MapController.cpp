@@ -22,20 +22,20 @@ void MapController::clickListener(SDL_Event event) {
 		//this->mapView->IdentifyTile(event.button.x,event.button.y);
 		playerController->movePlayer(event.button.x, event.button.y);
 
-		Mix_Chunk* darknessVoice = Mix_LoadWAV("tomi.wav");
+	/*	Mix_Chunk* darknessVoice = Mix_LoadWAV("tomi.wav");
 		if (darknessVoice == NULL) {
 			cerr << "No se puede cargar el darknessVoice de darkness"
 					<< SDL_GetError() << endl;
 			exit(1);
-		}
+		}*/
 
 		// Establecemos el volumen para el darknessVoice
-		int volumen = 2000;
-		Mix_VolumeChunk(darknessVoice, volumen);
+		//int volumen = 2000;
+		//Mix_VolumeChunk(darknessVoice, volumen);
 
 		// Introducimos el sonido en el canal
 		// En el canal 1 con una reproducción (1)
-		Mix_PlayChannel(1, darknessVoice, 0);
+		//Mix_PlayChannel(1, darknessVoice, 0);
 	}
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_LSHIFT)){
 		playerController->toggleRunning();
