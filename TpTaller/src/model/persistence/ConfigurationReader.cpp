@@ -595,6 +595,7 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 /**
  * Sobrecarga de operador >> para llenar los campos de una EntityView.
  */
+
 void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 
 	Entity* auxEntity = NULL;
@@ -678,7 +679,92 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	entityView->setDelay(auxDelay);
 	entityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
 }
+/*
+void operator >>(const YAML::Node& yamlNode, EntityViewData* entityView) {
 
+	Entity* auxEntity = NULL;
+	Vector2* auxAnchorPixel = new Vector2(0, 0);
+
+	std::vector<Power*> auxPowers;
+	std::string auxImageSrc;
+	std::string auxName;
+
+	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay,
+			auxAnimationNumberOfRepeats, auxBaseLength, auxBaseWidth;
+
+	try {
+		yamlNode["name"] >> auxName;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing EntityView name: ")
+						+ yamlException.what());
+		auxName = DEFAULT_NAME;
+	}
+	try {
+		yamlNode["imageSrc"] >> auxImageSrc;
+		yamlNode["imageWidth"] >> auxImageWidth;
+		yamlNode["imageHeight"] >> auxImageHeight;
+		yamlNode["numberOfClips"] >> auxNumberOfClips;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing EntityView: ")
+						+ yamlException.what());
+		auxImageSrc = DEFAULT_IMAGE_SRC;
+		auxImageWidth = DEFAULT_IMAGE_WIDTH;
+		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
+		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
+	}
+	try {
+		yamlNode["anchorPixel"] >> auxAnchorPixel;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(
+//				string("Error parsing EntityView: ") + yamlException.what());
+	}
+	try {
+		yamlNode["fps"] >> auxFps;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
+		auxFps = DEFAULT_FPS;
+	}
+	try {
+		yamlNode["delay"] >> auxDelay;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
+		auxDelay = DEFAULT_DELAY;
+	}
+	try {
+		yamlNode["animationRepeats"] >> auxAnimationNumberOfRepeats;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(
+//				string("Error parsing EntityView: ") + yamlException.what());
+		auxAnimationNumberOfRepeats = DEFAULT_REPEATS;
+	}
+	try {
+		yamlNode["baseWidth"] >> auxBaseWidth;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
+		auxBaseWidth = DEFAULT_BASE_WIDTH;
+	}
+	try {
+		yamlNode["baseHeight"] >> auxBaseLength;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
+		auxBaseLength = DEFAULT_BASE_LENGTH;
+	}
+
+	entityView->setAnchorPixel(auxAnchorPixel);
+//	entityView->setBaseWidth(auxBaseWidth);
+//	entityView->setBaseHeight(auxBaseLength);
+	entityView->setEntityId(auxName);
+	entityView->setImageHeight(auxImageHeight);
+	entityView->setImageWidth(auxImageWidth);
+	entityView->setNClips(auxNumberOfClips);
+	//entityView->setEntity(auxEntity);
+	entityView->setEntityImage(auxImageSrc);
+	entityView->setFps(auxFps);
+	entityView->setDelay(auxDelay);
+	entityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
+}*/
 void operator >>(const YAML::Node& yamlNode,
 		std::vector<Entity*>& entityVector) {
 	const YAML::Node& entityLocations = yamlNode["entityLocations"];
@@ -733,6 +819,7 @@ void operator >>(const YAML::Node& yamlNode,
 /**
  * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
  */
+
 void operator >>(const YAML::Node& yamlNode,
 		std::vector<EntityView*>& entityList) {
 	const YAML::Node& entityViews = yamlNode["entityViews"];
@@ -747,8 +834,23 @@ void operator >>(const YAML::Node& yamlNode,
 							+ yamlException.what());
 		}
 	}
+}/*
+void operator >>(const YAML::Node& yamlNode,
+		EntityHolder* entityList) {
+	const YAML::Node& entityViews = yamlNode["entityViews"];
+	for (unsigned i = 0; i < entityViews.size(); i++) {
+		EntityViewData* entityView = new EntityViewData();
+		try {
+			entityViews[i] >> entityView;
+			entityList->addEntityViewData(entityView);
+		} catch (YAML::Exception& yamlException) {
+			Logs::logErrorMessage(
+					string("Error parsing EntityView List: ")
+							+ yamlException.what());
+		}
+	}
 }
-
+*/
 /* ******************************************************* *
  * *********** ANIMATION CONFIGURATION PARSING *********** *
  * ******************************************************* */
@@ -1031,7 +1133,15 @@ void duplicateView(PlayerView* sourceView, PlayerView* destView) {
 	destView->setEntity(NULL);
 
 }
-
+void assignEntities(MapData* mapData,std::vector<Entity*> entities )
+{
+	for (unsigned i = 0; i < entities.size(); i++)
+	{
+		Entity* currentEntity= entities[i];
+		Coordinates coor=currentEntity->getCoordinates();
+		mapData->addRepresentable(coor.getRow(),coor.getCol(),currentEntity);
+	}
+}
 std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
 		std::vector<Entity*> entities) {
 	std::vector<EntityView*> completeViews;
@@ -1135,6 +1245,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 
 // Parsing EntityViews.
 	std::vector<EntityView*> entityViewVector;
+	//EntityHolder* entityViewVector= new EntityHolder();
 	try {
 		yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
 	} catch (YAML::Exception& yamlException) {
@@ -1196,8 +1307,9 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 			entityVector);
 	std::vector<PlayerView*> cleanPlayerViews = assignPlayers(playerViewVector,
 			playerVector);
-
+	//assignEntities(mapData,entityVector);
 	cleanUnusedViews(entityViewVector);
+
 	cleanUnusedViews(playerViewVector);
 
 // Parsing map tile locations.
@@ -1213,6 +1325,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	EntityViewMap* entityViewMap = new EntityViewMap(mapData->GetNRows(),
 			mapData->GetNCols());
 	loadEntityViewMap(entityViewMap, cleanPlayerViews);
+//	entityViewMap->assingEntitiesView(entityViewVector);
 	loadEntityViewMap(entityViewMap, cleanEntityViews);
 
 // Packing parser results.

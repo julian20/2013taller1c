@@ -22,6 +22,8 @@
 #include <model/persistence/PersistentConfiguration.h>
 #include <view/configuration/GameConfiguration.h>
 #include <view/EntityViewMap.h>
+#include <view/entities/EntityViewData.h>
+#include <view/entities/EntityHolder.h>
 #include <view/entities/EntityView.h>
 #include <view/entities/PlayerView.h>
 #include <model/Logs/Logs.h>

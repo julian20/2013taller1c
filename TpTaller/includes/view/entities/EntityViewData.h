@@ -36,7 +36,19 @@ public:
 	void setBaseHeight(int height);
 	Vector2* getAnchorPixel();
 	void setScale();
+	int getNClips();
+	void setNClips(int clips);
+	void setFps(int nuevasFps);
+	int getFps();
+	int getDelay();
+	void setDelay(int nuevoDelay);
+	void setNumberOfRepeats(int repeat);
 protected:
+	//string name;
+	int delay;
+	int fps;
+	int nOfRepeats;
+	int nClips;
 	int baseHeight;
 	int baseWidth;
 	float scaleWidth;
