@@ -19,6 +19,7 @@ EntityViewData::EntityViewData() {
 	this->tileWidth = 70;
 	this->imageHeight = 0;
 	this->imageWidth = 0;
+	this->nClips=0;
 	this->anchorPixel = new Vector2(0, 0);
 }
 
@@ -31,8 +32,12 @@ void EntityViewData::setScale() {
 			/ (float) (this->imageWidth);
 	printf("ancho %f---- alto %f", scaleWidth, scaleHeight);
 }
-
-
+int EntityViewData::getNClips() {
+	return this->nClips;
+}
+void EntityViewData::setNClips(int clips) {
+	this->nClips=clips;
+}
 void EntityViewData::setTileWidth(int width) {
 	this->tileWidth = width;
 }
@@ -75,11 +80,36 @@ void EntityViewData::setEntityId(string id)
 	this->entityId= id;
 }
 
+void EntityViewData::setDelay(int nuevoDelay) {
+	this->delay = nuevoDelay;
+}
+
+int EntityViewData::getDelay() {
+	return this->delay;
+}
+void EntityViewData::setFps(int nuevasFps) {
+	this->fps = nuevasFps;
+}
+void EntityViewData::setNumberOfRepeats(int repeat)
+{
+	this->nOfRepeats=repeat;
+}
+
+int EntityViewData::getFps() {
+	return this->fps;
+}
 string EntityViewData::getEntityId()
 {
 	return this->entityId;
+}/*
+void EntityViewData::setName(string name)
+{
+	this->name=name;
 }
-
+string EntityViewData::getName()
+{
+	return this->name;
+}*/
 void EntityViewData::setEntityImage(string image)
 {
 	this->entityImage= image;

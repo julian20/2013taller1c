@@ -10,9 +10,9 @@
 
 #include <view/entities/EntityView.h>
 #include <model/entityProperties/Coordinates.h>
-
+#include <view/entities/EntityHolder.h>
 #include <SDL/SDL.h>
-
+#include <model/map/TileData.h>
 #include <map>
 #include <vector>
 #include <list>
@@ -26,9 +26,12 @@ public:
 	void positionEntityView (EntityView* entity, Coordinates coordinates);
 	void drawViews(SDL_Surface* screen, Position* cam, std::map<string, int> visibleTiles);
 	list<EntityView*> getListAtRowAndCol(int row,int col);
+	void assingEntitiesView(EntityHolder* entityHolder);
+	void drawEntities(TileData* tileData,SDL_Surface* screen, Position* cam, int row, int col);
 	virtual ~EntityViewMap();
 private:
 	int rows, cols;
+	EntityHolder* entityHolder;
 	vector< vector< list<EntityView*> > > map;
 	list<EntityView*> movableEntities;
 

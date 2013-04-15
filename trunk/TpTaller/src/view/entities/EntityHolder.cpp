@@ -31,7 +31,9 @@ EntityViewData* EntityHolder::getEntity(string id)
 			}
 		}
 
-		return this->auxiliarEntity;
+		//return this->auxiliarEntity;
+	//por ahora devuelve Null luego tendria q mandar un objeto Auxiliar
+	return NULL;
 }
 
 bool EntityHolder::duplicateEntity(string id)

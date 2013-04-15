@@ -123,10 +123,11 @@ void MapView::draw(Position* cam) {
 			posTile.x = posTile.x + cameraPos->getX();
 			posTile.y = posTile.y + cameraPos->getY();
 			delete cameraPos;
+		//	TileData* tileData=data->GetTileData(row,col);
 
 			std::string textureId = data->GetTileType(row, col);
 			SDL_Surface* textureImage = textureHolder->getTexture(textureId);
-
+	//		viewMap->drawEntities(tileData,screen,cam,posTile.x,posTile.y);
 			SDL_BlitSurface(textureImage, NULL, screen, &posTile);
 
 		}
