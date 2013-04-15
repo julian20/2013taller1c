@@ -89,6 +89,16 @@
     imageSrc: resources/texturesTiles/Water.png
   - identifier: tree
     imageSrc: resources/texturesTiles/stonebrick.png
+  - identifier: sand
+    imageSrc: resources/texturesTiles/sandWater/sand.png
+  - identifier: sandWater45
+    imageSrc: resources/texturesTiles/sandWater/sandWater45.png
+  - identifier: sandWater135
+    imageSrc: resources/texturesTiles/sandWater/sandWater135.png
+  - identifier: shallowWater
+    imageSrc: resources/texturesTiles/sandWater/shallowWater.png
+  - identifier: sandWaterCurveLeftIn
+    imageSrc: resources/texturesTiles/sandWater/sandWaterCurveLeftIn.png
 - mapDimensions: [50, 50]
 - playerLocations:
   - name: player
@@ -445,118 +455,938 @@
     texture: soil
   - position: [13, 34, 0]
     texture: soil
+#The ocean baby
+#Arena
+  - position: [32, 26, 0]
+    texture: sand
+  - position: [32, 27, 0]
+    texture: sand
+  - position: [32, 28, 0]
+    texture: sand
+  - position: [33, 26, 0]
+    texture: sand
+  - position: [33, 27, 0]
+    texture: sand
+  - position: [33, 28, 0]
+    texture: sand
+  - position: [34, 26, 0]
+    texture: sand
+  - position: [34, 27, 0]
+    texture: sand
+  - position: [34, 28, 0]
+    texture: sand
+  - position: [35, 26, 0]
+    texture: sand
+  - position: [35, 27, 0]
+    texture: sand
+  - position: [35, 28, 0]
+    texture: sand
+  - position: [36, 26, 0]
+    texture: sand
+  - position: [36, 27, 0]
+    texture: sand
+  - position: [36, 28, 0]
+    texture: sand
+  - position: [37, 26, 0]
+    texture: sand
+  - position: [37, 27, 0]
+    texture: sand
+  - position: [37, 28, 0]
+    texture: sand
+  - position: [38, 26, 0]
+    texture: sand
+  - position: [38, 27, 0]
+    texture: sand
+  - position: [38, 28, 0]
+    texture: sand
+  - position: [39, 26, 0]
+    texture: sand
+  - position: [39, 27, 0]
+    texture: sand
+  - position: [39, 28, 0]
+    texture: sand
+  - position: [40, 26, 0]
+    texture: sand
+  - position: [40, 27, 0]
+    texture: sand
+  - position: [40, 28, 0]
+    texture: sand
+  - position: [41, 26, 0]
+    texture: sand
+  - position: [41, 27, 0]
+    texture: sand
+  - position: [41, 28, 0]
+    texture: sand
+  - position: [42, 26, 0]
+    texture: sand
+  - position: [42, 27, 0]
+    texture: sand
+  - position: [42, 28, 0]
+    texture: sand
+  - position: [43, 26, 0]
+    texture: sand
+  - position: [43, 27, 0]
+    texture: sand
+  - position: [43, 28, 0]
+    texture: sand
+  - position: [44, 26, 0]
+    texture: sand
+  - position: [44, 27, 0]
+    texture: sand
+  - position: [44, 28, 0]
+    texture: sand
+  - position: [45, 26, 0]
+    texture: sand
+  - position: [45, 27, 0]
+    texture: sand
+  - position: [45, 28, 0]
+    texture: sand
+  - position: [46, 26, 0]
+    texture: sand
+  - position: [46, 27, 0]
+    texture: sand
+  - position: [46, 28, 0]
+    texture: sand
+  - position: [47, 26, 0]
+    texture: sand
+  - position: [47, 27, 0]
+    texture: sand
+  - position: [47, 28, 0]
+    texture: sand
+  - position: [48, 26, 0]
+    texture: sand
+  - position: [48, 27, 0]
+    texture: sand
+  - position: [48, 28, 0]
+    texture: sand
+  - position: [49, 26, 0]
+    texture: sand
+  - position: [49, 27, 0]
+    texture: sand
+  - position: [49, 28, 0]
+    texture: sand
+  - position: [50, 26, 0]
+    texture: sand
+  - position: [50, 27, 0]
+    texture: sand
+  - position: [50, 28, 0]
+    texture: sand
+  - position: [51, 26, 0]
+    texture: sand
+  - position: [51, 27, 0]
+    texture: sand
+  - position: [51, 28, 0]
+    texture: sand
+  - position: [52, 26, 0]
+    texture: sand
+  - position: [52, 27, 0]
+    texture: sand
+  - position: [52, 28, 0]
+    texture: sand
+  - position: [53, 26, 0]
+    texture: sand
+  - position: [53, 27, 0]
+    texture: sand
+  - position: [53, 28, 0]
+    texture: sand
+  - position: [54, 26, 0]
+    texture: sand
+  - position: [54, 27, 0]
+    texture: sand
+  - position: [54, 28, 0]
+    texture: sand
+  - position: [55, 26, 0]
+    texture: sand
+  - position: [55, 27, 0]
+    texture: sand
+  - position: [55, 28, 0]
+    texture: sand
+  - position: [56, 26, 0]
+    texture: sand
+  - position: [56, 27, 0]
+    texture: sand
+  - position: [56, 28, 0]
+    texture: sand
+  - position: [57, 26, 0]
+    texture: sand
+  - position: [57, 27, 0]
+    texture: sand
+  - position: [57, 28, 0]
+    texture: sand
+  - position: [58, 26, 0]
+    texture: sand
+  - position: [58, 27, 0]
+    texture: sand
+  - position: [58, 28, 0]
+    texture: sand
+  - position: [59, 26, 0]
+    texture: sand
+  - position: [59, 27, 0]
+    texture: sand
+  - position: [59, 28, 0]
+    texture: sand
+  - position: [32, 29, 0]
+    texture: sand
+  - position: [32, 30, 0]
+    texture: sand
+  - position: [32, 31, 0]
+    texture: sand
+  - position: [32, 32, 0]
+    texture: sand
+  - position: [32, 33, 0]
+    texture: sand
+  - position: [32, 34, 0]
+    texture: sand
+  - position: [32, 35, 0]
+    texture: sand
+  - position: [32, 36, 0]
+    texture: sand
+  - position: [32, 37, 0]
+    texture: sand
+  - position: [32, 38, 0]
+    texture: sand
+  - position: [32, 39, 0]
+    texture: sand
+  - position: [32, 40, 0]
+    texture: sand
+  - position: [32, 41, 0]
+    texture: sand
+  - position: [32, 42, 0]
+    texture: sand
+  - position: [32, 43, 0]
+    texture: sand
+  - position: [32, 44, 0]
+    texture: sand
+  - position: [32, 45, 0]
+    texture: sand
+  - position: [32, 46, 0]
+    texture: sand
+  - position: [32, 47, 0]
+    texture: sand
+  - position: [32, 48, 0]
+    texture: sand
+  - position: [32, 49, 0]
+    texture: sand
+  - position: [33, 29, 0]
+    texture: sand
+  - position: [33, 30, 0]
+    texture: sand
+  - position: [33, 31, 0]
+    texture: sand
+  - position: [33, 32, 0]
+    texture: sand
+  - position: [33, 33, 0]
+    texture: sand
+  - position: [33, 34, 0]
+    texture: sand
+  - position: [33, 35, 0]
+    texture: sand
+  - position: [33, 36, 0]
+    texture: sand
+  - position: [33, 37, 0]
+    texture: sand
+  - position: [33, 38, 0]
+    texture: sand
+  - position: [33, 39, 0]
+    texture: sand
+  - position: [33, 40, 0]
+    texture: sand
+  - position: [33, 41, 0]
+    texture: sand
+  - position: [33, 42, 0]
+    texture: sand
+  - position: [33, 43, 0]
+    texture: sand
+  - position: [33, 44, 0]
+    texture: sand
+  - position: [33, 45, 0]
+    texture: sand
+  - position: [33, 46, 0]
+    texture: sand
+  - position: [33, 47, 0]
+    texture: sand
+  - position: [33, 48, 0]
+    texture: sand
+  - position: [33, 49, 0]
+    texture: sand
+  - position: [34, 29, 0]
+    texture: sand
   - position: [34, 30, 0]
-    texture: water
+    texture: sand
   - position: [34, 31, 0]
-    texture: water
+    texture: sand
   - position: [34, 32, 0]
-    texture: water
+    texture: sand
   - position: [34, 33, 0]
-    texture: water
+    texture: sand
   - position: [34, 34, 0]
-    texture: water
+    texture: sand
   - position: [34, 35, 0]
-    texture: water
+    texture: sand
   - position: [34, 36, 0]
-    texture: water
+    texture: sand
+  - position: [34, 37, 0]
+    texture: sand
+  - position: [34, 38, 0]
+    texture: sand
+  - position: [34, 39, 0]
+    texture: sand
+  - position: [34, 40, 0]
+    texture: sand
+  - position: [34, 41, 0]
+    texture: sand
+  - position: [34, 42, 0]
+    texture: sand
+  - position: [34, 43, 0]
+    texture: sand
+  - position: [34, 44, 0]
+    texture: sand
+  - position: [34, 45, 0]
+    texture: sand
+  - position: [34, 46, 0]
+    texture: sand
+  - position: [34, 47, 0]
+    texture: sand
+  - position: [34, 48, 0]
+    texture: sand
+  - position: [34, 49, 0]
+    texture: sand
+#Costa a 45 grados
   - position: [35, 30, 0]
-    texture: water
+    texture: sandWater45
   - position: [35, 31, 0]
-    texture: water
+    texture: sandWater45
   - position: [35, 32, 0]
-    texture: water
+    texture: sandWater45
   - position: [35, 33, 0]
-    texture: water
+    texture: sandWater45
   - position: [35, 34, 0]
-    texture: water
+    texture: sandWater45
   - position: [35, 35, 0]
-    texture: water
+    texture: sandWater45
   - position: [35, 36, 0]
-    texture: water
+    texture: sandWater45
+  - position: [35, 36, 0]
+    texture: sandWater45
+  - position: [35, 37, 0]
+    texture: sandWater45
+  - position: [35, 38, 0]
+    texture: sandWater45
+  - position: [35, 39, 0]
+    texture: sandWater45
+  - position: [35, 40, 0]
+    texture: sandWater45
+  - position: [35, 41, 0]
+    texture: sandWater45
+  - position: [35, 42, 0]
+    texture: sandWater45
+  - position: [35, 43, 0]
+    texture: sandWater45
+  - position: [35, 44, 0]
+    texture: sandWater45
+  - position: [35, 45, 0]
+    texture: sandWater45
+  - position: [35, 46, 0]
+    texture: sandWater45
+  - position: [35, 47, 0]
+    texture: sandWater45
+  - position: [35, 48, 0]
+    texture: sandWater45
+  - position: [35, 49, 0]
+    texture: sandWater45       
+  - position: [35, 29, 0]  
+    texture: sandWaterCurveLeftIn
+#Costa a 135 grados
+  - position: [36, 29, 0]
+    texture: sandWater135
+  - position: [37, 29, 0]
+    texture: sandWater135
+  - position: [38, 29, 0]
+    texture: sandWater135
+  - position: [39, 29, 0]
+    texture: sandWater135
+  - position: [40, 29, 0]
+    texture: sandWater135
+  - position: [41, 29, 0]
+    texture: sandWater135
+  - position: [42, 29, 0]
+    texture: sandWater135
+  - position: [43, 29, 0]
+    texture: sandWater135
+  - position: [44, 29, 0]
+    texture: sandWater135
+  - position: [45, 29, 0]
+    texture: sandWater135
+  - position: [46, 29, 0]
+    texture: sandWater135
+  - position: [47, 29, 0]
+    texture: sandWater135
+  - position: [48, 29, 0]
+    texture: sandWater135
+  - position: [49, 29, 0]
+    texture: sandWater135
+#Agua
   - position: [36, 30, 0]
-    texture: water
+    texture: shallowWater
   - position: [36, 31, 0]
-    texture: water
+    texture: shallowWater
   - position: [36, 32, 0]
-    texture: water
+    texture: shallowWater
   - position: [36, 33, 0]
-    texture: water
+    texture: shallowWater
   - position: [36, 34, 0]
-    texture: water
+    texture: shallowWater
   - position: [36, 35, 0]
-    texture: water
+    texture: shallowWater
   - position: [36, 36, 0]
-    texture: water
+    texture: shallowWater
+  - position: [36, 37, 0]
+    texture: shallowWater
+  - position: [36, 38, 0]
+    texture: shallowWater
+  - position: [36, 39, 0]
+    texture: shallowWater
+  - position: [36, 40, 0]
+    texture: shallowWater
+  - position: [36, 41, 0]
+    texture: shallowWater
+  - position: [36, 42, 0]
+    texture: shallowWater
+  - position: [36, 43, 0]
+    texture: shallowWater
+  - position: [36, 44, 0]
+    texture: shallowWater
+  - position: [36, 45, 0]
+    texture: shallowWater
+  - position: [36, 46, 0]
+    texture: shallowWater
+  - position: [36, 47, 0]
+    texture: shallowWater
+  - position: [36, 48, 0]
+    texture: shallowWater
+  - position: [36, 49, 0]
+    texture: shallowWater
   - position: [37, 30, 0]
-    texture: water
+    texture: shallowWater
   - position: [37, 31, 0]
-    texture: water
+    texture: shallowWater
   - position: [37, 32, 0]
-    texture: water
+    texture: shallowWater
   - position: [37, 33, 0]
-    texture: water
+    texture: shallowWater
   - position: [37, 34, 0]
-    texture: water
+    texture: shallowWater
   - position: [37, 35, 0]
-    texture: water
+    texture: shallowWater
   - position: [37, 36, 0]
-    texture: water
+    texture: shallowWater
+  - position: [37, 37, 0]
+    texture: shallowWater
+  - position: [37, 38, 0]
+    texture: shallowWater
+  - position: [37, 39, 0]
+    texture: shallowWater
+  - position: [37, 40, 0]
+    texture: shallowWater
+  - position: [37, 41, 0]
+    texture: shallowWater
+  - position: [37, 42, 0]
+    texture: shallowWater
+  - position: [37, 43, 0]
+    texture: shallowWater
+  - position: [37, 44, 0]
+    texture: shallowWater
+  - position: [37, 45, 0]
+    texture: shallowWater
+  - position: [37, 46, 0]
+    texture: shallowWater
+  - position: [37, 47, 0]
+    texture: shallowWater
+  - position: [37, 48, 0]
+    texture: shallowWater
+  - position: [37, 49, 0]
+    texture: shallowWater
   - position: [38, 30, 0]
-    texture: water
+    texture: shallowWater
   - position: [38, 31, 0]
-    texture: water
+    texture: shallowWater
   - position: [38, 32, 0]
-    texture: water
+    texture: shallowWater
   - position: [38, 33, 0]
-    texture: water
+    texture: shallowWater
   - position: [38, 34, 0]
-    texture: water
+    texture: shallowWater
   - position: [38, 35, 0]
-    texture: water
+    texture: shallowWater
   - position: [38, 36, 0]
-    texture: water
+    texture: shallowWater
+  - position: [38, 37, 0]
+    texture: shallowWater
+  - position: [38, 38, 0]
+    texture: shallowWater
+  - position: [38, 39, 0]
+    texture: shallowWater
+  - position: [38, 40, 0]
+    texture: shallowWater
+  - position: [38, 41, 0]
+    texture: shallowWater
+  - position: [38, 42, 0]
+    texture: shallowWater
+  - position: [38, 43, 0]
+    texture: shallowWater
+  - position: [38, 44, 0]
+    texture: shallowWater
+  - position: [38, 45, 0]
+    texture: shallowWater
+  - position: [38, 46, 0]
+    texture: shallowWater
+  - position: [38, 47, 0]
+    texture: shallowWater
+  - position: [38, 48, 0]
+    texture: shallowWater
+  - position: [38, 49, 0]
+    texture: shallowWater
   - position: [39, 30, 0]
-    texture: water
+    texture: shallowWater
   - position: [39, 31, 0]
-    texture: water
+    texture: shallowWater
   - position: [39, 32, 0]
-    texture: water
+    texture: shallowWater
   - position: [39, 33, 0]
-    texture: water
+    texture: shallowWater
   - position: [39, 34, 0]
-    texture: water
+    texture: shallowWater
   - position: [39, 35, 0]
-    texture: water
+    texture: shallowWater
   - position: [39, 36, 0]
-    texture: water
+    texture: shallowWater
+  - position: [39, 37, 0]
+    texture: shallowWater
+  - position: [39, 38, 0]
+    texture: shallowWater
+  - position: [39, 39, 0]
+    texture: shallowWater
+  - position: [39, 40, 0]
+    texture: shallowWater
+  - position: [39, 41, 0]
+    texture: shallowWater
+  - position: [39, 42, 0]
+    texture: shallowWater
+  - position: [39, 43, 0]
+    texture: shallowWater
+  - position: [39, 44, 0]
+    texture: shallowWater
+  - position: [39, 45, 0]
+    texture: shallowWater
+  - position: [39, 46, 0]
+    texture: shallowWater
+  - position: [39, 47, 0]
+    texture: shallowWater
+  - position: [39, 48, 0]
+    texture: shallowWater
+  - position: [39, 49, 0]
+    texture: shallowWater
   - position: [40, 30, 0]
-    texture: water
+    texture: shallowWater
   - position: [40, 31, 0]
-    texture: water
+    texture: shallowWater
   - position: [40, 32, 0]
-    texture: water
+    texture: shallowWater
   - position: [40, 33, 0]
-    texture: water
+    texture: shallowWater
   - position: [40, 34, 0]
-    texture: water
+    texture: shallowWater
   - position: [40, 35, 0]
-    texture: water
+    texture: shallowWater
   - position: [40, 36, 0]
-    texture: water
+    texture: shallowWater
+  - position: [40, 37, 0]
+    texture: shallowWater
+  - position: [40, 38, 0]
+    texture: shallowWater
+  - position: [40, 39, 0]
+    texture: shallowWater
+  - position: [40, 40, 0]
+    texture: shallowWater
+  - position: [40, 41, 0]
+    texture: shallowWater
+  - position: [40, 42, 0]
+    texture: shallowWater
+  - position: [40, 43, 0]
+    texture: shallowWater
+  - position: [40, 44, 0]
+    texture: shallowWater
+  - position: [40, 45, 0]
+    texture: shallowWater
+  - position: [40, 46, 0]
+    texture: shallowWater
+  - position: [40, 47, 0]
+    texture: shallowWater
+  - position: [40, 48, 0]
+    texture: shallowWater
+  - position: [40, 49, 0]
+    texture: shallowWater
   - position: [41, 30, 0]
-    texture: water
+    texture: shallowWater
   - position: [41, 31, 0]
-    texture: water
+    texture: shallowWater
   - position: [41, 32, 0]
-    texture: water
+    texture: shallowWater
   - position: [41, 33, 0]
-    texture: water
+    texture: shallowWater
   - position: [41, 34, 0]
-    texture: water
+    texture: shallowWater
   - position: [41, 35, 0]
-    texture: water
+    texture: shallowWater
   - position: [41, 36, 0]
-    texture: water
+    texture: shallowWater
+  - position: [41, 37, 0]
+    texture: shallowWater
+  - position: [41, 38, 0]
+    texture: shallowWater
+  - position: [41, 39, 0]
+    texture: shallowWater
+  - position: [41, 40, 0]
+    texture: shallowWater
+  - position: [41, 41, 0]
+    texture: shallowWater
+  - position: [41, 42, 0]
+    texture: shallowWater
+  - position: [41, 43, 0]
+    texture: shallowWater
+  - position: [41, 44, 0]
+    texture: shallowWater
+  - position: [41, 45, 0]
+    texture: shallowWater
+  - position: [41, 46, 0]
+    texture: shallowWater
+  - position: [41, 47, 0]
+    texture: shallowWater
+  - position: [41, 48, 0]
+    texture: shallowWater
+  - position: [41, 49, 0]
+    texture: shallowWater
+  - position: [42, 30, 0]
+    texture: shallowWater
+  - position: [42, 31, 0]
+    texture: shallowWater
+  - position: [42, 32, 0]
+    texture: shallowWater
+  - position: [42, 33, 0]
+    texture: shallowWater
+  - position: [42, 34, 0]
+    texture: shallowWater
+  - position: [42, 35, 0]
+    texture: shallowWater
+  - position: [42, 36, 0]
+    texture: shallowWater
+  - position: [42, 37, 0]
+    texture: shallowWater
+  - position: [42, 38, 0]
+    texture: shallowWater
+  - position: [42, 39, 0]
+    texture: shallowWater
+  - position: [42, 40, 0]
+    texture: shallowWater
+  - position: [42, 41, 0]
+    texture: shallowWater
+  - position: [42, 42, 0]
+    texture: shallowWater
+  - position: [42, 43, 0]
+    texture: shallowWater
+  - position: [42, 44, 0]
+    texture: shallowWater
+  - position: [42, 45, 0]
+    texture: shallowWater
+  - position: [42, 46, 0]
+    texture: shallowWater
+  - position: [42, 47, 0]
+    texture: shallowWater
+  - position: [42, 48, 0]
+    texture: shallowWater
+  - position: [42, 49, 0]
+    texture: shallowWater
+  - position: [43, 30, 0]
+    texture: shallowWater
+  - position: [43, 31, 0]
+    texture: shallowWater
+  - position: [43, 32, 0]
+    texture: shallowWater
+  - position: [43, 33, 0]
+    texture: shallowWater
+  - position: [43, 34, 0]
+    texture: shallowWater
+  - position: [43, 35, 0]
+    texture: shallowWater
+  - position: [43, 36, 0]
+    texture: shallowWater
+  - position: [43, 37, 0]
+    texture: shallowWater
+  - position: [43, 38, 0]
+    texture: shallowWater
+  - position: [43, 39, 0]
+    texture: shallowWater
+  - position: [43, 40, 0]
+    texture: shallowWater
+  - position: [43, 41, 0]
+    texture: shallowWater
+  - position: [43, 42, 0]
+    texture: shallowWater
+  - position: [43, 43, 0]
+    texture: shallowWater
+  - position: [43, 44, 0]
+    texture: shallowWater
+  - position: [43, 45, 0]
+    texture: shallowWater
+  - position: [43, 46, 0]
+    texture: shallowWater
+  - position: [43, 47, 0]
+    texture: shallowWater
+  - position: [43, 48, 0]
+    texture: shallowWater
+  - position: [43, 49, 0]
+    texture: shallowWater
+  - position: [44, 30, 0]
+    texture: shallowWater
+  - position: [44, 31, 0]
+    texture: shallowWater
+  - position: [44, 32, 0]
+    texture: shallowWater
+  - position: [44, 33, 0]
+    texture: shallowWater
+  - position: [44, 34, 0]
+    texture: shallowWater
+  - position: [44, 35, 0]
+    texture: shallowWater
+  - position: [44, 36, 0]
+    texture: shallowWater
+  - position: [44, 37, 0]
+    texture: shallowWater
+  - position: [44, 38, 0]
+    texture: shallowWater
+  - position: [44, 39, 0]
+    texture: shallowWater
+  - position: [44, 40, 0]
+    texture: shallowWater
+  - position: [44, 41, 0]
+    texture: shallowWater
+  - position: [44, 42, 0]
+    texture: shallowWater
+  - position: [44, 43, 0]
+    texture: shallowWater
+  - position: [44, 44, 0]
+    texture: shallowWater
+  - position: [44, 45, 0]
+    texture: shallowWater
+  - position: [44, 46, 0]
+    texture: shallowWater
+  - position: [44, 47, 0]
+    texture: shallowWater
+  - position: [44, 48, 0]
+    texture: shallowWater
+  - position: [44, 49, 0]
+    texture: shallowWater
+  - position: [45, 30, 0]
+    texture: shallowWater
+  - position: [45, 31, 0]
+    texture: shallowWater
+  - position: [45, 32, 0]
+    texture: shallowWater
+  - position: [45, 33, 0]
+    texture: shallowWater
+  - position: [45, 34, 0]
+    texture: shallowWater
+  - position: [45, 35, 0]
+    texture: shallowWater
+  - position: [45, 36, 0]
+    texture: shallowWater
+  - position: [45, 37, 0]
+    texture: shallowWater
+  - position: [45, 38, 0]
+    texture: shallowWater
+  - position: [45, 39, 0]
+    texture: shallowWater
+  - position: [45, 40, 0]
+    texture: shallowWater
+  - position: [45, 41, 0]
+    texture: shallowWater
+  - position: [45, 42, 0]
+    texture: shallowWater
+  - position: [45, 43, 0]
+    texture: shallowWater
+  - position: [45, 44, 0]
+    texture: shallowWater
+  - position: [45, 45, 0]
+    texture: shallowWater
+  - position: [45, 46, 0]
+    texture: shallowWater
+  - position: [45, 47, 0]
+    texture: shallowWater
+  - position: [45, 48, 0]
+    texture: shallowWater
+  - position: [45, 49, 0]
+    texture: shallowWater
+  - position: [46, 30, 0]
+    texture: shallowWater
+  - position: [46, 31, 0]
+    texture: shallowWater
+  - position: [46, 32, 0]
+    texture: shallowWater
+  - position: [46, 33, 0]
+    texture: shallowWater
+  - position: [46, 34, 0]
+    texture: shallowWater
+  - position: [46, 35, 0]
+    texture: shallowWater
+  - position: [46, 36, 0]
+    texture: shallowWater
+  - position: [46, 37, 0]
+    texture: shallowWater
+  - position: [46, 38, 0]
+    texture: shallowWater
+  - position: [46, 39, 0]
+    texture: shallowWater
+  - position: [46, 40, 0]
+    texture: shallowWater
+  - position: [46, 41, 0]
+    texture: shallowWater
+  - position: [46, 42, 0]
+    texture: shallowWater
+  - position: [46, 43, 0]
+    texture: shallowWater
+  - position: [46, 44, 0]
+    texture: shallowWater
+  - position: [46, 45, 0]
+    texture: shallowWater
+  - position: [46, 46, 0]
+    texture: shallowWater
+  - position: [46, 47, 0]
+    texture: shallowWater
+  - position: [46, 48, 0]
+    texture: shallowWater
+  - position: [46, 49, 0]
+    texture: shallowWater
+  - position: [47, 30, 0]
+    texture: shallowWater
+  - position: [47, 31, 0]
+    texture: shallowWater
+  - position: [47, 32, 0]
+    texture: shallowWater
+  - position: [47, 33, 0]
+    texture: shallowWater
+  - position: [47, 34, 0]
+    texture: shallowWater
+  - position: [47, 35, 0]
+    texture: shallowWater
+  - position: [47, 36, 0]
+    texture: shallowWater
+  - position: [47, 37, 0]
+    texture: shallowWater
+  - position: [47, 38, 0]
+    texture: shallowWater
+  - position: [47, 39, 0]
+    texture: shallowWater
+  - position: [47, 40, 0]
+    texture: shallowWater
+  - position: [47, 41, 0]
+    texture: shallowWater
+  - position: [47, 42, 0]
+    texture: shallowWater
+  - position: [47, 43, 0]
+    texture: shallowWater
+  - position: [47, 44, 0]
+    texture: shallowWater
+  - position: [47, 45, 0]
+    texture: shallowWater
+  - position: [47, 46, 0]
+    texture: shallowWater
+  - position: [47, 47, 0]
+    texture: shallowWater
+  - position: [47, 48, 0]
+    texture: shallowWater
+  - position: [47, 49, 0]
+    texture: shallowWater
+  - position: [48, 30, 0]
+    texture: shallowWater
+  - position: [48, 31, 0]
+    texture: shallowWater
+  - position: [48, 32, 0]
+    texture: shallowWater
+  - position: [48, 33, 0]
+    texture: shallowWater
+  - position: [48, 34, 0]
+    texture: shallowWater
+  - position: [48, 35, 0]
+    texture: shallowWater
+  - position: [48, 36, 0]
+    texture: shallowWater
+  - position: [48, 37, 0]
+    texture: shallowWater
+  - position: [48, 38, 0]
+    texture: shallowWater
+  - position: [48, 39, 0]
+    texture: shallowWater
+  - position: [48, 40, 0]
+    texture: shallowWater
+  - position: [48, 41, 0]
+    texture: shallowWater
+  - position: [48, 42, 0]
+    texture: shallowWater
+  - position: [48, 43, 0]
+    texture: shallowWater
+  - position: [48, 44, 0]
+    texture: shallowWater
+  - position: [48, 45, 0]
+    texture: shallowWater
+  - position: [48, 46, 0]
+    texture: shallowWater
+  - position: [48, 47, 0]
+    texture: shallowWater
+  - position: [48, 48, 0]
+    texture: shallowWater
+  - position: [48, 49, 0]
+    texture: shallowWater
+  - position: [49, 30, 0]
+    texture: shallowWater
+  - position: [49, 31, 0]
+    texture: shallowWater
+  - position: [49, 32, 0]
+    texture: shallowWater
+  - position: [49, 33, 0]
+    texture: shallowWater
+  - position: [49, 34, 0]
+    texture: shallowWater
+  - position: [49, 35, 0]
+    texture: shallowWater
+  - position: [49, 36, 0]
+    texture: shallowWater
+  - position: [49, 37, 0]
+    texture: shallowWater
+  - position: [49, 38, 0]
+    texture: shallowWater
+  - position: [49, 39, 0]
+    texture: shallowWater
+  - position: [49, 40, 0]
+    texture: shallowWater
+  - position: [49, 41, 0]
+    texture: shallowWater
+  - position: [49, 42, 0]
+    texture: shallowWater
+  - position: [49, 43, 0]
+    texture: shallowWater
+  - position: [49, 44, 0]
+    texture: shallowWater
+  - position: [49, 45, 0]
+    texture: shallowWater
+  - position: [49, 46, 0]
+    texture: shallowWater
+  - position: [49, 47, 0]
+    texture: shallowWater
+  - position: [49, 48, 0]
+    texture: shallowWater
+  - position: [49, 49, 0]
+    texture: shallowWater
+#Fin agua
   - position: [0, 0, 0]
     texture: soil
   - position: [0, 1, 0]
@@ -809,5 +1639,6 @@
     texture: soil
   - position: [8, 6, 0]
     texture: soil
+
 
     
