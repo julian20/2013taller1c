@@ -18,6 +18,7 @@ public:
 	bool fullscreen();
 	unsigned int getFps();
 	unsigned int getDelay();
+	unsigned int getMovementMargin();
 	unsigned int getDefaultScreenHeight();
 	unsigned int getDefaultScreenWidth();
 	unsigned int getDefaultBPP();
@@ -26,6 +27,7 @@ public:
 	std::string getMenuBackMusicSrc();
 	void setFps(unsigned int fps);
 	void setDelay(unsigned int delay);
+	void setMovementMargin(unsigned int movementMargin);
 	void setDefaultScreenHeight(unsigned int height);
 	void setDefaultScreenWidth(unsigned int width);
 	void setDefaultBPP(unsigned int bpp);
@@ -35,6 +37,7 @@ public:
 private:
 	unsigned int fps;
 	unsigned int delay;
+	unsigned int movementMargin;
 	unsigned int defaultScreenHeight;
 	unsigned int defaultScreenWidth;
 	unsigned int defaultBPP;

@@ -45,7 +45,6 @@ public:
 	virtual ~ConfigurationReader();
 
 private:
-
 };
 
 #endif	/* CONFIGURATIONREADER_H */

@@ -31,7 +31,7 @@ using namespace std;
 class PlayerView: public EntityView {
 public:
 	PlayerView();
-	void cargarImagen(string path);
+	void cargarImagen(std::string img, map<string,SDL_Surface*> *images);
 	void Mostrar(SDL_Surface* fondo);
 	void setPersonaje(Player* personaje);
 	Player* getPersonaje();

@@ -32,6 +32,7 @@ using namespace std;
 #define DEFAULT_IMAGE_HEIGHT 250
 #define DEFAULT_FPS 30
 #define DEFAULT_DELAY 3
+#define DEFAULT_MOVEMENT_MARGIN 50
 #define DEFAULT_REPEATS 2
 #define DEFAULT_SCREEN_HEIGHT 600
 #define DEFAULT_SCREEN_WIDTH 800
@@ -47,6 +48,7 @@ using namespace std;
 
 // Error Log.
 Logs errorLog;
+map<string,SDL_Surface*> images;
 
 /* ************************************** *
  * *********** AUX STRUCTURES *********** *
@@ -580,10 +582,10 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	playerView->setAnchorPixel(auxAnchorPixel);
 //	playerView->setBaseHeight(auxBaseLength);
 //	playerView->setBaseWidth(auxBaseWidth);
-	playerView->cargarImagen(auxImageSrc);
+	playerView->cargarImagen(auxImageSrc,&images);
 	playerView->setImageHeight(auxImageHeight);
 	playerView->setImageWidth(auxImageWidth);
-	playerView->setImagePath(auxImageSrc);
+	playerView->setImagePath(auxImageSrc, &images);
 	playerView->setNClips(auxNumberOfClips);
 	playerView->setFps(auxFps);
 	playerView->setDelay(auxDelay);
@@ -666,6 +668,8 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 		auxBaseLength = DEFAULT_BASE_LENGTH;
 	}
 
+	map<string,SDL_Surface*> images;
+
 	entityView->setAnchorPixel(auxAnchorPixel);
 //	entityView->setBaseWidth(auxBaseWidth);
 //	entityView->setBaseHeight(auxBaseLength);
@@ -674,7 +678,7 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	entityView->setImageWidth(auxImageWidth);
 	entityView->setNClips(auxNumberOfClips);
 	entityView->setEntity(auxEntity);
-	entityView->setImagePath(auxImageSrc);
+	entityView->setImagePath(auxImageSrc,&images);
 	entityView->setFps(auxFps);
 	entityView->setDelay(auxDelay);
 	entityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
@@ -861,7 +865,7 @@ void operator >>(const YAML::Node& yamlNode,
 void operator >>(const YAML::Node& yamlNode,
 		GameConfiguration* animationConfig) {
 	const YAML::Node& configuration = yamlNode["gameConfiguration"];
-	unsigned int auxFps, auxDelay, auxHeight, auxWidth, auxBPP;
+	unsigned int auxFps, auxDelay, auxHeight, auxWidth, auxBPP, auxMovementMargin;
 	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic;
 	try {
 		configuration["fps"] >> auxFps;
@@ -879,6 +883,12 @@ void operator >>(const YAML::Node& yamlNode,
 //						+ yamlException.what());
 		auxDelay = DEFAULT_DELAY;
 	}
+	try {
+			configuration["movementMargin"] >> auxMovementMargin;
+		} catch (YAML::Exception& yamlException) {
+			// No logeo, porque si no esta se usa el standard.
+			auxMovementMargin = DEFAULT_MOVEMENT_MARGIN;
+		}
 	try {
 		configuration["gameMusic"] >> auxGameMusicSrc;
 	} catch (YAML::Exception& yamlException) {
@@ -930,6 +940,7 @@ void operator >>(const YAML::Node& yamlNode,
 
 	animationConfig->setDelay(auxDelay);
 	animationConfig->setFps(auxFps);
+	animationConfig->setMovementMargin(auxMovementMargin);
 	animationConfig->setGameMusicSrc(auxGameMusicSrc);
 	animationConfig->setDefaultScreenHeight(auxHeight);
 	animationConfig->setDefaultScreenWidth(auxWidth);
@@ -1106,7 +1117,7 @@ void duplicateView(EntityView* sourceView, EntityView* destView) {
 	destView->setImageHeight(sourceView->getImageHeight());
 	destView->setImageWidth(sourceView->getImageWidth());
 	destView->setNClips(sourceView->getNClips());
-	destView->setImagePath(sourceView->getImagePath());
+	destView->setImagePath(sourceView->getImagePath(),&images);
 	destView->setFps(sourceView->getFps());
 	destView->setDelay(sourceView->getDelay());
 	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
@@ -1125,11 +1136,11 @@ void duplicateView(PlayerView* sourceView, PlayerView* destView) {
 	destView->setImageHeight(sourceView->getImageHeight());
 	destView->setImageWidth(sourceView->getImageWidth());
 	destView->setNClips(sourceView->getNClips());
-	destView->setImagePath(sourceView->getImagePath());
+	destView->setImagePath(sourceView->getImagePath(),&images);
 	destView->setFps(sourceView->getFps());
 	destView->setDelay(sourceView->getDelay());
 	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
-	destView->cargarImagen(sourceView->getImagePath());
+	destView->cargarImagen(sourceView->getImagePath(),&images);
 	destView->setEntity(NULL);
 
 }

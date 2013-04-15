@@ -9,10 +9,10 @@
 
 namespace std {
 
-MapCameraController::MapCameraController(MapCameraView* camera) {
+MapCameraController::MapCameraController(MapCameraView* camera, unsigned int movementMargin) {
 	this->camera = camera;
 	this->screen = camera->getActiveScreen();
-	this->movementMargin = 50;
+	this->movementMargin = movementMargin;
 	SDL_GetMouseState(&mouseX, &mouseY);
 }
 

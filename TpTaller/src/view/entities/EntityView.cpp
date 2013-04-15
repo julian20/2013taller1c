@@ -116,12 +116,16 @@ int EntityView::getImageWidth() {
 	return this->imageWidth;
 }
 
-SDL_Surface* EntityView::load_image(string urlImagen) {
+SDL_Surface* EntityView::load_image(string urlImagen, map<string,SDL_Surface*> *images) {
 	//The image that's loaded
 	SDL_Surface* loadedImageTmp = NULL;
 
 	//The optimized surface that will be used
 	SDL_Surface* optimizedImage = NULL;
+
+	if (images->count(urlImagen) > 0){
+		return images->at(urlImagen);
+	}
 
 	loadedImageTmp = IMG_Load(urlImagen.c_str());
 	SDL_Surface* loadedImage = rotozoomSurfaceXY(loadedImageTmp, 0, scaleWidth, scaleHeight, 0);
@@ -141,16 +145,19 @@ SDL_Surface* EntityView::load_image(string urlImagen) {
 			optimizedImage = loadedImage;
 		}
 	}
+
+	images->insert(std::pair<string,SDL_Surface*>(urlImagen,optimizedImage));
+
 	return optimizedImage;
 }
 
-void EntityView::setImagePath(string image_path) {
+void EntityView::setImagePath(string image_path, map<string,SDL_Surface*> *images) {
 	this->imagePath = image_path;
-	this->image = load_image(image_path);
+	this->image = load_image(image_path, images);
 	if (!image) { //TODO al log / loadear alternativa
 
 		//Logs(string("Error al cargar imagen de la vista ") + image_path);
-		this->image=load_image(DEFAULT_IMAGE);
+		this->image=load_image(DEFAULT_IMAGE,images);
 		this->nClips=0;
 		//printf("cargo la imagen\n");
 	}
