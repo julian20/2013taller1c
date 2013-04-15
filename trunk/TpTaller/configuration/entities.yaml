@@ -13,7 +13,7 @@
     imageWidth: 224
     imageHeight: 240
     numberOfClips: 23
-    anchorPixel: [112, 120]
+    anchorPixel: [100, 120]
     fps: 5
     delay: 3 
     animationRepeats: 4
@@ -22,7 +22,7 @@
     imageWidth: 242
     imageHeight: 235
     numberOfClips: 31
-    anchorPixel: [180, 105]
+    anchorPixel: [85, 112]
   - name: aniWater
     imageSrc: resources/aniWater.png
     imageWidth: 68
@@ -34,43 +34,43 @@
     imageWidth: 128
     imageHeight: 133
     numberOfClips: 0
-    anchorPixel: [65, 61]
+    anchorPixel: [66, 80]
   - name: barracks
     imageSrc: resources/barracks.png
     imageWidth: 320
     imageHeight: 290
     numberOfClips: 0
-    anchorPixel: [180, 195]
+    anchorPixel: [172, 209]
   - name: farmhouse
     imageSrc: resources/farmhouse.png
     imageWidth: 238
     imageHeight: 290
     numberOfClips: 0
-    anchorPixel: [119, 145]  
+    anchorPixel: [120, 139]  
   - name: sawmill
     imageSrc: resources/sawmill.png
     imageWidth: 276
     imageHeight: 249
     numberOfClips: 0
-    anchorPixel: [138, 125]
+    anchorPixel: [120, 180]
   - name: chapel
     imageSrc: resources/chapel.png
     imageWidth: 220
     imageHeight: 227
     numberOfClips: 0
-    anchorPixel: [110, 115] 
+    anchorPixel: [110, 160] 
   - name: pottery
     imageSrc: resources/pottery.png
     imageWidth: 259
     imageHeight: 247
     numberOfClips: 0
-    anchorPixel: [180, 125]  
+    anchorPixel: [72, 164]  
   - name: portbuilding
     imageSrc: resources/portbuilding.png
     imageWidth: 287
     imageHeight: 299
     numberOfClips: 0
-    anchorPixel: [195, 150]  
+    anchorPixel: [117, 133]  
 - gameConfiguration:
     fps: 30
     delay: 10
@@ -120,20 +120,22 @@
         damage: 3
         range: 1
 - entityLocations:
+  - name: tree
+    position: [0, 0, 0]
   - name: chapel
     position: [23, 20, 0]
   - name: portbuilding
-    position: [32, 30, 0]
+    position: [34, 34, 0]
   - name: pottery
     position: [20, 40, 0]
   - name: windmill
-    position: [10, 20, 0]
+    position: [12, 22, 0]
   - name: windmill
-    position: [10, 25, 0]
+    position: [12, 27, 0]
   - name: windmill
-    position: [10, 30, 0]
+    position: [12, 32, 0]
   - name: sawmill
-    position: [42, 12, 0]
+    position: [46, 12, 0]
   - name: tree
     position: [2, 4, 0]
   - name: tree
@@ -141,19 +143,17 @@
   - name: tree
     position: [15, 10, 0]
   - name: barracks
-    position: [12, 5, 0]
+    position: [17, 5, 0]
   - name: barracks
-    position: [2, 39, 0]
+    position: [5, 39, 0]
   - name: watermill
-    position: [6, 1, 0]
+    position: [8, 3, 0]
   - name: farmhouse
     position: [13, 13, 0]
   - name: farmhouse
     position: [8, 13, 0]
   - name: farmhouse
     position: [3, 13, 0]
-  - name: tree
-    position: [25, 25, 0]
   - name: tree
     position: [29, 25, 0]
   - name: tree
@@ -169,19 +169,13 @@
   - name: tree
     position: [25, 3, 0]
   - name: tree
-    position: [27, 3, 0]
-  - name: tree
     position: [29, 3, 0]
   - name: tree
     position: [31, 3, 0]
   - name: tree
     position: [33, 3, 0]
   - name: tree
-    position: [35, 3, 0]
-  - name: tree
     position: [37, 3, 0]
-  - name: tree
-    position: [39, 3, 0]
   - name: tree
     position: [25, 5, 0]
   - name: tree
@@ -209,11 +203,7 @@
   - name: tree
     position: [35, 7, 0]
   - name: tree
-    position: [37, 7, 0]
-  - name: tree
     position: [39, 7, 0]
-  - name: tree
-    position: [25, 9, 0]
   - name: tree
     position: [27, 9, 0]
   - name: tree
@@ -282,39 +272,39 @@
     position: [39, 17, 0]
 - tileLocations:
   - position: [0, 7, 0]
-    texture: water
+    texture: shallowWater
   - position: [1, 7, 0]
-    texture: water   
+    texture: shallowWater   
   - position: [2, 7, 0]
-    texture: water   
+    texture: shallowWater   
   - position: [3, 7, 0]
-    texture: water    
+    texture: shallowWater    
   - position: [4, 7, 0]
-    texture: water
+    texture: shallowWater
   - position: [5, 7, 0]
-    texture: water
+    texture: shallowWater
   - position: [6, 7, 0]
-    texture: water
+    texture: shallowWater
   - position: [7, 7, 0]
-    texture: water
+    texture: shallowWater
   - position: [8, 7, 0]
-    texture: water
+    texture: shallowWater
   - position: [9, 7, 0]
-    texture: water
+    texture: shallowWater
   - position: [9, 6, 0]
-    texture: water
+    texture: shallowWater
   - position: [9, 5, 0]
-    texture: water
+    texture: shallowWater
   - position: [9, 4, 0]
-    texture: water
+    texture: shallowWater
   - position: [9, 3, 0]
-    texture: water
+    texture: shallowWater
   - position: [9, 2, 0]
-    texture: water
+    texture: shallowWater
   - position: [9, 1, 0]
-    texture: water
+    texture: shallowWater
   - position: [9, 0, 0]
-    texture: water
+    texture: shallowWater
   - position: [0, 0, 0]
     texture: soil
   - position: [1, 0, 0]

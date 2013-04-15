@@ -81,7 +81,7 @@ void EntityViewMap::assingEntitiesView(EntityHolder* entityHolder)
 }
 void EntityViewMap::drawEntities(TileData* tileData,SDL_Surface* screen, Position* cam, int row, int col)
 {
-	for(int x=0; x<tileData->getNumberOfEntitiesOnTile();x++)
+	for(int i=0; i<tileData->getNumberOfEntitiesOnTile();i++)
 	{
 		Entity* entity= tileData->getNextEntity();
 		EntityViewData* viewData= entityHolder->getEntity(entity->getName());
