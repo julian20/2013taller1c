@@ -83,20 +83,20 @@ Player* PlayerView::getPersonaje() {
 	return this->player;
 }
 
-void PlayerView::cargarImagen(std::string img) {
+void PlayerView::cargarImagen(std::string img, map<string,SDL_Surface*> *images) {
 	//Load the sprite sheet
 	if (img.compare("")) {
 		//  throw new FaltaParametroException();
 	}
 
-	SDL_Surface* miPersonajeImagen = load_image(img);
+	SDL_Surface* miPersonajeImagen = load_image(img,images);
 
 	//If there was a problem in loading the sprite
 	if (!miPersonajeImagen) {
 		printf("NO SE HA ENCONTRADO LA IMAGEN DEL PERSONAJE\n");
 		//return false;
 		//TODO: cargo una alternativa
-		miPersonajeImagen = load_image(RUTA_IMAGEN);
+		miPersonajeImagen = load_image(RUTA_IMAGEN,images);
 	}
 
 	marco = 0;
@@ -202,7 +202,6 @@ void PlayerView::Mostrar(SDL_Surface* fondo) {
 
 PlayerView::~PlayerView() {
 	//libera la memoria que pide para La imagen
-	SDL_FreeSurface(this->characterImage);
 }
 
 int PlayerView::getImageHeight() {

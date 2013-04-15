@@ -18,7 +18,7 @@ typedef enum {MOUSE_TOP,MOUSE_BOTTOM,MOUSE_RIGHT,MOUSE_LEFT,
 
 class MapCameraController {
 public:
-	MapCameraController(MapCameraView* camera);
+	MapCameraController(MapCameraView* camera, unsigned int movementMargin);
 	void cameraMoveListener();
 	virtual ~MapCameraController();
 private:

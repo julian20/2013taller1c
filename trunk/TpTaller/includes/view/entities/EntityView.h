@@ -18,17 +18,19 @@
 #include <string>
 #include <model/map/Tile.h>
 
+#include <map>
+
 
 using namespace std;
 class EntityView {
 public:
 	EntityView();
-	void setImagePath(std::string image_path);
+	void setImagePath(string image_path, map<string,SDL_Surface*> *images);
 	std::string getImagePath();
 	virtual void setEntity(Entity* entity);
 	virtual Entity* getEntity();
 	virtual ~EntityView();
-	SDL_Surface* load_image(std::string urlImagen);
+	SDL_Surface* load_image(string urlImagen, map<string,SDL_Surface*> *images);
 	Vector2* getAnchorPixel();
 	void setAnchorPixel(Vector2* anchorPixel);
 	void setImageWidth(int width);

@@ -36,7 +36,7 @@ Game::Game(PersistentConfiguration* configuration) {
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->mapView = new MapView(mapData, screen, viewMap);
 	this->mapView->setTextureHolder(configuration->getTextureHolder());
-	this->cameraController = new MapCameraController(this->mapView->getCamera());
+	this->cameraController = new MapCameraController(this->mapView->getCamera(), gameConfig->getMovementMargin());
 
 	setUpCharacters(mapView, mapData, viewMap);
 	setUpEntities(mapView, mapData);

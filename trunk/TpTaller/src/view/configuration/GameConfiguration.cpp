@@ -46,6 +46,10 @@ unsigned int GameConfiguration::getDelay() {
 	return this->delay;
 }
 
+unsigned int GameConfiguration::getMovementMargin(){
+	return this->movementMargin;
+}
+
 unsigned int GameConfiguration::getDefaultScreenHeight() {
 	return this->defaultScreenHeight;
 }
@@ -76,6 +80,10 @@ void GameConfiguration::setFps(unsigned int fps) {
 
 void GameConfiguration::setDelay(unsigned int delay) {
 	this->delay = delay;
+}
+
+void GameConfiguration::setMovementMargin(unsigned int movementMargin){
+	this->movementMargin = movementMargin;
 }
 
 void GameConfiguration::setGameMusicSrc(std::string musicSrc) {
