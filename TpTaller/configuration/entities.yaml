@@ -79,8 +79,8 @@
     delay: 10
     movementMargin: 50
     gameMusic: resources/sound/NamiLogin.ogg
-    fullscreen: False
-    screenAutoConfig: False
+    fullscreen: true
+    screenAutoConfig: true
     defaultScreenHeight: 690
     defaultScreenWidth: 1280
     defaultBPP: 0

@@ -25,6 +25,7 @@ private:
 	SDL_Surface* screen;
 	MapView* mapView;
 	PlayerController* playerController;
+	bool buttonPressed;
 };
 
 #endif /* MAPCONTROLLER_H_ */
