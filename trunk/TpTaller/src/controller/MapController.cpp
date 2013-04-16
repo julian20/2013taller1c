@@ -15,12 +15,14 @@ MapController::MapController(MapView* mapView, MapData* mapData,
 	this->mapData = mapData;
 	this->screen = mapView->getDrawingSurface();
 	this->playerController = controller;
+	this->buttonPressed = false;
 }
 
 void MapController::clickListener(SDL_Event event) {
 	if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == 1)) {
 		//this->mapView->IdentifyTile(event.button.x,event.button.y);
-		playerController->movePlayer(event.button.x, event.button.y);
+		//playerController->movePlayer(event.button.x, event.button.y);
+		buttonPressed = true;
 
 	/*	Mix_Chunk* darknessVoice = Mix_LoadWAV("tomi.wav");
 		if (darknessVoice == NULL) {
@@ -37,6 +39,15 @@ void MapController::clickListener(SDL_Event event) {
 		// En el canal 1 con una reproducción (1)
 		//Mix_PlayChannel(1, darknessVoice, 0);
 	}
+
+	if ((event.type == SDL_MOUSEBUTTONUP) && (event.button.button == 1)) buttonPressed = false;
+
+	if (buttonPressed){
+		int mouseX, mouseY;
+		SDL_GetMouseState(&mouseX, &mouseY);
+		playerController->movePlayer(mouseX, mouseY);
+	}
+
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_LSHIFT)){
 		playerController->toggleRunning();
 	}
