@@ -18,6 +18,10 @@ MapCameraController::MapCameraController(MapCameraView* camera, unsigned int mov
 
 MousePosition MapCameraController::getMousePosition() {
 
+
+	bool focus = SDL_GetAppState() & SDL_APPMOUSEFOCUS;
+	if (!focus) return MOUSE_CENTER;
+
 	SDL_GetMouseState(&mouseX, &mouseY);
 	if (mouseAtLeft() && mouseAtTop()) return MOUSE_TOP_LEFT;
 	if (mouseAtRight() && mouseAtTop()) return MOUSE_TOP_RIGHT;
