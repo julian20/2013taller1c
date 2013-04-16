@@ -25,6 +25,8 @@ public:
 	std::string getGameMusicSrc();
 	std::string getMenuBackImageSrc();
 	std::string getMenuBackMusicSrc();
+	unsigned int getTileWidth();
+	unsigned int getTileHeight();
 	void setFps(unsigned int fps);
 	void setDelay(unsigned int delay);
 	void setMovementMargin(unsigned int movementMargin);
@@ -34,6 +36,8 @@ public:
 	void setGameMusicSrc(std::string musicSrc);
 	void setMenuBackImageSrc(std::string imageSrc);
 	void setMenuBackMusicSrc(std::string imageSrc);
+	void setTileWidth(unsigned int _tileWidth);
+	void setTileHeight(unsigned int _tileHeight);
 private:
 	unsigned int fps;
 	unsigned int delay;
@@ -41,6 +45,8 @@ private:
 	unsigned int defaultScreenHeight;
 	unsigned int defaultScreenWidth;
 	unsigned int defaultBPP;
+	unsigned int tileWidth;
+	unsigned int tileHeight;
 	std::string gameMusicSrc;
 	std::string menuBackImageSrc;
 	std::string menuBackMusicSrc;

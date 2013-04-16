@@ -81,6 +81,8 @@
     defaultBPP: 0
     menuBackImage: resources/lich.jpg
     menuBackMusic: resources/sound/pirates.ogg
+	tileWidth: 70
+	tileHeight: 50
 - tiles:
   - identifier: soil
     imageSrc: resources/texturesTiles/dirtTile.png
