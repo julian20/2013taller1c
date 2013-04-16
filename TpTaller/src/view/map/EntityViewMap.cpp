@@ -7,7 +7,6 @@
 
 #include <view/EntityViewMap.h>
 #include <model/map/Tile.h>
-#include <model/Logs/Logs.h>
 #include <string>
 
 #include <iostream>

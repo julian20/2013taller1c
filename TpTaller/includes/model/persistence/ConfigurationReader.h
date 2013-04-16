@@ -36,6 +36,8 @@
 #include <cstdlib>
 #include <stdlib.h>
 
+using namespace std;
+
 class ConfigurationReader {
 public:
 	ConfigurationReader();
@@ -43,7 +45,6 @@ public:
 	PersistentConfiguration loadConfiguration(std::string configurationFile,
 			std::string outputFilename);
 	virtual ~ConfigurationReader();
-
 private:
 };
 
