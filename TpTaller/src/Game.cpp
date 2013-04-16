@@ -88,6 +88,7 @@ void Game::setUpCharacters(MapView* map, MapData* mapData, EntityViewMap* viewMa
 	}
 
 	map->setUpPersonajes();
+	map->assignPersonaje(personaje);
 
 }
 

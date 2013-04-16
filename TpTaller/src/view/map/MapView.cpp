@@ -47,6 +47,8 @@ void MapView::setUpEntity(EntityView* entityView,Coordinates coor)
 
 void MapView::assignPersonaje(Player* _personaje) {
 	player = _personaje;
+	Position* pos = new Position(player->getCurrentPos()->getX(),player->getCurrentPos()->getY());
+	camera->setPosition(pos);
 }
 
 MapCameraView* MapView::getCamera(){
