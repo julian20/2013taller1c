@@ -14,15 +14,18 @@
     imageHeight: 240
     numberOfClips: 23
     anchorPixel: [100, 120]
-    fps: 5
-    delay: 3 
-    animationRepeats: 4
+    fps: 30
+    delay: 2 
+    animationRepeats: 7
   - name: watermill
     imageSrc: resources/watermill tileset.png
     imageWidth: 242
     imageHeight: 235
     numberOfClips: 31
     anchorPixel: [85, 112]
+    fps: 20
+    delay: 2 
+    animationRepeats: 5
   - name: aniWater
     imageSrc: resources/aniWater.png
     imageWidth: 68
@@ -76,11 +79,15 @@
     delay: 10
     movementMargin: 50
     gameMusic: resources/sound/NamiLogin.ogg
+    fullscreen: True
+    screenAutoConfig: False
     defaultScreenHeight: 690
     defaultScreenWidth: 1280
     defaultBPP: 0
     menuBackImage: resources/lich.jpg
     menuBackMusic: resources/sound/pirates.ogg
+    tileWidth: 70
+    tileHeight: 50
 - tiles:
   - identifier: soil
     imageSrc: resources/texturesTiles/dirtTile.png
@@ -164,19 +171,9 @@
   - name: tree
     position: [29, 27, 0]
   - name: tree
-    position: [25, 29, 0]
-  - name: tree
-    position: [27, 29, 0]
-  - name: tree
-    position: [25, 3, 0]
-  - name: tree
     position: [29, 3, 0]
   - name: tree
     position: [31, 3, 0]
-  - name: tree
-    position: [33, 3, 0]
-  - name: tree
-    position: [37, 3, 0]
   - name: tree
     position: [25, 5, 0]
   - name: tree
@@ -184,37 +181,9 @@
   - name: tree
     position: [29, 5, 0]
   - name: tree
-    position: [31, 5, 0]
-  - name: tree
-    position: [33, 5, 0]
-  - name: tree
-    position: [35, 5, 0]
-  - name: tree
-    position: [37, 5, 0]
-  - name: tree
-    position: [39, 5, 0]
-  - name: tree
     position: [27, 7, 0]
   - name: tree
-    position: [29, 7, 0]
-  - name: tree
-    position: [31, 7, 0]
-  - name: tree
-    position: [33, 7, 0]
-  - name: tree
-    position: [35, 7, 0]
-  - name: tree
-    position: [39, 7, 0]
-  - name: tree
-    position: [27, 9, 0]
-  - name: tree
-    position: [29, 9, 0]
-  - name: tree
-    position: [31, 9, 0]
-  - name: tree
     position: [33, 9, 0]
-  - name: tree
-    position: [35, 9, 0]
   - name: tree
     position: [37, 9, 0]
   - name: tree
@@ -224,35 +193,9 @@
   - name: tree
     position: [29, 11, 0]
   - name: tree
-    position: [31, 11, 0]
-  - name: tree
-    position: [33, 11, 0]
-  - name: tree
     position: [35, 11, 0]
   - name: tree
     position: [37, 11, 0]
-  - name: tree
-    position: [39, 11, 0]
-  - name: tree
-    position: [25, 13, 0]
-  - name: tree
-    position: [27, 13, 0]
-  - name: tree
-    position: [29, 13, 0]
-  - name: tree
-    position: [31, 13, 0]
-  - name: tree
-    position: [33, 13, 0]
-  - name: tree
-    position: [37, 13, 0]
-  - name: tree
-    position: [27, 15, 0]
-  - name: tree
-    position: [29, 15, 0]
-  - name: tree
-    position: [33, 15, 0]
-  - name: tree
-    position: [35, 15, 0]
   - name: tree
     position: [37, 15, 0]
   - name: tree
@@ -262,15 +205,7 @@
   - name: tree
     position: [27, 17, 0]
   - name: tree
-    position: [31, 17, 0]
-  - name: tree
-    position: [33, 17, 0]
-  - name: tree
     position: [35, 17, 0]
-  - name: tree
-    position: [37, 17, 0]
-  - name: tree
-    position: [39, 17, 0]
 - tileLocations:
   - position: [0, 7, 0]
     texture: shallowWater
@@ -610,46 +545,6 @@
   - position: [49, 27, 0]
     texture: sand
   - position: [49, 28, 0]
-    texture: sand
-  - position: [50, 27, 0]
-    texture: sand
-  - position: [50, 28, 0]
-    texture: sand
-  - position: [51, 27, 0]
-    texture: sand
-  - position: [51, 28, 0]
-    texture: sand
-  - position: [52, 27, 0]
-    texture: sand
-  - position: [52, 28, 0]
-    texture: sand
-  - position: [53, 27, 0]
-    texture: sand
-  - position: [53, 28, 0]
-    texture: sand
-  - position: [54, 27, 0]
-    texture: sand
-  - position: [54, 28, 0]
-    texture: sand
-  - position: [55, 27, 0]
-    texture: sand
-  - position: [55, 28, 0]
-    texture: sand
-  - position: [56, 27, 0]
-    texture: sand
-  - position: [56, 28, 0]
-    texture: sand
-  - position: [57, 27, 0]
-    texture: sand
-  - position: [57, 28, 0]
-    texture: sand
-  - position: [58, 27, 0]
-    texture: sand
-  - position: [58, 28, 0]
-    texture: sand
-  - position: [59, 27, 0]
-    texture: sand
-  - position: [59, 28, 0]
     texture: sand
   - position: [32, 29, 0]
     texture: sand
