@@ -32,9 +32,12 @@ public:
 	static Position computePosition(int row, int col, bool toTileZero = false);
 	static SDL_Rect computePositionTile(int row, int col, bool toTileZero = false);
 	static Coordinates* getTileCoordinates(int x, int y);
+	static void setTileWidth(unsigned int _tileWidth);
+	static void setTileHeight(unsigned int _tileHeight);
+
+	static unsigned int tileWidth;
+	static unsigned int tileHeight;
 private:
-
-
 	static SDL_Rect getSquaredMapTilePos(int row, int col);
 	static SDL_Rect getDiamondShapeMapTilePos(int row, int col);
 	static Position getDiamondShapeMapPos(int row, int col);

@@ -13,6 +13,9 @@
 #define TextureWidth	70		// px
 #define TextureHeight	50		// px
 
+unsigned int Tile::tileWidth = TextureWidth;
+unsigned int Tile::tileHeight = TextureHeight;
+
 Tile::Tile(Position* position, std::string textureId) {
 	this->coordinates = new Coordinates(0, 0);
 	this->position = position;
@@ -83,8 +86,8 @@ Position Tile::computePosition(int row, int col, bool toTileZero) {
 	pos.setY( rect.y );
 
 	if (toTileZero) {
-		pos.setX(pos.getX() + TextureWidth/2);
-		pos.setY(pos.getY() + TextureHeight/2);
+		pos.setX(pos.getX() + tileWidth/2);
+		pos.setY(pos.getY() + tileHeight/2);
 	}
 
 	return pos;
@@ -94,16 +97,16 @@ SDL_Rect Tile::computePositionTile(int row, int col, bool toTileZero) {
 	SDL_Rect rect = getDiamondShapeMapTilePos(row, col);
 
 	if (toTileZero) {
-		rect.x = rect.x + TextureWidth/2;
-		rect.y = rect.y + TextureHeight/2;
+		rect.x = rect.x + tileWidth/2;
+		rect.y = rect.y + tileHeight/2;
 	}
 
 	return rect;
 }
 
 SDL_Rect Tile::getSquaredMapTilePos(int row, int col) {
-	int widthTexture = TextureWidth - TilesOverlap;
-	int heightTexture = TextureHeight - TilesOverlap;
+	int widthTexture = tileWidth - TilesOverlap;
+	int heightTexture = tileHeight - TilesOverlap;
 
 	SDL_Rect posTile;
 
@@ -117,8 +120,8 @@ SDL_Rect Tile::getSquaredMapTilePos(int row, int col) {
 }
 
 SDL_Rect Tile::getDiamondShapeMapTilePos(int row, int col) {
-	int widthTexture = TextureWidth - TilesOverlap;
-	int heightTexture = TextureHeight - TilesOverlap;
+	int widthTexture = tileWidth - TilesOverlap;
+	int heightTexture = tileHeight - TilesOverlap;
 
 	Position pos = getDiamondShapeMapPos(row, col);
 	SDL_Rect posTile;
@@ -132,8 +135,8 @@ SDL_Rect Tile::getDiamondShapeMapTilePos(int row, int col) {
 }
 
 Position Tile::getDiamondShapeMapPos(int row, int col) {
-	int widthTexture = TextureWidth - TilesOverlap;
-	int heightTexture = TextureHeight - TilesOverlap;
+	int widthTexture = tileWidth - TilesOverlap;
+	int heightTexture = tileHeight - TilesOverlap;
 
 	Position pos;
 
@@ -148,8 +151,8 @@ Coordinates* Tile::getTileCoordinates(int x, int y)
 	float xF = (float)x;
 	float yF = (float)y;
 
-	float widthTexture = (float)TextureWidth - (float)TilesOverlap;
-	float heightTexture = (float)TextureHeight - (float)TilesOverlap;
+	float widthTexture = (float)tileWidth - (float)TilesOverlap;
+	float heightTexture = (float)tileHeight - (float)TilesOverlap;
 
 	int col = (int)(roundf(xF / widthTexture + yF / heightTexture));
 	int row = (int)(roundf(yF / heightTexture - xF / widthTexture));
@@ -158,4 +161,12 @@ Coordinates* Tile::getTileCoordinates(int x, int y)
 
 	Coordinates* coor = new Coordinates(row,col);
 	return coor;
+}
+
+void Tile::setTileWidth(unsigned int _tileWidth) {
+	tileWidth = _tileWidth;
+}
+
+void Tile::setTileHeight(unsigned int _tileHeight) {
+	tileHeight = _tileHeight;
 }

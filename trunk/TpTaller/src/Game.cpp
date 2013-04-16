@@ -29,6 +29,8 @@ Game::Game(PersistentConfiguration* configuration) {
 	this->fps = 0;
 	this->fpsUpdatingTimer = 0;
 	this->tempFps = 0;
+	Tile::setTileWidth( gameConfig->getTileWidth() );
+	Tile::setTileHeight( gameConfig->getTileHeight() );
 
 	initScreen();
 	initMusic();
