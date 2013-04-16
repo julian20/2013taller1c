@@ -932,6 +932,7 @@ void operator >>(const YAML::Node& yamlNode,
 	const YAML::Node& configuration = yamlNode["gameConfiguration"];
 	int auxFps, auxDelay, auxHeight, auxWidth, auxBPP, auxMovementMargin;
 	int auxTileWidth, auxTileHeight;
+	bool auxFullscreen, auxAutoConfig;
 	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic;
 	try {
 		configuration["fps"] >> auxFps;
@@ -963,6 +964,16 @@ void operator >>(const YAML::Node& yamlNode,
 						+ yamlException.what());
 		auxGameMusicSrc = DEFAULT_GAME_MUSIC;
 	}
+	try {
+		configuration["fullscreen"] >> auxFullscreen;
+	} catch (YAML::Exception& yamlException) {
+		auxFullscreen = false;
+	}
+	try {
+			configuration["screenAutoConfig"] >> auxAutoConfig;
+		} catch (YAML::Exception& yamlException) {
+			auxAutoConfig = false;
+		}
 	try {
 		configuration["defaultScreenHeight"] >> auxHeight;
 	} catch (YAML::Exception& yamlException) {
@@ -1040,6 +1051,8 @@ void operator >>(const YAML::Node& yamlNode,
 	animationConfig->setMenuBackMusicSrc(auxMenuMusic);
 	animationConfig->setTileWidth( (unsigned int) auxTileWidth);
 	animationConfig->setTileHeight( (unsigned int) auxTileHeight);
+	animationConfig->setFullscreen(auxFullscreen);
+	animationConfig->setScreenAutoConfig(auxAutoConfig);
 }
 
 /* *********************************************** *

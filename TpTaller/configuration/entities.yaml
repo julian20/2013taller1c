@@ -14,15 +14,18 @@
     imageHeight: 240
     numberOfClips: 23
     anchorPixel: [100, 120]
-    fps: 5
-    delay: 3 
-    animationRepeats: 4
+    fps: 30
+    delay: 2 
+    animationRepeats: 7
   - name: watermill
     imageSrc: resources/watermill tileset.png
     imageWidth: 242
     imageHeight: 235
     numberOfClips: 31
     anchorPixel: [85, 112]
+    fps: 20
+    delay: 2 
+    animationRepeats: 5
   - name: aniWater
     imageSrc: resources/aniWater.png
     imageWidth: 68
@@ -76,6 +79,8 @@
     delay: 10
     movementMargin: 50
     gameMusic: resources/sound/NamiLogin.ogg
+    fullscreen: False
+    screenAutoConfig: False
     defaultScreenHeight: 690
     defaultScreenWidth: 1280
     defaultBPP: 0
@@ -166,17 +171,9 @@
   - name: tree
     position: [29, 27, 0]
   - name: tree
-    position: [27, 29, 0]
-  - name: tree
-    position: [25, 3, 0]
-  - name: tree
     position: [29, 3, 0]
   - name: tree
     position: [31, 3, 0]
-  - name: tree
-    position: [33, 3, 0]
-  - name: tree
-    position: [37, 3, 0]
   - name: tree
     position: [25, 5, 0]
   - name: tree
@@ -184,29 +181,7 @@
   - name: tree
     position: [29, 5, 0]
   - name: tree
-    position: [31, 5, 0]
-  - name: tree
-    position: [33, 5, 0]
-  - name: tree
-    position: [37, 5, 0]
-  - name: tree
-    position: [39, 5, 0]
-  - name: tree
     position: [27, 7, 0]
-  - name: tree
-    position: [29, 7, 0]
-  - name: tree
-    position: [31, 7, 0]
-  - name: tree
-    position: [33, 7, 0]
-  - name: tree
-    position: [35, 7, 0]
-  - name: tree
-    position: [39, 7, 0]
-  - name: tree
-    position: [27, 9, 0]
-  - name: tree
-    position: [29, 9, 0]
   - name: tree
     position: [33, 9, 0]
   - name: tree
@@ -218,23 +193,9 @@
   - name: tree
     position: [29, 11, 0]
   - name: tree
-    position: [31, 11, 0]
-  - name: tree
-    position: [33, 11, 0]
-  - name: tree
     position: [35, 11, 0]
   - name: tree
     position: [37, 11, 0]
-  - name: tree
-    position: [39, 11, 0]
-  - name: tree
-    position: [27, 15, 0]
-  - name: tree
-    position: [29, 15, 0]
-  - name: tree
-    position: [33, 15, 0]
-  - name: tree
-    position: [35, 15, 0]
   - name: tree
     position: [37, 15, 0]
   - name: tree
@@ -244,13 +205,7 @@
   - name: tree
     position: [27, 17, 0]
   - name: tree
-    position: [33, 17, 0]
-  - name: tree
     position: [35, 17, 0]
-  - name: tree
-    position: [37, 17, 0]
-  - name: tree
-    position: [39, 17, 0]
 - tileLocations:
   - position: [0, 7, 0]
     texture: shallowWater

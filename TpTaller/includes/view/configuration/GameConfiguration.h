@@ -38,6 +38,8 @@ public:
 	void setMenuBackMusicSrc(std::string imageSrc);
 	void setTileWidth(unsigned int _tileWidth);
 	void setTileHeight(unsigned int _tileHeight);
+	void setScreenAutoConfig(bool screenAutoConfig);
+	void setFullscreen(bool fullscreen);
 private:
 	unsigned int fps;
 	unsigned int delay;
@@ -47,6 +49,8 @@ private:
 	unsigned int defaultBPP;
 	unsigned int tileWidth;
 	unsigned int tileHeight;
+	bool bScreenAutoConfig;
+	bool bFullscreen;
 	std::string gameMusicSrc;
 	std::string menuBackImageSrc;
 	std::string menuBackMusicSrc;
