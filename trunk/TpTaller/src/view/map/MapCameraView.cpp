@@ -17,6 +17,10 @@ MapCameraView::MapCameraView(Position* position, SDL_Surface* screen, int mapRow
 }
 
 void MapCameraView::setPosition(Position* position){
+	int w = screen->w;
+	int h = screen->h;
+	position->setX(- position->getX() + w/2);
+	position->setY(- position->getY() + h/2);
 	this->camera = position;
 }
 
