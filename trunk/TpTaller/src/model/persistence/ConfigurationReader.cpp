@@ -458,14 +458,14 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 
 	if (row < 0 || row >= rows){
 		Logs::logErrorMessage(
-				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
-				+ string(" [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+				string("Error parsing Player position >> Entity row out of bound: ") + string("name: ") + auxName
+				+ string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
 		auxPosition->setX(0);
 	}
 	if (col < 0 || col >= cols){
 		Logs::logErrorMessage(
-				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
-				+ string(" [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+				string("Error parsing Player position >> Entity row out of bound: ") + string("name: ") + auxName
+				+ string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
 		auxPosition->setY(0);
 	}
 
@@ -519,14 +519,18 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 	if (row < 0 || row >= rows){
 		Logs::logErrorMessage(
 				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
-				+ string(" [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
-		auxPosition->setX(int(rows/2));
+				+ string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+		entity = NULL;
+		delete auxPosition;
+		return;
 	}
 	if (col < 0 || col >= cols){
 		Logs::logErrorMessage(
 				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
-				+ string(" [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
-		auxPosition->setY(int(cols/2));
+				+ string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+		entity = NULL;
+		delete auxPosition;
+		return;
 	}
 
 	entity->setName(auxName);
@@ -827,7 +831,7 @@ void operator >>(const YAML::Node& yamlNode,
 		Entity* entity = new Entity();
 		try {
 			entityLocations[i] >> entity;
-			entityVector.push_back(entity);
+			if (entity != NULL) entityVector.push_back(entity);
 		} catch (YAML::Exception& yamlException) {
 			Logs::logErrorMessage(
 					string("Error parsing Entity Location List: ")
@@ -1084,14 +1088,14 @@ void operator >>(const YAML::Node& yamlNode, AuxMap& destMap) {
 			if( tile->getPosition()->getX() >= rows || tile->getPosition()->getX() < 0 ) {
 				Logs::logErrorMessage(
 						string("Error parsing Tile >> row index out of bounds: ") +
-						string(" [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
+						string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
 				delete tile;
 				continue;
 			}
 			if( tile->getPosition()->getY() >= cols || tile->getPosition()->getY() < 0 ){
 				Logs::logErrorMessage(
 						string("Error parsing Tile >> column index out of bounds: ") +
-						string(" [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
+						string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
 				delete tile;
 				continue;
 			}
@@ -1244,8 +1248,8 @@ void assignEntities(MapData* mapData,std::vector<Entity*> entities )
 {
 	for (unsigned i = 0; i < entities.size(); i++)
 	{
-		Entity* currentEntity= entities[i];
-		Coordinates coor=currentEntity->getCoordinates();
+		Entity* currentEntity = entities[i];
+		Coordinates coor = currentEntity->getCoordinates();
 		mapData->addRepresentable(coor.getRow(),coor.getCol(),currentEntity);
 	}
 }

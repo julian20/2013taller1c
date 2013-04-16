@@ -13,7 +13,7 @@
     imageWidth: 224
     imageHeight: 240
     numberOfClips: 23
-    anchorPixel: [1000, 120]
+    anchorPixel: [100, 120]
     fps: 5
     delay: 3 
     animationRepeats: 4
@@ -36,7 +36,7 @@
     numberOfClips: 0
     anchorPixel: [66, 80]
   - name: barracks
-    imageSrc: resources/barrack.png
+    imageSrc: resources/barracks.png
     imageWidth: 320
     imageHeight: 290
     numberOfClips: 0
@@ -122,9 +122,9 @@
         range: 1
 - entityLocations:
   - name: tree
-    position: [-10, 0, 0]
+    position: [0, 0, 0]
   - name: chapel
-    position: [-23, 20, 0]
+    position: [23, 20, 0]
   - name: portbuilding
     position: [34, 34, 0]
   - name: pottery
@@ -136,7 +136,7 @@
   - name: windmill
     position: [12, 32, 0]
   - name: sawmill
-    position: [460, 12, 0]
+    position: [46, 12, 0]
   - name: tree
     position: [2, 4, 0]
   - name: tree
@@ -164,8 +164,6 @@
   - name: tree
     position: [29, 27, 0]
   - name: tree
-    position: [25, 29, 0]
-  - name: tree
     position: [27, 29, 0]
   - name: tree
     position: [25, 3, 0]
@@ -188,8 +186,6 @@
   - name: tree
     position: [33, 5, 0]
   - name: tree
-    position: [35, 5, 0]
-  - name: tree
     position: [37, 5, 0]
   - name: tree
     position: [39, 5, 0]
@@ -210,11 +206,7 @@
   - name: tree
     position: [29, 9, 0]
   - name: tree
-    position: [31, 9, 0]
-  - name: tree
     position: [33, 9, 0]
-  - name: tree
-    position: [35, 9, 0]
   - name: tree
     position: [37, 9, 0]
   - name: tree
@@ -234,18 +226,6 @@
   - name: tree
     position: [39, 11, 0]
   - name: tree
-    position: [25, 13, 0]
-  - name: tree
-    position: [27, 13, 0]
-  - name: tree
-    position: [29, 13, 0]
-  - name: tree
-    position: [31, 13, 0]
-  - name: tree
-    position: [33, 13, 0]
-  - name: tree
-    position: [37, 13, 0]
-  - name: tree
     position: [27, 15, 0]
   - name: tree
     position: [29, 15, 0]
@@ -261,8 +241,6 @@
     position: [25, 17, 0]
   - name: tree
     position: [27, 17, 0]
-  - name: tree
-    position: [31, 17, 0]
   - name: tree
     position: [33, 17, 0]
   - name: tree
@@ -302,9 +280,9 @@
     texture: shallowWater
   - position: [9, 2, 0]
     texture: shallowWater
-  - position: [-9, 1, 0]
+  - position: [9, 1, 0]
     texture: shallowWater
-  - position: [9, 5550, 0]
+  - position: [9, 0, 0]
     texture: shallowWater
   - position: [0, 0, 0]
     texture: soil
@@ -610,46 +588,6 @@
   - position: [49, 27, 0]
     texture: sand
   - position: [49, 28, 0]
-    texture: sand
-  - position: [50, 27, 0]
-    texture: sand
-  - position: [50, 28, 0]
-    texture: sand
-  - position: [51, 27, 0]
-    texture: sand
-  - position: [51, 28, 0]
-    texture: sand
-  - position: [52, 27, 0]
-    texture: sand
-  - position: [52, 28, 0]
-    texture: sand
-  - position: [53, 27, 0]
-    texture: sand
-  - position: [53, 28, 0]
-    texture: sand
-  - position: [54, 27, 0]
-    texture: sand
-  - position: [54, 28, 0]
-    texture: sand
-  - position: [55, 27, 0]
-    texture: sand
-  - position: [55, 28, 0]
-    texture: sand
-  - position: [56, 27, 0]
-    texture: sand
-  - position: [56, 28, 0]
-    texture: sand
-  - position: [57, 27, 0]
-    texture: sand
-  - position: [57, 28, 0]
-    texture: sand
-  - position: [58, 27, 0]
-    texture: sand
-  - position: [58, 28, 0]
-    texture: sand
-  - position: [59, 27, 0]
-    texture: sand
-  - position: [59, 28, 0]
     texture: sand
   - position: [32, 29, 0]
     texture: sand
@@ -1665,6 +1603,3 @@
     texture: soil
   - position: [8, 6, 0]
     texture: soil
-
-
-    
