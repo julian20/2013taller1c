@@ -45,6 +45,8 @@ using namespace std;
 #define DEFAULT_MENU_MUSIC "resources/sound/pirates.ogg"
 #define DEFAULT_IMAGE_SRC "resources/questionMark.png"
 #define DEFAULT_NAME "UndefinedName"
+#define DEFAULT_TILE_WIDTH	70
+#define DEFAULT_TILE_HEIGHT	50
 
 // Error Log.
 Logs errorLog;
@@ -921,6 +923,7 @@ void operator >>(const YAML::Node& yamlNode,
 		GameConfiguration* animationConfig) {
 	const YAML::Node& configuration = yamlNode["gameConfiguration"];
 	unsigned int auxFps, auxDelay, auxHeight, auxWidth, auxBPP, auxMovementMargin;
+	unsigned int auxTileWidth, auxTileHeight;
 	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic;
 	try {
 		configuration["fps"] >> auxFps;
@@ -992,6 +995,22 @@ void operator >>(const YAML::Node& yamlNode,
 //						+ yamlException.what());
 		auxMenuMusic = DEFAULT_MENU_MUSIC;
 	}
+	try {
+		configuration["tileWidth"] >> auxTileWidth;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(
+//				string("Error parsing GameConfiguration: ")
+//						+ yamlException.what());
+		auxTileWidth = DEFAULT_TILE_WIDTH;
+	}
+	try {
+		configuration["tileHeight"] >> auxTileHeight;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(
+//				string("Error parsing GameConfiguration: ")
+//						+ yamlException.what());
+		auxTileHeight = DEFAULT_TILE_HEIGHT;
+	}
 
 	animationConfig->setDelay(auxDelay);
 	animationConfig->setFps(auxFps);
@@ -1002,6 +1021,8 @@ void operator >>(const YAML::Node& yamlNode,
 	animationConfig->setDefaultBPP(auxBPP);
 	animationConfig->setMenuBackImageSrc(auxMenuImage);
 	animationConfig->setMenuBackMusicSrc(auxMenuMusic);
+	animationConfig->setTileWidth(auxTileWidth);
+	animationConfig->setTileHeight(auxTileHeight);
 }
 
 /* *********************************************** *

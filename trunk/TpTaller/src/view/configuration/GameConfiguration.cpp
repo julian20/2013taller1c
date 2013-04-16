@@ -17,6 +17,8 @@
 #define DEFAULT_GAME_MUSIC "resources/sound/gameMusic.ogg"
 #define MENU_IMG "resources/lich.jpg"
 #define MENU_MUSIC  "resources/sound/pirates.ogg"
+#define DEFAULT_TILE_WIDTH	70
+#define DEFAULT_TILE_HEIGHT	50
 
 GameConfiguration::GameConfiguration() {
 	this->delay = DEFAULT_DELAY;
@@ -25,6 +27,8 @@ GameConfiguration::GameConfiguration() {
 	this->defaultScreenWidth = DEFAULT_W;
 	this->defaultBPP = DEFAULT_BPP;
 	this->gameMusicSrc = DEFAULT_GAME_MUSIC;
+	this->tileWidth = DEFAULT_TILE_WIDTH;
+	this->tileHeight = DEFAULT_TILE_HEIGHT;
 }
 
 GameConfiguration::~GameConfiguration() {
@@ -74,6 +78,14 @@ std::string GameConfiguration::getMenuBackMusicSrc() {
 	return this->menuBackMusicSrc;
 }
 
+unsigned int GameConfiguration::getTileWidth() {
+	return this->tileWidth;
+}
+
+unsigned int GameConfiguration::getTileHeight() {
+	return this->tileHeight;
+}
+
 void GameConfiguration::setFps(unsigned int fps) {
 	this->fps = fps;
 }
@@ -108,4 +120,12 @@ void GameConfiguration::setMenuBackImageSrc(std::string src) {
 
 void GameConfiguration::setMenuBackMusicSrc(std::string src) {
 	this->menuBackMusicSrc = src;
+}
+
+void GameConfiguration::setTileWidth(unsigned int _tileWidth) {
+	this->tileWidth = _tileWidth;
+}
+
+void GameConfiguration::setTileHeight(unsigned int _tileHeight) {
+	this->tileHeight = _tileHeight;
 }
