@@ -21,8 +21,8 @@ using namespace std;
 #define ENTITY_LOCATIONS_POSITION 6
 #define MAP_TILES_POSITION 7
 
-#define DEFAULT_ROWS 20
-#define DEFAULT_COLS 20
+#define DEFAULT_ROWS 50
+#define DEFAULT_COLS 50
 #define DEFAULT_POSITION 0 // [0, 0, 0]
 #define DEFAULT_DAMAGE 5
 #define DEFAULT_RANGE 1
@@ -49,6 +49,8 @@ using namespace std;
 // Error Log.
 Logs errorLog;
 map<string,SDL_Surface*> images;
+int rows;
+int cols;
 
 /* ************************************** *
  * *********** AUX STRUCTURES *********** *
@@ -444,6 +446,29 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 				string("Error parsing Player powers: ") + yamlException.what());
 	}
 
+	int row = auxPosition->getX();
+	int col = auxPosition->getY();
+	stringstream sRow;
+	stringstream sCol;
+	stringstream sZ;
+
+	sRow << row;
+	sCol << col;
+	sZ << auxPosition->getZ();
+
+	if (row < 0 || row >= rows){
+		Logs::logErrorMessage(
+				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
+				+ string(" [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+		auxPosition->setX(0);
+	}
+	if (col < 0 || col >= cols){
+		Logs::logErrorMessage(
+				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
+				+ string(" [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+		auxPosition->setY(0);
+	}
+
 	personaje->setName(auxName);
 	personaje->setPowers(auxPowers);
 	personaje->setCoordinates(auxPosition->getX(), auxPosition->getY());
@@ -476,6 +501,30 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 		Logs::logErrorMessage(
 				string("Error parsing Entity position: ")
 						+ yamlException.what());
+
+	}
+
+	int row = auxPosition->getX();
+	int col = auxPosition->getY();
+	stringstream sRow;
+	stringstream sCol;
+	stringstream sZ;
+
+	sRow << row;
+	sCol << col;
+	sZ << auxPosition->getZ();
+
+	if (row < 0 || row >= rows){
+		Logs::logErrorMessage(
+				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
+				+ string(" [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+		auxPosition->setX(0);
+	}
+	if (col < 0 || col >= cols){
+		Logs::logErrorMessage(
+				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
+				+ string(" [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+		auxPosition->setY(0);
 	}
 
 	entity->setName(auxName);
@@ -1026,6 +1075,24 @@ void operator >>(const YAML::Node& yamlNode, AuxMap& destMap) {
 		Tile* tile = new Tile(NULL, "");
 		try {
 			tileList[i] >> tile;
+			stringstream sRow;
+			stringstream sCol;
+			sRow << tile->getPosition()->getX();
+			sCol << tile->getPosition()->getY();
+			if( tile->getPosition()->getX() >= rows || tile->getPosition()->getX() < 0 ) {
+				Logs::logErrorMessage(
+						string("Error parsing Tile >> row index out of bounds: ") +
+						string(" [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
+				delete tile;
+				continue;
+			}
+			if( tile->getPosition()->getY() >= cols || tile->getPosition()->getY() < 0 ){
+				Logs::logErrorMessage(
+						string("Error parsing Tile >> column index out of bounds: ") +
+						string(" [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
+				delete tile;
+				continue;
+			}
 			destMap.tileList.push_back(tile);
 		} catch (YAML::Exception& yamlException) {
 			Logs::logErrorMessage(
@@ -1054,20 +1121,47 @@ void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
 	const YAML::Node& yamlDimensions = yamlNode["mapDimensions"];
 	try {
 		yamlDimensions[0] >> dimension.nrows;
+		rows = dimension.nrows;
 	} catch (YAML::Exception& yamlException) {
 		Logs::logErrorMessage(
 				string("Error parsing map dimension rows: ")
 						+ yamlException.what());
 		dimension.nrows = DEFAULT_ROWS;
+		rows = DEFAULT_ROWS;
 	}
 	try {
 		yamlDimensions[1] >> dimension.ncols;
+		cols = dimension.ncols;
 	} catch (YAML::Exception& yamlException) {
 		Logs::logErrorMessage(
 				string("Error parsing map dimension columns: ")
 						+ yamlException.what());
 		dimension.ncols = DEFAULT_COLS;
+		cols = dimension.ncols;
 	}
+
+	stringstream sRow;
+	stringstream sCol;
+
+	sRow << rows;
+	sCol << cols;
+
+	if (rows < 0 ){
+		Logs::logErrorMessage(
+				string("Error parsing Map dimensions >> row index out of bounds: ") +
+				string(" [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
+		rows = DEFAULT_ROWS;
+		dimension.nrows = rows;
+	}
+
+	if (cols < 0 ){
+		Logs::logErrorMessage(
+				string("Error parsing Map dimensions >> column index out of bounds: ") +
+				string(" [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
+		cols = DEFAULT_COLS;
+		dimension.ncols = cols;
+	}
+
 }
 
 /* ************************************************ *

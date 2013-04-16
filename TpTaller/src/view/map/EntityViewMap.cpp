@@ -7,6 +7,8 @@
 
 #include <view/EntityViewMap.h>
 #include <model/map/Tile.h>
+#include <model/Logs/Logs.h>
+#include <string>
 
 #include <iostream>
 
@@ -30,6 +32,7 @@ EntityViewMap::EntityViewMap(int rows, int cols) {
 void EntityViewMap::positionEntityView(EntityView* entity, Coordinates coordinates) {
 	int row = coordinates.getRow();
 	int col = coordinates.getCol();
+
 	map.at(col).at(row).push_back(entity);
 	if (entity->isMovable()) {
 		movableEntities.push_back(entity);

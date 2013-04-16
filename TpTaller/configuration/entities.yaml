@@ -74,7 +74,7 @@
 - gameConfiguration:
     fps: 30
     delay: 10
-    movementMargin: 150
+    movementMargin: 50
     gameMusic: resources/sound/NamiLogin.ogg
     defaultScreenHeight: 690
     defaultScreenWidth: 1280
