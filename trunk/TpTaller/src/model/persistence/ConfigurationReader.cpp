@@ -916,14 +916,22 @@ void operator >>(const YAML::Node& yamlNode,
  * *********** ANIMATION CONFIGURATION PARSING *********** *
  * ******************************************************* */
 
+void checkValues(int* value, string valueName, int default_value) {
+	if (*value < 0){
+		*value = default_value;
+		Logs::logErrorMessage( string("Error parsing ") + valueName +
+				string(", negative values are not allowed."));
+	}
+}
+
 /**
  * Sobrecarga de operador >> para parsear un AnimationConfiguration.
  */
 void operator >>(const YAML::Node& yamlNode,
 		GameConfiguration* animationConfig) {
 	const YAML::Node& configuration = yamlNode["gameConfiguration"];
-	unsigned int auxFps, auxDelay, auxHeight, auxWidth, auxBPP, auxMovementMargin;
-	unsigned int auxTileWidth, auxTileHeight;
+	int auxFps, auxDelay, auxHeight, auxWidth, auxBPP, auxMovementMargin;
+	int auxTileWidth, auxTileHeight;
 	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic;
 	try {
 		configuration["fps"] >> auxFps;
@@ -1012,17 +1020,26 @@ void operator >>(const YAML::Node& yamlNode,
 		auxTileHeight = DEFAULT_TILE_HEIGHT;
 	}
 
-	animationConfig->setDelay(auxDelay);
-	animationConfig->setFps(auxFps);
-	animationConfig->setMovementMargin(auxMovementMargin);
+	checkValues(&auxFps, string("fps"), DEFAULT_FPS);
+	checkValues(&auxDelay, string("delay"), DEFAULT_DELAY);
+	checkValues(&auxMovementMargin, string("movementMargin"), DEFAULT_MOVEMENT_MARGIN);
+	checkValues(&auxHeight, string("defaultScreenHeight"), DEFAULT_SCREEN_HEIGHT);
+	checkValues(&auxWidth, string("defaultScreenWidth"), DEFAULT_SCREEN_WIDTH);
+	checkValues(&auxBPP, string("defaultBPP"), DEFAULT_BPP);
+	checkValues(&auxTileWidth, string("TileWidth"), DEFAULT_TILE_WIDTH);
+	checkValues(&auxTileHeight, string("TileHeight"), DEFAULT_TILE_HEIGHT);
+
+	animationConfig->setDelay( (unsigned int) auxDelay);
+	animationConfig->setFps( (unsigned int) auxFps);
+	animationConfig->setMovementMargin( (unsigned int) auxMovementMargin);
 	animationConfig->setGameMusicSrc(auxGameMusicSrc);
-	animationConfig->setDefaultScreenHeight(auxHeight);
-	animationConfig->setDefaultScreenWidth(auxWidth);
-	animationConfig->setDefaultBPP(auxBPP);
+	animationConfig->setDefaultScreenHeight( (unsigned int) auxHeight);
+	animationConfig->setDefaultScreenWidth( (unsigned int) auxWidth);
+	animationConfig->setDefaultBPP( (unsigned int) auxBPP);
 	animationConfig->setMenuBackImageSrc(auxMenuImage);
 	animationConfig->setMenuBackMusicSrc(auxMenuMusic);
-	animationConfig->setTileWidth(auxTileWidth);
-	animationConfig->setTileHeight(auxTileHeight);
+	animationConfig->setTileWidth( (unsigned int) auxTileWidth);
+	animationConfig->setTileHeight( (unsigned int) auxTileHeight);
 }
 
 /* *********************************************** *
