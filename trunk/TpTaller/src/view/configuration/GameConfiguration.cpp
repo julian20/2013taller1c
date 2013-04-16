@@ -35,11 +35,11 @@ GameConfiguration::~GameConfiguration() {
 }
 
 bool GameConfiguration::screenAutoConfig(){
-	return SCREEN_AUTOCONFIG || FULLSCREEN;
+	return bScreenAutoConfig || bFullscreen;
 }
 
 bool GameConfiguration::fullscreen(){
-	return FULLSCREEN;
+	return bFullscreen;
 }
 
 unsigned int GameConfiguration::getFps() {
@@ -128,4 +128,10 @@ void GameConfiguration::setTileWidth(unsigned int _tileWidth) {
 
 void GameConfiguration::setTileHeight(unsigned int _tileHeight) {
 	this->tileHeight = _tileHeight;
+}
+void GameConfiguration::setScreenAutoConfig(bool screenAutoConfig){
+	this->bScreenAutoConfig = screenAutoConfig;
+}
+void GameConfiguration::setFullscreen(bool fullscreen){
+	this->bFullscreen = fullscreen;
 }
