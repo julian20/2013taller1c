@@ -506,6 +506,8 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 
 	int row = auxPosition->getX();
 	int col = auxPosition->getY();
+	//printf("row :%i col: %i\n ",row,col);
+
 	stringstream sRow;
 	stringstream sCol;
 	stringstream sZ;
@@ -518,13 +520,13 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 		Logs::logErrorMessage(
 				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
 				+ string(" [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
-		auxPosition->setX(0);
+		auxPosition->setX(int(rows/2));
 	}
 	if (col < 0 || col >= cols){
 		Logs::logErrorMessage(
 				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
 				+ string(" [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
-		auxPosition->setY(0);
+		auxPosition->setY(int(cols/2));
 	}
 
 	entity->setName(auxName);
