@@ -19,6 +19,7 @@
 #include <view/entities/PlayerView.h>
 #include <model/entities/player/Player.h>
 #include <model/persistence/PersistentConfiguration.h>
+#include <model/Logs/Logs.h>
 
 Game::Game(PersistentConfiguration* configuration) {
 
@@ -49,6 +50,7 @@ Game::Game(PersistentConfiguration* configuration) {
 	playerController->setPlayer(personaje);
 
 	this->mapController = new MapController(mapView, mapData, playerController);
+	openAudio = false;
 }
 
 void Game::setUpEntities(MapView* map, MapData* mapData) {
@@ -112,14 +114,18 @@ void Game::initScreen() {
 		screen = SDL_SetVideoMode(this->gameConfig->getDefaultScreenWidth(), this->gameConfig->getDefaultScreenHeight(), this->gameConfig->getDefaultBPP(), SDL_HWSURFACE);
 	}
 
+	if (!screen){
+		Logs::logErrorMessage("Unable to get video mode: " + string(SDL_GetError()));
+		exit(1);
+	}
+
 	if (gameConfig->fullscreen()) {
 		//La hacemos fullscreen
 		int flag = 1;
 		flag = SDL_WM_ToggleFullScreen(screen);
 		if (flag == 0) {
 			//TODO escribir en el log
-			printf("Unable to go fullscreen: %s\n", SDL_GetError());
-			exit(1);
+			Logs::logErrorMessage("Unable to go fullscreen: " + string(SDL_GetError()));
 		}
 	}
 
@@ -208,16 +214,19 @@ void Game::applyFPS(int timer) {
 void Game::initMusic() {
 	// Inicializamos la librería SDL_Mixer
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096) < 0) {
-		cerr << "Subsistema de Audio no disponible" << SDL_GetError() << endl;
-		exit(1);
+		Logs::logErrorMessage("Subsistema de audio no disponible: " + string(SDL_GetError()));
+		openAudio = false;
+		musica = NULL;
+		return;
 	}
 
 	// Cargamos la musica
 	musica = Mix_LoadMUS(this->gameConfig->getGameMusicSrc().c_str());
 
 	if (!musica) {
-		cerr << "No se puede cargar el sonido:" << SDL_GetError() << endl;
-		exit(1);
+		Logs::logErrorMessage("No se puede cargar el sonido: " + string(SDL_GetError()));
+		musica = NULL;
+		return;
 	}
 	Mix_VolumeMusic(500);
 	Mix_FadeInMusic(musica, -1, 3000);
@@ -229,8 +238,8 @@ Game::~Game() {
 	delete mapController;
 	delete cameraController;
 	delete textHandler;
-	Mix_FreeMusic(musica);
-	Mix_CloseAudio();
+	if (musica != NULL) Mix_FreeMusic(musica);
+	if (openAudio) Mix_CloseAudio();
 	// TODO Auto-generated destructor stub
 }
 

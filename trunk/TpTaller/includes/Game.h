@@ -61,6 +61,8 @@ private:
         int fps;
         int tempFps;
         int fpsUpdatingTimer;
+
+        bool openAudio;
 };
 
 #endif /* GAME_H_ */
