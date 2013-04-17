@@ -93,6 +93,18 @@ Position Tile::computePosition(int row, int col, bool toTileZero) {
 	return pos;
 }
 
+Position Tile::computeAdvancePosition(int row, int col, bool toTileZero){
+
+	Position pos = getDiamondShapeMapPos(row, col);
+
+	if (toTileZero) {
+			pos.setX(pos.getX() + tileWidth/2);
+			pos.setY(pos.getY() + tileHeight/2);
+	}
+
+	return pos;
+}
+
 SDL_Rect Tile::computePositionTile(int row, int col, bool toTileZero) {
 	SDL_Rect rect = getDiamondShapeMapTilePos(row, col);
 
