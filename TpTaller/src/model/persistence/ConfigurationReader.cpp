@@ -12,14 +12,23 @@ using namespace std;
 /**
  * YAML Configuration file position.
  */
-#define PLAYERVIEWS_POSITION 0
-#define ENTITYVIEWS_POSITION 1
-#define GAME_CONFIGURATION_POSITION 2
-#define TILE_DEFINITION_POSITION 3
-#define MAP_DIMENSION_POSITION 4
-#define PLAYER_LOCATIONS_POSITION 5
-#define ENTITY_LOCATIONS_POSITION 6
-#define MAP_TILES_POSITION 7
+//#define PLAYERVIEWS_POSITION 0
+//#define ENTITYVIEWS_POSITION 1
+//#define GAME_CONFIGURATION_POSITION 2
+//#define TILE_DEFINITION_POSITION 3
+//#define MAP_DIMENSION_POSITION 4
+//#define PLAYER_LOCATIONS_POSITION 5
+//#define ENTITY_LOCATIONS_POSITION 6
+//#define MAP_TILES_POSITION 7
+
+int PLAYERVIEWS_POSITION = 0;
+int ENTITYVIEWS_POSITION = 1;
+int GAME_CONFIGURATION_POSITION = 2;
+int TILE_DEFINITION_POSITION = 3;
+int MAP_DIMENSION_POSITION = 4;
+int PLAYER_LOCATIONS_POSITION = 5;
+int ENTITY_LOCATIONS_POSITION = 6;
+int MAP_TILES_POSITION = 7;
 
 #define DEFAULT_ROWS 50
 #define DEFAULT_COLS 50
@@ -1365,6 +1374,21 @@ void cleanUnusedViews(std::vector<EntityView*> viewVector) {
 	}
 }
 
+void setDefaultGameConfiguration(GameConfiguration* gameConf) {
+	gameConf->setFps(30);
+	gameConf->setDelay(10);
+	gameConf->setMovementMargin(50);
+	gameConf->setGameMusicSrc("resources/sound/NamiLogin.ogg");
+	gameConf->setFullscreen(true);
+	gameConf->setScreenAutoConfig(true);
+	gameConf->setDefaultScreenHeight(690);
+	gameConf->setDefaultScreenWidth(1280);
+	gameConf->setDefaultBPP(0);
+	gameConf->setMenuBackImageSrc("resources/lich.jpg");
+	gameConf->setMenuBackMusicSrc("resources/sound/pirates.ogg");
+	gameConf->setTileWidth(70);
+	gameConf->setTileHeight(50);
+}
 /* ********************************************* *
  * *********** CONFIGURATION LOADING *********** *
  * ********************************************* */
@@ -1421,6 +1445,12 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 		yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
 	} catch (YAML::Exception& yamlException) {
 		//std::cout << yamlException.what() << "\n";
+		setDefaultGameConfiguration(animationConfig);
+		TILE_DEFINITION_POSITION--;
+		MAP_DIMENSION_POSITION--;
+		PLAYER_LOCATIONS_POSITION--;
+		ENTITY_LOCATIONS_POSITION--;
+		MAP_TILES_POSITION--;
 		Logs::logErrorMessage(yamlException.what());
 	}
 
