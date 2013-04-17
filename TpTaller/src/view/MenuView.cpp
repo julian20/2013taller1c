@@ -133,7 +133,7 @@ void MenuView::initMusic() {
 	}
 	Mix_VolumeMusic(500);
 	Mix_FadeInMusic(musica, -1, 3000);
-	startVoice();
+	//startVoice();
 
 }
 
