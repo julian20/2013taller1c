@@ -40,7 +40,7 @@
     anchorPixel: [66, 80]
   - name: barracks
     imageSrc: resources/barracks.png
-    imageWidth: 320
+    imageWidth: 320 
     imageHeight: 290
     numberOfClips: 0
     anchorPixel: [172, 209]
@@ -77,7 +77,7 @@
 - gameConfiguration:
     fps: 30
     delay: 10
-    movementMargin: 50
+    movementMargin: 90
     gameMusic: resources/sound/NamiLogin.ogg
     fullscreen: false
     screenAutoConfig: false
@@ -85,7 +85,7 @@
     defaultScreenWidth: 1280
     defaultBPP: 0
     menuBackImage: resources/lich.jpg
-    menuBackMusic: resources/sound/pirates.ogg
+    menuBackMusic: resources/sound/QuinnLogin.ogg
     tileWidth: 70
     tileHeight: 50
 - tiles:
