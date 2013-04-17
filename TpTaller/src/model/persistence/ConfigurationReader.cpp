@@ -49,11 +49,21 @@ using namespace std;
 #define DEFAULT_TILE_WIDTH	70
 #define DEFAULT_TILE_HEIGHT	50
 
+// Excepcion que se lanza al recibir un nombre que no fue declarado previamente
+class PlayerLocationNameExcepton : public std::exception {
+public:
+	const char* what() const throw() {return "playerLocations error. Name not found in declaration.";}
+};
+
+
 // Error Log.
 Logs errorLog;
 map<string,SDL_Surface*> images;
 int rows;
 int cols;
+
+// Player name, for checking the player location.
+map<string,int> playerName;
 
 /* ************************************** *
  * *********** AUX STRUCTURES *********** *
@@ -841,6 +851,9 @@ void operator >>(const YAML::Node& yamlNode,
 		try {
 			playerLocations[i] >> player;
 			playerVector.push_back(player);
+			if (playerName.count(player->getName()) == 0){
+				throw PlayerLocationNameExcepton();
+			}
 		} catch (YAML::Exception& yamlException) {
 			Logs::logErrorMessage(
 					string("Error parsing Player Location List: ")
@@ -860,12 +873,14 @@ void operator >>(const YAML::Node& yamlNode,
 		try {
 			playerViews[i] >> entityView;
 			entityList.push_back(entityView);
+			playerName[entityView->getName()] = 0;;
 		} catch (YAML::Exception& yamlException) {
 			Logs::logErrorMessage(
 					string("Error parsing PlayerView List: ")
 							+ yamlException.what());
 		}
 	}
+
 }
 
 /**
