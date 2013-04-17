@@ -11,9 +11,7 @@
 #define DEFAULT_TEXTURE_PATH "resources/texturesTiles/grass.png"
 
 TextureHolder::TextureHolder() {
-	TileDefinition* defaultTile = new TileDefinition();
-	defaultTile->setTileId(DEFAULT_TEXTURE_ID);
-	defaultTile->setTileImageSrc(DEFAULT_TEXTURE_PATH);
+	TileDefinition* defaultTile = new TileDefinition(DEFAULT_TEXTURE_ID,DEFAULT_TEXTURE_PATH);
 	this->listOfTextures.push_back(defaultTile);
 }
 
@@ -57,10 +55,12 @@ SDL_Surface* TextureHolder::getTexture(std::string id) {
 	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
 		TileDefinition* auxTileDefinition = this->listOfTextures[i];
 		if (id.compare(auxTileDefinition->getTileId()) == 0) {
-			return auxTileDefinition->getTileImage();
+			SDL_Surface* surf = auxTileDefinition->getTileImage();
+			if (!surf) return getTexture(DEFAULT_TEXTURE_ID);
+			return surf;
 		}
 	}
 
-	return getTexture(DEFAULT_TEXTURE_ID);
+	return NULL;
 }
 
