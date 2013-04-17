@@ -11,9 +11,11 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_rotozoom.h>
 
+#include <model/Logs/Logs.h>
+
 #define TilesScale  	1
 
-#define DEFAULT_TEXTURE_PATH "defaultPath"
+#define DEFAULT_TEXTURE_PATH "resources/texturesTiles/grass.png"
 
 TileDefinition::TileDefinition() {
 	this->id = "default";
@@ -49,7 +51,7 @@ SDL_Surface* TileDefinition::getTileImage() {
 	if (this->openImage == NULL) {
 		SDL_Surface* loadedImageTmp = IMG_Load(this->imageSrc.c_str());
 		if (loadedImageTmp == NULL) {
-			printf("Unable to load tile texture. %s\n", SDL_GetError());
+			Logs::logErrorMessage("Unable to load tile texture: " + string(SDL_GetError()));
 			loadedImageTmp = this->getDefaultTileImage();
 		}
 
@@ -80,8 +82,8 @@ SDL_Surface* TileDefinition::prepareImage(SDL_Surface* loadedImage) {
 SDL_Surface * TileDefinition::getDefaultTileImage() {
 	SDL_Surface* loadedImage = IMG_Load(this->defaultImgSrc.c_str());
 	if (loadedImage == NULL) {
-		printf("Unable to load tile texture. %s\n", SDL_GetError());
-		exit(1);
+		Logs::logErrorMessage("Unable to load default tile texture: " + string(SDL_GetError()));
+		return NULL;
 	}
 	loadedImage = prepareImage(loadedImage);
 	return loadedImage;
