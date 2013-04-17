@@ -34,6 +34,8 @@ public:
 	static Coordinates* getTileCoordinates(int x, int y);
 	static void setTileWidth(unsigned int _tileWidth);
 	static void setTileHeight(unsigned int _tileHeight);
+	static unsigned int getTileWidth();
+	static unsigned int getTileHeight();
 
 	static unsigned int tileWidth;
 	static unsigned int tileHeight;
