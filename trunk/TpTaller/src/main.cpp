@@ -28,6 +28,39 @@ void initGame(PersistentConfiguration* configuration) {
 	delete game;
 }
 
+void initMenu(PersistentConfiguration* configuration){
+
+	Menu* menu = new Menu(configuration->getAnimationConfiguration());
+
+		MenuEvent event = NOTHING_EVENT;
+		while (event != EXIT_EVENT) {
+
+			event = menu->run();
+			switch (event) {
+			case NOTHING_EVENT:
+				break;
+			case EXIT_EVENT:
+				break;
+			case NEWGAME_EVENT:
+				//Aca inicio el juego
+				menu->close();
+				initGame(configuration);
+				event = EXIT_EVENT;
+				break;
+			case CONFIG_EVENT:
+				//Aca inicio el menu de configuraciones
+				cout << "Se inicio el menu de configuraciones" << endl;
+				break;
+
+			}
+
+		}
+
+		delete menu;
+}
+
+
+
 /*
  *
  */
@@ -41,45 +74,16 @@ int main(int argc, char** argv) {
 	ConfigurationReader cfgReader = ConfigurationReader();
 	try {
 		PersistentConfiguration configuration = cfgReader.loadConfiguration(CONFIGURATION_FILE, OUTPUT_FILENAME);
-		initGame(&configuration);
+		initMenu(&configuration);
 	} catch (std::exception& e) {
 		unLog.logErrorMessage(string("Configuration syntax error, ") + e.what() +string (". Loading default configuration."));
 		PersistentConfiguration configuration = cfgReader.loadConfiguration(DEFAULT_CONFIGURATION_FILE, OUTPUT_FILENAME);
-		initGame(&configuration);
+		initMenu(&configuration);
 	}
-
-//	Menu* menu = new Menu(configuration.getAnimationConfiguration());
-
-//	MenuEvent event = NOTHING_EVENT;
-//	while (event != EXIT_EVENT) {
-//
-//		event = menu->run();
-//		switch (event) {
-//		case NOTHING_EVENT:
-//			break;
-//		case EXIT_EVENT:
-//			break;
-//		case NEWGAME_EVENT:
-//			//Aca inicio el juego
-//			menu->close();
-//			initGame(&configuration);
-//			event = EXIT_EVENT;
-//			break;
-//		case CONFIG_EVENT:
-//			//Aca inicio el menu de configuraciones
-//			cout << "Se inicio el menu de configuraciones" << endl;
-//			break;
-//
-//		}
-//
-//	}
-//
-//	delete menu;
 
 	SDL_Quit();
 	Logs::logErrorMessage(string("************Program Ended**************** "));
 	Logs::closeFile();
-//	unLog.logErrorMessage(string("******************Program Finished***************"));
 	return 0;
 }
 
