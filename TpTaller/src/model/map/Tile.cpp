@@ -170,3 +170,11 @@ void Tile::setTileWidth(unsigned int _tileWidth) {
 void Tile::setTileHeight(unsigned int _tileHeight) {
 	tileHeight = _tileHeight;
 }
+
+unsigned int Tile::getTileWidth() {
+	return tileWidth;
+}
+
+unsigned int Tile::getTileHeight() {
+	return tileHeight;
+}

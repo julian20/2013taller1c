@@ -40,6 +40,8 @@ void Player::update() {
 		else loadNextPosition();
 	}
 
+	float relationSpeed = ((float) Tile::getTileHeight())/((float) Tile::getTileWidth());
+
 	Vector3* moveDirection = new Vector3(endPos->getX() - currentPos->getX(),
 			endPos->getY() - currentPos->getY(), endPos->getZ() - currentPos->getZ());
 
@@ -50,6 +52,7 @@ void Player::update() {
 		else loadNextPosition();
 	} else {
 		moveDirection->normalize();
+		moveDirection->multiplyBy(fabs(moveDirection->getY()) * (relationSpeed - 1) + 1);
 		moveDirection->multiplyBy(getSpeed()->getMagnitude());
 		currentPos->add(moveDirection);
 		//if (path->size() == 0) return;
