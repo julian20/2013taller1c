@@ -37,6 +37,8 @@ public:
 	static unsigned int getTileWidth();
 	static unsigned int getTileHeight();
 
+	static Position computeAdvancePosition(int row, int col, bool toTileZero);
+
 	static unsigned int tileWidth;
 	static unsigned int tileHeight;
 private:

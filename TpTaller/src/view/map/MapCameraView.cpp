@@ -58,9 +58,9 @@ void MapCameraView::moveCamera(CameraMove move, int cameraSpeed) {
 
 
 void MapCameraView::setLimitTiles(int mapRows,int mapCols) {
-	lastTilePosY = Tile::computePosition(mapRows, mapCols);
-	lastTilePosXDer = Tile::computePosition(0, mapCols);
-	lastTilePosXIzq = Tile::computePosition(mapRows, 0);
+	lastTilePosY = Tile::computeAdvancePosition(mapRows, mapCols,false);
+	lastTilePosXDer = Tile::computeAdvancePosition(0, mapCols,false);
+	lastTilePosXIzq = Tile::computeAdvancePosition(mapRows, 0,false);
 }
 
 
