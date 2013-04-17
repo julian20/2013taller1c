@@ -7,7 +7,7 @@
     anchorPixel: [48, 50]
     baseWidth: 1
     baseHeight: 1
-- entitysViews:    
+- entityViews:    
   - name: windmill
     imageSrc: resources/windmill.png
     imageWidth: 224
