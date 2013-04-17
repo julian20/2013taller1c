@@ -45,6 +45,7 @@ private:
 
 	Vector3* endPos;
 	Speed* speed;
+	Speed* initSpeed;
 	std::vector<Power*> powers;
 	std::string name;
 	Tile* currentTile;

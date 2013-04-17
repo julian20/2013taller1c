@@ -12,6 +12,7 @@
 Player::Player() {
 	endPos = new Vector3(0, 0);
 	this->speed = new Speed(0, Vector2(0, 0));
+	this->initSpeed = NULL;
 	this->name = "";
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile( new Coordinates(0, 0) );
@@ -28,7 +29,7 @@ void Player::moveTo(int x, int y, int z) {
 }
 
 bool Player::isRunning(){
-	if (speed->getMagnitude() >= 5)
+	if (speed->getMagnitude() >= 2*initSpeed->getMagnitude())
 		return true;
 	return false;
 }
@@ -92,6 +93,7 @@ Player::Player(string name, Position* position, Speed* speed, vector<Power*> pow
 
 Player::~Player() {
 	delete this->speed;
+	if (initSpeed != NULL) delete initSpeed;
 }
 
 void Player::setPosition(Position* position) {
@@ -106,6 +108,8 @@ Speed* Player::getSpeed() {
 
 void Player::setSpeed(Speed* speed) {
 	this->speed = speed;
+	if (initSpeed == NULL)
+		initSpeed = new Speed(speed->getMagnitude(),Vector2(0,0));
 }
 
 std::string Player::getName() {

@@ -73,7 +73,7 @@ MapData* PlayerController::getMapData() {
 //TODO - hardcoded
 void PlayerController::toggleRunning() {
 	if (player->isRunning())
-		player->setSpeedMagnitude(3);
+		player->setSpeedMagnitude(player->getSpeed()->getMagnitude()/2);
 	else
-		player->setSpeedMagnitude(5);
+		player->setSpeedMagnitude(player->getSpeed()->getMagnitude()*2);
 }
