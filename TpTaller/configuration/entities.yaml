@@ -7,7 +7,7 @@
     anchorPixel: [48, 50]
     baseWidth: 1
     baseHeight: 1
-- entityViews:    
+- entitysViews:    
   - name: windmill
     imageSrc: resources/windmill.png
     imageWidth: 224
@@ -79,8 +79,8 @@
     delay: 10
     movementMargin: 50
     gameMusic: resources/sound/NamiLogin.ogg
-    fullscreen: true
-    screenAutoConfig: true
+    fullscreen: false
+    screenAutoConfig: false
     defaultScreenHeight: 690
     defaultScreenWidth: 1280
     defaultBPP: 0
@@ -118,7 +118,7 @@
   - name: player
     position: [20, 20, 0]
     speed:
-      magnitude: 2
+      magnitude: 4
       direction: [1, 2]
     powers:
       - name: Club
