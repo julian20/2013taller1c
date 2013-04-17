@@ -12,23 +12,15 @@ using namespace std;
 /**
  * YAML Configuration file position.
  */
-//#define PLAYERVIEWS_POSITION 0
-//#define ENTITYVIEWS_POSITION 1
-//#define GAME_CONFIGURATION_POSITION 2
-//#define TILE_DEFINITION_POSITION 3
-//#define MAP_DIMENSION_POSITION 4
-//#define PLAYER_LOCATIONS_POSITION 5
-//#define ENTITY_LOCATIONS_POSITION 6
-//#define MAP_TILES_POSITION 7
+#define PLAYERVIEWS_POSITION 0
+#define ENTITYVIEWS_POSITION 1
+#define GAME_CONFIGURATION_POSITION 2
+#define TILE_DEFINITION_POSITION 3
+#define MAP_DIMENSION_POSITION 4
+#define PLAYER_LOCATIONS_POSITION 5
+#define ENTITY_LOCATIONS_POSITION 6
+#define MAP_TILES_POSITION 7
 
-int PLAYERVIEWS_POSITION = 0;
-int ENTITYVIEWS_POSITION = 1;
-int GAME_CONFIGURATION_POSITION = 2;
-int TILE_DEFINITION_POSITION = 3;
-int MAP_DIMENSION_POSITION = 4;
-int PLAYER_LOCATIONS_POSITION = 5;
-int ENTITY_LOCATIONS_POSITION = 6;
-int MAP_TILES_POSITION = 7;
 
 #define DEFAULT_ROWS 50
 #define DEFAULT_COLS 50
@@ -499,20 +491,15 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 
 	Position* auxPosition = new Position(0, 0, 0);
 	std::string auxName;
-	try {
-		yamlNode["name"] >> auxName;
-	} catch (YAML::Exception& yamlException) {
-		Logs::logErrorMessage(
-				string("Error parsing Entity name: ") + yamlException.what());
-		auxName = DEFAULT_NAME;
-	}
+	//TOMI: Antes controlabamos excepciones. Lo saque, porque no tenia sentido ubicar una Entity que no existia.
+	yamlNode["name"] >> auxName;
+
 	try {
 		yamlNode["position"] >> auxPosition;
 	} catch (YAML::Exception& yamlException) {
 		Logs::logErrorMessage(
 				string("Error parsing Entity position: ")
 						+ yamlException.what());
-
 	}
 
 	int row = auxPosition->getX();
@@ -839,15 +826,10 @@ void operator >>(const YAML::Node& yamlNode,
 		std::vector<Entity*>& entityVector) {
 	const YAML::Node& entityLocations = yamlNode["entityLocations"];
 	for (unsigned i = 0; i < entityLocations.size(); i++) {
+		// Tomi: Antes controlabamos excepciones. Lo saque porque no se solucionaba nada, solo se logeaba.
 		Entity* entity = new Entity();
-		try {
-			entityLocations[i] >> entity;
-			if (entity != NULL) entityVector.push_back(entity);
-		} catch (YAML::Exception& yamlException) {
-			Logs::logErrorMessage(
-					string("Error parsing Entity Location List: ")
-							+ yamlException.what());
-		}
+		entityLocations[i] >> entity;
+		if (entity != NULL) entityVector.push_back(entity);
 	}
 }
 
@@ -1374,6 +1356,10 @@ void cleanUnusedViews(std::vector<EntityView*> viewVector) {
 	}
 }
 
+void setDefaultPlayerView(){
+
+}
+
 void setDefaultGameConfiguration(GameConfiguration* gameConf) {
 	gameConf->setFps(30);
 	gameConf->setDelay(10);
@@ -1422,78 +1408,43 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 
 // Parsing PersonajeVista.
 	std::vector<PlayerView*> playerViewVector;
-	try {
-		yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
-	} catch (YAML::Exception& yamlException) {
-		//std::cout << yamlException.what() << "\n";
-		Logs::logErrorMessage(yamlException.what());
-	}
+	yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
+
 
 // Parsing EntityViews.
 	std::vector<EntityView*> entityViewVector;
 	//EntityHolder* entityViewVector= new EntityHolder();
-	try {
-		yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
-	} catch (YAML::Exception& yamlException) {
-		//std::cout << yamlException.what() << "\n";
-		Logs::logErrorMessage(yamlException.what());
-	}
+	yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
+
 
 // Parsing animation configuration.
 	GameConfiguration* animationConfig = new GameConfiguration();
-	try {
-		yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
-	} catch (YAML::Exception& yamlException) {
-		//std::cout << yamlException.what() << "\n";
-		setDefaultGameConfiguration(animationConfig);
-		TILE_DEFINITION_POSITION--;
-		MAP_DIMENSION_POSITION--;
-		PLAYER_LOCATIONS_POSITION--;
-		ENTITY_LOCATIONS_POSITION--;
-		MAP_TILES_POSITION--;
-		Logs::logErrorMessage(yamlException.what());
-	}
+	yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
+
 
 // Parsing tile definition.
 	TextureHolder* textureHolder = new TextureHolder();
-	try {
-		yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
-	} catch (YAML::Exception& yamlException) {
-		//std::cout << yamlException.what() << "\n";
-		Logs::logErrorMessage(yamlException.what());
-	}
+	yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
+
 
 // Parsing map dimensions.
 	AuxMap mapConfiguration;
 	AuxMapDimension mapDimension;
-	try {
-		yamlNode[MAP_DIMENSION_POSITION] >> mapDimension;
-		mapConfiguration.dimension = mapDimension;
-	} catch (YAML::Exception& yamlException) {
-		//std::cout << yamlException.what() << "\n";
-		Logs::logErrorMessage(yamlException.what());
-	}
+	yamlNode[MAP_DIMENSION_POSITION] >> mapDimension;
+	mapConfiguration.dimension = mapDimension;
+
 
 	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
 			mapConfiguration.dimension.ncols);
 
 // Parsing player locations.
 	std::vector<Player*> playerVector;
-	try {
-		yamlNode[PLAYER_LOCATIONS_POSITION] >> playerVector;
-	} catch (YAML::Exception& yamlException) {
-		//std::cout << yamlException.what() << "\n";
-		Logs::logErrorMessage(yamlException.what());
-	}
+	yamlNode[PLAYER_LOCATIONS_POSITION] >> playerVector;
+
 
 // Parsing player locations.
 	std::vector<Entity*> entityVector;
-	try {
-		yamlNode[ENTITY_LOCATIONS_POSITION] >> entityVector;
-	} catch (YAML::Exception& yamlException) {
-		//std::cout << yamlException.what() << "\n";
-		Logs::logErrorMessage(yamlException.what());
-	}
+	yamlNode[ENTITY_LOCATIONS_POSITION] >> entityVector;
 
 	std::vector<EntityView*> cleanEntityViews = assignEntities(entityViewVector,
 			entityVector);
@@ -1505,12 +1456,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	cleanUnusedViews(playerViewVector);
 
 // Parsing map tile locations.
-	try {
-		yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
-	} catch (YAML::Exception& yamlException) {
-		//std::cout << yamlException.what() << "\n";
-		Logs::logErrorMessage(yamlException.what());
-	}
+	yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
 	mapConfiguration >> mapData;
 
 // Create entityViewMap:
