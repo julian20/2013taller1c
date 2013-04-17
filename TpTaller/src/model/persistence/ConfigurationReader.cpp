@@ -21,7 +21,6 @@ using namespace std;
 #define ENTITY_LOCATIONS_POSITION 6
 #define MAP_TILES_POSITION 7
 
-
 #define DEFAULT_ROWS 50
 #define DEFAULT_COLS 50
 #define DEFAULT_POSITION 0 // [0, 0, 0]
@@ -50,20 +49,21 @@ using namespace std;
 #define DEFAULT_TILE_HEIGHT	50
 
 // Excepcion que se lanza al recibir un nombre que no fue declarado previamente
-class PlayerLocationNameExcepton : public std::exception {
+class PlayerLocationNameExcepton: public std::exception {
 public:
-	const char* what() const throw() {return "playerLocations error. Name not found in declaration.";}
+	const char* what() const throw () {
+		return "playerLocations error. Name not found in declaration.";
+	}
 };
-
 
 // Error Log.
 Logs errorLog;
-map<string,SDL_Surface*> images;
+map<string, SDL_Surface*> images;
 int rows;
 int cols;
 
 // Player name, for checking the player location.
-map<string,int> playerName;
+map<string, int> playerName;
 
 /* ************************************** *
  * *********** AUX STRUCTURES *********** *
@@ -469,16 +469,22 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 	sCol << col;
 	sZ << auxPosition->getZ();
 
-	if (row < 0 || row >= rows){
+	if (row < 0 || row >= rows) {
 		Logs::logErrorMessage(
-				string("Error parsing Player position >> Entity row out of bound: ") + string("name: ") + auxName
-				+ string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+				string(
+						"Error parsing Player position >> Entity row out of bound: ")
+						+ string("name: ") + auxName + string(" position: [")
+						+ sRow.str() + string(", ") + sCol.str() + string(", ")
+						+ sZ.str() + string("]"));
 		auxPosition->setX(0);
 	}
-	if (col < 0 || col >= cols){
+	if (col < 0 || col >= cols) {
 		Logs::logErrorMessage(
-				string("Error parsing Player position >> Entity row out of bound: ") + string("name: ") + auxName
-				+ string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+				string(
+						"Error parsing Player position >> Entity row out of bound: ")
+						+ string("name: ") + auxName + string(" position: [")
+						+ sRow.str() + string(", ") + sCol.str() + string(", ")
+						+ sZ.str() + string("]"));
 		auxPosition->setY(0);
 	}
 
@@ -487,7 +493,8 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 	personaje->setCoordinates(auxPosition->getX(), auxPosition->getY());
 	//Tile* newTile = new Tile(personaje->getCoordinates());
 	//personaje->setTile(newTile);
-	Coordinates* playerCoords = new Coordinates(auxPosition->getX(), auxPosition->getY());
+	Coordinates* playerCoords = new Coordinates(auxPosition->getX(),
+			auxPosition->getY());
 	Tile* newTile = new Tile(playerCoords);
 	personaje->setTile(newTile);
 	personaje->setSpeed(auxSpeed);
@@ -524,18 +531,24 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 	sCol << col;
 	sZ << auxPosition->getZ();
 
-	if (row < 0 || row >= rows){
+	if (row < 0 || row >= rows) {
 		Logs::logErrorMessage(
-				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
-				+ string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+				string(
+						"Error parsing Entity position >> Entity row out of bound: ")
+						+ string("name: ") + auxName + string(" position: [")
+						+ sRow.str() + string(", ") + sCol.str() + string(", ")
+						+ sZ.str() + string("]"));
 		entity = NULL;
 		delete auxPosition;
 		return;
 	}
-	if (col < 0 || col >= cols){
+	if (col < 0 || col >= cols) {
 		Logs::logErrorMessage(
-				string("Error parsing Entity position >> Entity row out of bound: ") + string("name: ") + auxName
-				+ string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string(", ") + sZ.str() + string("]"));
+				string(
+						"Error parsing Entity position >> Entity row out of bound: ")
+						+ string("name: ") + auxName + string(" position: [")
+						+ sRow.str() + string(", ") + sCol.str() + string(", ")
+						+ sZ.str() + string("]"));
 		entity = NULL;
 		delete auxPosition;
 		return;
@@ -645,7 +658,7 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	playerView->setAnchorPixel(auxAnchorPixel);
 //	playerView->setBaseHeight(auxBaseLength);
 //	playerView->setBaseWidth(auxBaseWidth);
-	playerView->cargarImagen(auxImageSrc,&images);
+	playerView->cargarImagen(auxImageSrc, &images);
 	playerView->setImageHeight(auxImageHeight);
 	playerView->setImageWidth(auxImageWidth);
 	playerView->setImagePath(auxImageSrc, &images);
@@ -686,8 +699,7 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 		yamlNode["numberOfClips"] >> auxNumberOfClips;
 	} catch (YAML::Exception& yamlException) {
 		Logs::logErrorMessage(
-				string("Error parsing EntityView: ")
-						+ yamlException.what());
+				string("Error parsing EntityView: ") + yamlException.what());
 		auxImageSrc = DEFAULT_IMAGE_SRC;
 		auxImageWidth = DEFAULT_IMAGE_WIDTH;
 		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
@@ -731,7 +743,7 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 		auxBaseLength = DEFAULT_BASE_LENGTH;
 	}
 
-	map<string,SDL_Surface*> images;
+	map<string, SDL_Surface*> images;
 
 	entityView->setAnchorPixel(auxAnchorPixel);
 //	entityView->setBaseWidth(auxBaseWidth);
@@ -741,97 +753,97 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	entityView->setImageWidth(auxImageWidth);
 	entityView->setNClips(auxNumberOfClips);
 	entityView->setEntity(auxEntity);
-	entityView->setImagePath(auxImageSrc,&images);
+	entityView->setImagePath(auxImageSrc, &images);
 	entityView->setFps(auxFps);
 	entityView->setDelay(auxDelay);
 	entityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
 }
 /*
-void operator >>(const YAML::Node& yamlNode, EntityViewData* entityView) {
+ void operator >>(const YAML::Node& yamlNode, EntityViewData* entityView) {
 
-	Entity* auxEntity = NULL;
-	Vector2* auxAnchorPixel = new Vector2(0, 0);
+ Entity* auxEntity = NULL;
+ Vector2* auxAnchorPixel = new Vector2(0, 0);
 
-	std::vector<Power*> auxPowers;
-	std::string auxImageSrc;
-	std::string auxName;
+ std::vector<Power*> auxPowers;
+ std::string auxImageSrc;
+ std::string auxName;
 
-	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay,
-			auxAnimationNumberOfRepeats, auxBaseLength, auxBaseWidth;
+ int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay,
+ auxAnimationNumberOfRepeats, auxBaseLength, auxBaseWidth;
 
-	try {
-		yamlNode["name"] >> auxName;
-	} catch (YAML::Exception& yamlException) {
-		Logs::logErrorMessage(
-				string("Error parsing EntityView name: ")
-						+ yamlException.what());
-		auxName = DEFAULT_NAME;
-	}
-	try {
-		yamlNode["imageSrc"] >> auxImageSrc;
-		yamlNode["imageWidth"] >> auxImageWidth;
-		yamlNode["imageHeight"] >> auxImageHeight;
-		yamlNode["numberOfClips"] >> auxNumberOfClips;
-	} catch (YAML::Exception& yamlException) {
-		Logs::logErrorMessage(
-				string("Error parsing EntityView: ")
-						+ yamlException.what());
-		auxImageSrc = DEFAULT_IMAGE_SRC;
-		auxImageWidth = DEFAULT_IMAGE_WIDTH;
-		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
-		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
-	}
-	try {
-		yamlNode["anchorPixel"] >> auxAnchorPixel;
-	} catch (YAML::Exception& yamlException) {
-//		Logs::logErrorMessage(
-//				string("Error parsing EntityView: ") + yamlException.what());
-	}
-	try {
-		yamlNode["fps"] >> auxFps;
-	} catch (YAML::Exception& yamlException) {
-//		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
-		auxFps = DEFAULT_FPS;
-	}
-	try {
-		yamlNode["delay"] >> auxDelay;
-	} catch (YAML::Exception& yamlException) {
-//		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
-		auxDelay = DEFAULT_DELAY;
-	}
-	try {
-		yamlNode["animationRepeats"] >> auxAnimationNumberOfRepeats;
-	} catch (YAML::Exception& yamlException) {
-//		Logs::logErrorMessage(
-//				string("Error parsing EntityView: ") + yamlException.what());
-		auxAnimationNumberOfRepeats = DEFAULT_REPEATS;
-	}
-	try {
-		yamlNode["baseWidth"] >> auxBaseWidth;
-	} catch (YAML::Exception& yamlException) {
-//		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
-		auxBaseWidth = DEFAULT_BASE_WIDTH;
-	}
-	try {
-		yamlNode["baseHeight"] >> auxBaseLength;
-	} catch (YAML::Exception& yamlException) {
-//		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
-		auxBaseLength = DEFAULT_BASE_LENGTH;
-	}
+ try {
+ yamlNode["name"] >> auxName;
+ } catch (YAML::Exception& yamlException) {
+ Logs::logErrorMessage(
+ string("Error parsing EntityView name: ")
+ + yamlException.what());
+ auxName = DEFAULT_NAME;
+ }
+ try {
+ yamlNode["imageSrc"] >> auxImageSrc;
+ yamlNode["imageWidth"] >> auxImageWidth;
+ yamlNode["imageHeight"] >> auxImageHeight;
+ yamlNode["numberOfClips"] >> auxNumberOfClips;
+ } catch (YAML::Exception& yamlException) {
+ Logs::logErrorMessage(
+ string("Error parsing EntityView: ")
+ + yamlException.what());
+ auxImageSrc = DEFAULT_IMAGE_SRC;
+ auxImageWidth = DEFAULT_IMAGE_WIDTH;
+ auxImageHeight = DEFAULT_IMAGE_HEIGHT;
+ auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
+ }
+ try {
+ yamlNode["anchorPixel"] >> auxAnchorPixel;
+ } catch (YAML::Exception& yamlException) {
+ //		Logs::logErrorMessage(
+ //				string("Error parsing EntityView: ") + yamlException.what());
+ }
+ try {
+ yamlNode["fps"] >> auxFps;
+ } catch (YAML::Exception& yamlException) {
+ //		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
+ auxFps = DEFAULT_FPS;
+ }
+ try {
+ yamlNode["delay"] >> auxDelay;
+ } catch (YAML::Exception& yamlException) {
+ //		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
+ auxDelay = DEFAULT_DELAY;
+ }
+ try {
+ yamlNode["animationRepeats"] >> auxAnimationNumberOfRepeats;
+ } catch (YAML::Exception& yamlException) {
+ //		Logs::logErrorMessage(
+ //				string("Error parsing EntityView: ") + yamlException.what());
+ auxAnimationNumberOfRepeats = DEFAULT_REPEATS;
+ }
+ try {
+ yamlNode["baseWidth"] >> auxBaseWidth;
+ } catch (YAML::Exception& yamlException) {
+ //		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
+ auxBaseWidth = DEFAULT_BASE_WIDTH;
+ }
+ try {
+ yamlNode["baseHeight"] >> auxBaseLength;
+ } catch (YAML::Exception& yamlException) {
+ //		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
+ auxBaseLength = DEFAULT_BASE_LENGTH;
+ }
 
-	entityView->setAnchorPixel(auxAnchorPixel);
-//	entityView->setBaseWidth(auxBaseWidth);
-//	entityView->setBaseHeight(auxBaseLength);
-	entityView->setEntityId(auxName);
-	entityView->setImageHeight(auxImageHeight);
-	entityView->setImageWidth(auxImageWidth);
-	entityView->setNClips(auxNumberOfClips);
-	//entityView->setEntity(auxEntity);
-	entityView->setEntityImage(auxImageSrc);
-	entityView->setFps(auxFps);
-	entityView->setDelay(auxDelay);
-	entityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
-}*/
+ entityView->setAnchorPixel(auxAnchorPixel);
+ //	entityView->setBaseWidth(auxBaseWidth);
+ //	entityView->setBaseHeight(auxBaseLength);
+ entityView->setEntityId(auxName);
+ entityView->setImageHeight(auxImageHeight);
+ entityView->setImageWidth(auxImageWidth);
+ entityView->setNClips(auxNumberOfClips);
+ //entityView->setEntity(auxEntity);
+ entityView->setEntityImage(auxImageSrc);
+ entityView->setFps(auxFps);
+ entityView->setDelay(auxDelay);
+ entityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
+ }*/
 void operator >>(const YAML::Node& yamlNode,
 		std::vector<Entity*>& entityVector) {
 	const YAML::Node& entityLocations = yamlNode["entityLocations"];
@@ -839,7 +851,8 @@ void operator >>(const YAML::Node& yamlNode,
 		// Tomi: Antes controlabamos excepciones. Lo saque porque no se solucionaba nada, solo se logeaba.
 		Entity* entity = new Entity();
 		entityLocations[i] >> entity;
-		if (entity != NULL) entityVector.push_back(entity);
+		if (entity != NULL)
+			entityVector.push_back(entity);
 	}
 }
 
@@ -851,7 +864,7 @@ void operator >>(const YAML::Node& yamlNode,
 		try {
 			playerLocations[i] >> player;
 			playerVector.push_back(player);
-			if (playerName.count(player->getName()) == 0){
+			if (playerName.count(player->getName()) == 0) {
 				throw PlayerLocationNameExcepton();
 			}
 		} catch (YAML::Exception& yamlException) {
@@ -873,7 +886,8 @@ void operator >>(const YAML::Node& yamlNode,
 		try {
 			playerViews[i] >> entityView;
 			entityList.push_back(entityView);
-			playerName[entityView->getName()] = 0;;
+			playerName[entityView->getName()] = 0;
+			;
 		} catch (YAML::Exception& yamlException) {
 			Logs::logErrorMessage(
 					string("Error parsing PlayerView List: ")
@@ -902,31 +916,32 @@ void operator >>(const YAML::Node& yamlNode,
 		}
 	}
 }/*
-void operator >>(const YAML::Node& yamlNode,
-		EntityHolder* entityList) {
-	const YAML::Node& entityViews = yamlNode["entityViews"];
-	for (unsigned i = 0; i < entityViews.size(); i++) {
-		EntityViewData* entityView = new EntityViewData();
-		try {
-			entityViews[i] >> entityView;
-			entityList->addEntityViewData(entityView);
-		} catch (YAML::Exception& yamlException) {
-			Logs::logErrorMessage(
-					string("Error parsing EntityView List: ")
-							+ yamlException.what());
-		}
-	}
-}
-*/
+ void operator >>(const YAML::Node& yamlNode,
+ EntityHolder* entityList) {
+ const YAML::Node& entityViews = yamlNode["entityViews"];
+ for (unsigned i = 0; i < entityViews.size(); i++) {
+ EntityViewData* entityView = new EntityViewData();
+ try {
+ entityViews[i] >> entityView;
+ entityList->addEntityViewData(entityView);
+ } catch (YAML::Exception& yamlException) {
+ Logs::logErrorMessage(
+ string("Error parsing EntityView List: ")
+ + yamlException.what());
+ }
+ }
+ }
+ */
 /* ******************************************************* *
  * *********** ANIMATION CONFIGURATION PARSING *********** *
  * ******************************************************* */
 
 void checkValues(int* value, string valueName, int default_value) {
-	if (*value < 0){
+	if (*value < 0) {
 		*value = default_value;
-		Logs::logErrorMessage( string("Error parsing ") + valueName +
-				string(", negative values are not allowed."));
+		Logs::logErrorMessage(
+				string("Error parsing ") + valueName
+						+ string(", negative values are not allowed."));
 	}
 }
 
@@ -957,11 +972,11 @@ void operator >>(const YAML::Node& yamlNode,
 		auxDelay = DEFAULT_DELAY;
 	}
 	try {
-			configuration["movementMargin"] >> auxMovementMargin;
-		} catch (YAML::Exception& yamlException) {
-			// No logeo, porque si no esta se usa el standard.
-			auxMovementMargin = DEFAULT_MOVEMENT_MARGIN;
-		}
+		configuration["movementMargin"] >> auxMovementMargin;
+	} catch (YAML::Exception& yamlException) {
+		// No logeo, porque si no esta se usa el standard.
+		auxMovementMargin = DEFAULT_MOVEMENT_MARGIN;
+	}
 	try {
 		configuration["gameMusic"] >> auxGameMusicSrc;
 	} catch (YAML::Exception& yamlException) {
@@ -976,10 +991,10 @@ void operator >>(const YAML::Node& yamlNode,
 		auxFullscreen = false;
 	}
 	try {
-			configuration["screenAutoConfig"] >> auxAutoConfig;
-		} catch (YAML::Exception& yamlException) {
-			auxAutoConfig = false;
-		}
+		configuration["screenAutoConfig"] >> auxAutoConfig;
+	} catch (YAML::Exception& yamlException) {
+		auxAutoConfig = false;
+	}
 	try {
 		configuration["defaultScreenHeight"] >> auxHeight;
 	} catch (YAML::Exception& yamlException) {
@@ -1039,24 +1054,26 @@ void operator >>(const YAML::Node& yamlNode,
 
 	checkValues(&auxFps, string("fps"), DEFAULT_FPS);
 	checkValues(&auxDelay, string("delay"), DEFAULT_DELAY);
-	checkValues(&auxMovementMargin, string("movementMargin"), DEFAULT_MOVEMENT_MARGIN);
-	checkValues(&auxHeight, string("defaultScreenHeight"), DEFAULT_SCREEN_HEIGHT);
+	checkValues(&auxMovementMargin, string("movementMargin"),
+			DEFAULT_MOVEMENT_MARGIN);
+	checkValues(&auxHeight, string("defaultScreenHeight"),
+			DEFAULT_SCREEN_HEIGHT);
 	checkValues(&auxWidth, string("defaultScreenWidth"), DEFAULT_SCREEN_WIDTH);
 	checkValues(&auxBPP, string("defaultBPP"), DEFAULT_BPP);
 	checkValues(&auxTileWidth, string("TileWidth"), DEFAULT_TILE_WIDTH);
 	checkValues(&auxTileHeight, string("TileHeight"), DEFAULT_TILE_HEIGHT);
 
-	animationConfig->setDelay( (unsigned int) auxDelay);
-	animationConfig->setFps( (unsigned int) auxFps);
-	animationConfig->setMovementMargin( (unsigned int) auxMovementMargin);
+	animationConfig->setDelay((unsigned int) auxDelay);
+	animationConfig->setFps((unsigned int) auxFps);
+	animationConfig->setMovementMargin((unsigned int) auxMovementMargin);
 	animationConfig->setGameMusicSrc(auxGameMusicSrc);
-	animationConfig->setDefaultScreenHeight( (unsigned int) auxHeight);
-	animationConfig->setDefaultScreenWidth( (unsigned int) auxWidth);
-	animationConfig->setDefaultBPP( (unsigned int) auxBPP);
+	animationConfig->setDefaultScreenHeight((unsigned int) auxHeight);
+	animationConfig->setDefaultScreenWidth((unsigned int) auxWidth);
+	animationConfig->setDefaultBPP((unsigned int) auxBPP);
 	animationConfig->setMenuBackImageSrc(auxMenuImage);
 	animationConfig->setMenuBackMusicSrc(auxMenuMusic);
-	animationConfig->setTileWidth( (unsigned int) auxTileWidth);
-	animationConfig->setTileHeight( (unsigned int) auxTileHeight);
+	animationConfig->setTileWidth((unsigned int) auxTileWidth);
+	animationConfig->setTileHeight((unsigned int) auxTileHeight);
 	animationConfig->setFullscreen(auxFullscreen);
 	animationConfig->setScreenAutoConfig(auxAutoConfig);
 }
@@ -1142,17 +1159,23 @@ void operator >>(const YAML::Node& yamlNode, AuxMap& destMap) {
 			stringstream sCol;
 			sRow << tile->getPosition()->getX();
 			sCol << tile->getPosition()->getY();
-			if( tile->getPosition()->getX() >= rows || tile->getPosition()->getX() < 0 ) {
+			if (tile->getPosition()->getX() >= rows
+					|| tile->getPosition()->getX() < 0) {
 				Logs::logErrorMessage(
-						string("Error parsing Tile >> row index out of bounds: ") +
-						string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
+						string(
+								"Error parsing Tile >> row index out of bounds: ")
+								+ string(" position: [") + sRow.str()
+								+ string(", ") + sCol.str() + string("]"));
 				delete tile;
 				continue;
 			}
-			if( tile->getPosition()->getY() >= cols || tile->getPosition()->getY() < 0 ){
+			if (tile->getPosition()->getY() >= cols
+					|| tile->getPosition()->getY() < 0) {
 				Logs::logErrorMessage(
-						string("Error parsing Tile >> column index out of bounds: ") +
-						string(" position: [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
+						string(
+								"Error parsing Tile >> column index out of bounds: ")
+								+ string(" position: [") + sRow.str()
+								+ string(", ") + sCol.str() + string("]"));
 				delete tile;
 				continue;
 			}
@@ -1209,18 +1232,22 @@ void operator >>(const YAML::Node& yamlNode, AuxMapDimension& dimension) {
 	sRow << rows;
 	sCol << cols;
 
-	if (rows < 0 ){
+	if (rows < 0) {
 		Logs::logErrorMessage(
-				string("Error parsing Map dimensions >> row index out of bounds: ") +
-				string(" [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
+				string(
+						"Error parsing Map dimensions >> row index out of bounds: ")
+						+ string(" [") + sRow.str() + string(", ") + sCol.str()
+						+ string("]"));
 		rows = DEFAULT_ROWS;
 		dimension.nrows = rows;
 	}
 
-	if (cols < 0 ){
+	if (cols < 0) {
 		Logs::logErrorMessage(
-				string("Error parsing Map dimensions >> column index out of bounds: ") +
-				string(" [")  + sRow.str() + string(", ") + sCol.str() + string("]"));
+				string(
+						"Error parsing Map dimensions >> column index out of bounds: ")
+						+ string(" [") + sRow.str() + string(", ") + sCol.str()
+						+ string("]"));
 		cols = DEFAULT_COLS;
 		dimension.ncols = cols;
 	}
@@ -1254,8 +1281,7 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		/**
 		 * TODO: hacer conversion entre Posicion y Coordinates.
 		 */
-		Coordinates coordinates = Coordinates(
-				entity->getCurrentPos()->getX(),
+		Coordinates coordinates = Coordinates(entity->getCurrentPos()->getX(),
 				entity->getCurrentPos()->getY());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
@@ -1274,7 +1300,7 @@ void duplicateView(EntityView* sourceView, EntityView* destView) {
 	destView->setImageHeight(sourceView->getImageHeight());
 	destView->setImageWidth(sourceView->getImageWidth());
 	destView->setNClips(sourceView->getNClips());
-	destView->setImagePath(sourceView->getImagePath(),&images);
+	destView->setImagePath(sourceView->getImagePath(), &images);
 	destView->setFps(sourceView->getFps());
 	destView->setDelay(sourceView->getDelay());
 	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
@@ -1293,21 +1319,19 @@ void duplicateView(PlayerView* sourceView, PlayerView* destView) {
 	destView->setImageHeight(sourceView->getImageHeight());
 	destView->setImageWidth(sourceView->getImageWidth());
 	destView->setNClips(sourceView->getNClips());
-	destView->setImagePath(sourceView->getImagePath(),&images);
+	destView->setImagePath(sourceView->getImagePath(), &images);
 	destView->setFps(sourceView->getFps());
 	destView->setDelay(sourceView->getDelay());
 	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
-	destView->cargarImagen(sourceView->getImagePath(),&images);
+	destView->cargarImagen(sourceView->getImagePath(), &images);
 	destView->setEntity(NULL);
 
 }
-void assignEntities(MapData* mapData,std::vector<Entity*> entities )
-{
-	for (unsigned i = 0; i < entities.size(); i++)
-	{
+void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
+	for (unsigned i = 0; i < entities.size(); i++) {
 		Entity* currentEntity = entities[i];
 		Coordinates coor = currentEntity->getCoordinates();
-		mapData->addRepresentable(coor.getRow(),coor.getCol(),currentEntity);
+		mapData->addRepresentable(coor.getRow(), coor.getCol(), currentEntity);
 	}
 }
 std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
@@ -1316,14 +1340,22 @@ std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
 	for (unsigned i = 0; i < entities.size(); i++) {
 		Entity* actualEntity = entities[i];
 		std::string entityName = actualEntity->getName();
+		EntityView* duplicate = NULL;
 		for (unsigned j = 0; j < entityViews.size(); j++) {
 			EntityView* actualView = entityViews[j];
 			if ((actualView->getName()).compare(entityName) == 0) {
-				EntityView* duplicate = new EntityView();
+				duplicate = new EntityView();
 				duplicateView(actualView, duplicate);
 				duplicate->setEntity(actualEntity);
 				completeViews.push_back(duplicate);
 			}
+		}
+		// Si no se le asigno ninguna entidad a la vista.
+		if (duplicate == NULL) {
+			Logs::logErrorMessage(
+					string(
+							"Could not find entity view with the name "
+									+ entityName));
 		}
 	}
 	return completeViews;
@@ -1371,7 +1403,7 @@ void cleanUnusedViews(std::vector<EntityView*> viewVector) {
 	}
 }
 
-void setDefaultPlayerView(){
+void setDefaultPlayerView() {
 
 }
 
@@ -1425,22 +1457,18 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	std::vector<PlayerView*> playerViewVector;
 	yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
 
-
 // Parsing EntityViews.
 	std::vector<EntityView*> entityViewVector;
 	//EntityHolder* entityViewVector= new EntityHolder();
 	yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
 
-
 // Parsing animation configuration.
 	GameConfiguration* animationConfig = new GameConfiguration();
 	yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
 
-
 // Parsing tile definition.
 	TextureHolder* textureHolder = new TextureHolder();
 	yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
-
 
 // Parsing map dimensions.
 	AuxMap mapConfiguration;
@@ -1448,14 +1476,12 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	yamlNode[MAP_DIMENSION_POSITION] >> mapDimension;
 	mapConfiguration.dimension = mapDimension;
 
-
 	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
 			mapConfiguration.dimension.ncols);
 
 // Parsing player locations.
 	std::vector<Player*> playerVector;
 	yamlNode[PLAYER_LOCATIONS_POSITION] >> playerVector;
-
 
 // Parsing player locations.
 	std::vector<Entity*> entityVector;

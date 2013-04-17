@@ -12,9 +12,13 @@
 
 #include <iostream>
 
+#include <model/Logs/Logs.h>
+
 #define START_LAUGH "resources/sound/laugh.wav"
 #define START_TAUNT "resources/sound/darkness.wav"
 #define ENVIRONMENT_WINDOW "SDL_VIDEO_CENTERED=1"
+
+#define DEFAULT_BACKIMG "resources/lich.jpg"
 
 namespace std {
 
@@ -44,11 +48,10 @@ MenuView::MenuView(GameConfiguration* configuration) {
 	}
 
 	if (!screen) {
-		cerr << "No se pudo establecer el modo de video: " << SDL_GetError()
-				<< endl;
+		Logs::logErrorMessage("No se pudo establecer el modo de video: " + string(SDL_GetError()));
 		exit(1);
 	}
-
+	audioOpen = false;
 }
 
 SDL_Surface* scaleImage(SDL_Surface* screen, SDL_Surface* image) {
@@ -67,9 +70,8 @@ void MenuView::initScreen() {
 	SDL_Surface *background_image = IMG_Load(
 			this->gameConfig->getMenuBackImageSrc().c_str());
 	if (!background_image) {
-		cerr << "No se ha podido cargar la imagen de fondo: " << SDL_GetError()
-				<< endl;
-		exit(1);
+		Logs::logErrorMessage("Unable to load background image: " + string(SDL_GetError()));
+		background_image = IMG_Load(DEFAULT_BACKIMG);
 	}
 
 	SDL_Surface* background = scaleImage(screen, background_image);
@@ -114,8 +116,10 @@ void MenuView::initMusic() {
 	// Inicializamos la librería SDL_Mixer
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
 			MIX_DEFAULT_CHANNELS, 4096) < 0) {
-		cerr << "Subsistema de Audio no disponible" << SDL_GetError() << endl;
-		exit(1);
+		Logs::logErrorMessage("Subsistema de audio no disponible: " + string(SDL_GetError()));
+		musica = NULL;
+		audioOpen = true;
+		return;
 	}
 	//startLaugh();
 
@@ -123,8 +127,9 @@ void MenuView::initMusic() {
 	musica = Mix_LoadMUS(this->gameConfig->getMenuBackMusicSrc().c_str());
 
 	if (!musica) {
-		cerr << "No se puede cargar el sonido:" << SDL_GetError() << endl;
-		exit(1);
+		Logs::logErrorMessage("No se puede cargar el sonido: " + string(SDL_GetError()));
+		musica = NULL;
+		return;
 	}
 	Mix_VolumeMusic(500);
 	Mix_FadeInMusic(musica, -1, 3000);
@@ -136,9 +141,9 @@ void MenuView::startVoice() {
 	// Cargamos un sonido
 	darknessVoice = Mix_LoadWAV(START_TAUNT);
 	if (darknessVoice == NULL) {
-		cerr << "No se puede cargar el darknessVoice de darkness"
-				<< SDL_GetError() << endl;
-		exit(1);
+		Logs::logErrorMessage("No se puede cargar el sonido: " + string(SDL_GetError()));
+		darknessVoice = NULL;
+		return;
 	}
 
 	// Establecemos el volumen para el darknessVoice
@@ -152,10 +157,10 @@ void MenuView::startVoice() {
 
 void MenuView::close(){
 	for (int i = 0 ; i < buttons.size() ; i++) delete buttons[i];
-	SDL_FreeSurface(screen);
-	Mix_FreeMusic(musica);
-	Mix_FreeChunk(darknessVoice);
-	Mix_CloseAudio();
+	if (screen != NULL) SDL_FreeSurface(screen);
+	if (musica != NULL) Mix_FreeMusic(musica);
+	if (darknessVoice != NULL) Mix_FreeChunk(darknessVoice);
+	if (audioOpen) Mix_CloseAudio();
 }
 
 MenuView::~MenuView() {

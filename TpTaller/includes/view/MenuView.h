@@ -39,6 +39,7 @@ private:
 	GameConfiguration* gameConfig;
 	void startLaugh();
 	void startVoice();
+	bool audioOpen;
 };
 
 } /* namespace std */
