@@ -42,8 +42,8 @@ int main(int argc, char** argv) {
 	try {
 		PersistentConfiguration configuration = cfgReader.loadConfiguration(CONFIGURATION_FILE, OUTPUT_FILENAME);
 		initGame(&configuration);
-	} catch (YAML::ParserException& yamlException) {
-		unLog.logErrorMessage(string("Configuration syntax error, ") + yamlException.what() +string (". Loading default configuration."));
+	} catch (std::exception& e) {
+		unLog.logErrorMessage(string("Configuration syntax error, ") + e.what() +string (". Loading default configuration."));
 		PersistentConfiguration configuration = cfgReader.loadConfiguration(DEFAULT_CONFIGURATION_FILE, OUTPUT_FILENAME);
 		initGame(&configuration);
 	}
