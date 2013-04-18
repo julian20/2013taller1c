@@ -17,7 +17,7 @@
 #include <model/entities/Entity.h>
 #include <model/entities/player/Player.h>
 #include <model/map/Tile.h>
-#include <model/map/TileDefinition.h>
+#include <model/map/TextureDefinition.h>
 #include <model/map/TextureHolder.h>
 #include <model/persistence/PersistentConfiguration.h>
 #include <view/configuration/GameConfiguration.h>
