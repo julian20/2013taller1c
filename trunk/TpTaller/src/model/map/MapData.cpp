@@ -28,8 +28,6 @@ void MapData::InitializeData() {
 }
 
 void MapData::SetTileType(std::string tileType, int row, int col) {
-	// ACA deberia ir una comprobacion de si el tileType ese existe pero
-	// creo q ya va a estar en en YAML
 	CheckRowColsValue(row, col);
 
 	data[row + nrows * col].setType(tileType);
@@ -42,19 +40,17 @@ std::string MapData::GetTileType(int row, int col) {
 }
 
 void MapData::CheckRowColsValue(int row, int col) {
-	if (row < 0 || row >= nrows) {
-		// TODO: tirar error al log
-	}
-	if (col < 0 || col >= ncols) {
-		// TODO: tirar error al log
+	if ((row < 0 || row >= nrows) || (col < 0 || col >= ncols)) {
+		Logs::logErrorMessage("Se ha intentado agregar una entity a un tile inexistente");
 	}
 }
 
-void MapData::addRepresentable(int row, int col, Entity* object) {
+void MapData::addEntity(int row, int col, Entity* object) {
 	TileData currentData = data[row + nrows * col];
 
 	currentData.addEntity(object);
 
+	printf("Entity agregada\n");
 }
 
 TileData* MapData::GetTileData(int row, int col) {
@@ -65,7 +61,7 @@ void MapData::addPersonaje(int row, int col, Player* personaje) {
 	data[row + nrows * col].setPersonaje(personaje);
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
-	//personaje->setTile(personajeTile);
+	personaje->setTile(personajeTile);
 }
 
 Player* MapData::GetPersonaje(int row, int col) {
@@ -79,10 +75,6 @@ Player* MapData::GetPersonaje(int row, int col) {
  * llama al destructor sobre cada elemento cuando se desreferencia,
  * la segunda hay que llamar al destructor a mano. Si se sabe donde
  * destruir no hay problema, pero es mas complicado me parece.
- *
- * Otra cosa, las Coordinates de la tile solo se usan aca, en todos
- * los otros lados (me parece) se usa la position, fijate si podes
- * usar la position y volamos la clase Coordinate a la mierda.
  */
 list<Tile *> *MapData::GetPath(Tile* from, Tile* to) {
 	/*list<Tile *> closedSet;

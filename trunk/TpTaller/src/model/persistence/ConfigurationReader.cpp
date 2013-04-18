@@ -1085,7 +1085,7 @@ void operator >>(const YAML::Node& yamlNode,
 /**
  * Extraction operator for tile definition.
  */
-void operator >>(const YAML::Node& yamlNode, TileDefinition* tileDefinition) {
+void operator >>(const YAML::Node& yamlNode, TextureDefinition* tileDefinition) {
 
 	std::string auxId, auxSrc;
 	try {
@@ -1096,8 +1096,8 @@ void operator >>(const YAML::Node& yamlNode, TileDefinition* tileDefinition) {
 				string("Error parsing TileDefinition: ")
 						+ yamlException.what());
 	}
-	tileDefinition->setTileId(auxId);
-	tileDefinition->setTileImageSrc(auxSrc);
+	tileDefinition->setTextureId(auxId);
+	tileDefinition->setTextureImageSrc(auxSrc);
 }
 
 /**
@@ -1106,7 +1106,7 @@ void operator >>(const YAML::Node& yamlNode, TileDefinition* tileDefinition) {
 void operator >>(const YAML::Node& yamlNode, TextureHolder* textureHolder) {
 	const YAML::Node& yamlTileDefinitions = yamlNode["tiles"];
 	for (unsigned i = 0; i < yamlTileDefinitions.size(); i++) {
-		TileDefinition* tileDef = new TileDefinition("", "");
+		TextureDefinition* tileDef = new TextureDefinition("", "");
 		try {
 			yamlTileDefinitions[i] >> tileDef;
 			textureHolder->addTexture(tileDef);
@@ -1331,7 +1331,7 @@ void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
 	for (unsigned i = 0; i < entities.size(); i++) {
 		Entity* currentEntity = entities[i];
 		Coordinates coor = currentEntity->getCoordinates();
-		mapData->addRepresentable(coor.getRow(), coor.getCol(), currentEntity);
+		mapData->addEntity(coor.getRow(), coor.getCol(), currentEntity);
 	}
 }
 std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
@@ -1459,7 +1459,6 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 
 // Parsing EntityViews.
 	std::vector<EntityView*> entityViewVector;
-	//EntityHolder* entityViewVector= new EntityHolder();
 	yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
 
 // Parsing animation configuration.
@@ -1491,7 +1490,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 			entityVector);
 	std::vector<PlayerView*> cleanPlayerViews = assignPlayers(playerViewVector,
 			playerVector);
-	//assignEntities(mapData,entityVector);
+	assignEntities(mapData,entityVector);
 	cleanUnusedViews(entityViewVector);
 
 	cleanUnusedViews(playerViewVector);

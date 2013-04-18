@@ -8,7 +8,7 @@
 #ifndef TEXTUREHOLDER_H_
 #define TEXTUREHOLDER_H_
 
-#include <model/map/TileDefinition.h>
+#include <model/map/TextureDefinition.h>
 #include <vector>
 #include <string>
 
@@ -16,11 +16,11 @@ class TextureHolder {
 public:
 	TextureHolder();
 	virtual ~TextureHolder();
-	void addTexture(TileDefinition* tileDefinition);
+	void addTexture(TextureDefinition* tileDefinition);
 	SDL_Surface* getTexture(std::string id);
 	std::string getTextureSrc(std::string id);
 private:
-	std::vector<TileDefinition*> listOfTextures;
+	std::vector<TextureDefinition*> listOfTextures;
 	bool duplicateTexture(std::string id);
 };
 
