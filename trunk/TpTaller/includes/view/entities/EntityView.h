@@ -59,7 +59,8 @@ public:
 protected:
 	SDL_Surface* loadImage(string urlImagen, map<string,SDL_Surface*> *images);
 	void loadFog();
-	void setPixelInvisible(SDL_Surface * surface, int x, int y, Uint32 color);
+	void setPixelInvisible(SDL_Surface * surface, int x, int y);
+	SDL_Surface* createFogSurface();
 
 	int nClips;
 	int timeSinceLastAnimation;

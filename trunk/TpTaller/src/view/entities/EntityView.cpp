@@ -116,30 +116,51 @@ int EntityView::getImageWidth() {
 	return this->imageWidth;
 }
 
-void EntityView::setPixelInvisible(SDL_Surface * surface, int x, int y, Uint32 color) {
+void EntityView::setPixelInvisible(SDL_Surface * surface, int x, int y) {
+	Uint32 mask = 0x00000000;
+
 	Uint8 * pixel = (Uint8*)surface->pixels;
 	pixel += (y * surface->pitch) + (x * sizeof(Uint32));
-	*((Uint32*)pixel) = color;
+	*((Uint32*)pixel) = mask;
 }
 
-void EntityView::loadFog() {
-	SDL_LockSurface(this->image);
-
+SDL_Surface* EntityView::createFogSurface() {
 	Uint32 rmask, gmask, bmask, amask;
     rmask = 0x000000ff;
     gmask = 0x0000ff00;
     bmask = 0x00ff0000;
     amask = 0xff000000;
 
-    this->fogImage = SDL_CreateRGBSurface(SDL_SWSURFACE, this->image->w, this->image->h,
+	SDL_Surface* retval = SDL_CreateRGBSurface(SDL_SWSURFACE, this->image->w, this->image->h,
     										32, rmask, gmask, bmask, amask);
-    //SDL_SetColorKey(this->fogImage, SDL_SRCCOLORKEY, SDL_MapRGB(this->fogImage->format, 255, 0, 255));
 
-    SDL_FillRect(this->fogImage, NULL, 0x90000000);
+    SDL_FillRect(retval, NULL, 0x90000000);	// Si quieren tocar que tan oscuro es el fog cambien
+    										// los dos primeros valores del hexa ese.
 
-    if(this->fogImage == NULL) {
-       // TODO: tirar algo al log
+    if(retval == NULL) {
+       Logs::logErrorMessage("Fog surface cannot be loaded");
+       // TODO: que mas acemo' aca?
     }
+
+    return retval;
+}
+
+void EntityView::loadFog() {
+	SDL_LockSurface(this->image);
+	this->fogImage = createFogSurface();
+
+	Uint32 *pixels = (Uint32 *)this->image->pixels;
+	Uint32 pixelValue;
+	Uint8 red, green, blue, alpha;	// channels
+
+	for (int x = 0; x < this->image->w; x++) {
+		for (int y = 0; y < this->image->h; y++) {
+			pixelValue = pixels[ ( y * this->image->w ) + x ];
+			SDL_GetRGBA(pixelValue, this->image->format, &red, &green, &blue, &alpha);
+
+			if (alpha == 0) setPixelInvisible(this->fogImage, x, y);
+		}
+	}
 
 	SDL_UnlockSurface(this->image);
 }
@@ -253,7 +274,7 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 
 
 	SDL_BlitSurface(image, &clip, screen, &offset);
-	//SDL_BlitSurface(fogImage, &clipFog, screen, &offsetFog);
+	SDL_BlitSurface(fogImage, &clipFog, screen, &offsetFog);
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 
