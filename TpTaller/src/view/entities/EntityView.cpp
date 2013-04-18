@@ -116,7 +116,35 @@ int EntityView::getImageWidth() {
 	return this->imageWidth;
 }
 
-SDL_Surface* EntityView::load_image(string urlImagen, map<string,SDL_Surface*> *images) {
+void EntityView::setPixelInvisible(SDL_Surface * surface, int x, int y, Uint32 color) {
+	Uint8 * pixel = (Uint8*)surface->pixels;
+	pixel += (y * surface->pitch) + (x * sizeof(Uint32));
+	*((Uint32*)pixel) = color;
+}
+
+void EntityView::loadFog() {
+	SDL_LockSurface(this->image);
+
+	Uint32 rmask, gmask, bmask, amask;
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
+
+    this->fogImage = SDL_CreateRGBSurface(SDL_SWSURFACE, this->image->w, this->image->h,
+    										32, rmask, gmask, bmask, amask);
+    //SDL_SetColorKey(this->fogImage, SDL_SRCCOLORKEY, SDL_MapRGB(this->fogImage->format, 255, 0, 255));
+
+    SDL_FillRect(this->fogImage, NULL, 0x90000000);
+
+    if(this->fogImage == NULL) {
+       // TODO: tirar algo al log
+    }
+
+	SDL_UnlockSurface(this->image);
+}
+
+SDL_Surface* EntityView::loadImage(string urlImagen, map<string,SDL_Surface*> *images) {
 	//The image that's loaded
 	SDL_Surface* loadedImageTmp = NULL;
 
@@ -153,14 +181,16 @@ SDL_Surface* EntityView::load_image(string urlImagen, map<string,SDL_Surface*> *
 
 void EntityView::setImagePath(string image_path, map<string,SDL_Surface*> *images) {
 	this->imagePath = image_path;
-	this->image = load_image(image_path, images);
+	this->image = loadImage(image_path, images);
 	if (!image) { //TODO al log / loadear alternativa
 
 		//Logs(string("Error al cargar imagen de la vista ") + image_path);
-		this->image=load_image(DEFAULT_IMAGE,images);
+		this->image=loadImage(DEFAULT_IMAGE,images);
 		this->nClips=0;
 		//printf("cargo la imagen\n");
 	}
+
+	loadFog();
 }
 
 void EntityView::setDelay(int nuevoDelay) {
@@ -205,23 +235,25 @@ Entity* EntityView::getEntity() {
  }*/
 
 void EntityView::draw(SDL_Surface* screen, Position* cam) {
-	clip.x = this->imageWidth * this->currentClip * scaleWidth;
-	clip.y = 0;
-	clip.w = this->imageWidth * scaleWidth;
-	clip.h = this->imageHeight * scaleHeight;
+	SDL_Rect clipFog;
+	clip.x = clipFog.x = this->imageWidth * this->currentClip * scaleWidth;
+	clip.y = clipFog.y = 0;
+	clip.w = clipFog.w = this->imageWidth * scaleWidth;
+	clip.h = clipFog.h = this->imageHeight * scaleHeight;
 	Vector3* position = entity->getCurrentPos();
 	int x = (int) position->getX();
 	int y = (int) position->getY();
 
-	SDL_Rect offset;
+	SDL_Rect offset, offsetFog;
 	int tileH = Tile::computePositionTile(0,0,true).h;
-	offset.x = (int) (Tile::computePositionTile(x, y, true).x + cam->getX() - (int)this->anchorPixel->getX());
-	offset.y = (int) (Tile::computePositionTile(x, y, true).y + cam->getY() - (int)this->anchorPixel->getY() - tileH/2  );
-	offset.h = clip.h;
-	offset.w = clip.w;
+	offset.x = offsetFog.x = (int) (Tile::computePositionTile(x, y, true).x + cam->getX() - (int)this->anchorPixel->getX());
+	offset.y = offsetFog.y = (int) (Tile::computePositionTile(x, y, true).y + cam->getY() - (int)this->anchorPixel->getY() - tileH/2  );
+	offset.h = offsetFog.h = clip.h;
+	offset.w = offsetFog.w = clip.w;
 
 
 	SDL_BlitSurface(image, &clip, screen, &offset);
+	//SDL_BlitSurface(fogImage, &clipFog, screen, &offsetFog);
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 

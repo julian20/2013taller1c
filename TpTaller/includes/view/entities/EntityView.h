@@ -30,7 +30,6 @@ public:
 	virtual void setEntity(Entity* entity);
 	virtual Entity* getEntity();
 	virtual ~EntityView();
-	SDL_Surface* load_image(string urlImagen, map<string,SDL_Surface*> *images);
 	Vector2* getAnchorPixel();
 	void setAnchorPixel(Vector2* anchorPixel);
 	void setImageWidth(int width);
@@ -58,12 +57,16 @@ public:
 	void setName(std::string name);
 
 protected:
+	SDL_Surface* loadImage(string urlImagen, map<string,SDL_Surface*> *images);
+	void loadFog();
+	void setPixelInvisible(SDL_Surface * surface, int x, int y, Uint32 color);
 
 	int nClips;
 	int timeSinceLastAnimation;
 	bool movable;
 	Entity* entity;
 	SDL_Surface* image;
+	SDL_Surface* fogImage;
 	Vector2* anchorPixel;
 	string imagePath;
 	std::string name;

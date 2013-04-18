@@ -89,14 +89,14 @@ void PlayerView::cargarImagen(std::string img, map<string,SDL_Surface*> *images)
 		//  throw new FaltaParametroException();
 	}
 
-	SDL_Surface* miPersonajeImagen = load_image(img,images);
+	SDL_Surface* miPersonajeImagen = loadImage(img, images);
 
 	//If there was a problem in loading the sprite
 	if (!miPersonajeImagen) {
 		printf("NO SE HA ENCONTRADO LA IMAGEN DEL PERSONAJE\n");
 		//return false;
 		//TODO: cargo una alternativa
-		miPersonajeImagen = load_image(RUTA_IMAGEN,images);
+		miPersonajeImagen = loadImage(RUTA_IMAGEN, images);
 	}
 
 	marco = 0;
@@ -113,7 +113,7 @@ void PlayerView::setEntity(Entity* entity) {
 	player = aux;
 }
 
-void PlayerView::showStandingAnimation(float direction,SDL_Surface* fondo){
+void PlayerView::showStandingAnimation(float direction, SDL_Surface* fondo){
 
 	SDL_Rect clipToDraw;
 	clipToDraw.x = imageWidth*currentClip*scaleWidth;;

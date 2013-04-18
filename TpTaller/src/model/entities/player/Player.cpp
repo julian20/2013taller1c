@@ -56,8 +56,6 @@ void Player::update() {
 		moveDirection->multiplyBy(fabs(moveDirection->getY()) * (relationSpeed - 1) + 1);
 		moveDirection->multiplyBy(getSpeed()->getMagnitude());
 		currentPos->add(moveDirection);
-		//if (path->size() == 0) return;
-		//		else setNextPosition();
 	}
 }
 
