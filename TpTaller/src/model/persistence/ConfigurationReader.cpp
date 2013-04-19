@@ -58,7 +58,7 @@ public:
 
 // Error Log.
 Logs errorLog;
-map<string, SDL_Surface*> images;
+TextureHolder* textureHolder = new TextureHolder();
 int rows;
 int cols;
 
@@ -175,8 +175,8 @@ void printPlayerViews(std::vector<PlayerView*> entityViews,
 	outputFile << "- playerViews:" << std::endl;
 	for (unsigned int j = 0; j < entityViews.size(); j++) {
 		PlayerView* playerView = entityViews[j];
-		outputFile << "  - imageSrc: " << playerView->getImagePath()
-				<< std::endl;
+		//outputFile << "  - imageSrc: " << playerView->getImagePath()
+		//		<< std::endl;
 		outputFile << "    fps: " << playerView->getFps() << std::endl;
 		outputFile << "    delay: " << playerView->getDelay() << std::endl;
 		printPlayer((Player*) playerView->getEntity(), outputFile);
@@ -193,8 +193,8 @@ void printEntityViews(std::vector<EntityView*> entityViews,
 	outputFile << "- entityViews:" << std::endl;
 	for (unsigned int j = 0; j < entityViews.size(); j++) {
 		EntityView* entityView = entityViews[j];
-		outputFile << "  - imageSrc: " << entityView->getImagePath()
-				<< std::endl;
+		//outputFile << "  - imageSrc: " << entityView->getImagePath()
+		//		<< std::endl;
 		outputFile << "    fps: " << entityView->getFps() << std::endl;
 		outputFile << "    delay: " << entityView->getDelay() << std::endl;
 		printEntity(entityView->getEntity(), outputFile);
@@ -658,16 +658,18 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	playerView->setAnchorPixel(auxAnchorPixel);
 //	playerView->setBaseHeight(auxBaseLength);
 //	playerView->setBaseWidth(auxBaseWidth);
-	playerView->cargarImagen(auxImageSrc, &images);
 	playerView->setImageHeight(auxImageHeight);
 	playerView->setImageWidth(auxImageWidth);
-	playerView->setImagePath(auxImageSrc, &images);
 	playerView->setNClips(auxNumberOfClips);
 	playerView->setFps(auxFps);
 	playerView->setDelay(auxDelay);
 	playerView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
 	playerView->setEntity(auxPlayer);
 
+	TextureDefinition* textureDef = new TextureDefinition(auxName, auxImageSrc);
+	textureHolder->addTexture(textureDef);
+
+	playerView->setTextureHolder(textureHolder);
 }
 
 /**
@@ -753,10 +755,14 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	entityView->setImageWidth(auxImageWidth);
 	entityView->setNClips(auxNumberOfClips);
 	entityView->setEntity(auxEntity);
-	entityView->setImagePath(auxImageSrc, &images);
 	entityView->setFps(auxFps);
 	entityView->setDelay(auxDelay);
 	entityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
+
+	TextureDefinition* textureDef = new TextureDefinition(auxName, auxImageSrc);
+	textureHolder->addTexture(textureDef);
+
+	entityView->setTextureHolder(textureHolder);
 }
 /*
  void operator >>(const YAML::Node& yamlNode, EntityViewData* entityView) {
@@ -1300,11 +1306,12 @@ void duplicateView(EntityView* sourceView, EntityView* destView) {
 	destView->setImageHeight(sourceView->getImageHeight());
 	destView->setImageWidth(sourceView->getImageWidth());
 	destView->setNClips(sourceView->getNClips());
-	destView->setImagePath(sourceView->getImagePath(), &images);
+	//destView->setImagePath(sourceView->getImagePath(), &images);
 	destView->setFps(sourceView->getFps());
 	destView->setDelay(sourceView->getDelay());
 	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
 	destView->setEntity(NULL);
+	destView->setTextureHolder(textureHolder);
 
 }
 
@@ -1319,12 +1326,12 @@ void duplicateView(PlayerView* sourceView, PlayerView* destView) {
 	destView->setImageHeight(sourceView->getImageHeight());
 	destView->setImageWidth(sourceView->getImageWidth());
 	destView->setNClips(sourceView->getNClips());
-	destView->setImagePath(sourceView->getImagePath(), &images);
+	//destView->setImagePath(sourceView->getImagePath(), &images);
 	destView->setFps(sourceView->getFps());
 	destView->setDelay(sourceView->getDelay());
 	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
-	destView->cargarImagen(sourceView->getImagePath(), &images);
 	destView->setEntity(NULL);
+	destView->setTextureHolder(textureHolder);
 
 }
 void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
@@ -1466,7 +1473,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
 
 // Parsing tile definition.
-	TextureHolder* textureHolder = new TextureHolder();
+	// La declaracion del textureHolder la hice global
 	yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
 
 // Parsing map dimensions.

@@ -9,24 +9,24 @@
 #ifndef ENTITYVIEW_H
 #define ENTITYVIEW_H
 
+#include <model/entityProperties/Position.h>
+#include <model/map/TextureHolder.h>
+#include <model/entities/Entity.h>
+#include <view/timer/Timer.h>
+#include <model/map/Tile.h>
+#include <model/Vector2.h>
+#include <string>
+#include <map>
+
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include <model/entities/Entity.h>
-#include <model/Vector2.h>
-#include <model/entityProperties/Position.h>
-#include <view/timer/Timer.h>
-#include <string>
-#include <model/map/Tile.h>
-
-#include <map>
 
 
 using namespace std;
 class EntityView {
 public:
 	EntityView();
-	void setImagePath(string image_path, map<string,SDL_Surface*> *images);
-	std::string getImagePath();
+	void setTextureHolder(TextureHolder* _textureHolder);
 	virtual void setEntity(Entity* entity);
 	virtual Entity* getEntity();
 	virtual ~EntityView();
@@ -57,10 +57,11 @@ public:
 	void setName(std::string name);
 
 protected:
-	SDL_Surface* loadImage(string urlImagen, map<string,SDL_Surface*> *images);
-	void loadFog();
+	//SDL_Surface* loadImage(string urlImagen, map<string,SDL_Surface*> *images);
+	void loadImage();
+	void loadFog(SDL_Surface* image);
 	void setPixelInvisible(SDL_Surface * surface, int x, int y);
-	SDL_Surface* createFogSurface();
+	SDL_Surface* createFogSurface(int width, int heigth);
 
 	int nClips;
 	int timeSinceLastAnimation;
@@ -69,7 +70,7 @@ protected:
 	SDL_Surface* image;
 	SDL_Surface* fogImage;
 	Vector2* anchorPixel;
-	string imagePath;
+	TextureHolder* textureHolder;
 	std::string name;
 	int imageHeight;
 	int imageWidth;

@@ -29,7 +29,6 @@ EntityView::EntityView() {
 	this->baseWidth = 1;
 	this->scaleWidth = 1;
 	this->scaleHeight = 1;
-	this->imagePath = "";
 	this->tileHeight = 50;
 	this->tileWidth = 70;
 	this->imageHeight = 0;
@@ -124,14 +123,14 @@ void EntityView::setPixelInvisible(SDL_Surface * surface, int x, int y) {
 	*((Uint32*)pixel) = mask;
 }
 
-SDL_Surface* EntityView::createFogSurface() {
+SDL_Surface* EntityView::createFogSurface(int width, int heigth) {
 	Uint32 rmask, gmask, bmask, amask;
     rmask = 0x000000ff;
     gmask = 0x0000ff00;
     bmask = 0x00ff0000;
     amask = 0xff000000;
 
-	SDL_Surface* retval = SDL_CreateRGBSurface(SDL_SWSURFACE, this->image->w, this->image->h,
+	SDL_Surface* retval = SDL_CreateRGBSurface(SDL_SWSURFACE, width, heigth,
     										32, rmask, gmask, bmask, amask);
 
     SDL_FillRect(retval, NULL, 0x90000000);	// Si quieren tocar que tan oscuro es el fog cambien
@@ -145,27 +144,32 @@ SDL_Surface* EntityView::createFogSurface() {
     return retval;
 }
 
-void EntityView::loadFog() {
-	SDL_LockSurface(this->image);
-	this->fogImage = createFogSurface();
+void EntityView::loadImage() {
+	image = textureHolder->getTexture(name);
+	loadFog(image);
+}
 
-	Uint32 *pixels = (Uint32 *)this->image->pixels;
+void EntityView::loadFog(SDL_Surface* image) {
+	SDL_LockSurface(image);
+	this->fogImage = createFogSurface(image->w, image->h);
+
+	Uint32 *pixels = (Uint32 *)image->pixels;
 	Uint32 pixelValue;
 	Uint8 red, green, blue, alpha;	// channels
 
-	for (int x = 0; x < this->image->w; x++) {
-		for (int y = 0; y < this->image->h; y++) {
-			pixelValue = pixels[ ( y * this->image->w ) + x ];
-			SDL_GetRGBA(pixelValue, this->image->format, &red, &green, &blue, &alpha);
+	for (int x = 0; x < image->w; x++) {
+		for (int y = 0; y < image->h; y++) {
+			pixelValue = pixels[ ( y * image->w ) + x ];
+			SDL_GetRGBA(pixelValue, image->format, &red, &green, &blue, &alpha);
 
 			if (alpha == 0) setPixelInvisible(this->fogImage, x, y);
 		}
 	}
 
-	SDL_UnlockSurface(this->image);
+	SDL_UnlockSurface(image);
 }
 
-SDL_Surface* EntityView::loadImage(string urlImagen, map<string,SDL_Surface*> *images) {
+/*SDL_Surface* EntityView::loadImage(string urlImagen, map<string,SDL_Surface*> *images) {
 	//The image that's loaded
 	SDL_Surface* loadedImageTmp = NULL;
 
@@ -198,9 +202,9 @@ SDL_Surface* EntityView::loadImage(string urlImagen, map<string,SDL_Surface*> *i
 	images->insert(std::pair<string,SDL_Surface*>(urlImagen,optimizedImage));
 
 	return optimizedImage;
-}
+}*/
 
-void EntityView::setImagePath(string image_path, map<string,SDL_Surface*> *images) {
+/*void EntityView::setImagePath(string image_path, map<string,SDL_Surface*> *images) {
 	this->imagePath = image_path;
 	this->image = loadImage(image_path, images);
 	if (!image) { //TODO al log / loadear alternativa
@@ -211,7 +215,10 @@ void EntityView::setImagePath(string image_path, map<string,SDL_Surface*> *image
 		//printf("cargo la imagen\n");
 	}
 
-	loadFog();
+}*/
+
+void EntityView::setTextureHolder( TextureHolder* _textureHolder ) {
+	textureHolder = _textureHolder;
 }
 
 void EntityView::setDelay(int nuevoDelay) {
@@ -230,10 +237,6 @@ int EntityView::getFps() {
 	return this->fps;
 }
 
-string EntityView::getImagePath() {
-	return this->imagePath;
-}
-
 void EntityView::setEntity(Entity* entity) {
 	this->entity = entity;
 }
@@ -242,20 +245,9 @@ Entity* EntityView::getEntity() {
 	return this->entity;
 }
 
-/*
- void EntityView::EstablecerClips()
- {
- for(int x=0; x < this->nClips ; x++)
- {
- clip[x].x =this->imageWidth*x;
- clip[x].y =0;
- clip[x].w=this->imageWidth;
- clip[x].h=this->imageHeight;
-
- }
- }*/
-
 void EntityView::draw(SDL_Surface* screen, Position* cam) {
+	if (image == NULL) loadImage();
+
 	SDL_Rect clipFog;
 	clip.x = clipFog.x = this->imageWidth * this->currentClip * scaleWidth;
 	clip.y = clipFog.y = 0;

@@ -49,8 +49,6 @@ void MapData::addEntity(int row, int col, Entity* object) {
 	TileData currentData = data[row + nrows * col];
 
 	currentData.addEntity(object);
-
-	printf("Entity agregada\n");
 }
 
 TileData* MapData::GetTileData(int row, int col) {
