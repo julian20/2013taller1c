@@ -15,13 +15,25 @@
 
 //Posicion de los pies del personaje respecto de la base de la imagen
 #define OFFSET_Y	15
-
-#define RUTA_IMAGEN "resources/soldierSheet.png"
 #define ANIMATION_CHANGE_DELAY 1
-
 #define STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE 16
+#define DEFAULT_CHARACTER_ID	"characterDefault"
 
-//#define SCALE				0.2
+PlayerView::PlayerView()
+//Llamamos al constructor de la superclase
+:
+		EntityView() {
+	camPos = new Position(0, 0);
+	marco = 0;
+	animationChangeRate = 0;
+	imageHeight = 0;
+	imageWidth = 0;
+	numberOfClips = 0;
+	movable = true;
+	direction = STANDING;
+	wasStanding = true;
+	player = NULL;
+}
 
 void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
 		SDL_Rect* clip) {
@@ -41,36 +53,12 @@ void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
 
 void PlayerView::draw(SDL_Surface* screen, Position* cam) {
 	UpdateCameraPos(cam);
-	Mostrar(screen);
+	Show(screen);
 }
 
 void PlayerView::UpdateCameraPos(Position* _camPos) {
 	delete camPos;
 	camPos = new Position(_camPos->getX(), _camPos->getY());
-}
-
-PlayerView::PlayerView()
-//Llamamos al constructor de la superclase
-:
-		EntityView() {
-	camPos = new Position(0, 0);
-	marco = 0;
-	animationChangeRate = 0;
-	characterImage = NULL;
-	imageHeight = 0;
-	imageWidth = 0;
-	numberOfClips = 0;
-	movable = true;
-	direction = STANDING;
-	wasStanding = true;
-	player = NULL;
-	// try
-	//{
-	//this->fondo = fondo;
-	/* }catch(ERROR e)
-	 {
-	 //TODO:cargo una imagen alternativa.
-	 }*/
 }
 
 void PlayerView::setPersonaje(Player* personaje) {
@@ -79,32 +67,15 @@ void PlayerView::setPersonaje(Player* personaje) {
 	player->getBase()->setAnchorPixel(anchorPixel);
 }
 
-Player* PlayerView::getPersonaje() {
-	return this->player;
-}
+void PlayerView::loadPlayerImage() {
+	image = textureHolder->getTexture(name);
 
-void PlayerView::cargarImagen(std::string img, map<string,SDL_Surface*> *images) {
-	//Load the sprite sheet
-	if (img.compare("")) {
-		//  throw new FaltaParametroException();
-	}
-
-	SDL_Surface* miPersonajeImagen = loadImage(img, images);
-
-	//If there was a problem in loading the sprite
-	if (!miPersonajeImagen) {
+	//If there was a problem loading the sprite
+	if (!image) {
 		printf("NO SE HA ENCONTRADO LA IMAGEN DEL PERSONAJE\n");
-		//return false;
 		//TODO: cargo una alternativa
-		miPersonajeImagen = loadImage(RUTA_IMAGEN, images);
+		image = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
 	}
-
-	marco = 0;
-	characterImage = miPersonajeImagen;
-}
-
-Player* PlayerView::getEntity() {
-	return player;
 }
 
 void PlayerView::setEntity(Entity* entity) {
@@ -122,7 +93,7 @@ void PlayerView::showStandingAnimation(float direction, SDL_Surface* fondo){
 	clipToDraw.h = imageHeight*scaleHeight;
 
 
-	showFrame(this->characterImage, fondo, &clipToDraw);
+	showFrame(this->image, fondo, &clipToDraw);
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 
@@ -145,7 +116,9 @@ void PlayerView::showStandingAnimation(float direction, SDL_Surface* fondo){
 
 }
 
-void PlayerView::Mostrar(SDL_Surface* fondo) {
+void PlayerView::Show(SDL_Surface* fondo) {
+	if (this->image == NULL) loadPlayerImage();
+
 	Vector2* movementDirection = this->player->getMovementDirection();
 	float direction = movementDirection->getAngle();
 
@@ -196,7 +169,7 @@ void PlayerView::Mostrar(SDL_Surface* fondo) {
 	clipToDraw.w = imageWidth*scaleWidth;
 	clipToDraw.h = imageHeight*scaleHeight;
 
-	showFrame(this->characterImage, fondo, &clipToDraw);
+	showFrame(this->image, fondo, &clipToDraw);
 }
 
 
@@ -226,4 +199,12 @@ int PlayerView::getNClips() {
 
 void PlayerView::setNClips(int clips) {
 	this->numberOfClips = clips;
+}
+
+Player* PlayerView::getPersonaje() {
+	return this->player;
+}
+
+Player* PlayerView::getEntity() {
+	return player;
 }

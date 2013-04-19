@@ -13,7 +13,7 @@
 
 #include <model/Logs/Logs.h>
 
-#define TilesScale  	1
+#define SCALE  	1
 
 #define DEFAULT_TEXTURE_PATH "resources/questionMark.png"
 
@@ -25,10 +25,10 @@ TextureDefinition::TextureDefinition() {
 }
 
 TextureDefinition::TextureDefinition(std::string id, std::string imageSrc) {
-	this->id = id;
-	this->imageSrc = imageSrc;
 	this->setDefaultImage(DEFAULT_TEXTURE_PATH);
 	this->openImage = NULL;
+	this->id = id;
+	this->imageSrc = imageSrc;
 }
 
 TextureDefinition::~TextureDefinition() {
@@ -55,8 +55,8 @@ SDL_Surface* TextureDefinition::getTextureImage() {
 			loadedImageTmp = this->getDefaultTextureImage();
 		}
 
-		SDL_Surface* loadedImageRot = rotozoomSurfaceXY(loadedImageTmp, 0, TilesScale,
-				TilesScale, 0);
+		SDL_Surface* loadedImageRot = rotozoomSurfaceXY(loadedImageTmp, 0, SCALE,
+				SCALE, 0);
 		SDL_FreeSurface(loadedImageTmp);
 		SDL_Surface* loadedImage = SDL_DisplayFormatAlpha(loadedImageRot);
 		SDL_FreeSurface(loadedImageRot);
@@ -71,7 +71,7 @@ void TextureDefinition::setTextureImageSrc(std::string imageSrc) {
 
 SDL_Surface* TextureDefinition::prepareImage(SDL_Surface* loadedImage) {
 	SDL_Surface* tmp = loadedImage;
-	loadedImage = rotozoomSurfaceXY(tmp, 0, TilesScale, TilesScale, 0);
+	loadedImage = rotozoomSurfaceXY(tmp, 0, SCALE, SCALE, 0);
 	SDL_FreeSurface(tmp);
 	tmp = loadedImage;
 	loadedImage = SDL_DisplayFormatAlpha(tmp);

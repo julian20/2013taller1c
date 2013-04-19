@@ -10,9 +10,15 @@
 #define DEFAULT_TEXTURE_ID "default"
 #define DEFAULT_TEXTURE_PATH "resources/texturesTiles/grass.png"
 
+#define DEFAULT_CHARACTER_ID	"characterDefault"
+#define DEFAULT_CHARACTER_PATH	"resources/soldierSheet.png"
+
 TextureHolder::TextureHolder() {
 	TextureDefinition* defaultTile = new TextureDefinition(DEFAULT_TEXTURE_ID,DEFAULT_TEXTURE_PATH);
 	this->listOfTextures.push_back(defaultTile);
+
+	TextureDefinition* defaultCharacter = new TextureDefinition(DEFAULT_CHARACTER_ID, DEFAULT_CHARACTER_PATH);
+	this->listOfTextures.push_back(defaultCharacter);
 }
 
 TextureHolder::~TextureHolder() {
@@ -23,8 +29,8 @@ TextureHolder::~TextureHolder() {
 
 bool TextureHolder::duplicateTexture(std::string id) {
 	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
-		TextureDefinition* auxTileDefinition = this->listOfTextures[i];
-		if (id.compare(auxTileDefinition->getTextureId()) == 0) {
+		TextureDefinition* auxTextureDefinition = this->listOfTextures[i];
+		if (id.compare(auxTextureDefinition->getTextureId()) == 0) {
 			return true;
 		}
 	}
@@ -32,19 +38,19 @@ bool TextureHolder::duplicateTexture(std::string id) {
 	return false;
 }
 
-void TextureHolder::addTexture(TextureDefinition* tileDefinition) {
-	if (duplicateTexture(tileDefinition->getTextureId())) {
+void TextureHolder::addTexture(TextureDefinition* textureDefinition) {
+	if (duplicateTexture(textureDefinition->getTextureId())) {
 		return;
 	}
 
-	this->listOfTextures.push_back(tileDefinition);
+	this->listOfTextures.push_back(textureDefinition);
 }
 
 std::string TextureHolder::getTextureSrc(std::string id) {
 	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
-		TextureDefinition* auxTileDefinition = this->listOfTextures[i];
-		if (id.compare(auxTileDefinition->getTextureId()) == 0) {
-			return auxTileDefinition->getTextureImageSrc();
+		TextureDefinition* auxTextureDefinition = this->listOfTextures[i];
+		if (id.compare(auxTextureDefinition->getTextureId()) == 0) {
+			return auxTextureDefinition->getTextureImageSrc();
 		}
 	}
 
@@ -53,10 +59,10 @@ std::string TextureHolder::getTextureSrc(std::string id) {
 
 SDL_Surface* TextureHolder::getTexture(std::string id) {
 	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
-		TextureDefinition* auxTileDefinition = this->listOfTextures[i];
-		if (id.compare(auxTileDefinition->getTextureId()) == 0) {
-			SDL_Surface* surf = auxTileDefinition->getTextureImage();
-			if (!surf) return getTexture(DEFAULT_TEXTURE_ID);
+		TextureDefinition* auxTextureDefinition = this->listOfTextures[i];
+		if (id.compare(auxTextureDefinition->getTextureId()) == 0) {
+			SDL_Surface* surf = auxTextureDefinition->getTextureImage();
+			if (surf == NULL) return getTexture(DEFAULT_TEXTURE_ID);
 			return surf;
 		}
 	}

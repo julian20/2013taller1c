@@ -22,17 +22,12 @@
 #define		SCREEN_HEIGHT  	480
 #define		SCREEN_BPP  	32
 
-//Dimensiones de la figura Imagen.
-#define PERSONAJE_ANCHO  96
-#define PERSONAJE_ALTO  96
-
 using namespace std;
 
 class PlayerView: public EntityView {
 public:
 	PlayerView();
-	void cargarImagen(std::string img, map<string,SDL_Surface*> *images);
-	void Mostrar(SDL_Surface* fondo);
+	void Show(SDL_Surface* fondo);
 	void setPersonaje(Player* personaje);
 	Player* getPersonaje();
 	void UpdateCameraPos(Position* _camPos);
@@ -50,9 +45,8 @@ public:
 private:
 	void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
 	void showStandingAnimation(float direction, SDL_Surface* fondo);
+	void loadPlayerImage();
 	Player* player;
-	//SDL_Surface* fondo;
-	SDL_Surface* characterImage;
 	Position* camPos;
 	int marco; 	// Current frame
 	int animationChangeRate;
