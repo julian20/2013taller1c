@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>
+#include <SDL/SDL_ttf.h>
+#include <model/Logs/Logs.h>
 
 #include <cmath>
 #include <string>
@@ -33,22 +35,29 @@ PlayerView::PlayerView()
 	direction = STANDING;
 	wasStanding = true;
 	player = NULL;
+	nameImage = NULL;
 }
 
-void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
-		SDL_Rect* clip) {
+void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
 	SDL_Rect offset;
 
 	Vector3* position = player->getCurrentPos();
 	float x = position->getX();
 	float y = position->getY();
 	offset.x = (int) x + camPos->getX() - this->anchorPixel->getX();
-	int h = Tile::computePositionTile(0,0).h;
-	offset.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h/2;
+	int h = Tile::computePositionTile(0, 0).h;
+	offset.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2;
 	offset.w = clip->w;
 	offset.h = clip->h;
 
 	SDL_BlitSurface(source, clip, screen, &offset);
+
+	SDL_Rect offsetNombre;
+	offsetNombre.x = (int) x + camPos->getX() - nameImage->w/2;
+	offsetNombre.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2 - 20;
+	offsetNombre.w = nameImage->w;
+	offsetNombre.h = nameImage->h;
+	SDL_BlitSurface(nameImage, NULL, screen, &offsetNombre);
 }
 
 void PlayerView::draw(SDL_Surface* screen, Position* cam) {
@@ -84,14 +93,15 @@ void PlayerView::setEntity(Entity* entity) {
 	player = aux;
 }
 
-void PlayerView::showStandingAnimation(float direction, SDL_Surface* fondo){
+void PlayerView::showStandingAnimation(float direction, SDL_Surface* fondo) {
 
 	SDL_Rect clipToDraw;
-	clipToDraw.x = imageWidth*currentClip*scaleWidth;;
-	clipToDraw.y = imageHeight*STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE;
-	clipToDraw.w = imageWidth*scaleWidth;;
-	clipToDraw.h = imageHeight*scaleHeight;
-
+	clipToDraw.x = imageWidth * currentClip * scaleWidth;
+	;
+	clipToDraw.y = imageHeight * STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE;
+	clipToDraw.w = imageWidth * scaleWidth;
+	;
+	clipToDraw.h = imageHeight * scaleHeight;
 
 	showFrame(this->image, fondo, &clipToDraw);
 
@@ -100,7 +110,7 @@ void PlayerView::showStandingAnimation(float direction, SDL_Surface* fondo){
 	//TODO - deberia ser numberOfClips-1 pero parece q esta mal la imagen ?¿
 
 	//Apply delay
-	if (currentClip < (numberOfClips-2) && timeSinceLastAnimation >= delay * 1000) {
+	if (currentClip < (numberOfClips - 2) && timeSinceLastAnimation >= delay * 1000) {
 		//Apply FPS cap
 		if (animationRateTimer.getTimeSinceLastAnimation() >= 1000 / fps) {
 			currentClip++;
@@ -113,65 +123,81 @@ void PlayerView::showStandingAnimation(float direction, SDL_Surface* fondo){
 		currentClip = 0;
 	}
 
-
 }
 
 void PlayerView::Show(SDL_Surface* fondo) {
-	if (this->image == NULL) loadPlayerImage();
+	if (this->image == NULL)
+		loadPlayerImage();
 
 	Vector2* movementDirection = this->player->getMovementDirection();
 	float direction = movementDirection->getAngle();
 
 	const float step = M_PI * 1 / 8;
 
-	if (step * 15 < direction || direction < step)			direction = RIGHT;
-	else if (step < direction && direction < step * 3)		direction = DOWN_RIGHT;
-	else if (step * 3 < direction && direction < step * 5)	direction = DOWN;
-	else if (step * 5 < direction && direction < step * 7)	direction = DOWN_LEFT;
-	else if (step * 7 < direction && direction < step * 9)	direction = LEFT;
-	else if (step * 9 < direction && direction < step * 11)	direction = UP_LEFT;
-	else if (step * 11 < direction && direction < step * 13)direction = UP;
-	else if (step * 13 < direction && direction < step * 15)direction = UP_RIGHT;
+	if (step * 15 < direction || direction < step)
+		direction = RIGHT;
+	else if (step < direction && direction < step * 3)
+		direction = DOWN_RIGHT;
+	else if (step * 3 < direction && direction < step * 5)
+		direction = DOWN;
+	else if (step * 5 < direction && direction < step * 7)
+		direction = DOWN_LEFT;
+	else if (step * 7 < direction && direction < step * 9)
+		direction = LEFT;
+	else if (step * 9 < direction && direction < step * 11)
+		direction = UP_LEFT;
+	else if (step * 11 < direction && direction < step * 13)
+		direction = UP;
+	else if (step * 13 < direction && direction < step * 15)
+		direction = UP_RIGHT;
 
-	if (player->isRunning()){
-		if (direction == RIGHT) 	direction = RIGHT_RUN;
-		if (direction == DOWN_RIGHT)direction = DOWN_RIGHT_RUN;
-		if (direction == DOWN) 		direction = DOWN_RUN;
-		if (direction == DOWN_LEFT) direction = DOWN_LEFT_RUN;
-		if (direction == LEFT) 		direction = LEFT_RUN;
-		if (direction == UP_LEFT) 	direction = UP_LEFT_RUN;
-		if (direction == UP) 		direction = UP_RUN;
-		if (direction == UP_RIGHT) 	direction = UP_RIGHT_RUN;
+	if (player->isRunning()) {
+		if (direction == RIGHT)
+			direction = RIGHT_RUN;
+		if (direction == DOWN_RIGHT)
+			direction = DOWN_RIGHT_RUN;
+		if (direction == DOWN)
+			direction = DOWN_RUN;
+		if (direction == DOWN_LEFT)
+			direction = DOWN_LEFT_RUN;
+		if (direction == LEFT)
+			direction = LEFT_RUN;
+		if (direction == UP_LEFT)
+			direction = UP_LEFT_RUN;
+		if (direction == UP)
+			direction = UP_RUN;
+		if (direction == UP_RIGHT)
+			direction = UP_RIGHT_RUN;
 	}
 
 	if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
 		this->marco++;
-		animationChangeRate = 0;// Move to the next marco in the animation
+		animationChangeRate = 0; // Move to the next marco in the animation
 	} else {
 		animationChangeRate++;
 	}
 
-	if (!player->IsMoving()){
-		if (!wasStanding){
+	if (!player->IsMoving()) {
+		if (!wasStanding) {
 			timer.start();
 			wasStanding = true;
 		}
-		showStandingAnimation(direction,fondo);
+		showStandingAnimation(direction, fondo);
 		return;
 	}
 
 	wasStanding = false;
-	if (marco >= numberOfClips) marco = 0;    // Loop the animation
+	if (marco >= numberOfClips)
+		marco = 0;    // Loop the animation
 
 	SDL_Rect clipToDraw;
-	clipToDraw.x = imageWidth*marco*scaleWidth;
-	clipToDraw.y = imageHeight*direction;
-	clipToDraw.w = imageWidth*scaleWidth;
-	clipToDraw.h = imageHeight*scaleHeight;
+	clipToDraw.x = imageWidth * marco * scaleWidth;
+	clipToDraw.y = imageHeight * direction;
+	clipToDraw.w = imageWidth * scaleWidth;
+	clipToDraw.h = imageHeight * scaleHeight;
 
 	showFrame(this->image, fondo, &clipToDraw);
 }
-
 
 PlayerView::~PlayerView() {
 	//libera la memoria que pide para La imagen
@@ -207,4 +233,17 @@ Player* PlayerView::getPersonaje() {
 
 Player* PlayerView::getEntity() {
 	return player;
+}
+
+void PlayerView::setName(std::string name) {
+	this->name = name;
+	SDL_Color color;
+	color.r = 255;
+	color.g = 255;
+	color.b = 255;
+	TTF_Font* font = TTF_OpenFont( "resources/fonts/Baramond.ttf", 28 );
+	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);
+	if (!nameImage || ! font)
+		Logs::logErrorMessage("Error al cargar la fuente para el nombre del personaje");
+
 }

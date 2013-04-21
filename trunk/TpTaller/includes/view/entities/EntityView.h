@@ -54,7 +54,7 @@ public:
 	void setBaseWidth(int width);
 	void setBaseHeight(int height);
 	std::string getName();
-	void setName(std::string name);
+	virtual void setName(std::string name);
 
 protected:
 	//SDL_Surface* loadImage(string urlImagen, map<string,SDL_Surface*> *images);
