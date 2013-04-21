@@ -29,6 +29,9 @@ public:
 	void setCoordinates(Coordinates coords);
 	std::string getTextureIdentifier();
 	void setTextureIdentifier(std::string textureId);
+	void setFScore(float _fScore);
+	float getFScore();
+	bool isEqual(Tile* otherTile);
 	static Position computePosition(int row, int col, bool toTileZero = false);
 	static SDL_Rect computePositionTile(int row, int col, bool toTileZero = false);
 	static Coordinates* getTileCoordinates(int x, int y);
@@ -49,6 +52,7 @@ private:
 	Position* position;
 	Coordinates* coordinates;
 	std::string textureIdentifier;
+	float fScore;	// for path finding
 };
 
 #endif /* TILE_H_ */

@@ -66,6 +66,48 @@ Player* MapData::GetPersonaje(int row, int col) {
 	return data[row + nrows * col].getPersonaje();
 }
 
+void addTileToList(list<Tile *> list, int row, int col){
+	list.push_back( new Tile( new Coordinates(row, col) ) );
+}
+
+list<Tile *> MapData::getNeighborTiles(Tile* tile) {
+	list<Tile *> neighborTiles;
+	Coordinates coords = tile->getCoordinates();
+
+	int col = coords.getCol();
+	int row = coords.getRow();
+
+	if (col > 0) addTileToList(neighborTiles, row, col - 1);
+	if (row > 0) addTileToList(neighborTiles, row - 1, col);
+	if (col > 0 && row > 0) addTileToList(neighborTiles, row - 1, col - 1);
+	if (col < ncols - 1) addTileToList(neighborTiles, row, col + 1);
+	if (row < nrows - 1) addTileToList(neighborTiles, row + 1, col);
+	if (col < ncols - 1 && row < nrows - 1) addTileToList(neighborTiles, row + 1, col + 1);
+	if (col > 0 && row < nrows - 1) addTileToList(neighborTiles, row + 1, col - 1);
+	if (col < ncols - 1 && row > 0) addTileToList(neighborTiles, row - 1, col + 1);
+
+	return neighborTiles;
+}
+
+bool tileExistInList(list<Tile *> list, Tile* tile) {
+	std::list<Tile *>::const_iterator iter;
+	for (iter = list.begin(); iter != list.end(); ++iter) {
+		Tile* current = *iter;
+
+		if (current->isEqual( tile )) return true;
+	}
+
+	return false;
+}
+
+bool compTileList(Tile* A, Tile* B) {
+	float AScore = A->getFScore();
+	float BScore = B->getFScore();
+	bool retval =  AScore < BScore;
+
+	return retval;
+}
+
 /**
  * TODO: ~~~ Gonchu ~~~
  * Tratar de usar list<Tile*> path en vez de
@@ -74,19 +116,49 @@ Player* MapData::GetPersonaje(int row, int col) {
  * la segunda hay que llamar al destructor a mano. Si se sabe donde
  * destruir no hay problema, pero es mas complicado me parece.
  */
-list<Tile *> *MapData::GetPath(Tile* from, Tile* to) {
+list<Tile *> *MapData::GetPath(Tile* from, Tile* goal) {
 	/*list<Tile *> closedSet;
-	 list<Tile *> openSet;
-	 openSet.insert( openSet.end(), from );
-	 list<Tile *> cameFrom;
+	list<Tile *> openSet;
+	openSet.push_back( from );
+	map<Tile *, Tile *> cameFrom;
 
-	 map<Tile *, float> g_score;
-	 g_score[from] = 0.0f;
-	 map<Tile *, float> f_score;
-	 f_score[from] = g_score[from] + heuristic_cost_estimate(from, to);
+	map<Tile *, float> g_score;
+	g_score[from] = 0.0f;
+	from->setFScore(g_score[from] + heuristicCostEstimate(from, goal));
+	Tile* current;
 
-	 while( openSet.size() > 0 ){
-	 }*/
+	while( openSet.size() > 0 ){
+		openSet.sort(compTileList);
+		current = openSet.back();	// node having the lowest fScore value
+
+		if (current->isEqual( goal ))
+			return reconstructPath(cameFrom, goal);
+
+		openSet.remove(current);
+		closedSet.push_back(current);
+		list<Tile *> neighborTiles = getNeighborTiles(current);
+
+		list<Tile *>::const_iterator iter;
+		for (iter = neighborTiles.begin(); iter != neighborTiles.end(); ++iter) {
+			Tile* neighbor = *iter;
+			float tentativeGScore = g_score[current] + distBetweenTiles(current, neighbor);
+
+			bool existsGScore = (g_score.find(current) == g_score.end());
+			if (existsGScore) g_score[neighbor] = tentativeGScore + 1;
+
+			if (existsGScore && (tentativeGScore >= g_score[neighbor]))
+				continue;
+
+			bool neighborInOpenSet = tileExistInList(openSet, neighbor);
+			if (!neighborInOpenSet || (tentativeGScore < g_score[neighbor])) {
+				cameFrom[neighbor] = current;
+				g_score[neighbor] = tentativeGScore;
+				neighbor->setFScore(g_score[neighbor] + heuristicCostEstimate(neighbor, goal));
+				if (!neighborInOpenSet)
+					openSet.push_back(neighbor);
+			}
+		}
+	}*/
 
 	list<Tile *> *path = new list<Tile *>();
 	Tile* nextTile;
@@ -94,7 +166,7 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* to) {
 	nextTile = from;
 	int row, col;
 	Coordinates nextTileCords = nextTile->getCoordinates();
-	Coordinates toCords = to->getCoordinates();
+	Coordinates toCords = goal->getCoordinates();
 
 	while (nextTileCords.getCol() != toCords.getCol()
 		|| nextTileCords.getRow() != toCords.getRow()) {
@@ -126,13 +198,33 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* to) {
 	return path;
 }
 
-/*float heuristic_cost_estimate(Tile* from, Tile* to) {
- Coordinates* fromPos = from->getCoordinates();
- Coordinates* toPos = to->getCoordinates();
+float MapData::heuristicCostEstimate(Tile* from, Tile* to) {
+	float dist = distBetweenTiles(from, to);
 
- // Devuelvo la norma del vector que une ambos puntos
- return sqrt( pow(toPos->row - fromPos->row, 2) + pow(toPos->col - fromPos->col, 2));
- }*/
+	return dist * 2;
+}
+
+float MapData::distBetweenTiles(Tile* from, Tile* to)  {
+	Coordinates fromPos = from->getCoordinates();
+	Coordinates toPos = to->getCoordinates();
+
+	// Devuelvo la norma del vector que une ambos puntos
+	return sqrt( pow(toPos.getRow() - fromPos.getRow(), 2) + pow(toPos.getCol() - fromPos.getCol(), 2));
+
+}
+
+list<Tile *> *MapData::reconstructPath(map<Tile *, Tile *> cameFrom, Tile* currentNode) {
+	list<Tile *> *path;
+
+	if (cameFrom.find(currentNode) != cameFrom.end()) {	// if exists in cameFrom
+		path = reconstructPath(cameFrom, cameFrom[currentNode]);
+	} else {
+		 path = new list<Tile *>();
+	}
+
+	path->push_back(currentNode);
+	return path;
+}
 
 void MapData::movePersonaje(Player* personaje, Tile* toTile) {
 	Tile fromTile = personaje->getTile();

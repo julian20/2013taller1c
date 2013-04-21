@@ -9,6 +9,7 @@
 #include <model/map/Tile.h>
 #include <model/map/TileData.h>
 #include <list>
+#include <map>
 
 using namespace std;
 
@@ -32,6 +33,11 @@ public:
 	void movePersonaje(Player* personaje, Tile* toTile);
 	//void IdentifyTile(int x, int y);
 private:
+	float heuristicCostEstimate(Tile* from, Tile* to);
+	float distBetweenTiles(Tile* from, Tile* to);
+	list<Tile *> *reconstructPath(map<Tile *, Tile *> cameFrom, Tile* goal);
+	list<Tile *> getNeighborTiles(Tile* tile);
+
     vector<TileData> data;
     int nrows;
     int ncols;
