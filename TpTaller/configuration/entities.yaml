@@ -1,6 +1,9 @@
 - playerViews:
-  - name: player
-    imageSrc: resources/black_knight.png
+  - name: Player
+    walkingImageSrc: resources/black_knight_walking.png
+    idleImageSrc: resources/black_knight_idle.png
+    runningImageSrc: resources/black_knight_running.png
+    attackImageSrc: resources/black_knight_attack.png
     imageWidth: 96
     imageHeight: 96
     numberOfClips: 8
@@ -115,7 +118,7 @@
     imageSrc: resources/texturesTiles/sandGrass/sandGrassCurveIn135.png
 - mapDimensions: [50, 50]
 - playerLocations:
-  - name: player
+  - name: Player
     position: [20, 20, 0]
     speed:
       magnitude: 4

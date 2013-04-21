@@ -16,6 +16,7 @@ Player::Player() {
 	this->name = "";
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile( new Coordinates(0, 0) );
+	attacking = false;
 }
 
 void Player::setPos(float x, float y, float z) {
@@ -87,6 +88,7 @@ Player::Player(string name, Position* position, Speed* speed, vector<Power*> pow
 	this->base = new Base();
 	endPos = new Vector3(0, 0, 0);
 	endPos->setValues(currentPos->getX(),currentPos->getY());
+	attacking = false;
 }
 
 Player::~Player() {
@@ -157,4 +159,16 @@ string Player::getClassName(){
 
 void Player::setSpeedMagnitude(int mag){
 	speed->setMagnitude(mag);
+}
+
+bool Player::isAttacking(){
+	return attacking;
+}
+
+void Player::attack(){
+	attacking = true;
+}
+
+void Player::cancelAttack(){
+	attacking = false;
 }

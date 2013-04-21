@@ -32,10 +32,11 @@ PlayerView::PlayerView()
 	imageWidth = 0;
 	numberOfClips = 0;
 	movable = true;
-	direction = STANDING;
+	direction = DOWN;
 	wasStanding = true;
 	player = NULL;
 	nameImage = NULL;
+	currentSprite = DOWN;
 }
 
 void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
@@ -77,14 +78,39 @@ void PlayerView::setPersonaje(Player* personaje) {
 }
 
 void PlayerView::loadPlayerImage() {
-	image = textureHolder->getTexture(name);
+	walkingImage = textureHolder->getTexture(name + string(WALKING_MODIFIER));
+	idleImage = textureHolder->getTexture(name + string(IDLE_MODIFIER));
+	attackImage = textureHolder->getTexture(name + string(ATTACK_MODIFIER));
+	runningImage = textureHolder->getTexture(name + string(RUNNING_MODIFIER));
 
 	//If there was a problem loading the sprite
-	if (!image) {
-		printf("NO SE HA ENCONTRADO LA IMAGEN DEL PERSONAJE\n");
+	if (!walkingImage ) {
+		Logs::logErrorMessage("Unable to load walking image");
 		//TODO: cargo una alternativa
-		image = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+		walkingImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
 	}
+
+	if (!idleImage ) {
+		Logs::logErrorMessage("Unable to load idle image");
+		//TODO: cargo una alternativa
+		walkingImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+	}
+
+	if (!attackImage) {
+		Logs::logErrorMessage("Unable to load attack image");
+		//TODO: cargo una alternativa
+		attackImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+	}
+	if (!runningImage) {
+		Logs::logErrorMessage("Unable to load running image");
+		//TODO: cargo una alternativa
+		attackImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+	}
+
+	numberOfWalkingClips = computeNumberOfClips(walkingImage);
+	numberOfIdleClips = computeNumberOfClips(idleImage);
+	numberOfRunningClips = computeNumberOfClips(runningImage);
+	numberOfAttackClips = computeNumberOfClips(attackImage);
 }
 
 void PlayerView::setEntity(Entity* entity) {
@@ -93,12 +119,12 @@ void PlayerView::setEntity(Entity* entity) {
 	player = aux;
 }
 
-void PlayerView::showStandingAnimation(float direction, SDL_Surface* fondo) {
+void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo) {
 
 	SDL_Rect clipToDraw;
 	clipToDraw.x = imageWidth * currentClip * scaleWidth;
 	;
-	clipToDraw.y = imageHeight * STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE;
+	clipToDraw.y = imageHeight * sprite;
 	clipToDraw.w = imageWidth * scaleWidth;
 	;
 	clipToDraw.h = imageHeight * scaleHeight;
@@ -126,77 +152,75 @@ void PlayerView::showStandingAnimation(float direction, SDL_Surface* fondo) {
 }
 
 void PlayerView::Show(SDL_Surface* fondo) {
+
 	if (this->image == NULL)
 		loadPlayerImage();
+
+	if (marco >= numberOfClips){
+		marco = 0;
+		if (player->isAttacking()) player->cancelAttack();
+	}
 
 	Vector2* movementDirection = this->player->getMovementDirection();
 	float direction = movementDirection->getAngle();
 
+	SpriteType sprite = DOWN;
+	image = walkingImage;
+	numberOfClips = numberOfWalkingClips;
+
 	const float step = M_PI * 1 / 8;
 
 	if (step * 15 < direction || direction < step)
-		direction = RIGHT;
+		sprite = RIGHT;
 	else if (step < direction && direction < step * 3)
-		direction = DOWN_RIGHT;
+		sprite = DOWN_RIGHT;
 	else if (step * 3 < direction && direction < step * 5)
-		direction = DOWN;
+		sprite = DOWN;
 	else if (step * 5 < direction && direction < step * 7)
-		direction = DOWN_LEFT;
+		sprite = DOWN_LEFT;
 	else if (step * 7 < direction && direction < step * 9)
-		direction = LEFT;
+		sprite = LEFT;
 	else if (step * 9 < direction && direction < step * 11)
-		direction = UP_LEFT;
+		sprite = UP_LEFT;
 	else if (step * 11 < direction && direction < step * 13)
-		direction = UP;
+		sprite = UP;
 	else if (step * 13 < direction && direction < step * 15)
-		direction = UP_RIGHT;
+		sprite = UP_RIGHT;
 
 	if (player->isRunning()) {
-		if (direction == RIGHT)
-			direction = RIGHT_RUN;
-		if (direction == DOWN_RIGHT)
-			direction = DOWN_RIGHT_RUN;
-		if (direction == DOWN)
-			direction = DOWN_RUN;
-		if (direction == DOWN_LEFT)
-			direction = DOWN_LEFT_RUN;
-		if (direction == LEFT)
-			direction = LEFT_RUN;
-		if (direction == UP_LEFT)
-			direction = UP_LEFT_RUN;
-		if (direction == UP)
-			direction = UP_RUN;
-		if (direction == UP_RIGHT)
-			direction = UP_RIGHT_RUN;
+		image = runningImage;
+		numberOfClips = numberOfRunningClips;
 	}
 
-	if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
-		this->marco++;
-		animationChangeRate = 0; // Move to the next marco in the animation
-	} else {
-		animationChangeRate++;
-	}
-
-	if (!player->IsMoving()) {
+	if (!player->IsMoving() && !player->isAttacking()) {
 		if (!wasStanding) {
 			timer.start();
 			wasStanding = true;
 		}
-		showStandingAnimation(direction, fondo);
+		image = idleImage;
+		numberOfClips = numberOfIdleClips;
+		sprite = DOWN;
+		showStandingAnimation(sprite, fondo);
 		return;
 	}
 
+	if (player->isAttacking()){
+		image = attackImage;
+		numberOfClips = numberOfAttackClips;
+		sprite = DOWN;
+	}
+
 	wasStanding = false;
-	if (marco >= numberOfClips)
-		marco = 0;    // Loop the animation
+	if (currentSprite != sprite){
+		marco = 0;
+	}
+	currentSprite = sprite;
+//	if (marco >= numberOfClips)
+//		marco = 0;    // Loop the animation
 
-	SDL_Rect clipToDraw;
-	clipToDraw.x = imageWidth * marco * scaleWidth;
-	clipToDraw.y = imageHeight * direction;
-	clipToDraw.w = imageWidth * scaleWidth;
-	clipToDraw.h = imageHeight * scaleHeight;
 
-	showFrame(this->image, fondo, &clipToDraw);
+	playAnimation(currentSprite,fondo);
+
 }
 
 PlayerView::~PlayerView() {
@@ -246,4 +270,26 @@ void PlayerView::setName(std::string name) {
 	if (!nameImage || ! font)
 		Logs::logErrorMessage("Error al cargar la fuente para el nombre del personaje");
 
+}
+
+void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen){
+	SDL_Rect clipToDraw;
+	clipToDraw.x = imageWidth * marco * scaleWidth;
+	clipToDraw.y = imageHeight * sprite;
+	clipToDraw.w = imageWidth * scaleWidth;
+	clipToDraw.h = imageHeight * scaleHeight;
+
+	showFrame(this->image, screen, &clipToDraw);
+
+	if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
+		this->marco++;
+		animationChangeRate = 0; // Move to the next marco in the animation
+	} else {
+		animationChangeRate++;
+	}
+
+}
+
+int PlayerView::computeNumberOfClips(SDL_Surface* img){
+	return img->w / imageWidth;
 }

@@ -565,7 +565,10 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 
 	std::vector<Power*> auxPowers;
 	Player* auxPlayer = NULL;
-	std::string auxImageSrc;
+	std::string auxWalkingImageSrc;
+	std::string auxRunningImageSrc;
+	std::string auxIdleImageSrc;
+	std::string auxAttackImageSrc;
 	std::string auxName;
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
 	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay,
@@ -580,12 +583,36 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 		auxName = DEFAULT_NAME;
 	}
 	try {
-		yamlNode["imageSrc"] >> auxImageSrc;
+		yamlNode["walkingImageSrc"] >> auxWalkingImageSrc;
 	} catch (YAML::Exception& yamlException) {
 		Logs::logErrorMessage(
-				string("Error parsing PlayerView image source: ")
+				string("Error parsing PlayerView walking image source: ")
 						+ yamlException.what());
-		auxImageSrc = DEFAULT_IMAGE_SRC;
+		auxWalkingImageSrc = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["idleImageSrc"] >> auxIdleImageSrc;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView idle image source: ")
+				+ yamlException.what());
+		auxIdleImageSrc = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["runningImageSrc"] >> auxRunningImageSrc;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView running image source: ")
+				+ yamlException.what());
+		auxRunningImageSrc = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["attackImageSrc"] >> auxAttackImageSrc;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView attack image source: ")
+				+ yamlException.what());
+		auxAttackImageSrc = DEFAULT_IMAGE_SRC;
 	}
 	try {
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
@@ -666,8 +693,14 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	playerView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
 	playerView->setEntity(auxPlayer);
 
-	TextureDefinition* textureDef = new TextureDefinition(auxName, auxImageSrc);
-	textureHolder->addTexture(textureDef);
+	TextureDefinition* walkingTexture = new TextureDefinition(auxName+ string(WALKING_MODIFIER), auxWalkingImageSrc);
+	textureHolder->addTexture(walkingTexture);
+	TextureDefinition* idleTexture = new TextureDefinition(auxName+ string(IDLE_MODIFIER), auxIdleImageSrc);
+	textureHolder->addTexture(idleTexture);
+	TextureDefinition* runningTexture = new TextureDefinition(auxName+ string(RUNNING_MODIFIER), auxRunningImageSrc);
+	textureHolder->addTexture(runningTexture);
+	TextureDefinition* attackTexture = new TextureDefinition(auxName + string(ATTACK_MODIFIER) , auxAttackImageSrc);
+	textureHolder->addTexture(attackTexture);
 
 	playerView->setTextureHolder(textureHolder);
 }
