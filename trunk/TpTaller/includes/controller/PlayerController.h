@@ -24,6 +24,7 @@ public:
 	MapData* getMapData();
 	Player* getPlayer();
 	void toggleRunning();
+	void playerAttack();
 private:
 	MapCameraView* camera;
 	MapData* data;

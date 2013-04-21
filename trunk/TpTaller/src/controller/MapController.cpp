@@ -51,6 +51,11 @@ void MapController::clickListener(SDL_Event event) {
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_LSHIFT)){
 		playerController->toggleRunning();
 	}
+
+	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_LCTRL)){
+		playerController->playerAttack();
+	}
+
 }
 
 MapController::~MapController() {

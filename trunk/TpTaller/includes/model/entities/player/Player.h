@@ -38,6 +38,11 @@ public:
 	Tile getTile();
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
+
+	void attack();
+	bool isAttacking();
+	void cancelAttack();
+
 	void setSpeedMagnitude(int mag);
 	string getClassName();
 private:
@@ -50,6 +55,8 @@ private:
 	std::string name;
 	Tile* currentTile;
 	list<Tile *> *path;
+
+	bool attacking;
 };
 
 #endif	/* PERSONAJE_H */

@@ -26,6 +26,8 @@
 
 using namespace std;
 
+typedef enum {LEFT, DOWN_LEFT, DOWN_RIGHT, DOWN, UP_LEFT, UP_RIGHT, UP, RIGHT} SpriteType;
+
 class PlayerView: public EntityView {
 public:
 	PlayerView();
@@ -45,12 +47,14 @@ public:
 	virtual ~PlayerView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera);
+	void playAnimation(SpriteType sprite, SDL_Surface* screen);
 private:
 	void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
-	void showStandingAnimation(float direction, SDL_Surface* fondo);
+	void showStandingAnimation(SpriteType sprite, SDL_Surface* fondo);
 	void loadPlayerImage();
 	Player* player;
 	Position* camPos;
+	SpriteType currentSprite;
 	int marco; 	// Current frame
 	int animationChangeRate;
 	int imageWidth;
@@ -58,9 +62,16 @@ private:
 	int numberOfClips;
 	int direction;
 	bool wasStanding;
-	enum {	LEFT, DOWN_LEFT, DOWN_RIGHT, DOWN, UP_LEFT, UP_RIGHT, UP, RIGHT,
-			LEFT_RUN, DOWN_LEFT_RUN, DOWN_RIGHT_RUN, DOWN_RUN, UP_LEFT_RUN,
-			UP_RIGHT_RUN, UP_RUN, RIGHT_RUN, STANDING};
+
+	SDL_Surface* attackImage;
+	int numberOfAttackClips;
+	SDL_Surface* walkingImage;
+	int numberOfWalkingClips;
+	SDL_Surface* idleImage;
+	int numberOfIdleClips;
+	SDL_Surface* runningImage;
+	int numberOfRunningClips;
+	int computeNumberOfClips(SDL_Surface* img);
 
 	SDL_Surface* nameImage;
 	TextHandler textHandler;

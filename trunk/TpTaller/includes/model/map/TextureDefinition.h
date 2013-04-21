@@ -11,6 +11,11 @@
 #include <SDL/SDL.h>
 #include <string>
 
+#define ATTACK_MODIFIER "Attack"
+#define WALKING_MODIFIER "Walking"
+#define IDLE_MODIFIER "Idle"
+#define RUNNING_MODIFIER "Running"
+
 class TextureDefinition {
 public:
 	TextureDefinition();

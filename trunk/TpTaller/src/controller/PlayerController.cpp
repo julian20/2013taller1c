@@ -77,3 +77,7 @@ void PlayerController::toggleRunning() {
 	else
 		player->setSpeedMagnitude(player->getSpeed()->getMagnitude()*2);
 }
+
+void PlayerController::playerAttack(){
+	player->attack();
+}
