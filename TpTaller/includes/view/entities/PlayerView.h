@@ -9,10 +9,12 @@
 
 #include <model/entities/player/Player.h>
 #include <view/entities/EntityView.h>
+#include <view/TextHandler.h>
 #include <model/entityProperties/Position.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <model/Vector2.h>
+
 #include <string>
 
 #define _USE_MATH_DEFINES	// To use math.h constants
@@ -39,6 +41,7 @@ public:
 	void setImageWidth(int width);
 	int getNClips();
 	void setNClips(int clips);
+	void setName(std::string name);
 	virtual ~PlayerView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera);
@@ -58,6 +61,10 @@ private:
 	enum {	LEFT, DOWN_LEFT, DOWN_RIGHT, DOWN, UP_LEFT, UP_RIGHT, UP, RIGHT,
 			LEFT_RUN, DOWN_LEFT_RUN, DOWN_RIGHT_RUN, DOWN_RUN, UP_LEFT_RUN,
 			UP_RIGHT_RUN, UP_RUN, RIGHT_RUN, STANDING};
+
+	SDL_Surface* nameImage;
+	TextHandler textHandler;
+
 };
 
 #endif	/* PERSONAJEVISTA_H */

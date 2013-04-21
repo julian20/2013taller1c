@@ -20,7 +20,7 @@ public:
 	TextHandler();
 	SDL_Color getColor(int r, int g, int b);
 	void applyTextOnSurface(string text,SDL_Surface* surface,int x, int y, string font, SDL_Color color);
-
+	void applyTextOnSurfaceCentered(string text,SDL_Surface* surface,int x, int y, string font, SDL_Color color);
 
 
 
