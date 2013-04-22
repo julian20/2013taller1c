@@ -61,6 +61,7 @@ private:
 	int imageHeight;
 	int numberOfClips;
 	int direction;
+	float lastDirection;
 	bool wasStanding;
 
 	SDL_Surface* attackImage;
