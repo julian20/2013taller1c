@@ -10,6 +10,7 @@
 #define ENTITYVIEW_H
 
 #include <model/entityProperties/Position.h>
+#include <model/map/TextureDefinition.h>
 #include <model/map/TextureHolder.h>
 #include <model/entities/Entity.h>
 #include <view/timer/Timer.h>
@@ -59,7 +60,7 @@ public:
 protected:
 	//SDL_Surface* loadImage(string urlImagen, map<string,SDL_Surface*> *images);
 	void loadImage();
-	void loadFog(SDL_Surface* image);
+	SDL_Surface* getFog(SDL_Surface* image);
 	void setPixelInvisible(SDL_Surface * surface, int x, int y);
 	SDL_Surface* createFogSurface(int width, int heigth);
 
