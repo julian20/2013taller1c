@@ -146,12 +146,17 @@ SDL_Surface* EntityView::createFogSurface(int width, int heigth) {
 
 void EntityView::loadImage() {
 	image = textureHolder->getTexture(name);
-	loadFog(image);
+
+	this->fogImage = textureHolder->getFogTexture(name);
+	if (this->fogImage == NULL) {
+		this->fogImage = getFog(image);
+		textureHolder->addFogTexture(name, this->fogImage);
+	}
 }
 
-void EntityView::loadFog(SDL_Surface* image) {
+SDL_Surface* EntityView::getFog(SDL_Surface* image) {
 	SDL_LockSurface(image);
-	this->fogImage = createFogSurface(image->w, image->h);
+	SDL_Surface* fog = createFogSurface(image->w, image->h);
 
 	Uint32 *pixels = (Uint32 *)image->pixels;
 	Uint32 pixelValue;
@@ -162,11 +167,13 @@ void EntityView::loadFog(SDL_Surface* image) {
 			pixelValue = pixels[ ( y * image->w ) + x ];
 			SDL_GetRGBA(pixelValue, image->format, &red, &green, &blue, &alpha);
 
-			if (alpha == 0) setPixelInvisible(this->fogImage, x, y);
+			if (alpha == 0) setPixelInvisible(fog, x, y);
 		}
 	}
 
 	SDL_UnlockSurface(image);
+
+	return fog;
 }
 
 /*SDL_Surface* EntityView::loadImage(string urlImagen, map<string,SDL_Surface*> *images) {

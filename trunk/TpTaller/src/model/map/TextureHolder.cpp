@@ -27,9 +27,9 @@ TextureHolder::~TextureHolder() {
 	}
 }
 
-bool TextureHolder::duplicateTexture(std::string id) {
-	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
-		TextureDefinition* auxTextureDefinition = this->listOfTextures[i];
+bool TextureHolder::duplicateTexture(std::vector<TextureDefinition*> list, std::string id) {
+	for (unsigned int i = 0; i < list.size(); i++) {
+		TextureDefinition* auxTextureDefinition = list[i];
 		if (id.compare(auxTextureDefinition->getTextureId()) == 0) {
 			return true;
 		}
@@ -38,8 +38,12 @@ bool TextureHolder::duplicateTexture(std::string id) {
 	return false;
 }
 
+void TextureHolder::addFogTexture(std::string id, SDL_Surface* texture) {
+	fogTextures[id] = texture;
+}
+
 void TextureHolder::addTexture(TextureDefinition* textureDefinition) {
-	if (duplicateTexture(textureDefinition->getTextureId())) {
+	if (duplicateTexture(listOfTextures, textureDefinition->getTextureId())) {
 		return;
 	}
 
@@ -70,3 +74,10 @@ SDL_Surface* TextureHolder::getTexture(std::string id) {
 	return NULL;
 }
 
+SDL_Surface* TextureHolder::getFogTexture(std::string id) {
+	if (fogTextures.find(id) == fogTextures.end()) {	// si no existe en el map
+		return NULL;
+	}
+
+	return fogTextures[id];
+}
