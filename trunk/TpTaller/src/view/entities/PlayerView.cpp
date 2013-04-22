@@ -37,6 +37,7 @@ PlayerView::PlayerView()
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
+	lastDirection = M_PI *1/2;
 }
 
 void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
@@ -162,7 +163,12 @@ void PlayerView::Show(SDL_Surface* fondo) {
 	}
 
 	Vector2* movementDirection = this->player->getMovementDirection();
-	float direction = movementDirection->getAngle();
+	float direction;
+
+	Vector2* v = new Vector2(0,0);
+	if (movementDirection->isEqual(v)) direction = lastDirection;
+	else direction = movementDirection->getAngle();
+	delete v;
 
 	SpriteType sprite = DOWN;
 	image = walkingImage;
@@ -199,7 +205,7 @@ void PlayerView::Show(SDL_Surface* fondo) {
 		}
 		image = idleImage;
 		numberOfClips = numberOfIdleClips;
-		sprite = DOWN;
+		lastDirection = direction;
 		showStandingAnimation(sprite, fondo);
 		return;
 	}
@@ -207,18 +213,14 @@ void PlayerView::Show(SDL_Surface* fondo) {
 	if (player->isAttacking()){
 		image = attackImage;
 		numberOfClips = numberOfAttackClips;
-		sprite = DOWN;
 	}
 
 	wasStanding = false;
-	if (currentSprite != sprite){
-		marco = 0;
-	}
 	currentSprite = sprite;
 //	if (marco >= numberOfClips)
 //		marco = 0;    // Loop the animation
 
-
+	lastDirection = direction;
 	playAnimation(currentSprite,fondo);
 
 }

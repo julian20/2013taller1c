@@ -73,6 +73,15 @@ void Player::loadNextPosition() {
 Vector2* Player::getMovementDirection() {
 	Vector2* moveDirection = new Vector2(endPos->getX() - currentPos->getX(),
 			endPos->getY() - currentPos->getY());
+	Vector2* v = new Vector2(0,0);
+
+	if (moveDirection->isEqual(v)){
+		delete v;
+		return moveDirection;
+	}
+
+	delete v;
+
 	moveDirection->normalize();
 
 	return moveDirection;
