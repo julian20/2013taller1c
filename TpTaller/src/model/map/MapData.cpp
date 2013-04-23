@@ -66,8 +66,8 @@ Player* MapData::GetPersonaje(int row, int col) {
 	return data[row + nrows * col].getPersonaje();
 }
 
-void addTileToList(list<Tile *> list, int row, int col){
-	list.push_back( new Tile( new Coordinates(row, col) ) );
+void addTileToList(list<Tile *> *list, int row, int col){
+	list->push_back( new Tile( new Coordinates(row, col) ) );
 }
 
 list<Tile *> MapData::getNeighborTiles(Tile* tile) {
@@ -77,14 +77,14 @@ list<Tile *> MapData::getNeighborTiles(Tile* tile) {
 	int col = coords.getCol();
 	int row = coords.getRow();
 
-	if (col > 0) addTileToList(neighborTiles, row, col - 1);
-	if (row > 0) addTileToList(neighborTiles, row - 1, col);
-	if (col > 0 && row > 0) addTileToList(neighborTiles, row - 1, col - 1);
-	if (col < ncols - 1) addTileToList(neighborTiles, row, col + 1);
-	if (row < nrows - 1) addTileToList(neighborTiles, row + 1, col);
-	if (col < ncols - 1 && row < nrows - 1) addTileToList(neighborTiles, row + 1, col + 1);
-	if (col > 0 && row < nrows - 1) addTileToList(neighborTiles, row + 1, col - 1);
-	if (col < ncols - 1 && row > 0) addTileToList(neighborTiles, row - 1, col + 1);
+	if (col > 0) addTileToList(&neighborTiles, row, col - 1);
+	if (row > 0) addTileToList(&neighborTiles, row - 1, col);
+	if (col > 0 && row > 0) addTileToList(&neighborTiles, row - 1, col - 1);
+	if (col < ncols - 1) addTileToList(&neighborTiles, row, col + 1);
+	if (row < nrows - 1) addTileToList(&neighborTiles, row + 1, col);
+	if (col < ncols - 1 && row < nrows - 1) addTileToList(&neighborTiles, row + 1, col + 1);
+	if (col > 0 && row < nrows - 1) addTileToList(&neighborTiles, row + 1, col - 1);
+	if (col < ncols - 1 && row > 0) addTileToList(&neighborTiles, row - 1, col + 1);
 
 	return neighborTiles;
 }
@@ -103,9 +103,7 @@ bool tileExistInList(list<Tile *> list, Tile* tile) {
 bool compTileList(Tile* A, Tile* B) {
 	float AScore = A->getFScore();
 	float BScore = B->getFScore();
-	bool retval =  AScore < BScore;
-
-	return retval;
+	return (AScore > BScore);
 }
 
 /**
@@ -117,14 +115,14 @@ bool compTileList(Tile* A, Tile* B) {
  * destruir no hay problema, pero es mas complicado me parece.
  */
 list<Tile *> *MapData::GetPath(Tile* from, Tile* goal) {
-	/*list<Tile *> closedSet;
+	list<Tile *> closedSet;
 	list<Tile *> openSet;
 	openSet.push_back( from );
-	map<Tile *, Tile *> cameFrom;
+	map<int, Tile *> cameFrom;
 
-	map<Tile *, float> g_score;
-	g_score[from] = 0.0f;
-	from->setFScore(g_score[from] + heuristicCostEstimate(from, goal));
+	map<int, float> g_score;
+	g_score[from->getHashValue()] = 0.0f;
+	from->setFScore(g_score[from->getHashValue()] + heuristicCostEstimate(from, goal));
 	Tile* current;
 
 	while( openSet.size() > 0 ){
@@ -141,26 +139,24 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* goal) {
 		list<Tile *>::const_iterator iter;
 		for (iter = neighborTiles.begin(); iter != neighborTiles.end(); ++iter) {
 			Tile* neighbor = *iter;
-			float tentativeGScore = g_score[current] + distBetweenTiles(current, neighbor);
+			float tentativeGScore = g_score[current->getHashValue()] + distBetweenTiles(current, neighbor);
 
-			bool existsGScore = (g_score.find(current) == g_score.end());
-			if (existsGScore) g_score[neighbor] = tentativeGScore + 1;
-
-			if (existsGScore && (tentativeGScore >= g_score[neighbor]))
+			bool existsGScore = !(g_score.find(neighbor->getHashValue()) == g_score.end());
+			if (existsGScore && (tentativeGScore >= g_score[neighbor->getHashValue()]))
 				continue;
 
 			bool neighborInOpenSet = tileExistInList(openSet, neighbor);
-			if (!neighborInOpenSet || (tentativeGScore < g_score[neighbor])) {
-				cameFrom[neighbor] = current;
-				g_score[neighbor] = tentativeGScore;
-				neighbor->setFScore(g_score[neighbor] + heuristicCostEstimate(neighbor, goal));
+			if (!neighborInOpenSet || (tentativeGScore < g_score[neighbor->getHashValue()])) {
+				cameFrom[neighbor->getHashValue()] = current;
+				g_score[neighbor->getHashValue()] = tentativeGScore;
+				neighbor->setFScore(g_score[neighbor->getHashValue()] + heuristicCostEstimate(neighbor, goal));
 				if (!neighborInOpenSet)
 					openSet.push_back(neighbor);
 			}
 		}
-	}*/
+	}
 
-	list<Tile *> *path = new list<Tile *>();
+	/*list<Tile *> *path = new list<Tile *>();
 	Tile* nextTile;
 
 	nextTile = from;
@@ -192,10 +188,10 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* goal) {
 
 		nextTile = new Tile(new Coordinates(row, col));
 		nextTileCords = nextTile->getCoordinates();
-		path->insert(path->end(), nextTile);
+		path->push_back(nextTile);
 	}
 
-	return path;
+	return path;*/
 }
 
 float MapData::heuristicCostEstimate(Tile* from, Tile* to) {
@@ -213,29 +209,42 @@ float MapData::distBetweenTiles(Tile* from, Tile* to)  {
 
 }
 
-list<Tile *> *MapData::reconstructPath(map<Tile *, Tile *> cameFrom, Tile* currentNode) {
+list<Tile *> *MapData::reconstructPath(map<int, Tile *> cameFrom, Tile* currentNode) {
 	list<Tile *> *path;
 
-	if (cameFrom.find(currentNode) != cameFrom.end()) {	// if exists in cameFrom
-		path = reconstructPath(cameFrom, cameFrom[currentNode]);
+	if (cameFrom.find(currentNode->getHashValue()) != cameFrom.end()) {	// if exists in cameFrom
+		path = reconstructPath(cameFrom, cameFrom[currentNode->getHashValue()]);
 	} else {
 		 path = new list<Tile *>();
 	}
 
-	path->push_back(currentNode);
+	Coordinates coords = currentNode->getCoordinates();
+	Tile *newTile = new Tile( new Coordinates(coords.getRow(), coords.getCol()) );
+
+	path->push_back(newTile);
 	return path;
+}
+
+void printPath( list<Tile *>* path )  {
+	list<Tile *>::const_iterator iter;
+	for (iter = path->begin(); iter != path->end(); ++iter) {
+		Tile* tile = *iter;
+		Coordinates coords = tile->getCoordinates();
+
+		printf("row: %d  col:%d\n", coords.getRow(), coords.getCol());
+	}
 }
 
 void MapData::movePersonaje(Player* personaje, Tile* toTile) {
 	Tile fromTile = personaje->getTile();
 
-	/*list<Tile *> *path = GetPath(&fromTile, toTile);
+	list<Tile *> *path = GetPath(&fromTile, toTile);
 	delete (toTile);
-	personaje->assignPath(path);*/
-
-	list<Tile *> *path = new list<Tile *>();
-	path->insert(path->end(), toTile);
 	personaje->assignPath(path);
+
+	/*list<Tile *> *path = new list<Tile *>();
+	path->insert(path->end(), toTile);
+	personaje->assignPath(path);*/
 }
 
 int MapData::GetNRows() {

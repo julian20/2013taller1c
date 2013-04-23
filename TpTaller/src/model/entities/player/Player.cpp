@@ -29,6 +29,10 @@ void Player::moveTo(int x, int y, int z) {
 	endPos = new Vector3(x, y, z);
 }
 
+bool Player::IsMoving() {
+	return !(currentPos->isEqual(endPos));
+}
+
 bool Player::isRunning(){
 	if (speed->getMagnitude() >= 2*initSpeed->getMagnitude())
 		return true;
@@ -108,7 +112,6 @@ Player::~Player() {
 void Player::setPosition(Position* position) {
 	Position pos = Tile::computePosition(position->getX(),position->getY());
 	currentPos->setValues(pos.getX(), pos.getY());
-	//currentPos->SetValues(Tile::computePosition(x,y).x , Tile::computePosition(x,y).y);
 }
 
 Speed* Player::getSpeed() {
@@ -135,10 +138,6 @@ std::vector<Power*> Player::getPowers() {
 
 void Player::setPowers(std::vector<Power*> powers) {
 	this->powers = powers;
-}
-
-bool Player::IsMoving() {
-	return !(currentPos->isEqual(endPos));
 }
 
 void Player::assignPath(list<Tile *> *_path) {

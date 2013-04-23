@@ -32,6 +32,7 @@ public:
 	void setFScore(float _fScore);
 	float getFScore();
 	bool isEqual(Tile* otherTile);
+	int getHashValue();
 	static Position computePosition(int row, int col, bool toTileZero = false);
 	static SDL_Rect computePositionTile(int row, int col, bool toTileZero = false);
 	static Coordinates* getTileCoordinates(int x, int y);
@@ -45,6 +46,8 @@ public:
 	static unsigned int tileWidth;
 	static unsigned int tileHeight;
 private:
+	void updatePosition();
+
 	static SDL_Rect getSquaredMapTilePos(int row, int col);
 	static SDL_Rect getDiamondShapeMapTilePos(int row, int col);
 	static Position getDiamondShapeMapPos(int row, int col);
