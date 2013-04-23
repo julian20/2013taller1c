@@ -1,9 +1,9 @@
 - playerViews:
   - name: Player
-    walkingImageSrc: resources/black_knight_walking.png
-    idleImageSrc: resources/black_knight_idle.png
-    runningImageSrc: resources/black_knight_running.png
-    attackImageSrc: resources/black_knight_attack.png
+    walkingImageSrc: resources/black_knight/black_knight_walking.png
+    idleImageSrc: resources/black_knight/black_knight_idle.png
+    runningImageSrc: resources/black_knight/black_knight_running.png
+    attackImageSrc: resources/black_knight/black_knight_attack.png
     imageWidth: 96
     imageHeight: 96
     numberOfClips: 8
@@ -12,7 +12,7 @@
     baseHeight: 1
 - entityViews:    
   - name: windmill
-    imageSrc: resources/windmill.png
+    imageSrc: resources/buildings/windmill.png
     imageWidth: 224
     imageHeight: 240
     numberOfClips: 23
@@ -21,7 +21,7 @@
     delay: 2 
     animationRepeats: 7
   - name: watermill
-    imageSrc: resources/watermill tileset.png
+    imageSrc: resources/buildings/watermill tileset.png
     imageWidth: 242
     imageHeight: 235
     numberOfClips: 31
@@ -36,43 +36,43 @@
     numberOfClips: 6
     anchorPixel: [34, 0]
   - name: tree
-    imageSrc: resources/tree.png
+    imageSrc: resources/tree2.png
     imageWidth: 128
     imageHeight: 133
     numberOfClips: 0
     anchorPixel: [66, 80]
   - name: barracks
-    imageSrc: resources/barracks.png
+    imageSrc: resources/buildings/barracks.png
     imageWidth: 320 
     imageHeight: 290
     numberOfClips: 0
     anchorPixel: [172, 209]
   - name: farmhouse
-    imageSrc: resources/farmhouse.png
+    imageSrc: resources/buildings/farmhouse.png
     imageWidth: 238
     imageHeight: 290
     numberOfClips: 0
     anchorPixel: [120, 139]  
   - name: sawmill
-    imageSrc: resources/sawmill.png
+    imageSrc: resources/buildings/sawmill.png
     imageWidth: 276
     imageHeight: 249
     numberOfClips: 0
     anchorPixel: [120, 180]
   - name: chapel
-    imageSrc: resources/chapel.png
+    imageSrc: resources/buildings/chapel.png
     imageWidth: 220
     imageHeight: 227
     numberOfClips: 0
     anchorPixel: [110, 160] 
   - name: pottery
-    imageSrc: resources/pottery.png
+    imageSrc: resources/buildings/pottery.png
     imageWidth: 259
     imageHeight: 247
     numberOfClips: 0
     anchorPixel: [72, 164]  
   - name: portbuilding
-    imageSrc: resources/portbuilding.png
+    imageSrc: resources/buildings/portbuilding.png
     imageWidth: 287
     imageHeight: 299
     numberOfClips: 0
