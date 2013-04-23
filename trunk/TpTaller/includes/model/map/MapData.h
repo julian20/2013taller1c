@@ -36,7 +36,7 @@ private:
 	float heuristicCostEstimate(Tile* from, Tile* to);
 	float distBetweenTiles(Tile* from, Tile* to);
 	list<Tile *> *reconstructPath(map<int, Tile *> cameFrom, Tile* goal);
-	list<Tile *> getNeighborTiles(Tile* tile);
+	list<Tile *> getNeighborTiles(Tile* tile, map<int, Tile *> *tilesContainer);
 
     vector<TileData> data;
     int nrows;

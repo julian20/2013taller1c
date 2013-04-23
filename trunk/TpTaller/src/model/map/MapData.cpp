@@ -66,25 +66,51 @@ Player* MapData::GetPersonaje(int row, int col) {
 	return data[row + nrows * col].getPersonaje();
 }
 
-void addTileToList(list<Tile *> *list, int row, int col){
-	list->push_back( new Tile( new Coordinates(row, col) ) );
+Tile *getTileFromContainer(map<int, Tile *> *tilesContainer, int row, int col) {
+	Tile *tile = new Tile( new Coordinates(row, col) );
+	int hashValue = tile->getHashValue();
+
+	bool existsTile = !(tilesContainer->find(hashValue) == tilesContainer->end());
+
+	if (!existsTile) {
+		(*tilesContainer)[hashValue] = tile;
+		return tile;
+	} else {
+		delete tile;
+		return (*tilesContainer)[hashValue];
+	}
 }
 
-list<Tile *> MapData::getNeighborTiles(Tile* tile) {
+void emptyTilesContainer(map<int, Tile *> tilesContainer) {
+	 std::map<int, Tile *>::iterator iter;
+	 for (iter = tilesContainer.begin(); iter != tilesContainer.end(); ++iter) {
+		 Tile* tile = iter->second;
+
+		 delete tile;
+	 }
+}
+
+void addTileToList(list<Tile *> *list, map<int, Tile *> *tilesContainer, int row, int col){
+	Tile* tile = getTileFromContainer(tilesContainer, row, col);
+
+	list->push_back( tile );
+}
+
+list<Tile *> MapData::getNeighborTiles(Tile* tile, map<int, Tile *> *tilesContainer) {
 	list<Tile *> neighborTiles;
 	Coordinates coords = tile->getCoordinates();
 
 	int col = coords.getCol();
 	int row = coords.getRow();
 
-	if (col > 0) addTileToList(&neighborTiles, row, col - 1);
-	if (row > 0) addTileToList(&neighborTiles, row - 1, col);
-	if (col > 0 && row > 0) addTileToList(&neighborTiles, row - 1, col - 1);
-	if (col < ncols - 1) addTileToList(&neighborTiles, row, col + 1);
-	if (row < nrows - 1) addTileToList(&neighborTiles, row + 1, col);
-	if (col < ncols - 1 && row < nrows - 1) addTileToList(&neighborTiles, row + 1, col + 1);
-	if (col > 0 && row < nrows - 1) addTileToList(&neighborTiles, row + 1, col - 1);
-	if (col < ncols - 1 && row > 0) addTileToList(&neighborTiles, row - 1, col + 1);
+	if (col > 0) addTileToList(&neighborTiles, tilesContainer, row, col - 1);
+	if (row > 0) addTileToList(&neighborTiles, tilesContainer, row - 1, col);
+	if (col > 0 && row > 0) addTileToList(&neighborTiles, tilesContainer, row - 1, col - 1);
+	if (col < ncols - 1) addTileToList(&neighborTiles, tilesContainer, row, col + 1);
+	if (row < nrows - 1) addTileToList(&neighborTiles, tilesContainer, row + 1, col);
+	if (col < ncols - 1 && row < nrows - 1) addTileToList(&neighborTiles, tilesContainer, row + 1, col + 1);
+	if (col > 0 && row < nrows - 1) addTileToList(&neighborTiles, tilesContainer, row + 1, col - 1);
+	if (col < ncols - 1 && row > 0) addTileToList(&neighborTiles, tilesContainer, row - 1, col + 1);
 
 	return neighborTiles;
 }
@@ -115,6 +141,7 @@ bool compTileList(Tile* A, Tile* B) {
  * destruir no hay problema, pero es mas complicado me parece.
  */
 list<Tile *> *MapData::GetPath(Tile* from, Tile* goal) {
+	map<int, Tile *> tilesContainer;	// Uso esto para ir guardando los punteros
 	list<Tile *> closedSet;
 	list<Tile *> openSet;
 	openSet.push_back( from );
@@ -129,12 +156,15 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* goal) {
 		openSet.sort(compTileList);
 		current = openSet.back();	// node having the lowest fScore value
 
-		if (current->isEqual( goal ))
-			return reconstructPath(cameFrom, goal);
+		if (current->isEqual( goal )) {
+			list<Tile *>* path = reconstructPath(cameFrom, goal);
+			emptyTilesContainer(tilesContainer);
+			return path;
+		}
 
 		openSet.remove(current);
 		closedSet.push_back(current);
-		list<Tile *> neighborTiles = getNeighborTiles(current);
+		list<Tile *> neighborTiles = getNeighborTiles(current, &tilesContainer);
 
 		list<Tile *>::const_iterator iter;
 		for (iter = neighborTiles.begin(); iter != neighborTiles.end(); ++iter) {
