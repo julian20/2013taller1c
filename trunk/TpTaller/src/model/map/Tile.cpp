@@ -27,9 +27,7 @@ Tile::Tile(Coordinates* _coordinates) {
 	this->coordinates = _coordinates;
 	this->textureIdentifier = "";
 	this->fScore = 0;
-
-	SDL_Rect pos = this->computePositionTile(coordinates->getRow(), coordinates->getCol());
-	this->position = new Position(pos.x, pos.y);
+	updatePosition();
 }
 
 Tile::Tile() {
@@ -43,6 +41,10 @@ Tile::~Tile() {
 			delete coordinates;
 }
 
+void Tile::updatePosition() {
+	SDL_Rect pos = this->computePositionTile(coordinates->getRow(), coordinates->getCol());
+	this->position = new Position(pos.x, pos.y);
+}
 
 Position* Tile::getPosition() {
 	return this->position;
@@ -66,10 +68,12 @@ Coordinates Tile::getCoordinates() {
 
 void Tile::setCoordinates(int _row, int _col) {
 	this->coordinates->changeTo(_row, _col);
+	updatePosition();
 }
 
 void Tile::setCoordinates(Coordinates coords) {
 	this->coordinates->changeTo(coords.getRow(), coords.getCol());
+	updatePosition();
 }
 
 std::string Tile::getTextureIdentifier() {
@@ -208,4 +212,8 @@ bool Tile::isEqual(Tile* otherTile) {
 	bool equalCol = (otherCoords.getCol() == coordinates->getCol());
 
 	return (equalRow && equalCol);
+}
+
+int Tile::getHashValue() {
+	return coordinates->getRow()*1000000 + coordinates->getCol();
 }
