@@ -231,11 +231,14 @@ float MapData::heuristicCostEstimate(Tile* from, Tile* to) {
 }
 
 float MapData::distBetweenTiles(Tile* from, Tile* to)  {
-	Coordinates fromPos = from->getCoordinates();
-	Coordinates toPos = to->getCoordinates();
+	Coordinates fromCoords = from->getCoordinates();
+	Coordinates toCoords = to->getCoordinates();
+
+	Position fromPos = Tile::computePosition(fromCoords.getRow(), fromCoords.getCol());
+	Position toPos = Tile::computePosition(toCoords.getRow(), toCoords.getCol());
 
 	// Devuelvo la norma del vector que une ambos puntos
-	return sqrt( pow(toPos.getRow() - fromPos.getRow(), 2) + pow(toPos.getCol() - fromPos.getCol(), 2));
+	return sqrt( pow(toPos.getX() - fromPos.getX(), 2) + pow(toPos.getY() - fromPos.getY(), 2));
 
 }
 
