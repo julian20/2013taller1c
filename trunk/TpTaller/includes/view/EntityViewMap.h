@@ -11,8 +11,8 @@
 #include <view/entities/EntityView.h>
 #include <model/entityProperties/Coordinates.h>
 #include <view/entities/EntityHolder.h>
-#include <SDL/SDL.h>
 #include <model/map/TileData.h>
+#include <SDL/SDL.h>
 #include <map>
 #include <vector>
 #include <list>

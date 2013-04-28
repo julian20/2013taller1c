@@ -24,10 +24,13 @@ public:
 	Player* getPersonaje();
 	Entity* getNextEntity();
 	int getNumberOfEntitiesOnTile();
+	bool getWasVisible();
+	bool getIsVisible();
 
 	//Setters
 	void setType(std::string type);
-	void setPersonaje(Player* newPersonaje);
+	void setPlayer(Player* newPersonaje);
+	void setVisibility( bool value );
 
 	void addEntity(Entity* entity);
 
@@ -36,6 +39,9 @@ private:
 	Player* personaje;
 	std::list<Entity*> entities;
 	std::list<Entity*>::iterator iterator;
+
+	bool wasVisible;
+	bool isVisible;
 };
 
 } /* namespace std */

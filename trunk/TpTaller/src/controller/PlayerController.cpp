@@ -28,8 +28,8 @@ void PlayerController::movePlayer(int x, int y) {
 			y - cameraPos->getY());
 
 	if (!(coor->getCol() <= 0 || coor->getRow() < 0)
-			&& !(coor->getCol() > data->GetNCols()
-					|| coor->getRow() > data->GetNRows())) {
+			&& !(coor->getCol() > data->getNCols()
+					|| coor->getRow() > data->getNRows())) {
 		SDL_Rect firstTile = Tile::computePositionTile(0, 0);
 		firstTile.x = cameraPos->getX() + firstTile.x;
 		firstTile.y = cameraPos->getY() + firstTile.y;

@@ -79,7 +79,7 @@ void EntityViewMap::updateMovablePos() {
 }
 void EntityViewMap::assingEntitiesView(EntityHolder* entityHolder)
 {
-	this->entityHolder=entityHolder;
+	this->entityHolder = entityHolder;
 }
 void EntityViewMap::drawEntities(TileData* tileData,SDL_Surface* screen, Position* cam, int row, int col)
 {

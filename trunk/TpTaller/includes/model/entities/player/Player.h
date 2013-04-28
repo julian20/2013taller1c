@@ -36,10 +36,15 @@ public:
 	void setName(std::string name);
 	std::vector<Power*> getPowers();
 	void setPowers(std::vector<Power*> powers);
+	void setViewRange( int _viewRange );
+	int getViewRange();
 	void setTile( Tile* _tile );
 	Tile getTile();
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
+
+	bool isMainPlayer();
+	void setAsMainPlayer();
 
 	void attack();
 	bool isAttacking();
@@ -58,6 +63,8 @@ public:
 private:
 	void loadNextPosition();
 
+	int viewRange;
+	bool mainPlayer;
 	Vector3* endPos;
 	Speed* speed;
 	Speed* initSpeed;
