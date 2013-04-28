@@ -27,6 +27,7 @@ using namespace std;
 #define DEFAULT_DAMAGE 5
 #define DEFAULT_RANGE 1
 #define DEFAULT_SPEED 5
+#define DEFAULT_VIEWRANGE 250
 #define DEFAULT_NUMBER_CLIPS 0
 #define DEFAULT_IMAGE_WIDTH 250
 #define DEFAULT_IMAGE_HEIGHT 250
@@ -421,6 +422,8 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 
 	Position* auxPosition = new Position(0, 0, 0);
 	Speed* auxSpeed = new Speed(0, new Vector2(0, 0));
+	bool auxMainPlayer;
+	int auxViewRange;
 	std::string auxName;
 	std::vector<Power*> auxPowers;
 
@@ -457,6 +460,22 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 	} catch (YAML::Exception& yamlException) {
 		Logs::logErrorMessage(
 				string("Error parsing Player powers: ") + yamlException.what());
+	}
+	try {
+		yamlNode["mainPlayer"] >> auxMainPlayer;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing Player mainPlayer: ") + yamlException.what());
+		auxMainPlayer = false;
+	}
+	if (auxMainPlayer) {
+		try {
+			yamlNode["viewRange"] >> auxViewRange;
+		} catch (YAML::Exception& yamlException) {
+			Logs::logErrorMessage(
+					string("Error parsing Player viewRange: ") + yamlException.what());
+			auxViewRange = DEFAULT_VIEWRANGE;
+		}
 	}
 
 	int row = auxPosition->getX();
@@ -498,6 +517,10 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 	Tile* newTile = new Tile(playerCoords);
 	personaje->setTile(newTile);
 	personaje->setSpeed(auxSpeed);
+	if (auxMainPlayer) {
+		personaje->setAsMainPlayer();
+		personaje->setViewRange(auxViewRange);
+	}
 }
 
 /**
@@ -1235,7 +1258,7 @@ void operator >>(AuxMap& originConfig, MapData* destMap) {
 		Tile* auxTile = originConfig.tileList[i];
 		int auxRow = auxTile->getPosition()->getX();
 		int auxCol = auxTile->getPosition()->getY();
-		destMap->SetTileType(auxTile->getTextureIdentifier(), auxRow, auxCol);
+		destMap->setTileType(auxTile->getTextureIdentifier(), auxRow, auxCol);
 	}
 }
 
@@ -1540,8 +1563,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	mapConfiguration >> mapData;
 
 // Create entityViewMap:
-	EntityViewMap* entityViewMap = new EntityViewMap(mapData->GetNRows(),
-			mapData->GetNCols());
+	EntityViewMap* entityViewMap = new EntityViewMap(mapData->getNRows(),
+			mapData->getNCols());
 	loadEntityViewMap(entityViewMap, cleanPlayerViews);
 //	entityViewMap->assingEntitiesView(entityViewVector);
 	loadEntityViewMap(entityViewMap, cleanEntityViews);

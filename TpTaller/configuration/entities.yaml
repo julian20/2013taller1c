@@ -130,6 +130,8 @@
       - name: Fist
         damage: 3
         range: 1
+    mainPlayer: true
+    viewRange: 200
 - entityLocations:
   - name: tree
     position: [0, 0, 0]

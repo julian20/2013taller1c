@@ -11,6 +11,7 @@
 
 Player::Player() {
 	endPos = new Vector3(0, 0);
+	this->mainPlayer = false;
 	this->speed = new Speed(0, new Vector2(0, 0));
 	this->initSpeed = NULL;
 	this->name = "";
@@ -185,6 +186,21 @@ void Player::cancelAttack(){
 	attacking = false;
 }
 
+bool Player::isMainPlayer() {
+	return mainPlayer;
+}
+
+void Player::setAsMainPlayer() {
+	this->mainPlayer = true;
+}
+
+void Player::setViewRange( int _viewRange ) {
+	this->viewRange = _viewRange;
+}
+
+int Player::getViewRange() {
+	return this->viewRange;
+}
 
 Player& Player::operator=(const Player &other){
 

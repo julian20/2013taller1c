@@ -15,6 +15,8 @@ TileData::TileData() {
 	//TODO: cambiar tileType de int a string
 	tileType = "neutral";
 	iterator = entities.begin();
+	wasVisible = false;
+	isVisible = false;
 }
 
 std::string TileData::getType(){
@@ -38,12 +40,29 @@ int TileData::getNumberOfEntitiesOnTile(){
 	return entities.size();
 }
 
+bool TileData::getWasVisible() {
+	return wasVisible;
+}
+
+bool TileData::getIsVisible() {
+	return isVisible;
+}
+
 void TileData::setType(std::string type){
 	tileType = type;
 }
 
-void TileData::setPersonaje(Player* newPersonaje){
+void TileData::setPlayer(Player* newPersonaje){
 	personaje = newPersonaje;
+}
+
+void TileData::setVisibility( bool value ) {
+	if (value) {
+		wasVisible = true;
+		isVisible = true;
+	} else {
+		isVisible = false;
+	}
 }
 
 void TileData::addEntity(Entity* entity){

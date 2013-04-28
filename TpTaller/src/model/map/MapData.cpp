@@ -6,6 +6,7 @@
  */
 
 MapData::MapData(int _nrows, int _ncols) {
+	this->mainPlayer = NULL;
 	nrows = _nrows;
 	ncols = _ncols;
 
@@ -13,13 +14,13 @@ MapData::MapData(int _nrows, int _ncols) {
 		// TODO: tirar error al log
 	}
 
-	InitializeData();
+	initializeData();
 }
 
 MapData::~MapData() {
 }
 
-void MapData::InitializeData() {
+void MapData::initializeData() {
 	for (int i = 0; i < nrows * ncols; i++) {
 		TileData tempData;
 		tempData.setType("neutral");
@@ -27,19 +28,20 @@ void MapData::InitializeData() {
 	}
 }
 
-void MapData::SetTileType(std::string tileType, int row, int col) {
-	CheckRowColsValue(row, col);
+void MapData::setTileType(std::string tileType, int row, int col) {
+	checkRowColsValue(row, col);
 
 	data[row + nrows * col].setType(tileType);
 }
 
-std::string MapData::GetTileType(int row, int col) {
-	CheckRowColsValue(row, col);
+std::string MapData::getTileType(int row, int col) {
+	checkRowColsValue(row, col);
 
-	return data[row + nrows * col].getType();
+	TileData* tileData = getTileData(row, col);
+	return tileData->getType();
 }
 
-void MapData::CheckRowColsValue(int row, int col) {
+void MapData::checkRowColsValue(int row, int col) {
 	if ((row < 0 || row >= nrows) || (col < 0 || col >= ncols)) {
 		Logs::logErrorMessage("Se ha intentado agregar una entity a un tile inexistente");
 	}
@@ -51,18 +53,20 @@ void MapData::addEntity(int row, int col, Entity* object) {
 	currentData.addEntity(object);
 }
 
-TileData* MapData::GetTileData(int row, int col) {
+TileData* MapData::getTileData(int row, int col) {
 	return &data[row + nrows * col];
 }
 
-void MapData::addPersonaje(int row, int col, Player* personaje) {
-	data[row + nrows * col].setPersonaje(personaje);
+void MapData::addPersonaje(int row, int col, Player* player) {
+	data[row + nrows * col].setPlayer(player);
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
-	personaje->setTile(personajeTile);
+	player->setTile(personajeTile);
+
+	if (player->isMainPlayer()) mainPlayer = player;
 }
 
-Player* MapData::GetPersonaje(int row, int col) {
+Player* MapData::getPersonaje(int row, int col) {
 	return data[row + nrows * col].getPersonaje();
 }
 
@@ -140,7 +144,7 @@ bool compTileList(Tile* A, Tile* B) {
  * la segunda hay que llamar al destructor a mano. Si se sabe donde
  * destruir no hay problema, pero es mas complicado me parece.
  */
-list<Tile *> *MapData::GetPath(Tile* from, Tile* goal) {
+list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 	map<int, Tile *> tilesContainer;	// Uso esto para ir guardando los punteros
 	list<Tile *> closedSet;
 	list<Tile *> openSet;
@@ -186,42 +190,6 @@ list<Tile *> *MapData::GetPath(Tile* from, Tile* goal) {
 		}
 	}
 
-	/*list<Tile *> *path = new list<Tile *>();
-	Tile* nextTile;
-
-	nextTile = from;
-	int row, col;
-	Coordinates nextTileCords = nextTile->getCoordinates();
-	Coordinates toCords = goal->getCoordinates();
-
-	while (nextTileCords.getCol() != toCords.getCol()
-		|| nextTileCords.getRow() != toCords.getRow()) {
-
-		int nextTileCol = nextTileCords.getCol();
-		int nextTileRow = nextTileCords.getRow();
-		int toCol = toCords.getCol();
-		int toRow = toCords.getRow();
-
-		if (toCol > nextTileCol)
-			col = nextTileCol + 1;
-		else if (toCol < nextTileCol)
-			col = nextTileCol - 1;
-		else
-			col = nextTileCol;
-
-		if (toRow > nextTileRow)
-			row = nextTileRow + 1;
-		else if (toRow < nextTileRow)
-			row = nextTileRow - 1;
-		else
-			row = nextTileRow;
-
-		nextTile = new Tile(new Coordinates(row, col));
-		nextTileCords = nextTile->getCoordinates();
-		path->push_back(nextTile);
-	}
-
-	return path;*/
 }
 
 float MapData::heuristicCostEstimate(Tile* from, Tile* to) {
@@ -271,20 +239,65 @@ void printPath( list<Tile *>* path )  {
 void MapData::movePersonaje(Player* personaje, Tile* toTile) {
 	Tile fromTile = personaje->getTile();
 
-	list<Tile *> *path = GetPath(&fromTile, toTile);
+	list<Tile *> *path = getPath(&fromTile, toTile);
 	delete (toTile);
 	personaje->assignPath(path);
 
+	// El codigo de aca abajo es para ir directo al tile clickeado
 	/*list<Tile *> *path = new list<Tile *>();
 	path->insert(path->end(), toTile);
 	personaje->assignPath(path);*/
 }
 
-int MapData::GetNRows() {
+void MapData::cleanVisibleTilesVector() {
+	 std::vector<TileData *>::iterator iter;
+	 for (iter = visibleTiles.begin(); iter != visibleTiles.end(); ++iter) {
+		TileData* tileData = *iter;
+
+		tileData->setVisibility(false);
+	 }
+
+	 visibleTiles.erase(visibleTiles.begin(), visibleTiles.end());
+}
+
+void MapData::updateVisibleTiles() {
+	cleanVisibleTilesVector();
+
+	Vector3* playerPos = mainPlayer->getCurrentPos();
+	int pX = playerPos->getX();
+	int pY = playerPos->getY();
+	int viewRange = mainPlayer->getViewRange()/sqrt(2);
+
+	// La posicion vertical son rows y la horizontal cols.
+	Tile topTile = Tile::getTileCoordinates(pX + viewRange, pY - viewRange);
+	Tile bottomTile = Tile::getTileCoordinates(pX - viewRange, pY + viewRange);
+	Tile leftTile = Tile::getTileCoordinates(pX - viewRange, pY - viewRange);
+	Tile rightTile = Tile::getTileCoordinates(pX + viewRange, pY + viewRange);
+
+	int topRow = topTile.getCoordinates().getRow();
+	int bottomRow = bottomTile.getCoordinates().getRow();
+	int leftCol = leftTile.getCoordinates().getCol();
+	int rightCol = rightTile.getCoordinates().getCol();
+
+	if (topRow < 0) topRow = 0;
+	if (leftCol < 0) leftCol = 0;
+
+	for (int row = topRow; row < bottomRow; row++) {
+		for (int col = leftCol; col < rightCol; col++) {
+			TileData* tileData = getTileData(row, col);
+
+			tileData->setVisibility(true);
+			visibleTiles.push_back(tileData);
+		}
+	}
+
+}
+
+int MapData::getNRows() {
 	return nrows;
 }
 
-int MapData::GetNCols() {
+int MapData::getNCols() {
 	return ncols;
 }
 

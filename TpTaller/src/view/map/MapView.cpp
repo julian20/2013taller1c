@@ -10,7 +10,7 @@ MapView::MapView(MapData* inputData, SDL_Surface* inputScreen, EntityViewMap* ma
 	data = inputData;
 	viewMap = map;
 	Position* cameraPos = new Position(screen->w / 2, screen->h / 2);
-	camera = new MapCameraView( cameraPos, screen , data->GetNRows() , data->GetNCols());
+	camera = new MapCameraView( cameraPos, screen , data->getNRows() , data->getNCols());
 	entitiesView = NULL;
 	player = NULL;
 
@@ -26,10 +26,10 @@ void MapView::setUpPersonajes() {
 	// lo representable) en el mapa.
 	SDL_Rect posTile;
 
-	for (int col = 0; col < data->GetNCols(); col++) {
-		for (int row = 0; row < data->GetNRows(); row++) {
+	for (int col = 0; col < data->getNCols(); col++) {
+		for (int row = 0; row < data->getNRows(); row++) {
 
-			Player* personaje = data->GetPersonaje(row, col);
+			Player* personaje = data->getPersonaje(row, col);
 			if (personaje != NULL) {
 
 				posTile = Tile::computePositionTile(row, col, true);
@@ -71,8 +71,8 @@ map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
 
 	if (supLeft->getCol() < 0) supLeft->setCol(0);
 	if (supRight->getRow() < 0) supRight->setRow(0);
-	if (infLeft->getRow() > data->GetNRows()) infLeft->setRow(data->GetNRows());
-	if (infRight->getCol() > data->GetNCols()) infRight->setCol(data->GetNCols());
+	if (infLeft->getRow() > data->getNRows()) infLeft->setRow(data->getNRows());
+	if (infRight->getCol() > data->getNCols()) infRight->setCol(data->getNCols());
 
 	// Se agregan los tiles de margen
 	if (supLeft->getCol() <= TilesVisibleMargin)
@@ -86,13 +86,13 @@ map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
 		supRight->setRow(supRight->getRow() - TilesVisibleMargin);
 
 
-	if (infRight->getCol() >= data->GetNCols() - TilesVisibleMargin)
-		infRight->setCol( data->GetNCols() );
+	if (infRight->getCol() >= data->getNCols() - TilesVisibleMargin)
+		infRight->setCol( data->getNCols() );
 	else
 		infRight->setCol(infRight->getCol() + TilesVisibleMargin);
 
-	if (infLeft->getRow() >= data->GetNRows() - TilesVisibleMargin)
-		infLeft->setRow( data->GetNRows() );
+	if (infLeft->getRow() >= data->getNRows() - TilesVisibleMargin)
+		infLeft->setRow( data->getNRows() );
 	else
 		infLeft->setRow(infLeft->getRow() + TilesVisibleMargin);
 
@@ -111,9 +111,9 @@ map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
 }
 
 void MapView::draw(Position* cam) {
+	data->updateVisibleTiles();
 
 	SDL_Rect posTile;
-
 	map<string, int> mapVisibleLimits = getVisibleTilesLimit(cam);
 
 	for (int col = mapVisibleLimits["StartCol"]; col < mapVisibleLimits["EndCol"]; col++) {
@@ -125,12 +125,11 @@ void MapView::draw(Position* cam) {
 			posTile.x = posTile.x + cameraPos->getX();
 			posTile.y = posTile.y + cameraPos->getY();
 			delete cameraPos;
-		//	TileData* tileData=data->GetTileData(row,col);
+			TileData* tileData = data->getTileData(row, col);
 
-			std::string textureId = data->GetTileType(row, col);
+			std::string textureId = data->getTileType(row, col);
 			SDL_Surface* textureImage = textureHolder->getTexture(textureId);
-	//		viewMap->drawEntities(tileData,screen,cam,posTile.x,posTile.y);
-			SDL_BlitSurface(textureImage, NULL, screen, &posTile);
+			if (tileData->getWasVisible()) SDL_BlitSurface(textureImage, NULL, screen, &posTile);
 
 		}
 
