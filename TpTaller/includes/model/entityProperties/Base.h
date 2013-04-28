@@ -20,6 +20,15 @@ public:
 	void setWidth(unsigned int width);
 	void setLength(unsigned int length);
 	void setAnchorPixel(Vector2* anchorPixel);
+
+	//Operator to transform the object into a stream.
+	friend ostream& operator <<(std::ostream&, const Base&);
+
+	//Operator to load an object from a stream
+	friend istream& operator >>(std::istream&, Base&);
+
+	Base& operator=(Base &other);
+
 private:
 	unsigned int width;
 	unsigned int length;

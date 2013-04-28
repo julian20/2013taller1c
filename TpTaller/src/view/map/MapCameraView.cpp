@@ -58,9 +58,9 @@ void MapCameraView::moveCamera(CameraMove move, int cameraSpeed) {
 
 
 void MapCameraView::setLimitTiles(int mapRows,int mapCols) {
-	lastTilePosY = Tile::computePosition(mapRows, mapCols,false);
-	lastTilePosXDer = Tile::computePosition(0, mapCols,false);
-	lastTilePosXIzq = Tile::computePosition(mapRows, 0,false);
+	this->lastTilePosY = Tile::computePosition(mapRows, mapCols,false);
+	this->lastTilePosXDer = Tile::computePosition(0, mapCols,false);
+	this->lastTilePosXIzq = Tile::computePosition(mapRows, 0,false);
 }
 
 
@@ -71,25 +71,25 @@ void MapCameraView::checkBoundaries(){
 
 void MapCameraView::checkBasicBoundaries() {
 	// Basic boundaries checking
-	if (camera->getX() > -lastTilePosXIzq.getX() + screen->w / 2)
-		camera->setX(-lastTilePosXIzq.getX() + screen->w / 2);
+	if (camera->getX() > -lastTilePosXIzq->getX() + screen->w / 2)
+		camera->setX(-lastTilePosXIzq->getX() + screen->w / 2);
 
-	if (camera->getX() < -lastTilePosXDer.getX() + screen->w / 2)
-		camera->setX(-lastTilePosXDer.getX() + screen->w / 2);
+	if (camera->getX() < -lastTilePosXDer->getX() + screen->w / 2)
+		camera->setX(-lastTilePosXDer->getX() + screen->w / 2);
 
 	if (camera->getY() > screen->h / 2)
 		camera->setY(screen->h / 2);
 
-	if (camera->getY() < -lastTilePosY.getY() + screen->h / 2)
-		camera->setY(-lastTilePosY.getY() + screen->h / 2);
+	if (camera->getY() < -lastTilePosY->getY() + screen->h / 2)
+		camera->setY(-lastTilePosY->getY() + screen->h / 2);
 }
 
 void MapCameraView::checkAdvancedBoundaries() {
 	// Advanced boundaries checking
 	float XTopRightCondition = (float) ((screen->w / 2));
-	float XBotRightCondition = (float) ((screen->w / 2 - lastTilePosY.getX()));
-	float YTopRightCondition = (float) ((screen->h / 2 - lastTilePosXDer.getY()));
-	float YTopLeftCondition = (float) ((screen->h / 2 - lastTilePosXIzq.getY()));
+	float XBotRightCondition = (float) ((screen->w / 2 - lastTilePosY->getX()));
+	float YTopRightCondition = (float) ((screen->h / 2 - lastTilePosXDer->getY()));
+	float YTopLeftCondition = (float) ((screen->h / 2 - lastTilePosXIzq->getY()));
 
 	bool cameraAtRightForTop = camera->getX() < XTopRightCondition;
 	bool cameraAtRightForBot = camera->getX() < XBotRightCondition;
@@ -99,7 +99,7 @@ void MapCameraView::checkAdvancedBoundaries() {
 	if (cameraAtRightForTop && cameraAtTopForRight) {
 
 		float m = (YTopRightCondition - (float) ((screen->h / 2)))
-				/ ((float) ((-lastTilePosXDer.getX() + screen->w / 2))
+				/ ((float) ((-lastTilePosXDer->getX() + screen->w / 2))
 						- XTopRightCondition);
 		float b = (float) ((screen->h / 2)) - XTopRightCondition * m;
 		float eval = camera->getX() * m + b;
@@ -107,16 +107,16 @@ void MapCameraView::checkAdvancedBoundaries() {
 	} else if (cameraAtRightForBot && !cameraAtTopForRight) {
 
 		float m = (YTopRightCondition
-				- (float) ((-lastTilePosY.getY() + screen->h / 2)))
-				/ ((float) ((screen->w / 2 - lastTilePosXDer.getX()))
+				- (float) ((-lastTilePosY->getY() + screen->h / 2)))
+				/ ((float) ((screen->w / 2 - lastTilePosXDer->getX()))
 						- XBotRightCondition);
-		float b = (float) ((-lastTilePosY.getY() + screen->h / 2)) - XBotRightCondition * m;
+		float b = (float) ((-lastTilePosY->getY() + screen->h / 2)) - XBotRightCondition * m;
 		float eval = camera->getX() * m + b;
 		if (eval > camera->getY())	camera->setY(eval);
 	} else if (!cameraAtRightForTop && cameraAtTopForLeft) {
 
 		float m = (YTopLeftCondition - (float) ((screen->h / 2)))
-				/ ((float) ((-lastTilePosXIzq.getX() + screen->w / 2))
+				/ ((float) ((-lastTilePosXIzq->getX() + screen->w / 2))
 						- XTopRightCondition);
 		float b = (float) ((screen->h / 2)) - XTopRightCondition * m;
 		float eval = camera->getX() * m + b;
@@ -124,10 +124,10 @@ void MapCameraView::checkAdvancedBoundaries() {
 	} else if (!cameraAtRightForBot && !cameraAtTopForLeft) {
 
 		float m = (YTopLeftCondition
-				- (float) ((-lastTilePosY.getY() + screen->h / 2)))
-				/ ((float) ((screen->w / 2 - lastTilePosXIzq.getX()))
+				- (float) ((-lastTilePosY->getY() + screen->h / 2)))
+				/ ((float) ((screen->w / 2 - lastTilePosXIzq->getX()))
 						- XBotRightCondition);
-		float b = (float) ((-lastTilePosY.getY() + screen->h / 2)) - XBotRightCondition * m;
+		float b = (float) ((-lastTilePosY->getY() + screen->h / 2)) - XBotRightCondition * m;
 		float eval = camera->getX() * m + b;
 		if (eval > camera->getY()) camera->setY(eval);
 	}

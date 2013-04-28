@@ -9,9 +9,13 @@
 #define POWER_H_
 
 #include <string>
+#include <iostream>
+
+using namespace std;
 
 class Power {
 public:
+	Power();
 	Power(std::string, int damage, int range);
 	int getDamage() const;
 	void setDamage(int damage);
@@ -20,8 +24,12 @@ public:
 	int getRange();
 	void setRange(int range);
 	virtual ~Power();
+	//Operator to transform the object into a stream.
+	friend ostream& operator <<(std::ostream&, const Power&);
+
+	//Operator to load an object from a stream
+	friend istream& operator >>(std::istream&, Power&);
 private:
-	Power();
 	std::string name;
 	int damage;
 	int range;

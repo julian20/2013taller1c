@@ -11,7 +11,7 @@
 
 Player::Player() {
 	endPos = new Vector3(0, 0);
-	this->speed = new Speed(0, Vector2(0, 0));
+	this->speed = new Speed(0, new Vector2(0, 0));
 	this->initSpeed = NULL;
 	this->name = "";
 	this->path = new list<Tile *>();
@@ -110,8 +110,8 @@ Player::~Player() {
 }
 
 void Player::setPosition(Position* position) {
-	Position pos = Tile::computePosition(position->getX(),position->getY());
-	currentPos->setValues(pos.getX(), pos.getY());
+	Position* pos = Tile::computePosition(position->getX(),position->getY());
+	currentPos->setValues(pos->getX(), pos->getY());
 }
 
 Speed* Player::getSpeed() {
@@ -121,7 +121,11 @@ Speed* Player::getSpeed() {
 void Player::setSpeed(Speed* speed) {
 	this->speed = speed;
 	if (initSpeed == NULL)
-		initSpeed = new Speed(speed->getMagnitude(),Vector2(0,0));
+		initSpeed = new Speed(speed->getMagnitude(),new Vector2(0,0));
+}
+
+void Player::setInitSpeed(Speed* initSpeed){
+	this->initSpeed = initSpeed;
 }
 
 std::string Player::getName() {
@@ -180,3 +184,78 @@ void Player::attack(){
 void Player::cancelAttack(){
 	attacking = false;
 }
+
+
+Player& Player::operator=(const Player &other){
+
+	this->name = other.name;
+	*(this->currentPos) = *(other.currentPos);
+	*(this->endPos) = *(other.endPos);
+	*(this->speed) = *(other.speed);
+	*(this->initSpeed) = *(other.initSpeed);
+	*(this->base) = *(other.base);
+	this->powers = other.powers;
+	*(this->currentTile) = *(other.currentTile);
+	*(this->path) = *(other.path);
+	return *this;
+}
+
+
+//Operator to transform the object into a stream.
+ostream& operator <<(std::ostream& out, const Player& player){
+	out << player.name << " " << *(player.currentPos) << *(player.endPos) << " " << *(player.speed) << " " <<
+			*(player.initSpeed) << " " << *(player.base) << " " << player.powers.size() << " ";
+	for (int i = 0 ; i < player.powers.size() ; i++){
+		out << *(player.powers[i]) << " ";
+	}
+	out << *(player.currentTile) << " " << player.path->size() << " ";
+	for (list<Tile*>::iterator it = player.path->begin() ; it != player.path->end(); ++it){
+		out << *it << " ";
+	}
+	return out;
+}
+
+	//Operator to load an object from a stream
+istream& operator >>(std::istream& in, Player& player){
+	string name;
+	in >> name;
+	player.setName(name);
+	Vector3 pos;
+	in >> pos;
+	player.setPos(pos.getX(),pos.getY(),pos.getZ());
+	in >> pos;
+	player.moveTo(pos.getX(),pos.getY(),pos.getZ());
+	Speed* speed = new Speed();
+	in >> *speed;
+	player.setSpeed(speed);
+	Speed* initSpeed = new Speed();
+	in >> *initSpeed;
+	player.setInitSpeed(initSpeed);
+	Base* base = new Base();
+	in >> *base;
+	player.setBase(base);
+	// Number of powers
+	int n;
+	in >> n;
+	vector<Power*> powers;
+	for (int i = 0; i < n ; i++){
+		Power* pow = new Power();
+		in >> *pow;
+		powers.push_back(pow);
+	}
+	player.setPowers(powers);
+	Tile* tile = new Tile();
+	in >> *tile;
+	player.setTile(tile);
+	// Number of tiles on the path
+	in >> n;
+	list<Tile*> *path = new list<Tile*>();
+	for (int i = 0; i < n ; i++){
+			Tile* tile;
+			in >> *tile;
+			path->push_back(tile);
+	}
+	player.assignPath(path);
+	return in;
+}
+

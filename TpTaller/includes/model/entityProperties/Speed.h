@@ -17,18 +17,29 @@
  * para describir distintas cosas.
  */
 
+using namespace std;
+
 class Speed {
 public:
+	Speed();
 	virtual ~Speed();
-	Speed(int magnitude, Vector2 direction);
+	Speed(int magnitude, Vector2* direction);
 	int getMagnitude();
 	void setMagnitude(int magnitude);
-	Vector2 getDirection();
-	void setDirection(Vector2 direction);
+	Vector2* getDirection();
+	void setDirection(Vector2* direction);
+
+	//Operator to transform the object into a stream.
+	friend ostream& operator <<(std::ostream&, const Speed&);
+
+	//Operator to load an object from a stream
+	friend istream& operator >>(std::istream&, Speed&);
+
+	Speed& operator=(Speed &other);
 
 private:
-	Speed();
-	Vector2 direction;
+
+	Vector2* direction;
 	int magnitude;
 };
 

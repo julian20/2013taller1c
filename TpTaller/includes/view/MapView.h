@@ -35,6 +35,7 @@ public:
 	TextureHolder* getTextureHolder();
 	void setTextureHolder(TextureHolder* textureHolder);
 	void setRunningPlayer();
+	void addNewPlayerView(PlayerView* view,Coordinates initCoord);
 private:
 	map<string, int> getVisibleTilesLimit(Position* cam);
 

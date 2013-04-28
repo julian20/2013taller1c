@@ -148,3 +148,8 @@ void MapView::setTextureHolder(TextureHolder* textureHolder) {
 	this->textureHolder = textureHolder;
 }
 
+void MapView::addNewPlayerView(PlayerView* view,Coordinates initCoord){
+
+	viewMap->positionEntityView(view,initCoord);
+
+}

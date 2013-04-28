@@ -28,6 +28,7 @@ class EntityView {
 public:
 	EntityView();
 	void setTextureHolder(TextureHolder* _textureHolder);
+	TextureHolder* getTextureHolder();
 	virtual void setEntity(Entity* entity);
 	virtual Entity* getEntity();
 	virtual ~EntityView();
