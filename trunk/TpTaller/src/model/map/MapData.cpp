@@ -234,11 +234,11 @@ float MapData::distBetweenTiles(Tile* from, Tile* to)  {
 	Coordinates fromCoords = from->getCoordinates();
 	Coordinates toCoords = to->getCoordinates();
 
-	Position fromPos = Tile::computePosition(fromCoords.getRow(), fromCoords.getCol());
-	Position toPos = Tile::computePosition(toCoords.getRow(), toCoords.getCol());
+	Position* fromPos = Tile::computePosition(fromCoords.getRow(), fromCoords.getCol());
+	Position* toPos = Tile::computePosition(toCoords.getRow(), toCoords.getCol());
 
 	// Devuelvo la norma del vector que une ambos puntos
-	return sqrt( pow(toPos.getX() - fromPos.getX(), 2) + pow(toPos.getY() - fromPos.getY(), 2));
+	return sqrt( pow(toPos->getX() - fromPos->getX(), 2) + pow(toPos->getY() - fromPos->getY(), 2));
 
 }
 

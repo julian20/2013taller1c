@@ -87,3 +87,26 @@ float Vector3::getAngle() {
 		return M_PI * 3 / 2;
 	}
 }
+
+Vector3& Vector3::operator=(Vector3 &other){
+	this->x = other.x;
+	this->y = other.y;
+	this->z = other.z;
+	return *this;
+}
+
+//Operator to transform the object into a stream.
+ostream& operator <<(std::ostream& out , const Vector3& vect){
+	out << vect.x << " " << vect.y << " " << vect.z;
+	return out;
+}
+
+//Operator to load an object from a stream
+istream& operator >>(std::istream& in, Vector3& vect){
+	float x, y, z;
+	in >> x;
+	in >> y;
+	in >> z;
+	vect.setValues(x,y,z);
+	return in;
+}

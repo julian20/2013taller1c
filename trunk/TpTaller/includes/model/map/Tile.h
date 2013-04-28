@@ -15,6 +15,8 @@
 #include <string>
 #include <math.h>
 
+using namespace std;
+
 class Tile {
 public:
 	Tile();
@@ -33,7 +35,7 @@ public:
 	float getFScore();
 	bool isEqual(Tile* otherTile);
 	int getHashValue();
-	static Position computePosition(int row, int col, bool toTileZero = false);
+	static Position* computePosition(int row, int col, bool toTileZero = false);
 	static SDL_Rect computePositionTile(int row, int col, bool toTileZero = false);
 	static Coordinates* getTileCoordinates(int x, int y);
 	static void setTileWidth(unsigned int _tileWidth);
@@ -43,12 +45,21 @@ public:
 
 	static unsigned int tileWidth;
 	static unsigned int tileHeight;
+
+	//Operator to transform the object into a stream.
+	friend ostream& operator <<(std::ostream&, const Tile&);
+
+	//Operator to load an object from a stream
+	friend istream& operator >>(std::istream&, Tile&);
+
+	Tile& operator=(Tile &other);
+
 private:
 	void updatePosition();
 
 	static SDL_Rect getSquaredMapTilePos(int row, int col);
 	static SDL_Rect getDiamondShapeMapTilePos(int row, int col);
-	static Position getDiamondShapeMapPos(int row, int col);
+	static Position* getDiamondShapeMapPos(int row, int col);
 
 	Position* position;
 	Coordinates* coordinates;

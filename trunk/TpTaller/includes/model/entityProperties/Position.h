@@ -8,6 +8,10 @@
 #ifndef POSITION_H
 #define	POSITION_H
 
+#include <iostream>
+
+using namespace std;
+
 class Position {
 public:
 	Position();
@@ -20,6 +24,14 @@ public:
 	void setY(int y);
 	int getZ() const;
 	void setZ(int z);
+
+	//Operator to transform the object into a stream.
+	friend ostream& operator <<(std::ostream&, const Position&);
+
+	//Operator to load an object from a stream
+	friend istream& operator >>(std::istream&, Position&);
+
+	Position& operator=(Position &other);
 
 private:
 	int x, y, z;

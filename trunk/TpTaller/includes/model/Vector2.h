@@ -10,6 +10,9 @@
 
 #define _USE_MATH_DEFINES	// To use math.h constants
 #include <math.h>
+#include <iostream>
+
+using namespace std;
 
 class Vector2 {
 public:
@@ -24,6 +27,15 @@ public:
 	void sub(Vector2 *other);
 	bool isEqual(Vector2 *other);
 	float getAngle();
+
+	//Operator to transform the object into a stream.
+	friend ostream& operator <<(std::ostream&, const Vector2&);
+
+	//Operator to load an object from a stream
+	friend istream& operator >>(std::istream&, Vector2&);
+
+	Vector2& operator=(Vector2 &other);
+
 private:
 	float x, y;
 };

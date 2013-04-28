@@ -33,6 +33,7 @@ using namespace std;
 		void setName(std::string name);
 		Coordinates getCoordinates();
 		void setCoordinates(int row, int col);
+
 	protected:
 		Vector3* currentPos;
 		Base* base;

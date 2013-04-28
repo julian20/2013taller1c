@@ -138,8 +138,8 @@ void printPlayer(Player* player, std::ofstream& outputFile) {
 	outputFile << "        magnitude: ";
 	outputFile << player->getSpeed()->getMagnitude() << std::endl;
 	outputFile << "        direction: [";
-	outputFile << player->getSpeed()->getDirection().getX() << ", ";
-	outputFile << player->getSpeed()->getDirection().getY() << "]";
+	outputFile << player->getSpeed()->getDirection()->getX() << ", ";
+	outputFile << player->getSpeed()->getDirection()->getY() << "]";
 	outputFile << std::endl;
 	outputFile << "      powers:\n";
 	for (unsigned i = 0; i < player->getPowers().size(); i++) {
@@ -409,7 +409,7 @@ void operator >>(const YAML::Node& yamlNode, Speed* speed) {
 	}
 
 	speed->setMagnitude(auxMagnitude);
-	speed->setDirection(Vector2(auxPosition->getX(), auxPosition->getY()));
+	speed->setDirection(new Vector2(auxPosition->getX(), auxPosition->getY()));
 	delete auxPosition;
 }
 
@@ -420,7 +420,7 @@ void operator >>(const YAML::Node& yamlNode, Speed* speed) {
 void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 
 	Position* auxPosition = new Position(0, 0, 0);
-	Speed* auxSpeed = new Speed(0, Vector2(0, 0));
+	Speed* auxSpeed = new Speed(0, new Vector2(0, 0));
 	std::string auxName;
 	std::vector<Power*> auxPowers;
 
@@ -444,7 +444,7 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 		Logs::logErrorMessage(
 				string("Error parsing Player speed: ") + yamlException.what());
 		auxSpeed->setMagnitude(DEFAULT_SPEED);
-		auxSpeed->setDirection(Vector2(0, 0));
+		auxSpeed->setDirection(new Vector2(0, 0));
 	}
 	try {
 		const YAML::Node& powers = yamlNode["powers"];

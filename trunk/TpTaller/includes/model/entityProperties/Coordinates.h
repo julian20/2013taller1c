@@ -8,6 +8,10 @@
 #ifndef COORDINATES_H_
 #define COORDINATES_H_
 
+#include <iostream>
+
+using namespace std;
+
 class Coordinates {
 public:
 	Coordinates();
@@ -17,6 +21,14 @@ public:
 	void setRow(int _row);
 	int getCol() const;
 	void setCol(int _col);
+	//Operator to transform the object into a stream.
+	friend ostream& operator <<(std::ostream&, const Coordinates&);
+
+	//Operator to load an object from a stream
+	friend istream& operator >>(std::istream&, Coordinates&);
+
+	Coordinates& operator=(Coordinates &other);
+
 private:
 	int row, col;
 };

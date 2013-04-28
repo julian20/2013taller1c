@@ -35,3 +35,25 @@ int Coordinates::getCol() const {
 void Coordinates::setCol(int _col){
 	col = _col;
 }
+
+Coordinates& Coordinates::operator=(Coordinates &other){
+	this->col = other.col;
+	this->row = other.row;
+
+	return *this;
+}
+
+//Operator to transform the object into a stream.
+ostream& operator <<(std::ostream& out, const Coordinates& coor){
+	out << coor.row << " " << coor.col;
+	return out;
+}
+
+//Operator to load an object from a stream
+istream& operator >>(std::istream& in, Coordinates& coor){
+	int col, row;
+	in >> row;
+	in >> col;
+	coor.changeTo(row,col);
+	return in;
+}

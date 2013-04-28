@@ -8,6 +8,7 @@
 #define	PERSONAJE_H
 
 #include <stdio.h>
+#include <iostream>
 #include <list>
 #include <model/map/Tile.h>
 #include <model/entities/Entity.h>
@@ -30,6 +31,7 @@ public:
 	void setPosition(Position* position);
 	Speed* getSpeed();
 	void setSpeed(Speed* speed);
+	void setInitSpeed(Speed* initSpeed);
 	std::string getName();
 	void setName(std::string name);
 	std::vector<Power*> getPowers();
@@ -42,6 +44,14 @@ public:
 	void attack();
 	bool isAttacking();
 	void cancelAttack();
+
+	//Operator to transform the object into a stream.
+	friend ostream& operator <<(std::ostream&, const Player&);
+
+	//Operator to load an object from a stream
+	friend istream& operator >>(std::istream&, Player&);
+
+	Player& operator=(const Player &other);
 
 	void setSpeedMagnitude(int mag);
 	string getClassName();

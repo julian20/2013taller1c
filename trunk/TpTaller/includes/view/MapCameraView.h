@@ -37,9 +37,9 @@ private:
 	Position* camera;
 	SDL_Surface* screen;
 
-	Position lastTilePosY;
-	Position lastTilePosXDer;
-	Position lastTilePosXIzq;
+	Position* lastTilePosY;
+	Position* lastTilePosXDer;
+	Position* lastTilePosXIzq;
 
 };
 

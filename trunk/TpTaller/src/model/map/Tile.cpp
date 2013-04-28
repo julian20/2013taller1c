@@ -84,13 +84,13 @@ void Tile::setTextureIdentifier(std::string textureId) {
 	this->textureIdentifier = textureId;
 }
 
-Position Tile::computePosition(int row, int col, bool toTileZero){
+Position* Tile::computePosition(int row, int col, bool toTileZero){
 
-	Position pos = getDiamondShapeMapPos(row, col);
+	Position* pos = getDiamondShapeMapPos(row, col);
 
 	if (toTileZero) {
-			pos.setX(pos.getX() + tileWidth/2);
-			pos.setY(pos.getY() + tileHeight/2);
+			pos->setX(pos->getX() + tileWidth/2);
+			pos->setY(pos->getY() + tileHeight/2);
 	}
 
 	return pos;
@@ -126,25 +126,25 @@ SDL_Rect Tile::getDiamondShapeMapTilePos(int row, int col) {
 	int widthTexture = tileWidth - TilesOverlap;
 	int heightTexture = tileHeight - TilesOverlap;
 
-	Position pos = getDiamondShapeMapPos(row, col);
+	Position* pos = getDiamondShapeMapPos(row, col);
 	SDL_Rect posTile;
 
-	posTile.x = pos.getX();
-	posTile.y = pos.getY();
+	posTile.x = pos->getX();
+	posTile.y = pos->getY();
 	posTile.w = widthTexture;
 	posTile.h = heightTexture;
 
 	return posTile;
 }
 
-Position Tile::getDiamondShapeMapPos(int row, int col) {
+Position* Tile::getDiamondShapeMapPos(int row, int col) {
 	int widthTexture = tileWidth - TilesOverlap;
 	int heightTexture = tileHeight - TilesOverlap;
 
-	Position pos;
+	Position* pos = new Position();
 
-	pos.setX((col - row) * widthTexture / 2);
-	pos.setY((col + row) * heightTexture / 2);
+	pos->setX((col - row) * widthTexture / 2);
+	pos->setY((col + row) * heightTexture / 2);
 
 	return pos;
 }
@@ -201,4 +201,35 @@ bool Tile::isEqual(Tile* otherTile) {
 
 int Tile::getHashValue() {
 	return coordinates->getRow()*1000000 + coordinates->getCol();
+}
+
+Tile& Tile::operator=(Tile &other){
+	this->fScore = other.fScore;
+	this->textureIdentifier = other.textureIdentifier;
+	*(this->coordinates) = *(other.coordinates);
+	*(this->position) = *(other.position);
+	return *this;
+}
+
+//Operator to transform the object into a stream.
+ostream& operator <<(std::ostream& out, const Tile& tile){
+	out << tile.textureIdentifier << " " << tile.fScore << " " << *(tile.position) << " " << tile.coordinates;
+	return out;
+}
+
+//Operator to load an object from a stream
+istream& operator >>(std::istream& in, Tile& tile){
+	string id;
+	float score;
+	Position* pos = new Position();
+	Coordinates coord;
+	in >> id;
+	tile.setTextureIdentifier(id);
+	in >> score;
+	tile.setFScore(score);
+	in >> *pos;
+	tile.setPosition(pos);
+	in >> coord;
+	tile.setCoordinates(coord);
+	return in;
 }

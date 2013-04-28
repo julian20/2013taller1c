@@ -227,6 +227,9 @@ SDL_Surface* EntityView::getFog(SDL_Surface* image) {
 void EntityView::setTextureHolder( TextureHolder* _textureHolder ) {
 	textureHolder = _textureHolder;
 }
+TextureHolder* EntityView::getTextureHolder(){
+	return this->textureHolder;
+}
 
 void EntityView::setDelay(int nuevoDelay) {
 	this->delay = nuevoDelay;
