@@ -281,6 +281,8 @@ void MapData::updateVisibleTiles() {
 
 	if (topRow < 0) topRow = 0;
 	if (leftCol < 0) leftCol = 0;
+	if (bottomRow > nrows) bottomRow = nrows;
+	if (rightCol > ncols) rightCol = ncols;
 
 	for (int row = topRow; row < bottomRow; row++) {
 		for (int col = leftCol; col < rightCol; col++) {
