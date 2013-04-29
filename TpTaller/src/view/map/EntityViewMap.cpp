@@ -16,16 +16,16 @@ using namespace std;
 /* ****************            ENTITYVIEWMAP					************* */
 /* ************************************************************************** */
 
-EntityViewMap::EntityViewMap(int rows, int cols) {
+EntityViewMap::EntityViewMap(MapData* _mapData) {
+	this->mapData = _mapData;
+	this->rows = mapData->getNRows();
+	this->cols = mapData->getNCols();
 
 	for (int i = 0; i < cols; i++) {
 		list<EntityView*> EntityList;
 		vector<list<EntityView*> > row(rows, EntityList);
 		map.push_back(row);
 	}
-
-	this->rows = rows;
-	this->cols = cols;
 }
 
 void EntityViewMap::positionEntityView(EntityView* entity, Coordinates coordinates) {
@@ -115,14 +115,19 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam, std::map<strin
 
 		for (int row = visibleTiles["StartRow"]; row < visibleTiles["EndRow"]; row++) {
 
-			list<EntityView*> aList = map.at(col).at(row);
-			if (!aList.empty()) {
-				list<EntityView*>::iterator it;
-				for (it = aList.begin(); it != aList.end(); ++it) {
-					EntityView* view = *it;
-					if (!view)
-						continue;
-					view->draw(screen, cam);
+			TileData* tileData = mapData->getTileData(row, col);
+
+			if (tileData->getWasVisible()) {
+				list<EntityView*> aList = map.at(col).at(row);
+				if (!aList.empty()) {
+					list<EntityView*>::iterator it;
+					for (it = aList.begin(); it != aList.end(); ++it) {
+						EntityView* view = *it;
+						if (!view)
+							continue;
+						bool drawFog = !(tileData->getIsVisible());
+						view->draw(screen, cam, drawFog);
+					}
 				}
 			}
 		}

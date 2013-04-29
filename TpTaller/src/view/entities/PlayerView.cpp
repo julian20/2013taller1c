@@ -62,7 +62,7 @@ void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* c
 	SDL_BlitSurface(nameImage, NULL, screen, &offsetNombre);
 }
 
-void PlayerView::draw(SDL_Surface* screen, Position* cam) {
+void PlayerView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 	UpdateCameraPos(cam);
 	Show(screen);
 }

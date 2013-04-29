@@ -255,7 +255,7 @@ Entity* EntityView::getEntity() {
 	return this->entity;
 }
 
-void EntityView::draw(SDL_Surface* screen, Position* cam) {
+void EntityView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 	if (image == NULL) loadImage();
 
 	SDL_Rect clipFog;
@@ -276,7 +276,7 @@ void EntityView::draw(SDL_Surface* screen, Position* cam) {
 
 
 	SDL_BlitSurface(image, &clip, screen, &offset);
-	SDL_BlitSurface(fogImage, &clipFog, screen, &offsetFog);
+	if (drawFog) SDL_BlitSurface(fogImage, &clipFog, screen, &offsetFog);
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 

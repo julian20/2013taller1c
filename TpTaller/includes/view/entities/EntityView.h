@@ -38,7 +38,7 @@ public:
 	void setImageHeight(int height);
 	void setTileWidth(int width);
 	void setTileHeight(int height);
-	virtual void draw(SDL_Surface* screen, Position* camera);
+	virtual void draw(SDL_Surface* screen, Position* camera, bool drawFog);
 	void setNClips(int clips);
 
 	int getFps();
