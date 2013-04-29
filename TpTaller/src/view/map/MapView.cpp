@@ -113,24 +113,28 @@ map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
 void MapView::draw(Position* cam) {
 	data->updateVisibleTiles();
 
-	SDL_Rect posTile;
+	SDL_Rect posTile, posFog;
 	map<string, int> mapVisibleLimits = getVisibleTilesLimit(cam);
 
 	for (int col = mapVisibleLimits["StartCol"]; col < mapVisibleLimits["EndCol"]; col++) {
 
 		for (int row = mapVisibleLimits["StartRow"]; row < mapVisibleLimits["EndRow"]; row++) {
 
-			posTile = Tile::computePositionTile(row, col);
-			Position* cameraPos = this->camera->getPosition();
-			posTile.x = posTile.x + cameraPos->getX();
-			posTile.y = posTile.y + cameraPos->getY();
-			delete cameraPos;
 			TileData* tileData = data->getTileData(row, col);
 
-			std::string textureId = data->getTileType(row, col);
-			SDL_Surface* textureImage = textureHolder->getTexture(textureId);
-			if (tileData->getWasVisible()) SDL_BlitSurface(textureImage, NULL, screen, &posTile);
+			if (tileData->getWasVisible()) {
+				posFog = posTile = Tile::computePositionTile(row, col);
+				Position* cameraPos = this->camera->getPosition();
+				posFog.x = posTile.x = posTile.x + cameraPos->getX();
+				posFog.y = posTile.y = posTile.y + cameraPos->getY();
+				delete cameraPos;
 
+				std::string textureId = data->getTileType(row, col);
+				SDL_Surface* textureImage = textureHolder->getTexture(textureId);
+				SDL_Surface* fogImage = textureHolder->getFogTexture(textureId);
+				SDL_BlitSurface(textureImage, NULL, screen, &posTile);
+				if (!(tileData->getIsVisible()))SDL_BlitSurface(fogImage, NULL, screen, &posFog);
+			}
 		}
 
 	}

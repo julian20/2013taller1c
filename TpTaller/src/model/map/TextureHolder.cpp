@@ -75,8 +75,9 @@ SDL_Surface* TextureHolder::getTexture(std::string id) {
 }
 
 SDL_Surface* TextureHolder::getFogTexture(std::string id) {
+
 	if (fogTextures.find(id) == fogTextures.end()) {	// si no existe en el map
-		return NULL;
+		fogTextures[id] = FogCreator::getFog( getTexture(id) );
 	}
 
 	return fogTextures[id];
