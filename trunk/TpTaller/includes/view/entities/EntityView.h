@@ -14,6 +14,7 @@
 #include <model/map/TextureHolder.h>
 #include <model/entities/Entity.h>
 #include <view/timer/Timer.h>
+#include <view/FogCreator.h>
 #include <model/map/Tile.h>
 #include <model/Vector2.h>
 #include <string>
@@ -61,9 +62,6 @@ public:
 protected:
 	//SDL_Surface* loadImage(string urlImagen, map<string,SDL_Surface*> *images);
 	void loadImage();
-	SDL_Surface* getFog(SDL_Surface* image);
-	void setPixelInvisible(SDL_Surface * surface, int x, int y);
-	SDL_Surface* createFogSurface(int width, int heigth);
 
 	int nClips;
 	int timeSinceLastAnimation;

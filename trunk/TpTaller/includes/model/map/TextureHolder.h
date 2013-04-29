@@ -8,6 +8,7 @@
 #ifndef TEXTUREHOLDER_H_
 #define TEXTUREHOLDER_H_
 
+#include <view/FogCreator.h>
 #include <model/map/TextureDefinition.h>
 #include <vector>
 #include <string>
