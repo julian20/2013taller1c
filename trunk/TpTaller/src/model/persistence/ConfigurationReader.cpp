@@ -1563,8 +1563,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	mapConfiguration >> mapData;
 
 // Create entityViewMap:
-	EntityViewMap* entityViewMap = new EntityViewMap(mapData->getNRows(),
-			mapData->getNCols());
+	EntityViewMap* entityViewMap = new EntityViewMap(mapData);
 	loadEntityViewMap(entityViewMap, cleanPlayerViews);
 //	entityViewMap->assingEntitiesView(entityViewVector);
 	loadEntityViewMap(entityViewMap, cleanEntityViews);

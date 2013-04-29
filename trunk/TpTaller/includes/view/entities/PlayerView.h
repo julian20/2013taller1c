@@ -46,7 +46,7 @@ public:
 	void setName(std::string name);
 	virtual ~PlayerView();
 	void EstablecerLosClips();
-	void draw(SDL_Surface* screen, Position* camera);
+	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
 	void playAnimation(SpriteType sprite, SDL_Surface* screen);
 private:
 	void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
