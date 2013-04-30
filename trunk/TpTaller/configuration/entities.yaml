@@ -135,7 +135,7 @@
     mainPlayer: true
     viewRange: 200
 - entityLocations:
-  - name: chapel
+  - name: tree
     position: [0, 0, 0]
   - name: chapel
     position: [23, 20, 0]

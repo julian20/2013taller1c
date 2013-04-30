@@ -85,12 +85,14 @@ void Tile::setTextureIdentifier(std::string textureId) {
 }
 
 Position* Tile::computePosition(int row, int col, bool toTileZero){
-
 	Position* pos = getDiamondShapeMapPos(row, col);
 
 	if (toTileZero) {
-			pos->setX(pos->getX() + tileWidth/2);
-			pos->setY(pos->getY() + tileHeight/2);
+		const int widthTexture = tileWidth - TilesOverlap;
+		const int heightTexture = tileHeight - TilesOverlap;
+
+		pos->setX(pos->getX() + widthTexture/2);
+		pos->setY(pos->getY() + heightTexture/2);
 	}
 
 	return pos;
@@ -100,16 +102,19 @@ SDL_Rect Tile::computePositionTile(int row, int col, bool toTileZero) {
 	SDL_Rect rect = getDiamondShapeMapTilePos(row, col);
 
 	if (toTileZero) {
-		rect.x = rect.x + tileWidth/2;
-		rect.y = rect.y + tileHeight/2;
+		const int widthTexture = tileWidth - TilesOverlap;
+		const int heightTexture = tileHeight - TilesOverlap;
+
+		rect.x = rect.x + widthTexture/2;
+		rect.y = rect.y + heightTexture/2;
 	}
 
 	return rect;
 }
 
 SDL_Rect Tile::getSquaredMapTilePos(int row, int col) {
-	int widthTexture = tileWidth - TilesOverlap;
-	int heightTexture = tileHeight - TilesOverlap;
+	const int widthTexture = tileWidth - TilesOverlap;
+	const int heightTexture = tileHeight - TilesOverlap;
 
 	SDL_Rect posTile;
 
@@ -123,8 +128,8 @@ SDL_Rect Tile::getSquaredMapTilePos(int row, int col) {
 }
 
 SDL_Rect Tile::getDiamondShapeMapTilePos(int row, int col) {
-	int widthTexture = tileWidth - TilesOverlap;
-	int heightTexture = tileHeight - TilesOverlap;
+	const int widthTexture = tileWidth - TilesOverlap;
+	const int heightTexture = tileHeight - TilesOverlap;
 
 	Position* pos = getDiamondShapeMapPos(row, col);
 	SDL_Rect posTile;
@@ -138,8 +143,8 @@ SDL_Rect Tile::getDiamondShapeMapTilePos(int row, int col) {
 }
 
 Position* Tile::getDiamondShapeMapPos(int row, int col) {
-	int widthTexture = tileWidth - TilesOverlap;
-	int heightTexture = tileHeight - TilesOverlap;
+	const int widthTexture = tileWidth - TilesOverlap;
+	const int heightTexture = tileHeight - TilesOverlap;
 
 	Position* pos = new Position();
 
@@ -160,9 +165,7 @@ Coordinates* Tile::getTileCoordinates(int x, int y)
 	int col = (int)(roundf(xF / widthTexture + yF / heightTexture));
 	int row = (int)(roundf(yF / heightTexture - xF / widthTexture));
 
-	// printf("x: %i   Y: %i\n",x,y);
-
-	Coordinates* coor = new Coordinates(row,col);
+	Coordinates* coor = new Coordinates(row, col);
 	return coor;
 }
 

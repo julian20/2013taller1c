@@ -29,7 +29,7 @@ public:
 	void drawViews(SDL_Surface* screen, Position* cam, std::map<string, int> visibleTiles);
 	list<EntityView*> getListAtRowAndCol(int row,int col);
 	void assingEntitiesView(EntityHolder* entityHolder);
-	void drawEntities(TileData* tileData,SDL_Surface* screen, Position* cam, int row, int col);
+	//void drawEntities(TileData* tileData,SDL_Surface* screen, Position* cam, int row, int col);
 	virtual ~EntityViewMap();
 private:
 	int rows, cols;

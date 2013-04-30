@@ -156,14 +156,14 @@ void EntityView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 	clip.y = clipFog.y = 0;
 	clip.w = clipFog.w = this->imageWidth * scaleWidth;
 	clip.h = clipFog.h = this->imageHeight * scaleHeight;
-	Vector3* position = entity->getCurrentPos();
-	int x = (int) position->getX();
-	int y = (int) position->getY();
+	Coordinates coords = entity->getCoordinates();
+	int row = coords.getRow();
+	int col = coords.getCol();
 
 	SDL_Rect offset, offsetFog;
 	int tileH = Tile::computePositionTile(0,0,true).h;
-	offset.x = offsetFog.x = (int) (Tile::computePositionTile(x, y, true).x + cam->getX() - (int)this->anchorPixel->getX());
-	offset.y = offsetFog.y = (int) (Tile::computePositionTile(x, y, true).y + cam->getY() - (int)this->anchorPixel->getY() - tileH/2  );
+	offset.x = offsetFog.x = (int) (Tile::computePositionTile(row, col, true).x + cam->getX() - (int)this->anchorPixel->getX());
+	offset.y = offsetFog.y = (int) (Tile::computePositionTile(row, col, true).y + cam->getY() - (int)this->anchorPixel->getY() - tileH/2  );
 	offset.h = offsetFog.h = clip.h;
 	offset.w = offsetFog.w = clip.w;
 

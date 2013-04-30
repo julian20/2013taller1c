@@ -22,8 +22,7 @@ MapView::~MapView() {
 }
 
 void MapView::setUpPersonajes() {
-	// Setea la posicion por unica vez de los personajes (y en un futuro posiblemente
-	// lo representable) en el mapa.
+	// Setea la posicion por unica vez de los personajes en el mapa.
 	SDL_Rect posTile;
 
 	for (int col = 0; col < data->getNCols(); col++) {
@@ -32,7 +31,8 @@ void MapView::setUpPersonajes() {
 			Player* personaje = data->getPersonaje(row, col);
 			if (personaje != NULL) {
 
-				posTile = Tile::computePositionTile(row, col, true);
+				posTile = Tile::computePositionTile(row, col);
+				Coordinates* coords = Tile::getTileCoordinates( posTile.x, posTile.y);
 				personaje->setPos((float) posTile.x, (float) posTile.y);
 			}
 		}
@@ -40,7 +40,7 @@ void MapView::setUpPersonajes() {
 }
 
 //TODO - este metodo iria en cfg reader
-void MapView::setUpEntity(EntityView* entityView,Coordinates coor)
+void MapView::setUpEntity(EntityView* entityView, Coordinates coor)
 {
 	this->viewMap->positionEntityView(entityView,coor);
 }
@@ -152,7 +152,5 @@ void MapView::setTextureHolder(TextureHolder* textureHolder) {
 }
 
 void MapView::addNewPlayerView(PlayerView* view,Coordinates initCoord){
-
 	viewMap->positionEntityView(view,initCoord);
-
 }

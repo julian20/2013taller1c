@@ -9,6 +9,7 @@
 #ifndef ENTITYVIEW_H
 #define ENTITYVIEW_H
 
+#include <model/entityProperties/Coordinates.h>
 #include <model/entityProperties/Position.h>
 #include <model/entityProperties/Base.h>
 #include <model/map/TextureDefinition.h>
