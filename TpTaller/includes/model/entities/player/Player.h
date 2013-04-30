@@ -67,6 +67,7 @@ public:
 	string getClassName();
 private:
 	void loadNextPosition();
+	void emptyPath();
 
 	int viewRange;
 	bool mainPlayer;

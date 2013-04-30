@@ -259,7 +259,8 @@ float MapData::distBetweenTiles(Tile* from, Tile* to)  {
 	Position* fromPos = Tile::computePosition(fromCoords.getRow(), fromCoords.getCol());
 	Position* toPos = Tile::computePosition(toCoords.getRow(), toCoords.getCol());
 
-	float result = sqrt( pow(toPos->getX() - fromPos->getX(), 2) + pow(toPos->getY() - fromPos->getY(), 2));
+	float result = sqrt( pow(toPos->getX() - fromPos->getX(), 2) +
+						 pow(toPos->getY() - fromPos->getY(), 2));
 
 	delete fromPos;
 	delete toPos;
@@ -340,15 +341,25 @@ void MapData::updateVisibleTiles() {
 
 	if (topRow < 0) topRow = 0;
 	if (leftCol < 0) leftCol = 0;
-	if (bottomRow > nrows) bottomRow = nrows;
-	if (rightCol > ncols) rightCol = ncols;
+	if (bottomRow > nrows - 2) bottomRow = nrows;
+	if (rightCol > ncols - 2) rightCol = ncols;
 
-	for (int row = topRow; row < bottomRow; row++) {
-		for (int col = leftCol; col < rightCol; col++) {
-			TileData* tileData = getTileData(row, col);
+	for (int row = topRow; row < bottomRow + 2; row++) {
+		for (int col = leftCol; col < rightCol + 2; col++) {
 
-			tileData->setVisibility(true);
-			visibleTiles.push_back(tileData);
+			Tile playerTile = mainPlayer->getTile();
+			Tile currentTile;
+			currentTile.setCoordinates(row, col);
+
+			if (distBetweenTiles(&currentTile, &playerTile) <
+					mainPlayer->getViewRange()) {
+
+				TileData* tileData = getTileData(row, col);
+
+				tileData->setVisibility(true);
+				visibleTiles.push_back(tileData);
+			}
+
 		}
 	}
 
