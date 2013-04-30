@@ -52,7 +52,7 @@
     imageWidth: 238
     imageHeight: 290
     numberOfClips: 0
-    anchorPixel: [120, 139]  
+    anchorPixel: [120, 139]
   - name: sawmill
     imageSrc: resources/buildings/sawmill.png
     imageWidth: 276
@@ -65,6 +65,8 @@
     imageHeight: 227
     numberOfClips: 0
     anchorPixel: [110, 160] 
+    baseWidth: 4
+    baseHeight: 3
   - name: pottery
     imageSrc: resources/buildings/pottery.png
     imageWidth: 259
@@ -119,7 +121,7 @@
 - mapDimensions: [50, 50]
 - playerLocations:
   - name: Player
-    position: [20, 20, 0]
+    position: [10, 10, 0]
     speed:
       magnitude: 4
       direction: [1, 2]
@@ -133,7 +135,7 @@
     mainPlayer: true
     viewRange: 200
 - entityLocations:
-  - name: tree
+  - name: chapel
     position: [0, 0, 0]
   - name: chapel
     position: [23, 20, 0]

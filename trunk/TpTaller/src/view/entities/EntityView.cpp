@@ -25,12 +25,9 @@
 using namespace std;
 
 EntityView::EntityView() {
-	this->baseHeight = 1;
-	this->baseWidth = 1;
+	this->base = new Base();
 	this->scaleWidth = 1;
 	this->scaleHeight = 1;
-	this->tileHeight = 50;
-	this->tileWidth = 70;
 	this->imageHeight = 0;
 	this->imageWidth = 0;
 	this->entity = NULL;
@@ -63,11 +60,9 @@ int EntityView::getNumberOfRepeats() {
 }
 
 void EntityView::setScale() {
-//	baseHeight = entity->getBase()->getLength();
-//	baseWidth = entity->getBase()->getWidth();
-	this->scaleHeight = (float) (this->tileHeight) * float(this->baseHeight)
+	this->scaleHeight = (float) (Tile::getTileHeight()) * float(this->base->getHeight())
 			/ (float) (this->imageHeight);
-	this->scaleWidth = (float) (this->tileWidth) * (float) (this->baseWidth)
+	this->scaleWidth = (float) (Tile::getTileWidth()) * (float) (this->base->getWidth())
 			/ (float) (this->imageWidth);
 }
 
@@ -79,18 +74,17 @@ void EntityView::setNClips(int clips) {
 	this->nClips = clips;
 }
 
-void EntityView::setTileWidth(int width) {
-	this->tileWidth = width;
-}
-void EntityView::setTileHeight(int height) {
-	this->tileHeight = height;
+void EntityView::setBaseSizes(int width, int height) {
+	this->base->setWidth(width);
+	this->base->setHeight(height);
 }
 
-void EntityView::setBaseWidth(int width) {
-	this->baseWidth = width;
+int EntityView::getBaseWidth() {
+	return this->base->getWidth();
 }
-void EntityView::setBaseHeight(int height) {
-	this->baseHeight = height;
+
+int EntityView::getBaseHeight() {
+	return this->base->getHeight();
 }
 
 void EntityView::setImageHeight(int height) {
@@ -145,6 +139,9 @@ int EntityView::getFps() {
 
 void EntityView::setEntity(Entity* entity) {
 	this->entity = entity;
+
+	if (this->entity)
+		this->entity->setBaseSizes(base->getWidth(), base->getHeight());
 }
 
 Entity* EntityView::getEntity() {
@@ -202,7 +199,7 @@ EntityView::~EntityView() {
 	//SDL_FreeSurface(this->image);
 	if (anchorPixel)
 		delete anchorPixel;
-
+	delete this->base;
 }
 
 std::string EntityView::getName() {

@@ -10,6 +10,7 @@
 #define ENTITYVIEW_H
 
 #include <model/entityProperties/Position.h>
+#include <model/entityProperties/Base.h>
 #include <model/map/TextureDefinition.h>
 #include <model/map/TextureHolder.h>
 #include <model/entities/Entity.h>
@@ -37,8 +38,6 @@ public:
 	void setAnchorPixel(Vector2* anchorPixel);
 	void setImageWidth(int width);
 	void setImageHeight(int height);
-	void setTileWidth(int width);
-	void setTileHeight(int height);
 	virtual void draw(SDL_Surface* screen, Position* camera, bool drawFog);
 	void setNClips(int clips);
 
@@ -54,14 +53,15 @@ public:
 	int getImageHeight();
 	int getImageWidth();
 
-	void setBaseWidth(int width);
-	void setBaseHeight(int height);
+	void setBaseSizes(int width, int height);
+	int getBaseWidth();
+	int getBaseHeight();
 	std::string getName();
 	virtual void setName(std::string name);
 
 protected:
-	//SDL_Surface* loadImage(string urlImagen, map<string,SDL_Surface*> *images);
 	void loadImage();
+	void updateBaseSize();
 
 	int nClips;
 	int timeSinceLastAnimation;
@@ -74,12 +74,9 @@ protected:
 	std::string name;
 	int imageHeight;
 	int imageWidth;
-	int baseWidth;
-	int baseHeight;
+	Base* base;
 	float scaleWidth;
 	float scaleHeight;
-	int tileHeight;
-	int tileWidth;
 	//void EstablecerClips();
 
 	int currentClip;

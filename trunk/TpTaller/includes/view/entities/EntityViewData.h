@@ -7,6 +7,7 @@
 
 #ifndef ENTITYVIEWDATA_H_
 #define ENTITYVIEWDATA_H_
+#include <model/map/Tile.h>
 #include <vector>
 #include <SDL/SDL.h>
 #include <string>
@@ -28,8 +29,6 @@ public:
 	void setAnchorPixel(Vector2* anchorPixel);
 	void setImageWidth(int width);
 	void setImageHeight(int height);
-	void setTileWidth(int width);
-	void setTileHeight(int height);
 	int getImageHeight();
 	int getImageWidth();
 	void setBaseWidth(int width);
@@ -53,8 +52,6 @@ protected:
 	int baseWidth;
 	float scaleWidth;
 	float scaleHeight;
-	int tileHeight;
-	int tileWidth;
 	int imageHeight;
 	int imageWidth;
 	Vector2* anchorPixel;

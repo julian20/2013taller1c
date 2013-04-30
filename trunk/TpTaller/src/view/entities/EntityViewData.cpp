@@ -15,8 +15,6 @@ EntityViewData::EntityViewData() {
 	this->scaleWidth = 1;
 	this->scaleHeight = 1;
 	this->entityImage = "";
-	this->tileHeight = 50;
-	this->tileWidth = 70;
 	this->imageHeight = 0;
 	this->imageWidth = 0;
 	this->nClips=0;
@@ -24,11 +22,9 @@ EntityViewData::EntityViewData() {
 }
 
 void EntityViewData::setScale() {
-	//baseHeight = entity->getBase()->getLength();
-	//baseWidth = entity->getBase()->getWidth();
-	this->scaleHeight = (float) (this->tileHeight) * float(this->baseHeight)
+	this->scaleHeight = (float) (Tile::getTileHeight()) * float(this->baseHeight)
 			/ (float) (this->imageHeight);
-	this->scaleWidth = (float) (this->tileWidth) * (float) (this->baseWidth)
+	this->scaleWidth = (float) (Tile::getTileWidth()) * (float) (this->baseWidth)
 			/ (float) (this->imageWidth);
 	printf("ancho %f---- alto %f", scaleWidth, scaleHeight);
 }
@@ -38,13 +34,6 @@ int EntityViewData::getNClips() {
 void EntityViewData::setNClips(int clips) {
 	this->nClips=clips;
 }
-void EntityViewData::setTileWidth(int width) {
-	this->tileWidth = width;
-}
-void EntityViewData::setTileHeight(int height) {
-	this->tileHeight = height;
-}
-
 void EntityViewData::setBaseWidth(int width) {
 	this->baseWidth = width;
 }
