@@ -56,7 +56,7 @@ ostream& operator <<(std::ostream& out, const Base& base){
 
 //Operator to load an object from a stream
 istream& operator >>(std::istream& in, Base& base){
-	int width, length;
+	unsigned int width, length;
 	Vector2* anchorPixel = new Vector2(0,0);
 	in >> width;
 	in >> length;

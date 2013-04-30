@@ -23,7 +23,7 @@
 #include <sstream>
 #include <fstream>
 
-#define READING_SIZE 4096
+#define READING_SIZE 8192
 #define MAPFILE "./mapita.yamp"
 
 using namespace std;
@@ -31,13 +31,12 @@ using namespace std;
 
 Client::Client(string host, int port, Game* game) {
 	// TODO Auto-generated constructor stub
-	int sockfd;
 	struct sockaddr_in hints;
 	struct hostent *server;
 
 	//Creo el nuevo socket
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd < 0)
+	clientID = socket(AF_INET, SOCK_STREAM, 0);
+	if (clientID < 0)
 		//TODO LOG
 
 	// Obtengo el host del servidor
@@ -59,13 +58,13 @@ Client::Client(string host, int port, Game* game) {
 	hints.sin_port = htons(port);
 
 	// Conecto al servidor utilizando el socket creado.
-	if (connect(sockfd,(struct sockaddr *) &hints,sizeof(hints)) < 0)
+	if (connect(clientID,(struct sockaddr *) &hints,sizeof(hints)) < 0)
 		//error("ERROR connecting"); //TODO LOG
 
 	// Devuelvo el socket ID.
-	this->clientID = sockfd;
-	this->info = new PlayerInfo();
 	this->game = game;
+
+	cout << clientID <<endl;
 
 }
 
@@ -86,7 +85,6 @@ void Client::downloadMap(){
 	while (line[0] != EOF){
 
 		recv(clientID,line,READING_SIZE,0);
-		printf("%s",line);
 		if (line[0] != EOF) f << line;
 
 	}
@@ -96,6 +94,7 @@ void Client::downloadMap(){
 }
 
 void Client::initPlayerInfo(PlayerView* view){
+	this->info = new PlayerInfo();
 	info->setWalkingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(WALKING_MODIFIER) ));
 	info->setRunningImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(RUNNING_MODIFIER) ));
 	info->setIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_MODIFIER) ));
@@ -107,25 +106,23 @@ void Client::initPlayerInfo(PlayerView* view){
 	info->setPlayer(view->getPersonaje());
 	Coordinates* c = new Coordinates(view->getPersonaje()->getCoordinates().getRow(), view->getPersonaje()->getCoordinates().getCol());
 	info->setInitCoordinates(c);
+//	players[view->getPersonaje()->getName()] = view->getPersonaje();
 
 }
 
 void Client::sendPlayerInfo(){
-
-	std::cout << "Sending Player Info" << std::endl;
 	std::stringstream ss;
 
 	ss << (*info);
+
 	// Envio la player info.
 	send(clientID,ss.str().c_str(),READING_SIZE,0);
-
-	std::cout << "Sended" << std::endl;
 
 }
 
 void Client::updatePlayers(GlobalChanges* changes){
 
-	vector<PlayerInfo*> others = changes->getOthersChanges(clientID);
+	vector<PlayerInfo*> others = changes->getOthersChanges(info->getPlayer()->getName());
 
 	for (int i = 0 ; i < others.size() ; i++){
 		PlayerInfo* info = others[i];
@@ -147,10 +144,12 @@ void Client::updatePlayers(GlobalChanges* changes){
 			view->setName(name);
 			view->setFps(info->getFPS());
 			view->setDelay(info->getDelay());
-//			game->addNewPlayer(player,view,info->getInitCoordinates());
+			game->addNewPlayer(player,view,info->getInitCoordinates());
+			players[player->getName()] = player;
 		} else {
 			// EXISTING PLAYER -> UPDATE
 			*(players[player->getName()]) = *player;
+			delete player;
 		}
 
 	}
@@ -161,19 +160,58 @@ void Client::updatePlayers(GlobalChanges* changes){
 GlobalChanges* Client::downloadGlobalChanges(){
 
 	GlobalChanges* changes = new GlobalChanges();
-	int size;
 	stringstream ss;
+	char buffer[READING_SIZE];
 
 
-	// Recibo el tamanio de los cambios
-	recv(clientID,ss,1024,0);
-	ss >> size;
 	// Recibo los cambios
-	recv(clientID,ss,size,0);
+	recv(clientID,buffer,READING_SIZE,0);
+	string temp;
+	temp.assign(buffer);
+	ss << temp;
 	ss >> *changes;
+
+
+	cout << "size: " << temp.size()*sizeof(char)<< endl;
+
 
 	return changes;
 }
+
+void* transmit(void* _client){
+
+	Client* client = (Client*) _client;
+
+	//client->downloadMap();
+	bool playing = true;
+
+	while (playing){
+		client->sendPlayerInfo();
+		cout << "1" << endl;
+		GlobalChanges* changes = client->downloadGlobalChanges();
+		cout << "2" << endl;
+		client->updatePlayers(changes);
+		cout<< "3" << endl;
+		delete changes;
+	}
+
+	return NULL;
+}
+
+
+void Client::run(){
+
+	pthread_t thread;
+	pthread_attr_t attr;
+	pthread_attr_init(&attr);
+
+	if (pthread_create(&thread, &attr, transmit,(void*)this ) != 0) {
+		fprintf(stderr, "Failed to create thread\n");
+
+	}
+
+}
+
 
 Client::~Client() {
 	close(clientID);

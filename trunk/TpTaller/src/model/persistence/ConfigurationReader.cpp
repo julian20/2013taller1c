@@ -1570,6 +1570,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	configuration.setTextureHolder(textureHolder);
 	configuration.setMapData(mapData);
 	configuration.setAnimationConfiguration(animationConfig);
+	configuration.setViewList(cleanPlayerViews);
 
 // Print parsed elements.
 //	printPlayerViews(playerViewVector, outputFile);

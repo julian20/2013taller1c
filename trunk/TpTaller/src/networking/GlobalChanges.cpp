@@ -6,6 +6,7 @@
  */
 
 #include <networking/GlobalChanges.h>
+#include <iostream>
 
 namespace std {
 
@@ -15,17 +16,23 @@ GlobalChanges::GlobalChanges() {
 }
 
 
-void GlobalChanges::addChanges(int currentClient, PlayerInfo* info){
+void GlobalChanges::addChanges(PlayerInfo* info){
 
-	changes.insert( pair<int,PlayerInfo*>(currentClient,info) );
+
+	if (changes.count(info->getPlayer()->getName()) == 0){
+		changes.insert( pair<string,PlayerInfo*>(info->getPlayer()->getName(),info) );
+	} else {
+		delete (changes[info->getPlayer()->getName()]);
+		changes[info->getPlayer()->getName()] = info;
+	}
 
 }
 
-vector<PlayerInfo*> GlobalChanges::getOthersChanges(int currentClient){
+vector<PlayerInfo*> GlobalChanges::getOthersChanges(string clientName){
 
 	vector<PlayerInfo*> vector;
-	for (map<int,PlayerInfo*>::iterator it=changes.begin(); it!=changes.end(); ++it){
-		if (currentClient != it->first){
+	for (map<string,PlayerInfo*>::iterator it=changes.begin(); it!=changes.end(); ++it){
+		if (clientName != it->first){
 			vector.push_back(it->second);
 		}
 	}
@@ -38,9 +45,14 @@ vector<PlayerInfo*> GlobalChanges::getOthersChanges(int currentClient){
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, GlobalChanges& c){
 
-	for (map<int,PlayerInfo*>::iterator it=c.changes.begin(); it!=c.changes.end(); ++it){
-		out << it->first << " " << *(it->second) << " ";
+	int size = c.changes.size();
+
+	out << size << " ";
+
+	for (map<string,PlayerInfo*>::iterator it=c.changes.begin(); it!=c.changes.end(); ++it){
+		out << *(it->second) << " ";
 	}
+
 
 	return out;
 
@@ -49,12 +61,13 @@ ostream& operator <<(std::ostream& out, GlobalChanges& c){
 //Operator to load an object from a stream
 istream& operator >>(std::istream& in, GlobalChanges& c){
 
-	while (!in.eof()){
-		int current;
+	int size;
+	in >> size;
+
+	for (int i = 0 ; i < size ; i++){
 		PlayerInfo* pl = new PlayerInfo();
-		in >> current;
 		in >> *pl;
-		c.addChanges(current,pl);
+		c.addChanges(pl);
 	}
 
 	return in;
@@ -63,7 +76,10 @@ istream& operator >>(std::istream& in, GlobalChanges& c){
 
 
 GlobalChanges::~GlobalChanges() {
-	// TODO Auto-generated destructor stub
+	for (map<string,PlayerInfo*>::iterator it=changes.begin(); it!=changes.end(); ++it){
+			delete (it->second);
+	}
+
 }
 
 } /* namespace std */

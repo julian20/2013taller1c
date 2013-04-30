@@ -8,6 +8,7 @@
 #include <model/entityProperties/Power.h>
 
 #include <string>
+#include <iostream>
 
 Power::Power() {
 	this->name = "";
@@ -37,7 +38,7 @@ std::string Power::getName() {
 }
 
 void Power::setName(std::string name) {
-	this->name = name;
+	this->name.assign(name);
 }
 
 int Power::getRange() {
@@ -59,10 +60,10 @@ istream& operator >>(std::istream& in, Power& power){
 	string name;
 	int damage, range;
 	in >> name;
-	in >> damage;
-	in >> range;
 	power.setName(name);
+	in >> damage;
 	power.setDamage(damage);
+	in >> range;
 	power.setRange(range);
 	return in;
 }

@@ -79,23 +79,29 @@ void* handle(void* par){
 		Server* server = parameter->server;
 
 		//Lo primero que hago es mandar el mapa.
-		server->sendMap(std::string(MAPFILE),clientSocket);
+		//server->sendMap(std::string(MAPFILE),clientSocket);
 
 		// Manda las imagenes y sonidos necesarios que se utilizaran.
 		//TODO : sendResources(sockID);
 
 
-		bool playing = false;
+		bool playing = true;
+
+		int i = 0;
 
 		while (playing){
 
 			GlobalChanges* changes = server->getChanges();
+
 			// Recibo la informacion del jugador
 			PlayerInfo* info = server->recievePlayerInfo(clientSocket);
-			changes->addChanges(clientSocket,info);
+			changes->addChanges(info);
 
 			server->sendGlobalChanges(clientSocket,changes);
 
+
+			cout << " Loop " << i << endl;
+			i++;
 			/* Aca se hace todo el manejo de actualizaciones.
 			 * Hay que mandar y recibir las actualizaciones de el resto de los jugadores
 			 */
@@ -125,8 +131,8 @@ void Server::run(){
 			perror("accept");
 		}
 		else {
-			printf("Got a connection from %s on port %d\n",
-					inet_ntoa(their_addr.sin_addr), htons(their_addr.sin_port));
+			printf("Got a connection from %s on port %d: ClientID: %d \n",
+					inet_ntoa(their_addr.sin_addr), htons(their_addr.sin_port), newsock);
 			ThreadParameter* tp = (ThreadParameter*) malloc(sizeof(ThreadParameter));
 			tp->clientID = newsock;
 			tp->server = this;
@@ -172,25 +178,15 @@ PlayerInfo* Server::recievePlayerInfo(int clientSocket){
 	stringstream ss;
 	string temp;
 	PlayerInfo* info = new PlayerInfo();
-	int size = 2*sizeof(int);
-	char* buffer = (char*) malloc(size*sizeof(char));
+	char buffer[READING_SIZE];
 	// NULL CONTROL TODO
-
-	std::cout << "Downloading Player Information" << std::endl;
-
-	free(buffer);
-	buffer = (char*) malloc(READING_SIZE*sizeof(char));
 
 	// Recibo el PlayerInfo.
 	recv(clientSocket,buffer,READING_SIZE,0);
-	temp.assign(buffer);
-
-	free(buffer);
+	temp.assign(buffer, READING_SIZE);
 
 	ss << temp;
 	ss >> *info;
-
-	//cout << "Download finished" << endl;
 
 	return info;
 
@@ -199,9 +195,11 @@ PlayerInfo* Server::recievePlayerInfo(int clientSocket){
 void Server::sendGlobalChanges(int sockID, GlobalChanges* changes){
 
 	stringstream ss;
-	ss << changes;
+	ss << *changes;
 
 	send(sockID,ss.str().c_str(),READING_SIZE,0);
+
+	cout << "size: " << ss.str().size()*sizeof(char)<< endl;
 
 }
 

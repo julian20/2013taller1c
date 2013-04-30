@@ -30,6 +30,8 @@ class Game {
 public:
         Game(PersistentConfiguration* configuration);
         MenuEvent run();
+        void addNewPlayer(Player* player, PlayerView* view, Coordinates* coords);
+        PlayerView* getPlayerView();
         virtual ~Game();
 private:
         Mix_Music* musica;

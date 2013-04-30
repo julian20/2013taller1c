@@ -14,6 +14,7 @@
 #include <model/map/MapData.h>
 #include <view/configuration/GameConfiguration.h>
 #include <view/EntityViewMap.h>
+#include <view/entities/PlayerView.h>
 
 #include <vector>
 
@@ -25,6 +26,8 @@ public:
 	void setTextureHolder(TextureHolder* textureHolder);
 	std::vector<Player*> getPersonajeList();
 	void setPersonajeList(std::vector<Player*> entityList);
+	void setViewList(std::vector<PlayerView*> viewList);
+	std::vector<PlayerView*> getViewList();
 	MapData* getMapData();
 	void setMapData(MapData* mapData);
 	GameConfiguration* getAnimationConfiguration();
@@ -34,6 +37,7 @@ public:
 
 private:
 	std::vector<Player*> entityList;
+	std::vector<PlayerView*> viewList;
 	TextureHolder* textureHolder;
 	MapData* mapData;
 	GameConfiguration* animationConfiguration;

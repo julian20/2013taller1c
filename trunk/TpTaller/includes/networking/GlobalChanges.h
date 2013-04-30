@@ -18,8 +18,8 @@ namespace std {
 class GlobalChanges {
 public:
 	GlobalChanges();
-	void addChanges(int currentClient, PlayerInfo* info);
-	vector<PlayerInfo*> getOthersChanges(int currentClient);
+	void addChanges(PlayerInfo* info);
+	vector<PlayerInfo*> getOthersChanges(string clientName);
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, GlobalChanges&);
@@ -29,7 +29,7 @@ public:
 
 	virtual ~GlobalChanges();
 private:
-	map<int, PlayerInfo*> changes;
+	map<string, PlayerInfo*> changes;
 };
 
 } /* namespace std */

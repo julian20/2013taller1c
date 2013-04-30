@@ -14,10 +14,10 @@ namespace std {
 PlayerInfo::PlayerInfo() {
 
 	name = "DEFAULT";
-	walkingImageSrc = "DEFAULT";
-	runningImageSrc= "DEFAULT";
-	idleImageSrc = "DEFAULT";
-	attackImageSrc = "DEFAULT";
+	walkingImageSrc = string("DEFAULT");
+	runningImageSrc= string("DEFAULT");
+	idleImageSrc = string("DEFAULT");
+	attackImageSrc = string("DEFAULT");
 
 	imageWidth = 0;
 	imageHeight = 0;
@@ -32,28 +32,28 @@ string PlayerInfo::getName(){
 }
 
 void PlayerInfo::setWalkingImageSrc(string img){
-	this->walkingImageSrc = img;
+	this->walkingImageSrc.assign(img);
 }
 string PlayerInfo::getWalkingImageSrc(){
 	return this->walkingImageSrc;
 }
 
 void PlayerInfo::setRunningImageSrc(string img){
-	this->runningImageSrc = img;
+	this->runningImageSrc.assign(img);
 }
 string PlayerInfo::getRunningImageSrc(){
 	return this->runningImageSrc;
 }
 
 void PlayerInfo::setIdleImageSrc(string img){
-	this->idleImageSrc = img;
+	this->idleImageSrc.assign(img);
 }
 string PlayerInfo::getIdleImageSrc(){
 	return this->idleImageSrc;
 }
 
 void PlayerInfo::setAttackImageSrc(string img){
-	this->attackImageSrc = img;
+	this->attackImageSrc.assign(img);
 }
 string PlayerInfo::getAttackImageSrc(){
 	return this->attackImageSrc;
@@ -123,10 +123,12 @@ ostream& operator <<(std::ostream& out , const PlayerInfo& info){
 	int delay = info.delay;
 
 	Player* player = info.player;
+	Coordinates* initCoords = info.initCoords;
 
 	out << name << " " << walkingImageSrc << " " << runningImageSrc << " " <<
 			idleImageSrc << " " << attackImageSrc << " " << imageWidth << " " << imageHeight << " " <<
-			anchorPixel->getX() << " " << anchorPixel->getY() << " " << fps << " " << delay << " " << player;
+			anchorPixel->getX() << " " << anchorPixel->getY() << " " << fps << " " << delay << " " << *initCoords << " "
+			<< *player;
 	return out;
 }
 
@@ -144,6 +146,7 @@ istream& operator >>(std::istream& in , PlayerInfo& info){
 	int imageHeight;
 	int delay,fps;
 	Player* player = new Player();
+	Coordinates* initCoords = new Coordinates();
 
 	in >> name;
 	info.setName(name);
@@ -169,6 +172,9 @@ istream& operator >>(std::istream& in , PlayerInfo& info){
 	info.setFPS(fps);
 	info.setDelay(delay);
 
+	in >> *initCoords;
+	info.setInitCoordinates(initCoords);
+
 	in >> *player;
 	info.setPlayer(player);
 
@@ -178,6 +184,8 @@ istream& operator >>(std::istream& in , PlayerInfo& info){
 
 PlayerInfo::~PlayerInfo() {
 	if (anchorPixel) delete anchorPixel;
+	if (player) delete player;
+	if (initCoords) delete initCoords;
 }
 
 } /* namespace std */

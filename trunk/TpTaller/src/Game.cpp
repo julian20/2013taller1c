@@ -51,6 +51,8 @@ Game::Game(PersistentConfiguration* configuration) {
 
 	this->mapController = new MapController(mapView, mapData, playerController);
 	openAudio = false;
+
+	personajeVista = (configuration->getViewList())[0];
 }
 
 void Game::setUpEntities(MapView* map, MapData* mapData) {
@@ -231,6 +233,17 @@ void Game::initMusic() {
 	Mix_VolumeMusic(500);
 	Mix_FadeInMusic(musica, -1, 3000);
 
+}
+
+void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords){
+
+	mapView->addNewPlayerView(view,*coords);
+
+
+}
+
+PlayerView* Game::getPlayerView(){
+	return personajeVista;
 }
 
 Game::~Game() {

@@ -15,11 +15,15 @@ namespace std {
 
 const char* buttons_released[NUM_BUTTONS] = {
 		"resources/buttons/new_game_button.png",
-		"resources/buttons/exit_button.png" };
+		"resources/buttons/multiplayer_button.png",
+		"resources/buttons/server_button.png",
+		"resources/buttons/exit_button.png"};
 const char* buttons_pressed[NUM_BUTTONS] = {
 		"resources/buttons/new_game_pressed.png",
-		"resources/buttons/exit_pressed.png" };
-const MenuEvent buttons_events[NUM_BUTTONS] = { NEWGAME_EVENT, EXIT_EVENT };
+		"resources/buttons/multiplayer_pressed.png",
+		"resources/buttons/server_pressed.png",
+		"resources/buttons/exit_pressed.png"};
+const MenuEvent buttons_events[NUM_BUTTONS] = { NEWGAME_EVENT,MULTIPLAYER_GAME_EVENT,SERVER_EVENT,EXIT_EVENT };
 
 Menu::Menu(GameConfiguration* configuration) {
 

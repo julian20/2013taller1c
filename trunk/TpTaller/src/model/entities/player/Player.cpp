@@ -66,6 +66,7 @@ void Player::update() {
 }
 
 void Player::loadNextPosition() {
+	if (path->empty()) return;
 	Tile* tile = path->front();
 	path->remove(tile);
 
@@ -106,13 +107,20 @@ Player::Player(string name, Position* position, Speed* speed, vector<Power*> pow
 }
 
 Player::~Player() {
+	delete currentPos;
+	delete endPos;
 	delete this->speed;
 	if (initSpeed != NULL) delete initSpeed;
+	for (int i = 0 ; i < powers.size() ; i++){
+		delete powers[i];
+	}
+	if (currentTile) delete currentTile;
 }
 
 void Player::setPosition(Position* position) {
 	Position* pos = Tile::computePosition(position->getX(),position->getY());
 	currentPos->setValues(pos->getX(), pos->getY());
+	delete pos;
 }
 
 Speed* Player::getSpeed() {
@@ -120,6 +128,7 @@ Speed* Player::getSpeed() {
 }
 
 void Player::setSpeed(Speed* speed) {
+	if (this->speed) delete this->speed;
 	this->speed = speed;
 	if (initSpeed == NULL)
 		initSpeed = new Speed(speed->getMagnitude(),new Vector2(0,0));
@@ -219,15 +228,15 @@ Player& Player::operator=(const Player &other){
 
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const Player& player){
-	out << player.name << " " << *(player.currentPos) << *(player.endPos) << " " << *(player.speed) << " " <<
+	out << player.name << " " << *(player.currentPos) << " " << *(player.endPos) << " " << *(player.speed) << " " <<
 			*(player.initSpeed) << " " << *(player.base) << " " << player.powers.size() << " ";
-	for (int i = 0 ; i < player.powers.size() ; i++){
+	for (unsigned int i = 0 ; i < player.powers.size() ; i++){
 		out << *(player.powers[i]) << " ";
 	}
-	out << *(player.currentTile) << " " << player.path->size() << " ";
-	for (list<Tile*>::iterator it = player.path->begin() ; it != player.path->end(); ++it){
-		out << *it << " ";
-	}
+	//out << *(player.currentTile) << " ";// << player.path->size() << " ";
+//	for (list<Tile*>::iterator it = player.path->begin() ; it != player.path->end(); ++it){
+//		out << *(*it) << " ";
+//	}
 	return out;
 }
 
@@ -255,23 +264,23 @@ istream& operator >>(std::istream& in, Player& player){
 	in >> n;
 	vector<Power*> powers;
 	for (int i = 0; i < n ; i++){
-		Power* pow = new Power();
-		in >> *pow;
-		powers.push_back(pow);
+		Power* power = new Power();
+		in >> *power;
+		powers.push_back(power);
 	}
 	player.setPowers(powers);
 	Tile* tile = new Tile();
 	in >> *tile;
 	player.setTile(tile);
 	// Number of tiles on the path
-	in >> n;
-	list<Tile*> *path = new list<Tile*>();
-	for (int i = 0; i < n ; i++){
-			Tile* tile;
-			in >> *tile;
-			path->push_back(tile);
-	}
-	player.assignPath(path);
+//	in >> n;
+//	list<Tile*> *path = new list<Tile*>();
+//	for (int i = 0; i < n ; i++){
+//			Tile* tile;
+//			in >> *tile;
+//			path->push_back(tile);
+//	}
+//	player.assignPath(path);
 	return in;
 }
 

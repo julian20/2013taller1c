@@ -18,7 +18,7 @@
 
 namespace std {
 
-#define NUM_BUTTONS 2
+#define NUM_BUTTONS 4
 
 class Menu {
 public:
