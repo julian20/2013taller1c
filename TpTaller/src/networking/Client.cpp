@@ -146,12 +146,15 @@ PlayerInfo* Client::recivePlayerInfo(){
 void Client::checkNewPlayers(){
 
 	// 1ro recibo la cantidad de players nuevos que hay
-	char buffer[10];
+	char buf[10];
 	int n = -1;
-	recv(clientID,buffer,10*sizeof(char), MSG_WAITALL);
-	stringstream ss;
-	ss << buffer;
-	ss >> n;
+	recv(clientID,buf,10*sizeof(char), MSG_EOR);
+	stringstream sstream;
+	sstream << buf;
+
+	sstream >> n;
+
+	cout << n << endl;
 	// No hay nuevos jugadores
 	if (n <= 0) return;
 
