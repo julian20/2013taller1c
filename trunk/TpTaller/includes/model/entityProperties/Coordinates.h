@@ -16,6 +16,7 @@ class Coordinates {
 public:
 	Coordinates();
 	Coordinates(int _row, int _col);
+	Coordinates( const Coordinates &coords );
     void changeTo(int _row, int _col);
 	int getRow() const;
 	void setRow(int _row);

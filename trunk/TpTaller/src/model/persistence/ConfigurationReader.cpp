@@ -579,6 +579,7 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 
 	entity->setName(auxName);
 	entity->setPos(auxPosition->getX(), auxPosition->getY());
+	entity->setCoordinates(auxPosition->getX(), auxPosition->getY());
 }
 
 /**

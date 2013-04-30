@@ -26,11 +26,13 @@ public:
 	int getNumberOfEntitiesOnTile();
 	bool getWasVisible();
 	bool getIsVisible();
+	bool isWalkable();
 
 	//Setters
 	void setType(std::string type);
 	void setPlayer(Player* newPersonaje);
 	void setVisibility( bool value );
+	void setWalkable( bool _walkable );
 
 	void addEntity(Entity* entity);
 
@@ -42,6 +44,7 @@ private:
 
 	bool wasVisible;
 	bool isVisible;
+	bool walkable;
 };
 
 } /* namespace std */

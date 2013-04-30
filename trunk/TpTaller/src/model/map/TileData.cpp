@@ -17,6 +17,7 @@ TileData::TileData() {
 	iterator = entities.begin();
 	wasVisible = false;
 	isVisible = false;
+	walkable = true;
 }
 
 std::string TileData::getType(){
@@ -48,6 +49,10 @@ bool TileData::getIsVisible() {
 	return isVisible;
 }
 
+bool TileData::isWalkable() {
+	return walkable;
+}
+
 void TileData::setType(std::string type){
 	tileType = type;
 }
@@ -63,6 +68,10 @@ void TileData::setVisibility( bool value ) {
 	} else {
 		isVisible = false;
 	}
+}
+
+void TileData::setWalkable( bool _walkable ) {
+	this->walkable = _walkable;
 }
 
 void TileData::addEntity(Entity* entity){
