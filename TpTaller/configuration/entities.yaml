@@ -4,6 +4,7 @@
     idleImageSrc: resources/black_knight/warriorStanding.png
     runningImageSrc: resources/black_knight/asd.png
     attackImageSrc: resources/black_knight/warriorAttack.png
+    idleBlockingImageSrc: resources/black_knight/warriorBlockingAnim.png
     imageWidth: 128
     imageHeight: 128
     numberOfClips: 8

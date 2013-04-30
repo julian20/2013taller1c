@@ -15,6 +15,7 @@
 #define WALKING_MODIFIER "Walking"
 #define IDLE_MODIFIER "Idle"
 #define RUNNING_MODIFIER "Running"
+#define IDLE_BLOCKING_MODIFIER "IdleBlocking"
 
 class TextureDefinition {
 public:
