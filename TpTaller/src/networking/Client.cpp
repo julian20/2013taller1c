@@ -24,7 +24,7 @@
 #include <fstream>
 
 #define READING_SIZE 8192
-#define EXTRA_SIZE 10
+#define EXTRA_SIZE 1
 #define MAPFILE "./mapita.yamp"
 
 using namespace std;
@@ -94,10 +94,10 @@ void Client::downloadMap(){
 
 void Client::initPlayerInfo(PlayerView* view){
 	this->info = new PlayerInfo();
-//	info->setWalkingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(WALKING_MODIFIER) ));
-//	info->setRunningImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(RUNNING_MODIFIER) ));
-//	info->setIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_MODIFIER) ));
-//	info->setAttackImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(ATTACK_MODIFIER) ));
+	info->setWalkingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(WALKING_MODIFIER) ));
+	info->setRunningImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(RUNNING_MODIFIER) ));
+	info->setIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_MODIFIER) ));
+	info->setAttackImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(ATTACK_MODIFIER) ));
 	info->setAnchorPixel(view->getAnchorPixel());
 	info->setDelay(view->getDelay());
 	info->setFPS(view->getFps());
@@ -113,13 +113,10 @@ void Client::registerPlayer(){
 	stringstream ss;
 	ss << *(this->info);
 
-	int size = (ss.str().size() + EXTRA_SIZE )*sizeof(char);
-
-	// SEND PLAYER INFO SIZE
-	send(this->clientID,&size,2*sizeof(int), MSG_WAITALL);
+	int size = 2*sizeof(PlayerInfo) + sizeof(Player);;
 
 	// SEND PLAYER INFO
-	send(this->clientID,ss.str().c_str(),size, MSG_WAITALL);
+	send(this->clientID,ss.str().c_str(),size, MSG_EOR);
 
 
 }
@@ -127,20 +124,17 @@ void Client::registerPlayer(){
 PlayerInfo* Client::recivePlayerInfo(){
 	stringstream ss;
 	string temp;
-	int size;
+	int size = 2*sizeof(PlayerInfo) + sizeof(Player);;
 	PlayerInfo* info = new PlayerInfo();
-
-	// RECIEVE PLAYER INFO SIZE
-	recv(clientID,&size,2*sizeof(int), MSG_WAITALL);
 
 	// CREATE A BUFFER OF THE RECIVED SIZE
 	char buffer[size];
 
 	// SEND PLAYER INFO
-	recv(clientID,buffer,size, MSG_WAITALL);
+	recv(clientID,buffer,size, MSG_EOR);
 	// Turn the char[]into a stringstream
-	temp.assign(buffer);
-	ss << temp;
+	ss << buffer;
+	ss.str().c_str();
 
 	// Initialize the recived PlayerInfo
 	ss >> *info;
@@ -152,9 +146,12 @@ PlayerInfo* Client::recivePlayerInfo(){
 void Client::checkNewPlayers(){
 
 	// 1ro recibo la cantidad de players nuevos que hay
+	char buffer[10];
 	int n = -1;
-	recv(clientID,&n,2*sizeof(int), MSG_WAITALL);
-
+	recv(clientID,buffer,10*sizeof(char), MSG_WAITALL);
+	stringstream ss;
+	ss << buffer;
+	ss >> n;
 	// No hay nuevos jugadores
 	if (n <= 0) return;
 

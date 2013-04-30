@@ -30,7 +30,7 @@
 #define MAPFILE "./mapfile.yaml"
 
 #define READING_SIZE 4096
-#define EXTRA_SIZE 10
+#define EXTRA_SIZE 1
 
 using namespace std;
 
@@ -171,21 +171,20 @@ void Server::sendMap(string mapfile,int sockID){
 }
 
 PlayerInfo* Server::recieveNewPlayer(int clientSocket){
-	stringstream ss;
-	int size;
+	int size = 2*sizeof(PlayerInfo) + sizeof(Player);
 	PlayerInfo* info = new PlayerInfo();
 
-	// RECIEVE PLAYER INFO SIZE
-	recv(clientSocket,&size,2*sizeof(int), MSG_WAITALL);
-	cout << "ESTE ES EL SIZE " << size << endl;
 
 	// CREATE A BUFFER OF THE RECIVED SIZE
 	char buffer[size];
+	stringstream ss;
 
 	// SEND PLAYER INFO
-	recv(clientSocket,buffer,size, MSG_WAITALL);
+	recv(clientSocket,buffer,size, MSG_EOR);
 	// Turn the char[]into a stringstream
 	ss << buffer;
+	ss.str().c_str();
+
 
 	// Initialize the recived PlayerInfo
 	ss >> *info;
@@ -205,10 +204,7 @@ void Server::sendPlayerInfo(int clientSocket,PlayerInfo* info){
 	stringstream ss;
 	ss << *(info);
 
-	int size = (ss.str().size() + EXTRA_SIZE )*sizeof(char);
-
-	// SEND PLAYER INFO SIZE
-	send(clientSocket,&size,2*sizeof(int), MSG_WAITALL);
+	int size = 2*sizeof(PlayerInfo) + sizeof(Player);
 
 	// SEND PLAYER INFO
 	send(clientSocket,ss.str().c_str(),size, MSG_WAITALL);
@@ -219,7 +215,11 @@ void Server::sendNewPlayers(int clientSocket, map<int,int> *sended){
 
 	// 1ro envio la cantidad de players que voy a mandar
 	int n = gamePlayers.size() - sended->size();
-	send(clientSocket,&n,2*sizeof(int), MSG_WAITALL);
+	stringstream ss;
+
+	ss << n;
+
+	send(clientSocket,ss.str().c_str(),(10)*sizeof(char), MSG_WAITALL);
 
 	for (map<int,PlayerInfo*>::iterator it = gamePlayers.begin() ; it != gamePlayers.end() ; ++it){
 
