@@ -153,8 +153,6 @@ void Client::checkNewPlayers(){
 	sstream << buf;
 
 	sstream >> n;
-
-	cout << n << endl;
 	// No hay nuevos jugadores
 	if (n <= 0) return;
 

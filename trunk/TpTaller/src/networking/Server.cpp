@@ -219,14 +219,16 @@ void Server::sendNewPlayers(int clientSocket, map<int,int> *sended){
 
 	ss << n;
 
-	send(clientSocket,ss.str().c_str(),(10)*sizeof(char), MSG_WAITALL);
+	send(clientSocket,ss.str().c_str(),(10)*sizeof(char), MSG_EOR);
+
+	if (n == 0) return;
 
 	for (map<int,PlayerInfo*>::iterator it = gamePlayers.begin() ; it != gamePlayers.end() ; ++it){
 
 		// SI NO HA SIDO ENVIADO, LO ENVIO
 		if (sended->count(it->first) == 0){
 			sendPlayerInfo(clientSocket,it->second);
-			sended->insert( pair<int,int>(clientSocket,clientSocket) );
+			(*sended)[it->first] = it->first;
 		}
 
 	}
