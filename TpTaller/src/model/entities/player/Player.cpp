@@ -18,6 +18,7 @@ Player::Player() {
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile( new Coordinates(0, 0) );
 	attacking = false;
+	blocking = false;
 }
 
 void Player::setPos(float x, float y, float z) {
@@ -195,6 +196,18 @@ void Player::cancelAttack(){
 	attacking = false;
 }
 
+void Player::block(){
+	blocking = true;
+}
+
+void Player::cancelBlock(){
+	blocking = false;
+}
+
+bool Player::isBlocking(){
+	return blocking;
+}
+
 bool Player::isMainPlayer() {
 	return mainPlayer;
 }
@@ -209,6 +222,11 @@ void Player::setViewRange( int _viewRange ) {
 
 int Player::getViewRange() {
 	return this->viewRange;
+}
+void Player::stop(){
+ delete endPos;
+ cout <<"hi!"<<endl;
+ endPos = new Vector3(currentPos->getX(), currentPos->getY(), currentPos->getZ());
 }
 
 Player& Player::operator=(const Player &other){

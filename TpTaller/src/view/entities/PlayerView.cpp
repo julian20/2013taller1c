@@ -20,6 +20,7 @@
 #define ANIMATION_CHANGE_DELAY 1
 #define STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE 16
 #define DEFAULT_CHARACTER_ID	"characterDefault"
+#define NUMBER_OF_STANDING_FRAMES 3
 
 PlayerView::PlayerView()
 //Llamamos al constructor de la superclase
@@ -36,8 +37,17 @@ PlayerView::PlayerView()
 	wasStanding = true;
 	player = NULL;
 	nameImage = NULL;
+	runningImage = NULL;
+	walkingImage = NULL;
+	attackImage = NULL;
+	idleImage=NULL;
+	numberOfRunningClips=0;
+	numberOfWalkingClips=0;
+	numberOfIdleClips=0;
+	numberOfAttackClips=0;
 	currentSprite = DOWN;
 	lastDirection = M_PI *1/2;
+
 }
 
 void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
@@ -124,10 +134,10 @@ void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo) {
 
 	SDL_Rect clipToDraw;
 	clipToDraw.x = imageWidth * currentClip * scaleWidth;
-	;
+
 	clipToDraw.y = imageHeight * sprite;
 	clipToDraw.w = imageWidth * scaleWidth;
-	;
+
 	clipToDraw.h = imageHeight * scaleHeight;
 
 	showFrame(this->image, fondo, &clipToDraw);
@@ -137,7 +147,7 @@ void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo) {
 	//TODO - deberia ser numberOfClips-1 pero parece q esta mal la imagen ?¿
 
 	//Apply delay
-	if (currentClip < (numberOfClips - 2) && timeSinceLastAnimation >= delay * 1000) {
+	if (currentClip < (numberOfIdleClips-1) && timeSinceLastAnimation >= delay * 1000) {
 		//Apply FPS cap
 		if (animationRateTimer.getTimeSinceLastAnimation() >= 1000 / fps) {
 			currentClip++;
@@ -211,8 +221,16 @@ void PlayerView::Show(SDL_Surface* fondo) {
 	}
 
 	if (player->isAttacking()){
+		player->stop();
 		image = attackImage;
 		numberOfClips = numberOfAttackClips;
+	}
+
+	//lucas TODO- Pensar como meter el cambio de standing animation?
+	if (player->isBlocking()){
+			player->stop();
+			image = attackImage;
+			numberOfClips = numberOfAttackClips;
 	}
 
 	wasStanding = false;

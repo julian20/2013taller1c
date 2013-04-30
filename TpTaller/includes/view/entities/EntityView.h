@@ -43,8 +43,8 @@ public:
 	void setNClips(int clips);
 
 	int getFps();
-	int getDelay();
-	void setDelay(int nuevoDelay);
+	float getDelay();
+	void setDelay(float nuevoDelay);
 	void setFps(int nuevasFps);
 	void setNumberOfRepeats(int repeats);
 	int getNumberOfRepeats();
@@ -85,7 +85,7 @@ protected:
 	Timer timer;
 	Timer animationRateTimer;
 
-	int delay;
+	float delay;
 	int fps;
 
 	int numberOfRepeats;

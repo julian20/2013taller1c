@@ -121,11 +121,11 @@ TextureHolder* EntityView::getTextureHolder(){
 	return this->textureHolder;
 }
 
-void EntityView::setDelay(int nuevoDelay) {
+void EntityView::setDelay(float nuevoDelay) {
 	this->delay = nuevoDelay;
 }
 
-int EntityView::getDelay() {
+float EntityView::getDelay() {
 	return this->delay;
 }
 
