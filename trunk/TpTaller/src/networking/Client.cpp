@@ -24,6 +24,7 @@
 #include <fstream>
 
 #define READING_SIZE 8192
+#define EXTRA_SIZE 10
 #define MAPFILE "./mapita.yamp"
 
 using namespace std;
@@ -64,8 +65,6 @@ Client::Client(string host, int port, Game* game) {
 	// Devuelvo el socket ID.
 	this->game = game;
 
-	cout << clientID <<endl;
-
 }
 
 void Client::downloadMap(){
@@ -95,10 +94,10 @@ void Client::downloadMap(){
 
 void Client::initPlayerInfo(PlayerView* view){
 	this->info = new PlayerInfo();
-	info->setWalkingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(WALKING_MODIFIER) ));
-	info->setRunningImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(RUNNING_MODIFIER) ));
-	info->setIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_MODIFIER) ));
-	info->setAttackImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(ATTACK_MODIFIER) ));
+//	info->setWalkingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(WALKING_MODIFIER) ));
+//	info->setRunningImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(RUNNING_MODIFIER) ));
+//	info->setIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_MODIFIER) ));
+//	info->setAttackImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(ATTACK_MODIFIER) ));
 	info->setAnchorPixel(view->getAnchorPixel());
 	info->setDelay(view->getDelay());
 	info->setFPS(view->getFps());
@@ -106,76 +105,80 @@ void Client::initPlayerInfo(PlayerView* view){
 	info->setPlayer(view->getPersonaje());
 	Coordinates* c = new Coordinates(view->getPersonaje()->getCoordinates().getRow(), view->getPersonaje()->getCoordinates().getCol());
 	info->setInitCoordinates(c);
-//	players[view->getPersonaje()->getName()] = view->getPersonaje();
 
 }
 
-void Client::sendPlayerInfo(){
-	std::stringstream ss;
+void Client::registerPlayer(){
 
-	ss << (*info);
-
-	// Envio la player info.
-	send(clientID,ss.str().c_str(),READING_SIZE,0);
-
-}
-
-void Client::updatePlayers(GlobalChanges* changes){
-
-	vector<PlayerInfo*> others = changes->getOthersChanges(info->getPlayer()->getName());
-
-	for (int i = 0 ; i < others.size() ; i++){
-		PlayerInfo* info = others[i];
-		Player* player = others[i]->getPlayer();
-		string name = player->getName();
-		if (players.count(player->getName()) == 0){
-			// NEW PLAYER -> ADD TO GAME
-			PlayerView* view = new PlayerView();
-			TextureHolder* th = new TextureHolder();
-			th->addTexture(new TextureDefinition(name + string(WALKING_MODIFIER),info->getWalkingImageSrc()));
-			th->addTexture(new TextureDefinition(name + string(RUNNING_MODIFIER),info->getRunningImageSrc()));
-			th->addTexture(new TextureDefinition(name + string(IDLE_MODIFIER),info->getIdleImageSrc()));
-			th->addTexture(new TextureDefinition(name + string(ATTACK_MODIFIER),info->getAttackImageSrc()));
-			view->setPersonaje(player);
-			view->setTextureHolder(th);
-			view->setAnchorPixel(info->getAnchorPixel());
-			view->setImageHeight(info->getImageHeight());
-			view->setImageWidth(info->getImageWidth());
-			view->setName(name);
-			view->setFps(info->getFPS());
-			view->setDelay(info->getDelay());
-			game->addNewPlayer(player,view,info->getInitCoordinates());
-			players[player->getName()] = player;
-		} else {
-			// EXISTING PLAYER -> UPDATE
-			*(players[player->getName()]) = *player;
-			delete player;
-		}
-
-	}
-
-}
-
-
-GlobalChanges* Client::downloadGlobalChanges(){
-
-	GlobalChanges* changes = new GlobalChanges();
 	stringstream ss;
-	char buffer[READING_SIZE];
+	ss << *(this->info);
+
+	int size = (ss.str().size() + EXTRA_SIZE )*sizeof(char);
+
+	// SEND PLAYER INFO SIZE
+	send(this->clientID,&size,2*sizeof(int), MSG_WAITALL);
+
+	// SEND PLAYER INFO
+	send(this->clientID,ss.str().c_str(),size, MSG_WAITALL);
 
 
-	// Recibo los cambios
-	recv(clientID,buffer,READING_SIZE,0);
+}
+
+PlayerInfo* Client::recivePlayerInfo(){
+	stringstream ss;
 	string temp;
+	int size;
+	PlayerInfo* info = new PlayerInfo();
+
+	// RECIEVE PLAYER INFO SIZE
+	recv(clientID,&size,2*sizeof(int), MSG_WAITALL);
+
+	// CREATE A BUFFER OF THE RECIVED SIZE
+	char buffer[size];
+
+	// SEND PLAYER INFO
+	recv(clientID,buffer,size, MSG_WAITALL);
+	// Turn the char[]into a stringstream
 	temp.assign(buffer);
 	ss << temp;
-	ss >> *changes;
+
+	// Initialize the recived PlayerInfo
+	ss >> *info;
+
+	return info;
+}
 
 
-	cout << "size: " << temp.size()*sizeof(char)<< endl;
+void Client::checkNewPlayers(){
 
+	// 1ro recibo la cantidad de players nuevos que hay
+	int n = -1;
+	recv(clientID,&n,2*sizeof(int), MSG_WAITALL);
 
-	return changes;
+	// No hay nuevos jugadores
+	if (n <= 0) return;
+
+	for (int i = 0; i < n ; i++){
+
+		// SI NO HA SIDO ENVIADO, LO ENVIO
+			PlayerInfo* info = recivePlayerInfo();
+			players.insert( pair<string,Player*>(info->getPlayer()->getName(), info->getPlayer()) );
+			// TODO: Creo la playerView y la registro en el game.
+			// TODO: Creo un eventHandler para el player que acabo de crear
+		}
+
+}
+
+void Client::sendEvents(){
+
+}
+
+Changes* Client::downloadChanges(){
+	return NULL;
+}
+
+void Client::updatePlayers(Changes* changes){
+
 }
 
 void* transmit(void* _client){
@@ -185,13 +188,13 @@ void* transmit(void* _client){
 	//client->downloadMap();
 	bool playing = true;
 
+	client->registerPlayer();
+
 	while (playing){
-		client->sendPlayerInfo();
-		cout << "1" << endl;
-		GlobalChanges* changes = client->downloadGlobalChanges();
-		cout << "2" << endl;
+		client->checkNewPlayers();
+		client->sendEvents();
+		Changes* changes = client->downloadChanges();
 		client->updatePlayers(changes);
-		cout<< "3" << endl;
 		delete changes;
 	}
 

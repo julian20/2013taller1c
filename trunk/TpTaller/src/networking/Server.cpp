@@ -30,6 +30,7 @@
 #define MAPFILE "./mapfile.yaml"
 
 #define READING_SIZE 4096
+#define EXTRA_SIZE 10
 
 using namespace std;
 
@@ -67,7 +68,7 @@ Server::Server(string host, int port) {
 
 	freeaddrinfo(res);
 
-	changes = new GlobalChanges();
+	changes = new Changes();
 
 }
 
@@ -84,27 +85,29 @@ void* handle(void* par){
 		// Manda las imagenes y sonidos necesarios que se utilizaran.
 		//TODO : sendResources(sockID);
 
+		map<int,int> sended;
+		sended.insert( pair<int,int>(clientSocket,clientSocket) );
+
+		PlayerInfo* info = server->recieveNewPlayer(clientSocket);
+		server->addPlayerToGame(clientSocket,info);
 
 		bool playing = true;
 
-		int i = 0;
-
 		while (playing){
 
-			GlobalChanges* changes = server->getChanges();
-
-			// Recibo la informacion del jugador
-			PlayerInfo* info = server->recievePlayerInfo(clientSocket);
-			changes->addChanges(info);
-
-			server->sendGlobalChanges(clientSocket,changes);
-
-
-			cout << " Loop " << i << endl;
-			i++;
 			/* Aca se hace todo el manejo de actualizaciones.
 			 * Hay que mandar y recibir las actualizaciones de el resto de los jugadores
 			 */
+
+
+			server->sendNewPlayers(clientSocket, &sended);
+
+			PlayerEvent* event = server->downloadEvents(clientSocket);
+
+			if (event != NULL)
+				server->addEventToChanges(clientSocket,event);
+
+			server->sendOthersChanges(clientSocket);
 
 		}
 		return NULL;
@@ -143,10 +146,6 @@ void Server::run(){
 	}
 }
 
-GlobalChanges* Server::getChanges(){
-	return changes;
-}
-
 
 void Server::sendMap(string mapfile,int sockID){
 
@@ -171,35 +170,79 @@ void Server::sendMap(string mapfile,int sockID){
 	map.close();
 }
 
-
-
-PlayerInfo* Server::recievePlayerInfo(int clientSocket){
-
+PlayerInfo* Server::recieveNewPlayer(int clientSocket){
 	stringstream ss;
-	string temp;
+	int size;
 	PlayerInfo* info = new PlayerInfo();
-	char buffer[READING_SIZE];
-	// NULL CONTROL TODO
 
-	// Recibo el PlayerInfo.
-	recv(clientSocket,buffer,READING_SIZE,0);
-	temp.assign(buffer, READING_SIZE);
+	// RECIEVE PLAYER INFO SIZE
+	recv(clientSocket,&size,2*sizeof(int), MSG_WAITALL);
+	cout << "ESTE ES EL SIZE " << size << endl;
 
-	ss << temp;
+	// CREATE A BUFFER OF THE RECIVED SIZE
+	char buffer[size];
+
+	// SEND PLAYER INFO
+	recv(clientSocket,buffer,size, MSG_WAITALL);
+	// Turn the char[]into a stringstream
+	ss << buffer;
+
+	// Initialize the recived PlayerInfo
 	ss >> *info;
 
 	return info;
 
 }
 
-void Server::sendGlobalChanges(int sockID, GlobalChanges* changes){
+void Server::addPlayerToGame(int clientSocket, PlayerInfo* info){
+
+	gamePlayers[clientSocket] = info;
+
+}
+
+void Server::sendPlayerInfo(int clientSocket,PlayerInfo* info){
 
 	stringstream ss;
-	ss << *changes;
+	ss << *(info);
 
-	send(sockID,ss.str().c_str(),READING_SIZE,0);
+	int size = (ss.str().size() + EXTRA_SIZE )*sizeof(char);
 
-	cout << "size: " << ss.str().size()*sizeof(char)<< endl;
+	// SEND PLAYER INFO SIZE
+	send(clientSocket,&size,2*sizeof(int), MSG_WAITALL);
+
+	// SEND PLAYER INFO
+	send(clientSocket,ss.str().c_str(),size, MSG_WAITALL);
+
+}
+
+void Server::sendNewPlayers(int clientSocket, map<int,int> *sended){
+
+	// 1ro envio la cantidad de players que voy a mandar
+	int n = gamePlayers.size() - sended->size();
+	send(clientSocket,&n,2*sizeof(int), MSG_WAITALL);
+
+	for (map<int,PlayerInfo*>::iterator it = gamePlayers.begin() ; it != gamePlayers.end() ; ++it){
+
+		// SI NO HA SIDO ENVIADO, LO ENVIO
+		if (sended->count(it->first) == 0){
+			sendPlayerInfo(clientSocket,it->second);
+			sended->insert( pair<int,int>(clientSocket,clientSocket) );
+		}
+
+	}
+
+
+}
+
+PlayerEvent* Server::downloadEvents(int clientSocket){
+	return NULL;
+}
+
+void Server::addEventToChanges(int clientSocket, PlayerEvent* event){
+
+}
+
+void Server::sendOthersChanges(int clientSocket){
 
 }
 
