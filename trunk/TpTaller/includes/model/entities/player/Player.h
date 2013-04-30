@@ -50,6 +50,11 @@ public:
 	bool isAttacking();
 	void cancelAttack();
 
+	void block();
+	void cancelBlock();
+	bool isBlocking();
+
+	void stop();
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const Player&);
 
@@ -74,6 +79,7 @@ private:
 	list<Tile *> *path;
 
 	bool attacking;
+	bool blocking;
 };
 
 #endif	/* PERSONAJE_H */

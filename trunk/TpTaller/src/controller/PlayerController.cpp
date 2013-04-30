@@ -81,3 +81,11 @@ void PlayerController::toggleRunning() {
 void PlayerController::playerAttack(){
 	player->attack();
 }
+
+void PlayerController::playerBlock(){
+	player->block();
+}
+
+void PlayerController::playerCancelBlock(){
+	player->cancelBlock();
+}

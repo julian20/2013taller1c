@@ -26,7 +26,7 @@
 
 using namespace std;
 
-typedef enum {LEFT, DOWN_LEFT, DOWN_RIGHT, DOWN, UP_LEFT, UP_RIGHT, UP, RIGHT} SpriteType;
+typedef enum {LEFT, UP_LEFT, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT} SpriteType;
 
 class PlayerView: public EntityView {
 public:

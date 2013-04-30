@@ -56,6 +56,14 @@ void MapController::clickListener(SDL_Event event) {
 		playerController->playerAttack();
 	}
 
+	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_LALT)){
+			playerController->playerBlock();
+	}
+
+	if ((event.type == SDL_KEYUP) && (event.key.keysym.sym == SDLK_LALT)){
+				playerController->playerCancelBlock();
+		}
+
 }
 
 MapController::~MapController() {

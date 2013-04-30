@@ -594,9 +594,10 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	std::string auxAttackImageSrc;
 	std::string auxName;
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
-	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay,
+	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps,
 			auxAnimationNumberOfRepeats, auxBaseWidth, auxBaseLength;
 
+	float auxDelay;
 	try {
 		yamlNode["name"] >> auxName;
 	} catch (YAML::Exception& yamlException) {
@@ -676,8 +677,8 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	try {
 		yamlNode["delay"] >> auxDelay;
 	} catch (YAML::Exception& yamlException) {
-//		Logs::logErrorMessage(
-//				string("Error parsing PlayerView: ") + yamlException.what());
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView: ") + yamlException.what());
 		auxDelay = DEFAULT_DELAY;
 	}
 	try {

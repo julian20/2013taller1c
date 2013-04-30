@@ -1,15 +1,16 @@
 - playerViews:
   - name: Player
-    walkingImageSrc: resources/black_knight/black_knight_walking.png
-    idleImageSrc: resources/black_knight/black_knight_idle.png
-    runningImageSrc: resources/black_knight/black_knight_running.png
-    attackImageSrc: resources/black_knight/black_knight_attack.png
-    imageWidth: 96
-    imageHeight: 96
+    walkingImageSrc: resources/black_knight/asd.png
+    idleImageSrc: resources/black_knight/warriorStanding.png
+    runningImageSrc: resources/black_knight/asd.png
+    attackImageSrc: resources/black_knight/warriorAttack.png
+    imageWidth: 128
+    imageHeight: 128
     numberOfClips: 8
-    anchorPixel: [48, 50]
+    anchorPixel: [64, 70]
     baseWidth: 1
     baseHeight: 1
+    delay: 0.5
 - entityViews:    
   - name: windmill
     imageSrc: resources/buildings/windmill.png
