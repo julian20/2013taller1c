@@ -223,10 +223,21 @@ void Player::setViewRange( int _viewRange ) {
 int Player::getViewRange() {
 	return this->viewRange;
 }
-void Player::stop(){
- delete endPos;
- cout <<"hi!"<<endl;
- endPos = new Vector3(currentPos->getX(), currentPos->getY(), currentPos->getZ());
+
+void Player::emptyPath() {
+	std::list<Tile *>::iterator iter;
+	for (iter = path->begin(); iter != path->end(); ++iter) {
+		Tile* tile = *iter;
+
+		delete tile;
+	}
+
+	delete path;
+	this->path = new list<Tile *>();
+}
+
+void Player::stop() {
+	emptyPath();
 }
 
 Player& Player::operator=(const Player &other){

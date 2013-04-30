@@ -193,8 +193,6 @@ void PlayerView::Show(SDL_Surface* fondo) {
 	delete v;
 
 	SpriteType sprite = DOWN;
-	image = walkingImage;
-	numberOfClips = numberOfWalkingClips;
 
 	const float step = M_PI * 1 / 8;
 
@@ -215,9 +213,25 @@ void PlayerView::Show(SDL_Surface* fondo) {
 	else if (step * 13 < direction && direction < step * 15)
 		sprite = UP_RIGHT;
 
+	if (player->isAttacking()) {
+		player->stop();
+		image = attackImage;
+		numberOfClips = numberOfAttackClips;
+	}
+	if (player->isBlocking()) {
+		player->stop();
+		image = idleBlockImage;
+		numberOfClips = numberOfIdleBlockClips;
+	}
+
 	if (player->isRunning()) {
 		image = runningImage;
 		numberOfClips = numberOfRunningClips;
+	}
+
+	if (player->IsMoving()) {
+		image = walkingImage;
+		numberOfClips = numberOfWalkingClips;
 	}
 
 	if (!player->IsMoving() && !player->isAttacking() && !player->isBlocking()) {
@@ -230,17 +244,6 @@ void PlayerView::Show(SDL_Surface* fondo) {
 		lastDirection = direction;
 		showStandingAnimation(sprite, fondo);
 		return;
-	}
-
-	if (player->isAttacking()) {
-		player->stop();
-		image = attackImage;
-		numberOfClips = numberOfAttackClips;
-	}
-	if (player->isBlocking()) {
-		player->stop();
-		image = idleBlockImage;
-		numberOfClips = numberOfIdleBlockClips;
 	}
 
 	//lucas TODO- Pensar como meter el cambio de standing animation?
