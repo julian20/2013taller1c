@@ -10,26 +10,25 @@
 
 #include <map>
 #include <vector>
+#include <iostream>
 
-#include <networking/PlayerInfo.h>
+#include <networking/PlayerEvent.h>
 
 namespace std {
 
-class GlobalChanges {
+class Changes {
 public:
-	GlobalChanges();
-	void addChanges(PlayerInfo* info);
-	vector<PlayerInfo*> getOthersChanges(string clientName);
+	Changes();
 
 	//Operator to transform the object into a stream.
-	friend ostream& operator <<(std::ostream&, GlobalChanges&);
+	friend ostream& operator <<(std::ostream&, Changes&);
 
 	//Operator to load an object from a stream
-	friend istream& operator >>(std::istream&, GlobalChanges&);
+	friend istream& operator >>(std::istream&, Changes&);
 
-	virtual ~GlobalChanges();
+	virtual ~Changes();
 private:
-	map<string, PlayerInfo*> changes;
+	map<string, PlayerEvent*> changes;
 };
 
 } /* namespace std */

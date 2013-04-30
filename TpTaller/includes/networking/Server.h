@@ -8,7 +8,9 @@
 #ifndef SERVER_H_
 #define SERVER_H_
 
-#include <networking/GlobalChanges.h>
+#include <networking/Changes.h>
+#include <networking/PlayerEvent.h>
+#include <networking/PlayerInfo.h>
 
 
 namespace std {
@@ -19,14 +21,22 @@ class Server {
 public:
 	Server(string host, int port);
 	void run();
-	GlobalChanges* getChanges();
+
 	void sendMap(string mapfile,int sockID);
-	PlayerInfo* recievePlayerInfo(int clientSocket);
-	void sendGlobalChanges(int sockID, GlobalChanges* changes);
+	PlayerInfo* recieveNewPlayer(int clientSocket);
+	void addPlayerToGame(int clientSocket, PlayerInfo* info);
+	void sendNewPlayers(int clientSocket, map<int,int> *sended);
+	PlayerEvent* downloadEvents(int clientSocket);
+	void addEventToChanges(int clientSocket, PlayerEvent* event);
+	void sendOthersChanges(int clientSocket);
 	virtual ~Server();
 private:
+
+	void sendPlayerInfo(int clientSocket,PlayerInfo* info);
+
 	int serverID;
-	GlobalChanges* changes;
+	Changes* changes;
+	map<int,PlayerInfo*> gamePlayers;
 };
 
 typedef struct aux{

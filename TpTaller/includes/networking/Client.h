@@ -9,7 +9,7 @@
 #define CLIENT_H_
 
 #include <networking/PlayerInfo.h>
-#include <networking/GlobalChanges.h>
+#include <networking/Changes.h>
 #include <model/entities/player/Player.h>
 #include <view/entities/PlayerView.h>
 #include <Game.h>
@@ -22,20 +22,27 @@ namespace std {
 class Client {
 public:
 	Client(string host, int port, Game* game);
+
 	void initPlayerInfo(PlayerView* view);
 	void run();
 
 	void downloadMap();
-	void sendPlayerInfo();
-	GlobalChanges* downloadGlobalChanges();
-	void updatePlayers(GlobalChanges* changes);
+	void registerPlayer();
+	void checkNewPlayers();
+	void sendEvents();
+	Changes* downloadChanges();
+	void updatePlayers(Changes* changes);
 
 	virtual ~Client();
 private:
+
+	PlayerInfo* recivePlayerInfo();
+
 	int clientID;
 	Game* game;
 	map<string,Player*> players;
 	PlayerInfo* info;
+	list<PlayerEvent*> events;
 
 
 
