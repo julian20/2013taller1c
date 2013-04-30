@@ -578,7 +578,6 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 	}
 
 	entity->setName(auxName);
-	entity->setPos(auxPosition->getX(), auxPosition->getY());
 	entity->setCoordinates(auxPosition->getX(), auxPosition->getY());
 }
 
@@ -1340,11 +1339,8 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		EntityView* parsedEntityView = entityViewVector[j];
 		Entity* entity = parsedEntityView->getEntity();
 
-		/**
-		 * TODO: hacer conversion entre Posicion y Coordinates.
-		 */
-		Coordinates coordinates = Coordinates(entity->getCurrentPos()->getX(),
-				entity->getCurrentPos()->getY());
+		Coordinates coordinates = Coordinates(entity->getCoordinates().getRow(),
+											  entity->getCoordinates().getCol());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}

@@ -165,7 +165,7 @@ void PlayerView::Show(SDL_Surface* fondo) {
 	Vector2* movementDirection = this->player->getMovementDirection();
 	float direction;
 
-	Vector2* v = new Vector2(0,0);
+	Vector2* v = new Vector2(0, 0);
 	if (movementDirection->isEqual(v)) direction = lastDirection;
 	else direction = movementDirection->getAngle();
 	delete v;
@@ -221,7 +221,7 @@ void PlayerView::Show(SDL_Surface* fondo) {
 //		marco = 0;    // Loop the animation
 
 	lastDirection = direction;
-	playAnimation(currentSprite,fondo);
+	playAnimation(currentSprite, fondo);
 
 }
 

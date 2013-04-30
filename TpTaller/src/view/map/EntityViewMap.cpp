@@ -59,11 +59,10 @@ void EntityViewMap::updateMovablePos() {
 
 		int initRow = entity->getCoordinates().getRow();
 		int initCol = entity->getCoordinates().getCol();
-		int currentRow = (int) entity->getCurrentPos()->getX();
-		int currentCol = (int) entity->getCurrentPos()->getY();
-		Coordinates* c = Tile::getTileCoordinates(currentRow, currentCol);
-		currentRow = c->getRow();
-		currentCol = c->getCol() - 1;
+		Vector3* entityPos = entity->getCurrentPos();
+		Coordinates* c = Tile::getTileCoordinates(entityPos->getX(), entityPos->getY());
+		int currentRow = c->getRow();
+		int currentCol = c->getCol() - 1;
 
 		if (initRow == currentRow && initCol == currentCol)
 			return;
@@ -81,7 +80,7 @@ void EntityViewMap::assingEntitiesView(EntityHolder* entityHolder)
 {
 	this->entityHolder = entityHolder;
 }
-void EntityViewMap::drawEntities(TileData* tileData,SDL_Surface* screen, Position* cam, int row, int col)
+/*void EntityViewMap::drawEntities(TileData* tileData,SDL_Surface* screen, Position* cam, int row, int col)
 {
 	for(int i=0; i<tileData->getNumberOfEntitiesOnTile();i++)
 	{
@@ -106,7 +105,7 @@ void EntityViewMap::drawEntities(TileData* tileData,SDL_Surface* screen, Positio
 
 		SDL_BlitSurface(imageEntity, &clip, screen, &offset);
 	}
-}
+}*/
 void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam, std::map<string, int> visibleTiles) {
 
 	updateMovablePos();
