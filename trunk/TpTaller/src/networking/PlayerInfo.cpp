@@ -135,7 +135,6 @@ ostream& operator <<(std::ostream& out , const PlayerInfo& info){
 //Operator to load an object from a stream
 istream& operator >>(std::istream& in , PlayerInfo& info){
 	float x, y;
-	stringstream ss;
 
 	string name;
 	string walkingImageSrc;
