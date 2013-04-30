@@ -592,6 +592,8 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	std::string auxRunningImageSrc;
 	std::string auxIdleImageSrc;
 	std::string auxAttackImageSrc;
+	std::string auxIdleBlocking;
+	std::string auxBlockingAnim;
 	std::string auxName;
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
 	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps,
@@ -638,6 +640,14 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 				+ yamlException.what());
 		auxAttackImageSrc = DEFAULT_IMAGE_SRC;
 	}
+	try {
+			yamlNode["idleBlockingImageSrc"] >> auxIdleBlocking;
+		} catch (YAML::Exception& yamlException) {
+			Logs::logErrorMessage(
+					string("Error parsing PlayerView idle block image source: ")
+					+ yamlException.what());
+			auxIdleBlocking = DEFAULT_IMAGE_SRC;
+		}
 	try {
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
 	} catch (YAML::Exception& yamlException) {
@@ -725,6 +735,8 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	textureHolder->addTexture(runningTexture);
 	TextureDefinition* attackTexture = new TextureDefinition(auxName + string(ATTACK_MODIFIER) , auxAttackImageSrc);
 	textureHolder->addTexture(attackTexture);
+	TextureDefinition* idleBlockTexture = new TextureDefinition(auxName + string(IDLE_BLOCKING_MODIFIER) , auxIdleBlocking);
+	textureHolder->addTexture(idleBlockTexture);
 
 	playerView->setTextureHolder(textureHolder);
 }

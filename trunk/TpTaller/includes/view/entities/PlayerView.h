@@ -72,6 +72,9 @@ private:
 	int numberOfIdleClips;
 	SDL_Surface* runningImage;
 	int numberOfRunningClips;
+	SDL_Surface* idleBlockImage;
+	int numberOfIdleBlockClips;
+
 	int computeNumberOfClips(SDL_Surface* img);
 
 	SDL_Surface* nameImage;

@@ -40,13 +40,13 @@ PlayerView::PlayerView()
 	runningImage = NULL;
 	walkingImage = NULL;
 	attackImage = NULL;
-	idleImage=NULL;
-	numberOfRunningClips=0;
-	numberOfWalkingClips=0;
-	numberOfIdleClips=0;
-	numberOfAttackClips=0;
+	idleImage = NULL;
+	numberOfRunningClips = 0;
+	numberOfWalkingClips = 0;
+	numberOfIdleClips = 0;
+	numberOfAttackClips = 0;
 	currentSprite = DOWN;
-	lastDirection = M_PI *1/2;
+	lastDirection = M_PI * 1 / 2;
 
 }
 
@@ -65,7 +65,7 @@ void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* c
 	SDL_BlitSurface(source, clip, screen, &offset);
 
 	SDL_Rect offsetNombre;
-	offsetNombre.x = (int) x + camPos->getX() - nameImage->w/2;
+	offsetNombre.x = (int) x + camPos->getX() - nameImage->w / 2;
 	offsetNombre.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2 - 20;
 	offsetNombre.w = nameImage->w;
 	offsetNombre.h = nameImage->h;
@@ -93,15 +93,16 @@ void PlayerView::loadPlayerImage() {
 	idleImage = textureHolder->getTexture(name + string(IDLE_MODIFIER));
 	attackImage = textureHolder->getTexture(name + string(ATTACK_MODIFIER));
 	runningImage = textureHolder->getTexture(name + string(RUNNING_MODIFIER));
+	idleBlockImage = textureHolder->getTexture(name + string(IDLE_BLOCKING_MODIFIER));
 
 	//If there was a problem loading the sprite
-	if (!walkingImage ) {
+	if (!walkingImage) {
 		Logs::logErrorMessage("Unable to load walking image");
 		//TODO: cargo una alternativa
 		walkingImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
 	}
 
-	if (!idleImage ) {
+	if (!idleImage) {
 		Logs::logErrorMessage("Unable to load idle image");
 		//TODO: cargo una alternativa
 		walkingImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
@@ -117,11 +118,17 @@ void PlayerView::loadPlayerImage() {
 		//TODO: cargo una alternativa
 		attackImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
 	}
+	if (!idleBlockImage) {
+		Logs::logErrorMessage("Unable to load idle blocking image");
+		//TODO: cargo una alternativa
+		attackImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+	}
 
 	numberOfWalkingClips = computeNumberOfClips(walkingImage);
 	numberOfIdleClips = computeNumberOfClips(idleImage);
 	numberOfRunningClips = computeNumberOfClips(runningImage);
 	numberOfAttackClips = computeNumberOfClips(attackImage);
+	numberOfIdleBlockClips = computeNumberOfClips(idleBlockImage);
 }
 
 void PlayerView::setEntity(Entity* entity) {
@@ -147,7 +154,7 @@ void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo) {
 	//TODO - deberia ser numberOfClips-1 pero parece q esta mal la imagen ?¿
 
 	//Apply delay
-	if (currentClip < (numberOfIdleClips-1) && timeSinceLastAnimation >= delay * 1000) {
+	if (currentClip < (numberOfClips - 1) && timeSinceLastAnimation >= delay * 1000) {
 		//Apply FPS cap
 		if (animationRateTimer.getTimeSinceLastAnimation() >= 1000 / fps) {
 			currentClip++;
@@ -167,17 +174,22 @@ void PlayerView::Show(SDL_Surface* fondo) {
 	if (this->image == NULL)
 		loadPlayerImage();
 
-	if (marco >= numberOfClips){
+	if (marco >= numberOfClips) {
 		marco = 0;
-		if (player->isAttacking()) player->cancelAttack();
+		if (player->isAttacking())
+			player->cancelAttack();
+		if (player->isBlocking())
+			marco = numberOfIdleBlockClips-1;
 	}
 
 	Vector2* movementDirection = this->player->getMovementDirection();
 	float direction;
 
 	Vector2* v = new Vector2(0, 0);
-	if (movementDirection->isEqual(v)) direction = lastDirection;
-	else direction = movementDirection->getAngle();
+	if (movementDirection->isEqual(v))
+		direction = lastDirection;
+	else
+		direction = movementDirection->getAngle();
 	delete v;
 
 	SpriteType sprite = DOWN;
@@ -208,7 +220,7 @@ void PlayerView::Show(SDL_Surface* fondo) {
 		numberOfClips = numberOfRunningClips;
 	}
 
-	if (!player->IsMoving() && !player->isAttacking()) {
+	if (!player->IsMoving() && !player->isAttacking() && !player->isBlocking()) {
 		if (!wasStanding) {
 			timer.start();
 			wasStanding = true;
@@ -220,19 +232,18 @@ void PlayerView::Show(SDL_Surface* fondo) {
 		return;
 	}
 
-	if (player->isAttacking()){
+	if (player->isAttacking()) {
 		player->stop();
 		image = attackImage;
 		numberOfClips = numberOfAttackClips;
 	}
-
-	//lucas TODO- Pensar como meter el cambio de standing animation?
-	if (player->isBlocking()){
-			player->stop();
-			image = attackImage;
-			numberOfClips = numberOfAttackClips;
+	if (player->isBlocking()) {
+		player->stop();
+		image = idleBlockImage;
+		numberOfClips = numberOfIdleBlockClips;
 	}
 
+	//lucas TODO- Pensar como meter el cambio de standing animation?
 	wasStanding = false;
 	currentSprite = sprite;
 //	if (marco >= numberOfClips)
@@ -285,14 +296,14 @@ void PlayerView::setName(std::string name) {
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
-	TTF_Font* font = TTF_OpenFont( "resources/fonts/Baramond.ttf", 28 );
+	TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
 	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);
-	if (!nameImage || ! font)
+	if (!nameImage || !font)
 		Logs::logErrorMessage("Error al cargar la fuente para el nombre del personaje");
 
 }
 
-void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen){
+void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen) {
 	SDL_Rect clipToDraw;
 	clipToDraw.x = imageWidth * marco * scaleWidth;
 	clipToDraw.y = imageHeight * sprite;
@@ -310,6 +321,6 @@ void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen){
 
 }
 
-int PlayerView::computeNumberOfClips(SDL_Surface* img){
+int PlayerView::computeNumberOfClips(SDL_Surface* img) {
 	return img->w / imageWidth;
 }
