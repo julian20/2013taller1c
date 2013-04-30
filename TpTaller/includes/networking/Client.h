@@ -23,16 +23,24 @@ class Client {
 public:
 	Client(string host, int port, Game* game);
 	void initPlayerInfo(PlayerView* view);
+	void run();
+
 	void downloadMap();
 	void sendPlayerInfo();
 	GlobalChanges* downloadGlobalChanges();
 	void updatePlayers(GlobalChanges* changes);
+
 	virtual ~Client();
 private:
 	int clientID;
 	Game* game;
 	map<string,Player*> players;
 	PlayerInfo* info;
+
+
+
+
+
 };
 
 } /* namespace std */

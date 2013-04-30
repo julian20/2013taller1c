@@ -13,6 +13,8 @@
 #include <model/Logs/Logs.h>
 #include <Game.h>
 #include <Menu.h>
+#include <networking/Client.h>
+#include <networking/Server.h>
 
 #include <SDL/SDL.h>
 
@@ -20,12 +22,31 @@
 #define OUTPUT_FILENAME "configuration/parserOutput.yaml"
 #define DEFAULT_CONFIGURATION_FILE "./configuration/.entitiesDefault.yaml"
 
+#define HOST "192.168.1.134"
+#define PORT 32001
+
 using namespace std;
 
 void initGame(PersistentConfiguration* configuration) {
 	Game* game = new Game(configuration);
 	game->run();
 	delete game;
+}
+
+void initMultiplayerGame(PersistentConfiguration* configuration){
+	Game* game = new Game(configuration);
+	Client* client = new Client(HOST,PORT,game);
+	client->initPlayerInfo(game->getPlayerView());
+	client->run();
+	game->run();
+	delete game;
+	delete client;
+}
+
+void initServer(){
+	Server* server = new Server(HOST,PORT);
+	server->run();
+	delete server;
 }
 
 void initMenu(PersistentConfiguration* configuration){
@@ -51,6 +72,14 @@ void initMenu(PersistentConfiguration* configuration){
 				//Aca inicio el menu de configuraciones
 				cout << "Se inicio el menu de configuraciones" << endl;
 				break;
+			case MULTIPLAYER_GAME_EVENT:
+				menu->close();
+				initMultiplayerGame(configuration);
+				break;
+			case SERVER_EVENT:
+				menu->close();
+				initServer();
+				break;
 
 			}
 
@@ -65,6 +94,7 @@ void initMenu(PersistentConfiguration* configuration){
  *
  */
 int main(int argc, char** argv) {
+
 	Logs unLog;
 	Logs::openFile();
 	Logs::logErrorMessage(string("************Program Starting**************** "));

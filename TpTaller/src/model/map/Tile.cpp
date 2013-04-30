@@ -81,7 +81,7 @@ std::string Tile::getTextureIdentifier() {
 }
 
 void Tile::setTextureIdentifier(std::string textureId) {
-	this->textureIdentifier = textureId;
+	this->textureIdentifier.assign(textureId);
 }
 
 Position* Tile::computePosition(int row, int col, bool toTileZero){
@@ -138,6 +138,8 @@ SDL_Rect Tile::getDiamondShapeMapTilePos(int row, int col) {
 	posTile.y = pos->getY();
 	posTile.w = widthTexture;
 	posTile.h = heightTexture;
+
+	delete pos;
 
 	return posTile;
 }
@@ -216,7 +218,7 @@ Tile& Tile::operator=(Tile &other){
 
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const Tile& tile){
-	out << tile.textureIdentifier << " " << tile.fScore << " " << *(tile.position) << " " << tile.coordinates;
+	out << tile.textureIdentifier << " " << tile.fScore << " " << *(tile.position) << " " << *(tile.coordinates);
 	return out;
 }
 

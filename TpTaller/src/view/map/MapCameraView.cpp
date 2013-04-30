@@ -134,7 +134,9 @@ void MapCameraView::checkAdvancedBoundaries() {
 }
 
 MapCameraView::~MapCameraView() {
-	// TODO Auto-generated destructor stub
+	delete lastTilePosXDer;
+	delete lastTilePosXIzq;
+	delete lastTilePosY;
 }
 
 } /* namespace std */

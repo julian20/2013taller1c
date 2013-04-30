@@ -1,3 +1,3 @@
 cp ./Debug/TpTaller .
-valgrind -v --leak-check=full --suppressions=./valgrind-rules.supp ./TpTaller 
+#valgrind --leak-check=full ./TpTaller 
 
