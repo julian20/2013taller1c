@@ -38,7 +38,7 @@ using namespace std;
 #define DEFAULT_SCREEN_HEIGHT 600
 #define DEFAULT_SCREEN_WIDTH 800
 #define DEFAULT_BPP 1
-#define DEFAULT_BASE_LENGTH 1
+#define DEFAULT_BASE_HEIGHT 1
 #define DEFAULT_BASE_WIDTH 1
 #define DEFAULT_TEXTURE "grass"
 #define DEFAULT_GAME_MUSIC "resources/sound/NamiLogin.ogg"
@@ -701,7 +701,7 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	} catch (YAML::Exception& yamlException) {
 //		Logs::logErrorMessage(
 //				string("Error parsing PlayerView: ") + yamlException.what());
-		auxBaseLength = DEFAULT_BASE_LENGTH;
+		auxBaseLength = DEFAULT_BASE_HEIGHT;
 	}
 
 	playerView->setName(auxName);
@@ -740,7 +740,7 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	std::string auxImageSrc;
 	std::string auxName;
 	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay,
-			auxAnimationNumberOfRepeats, auxBaseLength, auxBaseWidth;
+			auxAnimationNumberOfRepeats, auxBaseHeight, auxBaseWidth;
 
 	try {
 		yamlNode["name"] >> auxName;
@@ -795,25 +795,24 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 		auxBaseWidth = DEFAULT_BASE_WIDTH;
 	}
 	try {
-		yamlNode["baseHeight"] >> auxBaseLength;
+		yamlNode["baseHeight"] >> auxBaseHeight;
 	} catch (YAML::Exception& yamlException) {
 //		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
-		auxBaseLength = DEFAULT_BASE_LENGTH;
+		auxBaseHeight = DEFAULT_BASE_HEIGHT;
 	}
 
 	map<string, SDL_Surface*> images;
 
 	entityView->setAnchorPixel(auxAnchorPixel);
-//	entityView->setBaseWidth(auxBaseWidth);
-//	entityView->setBaseHeight(auxBaseLength);
+	entityView->setBaseSizes(auxBaseWidth, auxBaseHeight);
 	entityView->setName(auxName);
 	entityView->setImageHeight(auxImageHeight);
 	entityView->setImageWidth(auxImageWidth);
 	entityView->setNClips(auxNumberOfClips);
-	entityView->setEntity(auxEntity);
 	entityView->setFps(auxFps);
 	entityView->setDelay(auxDelay);
 	entityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
+	entityView->setEntity(auxEntity);
 
 	TextureDefinition* textureDef = new TextureDefinition(auxName, auxImageSrc);
 	textureHolder->addTexture(textureDef);
@@ -1367,6 +1366,7 @@ void duplicateView(EntityView* sourceView, EntityView* destView) {
 	destView->setDelay(sourceView->getDelay());
 	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
 	destView->setEntity(NULL);
+	destView->setBaseSizes(sourceView->getBaseWidth(), sourceView->getBaseWidth());
 	destView->setTextureHolder(textureHolder);
 
 }
@@ -1553,9 +1553,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 			entityVector);
 	std::vector<PlayerView*> cleanPlayerViews = assignPlayers(playerViewVector,
 			playerVector);
-	assignEntities(mapData,entityVector);
+	assignEntities(mapData, entityVector);
 	cleanUnusedViews(entityViewVector);
-
 	cleanUnusedViews(playerViewVector);
 
 // Parsing map tile locations.

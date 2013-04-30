@@ -9,7 +9,7 @@
 
 Base::Base() {
 	this->anchorPixel = new Vector2(0,0);
-	this->length = 1;
+	this->height = 1;
 	this->width = 1;
 }
 
@@ -17,19 +17,19 @@ Base::~Base() {
 	delete anchorPixel;
 }
 
-unsigned int Base::getLength() {
-	return this->length;
+int Base::getHeight() {
+	return this->height;
 }
 
-void Base::setLength(unsigned int length) {
-	this->length = length;
+void Base::setHeight(int _height) {
+	this->height = _height;
 }
 
-unsigned int Base::getWidth() {
+int Base::getWidth() {
 	return this->width;
 }
 
-void Base::setWidth(unsigned int width) {
+void Base::setWidth(int width) {
 	this->width = width;
 }
 
@@ -42,7 +42,7 @@ void Base::setAnchorPixel(Vector2* anchorPixel) {
 }
 
 Base& Base::operator=(Base &other){
-	this->length = other.length;
+	this->height = other.height;
 	this->width = other.width;
 	*(this->anchorPixel) = *(other.anchorPixel);
 	return *this;
@@ -50,7 +50,7 @@ Base& Base::operator=(Base &other){
 
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const Base& base){
-	out << base.width << " " << base.length << " " << *(base.anchorPixel);
+	out << base.width << " " << base.height << " " << *(base.anchorPixel);
 	return out;
 }
 
@@ -62,7 +62,7 @@ istream& operator >>(std::istream& in, Base& base){
 	in >> length;
 	in >> *anchorPixel;
 	base.setWidth(width);
-	base.setLength(length);
+	base.setHeight(length);
 	base.setAnchorPixel(anchorPixel);
 	return in;
 
