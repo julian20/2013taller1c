@@ -48,13 +48,18 @@ void MapData::checkRowColsValue(int row, int col) {
 }
 
 void MapData::addEntity(int row, int col, Entity* object) {
-	TileData currentData = data[row + nrows * col];
+	TileData* currentData = getTileData(row, col);
 
-	currentData.addEntity(object);
+	currentData->addEntity(object);
+	currentData->setWalkable(false);
 }
 
 TileData* MapData::getTileData(int row, int col) {
 	return &data[row + nrows * col];
+}
+
+TileData* MapData::getTileData(Coordinates coords) {
+	return getTileData(coords.getRow(), coords.getCol());
 }
 
 void MapData::addPersonaje(int row, int col, Player* player) {
@@ -94,27 +99,42 @@ void emptyTilesContainer(map<int, Tile *> tilesContainer) {
 	 }
 }
 
-void addTileToList(list<Tile *> *list, map<int, Tile *> *tilesContainer, int row, int col){
-	Tile* tile = getTileFromContainer(tilesContainer, row, col);
+void MapData::addTileToList(list<Tile *> *list, map<int, Tile *> *tilesContainer,
+		int row, int col, bool getNoWalkableTiles) {
 
-	list->push_back( tile );
+	TileData* tileData = getTileData(row, col);
+
+	if (tileData->isWalkable() || getNoWalkableTiles) {
+		Tile* tile = getTileFromContainer(tilesContainer, row, col);
+
+		list->push_back( tile );
+	}
 }
 
-list<Tile *> MapData::getNeighborTiles(Tile* tile, map<int, Tile *> *tilesContainer) {
+list<Tile *> MapData::getNeighborTiles(Tile* tile, map<int, Tile *> *tilesContainer,
+		bool getNoWalkableTiles) {
 	list<Tile *> neighborTiles;
 	Coordinates coords = tile->getCoordinates();
 
 	int col = coords.getCol();
 	int row = coords.getRow();
 
-	if (col > 0) addTileToList(&neighborTiles, tilesContainer, row, col - 1);
-	if (row > 0) addTileToList(&neighborTiles, tilesContainer, row - 1, col);
-	if (col > 0 && row > 0) addTileToList(&neighborTiles, tilesContainer, row - 1, col - 1);
-	if (col < ncols - 1) addTileToList(&neighborTiles, tilesContainer, row, col + 1);
-	if (row < nrows - 1) addTileToList(&neighborTiles, tilesContainer, row + 1, col);
-	if (col < ncols - 1 && row < nrows - 1) addTileToList(&neighborTiles, tilesContainer, row + 1, col + 1);
-	if (col > 0 && row < nrows - 1) addTileToList(&neighborTiles, tilesContainer, row + 1, col - 1);
-	if (col < ncols - 1 && row > 0) addTileToList(&neighborTiles, tilesContainer, row - 1, col + 1);
+	if (col > 0)
+		addTileToList(&neighborTiles, tilesContainer, row, col - 1, getNoWalkableTiles);
+	if (row > 0)
+		addTileToList(&neighborTiles, tilesContainer, row - 1, col, getNoWalkableTiles);
+	if (col > 0 && row > 0)
+		addTileToList(&neighborTiles, tilesContainer, row - 1, col - 1, getNoWalkableTiles);
+	if (col < ncols - 1)
+		addTileToList(&neighborTiles, tilesContainer, row, col + 1, getNoWalkableTiles);
+	if (row < nrows - 1)
+		addTileToList(&neighborTiles, tilesContainer, row + 1, col, getNoWalkableTiles);
+	if (col < ncols - 1 && row < nrows - 1)
+		addTileToList(&neighborTiles, tilesContainer, row + 1, col + 1, getNoWalkableTiles);
+	if (col > 0 && row < nrows - 1)
+		addTileToList(&neighborTiles, tilesContainer, row + 1, col - 1, getNoWalkableTiles);
+	if (col < ncols - 1 && row > 0)
+		addTileToList(&neighborTiles, tilesContainer, row - 1, col + 1, getNoWalkableTiles);
 
 	return neighborTiles;
 }
@@ -136,6 +156,37 @@ bool compTileList(Tile* A, Tile* B) {
 	return (AScore > BScore);
 }
 
+Tile* MapData::getValidTile(Tile* from, Tile* goal) {
+	// Si el tile al que se quiere ir no es walkable se intenta ir al tile
+	// walkable mas proximo a la posicion de partida
+
+	TileData* tileData = getTileData(goal->getCoordinates());
+	if (tileData->isWalkable()) return goal;
+
+	Tile* current = goal;
+	map<int, Tile *> tilesContainer;	// Uso esto para ir guardando los punteros
+
+	while (true) {
+		list<Tile *> neighborTiles = getNeighborTiles(current, &tilesContainer, true);
+
+		list<Tile *>::const_iterator iter;
+		for (iter = neighborTiles.begin(); iter != neighborTiles.end(); ++iter) {
+			// Cargo la distancia con el punto de partida a cada tile
+			current = *iter;
+			current->setFScore( distBetweenTiles(current, from) );
+		}
+
+		neighborTiles.sort(compTileList);
+		current = neighborTiles.back();	// El tile mas cercano al punto de partida
+		tileData = getTileData(current->getCoordinates());
+		if (tileData->isWalkable()) {
+			current = new Tile( new Coordinates( current->getCoordinates() ) );
+			emptyTilesContainer(tilesContainer);
+			return current;
+		}
+	}
+}
+
 /**
  * TODO: ~~~ Gonchu ~~~
  * Tratar de usar list<Tile*> path en vez de
@@ -145,6 +196,7 @@ bool compTileList(Tile* A, Tile* B) {
  * destruir no hay problema, pero es mas complicado me parece.
  */
 list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
+	Tile* currentGoal = getValidTile(from, goal);
 	map<int, Tile *> tilesContainer;	// Uso esto para ir guardando los punteros
 	list<Tile *> closedSet;
 	list<Tile *> openSet;
@@ -153,15 +205,15 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 
 	map<int, float> g_score;
 	g_score[from->getHashValue()] = 0.0f;
-	from->setFScore(g_score[from->getHashValue()] + heuristicCostEstimate(from, goal));
+	from->setFScore(g_score[from->getHashValue()] + heuristicCostEstimate(from, currentGoal));
 	Tile* current;
 
 	while( openSet.size() > 0 ){
 		openSet.sort(compTileList);
 		current = openSet.back();	// node having the lowest fScore value
 
-		if (current->isEqual( goal )) {
-			list<Tile *>* path = reconstructPath(cameFrom, goal);
+		if (current->isEqual( currentGoal )) {
+			list<Tile *>* path = reconstructPath(cameFrom, currentGoal);
 			emptyTilesContainer(tilesContainer);
 			return path;
 		}
@@ -173,7 +225,8 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 		list<Tile *>::const_iterator iter;
 		for (iter = neighborTiles.begin(); iter != neighborTiles.end(); ++iter) {
 			Tile* neighbor = *iter;
-			float tentativeGScore = g_score[current->getHashValue()] + distBetweenTiles(current, neighbor);
+			float tentativeGScore = g_score[current->getHashValue()] +
+									distBetweenTiles(current, neighbor);
 
 			bool existsGScore = !(g_score.find(neighbor->getHashValue()) == g_score.end());
 			if (existsGScore && (tentativeGScore >= g_score[neighbor->getHashValue()]))
@@ -183,7 +236,8 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 			if (!neighborInOpenSet || (tentativeGScore < g_score[neighbor->getHashValue()])) {
 				cameFrom[neighbor->getHashValue()] = current;
 				g_score[neighbor->getHashValue()] = tentativeGScore;
-				neighbor->setFScore(g_score[neighbor->getHashValue()] + heuristicCostEstimate(neighbor, goal));
+				neighbor->setFScore(g_score[neighbor->getHashValue()] +
+									heuristicCostEstimate(neighbor, currentGoal));
 				if (!neighborInOpenSet)
 					openSet.push_back(neighbor);
 			}

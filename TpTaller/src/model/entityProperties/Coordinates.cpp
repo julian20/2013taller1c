@@ -15,6 +15,10 @@ Coordinates::Coordinates(int _row, int _col) {
 	changeTo(_row, _col);
 }
 
+Coordinates::Coordinates( const Coordinates &coords ) {
+	changeTo(coords.getRow(), coords.getCol());
+}
+
 void Coordinates::changeTo(int _row, int _col) {
 	row = _row;
 	col = _col;

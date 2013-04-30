@@ -25,7 +25,8 @@ public:
     std::string getTileType(int row, int col);
     int getNRows();
     int getNCols();
-    TileData * getTileData(int row, int col);
+    TileData* getTileData(Coordinates coords);
+    TileData* getTileData(int row, int col);
     void addPersonaje(int row, int col, Player* personaje);
     Player* getPersonaje(int row, int col);
 	list<Tile *> *getPath(Tile* from, Tile* to);
@@ -37,8 +38,12 @@ public:
 private:
 	float heuristicCostEstimate(Tile* from, Tile* to);
 	float distBetweenTiles(Tile* from, Tile* to);
+	void addTileToList(list<Tile *> *list, map<int, Tile *> *tilesContainer,
+						int row, int col, bool getNoWalkableTiles);
 	list<Tile *> *reconstructPath(map<int, Tile *> cameFrom, Tile* goal);
-	list<Tile *> getNeighborTiles(Tile* tile, map<int, Tile *> *tilesContainer);
+	list<Tile *> getNeighborTiles(Tile* tile, map<int, Tile *> *tilesContainer,
+			bool getNoWalkableTiles = false);
+	Tile* getValidTile(Tile* from, Tile* goal);
 
 	Player* mainPlayer;
 	vector<TileData *> visibleTiles;
