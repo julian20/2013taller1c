@@ -25,7 +25,10 @@ PlayerInfo::PlayerInfo() {
 }
 
 void PlayerInfo::setName(string name){
-	this->name = name;
+	cout<<"llega a la funcion con el nombre "<<name;
+	this->name = string(name);
+	cout<<"pasa la funcion";
+
 }
 string PlayerInfo::getName(){
 	return this->name;
@@ -146,7 +149,6 @@ istream& operator >>(std::istream& in , PlayerInfo& info){
 	int delay,fps;
 	Player* player = new Player();
 	Coordinates* initCoords = new Coordinates();
-
 	in >> name;
 	info.setName(name);
 	in >> walkingImageSrc;

@@ -22,8 +22,8 @@
 #define OUTPUT_FILENAME "configuration/parserOutput.yaml"
 #define DEFAULT_CONFIGURATION_FILE "./configuration/.entitiesDefault.yaml"
 
-#define HOST "192.168.1.106"
-#define PORT 32001
+#define HOST "192.168.1.33"
+#define PORT 1234
 
 using namespace std;
 
