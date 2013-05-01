@@ -181,10 +181,11 @@ PlayerInfo* Server::recieveNewPlayer(int clientSocket){
 
 	// SEND PLAYER INFO
 	recv(clientSocket,buffer,size, MSG_EOR);
+//	recv(clientSocket,buffer,size2, MSG_MORE);
 	// Turn the char[]into a stringstream
 	ss << buffer;
 	ss.str().c_str();
-
+	//cout << "GCOUNT: " << ss.str().c_str() << endl;
 
 	// Initialize the recived PlayerInfo
 	ss >> *info;
