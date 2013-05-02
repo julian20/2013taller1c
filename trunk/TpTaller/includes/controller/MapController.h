@@ -19,6 +19,9 @@ public:
 			PlayerController* controller);
 	virtual ~MapController();
 	void clickListener(SDL_Event event);
+	void generateEventList(bool activated);
+	list<PlayerEvent*> getEvents();
+	void cleanEvents();
 
 private:
 	MapData* mapData;

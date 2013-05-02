@@ -24,19 +24,21 @@ public:
 
 	void sendMap(string mapfile,int sockID);
 	PlayerInfo* recieveNewPlayer(int clientSocket);
-	void addPlayerToGame(int clientSocket, PlayerInfo* info);
-	void sendNewPlayers(int clientSocket, map<int,int> *sended);
-	PlayerEvent* downloadEvents(int clientSocket);
-	void addEventToChanges(int clientSocket, PlayerEvent* event);
-	void sendOthersChanges(int clientSocket);
+	int addPlayerToGame(int clientSocket, PlayerInfo* info);
+	void sendAproval(int clientSocket, int result);
+	void sendNewPlayers(int clientSocket, map<int,string> *sended);
+	list<PlayerEvent*> recvEvents(int clientSocket);
+	void addEventsToChanges(string PlayerName, list<PlayerEvent*> event);
+	void sendOthersChanges(int clientSocket, string currentPlayer);
 	virtual ~Server();
 private:
-
-	void sendPlayerInfo(int clientSocket,PlayerInfo* info);
+	void sendPlayerEvents(int clientSocket,string name,list<PlayerEvent*> events);
+	void sendEvents(int clientSocket, list<PlayerEvent*> events);
 
 	int serverID;
 	Changes* changes;
 	map<int,PlayerInfo*> gamePlayers;
+	map<string,int> playerNames;
 };
 
 typedef struct aux{

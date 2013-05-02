@@ -11,6 +11,7 @@ PlayerController::PlayerController() {
 	this->data = NULL;
 	this->player = NULL;
 	this->camera = NULL;
+	this->listEvents = false;
 }
 
 PlayerController::~PlayerController() {
@@ -42,6 +43,9 @@ void PlayerController::movePlayer(int x, int y) {
 		}
 	}
 
+	if (listEvents)
+			events.push_back(new PlayerEvent(EVENT_MOVE,Vector2(x,y)));
+
 	delete coor;
 	delete cameraPos;
 }
@@ -72,20 +76,46 @@ MapData* PlayerController::getMapData() {
 
 //TODO - hardcoded
 void PlayerController::toggleRunning() {
-	if (player->isRunning())
+	if (player->isRunning()){
 		player->setSpeedMagnitude(player->getSpeed()->getMagnitude()/2);
-	else
+		if (listEvents)
+				events.push_back(new PlayerEvent(EVENT_WALKING));
+	}else {
 		player->setSpeedMagnitude(player->getSpeed()->getMagnitude()*2);
+		if (listEvents)
+				events.push_back(new PlayerEvent(EVENT_RUNNING));
+	}
 }
 
 void PlayerController::playerAttack(){
 	player->attack();
+	if (listEvents)
+			events.push_back(new PlayerEvent(EVENT_ATTACK));
 }
 
 void PlayerController::playerBlock(){
 	player->block();
+	if (listEvents)
+			events.push_back(new PlayerEvent(EVENT_BLOCK));
 }
 
 void PlayerController::playerCancelBlock(){
 	player->cancelBlock();
+	if (listEvents)
+		events.push_back(new PlayerEvent(EVENT_CANCEL_BLOCK));
+}
+
+void PlayerController::generateEventList(bool activated){
+	this->listEvents = activated;
+}
+
+list<PlayerEvent*> PlayerController::getEventList(){
+	return events;
+}
+
+void PlayerController::cleanEventList(){
+	for (list<PlayerEvent*>::iterator it = events.begin(); it != events.end() ; ++it){
+		delete *it;
+	}
+	events.clear();
 }

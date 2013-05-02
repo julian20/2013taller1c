@@ -12,6 +12,7 @@
 #include <model/Vector2.h>
 #include <model/Vector3.h>
 #include <model/entities/player/Player.h>
+#include <view/entities/PlayerView.h>
 
 namespace std {
 
@@ -53,6 +54,8 @@ public:
 
 	void setFPS(int fps);
 	int getFPS();
+
+	PlayerView* createPlayerView();
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const PlayerInfo&);
