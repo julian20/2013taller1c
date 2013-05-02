@@ -153,6 +153,9 @@ void MapView::draw(Position* cam) {
 
 }
 
+MapData* MapView::getMapData(){
+	return data;
+}
 TextureHolder* MapView::getTextureHolder() {
 	return this->textureHolder;
 }

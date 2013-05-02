@@ -27,6 +27,7 @@
 #include <controller/PlayerController.h>
 #include <view/configuration/GameConfiguration.h>
 #include <view/MapView.h>
+#include <view/MapCameraView.h>
 #include <view/TextHandler.h>
 #include <view/networking/ChatWindowsView.h>
 
@@ -37,6 +38,9 @@ public:
 
         void addNewPlayer(Player* player, PlayerView* view, Coordinates* coords);
         PlayerView* getPlayerView();
+
+        MapCameraView* getMapCameraView();
+        MapData* getMapData();
 
         list<PlayerEvent*> getEvents();
         void cleanEvents();
@@ -58,11 +62,16 @@ private:
         Player* personaje;
         PlayerView* personajeVista;
 
+        list<Player*> otherPlayers;
+        list<PlayerView*> otherPlayerViews;
+
         void initMusic();
         void initScreen();
         void draw();
         void setUpCharacters(MapView* map,MapData* mapData,EntityViewMap* viewMap);
         void setUpEntities(MapView* map,MapData* mapData);
+
+        void playersUpdate();
 
 
 

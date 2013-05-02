@@ -19,21 +19,27 @@ void Changes::addChanges(string name ,list<PlayerEvent*> events){
 	changes.insert(pair<string , list<PlayerEvent*> >(name,events));
 }
 
-map<string, list<PlayerEvent*> > Changes::getOthersChanges(string playerName){
+map<string, list<PlayerEvent*> > Changes::getChanges(){
 
-	map<string, list<PlayerEvent*> > others;
-
-	for (map<string, list<PlayerEvent*> >::iterator it = changes.begin() ; it != changes.end() ; ++it){
-
-		if (it->first != playerName && !it->second.empty())
-			others.insert(pair<string, list<PlayerEvent*> >(it->first,it->second));
-	}
-
-	return others;
+	return changes;
 
 }
 
+void Changes::resetChanges(){
+	for (map<string, list<PlayerEvent*> >::iterator it = changes.begin() ; it != changes.end() ; ++it){
+		while(!it->second.empty()){
+			delete it->second.front();
+			it->second.pop_front();
+		}
+	}
+}
+
 list<PlayerEvent*> Changes::getPlayerEvents(string player){
+
+	if (changes.count(player) <= 0){
+		list<PlayerEvent*> empty;
+		return empty;
+	}
 
 	return changes[player];
 

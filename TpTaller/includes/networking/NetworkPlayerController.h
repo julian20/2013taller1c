@@ -11,19 +11,21 @@
 #include <controller/PlayerController.h>
 #include <model/entities/player/Player.h>
 #include <model/map/MapData.h>
+#include <model/entityProperties/Coordinates.h>
 #include <view/MapCameraView.h>
 #include <networking/PlayerEvent.h>
 
 namespace std {
 
-class NetworkPlayerController {
+class NetworkPlayerController : public PlayerController {
 public:
 	NetworkPlayerController(Player* player,MapData* map, MapCameraView* camera);
 	void handleEvents(list<PlayerEvent*>);
+	void movePlayer(Coordinates* tileCoord);
+	Player* getPlayer();
 	virtual ~NetworkPlayerController();
 private:
-	PlayerController* controller;
-	Player* player;
+
 
 	void handleEvent(PlayerEvent* event);
 };

@@ -33,7 +33,7 @@ public:
 	list<PlayerEvent*> getEventList();
 	void cleanEventList();
 
-private:
+protected:
 	MapCameraView* camera;
 	MapData* data;
 	Player* player;

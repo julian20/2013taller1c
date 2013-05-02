@@ -11,27 +11,30 @@ namespace std {
 
 PlayerEvent::PlayerEvent(){
 	this->type = EVENT_NONE;
-	this->mousePos = new Vector2(0,0);
+	this->tileCoordinates = new Coordinates();
 }
 
 PlayerEvent::PlayerEvent(EventType type){
 	this->type = type;
-	this->mousePos = new Vector2(0,0);
+	this->tileCoordinates = new Coordinates();
 }
 
-PlayerEvent::PlayerEvent(EventType type, Vector2 mousePos){
+PlayerEvent::PlayerEvent(EventType type, Coordinates tileCoordinates){
 
 	this->type = type;
-	this->mousePos = new Vector2(0,0);
-	this->mousePos->setValues(mousePos.getX(), mousePos.getY());
+	this->tileCoordinates = new Coordinates();
+	this->tileCoordinates->setCol(tileCoordinates.getCol());
+	this->tileCoordinates->setRow(tileCoordinates.getRow());
 
 }
 
 void PlayerEvent::setEventType(EventType type){
 	this->type = type;
 }
-void PlayerEvent::setMousePos(Vector2 mousePos){
-	this->mousePos->setValues(mousePos.getX(), mousePos.getY());
+
+void PlayerEvent::setTileCoordinates(Coordinates tileCoordinates){
+	this->tileCoordinates->setCol(tileCoordinates.getCol());
+	this->tileCoordinates->setRow(tileCoordinates.getRow());
 }
 
 
@@ -39,13 +42,14 @@ void PlayerEvent::setMousePos(Vector2 mousePos){
 EventType PlayerEvent::getEventType(){
 	return type;
 }
-Vector2* PlayerEvent::getMousePos(){
-	return mousePos;
+
+Coordinates* PlayerEvent::getTileCoordinates(){
+	return this->tileCoordinates;
 }
 
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out , const PlayerEvent& event){
-	out << event.type << " " << event.mousePos;
+	out << event.type << " " << *(event.tileCoordinates);
 	return out;
 }
 
@@ -56,16 +60,16 @@ istream& operator >>(std::istream& in, PlayerEvent& event){
 	int tmp;
 	in >> tmp;
 	type = (EventType) tmp;
-	Vector2 vector;
-	in >> vector;
+	Coordinates coords;
+	in >> coords;
 	event.setEventType(type);
-	event.setMousePos(vector);
+	event.setTileCoordinates(coords);
 
 	return in;
 }
 
 PlayerEvent::~PlayerEvent() {
-	delete mousePos;
+	delete tileCoordinates;
 }
 
 } /* namespace std */

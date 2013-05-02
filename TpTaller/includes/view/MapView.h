@@ -25,6 +25,7 @@ public:
 	virtual ~MapView();
 
 	SDL_Surface* getDrawingSurface();
+	MapData* getMapData();
 
 	void draw(Position* cam);
 	void setUpPersonajes();

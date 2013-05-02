@@ -36,9 +36,9 @@ private:
 	void sendEvents(int clientSocket, list<PlayerEvent*> events);
 
 	int serverID;
-	Changes* changes;
 	map<int,PlayerInfo*> gamePlayers;
 	map<string,int> playerNames;
+	map<string,Changes*> changes;
 };
 
 typedef struct aux{

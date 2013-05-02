@@ -12,6 +12,7 @@
 #define TilesOverlap	2		// px
 #define TextureWidth	70		// px
 #define TextureHeight	50		// px
+
 unsigned int Tile::tileWidth = TextureWidth;
 unsigned int Tile::tileHeight = TextureHeight;
 
@@ -37,12 +38,11 @@ Tile::Tile() {
 Tile::~Tile() {
 	delete this->position;
 	if (coordinates)
-		delete coordinates;
+			delete coordinates;
 }
 
 void Tile::updatePosition() {
-	SDL_Rect pos = this->computePositionTile(coordinates->getRow(),
-			coordinates->getCol());
+	SDL_Rect pos = this->computePositionTile(coordinates->getRow(), coordinates->getCol());
 	this->position = new Position(pos.x, pos.y);
 }
 
@@ -60,8 +60,8 @@ void Tile::setPosition(Position* position) {
 
 Coordinates Tile::getCoordinates() {
 	Coordinates retval;
-	retval.setRow(coordinates->getRow());
-	retval.setCol(coordinates->getCol());
+	retval.setRow( coordinates->getRow() );
+	retval.setCol( coordinates->getCol() );
 
 	return retval;
 }
@@ -84,15 +84,15 @@ void Tile::setTextureIdentifier(std::string textureId) {
 	this->textureIdentifier.assign(textureId);
 }
 
-Position* Tile::computePosition(int row, int col, bool toTileZero) {
+Position* Tile::computePosition(int row, int col, bool toTileZero){
 	Position* pos = getDiamondShapeMapPos(row, col);
 
 	if (toTileZero) {
 		const int widthTexture = tileWidth - TilesOverlap;
 		const int heightTexture = tileHeight - TilesOverlap;
 
-		pos->setX(pos->getX() + widthTexture / 2);
-		pos->setY(pos->getY() + heightTexture / 2);
+		pos->setX(pos->getX() + widthTexture/2);
+		pos->setY(pos->getY() + heightTexture/2);
 	}
 
 	return pos;
@@ -105,8 +105,8 @@ SDL_Rect Tile::computePositionTile(int row, int col, bool toTileZero) {
 		const int widthTexture = tileWidth - TilesOverlap;
 		const int heightTexture = tileHeight - TilesOverlap;
 
-		rect.x = rect.x + widthTexture / 2;
-		rect.y = rect.y + heightTexture / 2;
+		rect.x = rect.x + widthTexture/2;
+		rect.y = rect.y + heightTexture/2;
 	}
 
 	return rect;
@@ -203,7 +203,7 @@ bool Tile::isEqual(Tile* otherTile) {
 }
 
 int Tile::getHashValue() {
-	return coordinates->getRow() * 1000000 + coordinates->getCol();
+	return coordinates->getRow()*1000000 + coordinates->getCol();
 }
 
 Tile& Tile::operator=(Tile &other) {
@@ -215,20 +215,16 @@ Tile& Tile::operator=(Tile &other) {
 }
 
 //Operator to transform the object into a stream.
-ostream& operator <<(std::ostream& out, const Tile& tile) {
-	out << tile.textureIdentifier << " " << tile.fScore << " "
-			<< *(tile.position) << " " << *(tile.coordinates);
+ostream& operator <<(std::ostream& out, const Tile& tile){
+	out << tile.fScore << " " << *(tile.position) << " " << *(tile.coordinates);
 	return out;
 }
 
 //Operator to load an object from a stream
-istream& operator >>(std::istream& in, Tile& tile) {
-	string id;
+istream& operator >>(std::istream& in, Tile& tile){
 	float score;
 	Position* pos = new Position();
 	Coordinates coord;
-	in >> id;
-	tile.setTextureIdentifier(id);
 	in >> score;
 	tile.setFScore(score);
 	in >> *pos;
