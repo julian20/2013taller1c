@@ -66,14 +66,13 @@ public:
 	virtual ~PlayerInfo();
 private:
 	string name;
-	string walkingImageSrc,runningImageSrc,idleImageSrc,attackImageSrc;
+	string walkingImageSrc, runningImageSrc, idleImageSrc, attackImageSrc;
 	int imageWidth, imageHeight;
 	Vector2* anchorPixel;
-	int fps,delay;
+	int fps, delay;
 	Coordinates* initCoords;
 
 	Player* player;
-
 
 };
 

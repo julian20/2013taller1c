@@ -50,13 +50,13 @@ void Power::setRange(int range) {
 }
 
 //Operator to transform the object into a stream.
-ostream& operator <<(std::ostream& out, const Power& power){
+ostream& operator <<(std::ostream& out, const Power& power) {
 	out << power.name << " " << power.damage << " " << power.range;
 	return out;
 }
 
 //Operator to load an object from a stream
-istream& operator >>(std::istream& in, Power& power){
+istream& operator >>(std::istream& in, Power& power) {
 	string name;
 	int damage, range;
 	in >> name;

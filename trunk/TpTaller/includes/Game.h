@@ -28,6 +28,7 @@
 #include <view/configuration/GameConfiguration.h>
 #include <view/MapView.h>
 #include <view/TextHandler.h>
+#include <view/networking/ChatWindowsView.h>
 
 class Game {
 public:
@@ -49,7 +50,7 @@ private:
         SDL_Surface* fondo;
 
         GameConfiguration* gameConfig;
-
+        ChatWindowsView* chat;
         MapView* mapView;
         MapController* mapController;
         MapCameraController* cameraController;

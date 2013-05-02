@@ -14,7 +14,6 @@
 #include <view/entities/PlayerView.h>
 #include <Game.h>
 
-
 #include <map>
 
 namespace std {
@@ -44,13 +43,9 @@ private:
 
 	int clientID;
 	Game* game;
-	map<string,Player*> players;
+	map<string, Player*> players;
 	PlayerInfo* info;
 	list<PlayerEvent*> events;
-
-
-
-
 
 };
 

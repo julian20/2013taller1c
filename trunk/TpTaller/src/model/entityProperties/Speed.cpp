@@ -38,21 +38,21 @@ void Speed::setDirection(Vector2* direction) {
 	this->direction = direction;
 }
 
-Speed& Speed::operator=(Speed &other){
+Speed& Speed::operator=(Speed &other) {
 	this->magnitude = other.magnitude;
 	*(this->direction) = *(other.direction);
 	return *this;
 }
 
 //Operator to transform the object into a stream.
-ostream& operator <<(std::ostream& out, const Speed& speed){
+ostream& operator <<(std::ostream& out, const Speed& speed) {
 	out << speed.magnitude << " " << *(speed.direction);
 }
 
 //Operator to load an object from a stream
-istream& operator >>(std::istream& in, Speed& speed){
+istream& operator >>(std::istream& in, Speed& speed) {
 	int mag;
-	Vector2* vect = new Vector2(0,0);
+	Vector2* vect = new Vector2(0, 0);
 	in >> mag;
 	in >> *vect;
 	speed.setMagnitude(mag);

@@ -15,20 +15,20 @@ using namespace std;
 
 class MapData {
 public:
-    static const int AMOUNT_TYPES = 4;  // Igual al mayor +1 index de consts
+	static const int AMOUNT_TYPES = 4;  // Igual al mayor +1 index de consts
 
-    MapData(int _nrows, int _ncols);
-    virtual ~MapData();
-    
-    void addEntity(int row, int col, Entity* object);
-    void setTileType(std::string tileType, int row, int col);
-    std::string getTileType(int row, int col);
-    int getNRows();
-    int getNCols();
-    TileData* getTileData(Coordinates coords);
-    TileData* getTileData(int row, int col);
-    void addPersonaje(int row, int col, Player* personaje);
-    Player* getPersonaje(int row, int col);
+	MapData(int _nrows, int _ncols);
+	virtual ~MapData();
+
+	void addEntity(int row, int col, Entity* object);
+	void setTileType(std::string tileType, int row, int col);
+	std::string getTileType(int row, int col);
+	int getNRows();
+	int getNCols();
+	TileData* getTileData(Coordinates coords);
+	TileData* getTileData(int row, int col);
+	void addPersonaje(int row, int col, Player* personaje);
+	Player* getPersonaje(int row, int col);
 	list<Tile *> *getPath(Tile* from, Tile* to);
 	list<Entity *> *Entities;
 	void movePersonaje(Player* personaje, Tile* toTile);
@@ -39,7 +39,7 @@ private:
 	float heuristicCostEstimate(Tile* from, Tile* to);
 	float distBetweenTiles(Tile* from, Tile* to);
 	void addTileToList(list<Tile *> *list, map<int, Tile *> *tilesContainer,
-						int row, int col, bool getNoWalkableTiles);
+			int row, int col, bool getNoWalkableTiles);
 	list<Tile *> *reconstructPath(map<int, Tile *> cameFrom, Tile* goal);
 	list<Tile *> getNeighborTiles(Tile* tile, map<int, Tile *> *tilesContainer,
 			bool getNoWalkableTiles = false);
@@ -47,12 +47,12 @@ private:
 
 	Player* mainPlayer;
 	vector<TileData *> visibleTiles;
-    vector<TileData> data;
-    int nrows;
-    int ncols;
+	vector<TileData> data;
+	int nrows;
+	int ncols;
 
-    void initializeData();
-    void checkRowColsValue(int row, int col);
+	void initializeData();
+	void checkRowColsValue(int row, int col);
 };
 
 #endif	/* MAPDATA_H */

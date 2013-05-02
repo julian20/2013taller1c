@@ -35,7 +35,7 @@ public:
 	TextureHolder* getTextureHolder();
 	void setTextureHolder(TextureHolder* textureHolder);
 	void setRunningPlayer();
-	void addNewPlayerView(PlayerView* view,Coordinates initCoord);
+	void addNewPlayerView(PlayerView* view, Coordinates initCoord);
 private:
 	map<string, int> getVisibleTilesLimit(Position* cam);
 
@@ -48,6 +48,7 @@ private:
 	SDL_Surface* tilesTextures[MapData::AMOUNT_TYPES];
 	string backgroundPath;
 	Player* player;
+
 
 	MapCameraView* camera;
 

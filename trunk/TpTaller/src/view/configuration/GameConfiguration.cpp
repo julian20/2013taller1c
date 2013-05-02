@@ -34,11 +34,11 @@ GameConfiguration::GameConfiguration() {
 GameConfiguration::~GameConfiguration() {
 }
 
-bool GameConfiguration::screenAutoConfig(){
+bool GameConfiguration::screenAutoConfig() {
 	return bScreenAutoConfig || bFullscreen;
 }
 
-bool GameConfiguration::fullscreen(){
+bool GameConfiguration::fullscreen() {
 	return bFullscreen;
 }
 
@@ -50,7 +50,7 @@ unsigned int GameConfiguration::getDelay() {
 	return this->delay;
 }
 
-unsigned int GameConfiguration::getMovementMargin(){
+unsigned int GameConfiguration::getMovementMargin() {
 	return this->movementMargin;
 }
 
@@ -94,7 +94,7 @@ void GameConfiguration::setDelay(unsigned int delay) {
 	this->delay = delay;
 }
 
-void GameConfiguration::setMovementMargin(unsigned int movementMargin){
+void GameConfiguration::setMovementMargin(unsigned int movementMargin) {
 	this->movementMargin = movementMargin;
 }
 
@@ -129,9 +129,9 @@ void GameConfiguration::setTileWidth(unsigned int _tileWidth) {
 void GameConfiguration::setTileHeight(unsigned int _tileHeight) {
 	this->tileHeight = _tileHeight;
 }
-void GameConfiguration::setScreenAutoConfig(bool screenAutoConfig){
+void GameConfiguration::setScreenAutoConfig(bool screenAutoConfig) {
 	this->bScreenAutoConfig = screenAutoConfig;
 }
-void GameConfiguration::setFullscreen(bool fullscreen){
+void GameConfiguration::setFullscreen(bool fullscreen) {
 	this->bFullscreen = fullscreen;
 }

@@ -60,10 +60,10 @@ int EntityView::getNumberOfRepeats() {
 }
 
 void EntityView::setScale() {
-	this->scaleHeight = (float) (Tile::getTileHeight()) * float(this->base->getHeight())
-			/ (float) (this->imageHeight);
-	this->scaleWidth = (float) (Tile::getTileWidth()) * (float) (this->base->getWidth())
-			/ (float) (this->imageWidth);
+	this->scaleHeight = (float) (Tile::getTileHeight())
+			* float(this->base->getHeight()) / (float) (this->imageHeight);
+	this->scaleWidth = (float) (Tile::getTileWidth())
+			* (float) (this->base->getWidth()) / (float) (this->imageWidth);
 }
 
 void EntityView::setImageWidth(int width) {
@@ -91,11 +91,11 @@ void EntityView::setImageHeight(int height) {
 	this->imageHeight = height;
 }
 
-Vector2* EntityView::getAnchorPixel(){
+Vector2* EntityView::getAnchorPixel() {
 	return this->anchorPixel;
 }
 
-void EntityView::setAnchorPixel(Vector2* anchorPixel){
+void EntityView::setAnchorPixel(Vector2* anchorPixel) {
 	this->anchorPixel = anchorPixel;
 }
 
@@ -114,10 +114,10 @@ void EntityView::loadImage() {
 	this->fogImage = textureHolder->getFogTexture(name);
 }
 
-void EntityView::setTextureHolder( TextureHolder* _textureHolder ) {
+void EntityView::setTextureHolder(TextureHolder* _textureHolder) {
 	textureHolder = _textureHolder;
 }
-TextureHolder* EntityView::getTextureHolder(){
+TextureHolder* EntityView::getTextureHolder() {
 	return this->textureHolder;
 }
 
@@ -149,7 +149,8 @@ Entity* EntityView::getEntity() {
 }
 
 void EntityView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
-	if (image == NULL) loadImage();
+	if (image == NULL)
+		loadImage();
 
 	SDL_Rect clipFog;
 	clip.x = clipFog.x = this->imageWidth * this->currentClip * scaleWidth;
@@ -161,15 +162,17 @@ void EntityView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 	int col = coords.getCol();
 
 	SDL_Rect offset, offsetFog;
-	int tileH = Tile::computePositionTile(0,0,true).h;
-	offset.x = offsetFog.x = (int) (Tile::computePositionTile(row, col, true).x + cam->getX() - (int)this->anchorPixel->getX());
-	offset.y = offsetFog.y = (int) (Tile::computePositionTile(row, col, true).y + cam->getY() - (int)this->anchorPixel->getY() - tileH/2  );
+	int tileH = Tile::computePositionTile(0, 0, true).h;
+	offset.x = offsetFog.x = (int) (Tile::computePositionTile(row, col, true).x
+			+ cam->getX() - (int) this->anchorPixel->getX());
+	offset.y = offsetFog.y = (int) (Tile::computePositionTile(row, col, true).y
+			+ cam->getY() - (int) this->anchorPixel->getY() - tileH / 2);
 	offset.h = offsetFog.h = clip.h;
 	offset.w = offsetFog.w = clip.w;
 
-
 	SDL_BlitSurface(image, &clip, screen, &offset);
-	if (drawFog) SDL_BlitSurface(fogImage, &clipFog, screen, &offsetFog);
+	if (drawFog)
+		SDL_BlitSurface(fogImage, &clipFog, screen, &offsetFog);
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 
@@ -181,7 +184,8 @@ void EntityView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 			animationRateTimer.start();
 		}
 	} else {
-		if ((currentRepeat >= numberOfRepeats) && (timeSinceLastAnimation >= delay * 1000)) {
+		if ((currentRepeat >= numberOfRepeats)
+				&& (timeSinceLastAnimation >= delay * 1000)) {
 			timer.start();
 			currentRepeat = 0;
 		}

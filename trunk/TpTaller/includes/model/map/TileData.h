@@ -31,8 +31,8 @@ public:
 	//Setters
 	void setType(std::string type);
 	void setPlayer(Player* newPersonaje);
-	void setVisibility( bool value );
-	void setWalkable( bool _walkable );
+	void setVisibility(bool value);
+	void setWalkable(bool _walkable);
 
 	void addEntity(Entity* entity);
 

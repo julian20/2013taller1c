@@ -25,7 +25,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
-
 using namespace std;
 class EntityView {
 public:
@@ -91,6 +90,5 @@ protected:
 	int numberOfRepeats;
 	int currentRepeat;
 };
-
 
 #endif /* ENTITYVIEW_H */

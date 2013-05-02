@@ -55,7 +55,7 @@ void Position::setZ(int z) {
 	this->z = z;
 }
 
-Position& Position::operator=(Position &other){
+Position& Position::operator=(Position &other) {
 	this->x = other.x;
 	this->y = other.y;
 	this->z = other.z;
@@ -63,17 +63,17 @@ Position& Position::operator=(Position &other){
 }
 
 //Operator to transform the object into a stream.
-ostream& operator <<(std::ostream& out, const Position& pos){
+ostream& operator <<(std::ostream& out, const Position& pos) {
 	out << pos.x << " " << pos.y << " " << pos.z;
 	return out;
 }
 
 //Operator to load an object from a stream
-istream& operator >>(std::istream& in, Position& pos){
-	int x,y,z;
+istream& operator >>(std::istream& in, Position& pos) {
+	int x, y, z;
 	in >> x;
 	in >> y;
 	in >> z;
-	pos.changeTo(x,y,z);
+	pos.changeTo(x, y, z);
 	return in;
 }

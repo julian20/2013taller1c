@@ -12,15 +12,20 @@ using namespace std;
 
 TextHandler::TextHandler() {
 	// TODO Auto-generated constructor stub
-	TTF_Init();
-	fontMap["lazy"]=TTF_OpenFont( "resources/fonts/lazy.ttf", 28 );
-	fontMap["baramond"]=TTF_OpenFont( "resources/fonts/Baramond.ttf", 28 );
+	if(!TTF_WasInit())
+		{
+
+			TTF_Init();
+		}else{printf("Ya esta abierta ttf\n");}
+	fontMap["lazy"] = TTF_OpenFont("resources/fonts/lazy.ttf", 28);
+	fontMap["baramond"] = TTF_OpenFont("resources/fonts/robot.ttf", 28);
 
 }
-
-
-
-SDL_Color TextHandler::getColor(int r, int g, int b){
+TTF_Font* TextHandler::getFont()
+{
+	return fontMap["baramond"];
+}
+SDL_Color TextHandler::getColor(int r, int g, int b) {
 	SDL_Color color;
 	color.r = r;
 	color.g = g;
@@ -28,12 +33,13 @@ SDL_Color TextHandler::getColor(int r, int g, int b){
 	return color;
 }
 
-void TextHandler::applyTextOnSurface(string text,SDL_Surface* surface,int x, int y, string font, SDL_Color color){
+void TextHandler::applyTextOnSurface(string text, SDL_Surface* surface, int x,
+		int y, string font, SDL_Color color) {
 
 	SDL_Surface* textSurface;
 	TTF_Font* selectedFont;
 	//Si la fuente elegida no existe usamos el default
-	if ( fontMap.find(font) == fontMap.end())
+	if (fontMap.find(font) == fontMap.end())
 		selectedFont = fontMap["lazy"];
 	else
 		selectedFont = fontMap[font];
@@ -52,13 +58,13 @@ void TextHandler::applyTextOnSurface(string text,SDL_Surface* surface,int x, int
 	SDL_FreeSurface(textSurface);
 }
 
-
-void TextHandler::applyTextOnSurfaceCentered(string text,SDL_Surface* surface,int x, int y, string font, SDL_Color color){
+void TextHandler::applyTextOnSurfaceCentered(string text, SDL_Surface* surface,
+		int x, int y, string font, SDL_Color color) {
 
 	SDL_Surface* textSurface;
 	TTF_Font* selectedFont;
 	//Si la fuente elegida no existe usamos el default
-	if ( fontMap.find(font) == fontMap.end())
+	if (fontMap.find(font) == fontMap.end())
 		selectedFont = fontMap["lazy"];
 	else
 		selectedFont = fontMap[font];
@@ -66,7 +72,7 @@ void TextHandler::applyTextOnSurfaceCentered(string text,SDL_Surface* surface,in
 	textSurface = TTF_RenderText_Solid(selectedFont, text.c_str(), color);
 	SDL_Rect rect;
 
-	rect.x = x-textSurface->w/2;
+	rect.x = x - textSurface->w / 2;
 	rect.y = y;
 	rect.w = textSurface->w;
 	rect.h = textSurface->h;
@@ -77,11 +83,10 @@ void TextHandler::applyTextOnSurfaceCentered(string text,SDL_Surface* surface,in
 	SDL_FreeSurface(textSurface);
 }
 
-
 TextHandler::~TextHandler() {
 	map<string, TTF_Font*>::iterator it;
-	for(it = fontMap.begin(); it != fontMap.end(); it++) {
-		TTF_CloseFont( it->second );
+	for (it = fontMap.begin(); it != fontMap.end(); it++) {
+		TTF_CloseFont(it->second);
 	}
 
 	TTF_Quit();

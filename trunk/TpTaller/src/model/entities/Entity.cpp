@@ -16,14 +16,15 @@ using namespace std;
 
 Entity::Entity() {
 	this->currentPos = new Vector3(0, 0, 0);
-	this->coord = new Coordinates(0,0);
+	this->coord = new Coordinates(0, 0);
 	this->base = new Base();
 	this->name = "";
 }
 
 void Entity::setPos(float x, float y, float z) {
 	currentPos->setValues(x, y, z);
-	coord->changeTo((int) x/Tile::computePositionTile(0,0).w , (int) y/Tile::computePositionTile(0,0).h);
+	coord->changeTo((int) x / Tile::computePositionTile(0, 0).w,
+			(int) y / Tile::computePositionTile(0, 0).h);
 }
 
 Vector3* Entity::getCurrentPos() {
@@ -32,13 +33,13 @@ Vector3* Entity::getCurrentPos() {
 
 Coordinates Entity::getCoordinates() {
 	Coordinates retval;
-	retval.setRow( coord->getRow() );
-	retval.setCol( coord->getCol() );
+	retval.setRow(coord->getRow());
+	retval.setCol(coord->getCol());
 
 	return retval;
 }
 
-void Entity::setCoordinates(int row, int col){
+void Entity::setCoordinates(int row, int col) {
 	coord->changeTo(row, col);
 }
 

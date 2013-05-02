@@ -20,25 +20,25 @@
 #include <vector>
 #include <iostream>
 using namespace std;
-	class Entity {
-	public:
-		Entity();
-		virtual void setPos(float x, float y, float z = 0);
-		Vector3* getCurrentPos();
-		virtual string getClassName();
-		virtual ~Entity();
-		Base* getBase();
-		void setBase(Base* base);
-		std::string getName();
-		void setName(std::string name);
-		Coordinates getCoordinates();
-		void setCoordinates(int row, int col);
-		void setBaseSizes(int width, int height);
-	protected:
-		Vector3* currentPos;
-		Base* base;
-		std::string name;
-		Coordinates* coord;
-	};
+class Entity {
+public:
+	Entity();
+	virtual void setPos(float x, float y, float z = 0);
+	Vector3* getCurrentPos();
+	virtual string getClassName();
+	virtual ~Entity();
+	Base* getBase();
+	void setBase(Base* base);
+	std::string getName();
+	void setName(std::string name);
+	Coordinates getCoordinates();
+	void setCoordinates(int row, int col);
+	void setBaseSizes(int width, int height);
+protected:
+	Vector3* currentPos;
+	Base* base;
+	std::string name;
+	Coordinates* coord;
+};
 
 #endif /* ENTITY_H_ */

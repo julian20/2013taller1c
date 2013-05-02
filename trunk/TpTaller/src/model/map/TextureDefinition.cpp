@@ -51,12 +51,13 @@ SDL_Surface* TextureDefinition::getTextureImage() {
 	if (this->openImage == NULL) {
 		SDL_Surface* loadedImageTmp = IMG_Load(this->imageSrc.c_str());
 		if (loadedImageTmp == NULL) {
-			Logs::logErrorMessage("Unable to load tile texture: " + string(SDL_GetError()));
+			Logs::logErrorMessage(
+					"Unable to load tile texture: " + string(SDL_GetError()));
 			loadedImageTmp = this->getDefaultTextureImage();
 		}
 
-		SDL_Surface* loadedImageRot = rotozoomSurfaceXY(loadedImageTmp, 0, SCALE,
-				SCALE, 0);
+		SDL_Surface* loadedImageRot = rotozoomSurfaceXY(loadedImageTmp, 0,
+				SCALE, SCALE, 0);
 		SDL_FreeSurface(loadedImageTmp);
 		SDL_Surface* loadedImage = SDL_DisplayFormatAlpha(loadedImageRot);
 		SDL_FreeSurface(loadedImageRot);
@@ -82,7 +83,9 @@ SDL_Surface* TextureDefinition::prepareImage(SDL_Surface* loadedImage) {
 SDL_Surface * TextureDefinition::getDefaultTextureImage() {
 	SDL_Surface* loadedImage = IMG_Load(this->defaultImgSrc.c_str());
 	if (loadedImage == NULL) {
-		Logs::logErrorMessage("Unable to load default tile texture: " + string(SDL_GetError()));
+		Logs::logErrorMessage(
+				"Unable to load default tile texture: "
+						+ string(SDL_GetError()));
 		return NULL;
 	}
 	loadedImage = prepareImage(loadedImage);
