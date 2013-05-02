@@ -22,11 +22,15 @@ public:
 	unsigned int getDefaultScreenHeight();
 	unsigned int getDefaultScreenWidth();
 	unsigned int getDefaultBPP();
+	unsigned int getServerPort();
+	std::string getServerIP();
 	std::string getGameMusicSrc();
 	std::string getMenuBackImageSrc();
 	std::string getMenuBackMusicSrc();
 	unsigned int getTileWidth();
 	unsigned int getTileHeight();
+	void setServerIP(std::string ipAddress);
+	void setServerPort(unsigned int serverPort);
 	void setFps(unsigned int fps);
 	void setDelay(unsigned int delay);
 	void setMovementMargin(unsigned int movementMargin);
@@ -49,8 +53,10 @@ private:
 	unsigned int defaultBPP;
 	unsigned int tileWidth;
 	unsigned int tileHeight;
+	unsigned int serverPort;
 	bool bScreenAutoConfig;
 	bool bFullscreen;
+	std::string serverIP;
 	std::string gameMusicSrc;
 	std::string menuBackImageSrc;
 	std::string menuBackMusicSrc;

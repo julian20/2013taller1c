@@ -46,6 +46,8 @@ using namespace std;
 #define DEFAULT_MENU_MUSIC "resources/sound/pirates.ogg"
 #define DEFAULT_IMAGE_SRC "resources/questionMark.png"
 #define DEFAULT_NAME "UndefinedName"
+#define DEFAULT_PORT 32001
+#define DEFAULT_IP "192.168.190.136"
 #define DEFAULT_TILE_WIDTH	70
 #define DEFAULT_TILE_HEIGHT	50
 
@@ -1033,9 +1035,25 @@ void operator >>(const YAML::Node& yamlNode,
 		GameConfiguration* animationConfig) {
 	const YAML::Node& configuration = yamlNode["gameConfiguration"];
 	int auxFps, auxDelay, auxHeight, auxWidth, auxBPP, auxMovementMargin;
-	int auxTileWidth, auxTileHeight;
+	int auxTileWidth, auxTileHeight, auxPort;
 	bool auxFullscreen, auxAutoConfig;
-	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic;
+	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic, auxIP;
+	try {
+		configuration["serverIP"] >> auxIP;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing GameConfiguration Server IP Address: ")
+						+ yamlException.what());
+		auxIP = DEFAULT_IP;
+	}
+	try {
+		configuration["serverPort"] >> auxPort;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing GameConfiguration Server Port: ")
+						+ yamlException.what());
+		auxPort = DEFAULT_PORT;
+	}
 	try {
 		configuration["fps"] >> auxFps;
 	} catch (YAML::Exception& yamlException) {
@@ -1144,6 +1162,9 @@ void operator >>(const YAML::Node& yamlNode,
 	checkValues(&auxTileWidth, string("TileWidth"), DEFAULT_TILE_WIDTH);
 	checkValues(&auxTileHeight, string("TileHeight"), DEFAULT_TILE_HEIGHT);
 
+
+	animationConfig->setServerIP(auxIP);
+	animationConfig->setServerPort((unsigned int) auxPort);
 	animationConfig->setDelay((unsigned int) auxDelay);
 	animationConfig->setFps((unsigned int) auxFps);
 	animationConfig->setMovementMargin((unsigned int) auxMovementMargin);

@@ -22,9 +22,6 @@
 #define OUTPUT_FILENAME "configuration/parserOutput.yaml"
 #define DEFAULT_CONFIGURATION_FILE "./configuration/.entitiesDefault.yaml"
 
-#define HOST "192.168.0.105"
-#define PORT 32001
-
 using namespace std;
 
 void initGame(PersistentConfiguration* configuration) {
@@ -34,8 +31,11 @@ void initGame(PersistentConfiguration* configuration) {
 }
 
 void initMultiplayerGame(PersistentConfiguration* configuration) {
+	std::string serverIP = configuration->getAnimationConfiguration()->getServerIP();
+	unsigned int serverPort = configuration->getAnimationConfiguration()->getServerPort();
+
 	Game* game = new Game(configuration,true);
-	Client* client = new Client(HOST, PORT, game);
+	Client* client = new Client(serverIP, serverPort, game);
 	client->initPlayerInfo(game->getPlayerView());
 	client->run();
 	game->run();
@@ -43,8 +43,11 @@ void initMultiplayerGame(PersistentConfiguration* configuration) {
 	delete client;
 }
 
-void initServer() {
-	Server* server = new Server(HOST, PORT);
+void initServer(PersistentConfiguration* configuration) {
+	std::string serverIP = configuration->getAnimationConfiguration()->getServerIP();
+	unsigned int serverPort = configuration->getAnimationConfiguration()->getServerPort();
+
+	Server* server = new Server(serverIP, serverPort);
 	server->run();
 	delete server;
 }
@@ -78,7 +81,7 @@ void initMenu(PersistentConfiguration* configuration) {
 			break;
 		case SERVER_EVENT:
 			menu->close();
-			initServer();
+			initServer(configuration);
 			break;
 
 		}
