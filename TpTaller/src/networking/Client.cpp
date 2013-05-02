@@ -6,6 +6,7 @@
  */
 
 #include <networking/Client.h>
+#include <networking/ComunicationUtils.h>
 #include <model/map/TextureDefinition.h>
 #include <model/map/TextureHolder.h>
 
@@ -26,6 +27,8 @@
 #define READING_SIZE 8192
 #define EXTRA_SIZE 1
 #define MAPFILE "./mapita.yamp"
+
+
 
 using namespace std;
 
@@ -59,7 +62,7 @@ Client::Client(string host, int port, Game* game) {
 	hints.sin_port = htons(port);
 
 	// Conecto al servidor utilizando el socket creado.
-	if (connect(clientID,(struct sockaddr *) &hints,sizeof(hints)) < 0)
+	if (connect(clientID,(struct sockaddr *) &hints,sizeof(hints)) < 0);
 		//error("ERROR connecting"); //TODO LOG
 
 	// Devuelvo el socket ID.
@@ -109,74 +112,80 @@ void Client::initPlayerInfo(PlayerView* view){
 }
 
 void Client::registerPlayer(){
-
-	stringstream ss;
-	ss << *(this->info);
-
-	int size = 2*sizeof(PlayerInfo) + sizeof(Player);;
-
-	// SEND PLAYER INFO
-	send(this->clientID,ss.str().c_str(),size, MSG_EOR);
-
-
+	ComunicationUtils::sendPlayerInfo(clientID,info);
 }
-
-PlayerInfo* Client::recivePlayerInfo(){
-	stringstream ss;
-	string temp;
-	int size = 2*sizeof(PlayerInfo) + sizeof(Player);;
-	PlayerInfo* info = new PlayerInfo();
-
-	// CREATE A BUFFER OF THE RECIVED SIZE
-	char buffer[size];
-
-	// SEND PLAYER INFO
-	recv(clientID,buffer,size, MSG_EOR);
-	// Turn the char[]into a stringstream
-	ss << buffer;
-	ss.str().c_str();
-
-	// Initialize the recived PlayerInfo
-	ss >> *info;
-
-	return info;
-}
-
 
 void Client::checkNewPlayers(){
 
 	// 1ro recibo la cantidad de players nuevos que hay
-	char buf[10];
-	int n = -1;
-	recv(clientID,buf,10*sizeof(char), MSG_EOR);
-	stringstream sstream;
-	sstream << buf;
-
-	sstream >> n;
+	int n = ComunicationUtils::recvNumber(clientID);
 	// No hay nuevos jugadores
 	if (n <= 0) return;
 
 	for (int i = 0; i < n ; i++){
 
 		// SI NO HA SIDO ENVIADO, LO ENVIO
-			PlayerInfo* info = recivePlayerInfo();
+			PlayerInfo* info = ComunicationUtils::recvPlayerInfo(clientID);
 			players.insert( pair<string,Player*>(info->getPlayer()->getName(), info->getPlayer()) );
+			cout << info->getPlayer()->getName() << " has conected..." << endl;
 			// TODO: Creo la playerView y la registro en el game.
+			PlayerView* view = info->createPlayerView();
 			// TODO: Creo un eventHandler para el player que acabo de crear
 		}
 
 }
 
 void Client::sendEvents(){
+	list<PlayerEvent*> events = game->getEvents();
+
+	// 1ro envio la cantidad de events que voy a mandar
+	ComunicationUtils::sendNumber(clientID,events.size());
+
+	for (list<PlayerEvent*>::iterator it = events.begin() ; it != events.end() ; ++it ){
+		ComunicationUtils::sendPlayerEvent(clientID,*it);
+	}
+
+	game->cleanEvents();
 
 }
 
-Changes* Client::downloadChanges(){
-	return NULL;
+list<PlayerEvent*> Client::recvListOfEvents(){
+
+	list<PlayerEvent*> events;
+
+	int n = ComunicationUtils::recvNumber(clientID);
+	if (n <= 0) return events;
+	for (int i = 0 ; i < n ; i++){
+		PlayerEvent* event = ComunicationUtils::recvPlayerEvent(clientID);
+		events.push_back(event);
+	}
+
+	return events;
+
+}
+
+Changes* Client::recvOthersChanges(){
+
+	int n = ComunicationUtils::recvNumber(clientID);
+
+	if (n <= 0) return NULL;
+	Changes* changes = new Changes();
+	for (int i = 0 ; i < n ; i++){
+
+		string player = ComunicationUtils::recvString(clientID);
+		list<PlayerEvent*> events  = recvListOfEvents();
+		changes->addChanges(player,events);
+	}
+
+	return changes;
 }
 
 void Client::updatePlayers(Changes* changes){
 
+}
+
+int Client::getServerAproval(){
+	return ComunicationUtils::recvNumber(clientID);
 }
 
 void* transmit(void* _client){
@@ -188,13 +197,21 @@ void* transmit(void* _client){
 
 	client->registerPlayer();
 
+	int ok = client->getServerAproval();
+	if (ok != 0){
+		cout << "El servidor ha rechazado la solicitud. Ya existe un jugador con ese nombre" << endl;
+		exit(0);
+	}
+
+
 	while (playing){
 		client->checkNewPlayers();
 		client->sendEvents();
-		Changes* changes = client->downloadChanges();
+		Changes* changes = client->recvOthersChanges();
 		client->updatePlayers(changes);
 		delete changes;
 	}
+
 
 	return NULL;
 }
@@ -211,6 +228,10 @@ void Client::run(){
 
 	}
 
+}
+
+Game* Client::getGame(){
+	return game;
 }
 
 

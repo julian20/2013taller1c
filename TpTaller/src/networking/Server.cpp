@@ -21,8 +21,10 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include <map>
 
 #include <networking/Server.h>
+#include <networking/ComunicationUtils.h>
 #include <networking/PlayerInfo.h>
 
 // TODO: LEER ESTO DE UN YAML
@@ -72,6 +74,10 @@ Server::Server(string host, int port) {
 
 }
 
+void Server::sendAproval(int clientSocket, int result){
+	ComunicationUtils::sendNumber(clientSocket,result);
+}
+
 void* handle(void* par){
 
 	/* send(), recv(), close() */
@@ -79,17 +85,26 @@ void* handle(void* par){
 		int clientSocket = parameter->clientID;
 		Server* server = parameter->server;
 
+
 		//Lo primero que hago es mandar el mapa.
 		//server->sendMap(std::string(MAPFILE),clientSocket);
 
 		// Manda las imagenes y sonidos necesarios que se utilizaran.
 		//TODO : sendResources(sockID);
 
-		map<int,int> sended;
-		sended.insert( pair<int,int>(clientSocket,clientSocket) );
+		map<int,string> sended;
+
 
 		PlayerInfo* info = server->recieveNewPlayer(clientSocket);
-		server->addPlayerToGame(clientSocket,info);
+		int result = server->addPlayerToGame(clientSocket,info);
+
+		server->sendAproval(clientSocket,result);
+		if (result != 0) return NULL;
+
+		string playerName = info->getPlayer()->getName();
+		sended.insert( pair<int,string>(clientSocket,playerName) );
+
+		cout << playerName << " has conected.. " << endl;
 
 		bool playing = true;
 
@@ -102,12 +117,12 @@ void* handle(void* par){
 
 			server->sendNewPlayers(clientSocket, &sended);
 
-			PlayerEvent* event = server->downloadEvents(clientSocket);
+			list<PlayerEvent*> events = server->recvEvents(clientSocket);
 
-			if (event != NULL)
-				server->addEventToChanges(clientSocket,event);
+			if (!events.empty())
+				server->addEventsToChanges(playerName,events);
 
-			server->sendOthersChanges(clientSocket);
+			server->sendOthersChanges(clientSocket, playerName);
 
 		}
 		return NULL;
@@ -134,8 +149,6 @@ void Server::run(){
 			perror("accept");
 		}
 		else {
-			printf("Got a connection from %s on port %d: ClientID: %d \n",
-					inet_ntoa(their_addr.sin_addr), htons(their_addr.sin_port), newsock);
 			ThreadParameter* tp = (ThreadParameter*) malloc(sizeof(ThreadParameter));
 			tp->clientID = newsock;
 			tp->server = this;
@@ -171,48 +184,25 @@ void Server::sendMap(string mapfile,int sockID){
 }
 
 PlayerInfo* Server::recieveNewPlayer(int clientSocket){
-	int size = 2*sizeof(PlayerInfo) + sizeof(Player);
-	PlayerInfo* info = new PlayerInfo();
 
-
-	// CREATE A BUFFER OF THE RECIVED SIZE
-	char buffer[size];
-	stringstream ss;
-
-	// SEND PLAYER INFO
-	recv(clientSocket,buffer,size, MSG_EOR);
-//	recv(clientSocket,buffer,size2, MSG_MORE);
-	// Turn the char[]into a stringstream
-	ss << buffer;
-	ss.str().c_str();
-	//cout << "GCOUNT: " << ss.str().c_str() << endl;
-
-	// Initialize the recived PlayerInfo
-	ss >> *info;
-
-	return info;
+	return ComunicationUtils::recvPlayerInfo(clientSocket);
 
 }
 
-void Server::addPlayerToGame(int clientSocket, PlayerInfo* info){
+int Server::addPlayerToGame(int clientSocket, PlayerInfo* info){
+
+	if (playerNames.count(info->getPlayer()->getName()) > 0){
+		return 1;
+	}
 
 	gamePlayers[clientSocket] = info;
+	playerNames[info->getPlayer()->getName()] = clientSocket;
+
+	return 0;
 
 }
 
-void Server::sendPlayerInfo(int clientSocket,PlayerInfo* info){
-
-	stringstream ss;
-	ss << *(info);
-
-	int size = 2*sizeof(PlayerInfo) + sizeof(Player);
-
-	// SEND PLAYER INFO
-	send(clientSocket,ss.str().c_str(),size, MSG_WAITALL);
-
-}
-
-void Server::sendNewPlayers(int clientSocket, map<int,int> *sended){
+void Server::sendNewPlayers(int clientSocket, map<int,string> *sended){
 
 	// 1ro envio la cantidad de players que voy a mandar
 	int n = gamePlayers.size() - sended->size();
@@ -228,8 +218,8 @@ void Server::sendNewPlayers(int clientSocket, map<int,int> *sended){
 
 		// SI NO HA SIDO ENVIADO, LO ENVIO
 		if (sended->count(it->first) == 0){
-			sendPlayerInfo(clientSocket,it->second);
-			(*sended)[it->first] = it->first;
+			ComunicationUtils::sendPlayerInfo(clientSocket,it->second);
+			(*sended)[it->first] = it->second->getPlayer()->getName();
 		}
 
 	}
@@ -237,15 +227,62 @@ void Server::sendNewPlayers(int clientSocket, map<int,int> *sended){
 
 }
 
-PlayerEvent* Server::downloadEvents(int clientSocket){
-	return NULL;
+list<PlayerEvent*> Server::recvEvents(int clientSocket){
+
+	list<PlayerEvent*> events;
+
+	// 1ro recibo la cantidad de cambios que se enviaran
+	int n = ComunicationUtils::recvNumber(clientSocket);
+
+	// No hubo cambios
+	if (n <= 0) return events;
+
+	// Recibo cada uno de los cambios
+	for (int i = 0 ; i < n ; i++){
+		PlayerEvent* event = ComunicationUtils::recvPlayerEvent(clientSocket);
+		events.push_back(event);
+	}
+
+	return events;
+
 }
 
-void Server::addEventToChanges(int clientSocket, PlayerEvent* event){
+void Server::addEventsToChanges(string playerName, list<PlayerEvent*> events){
+	changes->addChanges(playerName,events);
+}
+
+void Server::sendEvents(int clientSocket, list<PlayerEvent*> events){
+
+	// 1ro envio la cantidad de eventos que voy a mandar
+	ComunicationUtils::sendNumber(clientSocket,events.size());
+
+	for (list<PlayerEvent*>::iterator it = events.begin() ; it != events.end() ; ++it ){
+		ComunicationUtils::sendPlayerEvent(clientSocket,*it);
+	}
 
 }
 
-void Server::sendOthersChanges(int clientSocket){
+void Server::sendPlayerEvents(int clientSocket, string name,list<PlayerEvent*> events){
+
+	// Envio el nombre del jugador y luego sus eventos
+	ComunicationUtils::sendString(clientSocket,name);
+
+	sendEvents(clientSocket,events);
+
+}
+
+void Server::sendOthersChanges(int clientSocket, string currentPlayer){
+
+	map<string,list<PlayerEvent*> > others = changes->getOthersChanges(currentPlayer);
+
+	// 1ro envio la cantidad de players que tuvieron eventos
+	ComunicationUtils::sendNumber(clientSocket,others.size());
+
+	if (others.size() == 0) return;
+
+	for (map<string, list<PlayerEvent*> >::iterator it = others.begin() ; it != others.end() ; ++it){
+		sendPlayerEvents(clientSocket, it->first,it->second);
+	}
 
 }
 

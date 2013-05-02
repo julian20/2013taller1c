@@ -66,5 +66,17 @@ void MapController::clickListener(SDL_Event event) {
 
 }
 
+void MapController::generateEventList(bool activated){
+	playerController->generateEventList(activated);
+}
+
+list<PlayerEvent*> MapController::getEvents(){
+	return playerController->getEventList();
+}
+
+void MapController::cleanEvents(){
+	playerController->cleanEventList();
+}
+
 MapController::~MapController() {
 }

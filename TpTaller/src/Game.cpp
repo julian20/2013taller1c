@@ -21,7 +21,8 @@
 #include <model/persistence/PersistentConfiguration.h>
 #include <model/Logs/Logs.h>
 
-Game::Game(PersistentConfiguration* configuration) {
+
+Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	MapData* mapData = configuration->getMapData();
 
@@ -50,9 +51,11 @@ Game::Game(PersistentConfiguration* configuration) {
 	playerController->setPlayer(personaje);
 
 	this->mapController = new MapController(mapView, mapData, playerController);
+	this->mapController->generateEventList(multiplayer);
 	openAudio = false;
 
 	personajeVista = (configuration->getViewList())[0];
+	pthread_mutex_init(&running_mutex,NULL);
 }
 
 void Game::setUpEntities(MapView* map, MapData* mapData) {
@@ -159,9 +162,12 @@ void Game::draw() {
 
 MenuEvent Game::run() {
 
+
+
 	initScreen();
 	SDL_Event event;
 	bool exit = false;
+
 	while (!exit) {
 		int ticks = SDL_GetTicks();
 		cameraController->cameraMoveListener();
@@ -176,7 +182,6 @@ MenuEvent Game::run() {
 				exit = true;
 			//personajeVista->Mostrar();
 		}
-
 		//Actualizo la parte visual, sin mostrarla todavia
 		//1. Mapa
 		// mapView->update();
@@ -198,6 +203,7 @@ MenuEvent Game::run() {
 	return EXIT_EVENT;
 
 }
+
 
 void Game::applyFPS(int timer) {
 	timer = SDL_GetTicks() - timer;
@@ -236,7 +242,6 @@ void Game::initMusic() {
 }
 
 void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords){
-
 	mapView->addNewPlayerView(view,*coords);
 
 
@@ -246,6 +251,14 @@ PlayerView* Game::getPlayerView(){
 	return personajeVista;
 }
 
+list<PlayerEvent*> Game::getEvents(){
+	return mapController->getEvents();
+}
+
+void Game::cleanEvents(){
+	mapController->cleanEvents();
+}
+
 Game::~Game() {
 	delete mapView;
 	delete mapController;
@@ -253,6 +266,7 @@ Game::~Game() {
 	delete textHandler;
 	if (musica != NULL) Mix_FreeMusic(musica);
 	if (openAudio) Mix_CloseAudio();
+	pthread_mutex_destroy(&running_mutex);
 	// TODO Auto-generated destructor stub
 }
 

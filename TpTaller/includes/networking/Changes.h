@@ -9,7 +9,7 @@
 #define GLOBALCHANGES_H_
 
 #include <map>
-#include <vector>
+#include <list>
 #include <iostream>
 
 #include <networking/PlayerEvent.h>
@@ -20,15 +20,14 @@ class Changes {
 public:
 	Changes();
 
-	//Operator to transform the object into a stream.
-	friend ostream& operator <<(std::ostream&, Changes&);
+	void addChanges(string,list<PlayerEvent*>);
+	list<PlayerEvent*> getPlayerEvents(string player);
 
-	//Operator to load an object from a stream
-	friend istream& operator >>(std::istream&, Changes&);
+	map<string, list<PlayerEvent*> > getOthersChanges(string playerName);
 
 	virtual ~Changes();
 private:
-	map<string, PlayerEvent*> changes;
+	map<string, list<PlayerEvent*> > changes;
 };
 
 } /* namespace std */

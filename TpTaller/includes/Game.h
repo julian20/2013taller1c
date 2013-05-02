@@ -11,6 +11,9 @@
 //STL
 #include <ctime>
 
+//pthread
+#include <pthread.h>
+
 //SDL
 #include <SDL/SDL_events.h>
 #include <SDL/SDL_mixer.h>
@@ -28,10 +31,15 @@
 
 class Game {
 public:
-        Game(PersistentConfiguration* configuration);
+        Game(PersistentConfiguration* configuration, bool multiplayer);
         MenuEvent run();
+
         void addNewPlayer(Player* player, PlayerView* view, Coordinates* coords);
         PlayerView* getPlayerView();
+
+        list<PlayerEvent*> getEvents();
+        void cleanEvents();
+
         virtual ~Game();
 private:
         Mix_Music* musica;
@@ -65,6 +73,9 @@ private:
         int fpsUpdatingTimer;
 
         bool openAudio;
+
+        // Threading Variables
+        pthread_mutex_t running_mutex;
 };
 
 #endif /* GAME_H_ */

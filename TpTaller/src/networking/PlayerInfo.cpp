@@ -112,6 +112,10 @@ int PlayerInfo::getFPS(){
 	return this->fps;
 }
 
+PlayerView* PlayerInfo::createPlayerView(){
+	return NULL;
+}
+
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out , const PlayerInfo& info){
 	string name = info.name;

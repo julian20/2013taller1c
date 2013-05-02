@@ -22,19 +22,19 @@
 #define OUTPUT_FILENAME "configuration/parserOutput.yaml"
 #define DEFAULT_CONFIGURATION_FILE "./configuration/.entitiesDefault.yaml"
 
-#define HOST "192.168.1.33"
-#define PORT 1234
+#define HOST "192.168.0.105"
+#define PORT 32001
 
 using namespace std;
 
 void initGame(PersistentConfiguration* configuration) {
-	Game* game = new Game(configuration);
+	Game* game = new Game(configuration,false);
 	game->run();
 	delete game;
 }
 
 void initMultiplayerGame(PersistentConfiguration* configuration){
-	Game* game = new Game(configuration);
+	Game* game = new Game(configuration,true);
 	Client* client = new Client(HOST,PORT,game);
 	client->initPlayerInfo(game->getPlayerView());
 	client->run();
@@ -94,6 +94,7 @@ void initMenu(PersistentConfiguration* configuration){
  *
  */
 int main(int argc, char** argv) {
+
 
 	Logs unLog;
 	Logs::openFile();

@@ -11,6 +11,7 @@
 #include <model/map/MapData.h>
 #include <model/entities/player/Player.h>
 #include <view/MapCameraView.h>
+#include <networking/PlayerEvent.h>
 
 class PlayerController {
 public:
@@ -27,10 +28,18 @@ public:
 	void playerAttack();
 	void playerBlock();
 	void playerCancelBlock();
+
+	void generateEventList(bool activated);
+	list<PlayerEvent*> getEventList();
+	void cleanEventList();
+
 private:
 	MapCameraView* camera;
 	MapData* data;
 	Player* player;
+	bool listEvents;
+
+	list<PlayerEvent*> events;
 };
 
 #endif /* PLAYERCONTROLLER_H_ */

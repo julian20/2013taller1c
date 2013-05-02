@@ -22,21 +22,25 @@ namespace std {
 class Client {
 public:
 	Client(string host, int port, Game* game);
+	Game* getGame();
 
 	void initPlayerInfo(PlayerView* view);
 	void run();
 
 	void downloadMap();
 	void registerPlayer();
+	int getServerAproval();
 	void checkNewPlayers();
 	void sendEvents();
-	Changes* downloadChanges();
+	Changes* recvOthersChanges();
 	void updatePlayers(Changes* changes);
 
 	virtual ~Client();
 private:
 
 	PlayerInfo* recivePlayerInfo();
+	void sendEvent(PlayerEvent* event);
+	list<PlayerEvent*> recvListOfEvents();
 
 	int clientID;
 	Game* game;
