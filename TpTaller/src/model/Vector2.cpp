@@ -77,23 +77,23 @@ float Vector2::getAngle() {
 	}
 }
 
-Vector2& Vector2::operator=(Vector2 &other){
+Vector2& Vector2::operator=(Vector2 &other) {
 	this->x = other.x;
 	this->y = other.y;
 	return *this;
 }
 
 //Operator to transform the object into a stream.
-ostream& operator <<(std::ostream& out, const Vector2& vect){
+ostream& operator <<(std::ostream& out, const Vector2& vect) {
 	out << vect.x << " " << vect.y;
 	return out;
 }
 
 //Operator to load an object from a stream
-istream& operator >>(std::istream& in, Vector2& vect){
-	float x,y;
+istream& operator >>(std::istream& in, Vector2& vect) {
+	float x, y;
 	in >> x;
 	in >> y;
-	vect.setValues(x,y);
+	vect.setValues(x, y);
 	return in;
 }

@@ -465,7 +465,8 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 		yamlNode["mainPlayer"] >> auxMainPlayer;
 	} catch (YAML::Exception& yamlException) {
 		Logs::logErrorMessage(
-				string("Error parsing Player mainPlayer: ") + yamlException.what());
+				string("Error parsing Player mainPlayer: ")
+						+ yamlException.what());
 		auxMainPlayer = false;
 	}
 	if (auxMainPlayer) {
@@ -473,7 +474,8 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 			yamlNode["viewRange"] >> auxViewRange;
 		} catch (YAML::Exception& yamlException) {
 			Logs::logErrorMessage(
-					string("Error parsing Player viewRange: ") + yamlException.what());
+					string("Error parsing Player viewRange: ")
+							+ yamlException.what());
 			auxViewRange = DEFAULT_VIEWRANGE;
 		}
 	}
@@ -621,7 +623,7 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	} catch (YAML::Exception& yamlException) {
 		Logs::logErrorMessage(
 				string("Error parsing PlayerView idle image source: ")
-				+ yamlException.what());
+						+ yamlException.what());
 		auxIdleImageSrc = DEFAULT_IMAGE_SRC;
 	}
 	try {
@@ -629,7 +631,7 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	} catch (YAML::Exception& yamlException) {
 		Logs::logErrorMessage(
 				string("Error parsing PlayerView running image source: ")
-				+ yamlException.what());
+						+ yamlException.what());
 		auxRunningImageSrc = DEFAULT_IMAGE_SRC;
 	}
 	try {
@@ -637,17 +639,17 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	} catch (YAML::Exception& yamlException) {
 		Logs::logErrorMessage(
 				string("Error parsing PlayerView attack image source: ")
-				+ yamlException.what());
+						+ yamlException.what());
 		auxAttackImageSrc = DEFAULT_IMAGE_SRC;
 	}
 	try {
-			yamlNode["idleBlockingImageSrc"] >> auxIdleBlocking;
-		} catch (YAML::Exception& yamlException) {
-			Logs::logErrorMessage(
-					string("Error parsing PlayerView idle block image source: ")
-					+ yamlException.what());
-			auxIdleBlocking = DEFAULT_IMAGE_SRC;
-		}
+		yamlNode["idleBlockingImageSrc"] >> auxIdleBlocking;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView idle block image source: ")
+						+ yamlException.what());
+		auxIdleBlocking = DEFAULT_IMAGE_SRC;
+	}
 	try {
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
 	} catch (YAML::Exception& yamlException) {
@@ -727,15 +729,20 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	playerView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
 	playerView->setEntity(auxPlayer);
 
-	TextureDefinition* walkingTexture = new TextureDefinition(auxName+ string(WALKING_MODIFIER), auxWalkingImageSrc);
+	TextureDefinition* walkingTexture = new TextureDefinition(
+			auxName + string(WALKING_MODIFIER), auxWalkingImageSrc);
 	textureHolder->addTexture(walkingTexture);
-	TextureDefinition* idleTexture = new TextureDefinition(auxName+ string(IDLE_MODIFIER), auxIdleImageSrc);
+	TextureDefinition* idleTexture = new TextureDefinition(
+			auxName + string(IDLE_MODIFIER), auxIdleImageSrc);
 	textureHolder->addTexture(idleTexture);
-	TextureDefinition* runningTexture = new TextureDefinition(auxName+ string(RUNNING_MODIFIER), auxRunningImageSrc);
+	TextureDefinition* runningTexture = new TextureDefinition(
+			auxName + string(RUNNING_MODIFIER), auxRunningImageSrc);
 	textureHolder->addTexture(runningTexture);
-	TextureDefinition* attackTexture = new TextureDefinition(auxName + string(ATTACK_MODIFIER) , auxAttackImageSrc);
+	TextureDefinition* attackTexture = new TextureDefinition(
+			auxName + string(ATTACK_MODIFIER), auxAttackImageSrc);
 	textureHolder->addTexture(attackTexture);
-	TextureDefinition* idleBlockTexture = new TextureDefinition(auxName + string(IDLE_BLOCKING_MODIFIER) , auxIdleBlocking);
+	TextureDefinition* idleBlockTexture = new TextureDefinition(
+			auxName + string(IDLE_BLOCKING_MODIFIER), auxIdleBlocking);
 	textureHolder->addTexture(idleBlockTexture);
 
 	playerView->setTextureHolder(textureHolder);
@@ -1159,7 +1166,8 @@ void operator >>(const YAML::Node& yamlNode,
 /**
  * Extraction operator for tile definition.
  */
-void operator >>(const YAML::Node& yamlNode, TextureDefinition* tileDefinition) {
+void operator >>(const YAML::Node& yamlNode,
+		TextureDefinition* tileDefinition) {
 
 	std::string auxId, auxSrc;
 	try {
@@ -1353,7 +1361,7 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		Entity* entity = parsedEntityView->getEntity();
 
 		Coordinates coordinates = Coordinates(entity->getCoordinates().getRow(),
-											  entity->getCoordinates().getCol());
+				entity->getCoordinates().getCol());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}
@@ -1376,7 +1384,8 @@ void duplicateView(EntityView* sourceView, EntityView* destView) {
 	destView->setDelay(sourceView->getDelay());
 	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
 	destView->setEntity(NULL);
-	destView->setBaseSizes(sourceView->getBaseWidth(), sourceView->getBaseWidth());
+	destView->setBaseSizes(sourceView->getBaseWidth(),
+			sourceView->getBaseWidth());
 	destView->setTextureHolder(textureHolder);
 
 }

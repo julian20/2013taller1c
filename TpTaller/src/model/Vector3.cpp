@@ -41,7 +41,8 @@ void Vector3::normalize() {
 
 float Vector3::getNorm() {
 	// sqrt( x² + y² + z² );
-	return (float) sqrt(pow((double) x, 2) + pow((double) y, 2) + pow((double) z, 2));
+	return (float) sqrt(
+			pow((double) x, 2) + pow((double) y, 2) + pow((double) z, 2));
 }
 
 void Vector3::multiplyBy(float val) {
@@ -88,7 +89,7 @@ float Vector3::getAngle() {
 	}
 }
 
-Vector3& Vector3::operator=(Vector3 &other){
+Vector3& Vector3::operator=(Vector3 &other) {
 	this->x = other.x;
 	this->y = other.y;
 	this->z = other.z;
@@ -96,17 +97,17 @@ Vector3& Vector3::operator=(Vector3 &other){
 }
 
 //Operator to transform the object into a stream.
-ostream& operator <<(std::ostream& out , const Vector3& vect){
+ostream& operator <<(std::ostream& out, const Vector3& vect) {
 	out << vect.x << " " << vect.y << " " << vect.z;
 	return out;
 }
 
 //Operator to load an object from a stream
-istream& operator >>(std::istream& in, Vector3& vect){
+istream& operator >>(std::istream& in, Vector3& vect) {
 	float x, y, z;
 	in >> x;
 	in >> y;
 	in >> z;
-	vect.setValues(x,y,z);
+	vect.setValues(x, y, z);
 	return in;
 }

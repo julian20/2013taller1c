@@ -77,29 +77,29 @@ MapData* PlayerController::getMapData() {
 //TODO - hardcoded
 void PlayerController::toggleRunning() {
 	if (player->isRunning()){
-		player->setSpeedMagnitude(player->getSpeed()->getMagnitude()/2);
+		player->setSpeedMagnitude(player->getSpeed()->getMagnitude() / 2);
 		if (listEvents)
 				events.push_back(new PlayerEvent(EVENT_WALKING));
 	}else {
-		player->setSpeedMagnitude(player->getSpeed()->getMagnitude()*2);
+		player->setSpeedMagnitude(player->getSpeed()->getMagnitude() * 2);
 		if (listEvents)
 				events.push_back(new PlayerEvent(EVENT_RUNNING));
 	}
 }
 
-void PlayerController::playerAttack(){
+void PlayerController::playerAttack() {
 	player->attack();
 	if (listEvents)
 			events.push_back(new PlayerEvent(EVENT_ATTACK));
 }
 
-void PlayerController::playerBlock(){
+void PlayerController::playerBlock() {
 	player->block();
 	if (listEvents)
 			events.push_back(new PlayerEvent(EVENT_BLOCK));
 }
 
-void PlayerController::playerCancelBlock(){
+void PlayerController::playerCancelBlock() {
 	player->cancelBlock();
 	if (listEvents)
 		events.push_back(new PlayerEvent(EVENT_CANCEL_BLOCK));

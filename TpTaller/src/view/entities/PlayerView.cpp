@@ -50,7 +50,8 @@ PlayerView::PlayerView()
 
 }
 
-void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip) {
+void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
+		SDL_Rect* clip) {
 	SDL_Rect offset;
 
 	Vector3* position = player->getCurrentPos();
@@ -66,7 +67,8 @@ void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* c
 
 	SDL_Rect offsetNombre;
 	offsetNombre.x = (int) x + camPos->getX() - nameImage->w / 2;
-	offsetNombre.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2 - 20;
+	offsetNombre.y = (int) y + camPos->getY() - this->anchorPixel->getY()
+			- h / 2 - 20;
 	offsetNombre.w = nameImage->w;
 	offsetNombre.h = nameImage->h;
 	SDL_BlitSurface(nameImage, NULL, screen, &offsetNombre);
@@ -93,7 +95,8 @@ void PlayerView::loadPlayerImage() {
 	idleImage = textureHolder->getTexture(name + string(IDLE_MODIFIER));
 	attackImage = textureHolder->getTexture(name + string(ATTACK_MODIFIER));
 	runningImage = textureHolder->getTexture(name + string(RUNNING_MODIFIER));
-	idleBlockImage = textureHolder->getTexture(name + string(IDLE_BLOCKING_MODIFIER));
+	idleBlockImage = textureHolder->getTexture(
+			name + string(IDLE_BLOCKING_MODIFIER));
 
 	//If there was a problem loading the sprite
 	if (!walkingImage) {
@@ -154,7 +157,8 @@ void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo) {
 	//TODO - deberia ser numberOfClips-1 pero parece q esta mal la imagen ?¿
 
 	//Apply delay
-	if (currentClip < (numberOfClips - 1) && timeSinceLastAnimation >= delay * 1000) {
+	if (currentClip < (numberOfClips - 1)
+			&& timeSinceLastAnimation >= delay * 1000) {
 		//Apply FPS cap
 		if (animationRateTimer.getTimeSinceLastAnimation() >= 1000 / fps) {
 			currentClip++;
@@ -179,7 +183,7 @@ void PlayerView::Show(SDL_Surface* fondo) {
 		if (player->isAttacking())
 			player->cancelAttack();
 		if (player->isBlocking())
-			marco = numberOfIdleBlockClips-1;
+			marco = numberOfIdleBlockClips - 1;
 	}
 
 	Vector2* movementDirection = this->player->getMovementDirection();
@@ -234,7 +238,8 @@ void PlayerView::Show(SDL_Surface* fondo) {
 		numberOfClips = numberOfWalkingClips;
 	}
 
-	if (!player->IsMoving() && !player->isAttacking() && !player->isBlocking()) {
+	if (!player->IsMoving() && !player->isAttacking()
+			&& !player->isBlocking()) {
 		if (!wasStanding) {
 			timer.start();
 			wasStanding = true;
@@ -302,7 +307,8 @@ void PlayerView::setName(std::string name) {
 	TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
 	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);
 	if (!nameImage || !font)
-		Logs::logErrorMessage("Error al cargar la fuente para el nombre del personaje");
+		Logs::logErrorMessage(
+				"Error al cargar la fuente para el nombre del personaje");
 
 }
 

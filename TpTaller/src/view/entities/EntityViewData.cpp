@@ -9,7 +9,7 @@
 Logs unlog;
 
 EntityViewData::EntityViewData() {
-	this->openImage=NULL;
+	this->openImage = NULL;
 	this->baseHeight = 1;
 	this->baseWidth = 1;
 	this->scaleWidth = 1;
@@ -17,22 +17,22 @@ EntityViewData::EntityViewData() {
 	this->entityImage = "";
 	this->imageHeight = 0;
 	this->imageWidth = 0;
-	this->nClips=0;
+	this->nClips = 0;
 	this->anchorPixel = new Vector2(0, 0);
 }
 
 void EntityViewData::setScale() {
-	this->scaleHeight = (float) (Tile::getTileHeight()) * float(this->baseHeight)
-			/ (float) (this->imageHeight);
-	this->scaleWidth = (float) (Tile::getTileWidth()) * (float) (this->baseWidth)
-			/ (float) (this->imageWidth);
+	this->scaleHeight = (float) (Tile::getTileHeight())
+			* float(this->baseHeight) / (float) (this->imageHeight);
+	this->scaleWidth = (float) (Tile::getTileWidth())
+			* (float) (this->baseWidth) / (float) (this->imageWidth);
 	printf("ancho %f---- alto %f", scaleWidth, scaleHeight);
 }
 int EntityViewData::getNClips() {
 	return this->nClips;
 }
 void EntityViewData::setNClips(int clips) {
-	this->nClips=clips;
+	this->nClips = clips;
 }
 void EntityViewData::setBaseWidth(int width) {
 	this->baseWidth = width;
@@ -49,11 +49,11 @@ void EntityViewData::setImageWidth(int width) {
 	this->imageWidth = width;
 }
 
-Vector2* EntityViewData::getAnchorPixel(){
+Vector2* EntityViewData::getAnchorPixel() {
 	return this->anchorPixel;
 }
 
-void EntityViewData::setAnchorPixel(Vector2* anchorPixel){
+void EntityViewData::setAnchorPixel(Vector2* anchorPixel) {
 	this->anchorPixel = anchorPixel;
 }
 
@@ -64,9 +64,8 @@ int EntityViewData::getImageWidth() {
 	return this->imageWidth;
 }
 
-void EntityViewData::setEntityId(string id)
-{
-	this->entityId= id;
+void EntityViewData::setEntityId(string id) {
+	this->entityId = id;
 }
 
 void EntityViewData::setDelay(int nuevoDelay) {
@@ -79,34 +78,32 @@ int EntityViewData::getDelay() {
 void EntityViewData::setFps(int nuevasFps) {
 	this->fps = nuevasFps;
 }
-void EntityViewData::setNumberOfRepeats(int repeat)
-{
-	this->nOfRepeats=repeat;
+void EntityViewData::setNumberOfRepeats(int repeat) {
+	this->nOfRepeats = repeat;
 }
 
 int EntityViewData::getFps() {
 	return this->fps;
 }
-string EntityViewData::getEntityId()
-{
+string EntityViewData::getEntityId() {
 	return this->entityId;
 }/*
-void EntityViewData::setName(string name)
-{
-	this->name=name;
-}
-string EntityViewData::getName()
-{
-	return this->name;
-}*/
-void EntityViewData::setEntityImage(string image)
-{
-	this->entityImage= image;
+ void EntityViewData::setName(string name)
+ {
+ this->name=name;
+ }
+ string EntityViewData::getName()
+ {
+ return this->name;
+ }*/
+void EntityViewData::setEntityImage(string image) {
+	this->entityImage = image;
 }
 
 EntityViewData::~EntityViewData() {
 	SDL_FreeSurface(openImage);
-	if (anchorPixel) delete anchorPixel;
+	if (anchorPixel)
+		delete anchorPixel;
 }
 
 SDL_Surface* EntityViewData::getEntityImage() {
@@ -115,12 +112,14 @@ SDL_Surface* EntityViewData::getEntityImage() {
 		SDL_Surface* loadedImageTmp = IMG_Load(this->entityImage.c_str());
 		if (loadedImageTmp == NULL) {
 			printf("Unable to load Entity Image. %s\n", SDL_GetError());
-			unlog.logErrorMessage(string("Unable to load Entity Image.")+string(SDL_GetError()));
+			unlog.logErrorMessage(
+					string("Unable to load Entity Image.")
+							+ string(SDL_GetError()));
 			return NULL;
 		}
 
-		SDL_Surface* loadedImageRot = rotozoomSurfaceXY(loadedImageTmp, 0, this->scaleWidth,
-				this->scaleHeight, 0);
+		SDL_Surface* loadedImageRot = rotozoomSurfaceXY(loadedImageTmp, 0,
+				this->scaleWidth, this->scaleHeight, 0);
 		SDL_FreeSurface(loadedImageTmp);
 		SDL_Surface* loadedImage = SDL_DisplayFormatAlpha(loadedImageRot);
 		SDL_FreeSurface(loadedImageRot);

@@ -66,10 +66,10 @@ void PersistentConfiguration::setEntityViewMap(EntityViewMap* entityViewMap) {
 	this->entityViewMap = entityViewMap;
 }
 
-void PersistentConfiguration::setViewList(std::vector<PlayerView*> viewList){
+void PersistentConfiguration::setViewList(std::vector<PlayerView*> viewList) {
 	this->viewList = viewList;
 }
 
-std::vector<PlayerView*> PersistentConfiguration::getViewList(){
+std::vector<PlayerView*> PersistentConfiguration::getViewList() {
 	return viewList;
 }

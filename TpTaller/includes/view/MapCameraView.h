@@ -20,9 +20,11 @@ typedef enum {
 
 class MapCameraView {
 public:
-	MapCameraView(Position* position, SDL_Surface* screen, int mapRows, int mapCols);
+	MapCameraView(Position* position, SDL_Surface* screen, int mapRows,
+			int mapCols);
 
-	void setLimitTiles(Position* lastTilePosY,Position* lastTilePosXDer,Position* lastTilePosXIzq);
+	void setLimitTiles(Position* lastTilePosY, Position* lastTilePosXDer,
+			Position* lastTilePosXIzq);
 	void setPosition(Position* position);
 	Position* getPosition();
 	SDL_Surface* getActiveScreen();

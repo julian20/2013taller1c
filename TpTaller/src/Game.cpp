@@ -22,6 +22,7 @@
 #include <model/Logs/Logs.h>
 
 
+
 Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	MapData* mapData = configuration->getMapData();
@@ -56,6 +57,10 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	personajeVista = (configuration->getViewList())[0];
 	pthread_mutex_init(&running_mutex,NULL);
+	cout<<"va a asignar el chat"<<endl;
+	chat = new ChatWindowsView(screen, 0, 0, screen->w, 100, false);
+	cout<<"asigno el chat"<<endl;
+	
 }
 
 void Game::setUpEntities(MapView* map, MapData* mapData) {
@@ -157,24 +162,22 @@ void Game::draw() {
 	}
 	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 30, 40, "baramond", textHandler->getColor(255, 0, 0));
 	// Actualiza la screen
+	chat->draw_text();
 	SDL_Flip(screen);
 }
 
 MenuEvent Game::run() {
 
-
-
 	initScreen();
 	SDL_Event event;
 	bool exit = false;
-
 	while (!exit) {
 		int ticks = SDL_GetTicks();
 		cameraController->cameraMoveListener();
 		while (SDL_PollEvent(&event)) {
 
 			mapController->clickListener(event);
-
+			chat->handle_events(event);
 			if (event.type == SDL_QUIT)
 				exit = true;
 
@@ -182,6 +185,7 @@ MenuEvent Game::run() {
 				exit = true;
 			//personajeVista->Mostrar();
 		}
+
 		//Actualizo la parte visual, sin mostrarla todavia
 		//1. Mapa
 		// mapView->update();
@@ -203,7 +207,6 @@ MenuEvent Game::run() {
 	return EXIT_EVENT;
 
 }
-
 
 void Game::applyFPS(int timer) {
 	timer = SDL_GetTicks() - timer;
@@ -242,12 +245,12 @@ void Game::initMusic() {
 }
 
 void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords){
-	mapView->addNewPlayerView(view,*coords);
 
+	mapView->addNewPlayerView(view, *coords);
 
 }
 
-PlayerView* Game::getPlayerView(){
+PlayerView* Game::getPlayerView() {
 	return personajeVista;
 }
 

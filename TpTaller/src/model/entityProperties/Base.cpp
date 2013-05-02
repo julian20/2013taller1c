@@ -8,7 +8,7 @@
 #include <model/entityProperties/Base.h>
 
 Base::Base() {
-	this->anchorPixel = new Vector2(0,0);
+	this->anchorPixel = new Vector2(0, 0);
 	this->height = 1;
 	this->width = 1;
 }
@@ -41,7 +41,7 @@ void Base::setAnchorPixel(Vector2* anchorPixel) {
 	this->anchorPixel = anchorPixel;
 }
 
-Base& Base::operator=(Base &other){
+Base& Base::operator=(Base &other) {
 	this->height = other.height;
 	this->width = other.width;
 	*(this->anchorPixel) = *(other.anchorPixel);
@@ -49,15 +49,15 @@ Base& Base::operator=(Base &other){
 }
 
 //Operator to transform the object into a stream.
-ostream& operator <<(std::ostream& out, const Base& base){
+ostream& operator <<(std::ostream& out, const Base& base) {
 	out << base.width << " " << base.height << " " << *(base.anchorPixel);
 	return out;
 }
 
 //Operator to load an object from a stream
-istream& operator >>(std::istream& in, Base& base){
+istream& operator >>(std::istream& in, Base& base) {
 	unsigned int width, length;
-	Vector2* anchorPixel = new Vector2(0,0);
+	Vector2* anchorPixel = new Vector2(0, 0);
 	in >> width;
 	in >> length;
 	in >> *anchorPixel;

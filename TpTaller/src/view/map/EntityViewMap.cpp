@@ -28,7 +28,8 @@ EntityViewMap::EntityViewMap(MapData* _mapData) {
 	}
 }
 
-void EntityViewMap::positionEntityView(EntityView* entity, Coordinates coordinates) {
+void EntityViewMap::positionEntityView(EntityView* entity,
+		Coordinates coordinates) {
 	int row = coordinates.getRow();
 	int col = coordinates.getCol();
 
@@ -52,7 +53,8 @@ list<EntityView*> EntityViewMap::getListAtRowAndCol(int row, int col) {
 
 void EntityViewMap::updateMovablePos() {
 
-	for (list<EntityView*>::iterator it = movableEntities.begin(); it != movableEntities.end(); ++it) {
+	for (list<EntityView*>::iterator it = movableEntities.begin();
+			it != movableEntities.end(); ++it) {
 
 		EntityView* entityView = *it;
 		Entity* entity = entityView->getEntity();
@@ -60,7 +62,8 @@ void EntityViewMap::updateMovablePos() {
 		int initRow = entity->getCoordinates().getRow();
 		int initCol = entity->getCoordinates().getCol();
 		Vector3* entityPos = entity->getCurrentPos();
-		Coordinates* c = Tile::getTileCoordinates(entityPos->getX(), entityPos->getY());
+		Coordinates* c = Tile::getTileCoordinates(entityPos->getX(),
+				entityPos->getY());
 		int currentRow = c->getRow();
 		int currentCol = c->getCol() - 1;
 
@@ -76,43 +79,45 @@ void EntityViewMap::updateMovablePos() {
 	}
 
 }
-void EntityViewMap::assingEntitiesView(EntityHolder* entityHolder)
-{
+void EntityViewMap::assingEntitiesView(EntityHolder* entityHolder) {
 	this->entityHolder = entityHolder;
 }
 /*void EntityViewMap::drawEntities(TileData* tileData,SDL_Surface* screen, Position* cam, int row, int col)
-{
-	for(int i=0; i<tileData->getNumberOfEntitiesOnTile();i++)
-	{
-		Entity* entity= tileData->getNextEntity();
-		EntityViewData* viewData= entityHolder->getEntity(entity->getName());
-		SDL_Surface* imageEntity=viewData->getEntityImage();
-		//Se la paso a una entityView y listo singleton.
-		SDL_Rect clip;
-		clip.x = viewData->getImageWidth() * 1 * 1;
-			clip.y = 0;
-			clip.w = viewData->getImageWidth() ;
-			clip.h = viewData->getImageHeight() ;
-			Vector3* position = entity->getCurrentPos();
-			int x = (int) position->getX();
-			int y = (int) position->getY();
+ {
+ for(int i=0; i<tileData->getNumberOfEntitiesOnTile();i++)
+ {
+ Entity* entity= tileData->getNextEntity();
+ EntityViewData* viewData= entityHolder->getEntity(entity->getName());
+ SDL_Surface* imageEntity=viewData->getEntityImage();
+ //Se la paso a una entityView y listo singleton.
+ SDL_Rect clip;
+ clip.x = viewData->getImageWidth() * 1 * 1;
+ clip.y = 0;
+ clip.w = viewData->getImageWidth() ;
+ clip.h = viewData->getImageHeight() ;
+ Vector3* position = entity->getCurrentPos();
+ int x = (int) position->getX();
+ int y = (int) position->getY();
 
-			SDL_Rect offset;
-			offset.x = (int) (Tile::computePositionTile(x, y, true).x + cam->getX() - (int)viewData->getImageWidth()/ 2);
-			offset.y = (int) (Tile::computePositionTile(x, y, true).y + cam->getY() - (int)viewData->getImageHeight() / 2);
-			offset.h = clip.h;
-			offset.w = clip.w;
+ SDL_Rect offset;
+ offset.x = (int) (Tile::computePositionTile(x, y, true).x + cam->getX() - (int)viewData->getImageWidth()/ 2);
+ offset.y = (int) (Tile::computePositionTile(x, y, true).y + cam->getY() - (int)viewData->getImageHeight() / 2);
+ offset.h = clip.h;
+ offset.w = clip.w;
 
-		SDL_BlitSurface(imageEntity, &clip, screen, &offset);
-	}
-}*/
-void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam, std::map<string, int> visibleTiles) {
+ SDL_BlitSurface(imageEntity, &clip, screen, &offset);
+ }
+ }*/
+void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
+		std::map<string, int> visibleTiles) {
 
 	updateMovablePos();
 
-	for (int col = visibleTiles["StartCol"]; col < visibleTiles["EndCol"]; col++) {
+	for (int col = visibleTiles["StartCol"]; col < visibleTiles["EndCol"];
+			col++) {
 
-		for (int row = visibleTiles["StartRow"]; row < visibleTiles["EndRow"]; row++) {
+		for (int row = visibleTiles["StartRow"]; row < visibleTiles["EndRow"];
+				row++) {
 
 			TileData* tileData = mapData->getTileData(row, col);
 

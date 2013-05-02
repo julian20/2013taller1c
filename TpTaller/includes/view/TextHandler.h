@@ -12,22 +12,22 @@
 #include <string>
 #include <map>
 
-
 using namespace std;
 
 class TextHandler {
 public:
 	TextHandler();
 	SDL_Color getColor(int r, int g, int b);
-	void applyTextOnSurface(string text,SDL_Surface* surface,int x, int y, string font, SDL_Color color);
-	void applyTextOnSurfaceCentered(string text,SDL_Surface* surface,int x, int y, string font, SDL_Color color);
-
-
+	void applyTextOnSurface(string text, SDL_Surface* surface, int x, int y,
+			string font, SDL_Color color);
+	void applyTextOnSurfaceCentered(string text, SDL_Surface* surface, int x,
+			int y, string font, SDL_Color color);
 
 	virtual ~TextHandler();
+	TTF_Font* getFont();
 private:
 	//Map: key: font name; value = font pointer
-	map<string,TTF_Font*> fontMap;
+	map<string, TTF_Font*> fontMap;
 
 };
 

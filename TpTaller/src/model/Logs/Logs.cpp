@@ -10,20 +10,19 @@ FILE* Logs::archivo = NULL;
 Logs::Logs() {
 }
 
-void Logs::openFile(){
+void Logs::openFile() {
 
 	archivo = fopen(RUTA_LOG, "a");
-		if (!archivo) {
-			printf(
-					"Error al crear archivo de logs\n");
-		}
+	if (!archivo) {
+		printf("Error al crear archivo de logs\n");
+	}
 }
 
 void Logs::logErrorMessage(string msg) {
 
 	string hora = Date();
 	string errorLog = hora + string("--------") + msg + string("\n");
-	fprintf(archivo,"%s",errorLog.c_str());
+	fprintf(archivo, "%s", errorLog.c_str());
 }
 
 string Logs::Date() {

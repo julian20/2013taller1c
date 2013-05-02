@@ -37,7 +37,6 @@ public:
 
 	Vector3& operator=(Vector3 &other);
 
-
 private:
 	float x, y, z;
 };

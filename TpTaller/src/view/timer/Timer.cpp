@@ -7,7 +7,6 @@
 
 #include <view/timer/Timer.h>
 #define DELAY 2000 //miliseconds
-
 using namespace std;
 
 Timer::Timer() {
@@ -17,19 +16,19 @@ Timer::Timer() {
 
 }
 
-void Timer::start(){
+void Timer::start() {
 	startTime = SDL_GetTicks();
 }
 
-void Timer::setTimeSinceLastAnimation(int time){
+void Timer::setTimeSinceLastAnimation(int time) {
 	timeSinceLastAnimation = time;
 }
 
-int Timer::getTimeSinceLastAnimation(){
+int Timer::getTimeSinceLastAnimation() {
 	return SDL_GetTicks() - startTime;
 }
 
-int Timer::getTimeIntervalSinceStart(){
+int Timer::getTimeIntervalSinceStart() {
 	return SDL_GetTicks() - startTime;
 
 }

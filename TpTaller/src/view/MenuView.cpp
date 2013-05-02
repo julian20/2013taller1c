@@ -48,7 +48,9 @@ MenuView::MenuView(GameConfiguration* configuration) {
 	}
 
 	if (!screen) {
-		Logs::logErrorMessage("No se pudo establecer el modo de video: " + string(SDL_GetError()));
+		Logs::logErrorMessage(
+				"No se pudo establecer el modo de video: "
+						+ string(SDL_GetError()));
 		exit(1);
 	}
 	audioOpen = false;
@@ -70,7 +72,8 @@ void MenuView::initScreen() {
 	SDL_Surface *background_image = IMG_Load(
 			this->gameConfig->getMenuBackImageSrc().c_str());
 	if (!background_image) {
-		Logs::logErrorMessage("Unable to load background image: " + string(SDL_GetError()));
+		Logs::logErrorMessage(
+				"Unable to load background image: " + string(SDL_GetError()));
 		background_image = IMG_Load(DEFAULT_BACKIMG);
 	}
 
@@ -116,7 +119,8 @@ void MenuView::initMusic() {
 	// Inicializamos la librería SDL_Mixer
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
 			MIX_DEFAULT_CHANNELS, 4096) < 0) {
-		Logs::logErrorMessage("Subsistema de audio no disponible: " + string(SDL_GetError()));
+		Logs::logErrorMessage(
+				"Subsistema de audio no disponible: " + string(SDL_GetError()));
 		musica = NULL;
 		audioOpen = true;
 		return;
@@ -127,7 +131,8 @@ void MenuView::initMusic() {
 	musica = Mix_LoadMUS(this->gameConfig->getMenuBackMusicSrc().c_str());
 
 	if (!musica) {
-		Logs::logErrorMessage("No se puede cargar el sonido: " + string(SDL_GetError()));
+		Logs::logErrorMessage(
+				"No se puede cargar el sonido: " + string(SDL_GetError()));
 		musica = NULL;
 		return;
 	}
@@ -141,7 +146,8 @@ void MenuView::startVoice() {
 	// Cargamos un sonido
 	darknessVoice = Mix_LoadWAV(START_TAUNT);
 	if (darknessVoice == NULL) {
-		Logs::logErrorMessage("No se puede cargar el sonido: " + string(SDL_GetError()));
+		Logs::logErrorMessage(
+				"No se puede cargar el sonido: " + string(SDL_GetError()));
 		darknessVoice = NULL;
 		return;
 	}
@@ -155,12 +161,17 @@ void MenuView::startVoice() {
 	Mix_PlayChannel(0, darknessVoice, 0);
 }
 
-void MenuView::close(){
-	for (int i = 0 ; i < buttons.size() ; i++) delete buttons[i];
-	if (screen != NULL) SDL_FreeSurface(screen);
-	if (musica != NULL) Mix_FreeMusic(musica);
-	if (darknessVoice != NULL) Mix_FreeChunk(darknessVoice);
-	if (audioOpen) Mix_CloseAudio();
+void MenuView::close() {
+	for (int i = 0; i < buttons.size(); i++)
+		delete buttons[i];
+	if (screen != NULL)
+		SDL_FreeSurface(screen);
+	if (musica != NULL)
+		Mix_FreeMusic(musica);
+	if (darknessVoice != NULL)
+		Mix_FreeChunk(darknessVoice);
+	if (audioOpen)
+		Mix_CloseAudio();
 }
 
 MenuView::~MenuView() {

@@ -8,7 +8,6 @@
 #ifndef CHAT_H_
 #define CHAT_H_
 
-
 #include<netinet/in.h>
 #include<string.h>
 #include <stdio.h>
@@ -36,9 +35,9 @@ private:
 	int maxConnections;
 };
 
-typedef struct aux{
+typedef struct aux {
 	ChatServer* server;
 	int clientID;
-}ThreadParameter;
+} ThreadParameter;
 
 #endif /* CHAT_H_ */

@@ -36,9 +36,9 @@ public:
 	void setName(std::string name);
 	std::vector<Power*> getPowers();
 	void setPowers(std::vector<Power*> powers);
-	void setViewRange( int _viewRange );
+	void setViewRange(int _viewRange);
 	int getViewRange();
-	void setTile( Tile* _tile );
+	void setTile(Tile* _tile);
 	Tile getTile();
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
