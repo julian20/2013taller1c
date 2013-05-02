@@ -19,8 +19,12 @@
 #define MENU_MUSIC  "resources/sound/pirates.ogg"
 #define DEFAULT_TILE_WIDTH	70
 #define DEFAULT_TILE_HEIGHT	50
+#define DEFAULT_IP "192.168.190.136"
+#define DEFAULT_PORT 32001
 
 GameConfiguration::GameConfiguration() {
+	this->serverIP = DEFAULT_IP;
+	this->serverPort = DEFAULT_PORT;
 	this->delay = DEFAULT_DELAY;
 	this->fps = DEFAULT_FPS;
 	this->defaultScreenHeight = DEFAULT_H;
@@ -134,4 +138,20 @@ void GameConfiguration::setScreenAutoConfig(bool screenAutoConfig) {
 }
 void GameConfiguration::setFullscreen(bool fullscreen) {
 	this->bFullscreen = fullscreen;
+}
+
+void GameConfiguration::setServerIP(std::string ipAddress) {
+	this->serverIP = ipAddress;
+}
+
+void GameConfiguration::setServerPort(unsigned int serverPort) {
+	this->serverPort = serverPort;
+}
+
+unsigned int GameConfiguration::getServerPort() {
+	return this->serverPort;
+}
+
+std::string GameConfiguration::getServerIP() {
+	return this->serverIP;
 }
