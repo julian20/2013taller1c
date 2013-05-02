@@ -64,6 +64,7 @@ void MapController::clickListener(SDL_Event event) {
 		playerController->playerCancelBlock();
 	}
 
+
 }
 
 void MapController::generateEventList(bool activated){
