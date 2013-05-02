@@ -10,6 +10,7 @@
 
 #include <networking/PlayerInfo.h>
 #include <networking/Changes.h>
+#include <networking/NetworkPlayerController.h>
 #include <model/entities/player/Player.h>
 #include <view/entities/PlayerView.h>
 #include <Game.h>
@@ -44,6 +45,7 @@ private:
 	int clientID;
 	Game* game;
 	map<string, Player*> players;
+	map<string,NetworkPlayerController*> controllers;
 	PlayerInfo* info;
 	list<PlayerEvent*> events;
 

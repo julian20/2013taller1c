@@ -8,7 +8,7 @@
 #ifndef PLAYEREVENT_H_
 #define PLAYEREVENT_H_
 
-#include <model/Vector2.h>
+#include <model/entityProperties/Coordinates.h>
 #include <iostream>
 
 namespace std {
@@ -21,11 +21,11 @@ class PlayerEvent {
 public:
 	PlayerEvent();
 	PlayerEvent(EventType type);
-	PlayerEvent(EventType type, Vector2 mousePos);
+	PlayerEvent(EventType type, Coordinates tileCoordinates);
 	EventType getEventType();
 	void setEventType(EventType type);
-	Vector2* getMousePos();
-	void setMousePos(Vector2 mousePos);
+	Coordinates* getTileCoordinates();
+	void setTileCoordinates(Coordinates tileCoordinates);
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const PlayerEvent&);
@@ -36,7 +36,7 @@ public:
 	virtual ~PlayerEvent();
 private:
 	EventType type;
-	Vector2* mousePos;
+	Coordinates* tileCoordinates;
 };
 
 } /* namespace std */

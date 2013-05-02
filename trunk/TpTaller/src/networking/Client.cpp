@@ -128,9 +128,15 @@ void Client::checkNewPlayers(){
 			PlayerInfo* info = ComunicationUtils::recvPlayerInfo(clientID);
 			players.insert( pair<string,Player*>(info->getPlayer()->getName(), info->getPlayer()) );
 			cout << info->getPlayer()->getName() << " has conected..." << endl;
-			// TODO: Creo la playerView y la registro en el game.
+
+			// Creo la playerView y la registro en el game.
 			PlayerView* view = info->createPlayerView();
-			// TODO: Creo un eventHandler para el player que acabo de crear
+			Player* player = info->getPlayer();
+			game->addNewPlayer(player,view, info->getInitCoordinates());
+
+			//Creo un eventHandler para el player que acabo de agregar
+			NetworkPlayerController* controller = new NetworkPlayerController(player,game->getMapData(), game->getMapCameraView());
+			controllers.insert(pair<string,NetworkPlayerController*>(player->getName(),controller));
 		}
 
 }
@@ -182,6 +188,13 @@ Changes* Client::recvOthersChanges(){
 
 void Client::updatePlayers(Changes* changes){
 
+	for (map<string,NetworkPlayerController*>::iterator it = controllers.begin() ; it != controllers.end() ; ++it){
+		list<PlayerEvent*> events = changes->getPlayerEvents(it->first);
+		if (events.empty()) continue;
+
+		it->second->handleEvents(events);
+	}
+
 }
 
 int Client::getServerAproval(){
@@ -208,6 +221,7 @@ void* transmit(void* _client){
 		client->checkNewPlayers();
 		client->sendEvents();
 		Changes* changes = client->recvOthersChanges();
+		if (!changes) continue;
 		client->updatePlayers(changes);
 		delete changes;
 	}

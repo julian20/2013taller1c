@@ -26,7 +26,11 @@ void PlayerController::movePlayer(int x, int y) {
 	Position* cameraPos = this->camera->getPosition();
 
 	Coordinates* coor = Tile::getTileCoordinates(x - cameraPos->getX(),
-			y - cameraPos->getY());
+				y - cameraPos->getY());
+
+	if (listEvents){
+		events.push_back(new PlayerEvent(EVENT_MOVE,*coor));
+	}
 
 	if (!(coor->getCol() <= 0 || coor->getRow() < 0)
 			&& !(coor->getCol() > data->getNCols()
@@ -43,8 +47,7 @@ void PlayerController::movePlayer(int x, int y) {
 		}
 	}
 
-	if (listEvents)
-			events.push_back(new PlayerEvent(EVENT_MOVE,Vector2(x,y)));
+
 
 	delete coor;
 	delete cameraPos;

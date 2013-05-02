@@ -11,10 +11,8 @@ namespace std {
 
 NetworkPlayerController::NetworkPlayerController(Player* player,MapData* map, MapCameraView* camera) {
 	this->player = player;
-	this->controller = new PlayerController();
-	this->controller->setPlayer(this->player);
-	this->controller->setMapData(map);
-	this->controller->setMapCameraView(camera);
+	this->camera = camera;
+	this->data = map;
 }
 
 void NetworkPlayerController::handleEvent(PlayerEvent* event){
@@ -22,25 +20,50 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 	EventType type = event->getEventType();
 	switch (type){
 	case EVENT_RUNNING:
-		controller->toggleRunning();
+		this->toggleRunning();
 		break;
 	case EVENT_WALKING:
-		controller->toggleRunning();
+		this->toggleRunning();
 		break;
 	case EVENT_ATTACK:
-		controller->playerAttack();
+		this->playerAttack();
 		break;
 	case EVENT_BLOCK:
-		controller->playerBlock();
+		this->playerBlock();
 		break;
 	case EVENT_CANCEL_BLOCK:
-		controller->playerCancelBlock();
+		this->playerCancelBlock();
 		break;
 	case EVENT_MOVE:
-		controller->movePlayer((int) event->getMousePos()->getX(),(int) event->getMousePos()->getY());
+		this->movePlayer(event->getTileCoordinates());
+		break;
 	}
 
 }
+
+void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
+	Position* cameraPos = this->camera->getPosition();
+
+	if (!(tileCoord->getCol() <= 0 || tileCoord->getRow() < 0)
+			&& !(tileCoord->getCol() > data->getNCols()
+					|| tileCoord->getRow() > data->getNRows())) {
+		SDL_Rect firstTile = Tile::computePositionTile(0, 0);
+		firstTile.x = cameraPos->getX() + firstTile.x;
+		firstTile.y = cameraPos->getY() + firstTile.y;
+
+		if (player != NULL) {
+			// TODO: esto no pierde memoria a lo loco?
+			Tile* toTile = new Tile(
+					new Coordinates(tileCoord->getRow(), tileCoord->getCol()));
+			data->movePersonaje(player, toTile);
+		}
+	}
+
+
+
+	delete cameraPos;
+}
+
 
 void NetworkPlayerController::handleEvents(list<PlayerEvent*> events){
 
@@ -48,6 +71,10 @@ void NetworkPlayerController::handleEvents(list<PlayerEvent*> events){
 		handleEvent(*it);
 	}
 
+}
+
+Player* NetworkPlayerController::getPlayer(){
+	return this->player;
 }
 
 NetworkPlayerController::~NetworkPlayerController() {

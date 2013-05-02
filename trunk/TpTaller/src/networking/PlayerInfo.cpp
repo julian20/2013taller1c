@@ -8,121 +8,156 @@
 #include <sstream>
 
 #include <networking/PlayerInfo.h>
+#include <model/map/TextureHolder.h>
+#include <model/map/TextureDefinition.h>
 
 namespace std {
 
 PlayerInfo::PlayerInfo() {
 
-	name = "DEFAULT";
+	name = string("DEFAULT");
 	walkingImageSrc = string("DEFAULT");
 	runningImageSrc = string("DEFAULT");
 	idleImageSrc = string("DEFAULT");
 	attackImageSrc = string("DEFAULT");
+	idleBlockingImageScr = string("DEFAULT");
 
 	imageWidth = 0;
 	imageHeight = 0;
-	anchorPixel = new Vector2(0, 0);
+	anchorPixel = new Vector2(0,0);
 }
 
-void PlayerInfo::setName(string name) {
-	cout << "llega a la funcion con el nombre " << name;
+void PlayerInfo::setName(string name){
 	this->name = string(name);
-	cout << "pasa la funcion";
-
 }
-string PlayerInfo::getName() {
+string PlayerInfo::getName(){
 	return this->name;
 }
 
-void PlayerInfo::setWalkingImageSrc(string img) {
+void PlayerInfo::setWalkingImageSrc(string img){
 	this->walkingImageSrc.assign(img);
 }
-string PlayerInfo::getWalkingImageSrc() {
+string PlayerInfo::getWalkingImageSrc(){
 	return this->walkingImageSrc;
 }
 
-void PlayerInfo::setRunningImageSrc(string img) {
+void PlayerInfo::setRunningImageSrc(string img){
 	this->runningImageSrc.assign(img);
 }
-string PlayerInfo::getRunningImageSrc() {
+string PlayerInfo::getRunningImageSrc(){
 	return this->runningImageSrc;
 }
 
-void PlayerInfo::setIdleImageSrc(string img) {
+void PlayerInfo::setIdleImageSrc(string img){
 	this->idleImageSrc.assign(img);
 }
-string PlayerInfo::getIdleImageSrc() {
+string PlayerInfo::getIdleImageSrc(){
 	return this->idleImageSrc;
 }
 
-void PlayerInfo::setAttackImageSrc(string img) {
+void PlayerInfo::setAttackImageSrc(string img){
 	this->attackImageSrc.assign(img);
 }
-string PlayerInfo::getAttackImageSrc() {
+string PlayerInfo::getAttackImageSrc(){
 	return this->attackImageSrc;
 }
 
-void PlayerInfo::setImageDimentions(int width, int height) {
+void PlayerInfo::setIdleBlockingImageSrc(string img){
+	this->idleBlockingImageScr.assign(img);
+}
+string PlayerInfo::getIdleBlockingImageSrc(){
+	return this->idleBlockingImageScr;
+}
+
+void PlayerInfo::setImageDimentions(int width, int height){
 	this->imageHeight = height;
 	this->imageWidth = width;
 }
-int PlayerInfo::getImageWidth() {
+int PlayerInfo::getImageWidth(){
 	return this->imageWidth;
 }
-int PlayerInfo::getImageHeight() {
+int PlayerInfo::getImageHeight(){
 	return this->imageHeight;
 }
 
-void PlayerInfo::setAnchorPixel(float x, float y) {
-	this->anchorPixel->setValues(x, y);
+void PlayerInfo::setAnchorPixel(float x, float y){
+	this->anchorPixel->setValues(x,y);
 }
-void PlayerInfo::setAnchorPixel(Vector2* anchorPixel) {
+void PlayerInfo::setAnchorPixel(Vector2* anchorPixel){
 	*(this->anchorPixel) = *anchorPixel;
 }
-Vector2* PlayerInfo::getAnchorPixel() {
+Vector2* PlayerInfo::getAnchorPixel(){
 	return this->anchorPixel;
 }
 
-void PlayerInfo::setInitCoordinates(Coordinates* coords) {
+void PlayerInfo::setInitCoordinates(Coordinates* coords){
 	this->initCoords = coords;
 }
-Coordinates* PlayerInfo::getInitCoordinates() {
+Coordinates* PlayerInfo::getInitCoordinates(){
 	return this->initCoords;
 }
 
-void PlayerInfo::setPlayer(Player* player) {
+void PlayerInfo::setPlayer(Player* player){
 	this->player = player;
 }
-Player* PlayerInfo::getPlayer() {
+Player* PlayerInfo::getPlayer(){
 	return this->player;
 }
 
-void PlayerInfo::setDelay(int delay) {
+void PlayerInfo::setDelay(int delay){
 	this->delay = delay;
 }
-int PlayerInfo::getDelay() {
+int PlayerInfo::getDelay(){
 	return this->delay;
 
 }
 
-void PlayerInfo::setFPS(int fps) {
+void PlayerInfo::setFPS(int fps){
 	this->fps = fps;
 }
-int PlayerInfo::getFPS() {
+int PlayerInfo::getFPS(){
 	return this->fps;
 }
 
 PlayerView* PlayerInfo::createPlayerView(){
-	return NULL;
+	PlayerView* view = new PlayerView();
+	Player* player = this->getPlayer();
+	string playerName = player->getName();
+	view->setName(playerName);
+	view->setAnchorPixel(this->getAnchorPixel());
+	view->setBaseSizes(player->getBase()->getWidth(),player->getBase()->getHeight());
+	view->setDelay(this->getDelay());
+	view->setFps(this->getFPS());
+	view->setImageHeight(this->getImageHeight());
+	view->setImageWidth(this->getImageWidth());
+	view->setPersonaje(player);
+
+	string walking = this->getWalkingImageSrc();
+	string running = this->getRunningImageSrc();
+	string attack = this->getAttackImageSrc();
+	string idle = this->getIdleImageSrc();
+	string idle_blocking = this->getIdleBlockingImageSrc();
+
+	TextureHolder* th = new TextureHolder();
+	th->addTexture(new TextureDefinition(playerName + string(WALKING_MODIFIER), walking ));
+	th->addTexture(new TextureDefinition(playerName + string(RUNNING_MODIFIER), running));
+	th->addTexture(new TextureDefinition(playerName + string(ATTACK_MODIFIER), attack ));
+	th->addTexture(new TextureDefinition(playerName + string(IDLE_MODIFIER), idle ));
+	th->addTexture(new TextureDefinition(playerName + string(IDLE_BLOCKING_MODIFIER), idle_blocking ));
+
+	view->setTextureHolder(th);
+
+	return view;
 }
 
 //Operator to transform the object into a stream.
-ostream& operator <<(std::ostream& out, const PlayerInfo& info) {
+ostream& operator <<(std::ostream& out , const PlayerInfo& info){
 	string name = info.name;
 	string walkingImageSrc = info.walkingImageSrc;
 	string runningImageSrc = info.runningImageSrc;
 	string idleImageSrc = info.idleImageSrc;
 	string attackImageSrc = info.attackImageSrc;
+	string idleBlockingImageSrc = info.idleBlockingImageScr;
 	int imageWidth = info.imageWidth;
 	int imageHeight = info.imageHeight;
 	Vector2* anchorPixel = info.anchorPixel;
@@ -132,16 +167,15 @@ ostream& operator <<(std::ostream& out, const PlayerInfo& info) {
 	Player* player = info.player;
 	Coordinates* initCoords = info.initCoords;
 
-	out << name << " " << walkingImageSrc << " " << runningImageSrc << " "
-			<< idleImageSrc << " " << attackImageSrc << " " << imageWidth << " "
-			<< imageHeight << " " << anchorPixel->getX() << " "
-			<< anchorPixel->getY() << " " << fps << " " << delay << " "
-			<< *initCoords << " " << *player;
+	out << name << " " << walkingImageSrc << " " << runningImageSrc << " " <<
+			idleImageSrc << " " << attackImageSrc << " " << idleBlockingImageSrc<< " " << imageWidth << " " << imageHeight << " " <<
+			anchorPixel->getX() << " " << anchorPixel->getY() << " " << fps << " " << delay << " " << *initCoords << " "
+			<< *player;
 	return out;
 }
 
 //Operator to load an object from a stream
-istream& operator >>(std::istream& in, PlayerInfo& info) {
+istream& operator >>(std::istream& in , PlayerInfo& info){
 	float x, y;
 
 	string name;
@@ -149,9 +183,10 @@ istream& operator >>(std::istream& in, PlayerInfo& info) {
 	string runningImageSrc;
 	string idleImageSrc;
 	string attackImageSrc;
+	string idleBlockingImageSrc;
 	int imageWidth;
 	int imageHeight;
-	int delay, fps;
+	int delay,fps;
 	Player* player = new Player();
 	Coordinates* initCoords = new Coordinates();
 	in >> name;
@@ -164,14 +199,16 @@ istream& operator >>(std::istream& in, PlayerInfo& info) {
 	info.setIdleImageSrc(idleImageSrc);
 	in >> attackImageSrc;
 	info.setAttackImageSrc(attackImageSrc);
+	in >> idleBlockingImageSrc;
+	info.setIdleBlockingImageSrc(idleBlockingImageSrc);
 
 	in >> imageWidth;
 	in >> imageHeight;
-	info.setImageDimentions(imageWidth, imageHeight);
+	info.setImageDimentions(imageWidth,imageHeight);
 
 	in >> x;
 	in >> y;
-	info.setAnchorPixel(x, y);
+	info.setAnchorPixel(x,y);
 
 	in >> fps;
 	in >> delay;
@@ -187,13 +224,11 @@ istream& operator >>(std::istream& in, PlayerInfo& info) {
 	return in;
 }
 
+
 PlayerInfo::~PlayerInfo() {
-	if (anchorPixel)
-		delete anchorPixel;
-	if (player)
-		delete player;
-	if (initCoords)
-		delete initCoords;
+	if (anchorPixel) delete anchorPixel;
+	if (player) delete player;
+	if (initCoords) delete initCoords;
 }
 
 } /* namespace std */

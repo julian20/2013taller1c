@@ -36,6 +36,8 @@
 
 using namespace std;
 
+pthread_mutex_t changes_mutex;
+
 
 Server::Server(string host, int port) {
 	struct addrinfo hints, *res;
@@ -69,8 +71,7 @@ Server::Server(string host, int port) {
 	}
 
 	freeaddrinfo(res);
-
-	changes = new Changes();
+	pthread_mutex_init(&changes_mutex,NULL);
 
 }
 
@@ -113,15 +114,9 @@ void* handle(void* par){
 			/* Aca se hace todo el manejo de actualizaciones.
 			 * Hay que mandar y recibir las actualizaciones de el resto de los jugadores
 			 */
-
-
 			server->sendNewPlayers(clientSocket, &sended);
-
 			list<PlayerEvent*> events = server->recvEvents(clientSocket);
-
-			if (!events.empty())
-				server->addEventsToChanges(playerName,events);
-
+			if (!events.empty()) server->addEventsToChanges(playerName,events);
 			server->sendOthersChanges(clientSocket, playerName);
 
 		}
@@ -197,6 +192,9 @@ int Server::addPlayerToGame(int clientSocket, PlayerInfo* info){
 
 	gamePlayers[clientSocket] = info;
 	playerNames[info->getPlayer()->getName()] = clientSocket;
+	pthread_mutex_lock(&changes_mutex);
+	changes[info->getPlayer()->getName()] = new Changes();
+	pthread_mutex_unlock(&changes_mutex);
 
 	return 0;
 
@@ -240,7 +238,7 @@ list<PlayerEvent*> Server::recvEvents(int clientSocket){
 	// Recibo cada uno de los cambios
 	for (int i = 0 ; i < n ; i++){
 		PlayerEvent* event = ComunicationUtils::recvPlayerEvent(clientSocket);
-		events.push_back(event);
+		if (event != NULL) events.push_back(event);
 	}
 
 	return events;
@@ -248,7 +246,15 @@ list<PlayerEvent*> Server::recvEvents(int clientSocket){
 }
 
 void Server::addEventsToChanges(string playerName, list<PlayerEvent*> events){
-	changes->addChanges(playerName,events);
+
+	for (map<string, Changes* >::iterator it = changes.begin() ; it != changes.end() ; ++it){
+		if (it->first != playerName){
+			pthread_mutex_lock(&changes_mutex);
+			it->second->addChanges(playerName,events);
+			pthread_mutex_unlock(&changes_mutex);
+		}
+	}
+
 }
 
 void Server::sendEvents(int clientSocket, list<PlayerEvent*> events){
@@ -273,16 +279,23 @@ void Server::sendPlayerEvents(int clientSocket, string name,list<PlayerEvent*> e
 
 void Server::sendOthersChanges(int clientSocket, string currentPlayer){
 
-	map<string,list<PlayerEvent*> > others = changes->getOthersChanges(currentPlayer);
+	pthread_mutex_lock(&changes_mutex);
+	map<string,list<PlayerEvent*> > others = changes[currentPlayer]->getChanges();
+	pthread_mutex_unlock(&changes_mutex);
 
 	// 1ro envio la cantidad de players que tuvieron eventos
 	ComunicationUtils::sendNumber(clientSocket,others.size());
 
-	if (others.size() == 0) return;
+	if (others.size() <= 0) return;
 
 	for (map<string, list<PlayerEvent*> >::iterator it = others.begin() ; it != others.end() ; ++it){
 		sendPlayerEvents(clientSocket, it->first,it->second);
 	}
+
+	pthread_mutex_lock(&changes_mutex);
+	delete changes[currentPlayer];
+	changes[currentPlayer] = new Changes();
+	pthread_mutex_unlock(&changes_mutex);
 
 }
 

@@ -275,10 +275,7 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 	for (unsigned int i = 0; i < player.powers.size(); i++) {
 		out << *(player.powers[i]) << " ";
 	}
-	//out << *(player.currentTile) << " ";// << player.path->size() << " ";
-//	for (list<Tile*>::iterator it = player.path->begin() ; it != player.path->end(); ++it){
-//		out << *(*it) << " ";
-//	}
+	out << *(player.currentTile) << " ";
 	return out;
 }
 
@@ -314,15 +311,6 @@ istream& operator >>(std::istream& in, Player& player) {
 	Tile* tile = new Tile();
 	in >> *tile;
 	player.setTile(tile);
-	// Number of tiles on the path
-//	in >> n;
-//	list<Tile*> *path = new list<Tile*>();
-//	for (int i = 0; i < n ; i++){
-//			Tile* tile;
-//			in >> *tile;
-//			path->push_back(tile);
-//	}
-//	player.assignPath(path);
 	return in;
 }
 

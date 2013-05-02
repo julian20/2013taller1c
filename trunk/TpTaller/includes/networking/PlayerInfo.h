@@ -35,6 +35,9 @@ public:
 	void setAttackImageSrc(string img);
 	string getAttackImageSrc();
 
+	void setIdleBlockingImageSrc(string img);
+	string getIdleBlockingImageSrc();
+
 	void setImageDimentions(int width, int height);
 	int getImageWidth();
 	int getImageHeight();
@@ -66,10 +69,10 @@ public:
 	virtual ~PlayerInfo();
 private:
 	string name;
-	string walkingImageSrc, runningImageSrc, idleImageSrc, attackImageSrc;
+	string walkingImageSrc,runningImageSrc,idleImageSrc,attackImageSrc, idleBlockingImageScr;
 	int imageWidth, imageHeight;
 	Vector2* anchorPixel;
-	int fps, delay;
+	int fps,delay;
 	Coordinates* initCoords;
 
 	Player* player;

@@ -22,7 +22,6 @@
 #include <model/Logs/Logs.h>
 
 
-
 Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	MapData* mapData = configuration->getMapData();
@@ -171,6 +170,7 @@ MenuEvent Game::run() {
 	initScreen();
 	SDL_Event event;
 	bool exit = false;
+
 	while (!exit) {
 		int ticks = SDL_GetTicks();
 		cameraController->cameraMoveListener();
@@ -183,16 +183,14 @@ MenuEvent Game::run() {
 
 			if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
 				exit = true;
-			//personajeVista->Mostrar();
 		}
-
 		//Actualizo la parte visual, sin mostrarla todavia
 		//1. Mapa
 		// mapView->update();
 		// 2. Entidades estaticas
 		//       refreshEntities();
 		// 3. Personaje/s
-		personaje->update();
+		playersUpdate();
 
 		// En un futuro, aca se comprueban las colisiones.
 		// y se corrige la posicion del personaje.
@@ -222,6 +220,7 @@ void Game::applyFPS(int timer) {
 	} else
 		fps = 1000 / elapsedMiliseconds;
 }
+
 void Game::initMusic() {
 	// Inicializamos la librería SDL_Mixer
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 6, 4096) < 0) {
@@ -244,13 +243,28 @@ void Game::initMusic() {
 
 }
 
-void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords){
+void Game::playersUpdate(){
 
-	mapView->addNewPlayerView(view, *coords);
+	personaje->update();
+
+	for ( list<Player*>::iterator player = otherPlayers.begin() ; player != otherPlayers.end() ; ++player ){
+		(*player)->update();
+	}
 
 }
 
-PlayerView* Game::getPlayerView() {
+void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords){
+	player->setCoordinates(coords->getRow(),coords->getCol());
+	mapView->addNewPlayerView(view,*coords);
+	MapData* map = mapView->getMapData();
+	map->addPersonaje(coords->getRow(),coords->getCol(),player);
+
+	otherPlayers.push_back(player);
+	otherPlayerViews.push_back(view);
+
+}
+
+PlayerView* Game::getPlayerView(){
 	return personajeVista;
 }
 
@@ -260,6 +274,13 @@ list<PlayerEvent*> Game::getEvents(){
 
 void Game::cleanEvents(){
 	mapController->cleanEvents();
+}
+
+MapCameraView* Game::getMapCameraView(){
+	return mapView->getCamera();
+}
+MapData* Game::getMapData(){
+	return mapView->getMapData();
 }
 
 Game::~Game() {

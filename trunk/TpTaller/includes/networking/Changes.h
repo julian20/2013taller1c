@@ -22,8 +22,9 @@ public:
 
 	void addChanges(string,list<PlayerEvent*>);
 	list<PlayerEvent*> getPlayerEvents(string player);
+	void resetChanges();
 
-	map<string, list<PlayerEvent*> > getOthersChanges(string playerName);
+	map<string, list<PlayerEvent*> > getChanges();
 
 	virtual ~Changes();
 private:
