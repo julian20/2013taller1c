@@ -54,8 +54,8 @@ public:
 	int getImageWidth();
 
 	void setBaseSizes(int width, int height);
-	int getBaseWidth();
-	int getBaseHeight();
+	int getBaseRows();
+	int getBaseCols();
 	std::string getName();
 	virtual void setName(std::string name);
 

@@ -56,8 +56,8 @@ void Entity::setBase(Base* base) {
 }
 
 void Entity::setBaseSizes(int width, int height) {
-	this->base->setWidth(width);
-	this->base->setHeight(height);
+	this->base->setRows(width);
+	this->base->setCols(height);
 }
 
 std::string Entity::getName() {
