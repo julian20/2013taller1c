@@ -131,7 +131,7 @@ void MapView::draw(Position* cam) {
 			TileData* tileData = data->getTileData(row, col);
 
 			if (tileData->getWasVisible()) {
-				posFog = posTile = Tile::computePositionTile(row, col);
+				posFog = posTile = Tile::computePositionTile(row, col - 1);
 				Position* cameraPos = this->camera->getPosition();
 				posFog.x = posTile.x = posTile.x + cameraPos->getX();
 				posFog.y = posTile.y = posTile.y + cameraPos->getY();

@@ -21,16 +21,16 @@ int Base::getCols() {
 	return this->cols;
 }
 
-void Base::setCols(int _height) {
-	this->cols = _height;
+void Base::setCols(int _cols) {
+	this->cols = _cols;
 }
 
 int Base::getRows() {
 	return this->rows;
 }
 
-void Base::setRows(int width) {
-	this->rows = width;
+void Base::setRows(int _rows) {
+	this->rows = _rows;
 }
 
 Vector2* Base::getAnchorPixel() {
