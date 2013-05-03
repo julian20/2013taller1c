@@ -1389,47 +1389,7 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 
 }
 
-void duplicateView(EntityView* sourceView, EntityView* destView) {
 
-	//Duplico el anchor
-	Vector2* anchor = sourceView->getAnchorPixel();
-	Vector2* anchorCopy = new Vector2(anchor->getX(), anchor->getY());
-
-	destView->setAnchorPixel(anchorCopy);
-	destView->setName(sourceView->getName());
-	destView->setImageHeight(sourceView->getImageHeight());
-	destView->setImageWidth(sourceView->getImageWidth());
-	destView->setNClips(sourceView->getNClips());
-	//destView->setImagePath(sourceView->getImagePath(), &images);
-	destView->setFps(sourceView->getFps());
-	destView->setDelay(sourceView->getDelay());
-	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
-	destView->setEntity(NULL);
-	destView->setBaseSizes(sourceView->getBaseRows(),
-						   sourceView->getBaseCols());
-	destView->setTextureHolder(textureHolder);
-
-}
-
-void duplicateView(PlayerView* sourceView, PlayerView* destView) {
-
-//Duplico el anchor
-	Vector2* anchor = sourceView->getAnchorPixel();
-	Vector2* anchorCopy = new Vector2(anchor->getX(), anchor->getY());
-
-	destView->setAnchorPixel(anchorCopy);
-	destView->setName(sourceView->getName());
-	destView->setImageHeight(sourceView->getImageHeight());
-	destView->setImageWidth(sourceView->getImageWidth());
-	destView->setNClips(sourceView->getNClips());
-	//destView->setImagePath(sourceView->getImagePath(), &images);
-	destView->setFps(sourceView->getFps());
-	destView->setDelay(sourceView->getDelay());
-	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
-	destView->setEntity(NULL);
-	destView->setTextureHolder(textureHolder);
-
-}
 void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
 	for (unsigned i = 0; i < entities.size(); i++) {
 		Entity* currentEntity = entities[i];
@@ -1447,8 +1407,7 @@ std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
 		for (unsigned j = 0; j < entityViews.size(); j++) {
 			EntityView* actualView = entityViews[j];
 			if ((actualView->getName()).compare(entityName) == 0) {
-				duplicate = new EntityView();
-				duplicateView(actualView, duplicate);
+				duplicate = new EntityView(actualView);
 				duplicate->setEntity(actualEntity);
 				completeViews.push_back(duplicate);
 			}
@@ -1473,8 +1432,7 @@ std::vector<PlayerView*> assignPlayers(std::vector<PlayerView*> playerViews,
 		for (unsigned j = 0; j < playerViews.size(); j++) {
 			PlayerView* actualView = playerViews[j];
 			if ((actualView->getName()).compare(entityName) == 0) {
-				PlayerView* duplicate = new PlayerView();
-				duplicateView(actualView, duplicate);
+				PlayerView* duplicate = new PlayerView(actualView);
 				duplicate->setEntity(actualPlayer);
 				duplicate->setPersonaje(actualPlayer);
 				completeViews.push_back(duplicate);

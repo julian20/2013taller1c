@@ -29,8 +29,6 @@ PlayerView::PlayerView()
 	camPos = new Position(0, 0);
 	marco = 0;
 	animationChangeRate = 0;
-	imageHeight = 0;
-	imageWidth = 0;
 	numberOfClips = 0;
 	movable = true;
 	direction = DOWN;
@@ -49,7 +47,45 @@ PlayerView::PlayerView()
 	numberOfAttackClips = 0;
 	currentSprite = DOWN;
 	lastDirection = M_PI * 1 / 2;
+}
 
+PlayerView::PlayerView(PlayerView* otherPlayer)
+:
+		EntityView(this) {
+
+	Vector2* anchor = otherPlayer->getAnchorPixel();
+	Vector2* anchorCopy = new Vector2(anchor->getX(), anchor->getY());
+
+	anchorPixel = anchorCopy;
+	imageHeight = otherPlayer->getImageHeight();
+	imageWidth = otherPlayer->getImageWidth();
+	delay = otherPlayer->getDelay();
+	fps = otherPlayer->getFps();
+	camPos = new Position(0, 0);
+	marco = 0;
+	animationChangeRate = 0;
+	numberOfClips = otherPlayer->getNClips();
+	setNumberOfRepeats(otherPlayer->getNumberOfRepeats());
+	movable = true;
+	direction = DOWN;
+	wasStanding = true;
+	player = NULL;
+	nameImage = NULL;
+	runningImage = NULL;
+	walkingImage = NULL;
+	attackImage = NULL;
+	idleImage = NULL;
+	idleBlockImage = NULL;
+	numberOfRunningClips = 0;
+	numberOfWalkingClips = 0;
+	numberOfIdleClips = 0;
+	numberOfIdleBlockClips = 0;
+	numberOfAttackClips = 0;
+	currentSprite = DOWN;
+	lastDirection = M_PI * 1 / 2;
+	textureHolder = otherPlayer->getTextureHolder();
+
+	this->setName(otherPlayer->getName());
 }
 
 void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
@@ -270,22 +306,6 @@ void PlayerView::Show(SDL_Surface* fondo) {
 
 PlayerView::~PlayerView() {
 	//libera la memoria que pide para La imagen
-}
-
-int PlayerView::getImageHeight() {
-	return this->imageHeight;
-}
-
-void PlayerView::setImageHeight(int height) {
-	this->imageHeight = height;
-}
-
-int PlayerView::getImageWidth() {
-	return this->imageWidth;
-}
-
-void PlayerView::setImageWidth(int width) {
-	this->imageWidth = width;
 }
 
 int PlayerView::getNClips() {

@@ -47,6 +47,36 @@ EntityView::EntityView() {
 	setNumberOfRepeats(0);
 }
 
+EntityView::EntityView(EntityView* otherEntity) {
+	Vector2* anchor = otherEntity->getAnchorPixel();
+	Vector2* anchorCopy = new Vector2(anchor->getX(), anchor->getY());
+
+	this->base = new Base();
+	this->setBaseSizes(otherEntity->getBaseRows(),
+					   otherEntity->getBaseCols());
+	this->name = otherEntity->getName();
+	this->scaleWidth = 1;
+	this->scaleHeight = 1;
+	this->imageHeight = otherEntity->getImageHeight();
+	this->imageWidth = otherEntity->getImageWidth();
+	this->entity = NULL;
+	this->image = NULL;
+	this->delay = otherEntity->getDelay();
+	this->fps = otherEntity->getFps();
+	this->nClips = otherEntity->getNClips();
+	this->anchorPixel = anchorCopy;
+	this->movable = otherEntity->isMovable();
+	this->textureHolder = otherEntity->getTextureHolder();
+	this->currentRepeat = 0;
+	this->currentClip = 0;
+	timer.start();
+	animationRateTimer.start();
+
+	timeSinceLastAnimation = 1000;
+
+	setNumberOfRepeats(otherEntity->getNumberOfRepeats());
+}
+
 bool EntityView::isMovable() {
 	return movable;
 }
