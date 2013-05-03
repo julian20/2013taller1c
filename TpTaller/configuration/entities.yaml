@@ -90,7 +90,7 @@
     numberOfClips: 0
     anchorPixel: [117, 133]  
 - gameConfiguration:
-    serverIP: 192.168.190.136
+    serverIP: 127.0.0.1
     serverPort: 32001
     fps: 30
     delay: 10
@@ -98,8 +98,8 @@
     gameMusic: resources/sound/NamiLogin.ogg
     fullscreen: false
     screenAutoConfig: false
-    defaultScreenHeight: 690
-    defaultScreenWidth: 1280
+    defaultScreenHeight: 600
+    defaultScreenWidth: 600
     defaultBPP: 0
     menuBackImage: resources/lich.jpg
     menuBackMusic: resources/sound/QuinnLogin.ogg
@@ -133,7 +133,7 @@
 - mapDimensions: [50, 50]
 - playerLocations:
   - name: NewPlayer
-    position: [8, 8, 0]
+    position: [10, 10, 0]
     speed:
       magnitude: 4
       direction: [1, 2]

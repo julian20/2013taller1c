@@ -101,6 +101,7 @@ void Client::initPlayerInfo(PlayerView* view){
 	info->setRunningImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(RUNNING_MODIFIER) ));
 	info->setIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_MODIFIER) ));
 	info->setAttackImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(ATTACK_MODIFIER) ));
+	info->setIdleBlockingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_BLOCKING_MODIFIER) ));
 	info->setAnchorPixel(view->getAnchorPixel());
 	info->setDelay(view->getDelay());
 	info->setFPS(view->getFps());
