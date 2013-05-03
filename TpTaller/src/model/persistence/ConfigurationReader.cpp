@@ -38,8 +38,8 @@ using namespace std;
 #define DEFAULT_SCREEN_HEIGHT 600
 #define DEFAULT_SCREEN_WIDTH 800
 #define DEFAULT_BPP 1
-#define DEFAULT_BASE_HEIGHT 1
-#define DEFAULT_BASE_WIDTH 1
+#define DEFAULT_BASE_COLS 1
+#define DEFAULT_BASE_ROWS 1
 #define DEFAULT_TEXTURE "grass"
 #define DEFAULT_GAME_MUSIC "resources/sound/NamiLogin.ogg"
 #define DEFAULT_MENU_IMAGE "resources/lich.jpg"
@@ -601,7 +601,7 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	std::string auxName;
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
 	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps,
-			auxAnimationNumberOfRepeats, auxBaseWidth, auxBaseLength;
+			auxAnimationNumberOfRepeats, auxBaseRows, auxBaseCols;
 
 	float auxDelay;
 	try {
@@ -703,26 +703,26 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 		auxAnimationNumberOfRepeats = DEFAULT_REPEATS;
 	}
 	try {
-		yamlNode["baseWidth"] >> auxBaseWidth;
+		yamlNode["baseRows"] >> auxBaseRows;
 
 	} catch (YAML::Exception& yamlException) {
 //		Logs::logErrorMessage(
 //				string("Error parsing PlayerView: ") + yamlException.what());
-		auxBaseWidth = DEFAULT_BASE_WIDTH;
+		auxBaseRows = DEFAULT_BASE_ROWS;
 	}
 	try {
-		yamlNode["baseHeight"] >> auxBaseLength;
+		yamlNode["baseCols"] >> auxBaseCols;
 
 	} catch (YAML::Exception& yamlException) {
 //		Logs::logErrorMessage(
 //				string("Error parsing PlayerView: ") + yamlException.what());
-		auxBaseLength = DEFAULT_BASE_HEIGHT;
+		auxBaseCols = DEFAULT_BASE_COLS;
 	}
 
 	playerView->setName(auxName);
 	playerView->setAnchorPixel(auxAnchorPixel);
-//	playerView->setBaseHeight(auxBaseLength);
-//	playerView->setBaseWidth(auxBaseWidth);
+//	playerView->setBaseHeight(auxBaseCols);
+//	playerView->setBaseWidth(auxBaseRows);
 	playerView->setImageHeight(auxImageHeight);
 	playerView->setImageWidth(auxImageWidth);
 	playerView->setNClips(auxNumberOfClips);
@@ -762,7 +762,7 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 	std::string auxImageSrc;
 	std::string auxName;
 	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps, auxDelay,
-			auxAnimationNumberOfRepeats, auxBaseHeight, auxBaseWidth;
+			auxAnimationNumberOfRepeats, auxBaseCols, auxBaseRows;
 
 	try {
 		yamlNode["name"] >> auxName;
@@ -811,22 +811,22 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
 		auxAnimationNumberOfRepeats = DEFAULT_REPEATS;
 	}
 	try {
-		yamlNode["baseWidth"] >> auxBaseWidth;
+		yamlNode["baseRows"] >> auxBaseRows;
 	} catch (YAML::Exception& yamlException) {
 //		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
-		auxBaseWidth = DEFAULT_BASE_WIDTH;
+		auxBaseRows = DEFAULT_BASE_ROWS;
 	}
 	try {
-		yamlNode["baseHeight"] >> auxBaseHeight;
+		yamlNode["baseCols"] >> auxBaseCols;
 	} catch (YAML::Exception& yamlException) {
 //		Logs::logErrorMessage(string("Error parsing EntityView: ")+yamlException.what());
-		auxBaseHeight = DEFAULT_BASE_HEIGHT;
+		auxBaseCols = DEFAULT_BASE_COLS;
 	}
 
 	map<string, SDL_Surface*> images;
 
 	entityView->setAnchorPixel(auxAnchorPixel);
-	entityView->setBaseSizes(auxBaseWidth, auxBaseHeight);
+	entityView->setBaseSizes(auxBaseRows, auxBaseCols);
 	entityView->setName(auxName);
 	entityView->setImageHeight(auxImageHeight);
 	entityView->setImageWidth(auxImageWidth);
@@ -1405,8 +1405,8 @@ void duplicateView(EntityView* sourceView, EntityView* destView) {
 	destView->setDelay(sourceView->getDelay());
 	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
 	destView->setEntity(NULL);
-	destView->setBaseSizes(sourceView->getBaseWidth(),
-			sourceView->getBaseWidth());
+	destView->setBaseSizes(sourceView->getBaseRows(),
+			sourceView->getBaseRows());
 	destView->setTextureHolder(textureHolder);
 
 }

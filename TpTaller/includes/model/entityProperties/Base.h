@@ -14,11 +14,11 @@ class Base {
 public:
 	Base();
 	virtual ~Base();
-	int getWidth();
-	int getHeight();
+	int getRows();
+	int getCols();
 	Vector2* getAnchorPixel();
-	void setWidth(int width);
-	void setHeight(int length);
+	void setRows(int width);
+	void setCols(int length);
 	void setAnchorPixel(Vector2* anchorPixel);
 
 	//Operator to transform the object into a stream.
@@ -30,8 +30,8 @@ public:
 	Base& operator=(Base &other);
 
 private:
-	int width;
-	int height;
+	int rows;
+	int cols;
 	Vector2* anchorPixel;
 };
 

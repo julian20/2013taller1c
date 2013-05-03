@@ -125,7 +125,7 @@ PlayerView* PlayerInfo::createPlayerView(){
 	string playerName = player->getName();
 	view->setName(playerName);
 	view->setAnchorPixel(this->getAnchorPixel());
-	view->setBaseSizes(player->getBase()->getWidth(),player->getBase()->getHeight());
+	view->setBaseSizes(player->getBase()->getRows(),player->getBase()->getCols());
 	view->setDelay(this->getDelay());
 	view->setFps(this->getFPS());
 	view->setImageHeight(this->getImageHeight());

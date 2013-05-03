@@ -67,8 +67,8 @@
     imageHeight: 227
     numberOfClips: 0
     anchorPixel: [110, 160] 
-    baseWidth: 4
-    baseHeight: 3
+    baseRows: 4
+    baseCols: 3
   - name: pottery
     imageSrc: resources/buildings/pottery.png
     imageWidth: 259

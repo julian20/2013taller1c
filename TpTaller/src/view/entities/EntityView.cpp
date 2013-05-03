@@ -61,9 +61,9 @@ int EntityView::getNumberOfRepeats() {
 
 void EntityView::setScale() {
 	this->scaleHeight = (float) (Tile::getTileHeight())
-			* float(this->base->getHeight()) / (float) (this->imageHeight);
+			* float(this->base->getCols()) / (float) (this->imageHeight);
 	this->scaleWidth = (float) (Tile::getTileWidth())
-			* (float) (this->base->getWidth()) / (float) (this->imageWidth);
+			* (float) (this->base->getRows()) / (float) (this->imageWidth);
 }
 
 void EntityView::setImageWidth(int width) {
@@ -74,17 +74,17 @@ void EntityView::setNClips(int clips) {
 	this->nClips = clips;
 }
 
-void EntityView::setBaseSizes(int width, int height) {
-	this->base->setWidth(width);
-	this->base->setHeight(height);
+void EntityView::setBaseSizes(int _rows, int _cols) {
+	this->base->setRows(_rows);
+	this->base->setCols(_cols);
 }
 
-int EntityView::getBaseWidth() {
-	return this->base->getWidth();
+int EntityView::getBaseRows() {
+	return this->base->getRows();
 }
 
-int EntityView::getBaseHeight() {
-	return this->base->getHeight();
+int EntityView::getBaseCols() {
+	return this->base->getCols();
 }
 
 void EntityView::setImageHeight(int height) {
@@ -141,7 +141,7 @@ void EntityView::setEntity(Entity* entity) {
 	this->entity = entity;
 
 	if (this->entity)
-		this->entity->setBaseSizes(base->getWidth(), base->getHeight());
+		this->entity->setBaseSizes(base->getRows(), base->getCols());
 }
 
 Entity* EntityView::getEntity() {
