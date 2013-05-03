@@ -50,9 +50,24 @@ void MapData::checkRowColsValue(int row, int col) {
 
 void MapData::addEntity(int row, int col, Entity* object) {
 	TileData* currentData = getTileData(row, col);
-
 	currentData->addEntity(object);
-	currentData->setWalkable(false);
+
+
+	Base* base = object->getBase();
+	int baseRow = base->getRows();
+	int baseCol = base->getCols();
+
+	for (int offsetRow = 0; offsetRow < baseRow; offsetRow++) {
+		for (int offsetCol = 0; offsetCol < baseCol; offsetCol++) {
+
+			currentData = getTileData(row + offsetRow - baseRow/2,
+									  col + offsetCol - baseCol/2);
+
+			currentData->addEntity(object);
+			currentData->setWalkable(false);
+
+		}
+	}
 }
 
 TileData* MapData::getTileData(int row, int col) {
@@ -248,7 +263,7 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 					+ distBetweenTiles(current, neighbor);
 
 			bool existsGScore = !(g_score.find(neighbor->getHashValue())
-					== g_score.end());
+								== g_score.end());
 			if (existsGScore
 					&& (tentativeGScore >= g_score[neighbor->getHashValue()]))
 				continue;
@@ -259,8 +274,8 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 				cameFrom[neighbor->getHashValue()] = current;
 				g_score[neighbor->getHashValue()] = tentativeGScore;
 				neighbor->setFScore(
-						g_score[neighbor->getHashValue()]
-								+ heuristicCostEstimate(neighbor, currentGoal));
+							g_score[neighbor->getHashValue()]
+							+ heuristicCostEstimate(neighbor, currentGoal));
 				if (!neighborInOpenSet)
 					openSet.push_back(neighbor);
 			}
@@ -284,9 +299,9 @@ float MapData::distBetweenTiles(Tile* from, Tile* to) {
 	Position* toPos = Tile::computePosition(toCoords.getRow(),
 			toCoords.getCol());
 
-	float result = sqrt(
-			pow(toPos->getX() - fromPos->getX(), 2)
-					+ pow(toPos->getY() - fromPos->getY(), 2));
+	float result =
+			sqrt(pow(toPos->getX() - fromPos->getX(), 2)
+			   + pow(toPos->getY() - fromPos->getY(), 2));
 
 	delete fromPos;
 	delete toPos;

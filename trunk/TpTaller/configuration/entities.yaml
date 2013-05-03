@@ -9,8 +9,8 @@
     imageHeight: 128
     numberOfClips: 8
     anchorPixel: [64, 70]
-    baseWidth: 1
-    baseHeight: 1
+    baseRows: 1
+    baseCols: 1
     delay: 0.5
 - entityViews:    
   - name: windmill
@@ -22,6 +22,8 @@
     fps: 30
     delay: 2 
     animationRepeats: 7
+    baseRows: 2
+    baseCols: 3
   - name: watermill
     imageSrc: resources/buildings/watermill tileset.png
     imageWidth: 242
@@ -31,6 +33,8 @@
     fps: 20
     delay: 2 
     animationRepeats: 5
+    baseRows: 3
+    baseCols: 4
   - name: aniWater
     imageSrc: resources/aniWater.png
     imageWidth: 68
@@ -42,7 +46,7 @@
     imageWidth: 128
     imageHeight: 133
     numberOfClips: 0
-    anchorPixel: [66, 80]
+    anchorPixel: [60, 100]
   - name: barracks
     imageSrc: resources/buildings/barracks.png
     imageWidth: 320 
@@ -54,7 +58,9 @@
     imageWidth: 238
     imageHeight: 290
     numberOfClips: 0
-    anchorPixel: [120, 139]
+    anchorPixel: [80, 139]
+    baseRows: 4
+    baseCols: 3
   - name: sawmill
     imageSrc: resources/buildings/sawmill.png
     imageWidth: 276
@@ -74,7 +80,9 @@
     imageWidth: 259
     imageHeight: 247
     numberOfClips: 0
-    anchorPixel: [72, 164]  
+    anchorPixel: [72, 164]
+    baseRows: 3
+    baseCols: 3
   - name: portbuilding
     imageSrc: resources/buildings/portbuilding.png
     imageWidth: 287
@@ -125,7 +133,7 @@
 - mapDimensions: [50, 50]
 - playerLocations:
   - name: NewPlayer
-    position: [10, 10, 0]
+    position: [8, 8, 0]
     speed:
       magnitude: 4
       direction: [1, 2]

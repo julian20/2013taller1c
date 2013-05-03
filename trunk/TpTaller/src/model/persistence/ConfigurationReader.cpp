@@ -1406,7 +1406,7 @@ void duplicateView(EntityView* sourceView, EntityView* destView) {
 	destView->setNumberOfRepeats(sourceView->getNumberOfRepeats());
 	destView->setEntity(NULL);
 	destView->setBaseSizes(sourceView->getBaseRows(),
-			sourceView->getBaseRows());
+						   sourceView->getBaseCols());
 	destView->setTextureHolder(textureHolder);
 
 }
