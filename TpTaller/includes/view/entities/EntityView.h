@@ -29,6 +29,7 @@ using namespace std;
 class EntityView {
 public:
 	EntityView();
+	EntityView(EntityView* otherEntity);
 	void setTextureHolder(TextureHolder* _textureHolder);
 	TextureHolder* getTextureHolder();
 	virtual void setEntity(Entity* entity);

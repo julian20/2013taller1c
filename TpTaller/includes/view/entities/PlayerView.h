@@ -33,16 +33,13 @@ typedef enum {
 class PlayerView: public EntityView {
 public:
 	PlayerView();
+	PlayerView(PlayerView* otherPlayer);
 	void Show(SDL_Surface* fondo);
 	void setPersonaje(Player* personaje);
 	Player* getPersonaje();
 	void UpdateCameraPos(Position* _camPos);
 	Player* getEntity();
 	void setEntity(Entity* entity);
-	int getImageHeight();
-	void setImageHeight(int height);
-	int getImageWidth();
-	void setImageWidth(int width);
 	int getNClips();
 	void setNClips(int clips);
 	void setName(std::string name);
@@ -59,8 +56,6 @@ private:
 	SpriteType currentSprite;
 	int marco; 	// Current frame
 	int animationChangeRate;
-	int imageWidth;
-	int imageHeight;
 	int numberOfClips;
 	int direction;
 	float lastDirection;
