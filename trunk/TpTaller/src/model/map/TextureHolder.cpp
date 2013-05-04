@@ -16,29 +16,20 @@
 TextureHolder::TextureHolder() {
 	TextureDefinition* defaultTile = new TextureDefinition(DEFAULT_TEXTURE_ID,
 			DEFAULT_TEXTURE_PATH);
-	this->listOfTextures.push_back(defaultTile);
+	textures[defaultTile->getTextureId()] = defaultTile;
 
 	TextureDefinition* defaultCharacter = new TextureDefinition(
 			DEFAULT_CHARACTER_ID, DEFAULT_CHARACTER_PATH);
-	this->listOfTextures.push_back(defaultCharacter);
+	textures[defaultCharacter->getTextureId()] = defaultCharacter;
 }
 
 TextureHolder::~TextureHolder() {
-	for (unsigned int i = 0; i < listOfTextures.size(); i++) {
-		delete listOfTextures[i];
-	}
-}
+	std::map<std::string, TextureDefinition*>::iterator iter;
 
-bool TextureHolder::duplicateTexture(std::vector<TextureDefinition*> list,
-		std::string id) {
-	for (unsigned int i = 0; i < list.size(); i++) {
-		TextureDefinition* auxTextureDefinition = list[i];
-		if (id.compare(auxTextureDefinition->getTextureId()) == 0) {
-			return true;
-		}
+	for (iter = textures.begin(); iter != textures.end(); iter++) {
+		string id = iter->first;
+		delete textures[id];
 	}
-
-	return false;
 }
 
 void TextureHolder::addFogTexture(std::string id, SDL_Surface* texture) {
@@ -46,33 +37,30 @@ void TextureHolder::addFogTexture(std::string id, SDL_Surface* texture) {
 }
 
 void TextureHolder::addTexture(TextureDefinition* textureDefinition) {
-	if (duplicateTexture(listOfTextures, textureDefinition->getTextureId())) {
-		return;
-	}
+	string id = textureDefinition->getTextureId();
+	bool existInMap = !(textures.find(id) == textures.end());
 
-	this->listOfTextures.push_back(textureDefinition);
+	if (existInMap) return;
+
+	textures[id] = textureDefinition;
 }
 
 std::string TextureHolder::getTextureSrc(std::string id) {
-	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
-		TextureDefinition* auxTextureDefinition = this->listOfTextures[i];
-		if (id.compare(auxTextureDefinition->getTextureId()) == 0) {
-			return auxTextureDefinition->getTextureImageSrc();
-		}
-	}
+	bool existInMap = !(textures.find(id) == textures.end());
+
+	if (existInMap) return textures[id]->getTextureImageSrc();
 
 	return getTextureSrc(DEFAULT_TEXTURE_ID);
 }
 
 SDL_Surface* TextureHolder::getTexture(std::string id) {
-	for (unsigned int i = 0; i < this->listOfTextures.size(); i++) {
-		TextureDefinition* auxTextureDefinition = this->listOfTextures[i];
-		if (id.compare(auxTextureDefinition->getTextureId()) == 0) {
-			SDL_Surface* surf = auxTextureDefinition->getTextureImage();
-			if (surf == NULL)
-				return getTexture(DEFAULT_TEXTURE_ID);
-			return surf;
-		}
+	bool existInMap = !(textures.find(id) == textures.end());
+
+	if (existInMap) {
+		SDL_Surface* surf = textures[id]->getTextureImage();
+
+		if (surf == NULL) return getTexture(DEFAULT_TEXTURE_ID);
+		return surf;
 	}
 
 	return NULL;

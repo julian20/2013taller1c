@@ -26,7 +26,7 @@ public:
 	SDL_Surface* getFogTexture(std::string id);
 	std::string getTextureSrc(std::string id);
 private:
-	std::vector<TextureDefinition*> listOfTextures;
+	std::map<std::string, TextureDefinition*> textures;
 	std::map<std::string, SDL_Surface*> fogTextures;
 	bool duplicateTexture(std::vector<TextureDefinition*> list, std::string id);
 };
