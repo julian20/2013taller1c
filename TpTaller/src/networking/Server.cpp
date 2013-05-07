@@ -23,6 +23,8 @@
 #include <fstream>
 #include <map>
 
+#include <SDL/SDL.h>
+
 #include <networking/Server.h>
 #include <networking/ComunicationUtils.h>
 #include <networking/PlayerInfo.h>
@@ -72,6 +74,8 @@ Server::Server(string host, int port) {
 
 	freeaddrinfo(res);
 	pthread_mutex_init(&changes_mutex,NULL);
+
+	SDL_Init(SDL_INIT_JOYSTICK);
 
 }
 
@@ -124,11 +128,31 @@ void* handle(void* par){
 
 }
 
+void* readEvents(void* par ){
+
+	while (true){
+
+		SDL_Event event;
+		while (SDL_PollEvent(&event)){
+
+			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q){
+				exit(0);
+			}
+		}
+
+	}
+
+	return NULL;
+
+}
+
 
 void Server::run(){
 	pthread_t thread;
 	pthread_attr_t        attr;
 	pthread_attr_init(&attr);
+
+	pthread_create(&thread,&attr,readEvents,NULL);
 
 	/* Listen */
 	if (listen(serverID, BACKLOG) == -1) {
@@ -151,6 +175,8 @@ void Server::run(){
 				fprintf(stderr, "Failed to create thread\n");
 			}
 		}
+
+
 	}
 }
 
