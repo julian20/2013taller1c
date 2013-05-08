@@ -15,29 +15,32 @@ Changes::Changes() {
 
 }
 
-void Changes::addChanges(string name ,list<PlayerEvent*> events){
-	changes.insert(pair<string , list<PlayerEvent*> >(name,events));
+void Changes::addChanges(string name ,vector<PlayerEvent*> events){
+	changes.insert(pair<string , vector<PlayerEvent*> >(name,events));
 }
 
-map<string, list<PlayerEvent*> > Changes::getChanges(){
+map<string, vector<PlayerEvent*> > Changes::getChanges(){
 
 	return changes;
 
 }
 
 void Changes::resetChanges(){
-	for (map<string, list<PlayerEvent*> >::iterator it = changes.begin() ; it != changes.end() ; ++it){
-		while(!it->second.empty()){
-			delete it->second.front();
-			it->second.pop_front();
+
+	for (map<string, vector<PlayerEvent*> >::iterator it = changes.begin() ; it != changes.end() ; ++it){
+		for (int i = 0 ; i < it->second.size() ; i++ ){
+			delete it->second[i];
 		}
+		it->second.clear();
 	}
+
+	changes.clear();
 }
 
-list<PlayerEvent*> Changes::getPlayerEvents(string player){
+vector<PlayerEvent*> Changes::getPlayerEvents(string player){
 
 	if (changes.count(player) <= 0){
-		list<PlayerEvent*> empty;
+		vector<PlayerEvent*> empty;
 		return empty;
 	}
 
@@ -48,10 +51,14 @@ list<PlayerEvent*> Changes::getPlayerEvents(string player){
 
 Changes::~Changes() {
 
-	for (map<string, list<PlayerEvent*> >::iterator it = changes.begin() ; it != changes.end() ; ++it){
-		for (list<PlayerEvent*>::iterator ti = it->second.begin() ; ti != it->second.end() ; ++ti)
-			delete *ti;
+	for (map<string, vector<PlayerEvent*> >::iterator it = changes.begin() ; it != changes.end() ; ++it){
+		for (int i = 0 ; i < it->second.size() ; i++ ){
+			delete it->second[i];
+		}
+		it->second.clear();
 	}
+
+	changes.clear();
 
 }
 

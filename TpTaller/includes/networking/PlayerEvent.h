@@ -22,6 +22,7 @@ public:
 	PlayerEvent();
 	PlayerEvent(EventType type);
 	PlayerEvent(EventType type, Coordinates tileCoordinates);
+	PlayerEvent(const PlayerEvent &toCopy);
 	EventType getEventType();
 	void setEventType(EventType type);
 	Coordinates* getTileCoordinates();

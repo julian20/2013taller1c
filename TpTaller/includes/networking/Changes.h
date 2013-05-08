@@ -9,7 +9,7 @@
 #define GLOBALCHANGES_H_
 
 #include <map>
-#include <list>
+#include <vector>
 #include <iostream>
 
 #include <networking/PlayerEvent.h>
@@ -20,15 +20,15 @@ class Changes {
 public:
 	Changes();
 
-	void addChanges(string,list<PlayerEvent*>);
-	list<PlayerEvent*> getPlayerEvents(string player);
+	void addChanges(string,vector<PlayerEvent*>);
+	vector<PlayerEvent*> getPlayerEvents(string player);
 	void resetChanges();
 
-	map<string, list<PlayerEvent*> > getChanges();
+	map<string, vector<PlayerEvent*> > getChanges();
 
 	virtual ~Changes();
 private:
-	map<string, list<PlayerEvent*> > changes;
+	map<string, vector<PlayerEvent*> > changes;
 };
 
 } /* namespace std */

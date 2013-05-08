@@ -30,6 +30,7 @@ public:
 	void downloadMap();
 	void registerPlayer();
 	int getServerAproval();
+	void recvNewName();
 	void checkNewPlayers();
 	void sendEvents();
 	Changes* recvOthersChanges();
@@ -40,14 +41,17 @@ private:
 
 	PlayerInfo* recivePlayerInfo();
 	void sendEvent(PlayerEvent* event);
-	list<PlayerEvent*> recvListOfEvents();
+	vector<PlayerEvent*> recvListOfEvents();
 
 	int clientID;
 	Game* game;
 	map<string, Player*> players;
 	map<string,NetworkPlayerController*> controllers;
 	PlayerInfo* info;
-	list<PlayerEvent*> events;
+	vector<PlayerEvent*> events;
+
+	Player* player;
+	PlayerView* view;
 
 };
 

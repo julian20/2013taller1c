@@ -65,9 +65,9 @@ void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
 }
 
 
-void NetworkPlayerController::handleEvents(list<PlayerEvent*> events){
+void NetworkPlayerController::handleEvents(vector<PlayerEvent*> events){
 
-	for (list<PlayerEvent*>::iterator it = events.begin() ; it != events.end() ; ++it ){
+	for (vector<PlayerEvent*>::iterator it = events.begin() ; it != events.end() ; ++it ){
 		handleEvent(*it);
 	}
 

@@ -331,11 +331,24 @@ void PlayerView::setName(std::string name) {
 	color.g = 255;
 	color.b = 255;
 	TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
+	if (nameImage) SDL_FreeSurface(nameImage);
 	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);
 	if (!nameImage || !font)
 		Logs::logErrorMessage(
 				"Error al cargar la fuente para el nombre del personaje");
 
+}
+
+void PlayerView::setShowableName(string name){
+	SDL_Color color;
+	color.r = 255;
+	color.g = 255;
+	color.b = 255;
+	TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
+	if (nameImage) SDL_FreeSurface(nameImage);
+	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);
+	if (!nameImage || !font)
+		Logs::logErrorMessage("Error al cargar la fuente para el nombre del personaje");
 }
 
 void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen) {
