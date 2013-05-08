@@ -83,6 +83,33 @@ void Server::sendAproval(int clientSocket, int result){
 	ComunicationUtils::sendNumber(clientSocket,result);
 }
 
+int Server::isNameAbilivable(string playerName){
+
+	if (playerNames.count(playerName) > 0) return -1;
+
+	return 0;
+}
+
+string Server::getAbilivableName(string playerName){
+
+	int i = 0;
+	string newName = playerName;
+
+	while (playerNames.count(newName) > 0){
+		i++;
+		stringstream indexstream;
+		indexstream << i;
+		newName = playerName + indexstream.str();
+	}
+
+	return newName;
+
+}
+
+void Server::sendNewName(int clientSocket, string newName){
+	ComunicationUtils::sendString(clientSocket, newName);
+}
+
 void* handle(void* par){
 
 	/* send(), recv(), close() */
@@ -101,12 +128,18 @@ void* handle(void* par){
 
 
 		PlayerInfo* info = server->recieveNewPlayer(clientSocket);
-		int result = server->addPlayerToGame(clientSocket,info);
-
-		server->sendAproval(clientSocket,result);
-		if (result != 0) return NULL;
-
 		string playerName = info->getPlayer()->getName();
+
+		int result = server->isNameAbilivable(playerName);
+		server->sendAproval(clientSocket,result);
+		if (result != 0){
+			playerName = server->getAbilivableName(playerName);
+			server->sendNewName(clientSocket, playerName);
+			info->setName(playerName);
+			info->getPlayer()->setName(playerName);
+		}
+
+		server->addPlayerToGame(clientSocket,info);
 		sended.insert( pair<int,string>(clientSocket,playerName) );
 
 		cout << playerName << " has conected.. " << endl;
@@ -119,7 +152,7 @@ void* handle(void* par){
 			 * Hay que mandar y recibir las actualizaciones de el resto de los jugadores
 			 */
 			server->sendNewPlayers(clientSocket, &sended);
-			list<PlayerEvent*> events = server->recvEvents(clientSocket);
+			vector<PlayerEvent*> events = server->recvEvents(clientSocket);
 			if (!events.empty()) server->addEventsToChanges(playerName,events);
 			server->sendOthersChanges(clientSocket, playerName);
 
@@ -219,7 +252,7 @@ int Server::addPlayerToGame(int clientSocket, PlayerInfo* info){
 	gamePlayers[clientSocket] = info;
 	playerNames[info->getPlayer()->getName()] = clientSocket;
 	pthread_mutex_lock(&changes_mutex);
-	changes[info->getPlayer()->getName()] = new Changes();
+	changes.insert( pair<string,Changes*>(info->getPlayer()->getName(), new Changes() ) );
 	pthread_mutex_unlock(&changes_mutex);
 
 	return 0;
@@ -251,9 +284,9 @@ void Server::sendNewPlayers(int clientSocket, map<int,string> *sended){
 
 }
 
-list<PlayerEvent*> Server::recvEvents(int clientSocket){
+vector<PlayerEvent*> Server::recvEvents(int clientSocket){
 
-	list<PlayerEvent*> events;
+	vector<PlayerEvent*> events;
 
 	// 1ro recibo la cantidad de cambios que se enviaran
 	int n = ComunicationUtils::recvNumber(clientSocket);
@@ -271,30 +304,39 @@ list<PlayerEvent*> Server::recvEvents(int clientSocket){
 
 }
 
-void Server::addEventsToChanges(string playerName, list<PlayerEvent*> events){
+void Server::addEventsToChanges(string playerName, vector<PlayerEvent*> events){
 
 	for (map<string, Changes* >::iterator it = changes.begin() ; it != changes.end() ; ++it){
-		if (it->first != playerName){
+		if (it->first != playerName && !events.empty()){
+
+			vector<PlayerEvent*> eventsCopy;
+
+			for (int i = 0 ; i < events.size() ; i++)
+				eventsCopy.push_back(new PlayerEvent( *(events[i]) ) );
+
 			pthread_mutex_lock(&changes_mutex);
-			it->second->addChanges(playerName,events);
+			it->second->addChanges(playerName,eventsCopy);
 			pthread_mutex_unlock(&changes_mutex);
 		}
 	}
 
+	for (int i = 0 ; i < events.size() ; i++)
+		delete events[i];
+
 }
 
-void Server::sendEvents(int clientSocket, list<PlayerEvent*> events){
+void Server::sendEvents(int clientSocket, vector<PlayerEvent*> events){
 
 	// 1ro envio la cantidad de eventos que voy a mandar
 	ComunicationUtils::sendNumber(clientSocket,events.size());
 
-	for (list<PlayerEvent*>::iterator it = events.begin() ; it != events.end() ; ++it ){
-		ComunicationUtils::sendPlayerEvent(clientSocket,*it);
+	for (int i = 0  ; i < events.size() ; i++ ){
+		ComunicationUtils::sendPlayerEvent(clientSocket,events[i]);
 	}
 
 }
 
-void Server::sendPlayerEvents(int clientSocket, string name,list<PlayerEvent*> events){
+void Server::sendPlayerEvents(int clientSocket, string name, vector<PlayerEvent*> events){
 
 	// Envio el nombre del jugador y luego sus eventos
 	ComunicationUtils::sendString(clientSocket,name);
@@ -306,7 +348,7 @@ void Server::sendPlayerEvents(int clientSocket, string name,list<PlayerEvent*> e
 void Server::sendOthersChanges(int clientSocket, string currentPlayer){
 
 	pthread_mutex_lock(&changes_mutex);
-	map<string,list<PlayerEvent*> > others = changes[currentPlayer]->getChanges();
+	map<string,vector<PlayerEvent*> > others = changes[currentPlayer]->getChanges();
 	pthread_mutex_unlock(&changes_mutex);
 
 	// 1ro envio la cantidad de players que tuvieron eventos
@@ -314,13 +356,12 @@ void Server::sendOthersChanges(int clientSocket, string currentPlayer){
 
 	if (others.size() <= 0) return;
 
-	for (map<string, list<PlayerEvent*> >::iterator it = others.begin() ; it != others.end() ; ++it){
+	for (map<string, vector<PlayerEvent*> >::iterator it = others.begin() ; it != others.end() ; ++it){
 		sendPlayerEvents(clientSocket, it->first,it->second);
 	}
 
 	pthread_mutex_lock(&changes_mutex);
-	delete changes[currentPlayer];
-	changes[currentPlayer] = new Changes();
+	changes[currentPlayer]->resetChanges();
 	pthread_mutex_unlock(&changes_mutex);
 
 }

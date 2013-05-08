@@ -24,16 +24,19 @@ public:
 
 	void sendMap(string mapfile,int sockID);
 	PlayerInfo* recieveNewPlayer(int clientSocket);
+	int isNameAbilivable(string playerName);
+	string getAbilivableName(string playerName);
+	void sendNewName(int clientSocket, string newName);
 	int addPlayerToGame(int clientSocket, PlayerInfo* info);
 	void sendAproval(int clientSocket, int result);
 	void sendNewPlayers(int clientSocket, map<int,string> *sended);
-	list<PlayerEvent*> recvEvents(int clientSocket);
-	void addEventsToChanges(string PlayerName, list<PlayerEvent*> event);
+	vector<PlayerEvent*> recvEvents(int clientSocket);
+	void addEventsToChanges(string PlayerName, vector<PlayerEvent*> event);
 	void sendOthersChanges(int clientSocket, string currentPlayer);
 	virtual ~Server();
 private:
-	void sendPlayerEvents(int clientSocket,string name,list<PlayerEvent*> events);
-	void sendEvents(int clientSocket, list<PlayerEvent*> events);
+	void sendPlayerEvents(int clientSocket,string name, vector<PlayerEvent*> events);
+	void sendEvents(int clientSocket, vector<PlayerEvent*> events);
 
 	int serverID;
 	map<int,PlayerInfo*> gamePlayers;

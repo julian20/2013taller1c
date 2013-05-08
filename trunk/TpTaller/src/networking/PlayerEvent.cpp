@@ -14,6 +14,15 @@ PlayerEvent::PlayerEvent(){
 	this->tileCoordinates = new Coordinates();
 }
 
+PlayerEvent::PlayerEvent(const PlayerEvent &toCopy){
+
+	this->type = toCopy.type;
+	int row = toCopy.tileCoordinates->getRow();
+	int col= toCopy.tileCoordinates->getCol();
+	this->tileCoordinates = new Coordinates(row,col);
+
+}
+
 PlayerEvent::PlayerEvent(EventType type){
 	this->type = type;
 	this->tileCoordinates = new Coordinates();

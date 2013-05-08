@@ -110,6 +110,9 @@ void Client::initPlayerInfo(PlayerView* view){
 	Coordinates* c = new Coordinates(view->getPersonaje()->getCoordinates().getRow(), view->getPersonaje()->getCoordinates().getCol());
 	info->setInitCoordinates(c);
 
+	this->view = view;
+	this->player = view->getPersonaje();
+
 }
 
 void Client::registerPlayer(){
@@ -156,9 +159,9 @@ void Client::sendEvents(){
 
 }
 
-list<PlayerEvent*> Client::recvListOfEvents(){
+vector<PlayerEvent*> Client::recvListOfEvents(){
 
-	list<PlayerEvent*> events;
+	vector<PlayerEvent*> events;
 
 	int n = ComunicationUtils::recvNumber(clientID);
 	if (n <= 0) return events;
@@ -180,7 +183,7 @@ Changes* Client::recvOthersChanges(){
 	for (int i = 0 ; i < n ; i++){
 
 		string player = ComunicationUtils::recvString(clientID);
-		list<PlayerEvent*> events  = recvListOfEvents();
+		vector<PlayerEvent*> events  = recvListOfEvents();
 		changes->addChanges(player,events);
 	}
 
@@ -190,7 +193,7 @@ Changes* Client::recvOthersChanges(){
 void Client::updatePlayers(Changes* changes){
 
 	for (map<string,NetworkPlayerController*>::iterator it = controllers.begin() ; it != controllers.end() ; ++it){
-		list<PlayerEvent*> events = changes->getPlayerEvents(it->first);
+		vector<PlayerEvent*> events = changes->getPlayerEvents(it->first);
 		if (events.empty()) continue;
 
 		it->second->handleEvents(events);
@@ -200,6 +203,13 @@ void Client::updatePlayers(Changes* changes){
 
 int Client::getServerAproval(){
 	return ComunicationUtils::recvNumber(clientID);
+}
+
+void Client::recvNewName(){
+	string newName = ComunicationUtils::recvString(clientID);
+	this->player->setName(newName);
+	this->view->setShowableName(newName);
+	this->info->setName(newName);
 }
 
 void* transmit(void* _client){
@@ -213,8 +223,7 @@ void* transmit(void* _client){
 
 	int ok = client->getServerAproval();
 	if (ok != 0){
-		cout << "El servidor ha rechazado la solicitud. Ya existe un jugador con ese nombre" << endl;
-		exit(0);
+		client->recvNewName();
 	}
 
 

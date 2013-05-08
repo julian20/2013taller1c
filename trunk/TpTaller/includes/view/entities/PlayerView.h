@@ -43,6 +43,7 @@ public:
 	int getNClips();
 	void setNClips(int clips);
 	void setName(std::string name);
+	void setShowableName(string name);
 	virtual ~PlayerView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
