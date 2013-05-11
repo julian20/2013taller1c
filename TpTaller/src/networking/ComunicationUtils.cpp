@@ -16,9 +16,9 @@ namespace std {
 
 #define NUMBER_SIZE 15*sizeof(char)
 #define STRING_SIZE 150*sizeof(char)
-#define INFO_SIZE 2*(sizeof(PlayerInfo) + sizeof(Player))
-#define EVENT_SIZE 2*(sizeof(PlayerEvent) + sizeof(Coordinates))
-#define UPDATE_SIZE 2*(sizeof(PlayerUpdate) + sizeof(Vector3) + sizeof(Tile) + sizeof(Coordinates))
+#define INFO_SIZE 4*(sizeof(PlayerInfo) + sizeof(Player))
+#define EVENT_SIZE 4*(sizeof(PlayerEvent) + sizeof(Coordinates))
+#define UPDATE_SIZE 4*(sizeof(PlayerUpdate) + sizeof(Vector3) + sizeof(Tile) + sizeof(Coordinates))
 #define EXTRA 3
 
 ComunicationUtils::ComunicationUtils() {

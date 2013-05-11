@@ -143,10 +143,8 @@ void Client::checkNewPlayers(){
 			Player* player = info->getPlayer();
 			game->addNewPlayer(player,view, info->getInitCoordinates());
 
-			//Creo un eventHandler para el player que acabo de agregar
-			NetworkPlayerController* controller = new NetworkPlayerController(player,game->getMapData());
-			controllers.insert(pair<string,NetworkPlayerController*>(player->getName(),controller));
-		}
+
+	}
 
 }
 
@@ -164,42 +162,12 @@ void Client::sendEvents(){
 
 }
 
-vector<PlayerEvent*> Client::recvListOfEvents(){
-
-	vector<PlayerEvent*> events;
-
-	int n = ComunicationUtils::recvNumber(clientID);
-	if (n <= 0) return events;
-	for (int i = 0 ; i < n ; i++){
-		PlayerEvent* event = ComunicationUtils::recvPlayerEvent(clientID);
-		events.push_back(event);
-	}
-
-	return events;
-
-}
-
-Changes* Client::recvOthersChanges(){
-
-	int n = ComunicationUtils::recvNumber(clientID);
-
-	if (n <= 0) return NULL;
-	Changes* changes = new Changes();
-	for (int i = 0 ; i < n ; i++){
-
-		string player = ComunicationUtils::recvString(clientID);
-		vector<PlayerEvent*> events  = recvListOfEvents();
-		changes->addChanges(player,events);
-	}
-
-	return changes;
-}
-
 void Client::updatePlayers(map<string,PlayerUpdate*> updates){
 
 	for (map<string,PlayerUpdate*>::iterator it = updates.begin() ; it != updates.end() ; ++it){
 		if (players[it->first]){
 			players[it->first]->update(it->second);
+			players[it->first]->update();
 		}
 		delete it->second;
 	}
@@ -263,10 +231,6 @@ map<string,PlayerUpdate*> Client::recvPlayersUpdates(){
 	return updates;
 
 }
-
-void Client::sendPlayerUpdates(){
-}
-
 
 void Client::run(){
 
