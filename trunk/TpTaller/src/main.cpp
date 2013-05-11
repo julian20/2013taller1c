@@ -47,8 +47,9 @@ void initServer(PersistentConfiguration* configuration) {
 	std::string serverIP = configuration->getAnimationConfiguration()->getServerIP();
 	unsigned int serverPort = configuration->getAnimationConfiguration()->getServerPort();
 
+	MultiplayerGame* game = new MultiplayerGame(configuration);
 	Server* server = new Server(serverIP, serverPort);
-	server->run();
+	server->run(game);
 	delete server;
 }
 

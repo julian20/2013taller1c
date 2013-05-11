@@ -14,6 +14,7 @@
 #include <model/entities/Entity.h>
 #include <model/Vector2.h>	// Capas hay q volarlo
 #include <model/Vector3.h>
+#include <networking/PlayerUpdate.h>
 
 using namespace std;
 
@@ -26,6 +27,8 @@ public:
 	void moveTo(int x, int y, int z = 0);
 	void setPos(float x, float y, float z = 0);
 	void update();
+	void update(PlayerUpdate* update);
+	PlayerUpdate* generatePlayerUpdate();
 	Vector2* getMovementDirection();
 	bool IsMoving();
 	void setPosition(Position* position);
@@ -39,7 +42,7 @@ public:
 	void setViewRange(int _viewRange);
 	int getViewRange();
 	void setTile(Tile* _tile);
-	Tile getTile();
+	Tile* getTile();
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
 
@@ -47,14 +50,22 @@ public:
 	void setAsMainPlayer();
 
 	void attack();
+	void setAttack(bool attacking);
 	bool isAttacking();
 	void cancelAttack();
 
 	void block();
+	void setBlock(bool blocking);
 	void cancelBlock();
 	bool isBlocking();
 
+	void setChange(bool change);
+	bool getChange();
+
 	void stop();
+	Vector3* getEndPos();
+	void setEndPos(float x, float y, float z);
+
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const Player&);
 
@@ -81,6 +92,8 @@ private:
 
 	bool attacking;
 	bool blocking;
+
+	bool hasChange;
 };
 
 #endif	/* PERSONAJE_H */

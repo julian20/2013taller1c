@@ -9,9 +9,8 @@
 
 namespace std {
 
-NetworkPlayerController::NetworkPlayerController(Player* player,MapData* map, MapCameraView* camera) {
+NetworkPlayerController::NetworkPlayerController(Player* player,MapData* map) {
 	this->player = player;
-	this->camera = camera;
 	this->data = map;
 }
 
@@ -39,17 +38,15 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 		break;
 	}
 
+	player->setChange(true);
+
 }
 
 void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
-	Position* cameraPos = this->camera->getPosition();
 
 	if (!(tileCoord->getCol() <= 0 || tileCoord->getRow() < 0)
 			&& !(tileCoord->getCol() > data->getNCols()
 					|| tileCoord->getRow() > data->getNRows())) {
-		SDL_Rect firstTile = Tile::computePositionTile(0, 0);
-		firstTile.x = cameraPos->getX() + firstTile.x;
-		firstTile.y = cameraPos->getY() + firstTile.y;
 
 		if (player != NULL) {
 			// TODO: esto no pierde memoria a lo loco?
@@ -57,11 +54,9 @@ void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
 					new Coordinates(tileCoord->getRow(), tileCoord->getCol()));
 			data->movePersonaje(player, toTile);
 		}
+
 	}
 
-
-
-	delete cameraPos;
 }
 
 

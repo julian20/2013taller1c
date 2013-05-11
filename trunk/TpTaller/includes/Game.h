@@ -34,9 +34,9 @@
 class Game {
 public:
         Game(PersistentConfiguration* configuration, bool multiplayer);
-        MenuEvent run();
+        virtual MenuEvent run();
 
-        void addNewPlayer(Player* player, PlayerView* view, Coordinates* coords);
+        virtual void addNewPlayer(Player* player, PlayerView* view, Coordinates* coords);
         PlayerView* getPlayerView();
 
         MapCameraView* getMapCameraView();
@@ -46,6 +46,13 @@ public:
         void cleanEvents();
 
         virtual ~Game();
+protected:
+
+        MapView* mapView;
+        int fps;
+        int tempFps;
+        int fpsUpdatingTimer;
+        GameConfiguration* gameConfig;
 private:
         Mix_Music* musica;
 
@@ -53,11 +60,8 @@ private:
         SDL_Rect posFondo;
         SDL_Surface* fondo;
 
-        GameConfiguration* gameConfig;
+
         ChatWindowsView* chat;
-        MapView* mapView;
-        MapController* mapController;
-        MapCameraController* cameraController;
 
         Player* personaje;
         PlayerView* personajeVista;
@@ -65,22 +69,23 @@ private:
         list<Player*> otherPlayers;
         list<PlayerView*> otherPlayerViews;
 
+        MapController* mapController;
+        MapCameraController* cameraController;
+
+        void applyFPS(int timer);
         void initMusic();
         void initScreen();
         void draw();
         void setUpCharacters(MapView* map,MapData* mapData,EntityViewMap* viewMap);
         void setUpEntities(MapView* map,MapData* mapData);
-
         void playersUpdate();
 
 
 
+
         //FPS Crap
-        void applyFPS(int timer);
+
         TextHandler* textHandler;
-        int fps;
-        int tempFps;
-        int fpsUpdatingTimer;
 
         bool openAudio;
 

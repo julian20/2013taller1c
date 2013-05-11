@@ -224,6 +224,16 @@ istream& operator >>(std::istream& in , PlayerInfo& info){
 	return in;
 }
 
+void PlayerInfo::updatePlayer(PlayerUpdate* update){
+	Player* player = this->getPlayer();
+	player->setCoordinates(update->getInitCoordinates()->getRow(),update->getInitCoordinates()->getCol());
+	player->setSpeed(update->getSpeed());
+	player->setPos(update->getCurrentPos()->getX(),update->getCurrentPos()->getY(),update->getCurrentPos()->getZ());
+	player->setEndPos(update->getEndPos()->getX(),update->getEndPos()->getY(), update->getEndPos()->getZ());
+	player->setAttack(update->isAttacking());
+	player->setBlock(update->isBlocking());
+	player->setTile(update->getTile());
+}
 
 PlayerInfo::~PlayerInfo() {
 	if (anchorPixel) delete anchorPixel;

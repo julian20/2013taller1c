@@ -33,8 +33,10 @@ public:
 	void recvNewName();
 	void checkNewPlayers();
 	void sendEvents();
+	void sendPlayerUpdates();
 	Changes* recvOthersChanges();
-	void updatePlayers(Changes* changes);
+	map<string,PlayerUpdate*> recvPlayersUpdates();
+	void updatePlayers(map<string,PlayerUpdate*> updates);
 
 	virtual ~Client();
 private:

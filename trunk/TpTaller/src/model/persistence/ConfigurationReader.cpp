@@ -1255,7 +1255,7 @@ void operator >>(const YAML::Node& yamlNode, Tile* tile) {
 void operator >>(const YAML::Node& yamlNode, AuxMap& destMap) {
 	const YAML::Node& tileList = yamlNode["tileLocations"];
 	for (unsigned i = 0; i < tileList.size(); i++) {
-		Tile* tile = new Tile(NULL, "");
+		Tile* tile = new Tile();
 		try {
 			tileList[i] >> tile;
 			stringstream sRow;
@@ -1369,7 +1369,7 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		Player* personaje = (Player*) parsedEntityView->getEntity();
 
 		entityViewMap->positionEntityView(parsedEntityView,
-				personaje->getCoordinates());
+				*(personaje->getCoordinates()));
 	}
 
 }
@@ -1381,8 +1381,8 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		EntityView* parsedEntityView = entityViewVector[j];
 		Entity* entity = parsedEntityView->getEntity();
 
-		Coordinates coordinates = Coordinates(entity->getCoordinates().getRow(),
-				entity->getCoordinates().getCol());
+		Coordinates coordinates = Coordinates(entity->getCoordinates()->getRow(),
+				entity->getCoordinates()->getCol());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}
@@ -1393,8 +1393,8 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
 	for (unsigned i = 0; i < entities.size(); i++) {
 		Entity* currentEntity = entities[i];
-		Coordinates coor = currentEntity->getCoordinates();
-		mapData->addEntity(coor.getRow(), coor.getCol(), currentEntity);
+		Coordinates* coor = currentEntity->getCoordinates();
+		mapData->addEntity(coor->getRow(), coor->getCol(), currentEntity);
 	}
 }
 std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,

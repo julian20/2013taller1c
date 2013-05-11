@@ -97,6 +97,7 @@ void Client::downloadMap(){
 
 void Client::initPlayerInfo(PlayerView* view){
 	this->info = new PlayerInfo();
+	info->setName(view->getPersonaje()->getName());
 	info->setWalkingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(WALKING_MODIFIER) ));
 	info->setRunningImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(RUNNING_MODIFIER) ));
 	info->setIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_MODIFIER) ));
@@ -107,11 +108,12 @@ void Client::initPlayerInfo(PlayerView* view){
 	info->setFPS(view->getFps());
 	info->setImageDimentions(view->getImageWidth(), view->getImageHeight());
 	info->setPlayer(view->getPersonaje());
-	Coordinates* c = new Coordinates(view->getPersonaje()->getCoordinates().getRow(), view->getPersonaje()->getCoordinates().getCol());
+	Coordinates* c = new Coordinates(view->getPersonaje()->getCoordinates()->getRow(), view->getPersonaje()->getCoordinates()->getCol());
 	info->setInitCoordinates(c);
 
 	this->view = view;
 	this->player = view->getPersonaje();
+	this->players[view->getPersonaje()->getName()] = this->player;
 
 }
 
@@ -130,6 +132,9 @@ void Client::checkNewPlayers(){
 
 		// SI NO HA SIDO ENVIADO, LO ENVIO
 			PlayerInfo* info = ComunicationUtils::recvPlayerInfo(clientID);
+
+			if (players.count(info->getPlayer()->getName()) > 0) return;
+
 			players.insert( pair<string,Player*>(info->getPlayer()->getName(), info->getPlayer()) );
 			cout << info->getPlayer()->getName() << " has conected..." << endl;
 
@@ -139,7 +144,7 @@ void Client::checkNewPlayers(){
 			game->addNewPlayer(player,view, info->getInitCoordinates());
 
 			//Creo un eventHandler para el player que acabo de agregar
-			NetworkPlayerController* controller = new NetworkPlayerController(player,game->getMapData(), game->getMapCameraView());
+			NetworkPlayerController* controller = new NetworkPlayerController(player,game->getMapData());
 			controllers.insert(pair<string,NetworkPlayerController*>(player->getName(),controller));
 		}
 
@@ -190,13 +195,13 @@ Changes* Client::recvOthersChanges(){
 	return changes;
 }
 
-void Client::updatePlayers(Changes* changes){
+void Client::updatePlayers(map<string,PlayerUpdate*> updates){
 
-	for (map<string,NetworkPlayerController*>::iterator it = controllers.begin() ; it != controllers.end() ; ++it){
-		vector<PlayerEvent*> events = changes->getPlayerEvents(it->first);
-		if (events.empty()) continue;
-
-		it->second->handleEvents(events);
+	for (map<string,PlayerUpdate*>::iterator it = updates.begin() ; it != updates.end() ; ++it){
+		if (players[it->first]){
+			players[it->first]->update(it->second);
+		}
+		delete it->second;
 	}
 
 }
@@ -230,14 +235,36 @@ void* transmit(void* _client){
 	while (playing){
 		client->checkNewPlayers();
 		client->sendEvents();
-		Changes* changes = client->recvOthersChanges();
-		if (!changes) continue;
-		client->updatePlayers(changes);
-		delete changes;
+		map<string,PlayerUpdate*> updates = client->recvPlayersUpdates();
+		if (!updates.empty()) client->updatePlayers(updates);
+
 	}
 
 
 	return NULL;
+}
+
+map<string,PlayerUpdate*> Client::recvPlayersUpdates(){
+
+	map<string,PlayerUpdate*> updates;
+
+	int nUpdates = ComunicationUtils::recvNumber(clientID);
+	if (nUpdates <= 0) return updates;
+
+	for (int i = 0 ; i < nUpdates ; i++){
+
+		PlayerUpdate* update = ComunicationUtils::recvPlayerUpdate(clientID);
+		string name = update->getName();
+
+		updates[name] = update;
+
+	}
+
+	return updates;
+
+}
+
+void Client::sendPlayerUpdates(){
 }
 
 

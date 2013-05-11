@@ -19,7 +19,7 @@ namespace std {
 
 class NetworkPlayerController : public PlayerController {
 public:
-	NetworkPlayerController(Player* player,MapData* map, MapCameraView* camera);
+	NetworkPlayerController(Player* player,MapData* map);
 	void handleEvents(vector<PlayerEvent*>);
 	void movePlayer(Coordinates* tileCoord);
 	Player* getPlayer();

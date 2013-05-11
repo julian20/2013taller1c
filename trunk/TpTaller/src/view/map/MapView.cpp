@@ -10,9 +10,11 @@ MapView::MapView(MapData* inputData, SDL_Surface* inputScreen,
 	screen = inputScreen;
 	data = inputData;
 	viewMap = map;
+	if (inputScreen != NULL) {
 	Position* cameraPos = new Position(screen->w / 2, screen->h / 2);
 	camera = new MapCameraView(cameraPos, screen, data->getNRows(),
 			data->getNCols());
+	}
 	entitiesView = NULL;
 	player = NULL;
 

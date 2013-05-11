@@ -59,8 +59,8 @@ void EntityViewMap::updateMovablePos() {
 		EntityView* entityView = *it;
 		Entity* entity = entityView->getEntity();
 
-		int initRow = entity->getCoordinates().getRow();
-		int initCol = entity->getCoordinates().getCol();
+		int initRow = entity->getCoordinates()->getRow();
+		int initCol = entity->getCoordinates()->getCol();
 		Vector3* entityPos = entity->getCurrentPos();
 		Coordinates* c = Tile::getTileCoordinates(entityPos->getX(),
 				entityPos->getY());

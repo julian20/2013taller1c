@@ -39,6 +39,7 @@
 using namespace std;
 
 pthread_mutex_t changes_mutex;
+pthread_mutex_t playerInfo_mutex;
 
 
 Server::Server(string host, int port) {
@@ -110,13 +111,28 @@ void Server::sendNewName(int clientSocket, string newName){
 	ComunicationUtils::sendString(clientSocket, newName);
 }
 
+MultiplayerGame* Server::getGame(){
+	return game;
+}
+
+void Server::getPlayersUpdates(){
+
+	for (map<string,int>::iterator it = playerNames.begin() ; it != playerNames.end() ; ++it) {
+
+		updates[it->first] = game->getPlayersUpdates();
+
+//		if (update != NULL) delete update;
+	}
+
+}
+
 void* handle(void* par){
 
 	/* send(), recv(), close() */
 		ThreadParameter* parameter = (ThreadParameter*) par;
 		int clientSocket = parameter->clientID;
 		Server* server = parameter->server;
-
+		MultiplayerGame* game = server->getGame();
 
 		//Lo primero que hago es mandar el mapa.
 		//server->sendMap(std::string(MAPFILE),clientSocket);
@@ -125,6 +141,7 @@ void* handle(void* par){
 		//TODO : sendResources(sockID);
 
 		map<int,string> sended;
+
 
 
 		PlayerInfo* info = server->recieveNewPlayer(clientSocket);
@@ -153,12 +170,20 @@ void* handle(void* par){
 			 */
 			server->sendNewPlayers(clientSocket, &sended);
 			vector<PlayerEvent*> events = server->recvEvents(clientSocket);
-			if (!events.empty()) server->addEventsToChanges(playerName,events);
-			server->sendOthersChanges(clientSocket, playerName);
+			if (!events.empty()) game->addEventsToHandle(playerName,events);
+
+			server->getPlayersUpdates();
+			server->sendPlayersUpdates(clientSocket, playerName);
 
 		}
 		return NULL;
 
+}
+
+void* runGameBackEnd(void* parameter){
+	MultiplayerGame* game = (MultiplayerGame*) parameter;
+	game->run();
+	return NULL;
 }
 
 void* readEvents(void* par ){
@@ -180,17 +205,24 @@ void* readEvents(void* par ){
 }
 
 
-void Server::run(){
+void Server::run(MultiplayerGame* game){
+	this->game = game;
 	pthread_t thread;
+	pthread_t gameThread;
+	pthread_t eventThread;
 	pthread_attr_t        attr;
 	pthread_attr_init(&attr);
 
-	pthread_create(&thread,&attr,readEvents,NULL);
+	pthread_create(&eventThread,&attr,readEvents,NULL);
 
 	/* Listen */
 	if (listen(serverID, BACKLOG) == -1) {
 		perror("listen");
 	}
+
+
+	pthread_create(&gameThread,&attr,runGameBackEnd,(void*)game);
+
 
 	/* Main loop */
 	while (1) {
@@ -249,11 +281,15 @@ int Server::addPlayerToGame(int clientSocket, PlayerInfo* info){
 		return 1;
 	}
 
+	game->addNewPlayer(info->getPlayer(), info->getInitCoordinates());
+
+
 	gamePlayers[clientSocket] = info;
 	playerNames[info->getPlayer()->getName()] = clientSocket;
-	pthread_mutex_lock(&changes_mutex);
-	changes.insert( pair<string,Changes*>(info->getPlayer()->getName(), new Changes() ) );
-	pthread_mutex_unlock(&changes_mutex);
+	updates[info->getPlayer()->getName()] = vector<PlayerUpdate*>();
+//	pthread_mutex_lock(&changes_mutex);
+//	changes.insert( pair<string,Changes*>(info->getPlayer()->getName(), new Changes() ) );
+//	pthread_mutex_unlock(&changes_mutex);
 
 	return 0;
 
@@ -303,6 +339,37 @@ vector<PlayerEvent*> Server::recvEvents(int clientSocket){
 	return events;
 
 }
+
+PlayerUpdate* Server::recvUpdates(int clientSocket){
+	return ComunicationUtils::recvPlayerUpdate(clientSocket);
+}
+
+void Server::sendPlayersUpdates(int clientSocket, string playerName){
+
+	int size = updates[playerName].size();
+	// Mando la cantidad de actualizaciones
+	ComunicationUtils::sendNumber(clientSocket,updates[playerName].size());
+
+	for (int i = 0 ; i < size ; i++){
+
+		// Envio la actualizacion
+		ComunicationUtils::sendPlayerUpdate(clientSocket,updates[playerName][i]);
+		delete updates[playerName][i];
+
+	}
+
+
+	updates[playerName].clear();
+
+
+}
+
+void Server::updatePlayerInfo(int clientSocket, PlayerUpdate* update){
+
+	gamePlayers[clientSocket]->updatePlayer(update);
+
+}
+
 
 void Server::addEventsToChanges(string playerName, vector<PlayerEvent*> events){
 

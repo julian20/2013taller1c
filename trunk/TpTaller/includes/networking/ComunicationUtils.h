@@ -10,6 +10,7 @@
 
 #include <networking/PlayerEvent.h>
 #include <networking/PlayerInfo.h>
+#include <networking/PlayerUpdate.h>
 #include <networking/Changes.h>
 
 #include <string>
@@ -29,6 +30,10 @@ public:
 
 	static void 		sendPlayerEvent(int sockID,PlayerEvent* event);
 	static PlayerEvent* recvPlayerEvent(int sockID);
+
+	static void			sendPlayerUpdate(int sockID,PlayerUpdate* update);
+	static PlayerUpdate* recvPlayerUpdate(int sockID);
+
 private:
 	ComunicationUtils();
 	virtual ~ComunicationUtils();

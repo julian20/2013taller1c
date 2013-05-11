@@ -18,6 +18,7 @@ namespace std {
 #define STRING_SIZE 150*sizeof(char)
 #define INFO_SIZE 2*(sizeof(PlayerInfo) + sizeof(Player))
 #define EVENT_SIZE 2*(sizeof(PlayerEvent) + sizeof(Coordinates))
+#define UPDATE_SIZE 2*(sizeof(PlayerUpdate) + sizeof(Vector3) + sizeof(Tile) + sizeof(Coordinates))
 #define EXTRA 3
 
 ComunicationUtils::ComunicationUtils() {
@@ -127,6 +128,34 @@ PlayerEvent* ComunicationUtils::recvPlayerEvent(int sockID){
 	eventstream >> *event;
 
 	return event;
+
+}
+
+void ComunicationUtils::sendPlayerUpdate(int sockID,PlayerUpdate* update){
+
+	int size = UPDATE_SIZE;
+	stringstream updatestream;
+	updatestream << *update;
+
+	send(sockID,updatestream.str().c_str(), size, MSG_EOR);
+
+}
+
+PlayerUpdate* ComunicationUtils::recvPlayerUpdate(int sockID){
+
+	int size = UPDATE_SIZE;
+	char updatebuffer[size];
+	stringstream updatestream;
+
+	recv(sockID,updatebuffer,size,MSG_EOR);
+
+	updatestream << updatebuffer;
+
+	PlayerUpdate* update = new PlayerUpdate();
+
+	updatestream >> *update;
+
+	return update;
 
 }
 

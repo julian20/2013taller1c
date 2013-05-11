@@ -35,7 +35,7 @@ Vector2* Speed::getDirection() {
 }
 
 void Speed::setDirection(Vector2* direction) {
-	this->direction = direction;
+	this->direction->setValues(direction->getX(),direction->getY());
 }
 
 Speed& Speed::operator=(Speed &other) {
