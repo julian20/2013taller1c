@@ -61,7 +61,7 @@ public:
 
 // Error Log.
 Logs errorLog;
-TextureHolder* textureHolder = new TextureHolder();
+TextureHolder* textureHolder = NULL;
 int rows;
 int cols;
 
@@ -1162,7 +1162,6 @@ void operator >>(const YAML::Node& yamlNode,
 	checkValues(&auxTileWidth, string("TileWidth"), DEFAULT_TILE_WIDTH);
 	checkValues(&auxTileHeight, string("TileHeight"), DEFAULT_TILE_HEIGHT);
 
-
 	animationConfig->setServerIP(auxIP);
 	animationConfig->setServerPort((unsigned int) auxPort);
 	animationConfig->setDelay((unsigned int) auxDelay);
@@ -1381,14 +1380,14 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		EntityView* parsedEntityView = entityViewVector[j];
 		Entity* entity = parsedEntityView->getEntity();
 
-		Coordinates coordinates = Coordinates(entity->getCoordinates()->getRow(),
+		Coordinates coordinates = Coordinates(
+				entity->getCoordinates()->getRow(),
 				entity->getCoordinates()->getCol());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}
 
 }
-
 
 void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
 	for (unsigned i = 0; i < entities.size(); i++) {
@@ -1494,6 +1493,11 @@ void setDefaultGameConfiguration(GameConfiguration* gameConf) {
 PersistentConfiguration ConfigurationReader::loadConfiguration(
 		std::string configurationFile, std::string outputFilename) {
 
+	if(textureHolder != NULL) {
+		delete textureHolder;
+	}
+	textureHolder = new TextureHolder();
+
 	/**
 	 * TODO: hacer free de los structs auxiliares luego
 	 * de parsear.
@@ -1580,6 +1584,77 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 //	printTextureHolder(textureHolder, outputFile);
 //	printMapConfiguration(mapConfiguration, outputFile);
 	printHeader("END OF PARSER");
+
+	return configuration;
+}
+
+ServerMapPersistentConfiguration ConfigurationReader::loadServerMapConfiguration(
+		std::string configurationFile) {
+
+	if(textureHolder != NULL) {
+		delete textureHolder;
+	}
+	textureHolder = new TextureHolder();
+
+	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
+
+	// Error Check
+	if (!inputFile) {
+		//cout << "No se encontro el archivo de configuracion" << std::endl;
+		Logs::logErrorMessage(
+				string("No se encontro el archivo de configuracion: "));
+		exit(1);
+	}
+
+	// Parser initialization.
+	YAML::Parser parser(inputFile);
+	YAML::Node yamlNode;
+	parser.GetNextDocument(yamlNode);
+
+	// Parsing EntityViews.
+	std::vector<EntityView*> entityViewVector;
+	yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
+
+	// Parsing animation configuration.
+	GameConfiguration* animationConfig = new GameConfiguration();
+	yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
+
+	// Parsing tile definition.
+	yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
+
+	// Parsing map dimensions.
+	AuxMap mapConfiguration;
+	AuxMapDimension mapDimension;
+	yamlNode[MAP_DIMENSION_POSITION] >> mapDimension;
+	mapConfiguration.dimension = mapDimension;
+
+	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
+			mapConfiguration.dimension.ncols);
+
+	// Parsing player locations.
+	std::vector<Entity*> entityVector;
+	yamlNode[ENTITY_LOCATIONS_POSITION] >> entityVector;
+
+	// Assigning Entities to EntityViews.
+	std::vector<EntityView*> cleanEntityViews = assignEntities(entityViewVector,
+			entityVector);
+	assignEntities(mapData, entityVector);
+	cleanUnusedViews(entityViewVector);
+
+	// Parsing map tile locations.
+	yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
+	mapConfiguration >> mapData;
+
+	// Create entityViewMap:
+	EntityViewMap* entityViewMap = new EntityViewMap(mapData);
+	loadEntityViewMap(entityViewMap, cleanEntityViews);
+
+	ServerMapPersistentConfiguration configuration =
+			ServerMapPersistentConfiguration();
+	configuration.setEntityViewMap(entityViewMap);
+	configuration.setTextureHolder(textureHolder);
+	configuration.setMapData(mapData);
+	configuration.setAnimationConfiguration(animationConfig);
 
 	return configuration;
 }
