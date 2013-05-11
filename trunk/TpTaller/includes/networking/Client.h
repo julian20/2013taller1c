@@ -9,7 +9,6 @@
 #define CLIENT_H_
 
 #include <networking/PlayerInfo.h>
-#include <networking/Changes.h>
 #include <networking/NetworkPlayerController.h>
 #include <model/entities/player/Player.h>
 #include <view/entities/PlayerView.h>
@@ -33,22 +32,17 @@ public:
 	void recvNewName();
 	void checkNewPlayers();
 	void sendEvents();
-	void sendPlayerUpdates();
-	Changes* recvOthersChanges();
 	map<string,PlayerUpdate*> recvPlayersUpdates();
 	void updatePlayers(map<string,PlayerUpdate*> updates);
 
 	virtual ~Client();
 private:
 
-	PlayerInfo* recivePlayerInfo();
 	void sendEvent(PlayerEvent* event);
-	vector<PlayerEvent*> recvListOfEvents();
 
 	int clientID;
 	Game* game;
 	map<string, Player*> players;
-	map<string,NetworkPlayerController*> controllers;
 	PlayerInfo* info;
 	vector<PlayerEvent*> events;
 

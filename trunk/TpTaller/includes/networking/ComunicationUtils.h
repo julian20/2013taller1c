@@ -11,7 +11,6 @@
 #include <networking/PlayerEvent.h>
 #include <networking/PlayerInfo.h>
 #include <networking/PlayerUpdate.h>
-#include <networking/Changes.h>
 
 #include <string>
 

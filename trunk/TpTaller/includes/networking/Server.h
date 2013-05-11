@@ -8,7 +8,6 @@
 #ifndef SERVER_H_
 #define SERVER_H_
 
-#include <networking/Changes.h>
 #include <networking/PlayerEvent.h>
 #include <networking/PlayerInfo.h>
 #include <MultiplayerGame.h>
@@ -36,26 +35,19 @@ public:
 	void sendNewPlayers(int clientSocket, map<int,string> *sended);
 
 	vector<PlayerEvent*> recvEvents(int clientSocket);
-	void addEventsToChanges(string PlayerName, vector<PlayerEvent*> event);
-	void sendOthersChanges(int clientSocket, string currentPlayer);
 
-	PlayerUpdate* recvUpdates(int clientSocket);
 	void getPlayersUpdates();
 	void sendPlayersUpdates(int clientSocket, string playerName);
-	void updatePlayerInfo(int clientSocket, PlayerUpdate* update);
 
 	MultiplayerGame* getGame();
 
 	virtual ~Server();
 private:
-	void sendPlayerEvents(int clientSocket,string name, vector<PlayerEvent*> events);
-	void sendEvents(int clientSocket, vector<PlayerEvent*> events);
 
 	int serverID;
 	MultiplayerGame* game;
 	map<int,PlayerInfo*> gamePlayers;
 	map<string,int> playerNames;
-	map<string,Changes*> changes;
 	map<string,vector<PlayerUpdate*> > updates;
 };
 
