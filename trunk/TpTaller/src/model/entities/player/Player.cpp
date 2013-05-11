@@ -82,7 +82,7 @@ void Player::update(PlayerUpdate* update){
 	this->attacking = update->isAttacking();
 	this->blocking = update->isBlocking();
 	this->currentTile = update->getTile();
-	this->coord = update->getInitCoordinates();
+	//this->coord = update->getInitCoordinates();
 
 }
 
