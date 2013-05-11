@@ -339,9 +339,9 @@ void printPath(list<Tile *>* path) {
 }
 
 void MapData::movePersonaje(Player* personaje, Tile* toTile) {
-	Tile fromTile = personaje->getTile();
+	Tile* fromTile = personaje->getTile();
 
-	list<Tile *> *path = getPath(&fromTile, toTile);
+	list<Tile *> *path = getPath(fromTile, toTile);
 	delete (toTile);
 	personaje->assignPath(path);
 
@@ -393,11 +393,11 @@ void MapData::updateVisibleTiles() {
 	for (int row = topRow; row < bottomRow + 2; row++) {
 		for (int col = leftCol; col < rightCol + 2; col++) {
 
-			Tile playerTile = mainPlayer->getTile();
+			Tile* playerTile = mainPlayer->getTile();
 			Tile currentTile;
 			currentTile.setCoordinates(row, col);
 
-			if (distBetweenTiles(&currentTile, &playerTile)
+			if (distBetweenTiles(&currentTile, playerTile)
 					< mainPlayer->getViewRange()) {
 
 				TileData* tileData = getTileData(row, col);

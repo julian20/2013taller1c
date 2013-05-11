@@ -55,7 +55,7 @@ void Tile::setPosition(int x, int y, int z) {
 }
 
 void Tile::setPosition(Position* position) {
-	this->position = position;
+	this->position->changeTo(position->getX(),position->getY(), position->getZ());
 }
 
 Coordinates Tile::getCoordinates() {

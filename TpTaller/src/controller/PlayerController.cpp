@@ -30,6 +30,7 @@ void PlayerController::movePlayer(int x, int y) {
 
 	if (listEvents){
 		events.push_back(new PlayerEvent(EVENT_MOVE,*coor));
+		return;
 	}
 
 	if (!(coor->getCol() <= 0 || coor->getRow() < 0)
@@ -80,10 +81,17 @@ MapData* PlayerController::getMapData() {
 //TODO - hardcoded
 void PlayerController::toggleRunning() {
 	if (player->isRunning()){
+		if (listEvents){
+			events.push_back(new PlayerEvent(EVENT_WALKING));
+			return;
+		}
 		player->setSpeedMagnitude(player->getSpeed()->getMagnitude() / 2);
-		if (listEvents)
-				events.push_back(new PlayerEvent(EVENT_WALKING));
+
 	}else {
+		if (listEvents) {
+			events.push_back(new PlayerEvent(EVENT_RUNNING));
+			return;
+		}
 		player->setSpeedMagnitude(player->getSpeed()->getMagnitude() * 2);
 		if (listEvents)
 				events.push_back(new PlayerEvent(EVENT_RUNNING));
@@ -91,21 +99,29 @@ void PlayerController::toggleRunning() {
 }
 
 void PlayerController::playerAttack() {
+	if (listEvents){
+		events.push_back(new PlayerEvent(EVENT_ATTACK));
+		return;
+	}
 	player->attack();
-	if (listEvents)
-			events.push_back(new PlayerEvent(EVENT_ATTACK));
 }
 
 void PlayerController::playerBlock() {
+	if (listEvents){
+		events.push_back(new PlayerEvent(EVENT_BLOCK));
+		return;
+	}
 	player->block();
-	if (listEvents)
-			events.push_back(new PlayerEvent(EVENT_BLOCK));
+
 }
 
 void PlayerController::playerCancelBlock() {
-	player->cancelBlock();
-	if (listEvents)
+	if (listEvents){
 		events.push_back(new PlayerEvent(EVENT_CANCEL_BLOCK));
+		return;
+	}
+	player->cancelBlock();
+
 }
 
 void PlayerController::generateEventList(bool activated){

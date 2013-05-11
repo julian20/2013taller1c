@@ -19,6 +19,7 @@ Player::Player() {
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	attacking = false;
 	blocking = false;
+	hasChange = true;
 }
 
 void Player::setPos(float x, float y, float z) {
@@ -70,6 +71,38 @@ void Player::update() {
 		moveDirection->multiplyBy(getSpeed()->getMagnitude());
 		currentPos->add(moveDirection);
 	}
+}
+
+void Player::update(PlayerUpdate* update){
+
+	this->currentPos->setValues(update->getCurrentPos()->getX(),update->getCurrentPos()->getY(),update->getCurrentPos()->getZ());
+	this->endPos->setValues(update->getEndPos()->getX(),update->getEndPos()->getY(),update->getEndPos()->getZ());
+	this->speed->setMagnitude(update->getSpeed()->getMagnitude());
+	this->speed->setDirection(update->getSpeed()->getDirection());
+	this->attacking = update->isAttacking();
+	this->blocking = update->isBlocking();
+	this->currentTile = update->getTile();
+	this->coord = update->getInitCoordinates();
+
+}
+
+PlayerUpdate* Player::generatePlayerUpdate(){
+
+	if (!this->hasChange) return NULL;
+
+	PlayerUpdate* update = new PlayerUpdate();
+
+	update->setName(this->name);
+
+	update->setCurrentPos(this->currentPos);
+	update->setEndPos(this->endPos);
+	update->setSpeed(this->speed);
+	update->setAttacking(this->attacking);
+	update->setBlocking(this->blocking);
+	update->setTile(this->currentTile);
+	update->setInitCoordinates(this->coord);
+
+	return update;
 }
 
 void Player::loadNextPosition() {
@@ -182,9 +215,9 @@ void Player::setTile(Tile* _tile) {
 	// Las coordinates se actualizan en EntityViewMap
 }
 
-Tile Player::getTile() {
-	Tile retval;
-	retval.setCoordinates(currentTile->getCoordinates());
+Tile* Player::getTile() {
+	Tile* retval = new Tile();
+	retval->setCoordinates(currentTile->getCoordinates());
 
 	return retval;
 }
@@ -205,16 +238,30 @@ void Player::attack() {
 	attacking = true;
 }
 
+void Player::setAttack(bool attacking){
+	this->attacking = attacking;
+}
+
 void Player::cancelAttack() {
-	attacking = false;
+	if (attacking){
+		attacking = false;
+		hasChange = true;
+	}
 }
 
 void Player::block() {
 	blocking = true;
 }
 
+void Player::setBlock(bool blocking){
+	this->blocking = blocking;
+}
+
 void Player::cancelBlock() {
-	blocking = false;
+	if (blocking){
+		blocking = false;
+		hasChange = true;
+	}
 }
 
 bool Player::isBlocking() {
@@ -314,3 +361,18 @@ istream& operator >>(std::istream& in, Player& player) {
 	return in;
 }
 
+Vector3* Player::getEndPos(){
+	return endPos;
+}
+
+void Player::setEndPos(float x, float y, float z){
+	endPos->setValues(x, y, z);
+}
+
+void Player::setChange(bool change){
+	hasChange = change;
+}
+
+bool Player::getChange(){
+	return hasChange;
+}

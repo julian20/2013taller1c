@@ -90,8 +90,8 @@ void Game::setUpCharacters(MapView* map, MapData* mapData, EntityViewMap* viewMa
 						//TODO - Lucas: "personaje" deberia ser una lista de personajes
 						personaje = (Player*) entity;
 
-						Coordinates coord = personaje->getCoordinates();
-						mapData->addPersonaje(coord.getRow(), coord.getCol(), personaje);
+						Coordinates* coord = personaje->getCoordinates();
+						mapData->addPersonaje(coord->getRow(), coord->getCol(), personaje);
 					}
 				}
 			}
@@ -184,18 +184,8 @@ MenuEvent Game::run() {
 			if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
 				exit = true;
 		}
-		//Actualizo la parte visual, sin mostrarla todavia
-		//1. Mapa
-		// mapView->update();
-		// 2. Entidades estaticas
-		//       refreshEntities();
-		// 3. Personaje/s
+
 		playersUpdate();
-
-		// En un futuro, aca se comprueban las colisiones.
-		// y se corrige la posicion del personaje.
-
-		// Dibujo}
 
 		draw();
 
@@ -246,9 +236,11 @@ void Game::initMusic() {
 void Game::playersUpdate(){
 
 	personaje->update();
+	personaje->setChange(false);
 
 	for ( list<Player*>::iterator player = otherPlayers.begin() ; player != otherPlayers.end() ; ++player ){
 		(*player)->update();
+		(*player)->setChange(false);
 	}
 
 }

@@ -98,8 +98,8 @@
     gameMusic: resources/sound/NamiLogin.ogg
     fullscreen: false
     screenAutoConfig: false
-    defaultScreenHeight: 600
-    defaultScreenWidth: 600
+    defaultScreenHeight: 700
+    defaultScreenWidth: 1200
     defaultBPP: 0
     menuBackImage: resources/lich.jpg
     menuBackMusic: resources/sound/QuinnLogin.ogg
@@ -133,7 +133,7 @@
 - mapDimensions: [50, 50]
 - playerLocations:
   - name: NewPlayer
-    position: [10, 10, 0]
+    position: [11, 12, 0]
     speed:
       magnitude: 4
       direction: [1, 2]

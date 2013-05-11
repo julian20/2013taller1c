@@ -9,6 +9,7 @@
 #define PLAYERINFO_H_
 
 #include <string>
+#include <networking/PlayerUpdate.h>
 #include <model/Vector2.h>
 #include <model/Vector3.h>
 #include <model/entities/player/Player.h>
@@ -59,6 +60,7 @@ public:
 	int getFPS();
 
 	PlayerView* createPlayerView();
+	void updatePlayer(PlayerUpdate* update);
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const PlayerInfo&);
