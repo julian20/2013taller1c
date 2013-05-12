@@ -25,16 +25,18 @@
 using namespace std;
 
 void initGame(PersistentConfiguration* configuration) {
-	Game* game = new Game(configuration,false);
+	Game* game = new Game(configuration, false);
 	game->run();
 	delete game;
 }
 
 void initMultiplayerGame(PersistentConfiguration* configuration) {
-	std::string serverIP = configuration->getAnimationConfiguration()->getServerIP();
-	unsigned int serverPort = configuration->getAnimationConfiguration()->getServerPort();
+	std::string serverIP =
+			configuration->getAnimationConfiguration()->getServerIP();
+	unsigned int serverPort =
+			configuration->getAnimationConfiguration()->getServerPort();
 
-	Game* game = new Game(configuration,true);
+	Game* game = new Game(configuration, true);
 	Client* client = new Client(serverIP, serverPort, game);
 	client->initPlayerInfo(game->getPlayerView());
 	client->run();
@@ -44,8 +46,10 @@ void initMultiplayerGame(PersistentConfiguration* configuration) {
 }
 
 void initServer(PersistentConfiguration* configuration) {
-	std::string serverIP = configuration->getAnimationConfiguration()->getServerIP();
-	unsigned int serverPort = configuration->getAnimationConfiguration()->getServerPort();
+	std::string serverIP =
+			configuration->getAnimationConfiguration()->getServerIP();
+	unsigned int serverPort =
+			configuration->getAnimationConfiguration()->getServerPort();
 
 	MultiplayerGame* game = new MultiplayerGame(configuration);
 	Server* server = new Server(serverIP, serverPort);
@@ -97,7 +101,6 @@ void initMenu(PersistentConfiguration* configuration) {
  */
 int main(int argc, char** argv) {
 
-
 	Logs unLog;
 	Logs::openFile();
 	Logs::logErrorMessage(
@@ -107,9 +110,12 @@ int main(int argc, char** argv) {
 	// Lectura del archivo de configuracion
 	ConfigurationReader cfgReader = ConfigurationReader();
 	try {
-		PersistentConfiguration configuration = cfgReader.loadConfiguration(
-				CONFIGURATION_FILE, OUTPUT_FILENAME);
-		initMenu(&configuration);
+		/*PersistentConfiguration configuration = cfgReader.loadConfiguration(
+		 CONFIGURATION_FILE, OUTPUT_FILENAME);*/
+		//initMenu(&configuration);
+		ServerMapPersistentConfiguration configuration =
+				cfgReader.loadServerMapConfiguration(
+						"./configuration/serverMapConfiguration.yaml");
 	} catch (std::exception& e) {
 		unLog.logErrorMessage(
 				string("Configuration syntax error, ") + e.what()
