@@ -102,6 +102,7 @@ PlayerUpdate* Player::generatePlayerUpdate(){
 	update->setTile(this->currentTile);
 	update->setInitCoordinates(this->coord);
 
+
 	return update;
 }
 
