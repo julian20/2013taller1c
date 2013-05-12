@@ -117,11 +117,14 @@ void Client::initPlayerInfo(PlayerView* view){
 
 	this->view = view;
 	this->player = view->getPersonaje();
-
 }
 
 void Client::registerPlayer(){
 	ComunicationUtils::sendPlayerInfo(clientID,info);
+}
+
+void Client::addLocalPlayer(){
+	this->players.insert(pair<string,Player*>(player->getName(), player));
 }
 
 void Client::checkNewPlayers(){
@@ -209,6 +212,7 @@ void* transmit(void* _client){
 		client->recvNewName();
 	}
 
+	client->addLocalPlayer();
 
 	while (playing){
 		client->checkNewPlayers();
