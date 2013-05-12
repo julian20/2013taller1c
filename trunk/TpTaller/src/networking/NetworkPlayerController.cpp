@@ -27,6 +27,9 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 	case EVENT_ATTACK:
 		this->playerAttack();
 		break;
+	case EVENT_CANCEL_ATTACK:
+		this->playerCancelAttack();
+		break;
 	case EVENT_BLOCK:
 		this->playerBlock();
 		break;

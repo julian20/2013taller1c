@@ -26,6 +26,7 @@ public:
 	Player* getPlayer();
 	void toggleRunning();
 	void playerAttack();
+	void playerCancelAttack();
 	void playerBlock();
 	void playerCancelBlock();
 
