@@ -117,8 +117,6 @@ void Client::initPlayerInfo(PlayerView* view){
 
 	this->view = view;
 	this->player = view->getPersonaje();
-	this->players[view->getPersonaje()->getName()] = this->player;
-
 }
 
 void Client::registerPlayer(){
@@ -136,8 +134,13 @@ void Client::checkNewPlayers(){
 
 		// SI NO HA SIDO ENVIADO, LO ENVIO
 			PlayerInfo* info = ComunicationUtils::recvPlayerInfo(clientID);
+			string playerName = info->getPlayer()->getName();
 
-			if (players.count(info->getPlayer()->getName()) > 0) return;
+			cout << "CANT: " << players.count(playerName) << " PLAYER " << playerName << endl;
+
+			if (players.count(playerName) > 0) return;
+
+
 
 			players.insert( pair<string,Player*>(info->getPlayer()->getName(), info->getPlayer()) );
 			cout << info->getPlayer()->getName() << " has conected..." << endl;
