@@ -133,22 +133,24 @@ void Client::checkNewPlayers(){
 	for (int i = 0; i < n ; i++){
 
 		// SI NO HA SIDO ENVIADO, LO ENVIO
-			PlayerInfo* info = ComunicationUtils::recvPlayerInfo(clientID);
-			string playerName = info->getPlayer()->getName();
+		PlayerInfo* info = ComunicationUtils::recvPlayerInfo(clientID);
+		string playerName = info->getPlayer()->getName();
 
-			cout << "CANT: " << players.count(playerName) << " PLAYER " << playerName << endl;
+		cout << "CANT: " << players.count(playerName) << " PLAYER " << playerName << endl;
 
-			if (players.count(playerName) > 0) return;
+		for (map<string, Player*>::iterator it = players.begin() ; it != players.end() ; ++it){
+			cout << "REGISTRO: " << it->first << endl;
+		}
 
+		if (players.count(playerName) != 0) return;
 
+		players.insert( pair<string,Player*>(info->getPlayer()->getName(), info->getPlayer()) );
+		cout << info->getPlayer()->getName() << " has conected..." << endl;
 
-			players.insert( pair<string,Player*>(info->getPlayer()->getName(), info->getPlayer()) );
-			cout << info->getPlayer()->getName() << " has conected..." << endl;
-
-			// Creo la playerView y la registro en el game.
-			PlayerView* view = info->createPlayerView();
-			Player* player = info->getPlayer();
-			game->addNewPlayer(player,view, info->getInitCoordinates());
+		// Creo la playerView y la registro en el game.
+		PlayerView* view = info->createPlayerView();
+		Player* player = info->getPlayer();
+		game->addNewPlayer(player,view, info->getInitCoordinates());
 
 
 	}
@@ -172,7 +174,7 @@ void Client::sendEvents(){
 void Client::updatePlayers(map<string,PlayerUpdate*> updates){
 
 	for (map<string,PlayerUpdate*>::iterator it = updates.begin() ; it != updates.end() ; ++it){
-		if (players[it->first]){
+		if (players.count(it->first) != 0){
 			players[it->first]->update(it->second);
 			players[it->first]->update();
 		}
