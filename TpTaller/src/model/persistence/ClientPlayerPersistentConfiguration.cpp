@@ -8,11 +8,27 @@
 #include <model/persistence/ClientPlayerPersistentConfiguration.h>
 
 ClientPlayerPersistentConfiguration::ClientPlayerPersistentConfiguration() {
-	// TODO Auto-generated constructor stub
-
+	this->playerViewList = NULL;
+	this->gameConfiguration = NULL;
 }
 
 ClientPlayerPersistentConfiguration::~ClientPlayerPersistentConfiguration() {
-	// TODO Auto-generated destructor stub
+	delete this->playerViewList;
+	delete this->gameConfiguration;
 }
 
+std::vector<PlayerView*> ClientPlayerPersistentConfiguration::getPlayerViewList() {
+	return this->playerViewList;
+}
+
+void ClientPlayerPersistentConfiguration::setPlayerViewList(std::vector<PlayerView*>  playerViewList) {
+	this->playerViewList = playerViewList;
+}
+
+GameConfiguration* ClientPlayerPersistentConfiguration::getGameConfiguration() {
+	return this->gameConfiguration;
+}
+
+void ClientPlayerPersistentConfiguration::setGameConfiguration(GameConfiguration* gameConfiguration) {
+	this->gameConfiguration = gameConfiguration;
+}

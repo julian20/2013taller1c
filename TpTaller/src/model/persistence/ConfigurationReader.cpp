@@ -1493,7 +1493,7 @@ void setDefaultGameConfiguration(GameConfiguration* gameConf) {
 PersistentConfiguration ConfigurationReader::loadConfiguration(
 		std::string configurationFile, std::string outputFilename) {
 
-	if(textureHolder != NULL) {
+	if (textureHolder != NULL) {
 		delete textureHolder;
 	}
 	textureHolder = new TextureHolder();
@@ -1591,7 +1591,91 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 ServerMapPersistentConfiguration ConfigurationReader::loadServerMapConfiguration(
 		std::string configurationFile) {
 
-	if(textureHolder != NULL) {
+	int entityViewsPosition = 0;
+	int gameConfigurationPosition = 1;
+	int tileDefinitionPosition = 2;
+	int mapDimensionPosition = 3;
+	int entityLocationPosition = 4;
+	int tileLocationPosition = 5;
+
+	if (textureHolder != NULL) {
+		delete textureHolder;
+	}
+	textureHolder = new TextureHolder();
+
+	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
+	std::ofstream outputFile(
+			"./configuration/serverMapConfigurationOutput.yaml");
+
+	// Error Check
+	if (!inputFile) {
+		//cout << "No se encontro el archivo de configuracion" << std::endl;
+		Logs::logErrorMessage(
+				string("No se encontro el archivo de configuracion: "));
+		exit(1);
+	}
+
+	// Parser initialization.
+	YAML::Parser parser(inputFile);
+	YAML::Node yamlNode;
+	parser.GetNextDocument(yamlNode);
+
+	// Parsing EntityViews.
+	std::vector<EntityView*> entityViewVector;
+	yamlNode[entityViewsPosition] >> entityViewVector;
+
+	// Parsing animation configuration.
+	GameConfiguration* animationConfig = new GameConfiguration();
+	yamlNode[gameConfigurationPosition] >> animationConfig;
+
+	// Parsing tile definition.
+	yamlNode[tileDefinitionPosition] >> textureHolder;
+
+	// Parsing map dimensions.
+	AuxMap mapConfiguration;
+	AuxMapDimension mapDimension;
+	yamlNode[mapDimensionPosition] >> mapDimension;
+	mapConfiguration.dimension = mapDimension;
+
+	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
+			mapConfiguration.dimension.ncols);
+
+	// Parsing player locations.
+	std::vector<Entity*> entityVector;
+	yamlNode[entityLocationPosition] >> entityVector;
+
+	// Assigning Entities to EntityViews.
+	std::vector<EntityView*> cleanEntityViews = assignEntities(entityViewVector,
+			entityVector);
+	assignEntities(mapData, entityVector);
+	cleanUnusedViews(entityViewVector);
+
+	// Parsing map tile locations.
+	yamlNode[tileLocationPosition] >> mapConfiguration;
+	mapConfiguration >> mapData;
+
+	// Create entityViewMap:
+	EntityViewMap* entityViewMap = new EntityViewMap(mapData);
+	loadEntityViewMap(entityViewMap, cleanEntityViews);
+
+	ServerMapPersistentConfiguration configuration =
+			ServerMapPersistentConfiguration();
+	configuration.setEntityViewMap(entityViewMap);
+	configuration.setTextureHolder(textureHolder);
+	configuration.setMapData(mapData);
+	configuration.setAnimationConfiguration(animationConfig);
+
+	return configuration;
+}
+
+ClientPlayerPersistentConfiguration ConfigurationReader::loadClientPlayerConfiguration(
+		std::string configurationFile) {
+
+	int playerViewsPosition = 0;
+	int gameConfigurationPosition = 1;
+	int playerLocationPosition = 2;
+
+	if (textureHolder != NULL) {
 		delete textureHolder;
 	}
 	textureHolder = new TextureHolder();
@@ -1611,50 +1695,27 @@ ServerMapPersistentConfiguration ConfigurationReader::loadServerMapConfiguration
 	YAML::Node yamlNode;
 	parser.GetNextDocument(yamlNode);
 
-	// Parsing EntityViews.
-	std::vector<EntityView*> entityViewVector;
-	yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
+	// Parsing PlayerViews.
+	std::vector<PlayerView*> playerViewVector;
+	yamlNode[playerViewsPosition] >> playerViewVector;
 
 	// Parsing animation configuration.
 	GameConfiguration* animationConfig = new GameConfiguration();
-	yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
-
-	// Parsing tile definition.
-	yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
-
-	// Parsing map dimensions.
-	AuxMap mapConfiguration;
-	AuxMapDimension mapDimension;
-	yamlNode[MAP_DIMENSION_POSITION] >> mapDimension;
-	mapConfiguration.dimension = mapDimension;
-
-	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
-			mapConfiguration.dimension.ncols);
+	yamlNode[gameConfigurationPosition] >> animationConfig;
 
 	// Parsing player locations.
-	std::vector<Entity*> entityVector;
-	yamlNode[ENTITY_LOCATIONS_POSITION] >> entityVector;
+	std::vector<Player*> playerVector;
+	yamlNode[playerLocationPosition] >> playerVector;
 
-	// Assigning Entities to EntityViews.
-	std::vector<EntityView*> cleanEntityViews = assignEntities(entityViewVector,
-			entityVector);
-	assignEntities(mapData, entityVector);
-	cleanUnusedViews(entityViewVector);
+	// Clean not assigned player views.
+	std::vector<PlayerView*> cleanPlayerViews = assignPlayers(playerViewVector,
+			playerVector);
+	cleanUnusedViews(playerViewVector);
 
-	// Parsing map tile locations.
-	yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
-	mapConfiguration >> mapData;
-
-	// Create entityViewMap:
-	EntityViewMap* entityViewMap = new EntityViewMap(mapData);
-	loadEntityViewMap(entityViewMap, cleanEntityViews);
-
-	ServerMapPersistentConfiguration configuration =
-			ServerMapPersistentConfiguration();
-	configuration.setEntityViewMap(entityViewMap);
-	configuration.setTextureHolder(textureHolder);
-	configuration.setMapData(mapData);
-	configuration.setAnimationConfiguration(animationConfig);
+	ClientPlayerPersistentConfiguration configuration =
+			ClientPlayerPersistentConfiguration();
+	configuration.setGameConfiguration(animationConfig);
+	configuration.setPlayerViewList(cleanPlayerViews);
 
 	return configuration;
 }

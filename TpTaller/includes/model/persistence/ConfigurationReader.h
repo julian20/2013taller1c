@@ -15,6 +15,7 @@
 #include <model/entityProperties/Power.h>
 #include <model/persistence/ConfigurationReader.h>
 #include <model/persistence/ServerMapPersistentConfiguration.h>
+#include <model/persistence/ClientPlayerPersistentConfiguration.h>
 #include <model/entities/Entity.h>
 #include <model/entities/player/Player.h>
 #include <model/map/Tile.h>
@@ -46,6 +47,8 @@ public:
 	PersistentConfiguration loadConfiguration(std::string configurationFile,
 			std::string outputFilename);
 	ServerMapPersistentConfiguration loadServerMapConfiguration(
+			std::string configurationFile);
+	ClientPlayerPersistentConfiguration loadClientPlayerConfiguration(
 			std::string configurationFile);
 	virtual ~ConfigurationReader();
 private:
