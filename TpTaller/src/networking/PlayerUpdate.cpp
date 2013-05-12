@@ -72,8 +72,6 @@ Tile* PlayerUpdate::getTile(){
 }
 
 void PlayerUpdate::setTile(Tile* tile){
-	this->currentTile->setTileHeight(tile->getTileHeight());
-	this->currentTile->setTileWidth(tile->getTileHeight());
 	this->currentTile->setFScore(tile->getFScore());
 	this->currentTile->setPosition(tile->getPosition());
 	this->currentTile->setCoordinates(tile->getCoordinates());
