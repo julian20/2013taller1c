@@ -24,6 +24,7 @@ public:
 	Game* getGame();
 
 	void initPlayerInfo(PlayerView* view);
+	void addLocalPlayer();
 	void run();
 
 	void downloadMap();
