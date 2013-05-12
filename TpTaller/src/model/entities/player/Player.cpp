@@ -243,10 +243,8 @@ void Player::setAttack(bool attacking){
 }
 
 void Player::cancelAttack() {
-	if (attacking){
-		attacking = false;
-		hasChange = true;
-	}
+	attacking = false;
+	hasChange = true;
 }
 
 void Player::block() {

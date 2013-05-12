@@ -106,6 +106,14 @@ void PlayerController::playerAttack() {
 	player->attack();
 }
 
+void PlayerController::playerCancelAttack(){
+	if (listEvents){
+		events.push_back(new PlayerEvent(EVENT_CANCEL_ATTACK));
+		return;
+	}
+	player->cancelAttack();
+}
+
 void PlayerController::playerBlock() {
 	if (listEvents){
 		events.push_back(new PlayerEvent(EVENT_BLOCK));
