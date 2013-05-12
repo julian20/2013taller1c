@@ -25,6 +25,7 @@
 
 #include <SDL/SDL.h>
 
+#include <model/Logs/Logs.h>
 #include <networking/Server.h>
 #include <networking/ComunicationUtils.h>
 #include <networking/PlayerInfo.h>
@@ -54,23 +55,27 @@ Server::Server(string host, int port) {
 	ssport << port;
 
 	if (getaddrinfo(host.c_str(), ssport.str().c_str(),&hints, &res) != 0) {
-		perror("getaddrinfo");
+		Logs::logErrorMessage("Servidor: Error al obtener la informacion de direccion");
+		exit(1);
 	}
 
 	/* Create the socket */
 	serverID = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 	if (serverID == -1) {
-		perror("sock");
+		Logs::logErrorMessage("Servidor: Error al inicializar el servidor");
+		exit(1);
 	}
 
 	/* Enable the socket to reuse the address */
 	if (setsockopt(serverID, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(int)) == -1) {
-		perror("setsockopt");
+		Logs::logErrorMessage("Servidor: Error al setear la reutilizacion de direcciones");
+		exit(1);
 	}
 
 	/* Bind to the address */
 	if (bind(serverID, res->ai_addr, res->ai_addrlen) == -1) {
-		perror("bind");
+		Logs::logErrorMessage("Servidor: Error de asignacion de direccion");
+		exit(1);
 	}
 
 	freeaddrinfo(res);
@@ -217,7 +222,8 @@ void Server::run(MultiplayerGame* game){
 
 	/* Listen */
 	if (listen(serverID, BACKLOG) == -1) {
-		perror("listen");
+		Logs::logErrorMessage("Servidor: Error al poner al servidor en modo de recepcion de conexiones");
+		exit(1);
 	}
 
 
@@ -230,14 +236,14 @@ void Server::run(MultiplayerGame* game){
 		struct sockaddr_in their_addr;
 		int newsock = accept(serverID, (struct sockaddr*)&their_addr, &size);
 		if (newsock == -1) {
-			perror("accept");
+			Logs::logErrorMessage("Servidor: El servidor no ha podido aceptar la conexion");
 		}
 		else {
 			ThreadParameter* tp = (ThreadParameter*) malloc(sizeof(ThreadParameter));
 			tp->clientID = newsock;
 			tp->server = this;
 			if (pthread_create(&thread, &attr, handle,(void*)tp ) != 0) {
-				fprintf(stderr, "Failed to create thread\n");
+				Logs::logErrorMessage("Servidor: Error al inicializar handle thread");
 			}
 		}
 
@@ -251,7 +257,7 @@ void Server::sendMap(string mapfile,int sockID){
 	std::ifstream map;
 	map.open(mapfile.c_str());
 	if (!map.is_open()){
-		//TODO: LOG
+		Logs::logErrorMessage("Servidor: No se ha podido cargar el mapa");
 		exit(1);
 	}
 
@@ -308,7 +314,8 @@ void Server::sendNewPlayers(int clientSocket, map<int,string> *sended){
 
 		// SI NO HA SIDO ENVIADO, LO ENVIO
 		if (sended->count(it->first) == 0){
-			ComunicationUtils::sendPlayerInfo(clientSocket,it->second);
+			PlayerInfo* info = it->second;
+			ComunicationUtils::sendPlayerInfo(clientSocket,info);
 			(*sended)[it->first] = it->second->getPlayer()->getName();
 		}
 

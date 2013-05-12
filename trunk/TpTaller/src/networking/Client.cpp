@@ -9,6 +9,7 @@
 #include <networking/ComunicationUtils.h>
 #include <model/map/TextureDefinition.h>
 #include <model/map/TextureHolder.h>
+#include <model/Logs/Logs.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,15 +41,17 @@ Client::Client(string host, int port, Game* game) {
 
 	//Creo el nuevo socket
 	clientID = socket(AF_INET, SOCK_STREAM, 0);
-	if (clientID < 0)
-		//TODO LOG
+	if (clientID < 0){
+		Logs::logErrorMessage("Cliente: El cliente no se ha podido inicializar");
+		exit(1);
+	}
+
 
 	// Obtengo el host del servidor
 	server = gethostbyname(host.c_str());
 	if (server == NULL) {
-		//TODO LOG
-		fprintf(stderr,"ERROR, no such host\n");
-		exit(0);
+		Logs::logErrorMessage("Cliente: No se ha podido obtener el host del servidor");
+		exit(1);
 	}
 
 	// Seteo las cosas necesarias para conectarme al servidor
@@ -56,14 +59,15 @@ Client::Client(string host, int port, Game* game) {
 	hints.sin_family = AF_INET;
 	if(inet_pton(AF_INET, host.c_str(), &hints.sin_addr)<=0)
 	{
-		//TODO LOG
-		printf("\n inet_pton error occured\n");
+		Logs::logErrorMessage("Cliente: Error al obtener la direccion IP del servidor");
+		exit(1);
 	}
 	hints.sin_port = htons(port);
 
 	// Conecto al servidor utilizando el socket creado.
-	if (connect(clientID,(struct sockaddr *) &hints,sizeof(hints)) < 0);
-		//error("ERROR connecting"); //TODO LOG
+	if (connect(clientID,(struct sockaddr *) &hints,sizeof(hints)) < 0){
+		Logs::logErrorMessage("Cliente: Ha ocurrido un error conectandose al servidor");
+	}
 
 	// Devuelvo el socket ID.
 	this->game = game;
