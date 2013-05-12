@@ -216,6 +216,7 @@ void Player::setTile(Tile* _tile) {
 }
 
 Tile* Player::getTile() {
+	// Devuelve una copia del tile
 	Tile* retval = new Tile();
 	retval->setCoordinates(currentTile->getCoordinates());
 

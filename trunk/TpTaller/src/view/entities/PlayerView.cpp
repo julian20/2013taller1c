@@ -49,14 +49,9 @@ PlayerView::PlayerView()
 	lastDirection = M_PI * 1 / 2;
 }
 
-PlayerView::PlayerView(PlayerView* otherPlayer)
-:
-		EntityView(this) {
+PlayerView::PlayerView(PlayerView* otherPlayer):
+		EntityView(otherPlayer) {
 
-	Vector2* anchor = otherPlayer->getAnchorPixel();
-	Vector2* anchorCopy = new Vector2(anchor->getX(), anchor->getY());
-
-	anchorPixel = anchorCopy;
 	imageHeight = otherPlayer->getImageHeight();
 	imageWidth = otherPlayer->getImageWidth();
 	delay = otherPlayer->getDelay();

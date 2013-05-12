@@ -43,13 +43,17 @@ Tile::~Tile() {
 }
 
 void Tile::updatePosition() {
-	SDL_Rect pos = this->computePositionTile(coordinates->getRow(), coordinates->getCol());
-	if (position!=NULL) delete (this->position);
-	this->position = new Position(pos.x, pos.y);
+	SDL_Rect pos = this->computePositionTile(coordinates->getRow(),
+											 coordinates->getCol());
+	setPosition(pos.x, pos.y);
 }
 
 Position* Tile::getPosition() {
 	return this->position;
+}
+
+void Tile::setPosition(int x, int y) {
+	this->position->changeTo(x, y);
 }
 
 void Tile::setPosition(int x, int y, int z) {
