@@ -29,7 +29,7 @@
     imageWidth: 242
     imageHeight: 235
     numberOfClips: 31
-    anchorPixel: [85, 112]
+    anchorPixel: [115, 142]
     fps: 20
     delay: 2 
     animationRepeats: 5
@@ -41,18 +41,24 @@
     imageHeight: 49
     numberOfClips: 6
     anchorPixel: [34, 0]
+    baseRows: 1
+    baseCols: 1
   - name: tree
     imageSrc: resources/tree2.png
     imageWidth: 128
     imageHeight: 133
     numberOfClips: 0
     anchorPixel: [60, 100]
+    baseRows: 1
+    baseCols: 1
   - name: barracks
     imageSrc: resources/buildings/barracks.png
     imageWidth: 320 
     imageHeight: 290
     numberOfClips: 0
-    anchorPixel: [172, 209]
+    anchorPixel: [155, 195]
+    baseRows: 4
+    baseCols: 4
   - name: farmhouse
     imageSrc: resources/buildings/farmhouse.png
     imageWidth: 238
@@ -72,7 +78,7 @@
     imageWidth: 220
     imageHeight: 227
     numberOfClips: 0
-    anchorPixel: [110, 160] 
+    anchorPixel: [75, 150] 
     baseRows: 4
     baseCols: 3
   - name: pottery
@@ -80,7 +86,7 @@
     imageWidth: 259
     imageHeight: 247
     numberOfClips: 0
-    anchorPixel: [72, 164]
+    anchorPixel: [120, 150]
     baseRows: 3
     baseCols: 3
   - name: portbuilding
@@ -88,7 +94,9 @@
     imageWidth: 287
     imageHeight: 299
     numberOfClips: 0
-    anchorPixel: [117, 133]  
+    anchorPixel: [124, 204]  
+    baseRows: 4
+    baseCols: 4
 - gameConfiguration:
     serverIP: 127.0.0.1
     serverPort: 32001
@@ -133,7 +141,7 @@
 - mapDimensions: [50, 50]
 - playerLocations:
   - name: NewPlayer
-    position: [11, 12, 0]
+    position: [9, 9, 0]
     speed:
       magnitude: 4
       direction: [1, 2]
@@ -145,9 +153,9 @@
         damage: 3
         range: 1
     mainPlayer: true
-    viewRange: 200
+    viewRange: 500
 - entityLocations:
-  - name: tree
+  - name: barracks
     position: [0, 0, 0]
   - name: chapel
     position: [23, 20, 0]

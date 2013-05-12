@@ -62,11 +62,18 @@ void MapData::addEntity(int row, int col, Entity* object) {
 	for (int offsetRow = 0; offsetRow < baseRow; offsetRow++) {
 		for (int offsetCol = 0; offsetCol < baseCol; offsetCol++) {
 
-			currentData = getTileData(row + offsetRow - baseRow/2,
-									  col + offsetCol - baseCol/2);
+			int currentRow = row + offsetRow - baseRow/2;
+			int currentCol = col + offsetCol - baseCol/2;
 
-			currentData->addEntity(object);
-			currentData->setWalkable(false);
+			if (currentRow >= 0 && currentRow < nrows &&
+				currentCol >= 0 && currentCol < ncols) {
+
+				currentData = getTileData(currentRow, currentCol);
+
+				currentData->addEntity(object);
+				currentData->setWalkable(false);
+
+			}
 
 		}
 	}
@@ -241,6 +248,13 @@ Tile* MapData::getValidTile(Tile* from, Tile* goal) {
  * destruir no hay problema, pero es mas complicado me parece.
  */
 list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
+	TileData* data = getTileData(from->getCoordinates());
+	if (data->isWalkable() == false) {
+		std::cout << "El tile donde se encuentra el jugador no es transitable"
+																<< std::endl;
+		return new list<Tile *>();
+	}
+
 	Tile* currentGoal = getValidTile(from, goal);
 	map<int, Tile *> tilesContainer;// Uso esto para ir guardando los punteros
 	list<Tile *> closedSet;
