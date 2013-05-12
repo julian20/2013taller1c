@@ -436,6 +436,7 @@ void MapData::updateVisibleTiles() {
 				tileData->setVisibility(true);
 				visibleTiles.push_back(tileData);
 			}
+			delete playerTile;
 
 		}
 	}

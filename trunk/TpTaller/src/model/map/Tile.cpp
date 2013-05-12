@@ -26,6 +26,7 @@ Tile::Tile(Position* position, std::string textureId) {
 Tile::Tile(Coordinates* _coordinates) {
 	this->coordinates = _coordinates;
 	this->textureIdentifier = "";
+	this->position = new Position(0, 0, 0);
 	this->fScore = 0;
 	updatePosition();
 }
@@ -43,6 +44,7 @@ Tile::~Tile() {
 
 void Tile::updatePosition() {
 	SDL_Rect pos = this->computePositionTile(coordinates->getRow(), coordinates->getCol());
+	if (position!=NULL) delete (this->position);
 	this->position = new Position(pos.x, pos.y);
 }
 
