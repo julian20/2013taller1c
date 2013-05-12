@@ -26,7 +26,7 @@
 
 #define READING_SIZE 8192
 #define EXTRA_SIZE 1
-#define MAPFILE "./mapita.yamp"
+#define MAPFILE "./mapita.yaml"
 
 
 
