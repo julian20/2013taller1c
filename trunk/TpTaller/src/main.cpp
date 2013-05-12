@@ -110,12 +110,9 @@ int main(int argc, char** argv) {
 	// Lectura del archivo de configuracion
 	ConfigurationReader cfgReader = ConfigurationReader();
 	try {
-		/*PersistentConfiguration configuration = cfgReader.loadConfiguration(
-		 CONFIGURATION_FILE, OUTPUT_FILENAME);*/
-		//initMenu(&configuration);
-		ServerMapPersistentConfiguration configuration =
-				cfgReader.loadServerMapConfiguration(
-						"./configuration/serverMapConfiguration.yaml");
+		PersistentConfiguration configuration = cfgReader.loadConfiguration(
+		 CONFIGURATION_FILE, OUTPUT_FILENAME);
+		initMenu(&configuration);
 	} catch (std::exception& e) {
 		unLog.logErrorMessage(
 				string("Configuration syntax error, ") + e.what()
