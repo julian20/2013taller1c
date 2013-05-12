@@ -243,8 +243,8 @@ void Client::run(){
 	pthread_attr_init(&attr);
 
 	if (pthread_create(&thread, &attr, transmit,(void*)this ) != 0) {
-		fprintf(stderr, "Failed to create thread\n");
-
+		Logs::logErrorMessage("Cliente: Error al inicializar transmit thread");
+		exit(0);
 	}
 
 }
