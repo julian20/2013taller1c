@@ -164,6 +164,7 @@ void* handle(void* par){
 			info->getPlayer()->setName(playerName);
 		}
 
+		sended.insert(pair<int, string>(clientSocket,playerName));
 		server->addPlayerToGame(clientSocket,info);
 
 		cout << playerName << " has conected.. " << endl;

@@ -117,6 +117,7 @@ void Client::initPlayerInfo(PlayerView* view){
 
 	this->view = view;
 	this->player = view->getPersonaje();
+
 }
 
 void Client::registerPlayer(){
