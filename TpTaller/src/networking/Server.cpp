@@ -198,7 +198,7 @@ void* readEvents(void* par ){
 		SDL_Event event;
 		while (SDL_PollEvent(&event)){
 
-			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q){
+			if ( (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q) || (event.type == SDL_QUIT ) ){
 				exit(0);
 			}
 		}
