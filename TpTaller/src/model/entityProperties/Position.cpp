@@ -25,6 +25,11 @@ Position::Position(int coordX, int coordY) {
 	z = 0;
 }
 
+void Position::changeTo(int newX, int newY) {
+	x = newX;
+	y = newY;
+}
+
 void Position::changeTo(int newX, int newY, int newZ) {
 	x = newX;
 	y = newY;

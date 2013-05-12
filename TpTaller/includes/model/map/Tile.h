@@ -24,6 +24,7 @@ public:
 	Tile(Coordinates* _coordinates);
 	virtual ~Tile();
 	Position* getPosition();
+	void setPosition(int x, int y);
 	void setPosition(int x, int y, int z);
 	void setPosition(Position* newPosition);
 	Coordinates getCoordinates();

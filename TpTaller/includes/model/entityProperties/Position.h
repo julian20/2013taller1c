@@ -17,7 +17,8 @@ public:
 	Position();
 	Position(int x, int y, int z);
 	Position(int coordX, int coordY);
-	void changeTo(int nuevaX, int nuevaY, int nuevaZ);
+	void changeTo(int newX, int newY);
+	void changeTo(int newX, int newY, int newZ);
 	int getX() const;
 	void setX(int x);
 	int getY() const;
