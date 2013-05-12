@@ -65,7 +65,7 @@ void EntityViewMap::updateMovablePos() {
 		Coordinates* c = Tile::getTileCoordinates(entityPos->getX(),
 				entityPos->getY());
 		int currentRow = c->getRow();
-		int currentCol = c->getCol() - 1;
+		int currentCol = c->getCol();
 
 		if (initRow == currentRow && initCol == currentCol)
 			return;
@@ -74,8 +74,8 @@ void EntityViewMap::updateMovablePos() {
 		if (!coord.empty())
 			coord.remove(entityView);
 		map[initCol][initRow] = coord;
-		map.at(currentCol).at(currentRow).push_back(entityView);
 		entity->setCoordinates(currentRow, currentCol);
+		map.at(currentCol).at(currentRow).push_back(entityView);
 	}
 
 }

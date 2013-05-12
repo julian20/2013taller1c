@@ -40,6 +40,12 @@ Coordinates* Entity::getCoordinates() {
 }
 
 void Entity::setCoordinates(int row, int col) {
+	if (row < 0 || col < 0) {
+		std::cout << "Se esta tratando de asignar unas coordenadas"
+					 " fuera de rango a una entity" << std::endl;
+		return;
+	}
+
 	coord->changeTo(row, col);
 }
 
