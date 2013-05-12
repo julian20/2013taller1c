@@ -5,6 +5,8 @@
  * son parseados utilizando YAML.
  */
 
+#define VisibleTilesMargin	2
+
 MapData::MapData(int _nrows, int _ncols) {
 	this->mainPlayer = NULL;
 	nrows = _nrows;
@@ -71,6 +73,12 @@ void MapData::addEntity(int row, int col, Entity* object) {
 }
 
 TileData* MapData::getTileData(int row, int col) {
+	if( (row < 0 || row >= nrows) || (col < 0 || col >= ncols) ) {
+		std::cout << "Se esta intentando pedir un tile fuera de rango"
+														<< std::endl;
+		return NULL;
+	}
+
 	return &data[row + nrows * col];
 }
 
@@ -89,6 +97,12 @@ void MapData::addPersonaje(int row, int col, Player* player) {
 }
 
 Player* MapData::getPersonaje(int row, int col) {
+	if( (row < 0 || row >= nrows) || (col < 0 || col >= ncols) ) {
+		std::cout << "Se esta intentando pedir un personaje fuera de rango"
+														<< std::endl;
+		return NULL;
+	}
+
 	return data[row + nrows * col].getPersonaje();
 }
 
@@ -381,17 +395,20 @@ void MapData::updateVisibleTiles() {
 	int leftCol = leftTile.getCoordinates().getCol();
 	int rightCol = rightTile.getCoordinates().getCol();
 
-	if (topRow < 0)
-		topRow = 0;
-	if (leftCol < 0)
-		leftCol = 0;
-	if (bottomRow > nrows - 2)
-		bottomRow = nrows;
-	if (rightCol > ncols - 2)
-		rightCol = ncols;
+	if (topRow < VisibleTilesMargin)
+		topRow = VisibleTilesMargin;
+	if (leftCol < VisibleTilesMargin)
+		leftCol = VisibleTilesMargin;
+	if (bottomRow > nrows - VisibleTilesMargin)
+		bottomRow = nrows - VisibleTilesMargin;
+	if (rightCol > ncols - VisibleTilesMargin)
+		rightCol = ncols - VisibleTilesMargin;
 
-	for (int row = topRow; row < bottomRow + 2; row++) {
-		for (int col = leftCol; col < rightCol + 2; col++) {
+	for (int row = topRow - VisibleTilesMargin;
+			row < bottomRow + VisibleTilesMargin; row++) {
+
+		for (int col = leftCol - VisibleTilesMargin;
+				col < rightCol + VisibleTilesMargin; col++) {
 
 			Tile* playerTile = mainPlayer->getTile();
 			Tile currentTile;
