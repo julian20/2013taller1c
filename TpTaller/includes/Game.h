@@ -89,9 +89,6 @@ private:
         TextHandler* textHandler;
 
         bool openAudio;
-
-        // Threading Variables
-        pthread_mutex_t running_mutex;
 };
 
 #endif /* GAME_H_ */
