@@ -106,8 +106,8 @@
     gameMusic: resources/sound/NamiLogin.ogg
     fullscreen: false
     screenAutoConfig: false
-    defaultScreenHeight: 700
-    defaultScreenWidth: 1200
+    defaultScreenHeight: 600
+    defaultScreenWidth: 1000
     defaultBPP: 0
     menuBackImage: resources/lich.jpg
     menuBackMusic: resources/sound/QuinnLogin.ogg
