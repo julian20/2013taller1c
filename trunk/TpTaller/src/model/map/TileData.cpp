@@ -48,7 +48,9 @@ bool TileData::getIsVisible() {
 	return isVisible;
 }
 
-bool TileData::isWalkable() {
+bool TileData::isWalkable( bool ignorePlayer ) {
+	if (ignorePlayer && personaje != NULL) return false;
+
 	return walkable;
 }
 
@@ -58,6 +60,10 @@ void TileData::setType(std::string type) {
 
 void TileData::setPlayer(Player* newPersonaje) {
 	personaje = newPersonaje;
+}
+
+void TileData::cleanPlayer() {
+	personaje = NULL;
 }
 
 void TileData::setVisibility(bool value) {

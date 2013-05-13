@@ -29,6 +29,8 @@ public:
 	TileData* getTileData(int row, int col);
 	void addPersonaje(int row, int col, Player* personaje);
 	Player* getPersonaje(int row, int col);
+	void updatePersonajePos(int prevRow, int prevCol,
+							int row, int col, Player* personaje);
 	list<Tile *> *getPath(Tile* from, Tile* to);
 	list<Entity *> *Entities;
 	void movePersonaje(Player* personaje, Tile* toTile);

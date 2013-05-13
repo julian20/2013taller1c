@@ -76,9 +76,13 @@ void EntityViewMap::updateMovablePos() {
 		map[initCol][initRow] = coord;
 		entity->setCoordinates(currentRow, currentCol);
 		map.at(currentCol).at(currentRow).push_back(entityView);
+
+		mapData->updatePersonajePos(initRow, initCol, currentRow, currentCol,
+															(Player*) entity);
 	}
 
 }
+
 void EntityViewMap::assingEntitiesView(EntityHolder* entityHolder) {
 	this->entityHolder = entityHolder;
 }

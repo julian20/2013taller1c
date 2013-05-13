@@ -94,13 +94,27 @@ TileData* MapData::getTileData(Coordinates coords) {
 }
 
 void MapData::addPersonaje(int row, int col, Player* player) {
-	data[row + nrows * col].setPlayer(player);
+	TileData* tileData = getTileData(row, col);
+	tileData->setPlayer(player);
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
 	player->setTile(personajeTile);
 
 	if (player->isMainPlayer())
 		mainPlayer = player;
+}
+
+void MapData::updatePersonajePos(int prevRow, int prevCol,
+								 int row, int col, Player* player) {
+
+	TileData* tileDataPrev = getTileData(prevRow, prevCol);
+	TileData* tileDataCurrent = getTileData(row, col);
+
+	tileDataPrev->cleanPlayer();
+	tileDataCurrent->setPlayer(player);
+
+	Tile* personajeTile = new Tile(new Coordinates(row, col));
+	player->setTile(personajeTile);
 }
 
 Player* MapData::getPersonaje(int row, int col) {
@@ -249,7 +263,7 @@ Tile* MapData::getValidTile(Tile* from, Tile* goal) {
  */
 list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 	TileData* data = getTileData(from->getCoordinates());
-	if (data->isWalkable() == false) {
+	if (data->isWalkable(false) == false) {
 		std::cout << "El tile donde se encuentra el jugador no es transitable"
 																<< std::endl;
 		return new list<Tile *>();

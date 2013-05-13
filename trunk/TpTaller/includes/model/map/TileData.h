@@ -26,11 +26,12 @@ public:
 	int getNumberOfEntitiesOnTile();
 	bool getWasVisible();
 	bool getIsVisible();
-	bool isWalkable();
+	bool isWalkable( bool ignorePlayer = true );
 
 	//Setters
 	void setType(std::string type);
 	void setPlayer(Player* newPersonaje);
+	void cleanPlayer();
 	void setVisibility(bool value);
 	void setWalkable(bool _walkable);
 
