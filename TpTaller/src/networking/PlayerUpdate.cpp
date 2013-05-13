@@ -17,6 +17,7 @@ PlayerUpdate::PlayerUpdate(){
 	this->blocking = false;
 	this->currentTile = new Tile();
 	this->initCoords = new Coordinates;
+	this->chat=NULL;
 }
 
 void PlayerUpdate::setName(string playerName){

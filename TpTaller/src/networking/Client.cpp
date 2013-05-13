@@ -237,7 +237,6 @@ map<string,PlayerUpdate*> Client::recvPlayersUpdates(){
 
 		PlayerUpdate* update = ComunicationUtils::recvPlayerUpdate(clientID);
 		string name = update->getName();
-
 		updates[name] = update;
 
 	}

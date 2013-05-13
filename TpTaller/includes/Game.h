@@ -22,6 +22,7 @@
 
 //Ours
 #include <model/persistence/PersistentConfiguration.h>
+#include <model/Chat.h>
 #include <controller/MapController.h>
 #include <controller/MapCameraController.h>
 #include <controller/PlayerController.h>
@@ -60,8 +61,8 @@ private:
         SDL_Rect posFondo;
         SDL_Surface* fondo;
 
-
-        ChatWindowsView* chat;
+        Chat* chat ;
+        ChatWindowsView* chatView;
 
         Player* personaje;
         PlayerView* personajeVista;

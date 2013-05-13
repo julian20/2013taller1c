@@ -12,6 +12,7 @@
 #include <map>
 
 #include <Game.h>
+#include <model/Chat.h>
 #include <model/persistence/PersistentConfiguration.h>
 #include <networking/PlayerEvent.h>
 #include <networking/NetworkPlayerController.h>
@@ -27,6 +28,7 @@ public:
 	virtual void addNewPlayer(Player* player, Coordinates* coordiantes);
 	void addEventsToHandle(string playerName, vector<PlayerEvent*> events);
 	vector<PlayerUpdate*> getPlayersUpdates();
+	Chat* getChatUpdates();
 	virtual ~MultiplayerGame();
 private:
 
