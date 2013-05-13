@@ -18,7 +18,7 @@ namespace std {
 #define STRING_SIZE 150*sizeof(char)
 #define INFO_SIZE 4*(sizeof(PlayerInfo) + sizeof(Player))
 #define EVENT_SIZE 4*(sizeof(PlayerEvent) + sizeof(Coordinates))
-#define UPDATE_SIZE 4*(sizeof(PlayerUpdate) + sizeof(Vector3) + sizeof(Tile) + sizeof(Coordinates))
+#define UPDATE_SIZE 80
 #define EXTRA 3
 
 ComunicationUtils::ComunicationUtils() {
@@ -26,7 +26,6 @@ ComunicationUtils::ComunicationUtils() {
 }
 
 void ComunicationUtils::sendNumber(int sockID,int number){
-
 	char buffer[NUMBER_SIZE];
 	sprintf(buffer,"%d",number);
 
@@ -39,13 +38,13 @@ void ComunicationUtils::sendNumber(int sockID,int number){
 }
 
 int ComunicationUtils::recvNumber(int sockID){
-
 	char buffer[NUMBER_SIZE];
 	//Loop while we're not getting our shit
+
 	while(recv(sockID,buffer,NUMBER_SIZE, MSG_EOR)!=NUMBER_SIZE);
 	int n = atoi(buffer);
-	return n;
 
+	return n;
 }
 
 void ComunicationUtils::sendString(int sockID,string string){
