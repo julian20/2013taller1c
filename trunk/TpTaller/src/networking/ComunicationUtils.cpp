@@ -14,7 +14,7 @@
 
 namespace std {
 
-#define NUMBER_SIZE 15*sizeof(char)
+#define NUMBER_SIZE 10*sizeof(char)
 #define STRING_SIZE 150*sizeof(char)
 #define INFO_SIZE 4*(sizeof(PlayerInfo) + sizeof(Player))
 #define EVENT_SIZE 4*(sizeof(PlayerEvent) + sizeof(Coordinates))
@@ -23,31 +23,27 @@ namespace std {
 
 ComunicationUtils::ComunicationUtils() {
 	// TODO Auto-generated constructor stub
-
 }
 
 void ComunicationUtils::sendNumber(int sockID,int number){
 
-	stringstream nstream;
-	int size = NUMBER_SIZE;
+	char buffer[NUMBER_SIZE];
+	sprintf(buffer,"%d",number);
 
-	nstream << number;
+	while(send(sockID,buffer,NUMBER_SIZE,MSG_EOR)!=NUMBER_SIZE){
 
-	send(sockID,nstream.str().c_str(),size,MSG_EOR);
+		//Do nothing (send again)!
+
+	}
 
 }
 
 int ComunicationUtils::recvNumber(int sockID){
 
-	char nbuffer[NUMBER_SIZE];
-	int n = -1;
-
-	recv(sockID,nbuffer,NUMBER_SIZE, MSG_EOR);
-
-	stringstream nstream;
-	nstream << nbuffer;
-	nstream >> n;
-
+	char buffer[NUMBER_SIZE];
+	//Loop while we're not getting our shit
+	while(recv(sockID,buffer,NUMBER_SIZE, MSG_EOR)!=NUMBER_SIZE);
+	int n = atoi(buffer);
 	return n;
 
 }
@@ -58,7 +54,7 @@ void ComunicationUtils::sendString(int sockID,string string){
 	stringstream sstream;
 	sstream << string;
 
-	send(sockID,sstream.str().c_str(),size,MSG_EOR);
+	while(send(sockID,sstream.str().c_str(),size,MSG_EOR)!=size);
 
 }
 
@@ -68,7 +64,7 @@ string ComunicationUtils::recvString(int sockID){
 
 	char sbuffer[size];
 
-	recv(sockID,sbuffer,size,MSG_EOR);
+	while (recv(sockID,sbuffer,size,MSG_EOR)!=size);
 
 	string srecv = string(sbuffer);
 
@@ -84,7 +80,7 @@ void ComunicationUtils::sendPlayerInfo(int sockID,PlayerInfo* info){
 	int size = INFO_SIZE;
 
 	// SEND PLAYER INFO
-	send(sockID,infostream.str().c_str(),size, MSG_EOR);
+	while(send(sockID,infostream.str().c_str(),size, MSG_EOR)!=size);
 
 }
 
@@ -95,7 +91,7 @@ PlayerInfo* ComunicationUtils::recvPlayerInfo(int sockID){
 
 	char infobuffer[size];
 
-	recv(sockID,infobuffer,size,MSG_EOR);
+	while(recv(sockID,infobuffer,size,MSG_EOR)!=size);
 	stringstream infostream;
 	infostream << infobuffer;
 
@@ -111,7 +107,7 @@ void ComunicationUtils::sendPlayerEvent(int sockID,PlayerEvent* event){
 
 	int size = EVENT_SIZE;
 
-	send(sockID,eventstream.str().c_str(),size, MSG_EOR);
+	while(send(sockID,eventstream.str().c_str(),size, MSG_EOR)!=size);
 
 }
 
@@ -121,7 +117,7 @@ PlayerEvent* ComunicationUtils::recvPlayerEvent(int sockID){
 	PlayerEvent* event = new PlayerEvent();
 	char eventbuffer[size];
 
-	recv(sockID,eventbuffer,size,MSG_EOR);
+	while(recv(sockID,eventbuffer,size,MSG_EOR)!=size);
 
 	stringstream eventstream;
 	eventstream << eventbuffer;
@@ -137,7 +133,7 @@ void ComunicationUtils::sendPlayerUpdate(int sockID,PlayerUpdate* update){
 	stringstream updatestream;
 	updatestream << *update;
 
-	send(sockID,updatestream.str().c_str(), size, MSG_EOR);
+	while(send(sockID,updatestream.str().c_str(), size, MSG_EOR)!=size);
 
 }
 
@@ -147,7 +143,7 @@ PlayerUpdate* ComunicationUtils::recvPlayerUpdate(int sockID){
 	char updatebuffer[size];
 	stringstream updatestream;
 
-	recv(sockID,updatebuffer,size,MSG_EOR);
+	while(recv(sockID,updatebuffer,size,MSG_EOR)!=size);
 
 	updatestream << updatebuffer;
 
