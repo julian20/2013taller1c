@@ -7,10 +7,11 @@
 
 #ifndef SERVER_H_
 #define SERVER_H_
-
+#include <networking/Chat/ChatServer.h>
 #include <networking/PlayerEvent.h>
 #include <networking/PlayerInfo.h>
 #include <MultiplayerGame.h>
+
 
 
 namespace std {
@@ -42,9 +43,11 @@ public:
 	MultiplayerGame* getGame();
 
 	virtual ~Server();
+	ChatServer* getChat();
 private:
 
 	int serverID;
+	ChatServer* chat;
 	MultiplayerGame* game;
 	map<int,PlayerInfo*> gamePlayers;
 	map<string,int> playerNames;

@@ -12,6 +12,7 @@
 
 #include <model/map/Tile.h>
 #include <model/Vector3.h>
+#include <model/Chat.h>
 #include <model/entityProperties/Speed.h>
 #include <model/entityProperties/Coordinates.h>
 
@@ -24,7 +25,7 @@ public:
 
 	void setName(string playerName);
 	string getName();
-
+	Chat* chat;
 	Vector3* getCurrentPos();
 	void setCurrentPos(Vector3* currentPos);
 	Vector3* getEndPos();

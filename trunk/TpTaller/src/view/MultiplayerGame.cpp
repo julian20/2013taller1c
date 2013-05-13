@@ -85,8 +85,10 @@ vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 
 	for ( list<Player*>::iterator player = players.begin() ; player != players.end() ; ++player ){
 		PlayerUpdate* update = (*player)->generatePlayerUpdate();
-		if (!update) continue;
-		updates.push_back(update);
+		if (update)
+			{
+			updates.push_back(update);
+			}
 	}
 
 	return updates;
@@ -98,3 +100,5 @@ MultiplayerGame::~MultiplayerGame() {
 }
 
 } /* namespace std */
+
+

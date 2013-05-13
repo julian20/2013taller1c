@@ -5,8 +5,8 @@
  *      Author: damian
  */
 
-#ifndef CHAT_H_
-#define CHAT_H_
+#ifndef CHATSERVER_H_
+#define CHATSERVER_H_
 
 #include<netinet/in.h>
 #include<string.h>
@@ -16,28 +16,35 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <networking/PlayerInfo.h>
 #include <unistd.h>
 #include <netdb.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <string.h>
+#include <MultiplayerGame.h>
+#include <model/Chat.h>
+
 
 class ChatServer {
 public:
 	ChatServer();
 	void run();
 	void setSocketId(int id);
+	void addPlayerToChat(int clientSocket, string nombre);
 	void setMaxConnections(int mc);
+	void getChatUpdates();
+	void sendChatUpdates(int clientSocket, string nombre);
 //	void* enviarMensajes(void* cliente);
 	virtual ~ChatServer();
 private:
 	int socketId;
+	map<string,vector<Chat*> > updates;
+	MultiplayerGame* game;
+	map<string,int> players;
 	int maxConnections;
+
 };
 
-typedef struct aux {
-	ChatServer* server;
-	int clientID;
-} ThreadParameter;
 
-#endif /* CHAT_H_ */
+#endif /* CHATSERVER_H_ */

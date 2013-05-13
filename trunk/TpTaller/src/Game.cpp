@@ -56,9 +56,10 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	personajeVista = (configuration->getViewList())[0];
 	pthread_mutex_init(&running_mutex,NULL);
-	cout<<"va a asignar el chat"<<endl;
-	chat = new ChatWindowsView(screen, 0, 0, screen->w, 100, false);
-	cout<<"asigno el chat"<<endl;
+	chat = new Chat();
+	chat->assignPlayer(personaje->getName());
+	chatView = new ChatWindowsView(screen, 0, 0, screen->w, 100, false);
+	chatView->setChat(chat);
 	
 }
 
@@ -161,7 +162,7 @@ void Game::draw() {
 	}
 	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 30, 40, "baramond", textHandler->getColor(255, 0, 0));
 	// Actualiza la screen
-	chat->draw_text();
+	chatView->drawChatView();
 	SDL_Flip(screen);
 }
 
@@ -177,7 +178,7 @@ MenuEvent Game::run() {
 		while (SDL_PollEvent(&event)) {
 
 			mapController->clickListener(event);
-			chat->handle_events(event);
+			chatView->handle_events(event);
 			if (event.type == SDL_QUIT)
 				exit = true;
 

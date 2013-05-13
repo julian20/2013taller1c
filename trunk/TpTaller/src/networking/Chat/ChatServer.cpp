@@ -7,6 +7,7 @@
 
 #include <networking/Chat/ChatServer.h>
 
+
 ChatServer::ChatServer() {
 	// TODO Auto-generated constructor stub
 
@@ -21,11 +22,10 @@ void ChatServer::setMaxConnections(int mc) {
 ChatServer::~ChatServer() {
 	// TODO Auto-generated destructor stub
 }
-
+/*
 void* enviarMensajes(void* cliente) {
-	int i, h, aux;
-	ThreadParameter* client = (ThreadParameter*) cliente;
-	int nsd = client->clientID;
+	int i, h, aux=0;
+
 	//	ChatServer* chatServer= client->server;
 	int conexiones[10]; //Harcodeado
 	char content[30];
@@ -47,17 +47,27 @@ void* enviarMensajes(void* cliente) {
 			send(conexiones[j], "exit", 5, 0);
 		}
 	}
-	i = recv(nsd, content, 30, 0);
-
-	while (strcmp(content, "exit") != 0) {
-		printf("\nClient numero %i: %s\n", nsd, content);
-		i = recv(nsd, content, 30, 0);
+}*/
+void ChatServer::addPlayerToChat(int clientSocket, string name)
+{
+	if (players.count(name) == 0){
+		players[name] = clientSocket;
 	}
-
-	printf("\nBye");
-	send(nsd, "Offline", 10, 0);
-	close(nsd);
 }
+
+void ChatServer::getChatUpdates()
+{
+	for (map<string,int>::iterator it = players.begin() ; it != players.end() ; ++it) {
+
+		pthread_mutex_t updatesChat_mutex;
+			pthread_mutex_lock(&updatesChat_mutex);
+		//	updates[it->first] = game->getChatUpdates();
+			pthread_mutex_unlock(&updatesChat_mutex);
+
+	//		if (update != NULL) delete update;
+		}
+}
+
 void ChatServer::run() {
 	pthread_t thread;
 	pthread_attr_t attr;
@@ -73,16 +83,14 @@ void ChatServer::run() {
 		newSockId = accept(this->socketId, ((struct sockaddr *) &cli), &i);
 		if (newSockId == -1) {
 			printf("\nCheck the description parameter\n");
-			return;
+			//return;
 		} else {
-			ThreadParameter* cliente = (ThreadParameter*) malloc(
-					sizeof(ThreadParameter));
-			cliente->clientID = newSockId;
 
-			if (pthread_create(&thread, &attr, enviarMensajes, (void*) cliente)
-					!= 0) {
-				fprintf(stderr, "Failed to create thread\n");
-			}
+
+			//if (pthread_create(&thread, &attr, enviarMensajes, (void*) cliente)
+				//	!= 0) {
+				//fprintf(stderr, "Failed to create thread\n");
+		//	}
 
 			printf("\nConnection accepted  numero %i !", aux);
 			aux++;

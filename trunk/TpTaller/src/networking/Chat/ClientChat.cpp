@@ -22,20 +22,12 @@ void ClientChat::run() {
 	char content[30];
 	struct sockaddr_in cli;
 
-	con = connect(this->socketId, (struct sockaddr*) &cli, sizeof(cli));
-	//printf("Soy el cliente ",con);
-	if (con == -1) {
-		printf("\nConnection error");
-		return;
-	}
-
 	if (fork()) {
 		printf("\nEnter the data to be send type exit for stop:\n");
 		scanf("%s", content);
 
 		while (strcmp(content, "exit") != 0) {
 			send(this->socketId, content, 30, 0);
-			scanf("%s", content);
 		}
 		send(this->socketId, "exit", 5, 0);
 	} else {

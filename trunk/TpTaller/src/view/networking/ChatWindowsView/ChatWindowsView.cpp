@@ -16,42 +16,36 @@ ChatWindowsView::~ChatWindowsView() {
 ChatWindowsView::ChatWindowsView(SDL_Surface* screen, int x, int y, int w,
 		int h, bool pass) {
 
-	cout << "asigna screen" << endl;
 	this->_screen = screen;
-	cout << "asigna focused" << endl;
 	this->focused = true;
-	cout << "asigna pass" << endl;
-	this->password = pass;
+	this->chat=NULL;
 
-	cout << "asigna clips" << endl;
 	this->clip.x = x;
 	this->clip.y = y;
 	this->clip.w = w;
 	this->clip.h = h;
 
-	font = TTF_OpenFont(FONT,50);
-	cout << "crea color" << endl;
+	font = TTF_OpenFont(FONT,20);
 	SDL_Colour colour = {1, 1, 1 };
 	//cout << "asigna color" << endl;
 	this->text_colour = colour;
-	cout << "termino de asignar todo" << endl;
 }
-
-bool ChatWindowsView::draw(void) {
+void ChatWindowsView::drawChatView()
+{
+	this->drawChatWindow();
+	this->draw_text(this->text);
+}
+void ChatWindowsView::setChat(Chat* chat)
+{
+	this->chat=chat;
+}
+bool ChatWindowsView::drawChatWindow(void) {
 	return SDL_FillRect(this->_screen, &this->clip, 0x0D7A3E);
 }
 
-bool ChatWindowsView::draw_text(void) {
-	this->draw();
+bool ChatWindowsView::draw_text(string text) {
 	string display;
-	display = "";
-	if (this->password) {
-		for (unsigned int i = 0; i < this->text.length(); i++) {
-			display += "*";
-		}
-	} else {
-		display = this->text;
-	}
+	display = text;
 	SDL_Surface* msg = NULL;
 	msg = TTF_RenderText_Solid(this->font, display.c_str(), this->text_colour);
 	SDL_Rect tmp = this->clip;
@@ -159,6 +153,10 @@ void ChatWindowsView::handle_events(SDL_Event ev) {
 			string aux = (this->text).substr(0, longitud);
 			this->text = aux;
 		}
-		this->draw_text();
+		if (ev.key.keysym.sym == SDLK_KP_ENTER)
+		{
+			this->chat->newMessage(string("PEPE"),this->text);
+		}
+		//this->draw_text(this->text);
 	}
 }
