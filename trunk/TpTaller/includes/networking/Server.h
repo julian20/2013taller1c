@@ -11,6 +11,7 @@
 #include <networking/PlayerEvent.h>
 #include <networking/PlayerInfo.h>
 #include <MultiplayerGame.h>
+#include <vector>
 
 
 
@@ -25,6 +26,8 @@ public:
 
 	void sendMap(string mapfile,int sockID);
 	void sendFile(string fileName, int sockID);
+
+	std::vector<std::string> listFilesInDirectory(std::string);
 
 	PlayerInfo* recieveNewPlayer(int clientSocket);
 	void sendAproval(int clientSocket, int result);
