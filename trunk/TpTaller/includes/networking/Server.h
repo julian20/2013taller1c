@@ -24,6 +24,7 @@ public:
 	void run(MultiplayerGame* game);
 
 	void sendMap(string mapfile,int sockID);
+	void sendFile(string fileName, int sockID);
 
 	PlayerInfo* recieveNewPlayer(int clientSocket);
 	void sendAproval(int clientSocket, int result);

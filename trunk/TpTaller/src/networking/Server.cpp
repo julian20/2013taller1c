@@ -142,7 +142,7 @@ void* handle(void* par){
 		MultiplayerGame* game = server->getGame();
 
 		//Lo primero que hago es mandar el mapa.
-		//server->sendMap(std::string(MAPFILE),clientSocket);
+		//server->sendFile("./resources/foo.png",clientSocket);
 
 		// Manda las imagenes y sonidos necesarios que se utilizaran.
 		//TODO : sendResources(sockID);
@@ -279,6 +279,36 @@ void Server::sendMap(string mapfile,int sockID){
 	printf("Map Sended.\n");
 
 	map.close();
+}
+
+void Server::sendFile(string file, int sockID) {
+
+	// Get Picture Size
+	FILE *picture;
+	picture = fopen(file.c_str(), "r");
+	int size;
+	fseek(picture, 0, SEEK_END);
+	size = ftell(picture);
+	fseek(picture, 0, SEEK_SET);
+
+	// Send Picture Size
+	send(sockID, &size, sizeof(size),0);
+
+	// Send picture file name
+	int filenameSize = file.size();
+	send(sockID, &filenameSize, sizeof(int), 0);
+
+	// Send picture file name
+	send(sockID, file.c_str(), filenameSize * sizeof(char), 0);
+
+	// Send Picture as Byte Array
+	char send_buffer[size];
+	while(!feof(picture)) {
+	    fread(send_buffer, 1, sizeof(send_buffer), picture);
+	    send(sockID, send_buffer, sizeof(send_buffer),0);
+	    bzero(send_buffer, sizeof(send_buffer));
+	}
+
 }
 
 PlayerInfo* Server::recieveNewPlayer(int clientSocket){

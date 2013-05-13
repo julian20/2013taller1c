@@ -28,6 +28,7 @@ public:
 	void run();
 
 	void downloadMap();
+	void downloadFile();
 	void registerPlayer();
 	int getServerAproval();
 	void recvNewName();

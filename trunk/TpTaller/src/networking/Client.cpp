@@ -99,6 +99,32 @@ void Client::downloadMap(){
 
 }
 
+void Client::downloadFile() {
+
+	// Read Picture Size
+	int size;
+	read(clientID, &size, sizeof(int));
+
+	// Read filename size
+	int filenameSize;
+	read(clientID, &filenameSize, sizeof(int));
+
+	// Read picture file name
+	char fileName[filenameSize];
+	read(clientID, fileName, filenameSize * sizeof(char));
+
+	// Read Picture Byte Array
+	char p_array[size];
+	read(clientID, p_array, size);
+
+	// Convert it Back into Picture
+	FILE *image;
+	image = fopen(fileName, "w");
+	fwrite(p_array, 1, sizeof(p_array), image);
+	fclose(image);
+
+}
+
 void Client::initPlayerInfo(PlayerView* view){
 	this->info = new PlayerInfo();
 	info->setName(view->getPersonaje()->getName());
@@ -202,7 +228,7 @@ void* transmit(void* _client){
 
 	Client* client = (Client*) _client;
 
-	//client->downloadMap();
+	//client->downloadFile();
 	bool playing = true;
 
 	client->registerPlayer();
