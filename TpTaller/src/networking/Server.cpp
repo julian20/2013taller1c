@@ -16,11 +16,14 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <string.h>
+#include <sys/types.h>
+#include <dirent.h>
 
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <map>
 
 #include <SDL/SDL.h>
@@ -214,6 +217,27 @@ void* readEvents(void* par ){
 
 }
 
+std::vector<std::string> Server::listFilesInDirectory(std::string directory) {
+
+	std::vector<std::string> listOfFiles;
+
+	struct dirent *de=NULL;
+	DIR *dir=NULL;
+
+	dir=opendir(directory.c_str());
+	if(dir == NULL) {
+		Logs::logErrorMessage(std::string("No se pudo abrir el directorio" + directory));
+		return listOfFiles;
+	}
+
+	while(de = readdir(dir)) {
+		listOfFiles.push_back(string(de->d_name));
+		std::cout << string(de->d_name) << std::endl;
+	}
+
+	return listOfFiles;
+
+}
 
 void Server::run(MultiplayerGame* game){
 	this->game = game;
