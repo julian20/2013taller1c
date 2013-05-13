@@ -55,7 +55,6 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 	openAudio = false;
 
 	personajeVista = (configuration->getViewList())[0];
-	pthread_mutex_init(&running_mutex,NULL);
 	chat = new Chat();
 	chat->assignPlayer(personaje->getName());
 	chatView = new ChatWindowsView(screen, 0, 0, screen->w, 100, false);
@@ -283,7 +282,6 @@ Game::~Game() {
 	delete textHandler;
 	if (musica != NULL) Mix_FreeMusic(musica);
 	if (openAudio) Mix_CloseAudio();
-	pthread_mutex_destroy(&running_mutex);
 	// TODO Auto-generated destructor stub
 }
 

@@ -39,9 +39,6 @@
 
 using namespace std;
 
-pthread_mutex_t updates_mutex;
-pthread_mutex_t playerInfo_mutex;
-
 
 Server::Server(string host, int port) {
 	struct addrinfo hints, *res;
@@ -82,8 +79,6 @@ Server::Server(string host, int port) {
 	this->chat->setMaxConnections(BACKLOG);
 
 	freeaddrinfo(res);
-
-	pthread_mutex_init(&updates_mutex,NULL);
 
 	SDL_Init(SDL_INIT_JOYSTICK);
 
@@ -131,9 +126,7 @@ void Server::getPlayersUpdates(){
 
 	for (map<string,int>::iterator it = playerNames.begin() ; it != playerNames.end() ; ++it) {
 
-		pthread_mutex_lock(&updates_mutex);
 		updates[it->first] = game->getPlayersUpdates();
-		pthread_mutex_unlock(&updates_mutex);
 
 //		if (update != NULL) delete update;
 	}
@@ -306,9 +299,7 @@ int Server::addPlayerToGame(int clientSocket, PlayerInfo* info){
 	gamePlayers[clientSocket] = info;
 	playerNames[info->getPlayer()->getName()] = clientSocket;
 
-	pthread_mutex_lock(&updates_mutex);
 	updates[info->getPlayer()->getName()] = vector<PlayerUpdate*>();
-	pthread_mutex_unlock(&updates_mutex);
 
 	return 0;
 
@@ -318,11 +309,8 @@ void Server::sendNewPlayers(int clientSocket, map<int,string> *sended){
 
 	// 1ro envio la cantidad de players que voy a mandar
 	int n = gamePlayers.size() - sended->size();
-	stringstream ss;
 
-	ss << n;
-
-	send(clientSocket,ss.str().c_str(),(10)*sizeof(char), MSG_EOR);
+	ComunicationUtils::sendNumber(clientSocket,n);
 
 	if (n == 0) return;
 
@@ -374,9 +362,7 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName){
 
 	}
 
-	pthread_mutex_lock(&updates_mutex);
 	updates[playerName].clear();
-	pthread_mutex_unlock(&updates_mutex);
 
 }
 
