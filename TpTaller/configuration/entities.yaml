@@ -153,7 +153,7 @@
         damage: 3
         range: 1
     mainPlayer: true
-    viewRange: 500
+    viewRange: 200
 - entityLocations:
   - name: barracks
     position: [0, 0, 0]

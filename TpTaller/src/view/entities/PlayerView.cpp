@@ -84,7 +84,7 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 	offset.h = offsetFog.h = clip->h;
 
 	SDL_BlitSurface(this->image, clip, screen, &offset);
-	if (drawFog)
+	if (drawFog || player->playerIsActive() == false)
 		SDL_BlitSurface(fogImage, clip, screen, &offsetFog);
 
 	SDL_Rect offsetNombre;
