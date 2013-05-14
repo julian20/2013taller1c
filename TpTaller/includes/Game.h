@@ -43,6 +43,8 @@ public:
         MapCameraView* getMapCameraView();
         MapData* getMapData();
 
+        Chat* getChat();
+
         list<PlayerEvent*> getEvents();
         void cleanEvents();
 
