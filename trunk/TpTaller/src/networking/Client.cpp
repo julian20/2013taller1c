@@ -278,9 +278,6 @@ bool Client::exchangeAliveSignals(){
 	string signal = ComunicationUtils::recvString(clientID);
 	if (signal.compare(ALIVE_SIGNAL) == 0) return true;
 
-
-	Logs::logErrorMessage("Client: Ha fallado la conexion con el servidor");
-	cout << "Client: Ha fallado la conexion con el servidor" << endl;
 	return false;
 
 }
