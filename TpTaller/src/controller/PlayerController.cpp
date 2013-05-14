@@ -19,7 +19,11 @@ PlayerController::~PlayerController() {
 	delete this->camera;
 	delete this->player;
 }
-
+ChatController* PlayerController::getChatController()
+{
+//	Player* miPlayer=this->player;
+	return (player->getChat())->getChatController();
+}
 void PlayerController::movePlayer(int x, int y) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
 	// TODO: Que seleccione la casilla bien!

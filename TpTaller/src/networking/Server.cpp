@@ -186,7 +186,7 @@ void* handle(void* par){
 
 			server->getPlayersUpdates();
 			server->sendPlayersUpdates(clientSocket, playerName);
-		//	serverChat->getChatUpdates();
+			serverChat->getChatUpdates();
 		//	serverChat->sendChatUpdates(clientSocket, playerName);
 		}
 		return NULL;

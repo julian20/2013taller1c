@@ -11,6 +11,7 @@
 #include <iostream>
 #include <list>
 #include <model/map/Tile.h>
+#include <model/Chat.h>
 #include <model/entities/Entity.h>
 #include <model/Vector2.h>	// Capas hay q volarlo
 #include <model/Vector3.h>
@@ -76,7 +77,9 @@ public:
 
 	void setSpeedMagnitude(int mag);
 	string getClassName();
+	Chat* getChat();
 private:
+	Chat* chat;
 	void loadNextPosition();
 	void emptyPath();
 

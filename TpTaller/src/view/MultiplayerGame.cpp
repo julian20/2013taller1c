@@ -94,7 +94,10 @@ vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 	return updates;
 
 }
+Chat* MultiplayerGame::getChatUpdates()
+{
 
+}
 MultiplayerGame::~MultiplayerGame() {
 	// TODO Auto-generated destructor stub
 }

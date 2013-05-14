@@ -18,7 +18,9 @@ void ChatServer::setSocketId(int socketId) {
 void ChatServer::setMaxConnections(int mc) {
 	this->maxConnections = mc;
 }
-
+void ChatServer::setGame(MultiplayerGame* game) {
+	this->game = game;
+}
 ChatServer::~ChatServer() {
 	// TODO Auto-generated destructor stub
 }
@@ -61,7 +63,7 @@ void ChatServer::getChatUpdates()
 
 		pthread_mutex_t updatesChat_mutex;
 			pthread_mutex_lock(&updatesChat_mutex);
-		//	updates[it->first] = game->getChatUpdates();
+			updates[it->first] = game->getChatUpdates();
 			pthread_mutex_unlock(&updatesChat_mutex);
 
 	//		if (update != NULL) delete update;

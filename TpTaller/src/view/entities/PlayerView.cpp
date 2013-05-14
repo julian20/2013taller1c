@@ -79,7 +79,7 @@ PlayerView::PlayerView(PlayerView* otherPlayer):
 	currentSprite = DOWN;
 	lastDirection = M_PI * 1 / 2;
 	textureHolder = otherPlayer->getTextureHolder();
-
+	//chatView = new ChatWindowsView();
 	this->setName(otherPlayer->getName());
 }
 
@@ -108,8 +108,10 @@ void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
 }
 
 void PlayerView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
+
 	UpdateCameraPos(cam);
 	Show(screen);
+	//chatView->drawChatView(screen);
 }
 
 void PlayerView::UpdateCameraPos(Position* _camPos) {
@@ -121,6 +123,8 @@ void PlayerView::setPersonaje(Player* personaje) {
 	this->player = personaje;
 	Vector2* anchorPixel = new Vector2(clip.w / 2, OFFSET_Y);
 	player->getBase()->setAnchorPixel(anchorPixel);
+
+	//this->chatView->setChat(player->getChat());
 }
 
 void PlayerView::loadPlayerImage() {

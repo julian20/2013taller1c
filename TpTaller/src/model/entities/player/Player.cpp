@@ -17,11 +17,15 @@ Player::Player() {
 	this->name = "";
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
+	chat= new Chat();
 	attacking = false;
 	blocking = false;
 	hasChange = true;
 }
-
+Chat* Player::getChat()
+{
+	return this->chat;
+}
 void Player::setPos(float x, float y, float z) {
 	currentPos->setValues(x, y, z);
 
