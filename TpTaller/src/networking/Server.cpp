@@ -60,6 +60,7 @@ void* handle(void* par){
 		std::vector<std::string> withBase = server->listFilesInDirectoryWithBase("sendFiles");
 		std::vector<std::string> withoutBase = server->listFilesInDirectory("sendFiles");
 
+		std::cout << withoutBase[0] << std::endl;
 		//server->sendFile(withBase[0],withoutBase[0],clientSocket);
 
 		// Manda las imagenes y sonidos necesarios que se utilizaran.
@@ -191,7 +192,6 @@ Server::Server(string host, int port) {
 /* **************************** SERVER RUN ************************** */
 
 void Server::run(MultiplayerGame* game){
-	//this->listFilesInDirectory("./resources");
 	this->game = game;
 	pthread_t thread;
 	pthread_t gameThread;
@@ -270,20 +270,43 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 	fseek(picture, 0, SEEK_SET);
 
 	// Send Picture Size
-	send(sockID, &size, sizeof(size),0);
+	int ammountSent = 0;
+	while (ammountSent != sizeof(size)) {
+		ammountSent = send(sockID, &size, sizeof(size),0);
+	}
+	ammountSent = 0;
 
-	// Send picture file name
+	// Send picture file name size
 	int filenameSize = fileDest.size();
-	send(sockID, &filenameSize, sizeof(int), 0);
+	while (ammountSent != sizeof(int)) {
+		ammountSent = send(sockID, &filenameSize, sizeof(int), 0);
+	}
+	ammountSent = 0;
 
 	// Send picture file name
-	send(sockID, fileDest.c_str(), filenameSize * sizeof(char), 0);
+	while (ammountSent != (filenameSize * sizeof(char))) {
+		ammountSent = send(sockID, fileDest.c_str(), filenameSize * sizeof(char), 0);
+	}
+	ammountSent = 0;
 
 	// Send Picture as Byte Array
 	char send_buffer[size];
+	int bufferSize;
 	while(!feof(picture)) {
+
 	    fread(send_buffer, 1, sizeof(send_buffer), picture);
-	    send(sockID, send_buffer, sizeof(send_buffer),0);
+
+	    bufferSize = sizeof(send_buffer);
+		while (ammountSent != sizeof(send_buffer)) {
+			ammountSent = send(sockID, &bufferSize, sizeof(int),0);
+		}
+		ammountSent = 0;
+
+		while (ammountSent != sizeof(send_buffer)) {
+			ammountSent = send(sockID, send_buffer, sizeof(send_buffer),0);
+		}
+		ammountSent = 0;
+
 	    bzero(send_buffer, sizeof(send_buffer));
 	}
 
