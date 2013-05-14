@@ -231,6 +231,7 @@ void Client::recvNewName(){
 	this->player->setName(newName);
 	this->view->setShowableName(newName);
 	this->info->setName(newName);
+	this->game->getChat()->assignPlayer(newName);
 }
 
 void* transmit(void* _client){

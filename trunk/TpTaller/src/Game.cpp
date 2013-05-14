@@ -55,6 +55,7 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 	openAudio = false;
 
 	personajeVista = (configuration->getViewList())[0];
+
 	chat = new Chat();
 	chat->assignPlayer(personaje->getName());
 	chatView = new ChatWindowsView();
@@ -273,6 +274,10 @@ MapCameraView* Game::getMapCameraView(){
 }
 MapData* Game::getMapData(){
 	return mapView->getMapData();
+}
+
+Chat* Game::getChat(){
+	return chat;
 }
 
 Game::~Game() {
