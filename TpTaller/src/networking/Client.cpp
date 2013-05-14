@@ -20,6 +20,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <libgen.h>
 
 #include <iostream>
 #include <sstream>
@@ -119,7 +120,15 @@ void Client::downloadFile() {
 
 	// Convert it Back into Picture
 	FILE *image;
-	image = fopen(fileName, "w");
+
+	// TODO: necesito aca crear el directorio solo si no existe.
+	// puse como ejemplo pasarlo a un directorio con la misma estructura
+	// que el original pero con el "/base" adelante.
+	string dirName = string("./base/")+string(dirname(fileName));
+	string makeDir = string("mkdir -p ");
+	system(string(makeDir + dirName).c_str());
+
+	image = fopen(string("./base/" + string(fileName)).c_str(), "w");
 	fwrite(p_array, 1, sizeof(p_array), image);
 	fclose(image);
 
