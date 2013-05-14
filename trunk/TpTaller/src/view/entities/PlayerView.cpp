@@ -34,16 +34,10 @@ PlayerView::PlayerView()
 	direction = DOWN;
 	wasStanding = true;
 	player = NULL;
-	nameImage = NULL;
-	runningImage = NULL;
-	walkingImage = NULL;
-	attackImage = NULL;
-	idleImage = NULL;
-	idleBlockImage = NULL;
-	numberOfRunningClips = 0;
-	numberOfWalkingClips = 0;
-	numberOfIdleClips = 0;
-	numberOfIdleBlockClips = 0;
+	nameImage = runningImage = walkingImage = NULL;
+	idleImage = idleBlockImage = attackImage = NULL;
+	numberOfRunningClips = numberOfWalkingClips = 0;
+	numberOfIdleClips = numberOfIdleBlockClips = 0;
 	numberOfAttackClips = 0;
 	currentSprite = DOWN;
 	lastDirection = M_PI * 1 / 2;
@@ -65,16 +59,10 @@ PlayerView::PlayerView(PlayerView* otherPlayer):
 	direction = DOWN;
 	wasStanding = true;
 	player = NULL;
-	nameImage = NULL;
-	runningImage = NULL;
-	walkingImage = NULL;
-	attackImage = NULL;
-	idleImage = NULL;
-	idleBlockImage = NULL;
-	numberOfRunningClips = 0;
-	numberOfWalkingClips = 0;
-	numberOfIdleClips = 0;
-	numberOfIdleBlockClips = 0;
+	nameImage = runningImage = walkingImage = NULL;
+	idleImage = idleBlockImage = attackImage = NULL;
+	numberOfRunningClips = numberOfWalkingClips = 0;
+	numberOfIdleClips = numberOfIdleBlockClips = 0;
 	numberOfAttackClips = 0;
 	currentSprite = DOWN;
 	lastDirection = M_PI * 1 / 2;
@@ -83,20 +71,21 @@ PlayerView::PlayerView(PlayerView* otherPlayer):
 	this->setName(otherPlayer->getName());
 }
 
-void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
-		SDL_Rect* clip) {
-	SDL_Rect offset;
+void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
+	SDL_Rect offset, offsetFog;
 
 	Vector3* position = player->getCurrentPos();
 	float x = position->getX();
 	float y = position->getY();
-	offset.x = (int) x + camPos->getX() - this->anchorPixel->getX();
+	offset.x = offsetFog.x = (int) x + camPos->getX() - this->anchorPixel->getX();
 	int h = Tile::computePositionTile(0, 0).h;
-	offset.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2;
-	offset.w = clip->w;
-	offset.h = clip->h;
+	offset.y = offsetFog.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2;
+	offset.w = offsetFog.w = clip->w;
+	offset.h = offsetFog.h = clip->h;
 
-	SDL_BlitSurface(source, clip, screen, &offset);
+	SDL_BlitSurface(this->image, clip, screen, &offset);
+	if (drawFog)
+		SDL_BlitSurface(fogImage, clip, screen, &offsetFog);
 
 	SDL_Rect offsetNombre;
 	offsetNombre.x = (int) x + camPos->getX() - nameImage->w / 2;
@@ -110,7 +99,7 @@ void PlayerView::showFrame(SDL_Surface* source, SDL_Surface* screen,
 void PlayerView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 
 	UpdateCameraPos(cam);
-	Show(screen);
+	Show(screen, drawFog);
 	//chatView->drawChatView(screen);
 }
 
@@ -134,34 +123,46 @@ void PlayerView::loadPlayerImage() {
 	runningImage = textureHolder->getTexture(name + string(RUNNING_MODIFIER));
 	idleBlockImage = textureHolder->getTexture(
 			name + string(IDLE_BLOCKING_MODIFIER));
+	// Fogs
+	walkingImageFog = textureHolder->getFogTexture(name + string(WALKING_MODIFIER));
+	idleImageFog = textureHolder->getFogTexture(name + string(IDLE_MODIFIER));
+	attackImageFog = textureHolder->getFogTexture(name + string(ATTACK_MODIFIER));
+	runningImageFog = textureHolder->getFogTexture(name + string(RUNNING_MODIFIER));
+	idleBlockImageFog = textureHolder->getFogTexture(
+			name + string(IDLE_BLOCKING_MODIFIER));
 
 	//If there was a problem loading the sprite
 	if (!walkingImage) {
 		Logs::logErrorMessage("Unable to load walking image");
 		//TODO: cargo una alternativa
 		walkingImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+		walkingImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
 	}
 
 	if (!idleImage) {
 		Logs::logErrorMessage("Unable to load idle image");
 		//TODO: cargo una alternativa
-		walkingImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+		idleImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+		idleImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
 	}
 
 	if (!attackImage) {
 		Logs::logErrorMessage("Unable to load attack image");
 		//TODO: cargo una alternativa
 		attackImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+		attackImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
 	}
 	if (!runningImage) {
 		Logs::logErrorMessage("Unable to load running image");
 		//TODO: cargo una alternativa
-		attackImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+		runningImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+		runningImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
 	}
 	if (!idleBlockImage) {
 		Logs::logErrorMessage("Unable to load idle blocking image");
 		//TODO: cargo una alternativa
-		attackImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+		idleBlockImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
+		idleBlockImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
 	}
 
 	numberOfWalkingClips = computeNumberOfClips(walkingImage);
@@ -177,7 +178,8 @@ void PlayerView::setEntity(Entity* entity) {
 	player = aux;
 }
 
-void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo) {
+void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo,
+		bool drawFog) {
 
 	SDL_Rect clipToDraw;
 	clipToDraw.x = imageWidth * currentClip * scaleWidth;
@@ -187,7 +189,7 @@ void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo) {
 
 	clipToDraw.h = imageHeight * scaleHeight;
 
-	showFrame(this->image, fondo, &clipToDraw);
+	showFrame(fondo, &clipToDraw, drawFog);
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 
@@ -210,7 +212,7 @@ void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo) {
 
 }
 
-void PlayerView::Show(SDL_Surface* fondo) {
+void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 
 	if (this->image == NULL)
 		loadPlayerImage();
@@ -257,17 +259,19 @@ void PlayerView::Show(SDL_Surface* fondo) {
 	if (player->isAttacking()) {
 		//Si se estaba moviendo, reseteamos el marco para que no quede un # de clip invalido
 		if (player->IsMoving()){
-			marco =0;
+			marco = 0;
 			player->stop();
 		}
 		image = attackImage;
+		fogImage = attackImageFog;
 		numberOfClips = numberOfAttackClips;
 	}
 
 	if (player->isBlocking()) {
-		marco=0;
+		marco = 0;
 		player->stop();
 		image = idleBlockImage;
+		fogImage = idleBlockImageFog;
 		numberOfClips = numberOfIdleBlockClips;
 	}
 
@@ -278,6 +282,7 @@ void PlayerView::Show(SDL_Surface* fondo) {
 
 	if (player->IsMoving()) {
 		image = walkingImage;
+		fogImage = walkingImageFog;
 		numberOfClips = numberOfWalkingClips;
 	}
 
@@ -288,9 +293,10 @@ void PlayerView::Show(SDL_Surface* fondo) {
 			wasStanding = true;
 		}
 		image = idleImage;
+		fogImage = idleImageFog;
 		numberOfClips = numberOfIdleClips;
 		lastDirection = direction;
-		showStandingAnimation(sprite, fondo);
+		showStandingAnimation(sprite, fondo, drawFog);
 		return;
 	}
 
@@ -300,7 +306,7 @@ void PlayerView::Show(SDL_Surface* fondo) {
 //		marco = 0;    // Loop the animation
 
 	lastDirection = direction;
-	playAnimation(currentSprite, fondo);
+	playAnimation(currentSprite, fondo, drawFog);
 
 }
 
@@ -351,14 +357,15 @@ void PlayerView::setShowableName(string name){
 		Logs::logErrorMessage("Error al cargar la fuente para el nombre del personaje");
 }
 
-void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen) {
+void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen,
+		bool drawFog) {
 	SDL_Rect clipToDraw;
 	clipToDraw.x = imageWidth * marco * scaleWidth;
 	clipToDraw.y = imageHeight * sprite;
 	clipToDraw.w = imageWidth * scaleWidth;
 	clipToDraw.h = imageHeight * scaleHeight;
 
-	showFrame(this->image, screen, &clipToDraw);
+	showFrame(screen, &clipToDraw, drawFog);
 
 	if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
 		this->marco++;

@@ -35,7 +35,7 @@ class PlayerView: public EntityView {
 public:
 	PlayerView();
 	PlayerView(PlayerView* otherPlayer);
-	void Show(SDL_Surface* fondo);
+	void Show(SDL_Surface* fondo, bool drawFog);
 	void setPersonaje(Player* personaje);
 	Player* getPersonaje();
 	void UpdateCameraPos(Position* _camPos);
@@ -48,12 +48,12 @@ public:
 	virtual ~PlayerView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
-	void playAnimation(SpriteType sprite, SDL_Surface* screen);
 
 private:
 	ChatWindowsView* chatView;
-	void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
-	void showStandingAnimation(SpriteType sprite, SDL_Surface* fondo);
+	void showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog);
+	void showStandingAnimation(SpriteType sprite, SDL_Surface* fondo, bool drawFog);
+	void playAnimation(SpriteType sprite, SDL_Surface* screen, bool drawFog);
 	void loadPlayerImage();
 	Player* player;
 	Position* camPos;
@@ -66,14 +66,19 @@ private:
 	bool wasStanding;
 
 	SDL_Surface* attackImage;
+	SDL_Surface* attackImageFog;
 	int numberOfAttackClips;
 	SDL_Surface* walkingImage;
+	SDL_Surface* walkingImageFog;
 	int numberOfWalkingClips;
 	SDL_Surface* idleImage;
+	SDL_Surface* idleImageFog;
 	int numberOfIdleClips;
 	SDL_Surface* runningImage;
+	SDL_Surface* runningImageFog;
 	int numberOfRunningClips;
 	SDL_Surface* idleBlockImage;
+	SDL_Surface* idleBlockImageFog;
 	int numberOfIdleBlockClips;
 
 	int computeNumberOfClips(SDL_Surface* img);
