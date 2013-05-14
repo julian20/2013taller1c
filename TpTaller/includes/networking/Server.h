@@ -29,8 +29,8 @@ public:
 	void sendMap(string mapfile,int sockID);
 	void sendFile(string fileName, int sockID);
 
+	std::vector<std::string> listFilesInDirectoryWithBase(std::string directory);
 	std::vector<std::string> listFilesInDirectory(std::string directory);
-	std::vector<std::string> listFilesInDirectory(std::string directory, std::ofstream& outputFile);
 
 	PlayerInfo* recieveNewPlayer(int clientSocket);
 	void sendAproval(int clientSocket, int result);

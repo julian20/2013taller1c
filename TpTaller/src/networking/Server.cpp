@@ -57,14 +57,12 @@ void* handle(void* par){
 		MultiplayerGame* game = server->getGame();
 
 		//Lo primero que hago es mandar el mapa.
-		//server->sendFile("./resources/foo.png",clientSocket);
+		//server->sendFile("resources/foo.png",clientSocket);
 
 		// Manda las imagenes y sonidos necesarios que se utilizaran.
 		//TODO : sendResources(sockID);
 
 		map<int,string> sended;
-
-
 
 		PlayerInfo* info = server->recieveNewPlayer(clientSocket);
 		string playerName = info->getPlayer()->getName();
@@ -290,6 +288,29 @@ void Server::sendFile(string file, int sockID) {
 
 std::vector<std::string> Server::listFilesInDirectory(std::string directory) {
 
+	std::vector<std::string> newVector;
+
+	std::vector<std::string> withBase = this->listFilesInDirectoryWithBase(directory);
+
+	// Tamaño del dir mas /
+	int length = directory.size() + 1;
+
+	std::ofstream outputFile("testResources");
+
+	for (unsigned i = 0 ; i < withBase.size() ; i++) {
+
+		newVector.push_back(withBase[i].substr(length));
+
+		outputFile << newVector[i] << std::endl;
+
+	}
+
+	return newVector;
+
+}
+
+std::vector<std::string> Server::listFilesInDirectoryWithBase(std::string directory) {
+
 	std::vector<std::string> listOfFiles;
 
 	struct dirent *de = NULL;
@@ -297,32 +318,30 @@ std::vector<std::string> Server::listFilesInDirectory(std::string directory) {
 	DIR *checkDir = NULL;
 
 	dir = opendir(directory.c_str());
-	if( dir == NULL ) {
-		Logs::logErrorMessage(std::string("No se pudo abrir el directorio" + directory));
+	if (dir == NULL) {
+		Logs::logErrorMessage(
+				std::string("No se pudo abrir el directorio" + directory));
 		return listOfFiles;
 	}
 
-	while( ( de = readdir( dir ) ) ) {
+	while ((de = readdir(dir))) {
 
-		if(string(".").compare(de->d_name) == 0) continue;
-		if(string("..").compare(de->d_name) == 0) continue;
+		if (string(".").compare(de->d_name) == 0)
+			continue;
+		if (string("..").compare(de->d_name) == 0)
+			continue;
 
-		checkDir = opendir( string(directory + "/" + de->d_name).c_str() );
-		if( checkDir == NULL ) {
-			listOfFiles.push_back( directory + "/" + string( de->d_name ) );
+		checkDir = opendir(string(directory + "/" + de->d_name).c_str());
+		if (checkDir == NULL) {
+			listOfFiles.push_back(directory + "/" + string(de->d_name));
 		} else {
-			std::vector<std::string> auxVector = listFilesInDirectory(string(directory + "/" + de->d_name));
-			for( unsigned i = 0 ; i < auxVector.size() ; i++ ){
+			std::vector<std::string> auxVector = listFilesInDirectoryWithBase(
+					string(directory + "/" + de->d_name));
+			for (unsigned i = 0; i < auxVector.size(); i++) {
 				listOfFiles.push_back(auxVector[i]);
 			}
 			closedir(checkDir);
 		}
-	}
-
-	std::ofstream outputFile("testResources");
-
-	for( unsigned i = 0 ; i < listOfFiles.size() ; i++ ){
-		outputFile << listOfFiles[i] << std::endl;
 	}
 
 	return listOfFiles;
