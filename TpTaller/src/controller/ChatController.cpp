@@ -35,7 +35,7 @@ void ChatController::handle_events(SDL_Event ev) {
 					(char) ev.key.keysym.sym;
 			this->text += c;
 		} else if ((c <= '1' || c >= '0')
-				&& ev.key.keysym.sym != SDLK_LSHIFT) {
+				&& ev.key.keysym.sym != SDLK_LSHIFT && ev.key.keysym.sym !=SDLK_RSHIFT) {
 			if (ev.key.keysym.mod & KMOD_SHIFT) {
 				switch (c) {
 				case '1':
