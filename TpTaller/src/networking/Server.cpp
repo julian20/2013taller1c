@@ -107,6 +107,9 @@ void* handle(void* par){
 			serverChat->getChatUpdates();
 		//	serverChat->sendChatUpdates(clientSocket, playerName);
 		}
+
+		server->disconectPlayer(clientSocket,playerName);
+
 		return NULL;
 
 }
@@ -514,6 +517,15 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName){
 
 }
 
+
+
+void Server::disconectPlayer(int clientSocket, string playerName){
+
+	vector<PlayerEvent*> disconectEvent;
+	disconectEvent.push_back(new PlayerEvent(EVENT_DISCONECT));
+	game->addEventsToHandle(playerName,disconectEvent);
+
+}
 
 /* ************************ SERVER GETTERS ************************* */
 

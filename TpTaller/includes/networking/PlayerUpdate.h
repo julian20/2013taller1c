@@ -37,6 +37,8 @@ public:
 	void setAttacking(bool attacking);
 	bool isBlocking();
 	void setBlocking(bool blocking);
+	bool isActive();
+	void setActive(bool active);
 	Tile* getTile();
 	void setTile(Tile* tile);
 	Coordinates* getInitCoordinates();
@@ -61,6 +63,7 @@ private:
 
 	bool attacking;
 	bool blocking;
+	bool active;
 
 	Coordinates* initCoords;
 

@@ -74,6 +74,8 @@ PlayerView::PlayerView(PlayerView* otherPlayer):
 void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 	SDL_Rect offset, offsetFog;
 
+	if (drawFog) return;
+
 	Vector3* position = player->getCurrentPos();
 	float x = position->getX();
 	float y = position->getY();
@@ -84,8 +86,12 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 	offset.h = offsetFog.h = clip->h;
 
 	SDL_BlitSurface(this->image, clip, screen, &offset);
-	if (drawFog || player->playerIsActive() == false)
+
+
+	if (player->playerIsActive() == false){
 		SDL_BlitSurface(fogImage, clip, screen, &offsetFog);
+	}
+
 
 	SDL_Rect offsetNombre;
 	offsetNombre.x = (int) x + camPos->getX() - nameImage->w / 2;

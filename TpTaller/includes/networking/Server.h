@@ -45,6 +45,8 @@ public:
 	void getPlayersUpdates();
 	void sendPlayersUpdates(int clientSocket, string playerName);
 
+	void disconectPlayer(int clientSocket, string playerName);
+
 	MultiplayerGame* getGame();
 
 	ChatServer* getChat();

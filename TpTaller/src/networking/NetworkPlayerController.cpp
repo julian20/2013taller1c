@@ -41,6 +41,13 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 		break;
 	case EVENT_STOP:
 		this->player->stop();
+		break;
+	case EVENT_DISCONECT:
+		this->player->SetUnactive();
+		break;
+	case EVENT_CONECT:
+		this->player->setActive();
+		break;
 	}
 
 	player->setChange(true);
