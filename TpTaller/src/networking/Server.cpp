@@ -60,7 +60,7 @@ void* handle(void* par){
 		std::vector<std::string> withBase = server->listFilesInDirectoryWithBase("sendFiles");
 		std::vector<std::string> withoutBase = server->listFilesInDirectory("sendFiles");
 
-		std::cout << withoutBase[0] << std::endl;
+//		std::cout << withoutBase[0] << std::endl;
 		//server->sendFile(withBase[0],withoutBase[0],clientSocket);
 
 		// Manda las imagenes y sonidos necesarios que se utilizaran.
@@ -389,7 +389,7 @@ void Server::sendAproval(int clientSocket, int result){
 }
 
 int Server::isNameAbilivable(string playerName){
-	if (playerNames.count(playerName) > 0) return ERROR;
+	if (conectedPlayers.count(playerName) > 0) return ERROR;
 	return OK;
 }
 
@@ -398,7 +398,7 @@ string Server::getAbilivableName(string playerName){
 	int i = 0;
 	string newName = playerName;
 
-	while (playerNames.count(newName) > 0){
+	while (conectedPlayers.count(newName) > 0){
 		i++;
 		stringstream indexstream;
 		indexstream << i;
@@ -415,22 +415,42 @@ void Server::sendNewName(int clientSocket, string newName){
 
 int Server::addPlayerToGame(int clientSocket, PlayerInfo* info){
 
-	if (playerNames.count(info->getPlayer()->getName()) > 0){
-		return 1;
+	string playerName = info->getPlayer()->getName();
+
+	if (disconectedPlayers.count(playerName) > 0){
+		return reconectPlayer(clientSocket,playerName,info);
 	}
+
+
 
 	game->addNewPlayer(info->getPlayer(), info->getInitCoordinates());
 
 
 	gamePlayers[clientSocket] = info;
-	playerNames[info->getPlayer()->getName()] = clientSocket;
+	conectedPlayers[playerName] = clientSocket;
 
-	updates[info->getPlayer()->getName()] = vector<PlayerUpdate*>();
+	updates[playerName] = vector<PlayerUpdate*>();
 
 	return 0;
 
 }
 
+int Server::reconectPlayer(int clientSocket, string playerName, PlayerInfo* info){
+
+	disconectedPlayers.erase(playerName);
+
+	vector<PlayerEvent*> conectEvent;
+	conectEvent.push_back(new PlayerEvent(EVENT_CONECT));
+	game->addEventsToHandle(playerName,conectEvent);
+
+	gamePlayers.insert(pair<int,PlayerInfo*>(clientSocket,info));
+	conectedPlayers.insert(pair<string,int>(playerName,clientSocket));
+
+	updates[playerName] = vector<PlayerUpdate*>();
+
+
+	return 0;
+}
 
 /* *********************** SERVER MAIN LOOP ************************ */
 
@@ -490,11 +510,10 @@ vector<PlayerEvent*> Server::recvEvents(int clientSocket){
 
 void Server::getPlayersUpdates(){
 
-	for (map<string,int>::iterator it = playerNames.begin() ; it != playerNames.end() ; ++it) {
+	for (map<string,int>::iterator it = conectedPlayers.begin() ; it != conectedPlayers.end() ; ++it) {
 
 		updates[it->first] = game->getPlayersUpdates();
 
-//		if (update != NULL) delete update;
 	}
 
 }
@@ -517,13 +536,16 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName){
 
 }
 
-
+/* ************************** CLOSE SERVER ************************* */
 
 void Server::disconectPlayer(int clientSocket, string playerName){
 
 	vector<PlayerEvent*> disconectEvent;
 	disconectEvent.push_back(new PlayerEvent(EVENT_DISCONECT));
 	game->addEventsToHandle(playerName,disconectEvent);
+	gamePlayers.erase(clientSocket);
+	conectedPlayers.erase(playerName);
+	disconectedPlayers.insert(pair<string,int>(playerName,clientSocket));
 
 }
 

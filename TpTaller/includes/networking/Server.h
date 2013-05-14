@@ -55,11 +55,14 @@ public:
 
 private:
 
+	int reconectPlayer(int clientSocket, string playerName, PlayerInfo* info);
+
 	int serverID;
 	ChatServer* chat;
 	MultiplayerGame* game;
 	map<int,PlayerInfo*> gamePlayers;
-	map<string,int> playerNames;
+	map<string,int> conectedPlayers;
+	map<string,int> disconectedPlayers;
 	map<string,vector<PlayerUpdate*> > updates;
 };
 
