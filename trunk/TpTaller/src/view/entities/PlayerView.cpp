@@ -261,6 +261,7 @@ void PlayerView::Show(SDL_Surface* fondo) {
 	}
 
 	if (player->isBlocking()) {
+		marco=0;
 		player->stop();
 		image = idleBlockImage;
 		numberOfClips = numberOfIdleBlockClips;
