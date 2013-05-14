@@ -61,13 +61,10 @@ void ChatServer::getChatUpdates()
 {
 	for (map<string,int>::iterator it = players.begin() ; it != players.end() ; ++it) {
 
-		pthread_mutex_t updatesChat_mutex;
-			pthread_mutex_lock(&updatesChat_mutex);
-			updates[it->first] = game->getChatUpdates();
-			pthread_mutex_unlock(&updatesChat_mutex);
+		updates[it->first] = game->getChatUpdates();
 
 	//		if (update != NULL) delete update;
-		}
+	}
 }
 
 void ChatServer::run() {
