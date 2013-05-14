@@ -11,13 +11,15 @@
 #include <networking/PlayerEvent.h>
 #include <networking/PlayerInfo.h>
 #include <MultiplayerGame.h>
+#include <iostream>
+#include <fstream>
+#include <string>
 #include <vector>
-
-
+#include <exception>
+#include <cstdlib>
+#include <stdlib.h>
 
 namespace std {
-
-
 
 class Server {
 public:
@@ -27,7 +29,8 @@ public:
 	void sendMap(string mapfile,int sockID);
 	void sendFile(string fileName, int sockID);
 
-	std::vector<std::string> listFilesInDirectory(std::string);
+	std::vector<std::string> listFilesInDirectory(std::string directory);
+	std::vector<std::string> listFilesInDirectory(std::string directory, std::ofstream& outputFile);
 
 	PlayerInfo* recieveNewPlayer(int clientSocket);
 	void sendAproval(int clientSocket, int result);
