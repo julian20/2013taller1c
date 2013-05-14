@@ -21,10 +21,7 @@ namespace std {
 class Client {
 public:
 	Client(string host, int port, Game* game);
-	Game* getGame();
-
 	void initPlayerInfo(PlayerView* view);
-	void addLocalPlayer();
 	void run();
 
 	void downloadMap();
@@ -33,12 +30,15 @@ public:
 	void registerPlayer();
 	int getServerAproval();
 	void recvNewName();
+	void addLocalPlayer();
 
 	bool exchangeAliveSignals();
 	void checkNewPlayers();
 	void sendEvents();
 	map<string,PlayerUpdate*> recvPlayersUpdates();
 	void updatePlayers(map<string,PlayerUpdate*> updates);
+
+	Game* getGame();
 
 	virtual ~Client();
 private:

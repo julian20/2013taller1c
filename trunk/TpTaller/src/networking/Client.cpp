@@ -34,6 +34,46 @@
 
 using namespace std;
 
+/* ***************************************************************** */
+/* *************  FUNCIONES EJECUTADAS EN LOS THREADS ************** */
+/* ***************************************************************** */
+
+void* transmit(void* _client){
+
+	Client* client = (Client*) _client;
+
+	//client->downloadFile();
+	bool playing = true;
+
+	client->registerPlayer();
+
+	int ok = client->getServerAproval();
+	if (ok != 0){
+		client->recvNewName();
+	}
+
+	client->addLocalPlayer();
+
+	while (playing){
+
+		playing = client->exchangeAliveSignals();
+		if (!playing) break;
+
+		client->checkNewPlayers();
+		client->sendEvents();
+		map<string,PlayerUpdate*> updates = client->recvPlayersUpdates();
+		if (!updates.empty()) client->updatePlayers(updates);
+
+	}
+
+
+	return NULL;
+}
+
+
+/* ***************************************************************** */
+/* *************************  CLASE CLIENT ************************* */
+/* ***************************************************************** */
 
 Client::Client(string host, int port, Game* game) {
 	// TODO Auto-generated constructor stub
@@ -74,6 +114,48 @@ Client::Client(string host, int port, Game* game) {
 	this->game = game;
 
 }
+
+
+/* ******************** CLIENT SET PLAYER INFO ********************* */
+
+void Client::initPlayerInfo(PlayerView* view){
+	this->info = new PlayerInfo();
+	info->setName(view->getPersonaje()->getName());
+	info->setWalkingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(WALKING_MODIFIER) ));
+	info->setRunningImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(RUNNING_MODIFIER) ));
+	info->setIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_MODIFIER) ));
+	info->setAttackImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(ATTACK_MODIFIER) ));
+	info->setIdleBlockingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_BLOCKING_MODIFIER) ));
+	info->setAnchorPixel(view->getAnchorPixel());
+	info->setDelay(view->getDelay());
+	info->setFPS(view->getFps());
+	info->setImageDimentions(view->getImageWidth(), view->getImageHeight());
+	info->setPlayer(view->getPersonaje());
+	Coordinates* c = new Coordinates(view->getPersonaje()->getCoordinates()->getRow(), view->getPersonaje()->getCoordinates()->getCol());
+	info->setInitCoordinates(c);
+
+	this->view = view;
+	this->player = view->getPersonaje();
+}
+
+
+/* **************************** CLIENT RUN ************************** */
+
+void Client::run(){
+
+	pthread_t thread;
+	pthread_attr_t attr;
+	pthread_attr_init(&attr);
+
+	if (pthread_create(&thread, &attr, transmit,(void*)this ) != 0) {
+		Logs::logErrorMessage("Cliente: Error al inicializar transmit thread");
+		exit(0);
+	}
+
+}
+
+
+/* *************  FUNCIONES DE RECEPCION DE ARCHIVOS *************** */
 
 void Client::downloadMap(){
 
@@ -134,32 +216,43 @@ void Client::downloadFile() {
 
 }
 
-void Client::initPlayerInfo(PlayerView* view){
-	this->info = new PlayerInfo();
-	info->setName(view->getPersonaje()->getName());
-	info->setWalkingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(WALKING_MODIFIER) ));
-	info->setRunningImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(RUNNING_MODIFIER) ));
-	info->setIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_MODIFIER) ));
-	info->setAttackImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(ATTACK_MODIFIER) ));
-	info->setIdleBlockingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_BLOCKING_MODIFIER) ));
-	info->setAnchorPixel(view->getAnchorPixel());
-	info->setDelay(view->getDelay());
-	info->setFPS(view->getFps());
-	info->setImageDimentions(view->getImageWidth(), view->getImageHeight());
-	info->setPlayer(view->getPersonaje());
-	Coordinates* c = new Coordinates(view->getPersonaje()->getCoordinates()->getRow(), view->getPersonaje()->getCoordinates()->getCol());
-	info->setInitCoordinates(c);
 
-	this->view = view;
-	this->player = view->getPersonaje();
-}
+/* *********************  ENVIO DEL NUEVO JUGADOR ****************** */
 
 void Client::registerPlayer(){
 	ComunicationUtils::sendPlayerInfo(clientID,info);
 }
 
+int Client::getServerAproval(){
+	return ComunicationUtils::recvNumber(clientID);
+}
+
+void Client::recvNewName(){
+	string newName = ComunicationUtils::recvString(clientID);
+	this->player->setName(newName);
+	this->view->setShowableName(newName);
+	this->info->setName(newName);
+	this->game->getChat()->assignPlayer(newName);
+}
+
 void Client::addLocalPlayer(){
 	this->players.insert(pair<string,Player*>(player->getName(), player));
+}
+
+
+/* *********************** CLIENT MAIN LOOP ************************ */
+
+bool Client::exchangeAliveSignals(){
+
+	ComunicationUtils::sendString(clientID, ALIVE_SIGNAL);
+	string signal = ComunicationUtils::recvString(clientID);
+	if (signal.compare(ALIVE_SIGNAL) == 0) return true;
+
+
+	Logs::logErrorMessage("Client: Ha fallado la conexion con el servidor");
+	cout << "Client: Ha fallado la conexion con el servidor" << endl;
+	return false;
+
 }
 
 void Client::checkNewPlayers(){
@@ -210,62 +303,6 @@ void Client::sendEvents(){
 
 }
 
-void Client::updatePlayers(map<string,PlayerUpdate*> updates){
-
-	for (map<string,PlayerUpdate*>::iterator it = updates.begin() ; it != updates.end() ; ++it){
-		if (players.count(it->first) != 0){
-			players[it->first]->update(it->second);
-			players[it->first]->update();
-		}
-		delete it->second;
-	}
-
-}
-
-int Client::getServerAproval(){
-	return ComunicationUtils::recvNumber(clientID);
-}
-
-void Client::recvNewName(){
-	string newName = ComunicationUtils::recvString(clientID);
-	this->player->setName(newName);
-	this->view->setShowableName(newName);
-	this->info->setName(newName);
-	this->game->getChat()->assignPlayer(newName);
-}
-
-void* transmit(void* _client){
-
-	Client* client = (Client*) _client;
-
-	//client->downloadFile();
-	bool playing = true;
-
-	client->registerPlayer();
-
-	int ok = client->getServerAproval();
-	if (ok != 0){
-		client->recvNewName();
-	}
-
-	client->addLocalPlayer();
-
-	while (playing){
-
-		playing = client->exchangeAliveSignals();
-		if (!playing) break;
-
-		client->checkNewPlayers();
-		client->sendEvents();
-		map<string,PlayerUpdate*> updates = client->recvPlayersUpdates();
-		if (!updates.empty()) client->updatePlayers(updates);
-
-	}
-
-
-	return NULL;
-}
-
 map<string,PlayerUpdate*> Client::recvPlayersUpdates(){
 
 	map<string,PlayerUpdate*> updates;
@@ -285,36 +322,27 @@ map<string,PlayerUpdate*> Client::recvPlayersUpdates(){
 
 }
 
-bool Client::exchangeAliveSignals(){
+void Client::updatePlayers(map<string,PlayerUpdate*> updates){
 
-	ComunicationUtils::sendString(clientID, ALIVE_SIGNAL);
-	string signal = ComunicationUtils::recvString(clientID);
-	if (signal.compare(ALIVE_SIGNAL) == 0) return true;
-
-
-	Logs::logErrorMessage("Client: Ha fallado la conexion con el servidor");
-	cout << "Client: Ha fallado la conexion con el servidor" << endl;
-	return false;
-
-}
-
-void Client::run(){
-
-	pthread_t thread;
-	pthread_attr_t attr;
-	pthread_attr_init(&attr);
-
-	if (pthread_create(&thread, &attr, transmit,(void*)this ) != 0) {
-		Logs::logErrorMessage("Cliente: Error al inicializar transmit thread");
-		exit(0);
+	for (map<string,PlayerUpdate*>::iterator it = updates.begin() ; it != updates.end() ; ++it){
+		if (players.count(it->first) != 0){
+			players[it->first]->update(it->second);
+			players[it->first]->update();
+		}
+		delete it->second;
 	}
 
 }
+
+
+/* ************************ CLIENT GETTERS ************************* */
 
 Game* Client::getGame(){
 	return game;
 }
 
+
+/* ********************** CLIENT DESTRUCTOR ************************ */
 
 Client::~Client() {
 	close(clientID);
