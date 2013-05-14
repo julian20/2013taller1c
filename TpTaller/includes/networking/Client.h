@@ -29,9 +29,12 @@ public:
 
 	void downloadMap();
 	void downloadFile();
+
 	void registerPlayer();
 	int getServerAproval();
 	void recvNewName();
+
+	bool exchangeAliveSignals();
 	void checkNewPlayers();
 	void sendEvents();
 	map<string,PlayerUpdate*> recvPlayersUpdates();
