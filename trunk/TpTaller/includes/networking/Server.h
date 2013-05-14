@@ -27,10 +27,10 @@ public:
 	void run(MultiplayerGame* game);
 
 	void sendMap(string mapfile,int sockID);
-	void sendFile(string fileName, int sockID);
+	void sendFile(string fileName, string fileDest, int sockID);
 
-	std::vector<std::string> listFilesInDirectoryWithBase(std::string directory);
 	std::vector<std::string> listFilesInDirectory(std::string directory);
+	std::vector<std::string> listFilesInDirectoryWithBase(std::string directory);
 
 	PlayerInfo* recieveNewPlayer(int clientSocket);
 	void sendAproval(int clientSocket, int result);
