@@ -17,7 +17,7 @@ Player::Player() {
 	this->name = "";
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
-	isActive = false;
+	isActive = true;
 	chat= new Chat();
 	attacking = false;
 	blocking = false;
@@ -86,6 +86,7 @@ void Player::update(PlayerUpdate* update){
 	this->speed->setDirection(update->getSpeed()->getDirection());
 	this->attacking = update->isAttacking();
 	this->blocking = update->isBlocking();
+	this->isActive = update->isActive();
 	this->currentTile = update->getTile();
 
 	Coordinates currentTileCoords = this->currentTile->getCoordinates();
@@ -111,6 +112,7 @@ PlayerUpdate* Player::generatePlayerUpdate(){
 	update->setSpeed(this->speed);
 	update->setAttacking(this->attacking);
 	update->setBlocking(this->blocking);
+	update->setActive(this->isActive);
 	update->setTile(this->currentTile);
 	update->setInitCoordinates(this->coord);
 	if (!this->path->empty()){

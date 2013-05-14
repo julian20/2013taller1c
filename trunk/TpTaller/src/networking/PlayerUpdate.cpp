@@ -15,6 +15,7 @@ PlayerUpdate::PlayerUpdate(){
 	this->speed = new Speed();
 	this->attacking = false;
 	this->blocking = false;
+	this->active = true;
 	this->currentTile = new Tile();
 	this->nextTile = new Tile();
 	this->initCoords = new Coordinates;
@@ -70,6 +71,14 @@ void PlayerUpdate::setBlocking(bool blocking){
 	this->blocking = blocking;
 }
 
+bool PlayerUpdate::isActive(){
+	return active;
+}
+
+void PlayerUpdate::setActive(bool active){
+	this->active = active;
+}
+
 Tile* PlayerUpdate::getTile(){
 	return currentTile;
 }
@@ -103,7 +112,7 @@ Tile* PlayerUpdate::getNextTile(){
 ostream& operator <<(std::ostream& out, const PlayerUpdate& update){
 
 	out << update.name << " " << *update.currentPos << " " << *update.endPos << " " << *update.speed << " " << update.attacking << " "
-			<< update.blocking << " " << *update.currentTile << " " << *update.nextTile << " " << *update.initCoords << " ";
+			<< update.blocking << " " << update.active << " " << *update.currentTile << " " << *update.nextTile << " " << *update.initCoords << " ";
 
 
 	return out;
@@ -131,6 +140,9 @@ istream& operator >>(std::istream& in, PlayerUpdate& update){
 	bool blocking;
 	in >> blocking;
 	update.setBlocking(blocking);
+	bool active;
+	in >> active;
+	update.setActive(active);
 	Tile tile;
 	in >> tile;
 	update.setTile(&tile);
