@@ -57,7 +57,10 @@ void* handle(void* par){
 		MultiplayerGame* game = server->getGame();
 
 		//Lo primero que hago es mandar el mapa.
-		//server->sendFile("resources/foo.png",clientSocket);
+		std::vector<std::string> withBase = server->listFilesInDirectoryWithBase("sendFiles");
+		std::vector<std::string> withoutBase = server->listFilesInDirectory("sendFiles");
+
+		//server->sendFile(withBase[0],withoutBase[0],clientSocket);
 
 		// Manda las imagenes y sonidos necesarios que se utilizaran.
 		//TODO : sendResources(sockID);
@@ -256,11 +259,11 @@ void Server::sendMap(string mapfile,int sockID){
 	map.close();
 }
 
-void Server::sendFile(string file, int sockID) {
+void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 
 	// Get Picture Size
 	FILE *picture;
-	picture = fopen(file.c_str(), "r");
+	picture = fopen(fileOrigin.c_str(), "r");
 	int size;
 	fseek(picture, 0, SEEK_END);
 	size = ftell(picture);
@@ -270,11 +273,11 @@ void Server::sendFile(string file, int sockID) {
 	send(sockID, &size, sizeof(size),0);
 
 	// Send picture file name
-	int filenameSize = file.size();
+	int filenameSize = fileDest.size();
 	send(sockID, &filenameSize, sizeof(int), 0);
 
 	// Send picture file name
-	send(sockID, file.c_str(), filenameSize * sizeof(char), 0);
+	send(sockID, fileDest.c_str(), filenameSize * sizeof(char), 0);
 
 	// Send Picture as Byte Array
 	char send_buffer[size];

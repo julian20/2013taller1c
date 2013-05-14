@@ -206,11 +206,11 @@ void Client::downloadFile() {
 	// Convert it Back into Picture
 	FILE *image;
 
-	string dirName = string("./base/")+string(dirname(fileBaseDir));
+	string dirName = string(dirname(fileBaseDir));
 	string makeDir = string("mkdir -p ");
 	system(string(makeDir + dirName).c_str());
 
-	string outputFile(string("./base/") + string(fileName));
+	string outputFile(fileName);
 
 	image = fopen(outputFile.c_str(), "w");
 	fwrite(p_array, 1, sizeof(p_array), image);
