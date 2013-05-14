@@ -189,21 +189,21 @@ void Client::downloadFile() {
 	// Read Picture Size
 	int size;
 	while (ammountRecv != sizeof(int)) {
-		ammountRecv = read(clientID, &size, sizeof(int));
+		ammountRecv = recv(clientID, &size, sizeof(int), MSG_EOR);
 	}
 	ammountRecv = 0;
 
 	// Read filename size
 	int filenameSize;
 	while (ammountRecv != sizeof(int)) {
-		ammountRecv = read(clientID, &filenameSize, sizeof(int));
+		ammountRecv = recv(clientID, &filenameSize, sizeof(int), MSG_EOR);
 	}
 	ammountRecv = 0;
 
 	// Read picture file name
-	char fileName[filenameSize];
+	char* fileName = (char*) malloc( filenameSize * sizeof(char) );
 	while (ammountRecv != (filenameSize * sizeof(char))) {
-		ammountRecv = read(clientID, fileName, filenameSize * sizeof(char));
+		ammountRecv = recv(clientID, fileName, filenameSize * sizeof(char), MSG_EOR);
 	}
 	ammountRecv = 0;
 
@@ -227,13 +227,13 @@ void Client::downloadFile() {
 	while(sizeOfOutput != size) {
 
 		while (ammountRecv != sizeof(int)) {
-			ammountRecv = read(clientID, &bufferSize, sizeof(int));
+			ammountRecv = recv(clientID, &bufferSize, sizeof(int),MSG_EOR);
 		}
 		ammountRecv = 0;
 
 		char p_array[bufferSize];
 		while (ammountRecv != bufferSize) {
-			ammountRecv = read(clientID, p_array, bufferSize);
+			ammountRecv = recv(clientID, p_array, bufferSize,MSG_EOR);
 		}
 		sizeOfOutput += ammountRecv;
 		ammountRecv = 0;
