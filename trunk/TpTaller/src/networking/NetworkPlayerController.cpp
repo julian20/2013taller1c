@@ -39,6 +39,8 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 	case EVENT_MOVE:
 		this->movePlayer(event->getTileCoordinates());
 		break;
+	case EVENT_STOP:
+		this->player->stop();
 	}
 
 	player->setChange(true);

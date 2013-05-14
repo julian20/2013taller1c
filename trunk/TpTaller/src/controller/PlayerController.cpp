@@ -92,14 +92,13 @@ void PlayerController::toggleRunning() {
 			return;
 		}
 		player->setSpeedMagnitude(player->getSpeed()->getMagnitude() * 2);
-		if (listEvents)
-				events.push_back(new PlayerEvent(EVENT_RUNNING));
 	}
 }
 
 void PlayerController::playerAttack() {
 	if (listEvents){
 		events.push_back(new PlayerEvent(EVENT_ATTACK));
+		events.push_back(new PlayerEvent(EVENT_STOP));
 		return;
 	}
 	player->attack();
@@ -116,6 +115,7 @@ void PlayerController::playerCancelAttack(){
 void PlayerController::playerBlock() {
 	if (listEvents){
 		events.push_back(new PlayerEvent(EVENT_BLOCK));
+		events.push_back(new PlayerEvent(EVENT_STOP));
 		return;
 	}
 	player->block();
