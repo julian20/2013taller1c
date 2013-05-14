@@ -184,24 +184,34 @@ void Client::downloadMap(){
 
 void Client::downloadFile() {
 
+	int ammountRecv = 0;
+
 	// Read Picture Size
 	int size;
 	read(clientID, &size, sizeof(int));
+	while (ammountRecv != sizeof(int)) {
+		ammountRecv = read(clientID, &size, sizeof(int));
+	}
+	ammountRecv = 0;
 
 	// Read filename size
 	int filenameSize;
 	read(clientID, &filenameSize, sizeof(int));
+	while (ammountRecv != sizeof(int)) {
+		ammountRecv = read(clientID, &filenameSize, sizeof(int));
+	}
+	ammountRecv = 0;
 
 	// Read picture file name
 	char fileName[filenameSize];
 	read(clientID, fileName, filenameSize * sizeof(char));
+	while (ammountRecv != (filenameSize * sizeof(char))) {
+		ammountRecv = read(clientID, fileName, filenameSize * sizeof(char));
+	}
+	ammountRecv = 0;
 
 	char* fileBaseDir = strdup(fileName);
 	char* fileBaseName = strdup(fileName);
-
-	// Read Picture Byte Array
-	char p_array[size];
-	read(clientID, p_array, size);
 
 	// Convert it Back into Picture
 	FILE *image;
@@ -211,9 +221,30 @@ void Client::downloadFile() {
 	system(string(makeDir + dirName).c_str());
 
 	string outputFile(fileName);
-
 	image = fopen(outputFile.c_str(), "w");
-	fwrite(p_array, 1, sizeof(p_array), image);
+
+	int sizeOfOutput = 0;
+	int bufferSize;
+
+	// Read Picture Byte Array
+	while(sizeOfOutput != size) {
+
+		while (ammountRecv != sizeof(int)) {
+			ammountRecv = read(clientID, &bufferSize, sizeof(int));
+		}
+		ammountRecv = 0;
+
+		char p_array[bufferSize];
+		while (ammountRecv != bufferSize) {
+			ammountRecv = read(clientID, p_array, bufferSize);
+		}
+		sizeOfOutput += ammountRecv;
+		ammountRecv = 0;
+
+		fwrite(p_array, 1, sizeof(p_array), image);
+
+	}
+
 	fclose(image);
 
 }
