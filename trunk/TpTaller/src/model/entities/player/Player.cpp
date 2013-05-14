@@ -82,7 +82,14 @@ void Player::update(PlayerUpdate* update){
 	this->attacking = update->isAttacking();
 	this->blocking = update->isBlocking();
 	this->currentTile = update->getTile();
-	//this->coord = update->getInitCoordinates();
+
+	Coordinates currentTileCoords = this->currentTile->getCoordinates();
+	Coordinates nextTileCoords = update->getNextTile()->getCoordinates();
+	if ( ( !currentTileCoords.isEqual( nextTileCoords ) ) && ( this->path->empty() ) ){
+		this->path->push_front(update->getNextTile());
+	}
+
+
 
 }
 
@@ -101,7 +108,11 @@ PlayerUpdate* Player::generatePlayerUpdate(){
 	update->setBlocking(this->blocking);
 	update->setTile(this->currentTile);
 	update->setInitCoordinates(this->coord);
-
+	if (!this->path->empty()){
+		update->setNextTile(this->path->front());
+	} else {
+		update->setNextTile(this->currentTile);
+	}
 
 	return update;
 }

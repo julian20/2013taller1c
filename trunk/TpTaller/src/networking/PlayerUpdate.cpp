@@ -16,6 +16,7 @@ PlayerUpdate::PlayerUpdate(){
 	this->attacking = false;
 	this->blocking = false;
 	this->currentTile = new Tile();
+	this->nextTile = new Tile();
 	this->initCoords = new Coordinates;
 	this->chat=NULL;
 }
@@ -23,6 +24,7 @@ PlayerUpdate::PlayerUpdate(){
 void PlayerUpdate::setName(string playerName){
 	this->name = playerName;
 }
+
 string PlayerUpdate::getName(){
 	return this->name;
 }
@@ -87,11 +89,22 @@ void PlayerUpdate::setInitCoordinates(Coordinates* initCoords){
 	this->initCoords->setRow(initCoords->getRow());
 }
 
+void PlayerUpdate::setNextTile(Tile* nextTile){
+	this->nextTile->setFScore(nextTile->getFScore());
+	this->nextTile->setPosition(nextTile->getPosition());
+	this->nextTile->setCoordinates(nextTile->getCoordinates());
+}
+
+Tile* PlayerUpdate::getNextTile(){
+	return nextTile;
+}
+
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const PlayerUpdate& update){
 
 	out << update.name << " " << *update.currentPos << " " << *update.endPos << " " << *update.speed << " " << update.attacking << " "
-			<< update.blocking << " " << *update.currentTile << " " << *update.initCoords;
+			<< update.blocking << " " << *update.currentTile << " " << *update.nextTile << " " << *update.initCoords << " ";
+
 
 	return out;
 }
@@ -121,9 +134,13 @@ istream& operator >>(std::istream& in, PlayerUpdate& update){
 	Tile tile;
 	in >> tile;
 	update.setTile(&tile);
+	in >> tile;
+	update.setNextTile(&tile);
 	Coordinates coords;
 	in >> coords;
 	update.setInitCoordinates(&coords);
+
+
 
 	return in;
 }

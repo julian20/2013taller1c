@@ -40,6 +40,10 @@ void Coordinates::setCol(int _col) {
 	col = _col;
 }
 
+bool Coordinates::isEqual(Coordinates coords){
+	return ( (coords.getCol() == this->col) && (coords.getRow() == this->row) );
+}
+
 Coordinates& Coordinates::operator=(Coordinates &other) {
 	this->col = other.col;
 	this->row = other.row;

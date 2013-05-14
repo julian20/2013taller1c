@@ -9,6 +9,7 @@
 #define PLAYERUPDATE_H_
 
 #include <sstream>
+#include <list>
 
 #include <model/map/Tile.h>
 #include <model/Vector3.h>
@@ -40,6 +41,8 @@ public:
 	void setTile(Tile* tile);
 	Coordinates* getInitCoordinates();
 	void setInitCoordinates(Coordinates* initCoords);
+	void setNextTile(Tile* nextTile);
+	Tile* getNextTile();
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const PlayerUpdate&);
@@ -62,6 +65,9 @@ private:
 	Coordinates* initCoords;
 
 	Tile* currentTile;
+	Tile* nextTile;
+
+
 };
 
 } /* namespace std */
