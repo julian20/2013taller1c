@@ -34,23 +34,23 @@ public:
 
 	PlayerInfo* recieveNewPlayer(int clientSocket);
 	void sendAproval(int clientSocket, int result);
-
 	int isNameAbilivable(string playerName);
 	string getAbilivableName(string playerName);
 	void sendNewName(int clientSocket, string newName);
-
 	int addPlayerToGame(int clientSocket, PlayerInfo* info);
+
+	bool exchangeAliveSignals(int clientSocket);
 	void sendNewPlayers(int clientSocket, map<int,string> *sended);
-
 	vector<PlayerEvent*> recvEvents(int clientSocket);
-
 	void getPlayersUpdates();
 	void sendPlayersUpdates(int clientSocket, string playerName);
 
 	MultiplayerGame* getGame();
 
-	virtual ~Server();
 	ChatServer* getChat();
+
+	virtual ~Server();
+
 private:
 
 	int serverID;

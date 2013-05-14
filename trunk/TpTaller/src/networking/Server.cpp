@@ -35,13 +35,112 @@
 
 // TODO: LEER ESTO DE UN YAML
 #define BACKLOG     10  /* Passed to listen() */
-#define MAPFILE "./mapfile.yaml"
-
 #define READING_SIZE 4096
-#define EXTRA_SIZE 1
+#define ALIVE_SIGNAL "ALIVE"
+#define OK 0
+#define ERROR -1
 
 using namespace std;
 
+/* ***************************************************************** */
+/* *************  FUNCIONES EJECUTADAS EN LOS THREADS ************** */
+/* ***************************************************************** */
+
+
+// Funcion que ejecuta al conectarse cada client
+void* handle(void* par){
+
+	/* send(), recv(), close() */
+		ThreadParameter* parameter = (ThreadParameter*) par;
+		int clientSocket = parameter->clientID;
+		Server* server = parameter->server;
+		MultiplayerGame* game = server->getGame();
+
+		//Lo primero que hago es mandar el mapa.
+		//server->sendFile("./resources/foo.png",clientSocket);
+
+		// Manda las imagenes y sonidos necesarios que se utilizaran.
+		//TODO : sendResources(sockID);
+
+		map<int,string> sended;
+
+
+
+		PlayerInfo* info = server->recieveNewPlayer(clientSocket);
+		string playerName = info->getPlayer()->getName();
+
+		int result = server->isNameAbilivable(playerName);
+		server->sendAproval(clientSocket,result);
+		if (result != OK){
+			playerName = server->getAbilivableName(playerName);
+			server->sendNewName(clientSocket, playerName);
+			info->setName(playerName);
+			info->getPlayer()->setName(playerName);
+		}
+
+		sended.insert(pair<int, string>(clientSocket,playerName));
+		server->addPlayerToGame(clientSocket,info);
+		ChatServer* serverChat=server->getChat();
+		serverChat->addPlayerToChat(clientSocket,playerName);
+
+		cout << playerName << " has conected.. " << endl;
+
+		bool playing = true;
+
+		while (playing){
+
+			/* Aca se hace todo el manejo de actualizaciones.
+			 * Hay que mandar y recibir las actualizaciones de el resto de los jugadores
+			 */
+
+			playing = server->exchangeAliveSignals(clientSocket);
+			if (!playing) break;
+
+			server->sendNewPlayers(clientSocket, &sended);
+			vector<PlayerEvent*> events = server->recvEvents(clientSocket);
+			if (!events.empty()) game->addEventsToHandle(playerName,events);
+
+			server->getPlayersUpdates();
+			server->sendPlayersUpdates(clientSocket, playerName);
+			serverChat->getChatUpdates();
+		//	serverChat->sendChatUpdates(clientSocket, playerName);
+		}
+		return NULL;
+
+}
+
+// Funcion que corre la logica de actualizaciones de los jugadores
+void* runGameBackEnd(void* parameter){
+	MultiplayerGame* game = (MultiplayerGame*) parameter;
+	game->run();
+	return NULL;
+}
+
+// Funcion que lee eventos para saber cuando cerrar el servidor
+void* readEvents(void* par ){
+
+	while (true){
+
+		SDL_Event event;
+		while (SDL_PollEvent(&event)){
+
+			if ( (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q) || (event.type == SDL_QUIT ) ){
+				exit(0);
+			}
+		}
+
+	}
+
+	return NULL;
+
+}
+
+
+/* ***************************************************************** */
+/* *************************  CLASE SERVER ************************* */
+/* ***************************************************************** */
+
+/* *********************** SERVER CONTRUCTOR ************************ */
 
 Server::Server(string host, int port) {
 	struct addrinfo hints, *res;
@@ -87,176 +186,8 @@ Server::Server(string host, int port) {
 
 }
 
-void Server::sendAproval(int clientSocket, int result){
-	ComunicationUtils::sendNumber(clientSocket,result);
-}
 
-int Server::isNameAbilivable(string playerName){
-
-	if (playerNames.count(playerName) > 0) return -1;
-
-	return 0;
-}
-
-string Server::getAbilivableName(string playerName){
-
-	int i = 0;
-	string newName = playerName;
-
-	while (playerNames.count(newName) > 0){
-		i++;
-		stringstream indexstream;
-		indexstream << i;
-		newName = playerName + indexstream.str();
-	}
-
-	return newName;
-
-}
-ChatServer* Server::getChat()
-{
-	return this->chat;
-}
-void Server::sendNewName(int clientSocket, string newName){
-	ComunicationUtils::sendString(clientSocket, newName);
-}
-
-MultiplayerGame* Server::getGame(){
-	return game;
-}
-
-void Server::getPlayersUpdates(){
-
-	for (map<string,int>::iterator it = playerNames.begin() ; it != playerNames.end() ; ++it) {
-
-		updates[it->first] = game->getPlayersUpdates();
-
-//		if (update != NULL) delete update;
-	}
-
-}
-
-void* handle(void* par){
-
-	/* send(), recv(), close() */
-		ThreadParameter* parameter = (ThreadParameter*) par;
-		int clientSocket = parameter->clientID;
-		Server* server = parameter->server;
-		MultiplayerGame* game = server->getGame();
-
-		//Lo primero que hago es mandar el mapa.
-		//server->sendFile("./resources/foo.png",clientSocket);
-
-		// Manda las imagenes y sonidos necesarios que se utilizaran.
-		//TODO : sendResources(sockID);
-
-		map<int,string> sended;
-
-
-
-		PlayerInfo* info = server->recieveNewPlayer(clientSocket);
-		string playerName = info->getPlayer()->getName();
-
-		int result = server->isNameAbilivable(playerName);
-		server->sendAproval(clientSocket,result);
-		if (result != 0){
-			playerName = server->getAbilivableName(playerName);
-			server->sendNewName(clientSocket, playerName);
-			info->setName(playerName);
-			info->getPlayer()->setName(playerName);
-		}
-
-		sended.insert(pair<int, string>(clientSocket,playerName));
-		server->addPlayerToGame(clientSocket,info);
-		ChatServer* serverChat=server->getChat();
-		serverChat->addPlayerToChat(clientSocket,playerName);
-
-		cout << playerName << " has conected.. " << endl;
-
-		bool playing = true;
-
-		while (playing){
-
-			/* Aca se hace todo el manejo de actualizaciones.
-			 * Hay que mandar y recibir las actualizaciones de el resto de los jugadores
-			 */
-			server->sendNewPlayers(clientSocket, &sended);
-			vector<PlayerEvent*> events = server->recvEvents(clientSocket);
-			if (!events.empty()) game->addEventsToHandle(playerName,events);
-
-			server->getPlayersUpdates();
-			server->sendPlayersUpdates(clientSocket, playerName);
-			serverChat->getChatUpdates();
-		//	serverChat->sendChatUpdates(clientSocket, playerName);
-		}
-		return NULL;
-
-}
-
-void* runGameBackEnd(void* parameter){
-	MultiplayerGame* game = (MultiplayerGame*) parameter;
-	game->run();
-	return NULL;
-}
-
-void* readEvents(void* par ){
-
-	while (true){
-
-		SDL_Event event;
-		while (SDL_PollEvent(&event)){
-
-			if ( (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q) || (event.type == SDL_QUIT ) ){
-				exit(0);
-			}
-		}
-
-	}
-
-	return NULL;
-
-}
-
-std::vector<std::string> Server::listFilesInDirectory(std::string directory) {
-
-	std::vector<std::string> listOfFiles;
-
-	struct dirent *de = NULL;
-	DIR *dir = NULL;
-	DIR *checkDir = NULL;
-
-	dir = opendir(directory.c_str());
-	if( dir == NULL ) {
-		Logs::logErrorMessage(std::string("No se pudo abrir el directorio" + directory));
-		return listOfFiles;
-	}
-
-	while( ( de = readdir( dir ) ) ) {
-
-		if(string(".").compare(de->d_name) == 0) continue;
-		if(string("..").compare(de->d_name) == 0) continue;
-
-		checkDir = opendir( string(directory + "/" + de->d_name).c_str() );
-		if( checkDir == NULL ) {
-			listOfFiles.push_back( directory + "/" + string( de->d_name ) );
-		} else {
-			std::vector<std::string> auxVector = listFilesInDirectory(string(directory + "/" + de->d_name));
-			for( unsigned i = 0 ; i < auxVector.size() ; i++ ){
-				listOfFiles.push_back(auxVector[i]);
-			}
-			closedir(checkDir);
-		}
-	}
-
-	std::ofstream outputFile("testResources");
-
-	for( unsigned i = 0 ; i < listOfFiles.size() ; i++ ){
-		outputFile << listOfFiles[i] << std::endl;
-	}
-
-	return listOfFiles;
-
-}
+/* **************************** SERVER RUN ************************** */
 
 void Server::run(MultiplayerGame* game){
 	//this->listFilesInDirectory("./resources");
@@ -301,6 +232,8 @@ void Server::run(MultiplayerGame* game){
 	}
 }
 
+
+/* *****************  FUNCIONES DE ENVIO DE ARCHIVOS *************** */
 
 void Server::sendMap(string mapfile,int sockID){
 
@@ -355,10 +288,81 @@ void Server::sendFile(string file, int sockID) {
 
 }
 
+std::vector<std::string> Server::listFilesInDirectory(std::string directory) {
+
+	std::vector<std::string> listOfFiles;
+
+	struct dirent *de = NULL;
+	DIR *dir = NULL;
+	DIR *checkDir = NULL;
+
+	dir = opendir(directory.c_str());
+	if( dir == NULL ) {
+		Logs::logErrorMessage(std::string("No se pudo abrir el directorio" + directory));
+		return listOfFiles;
+	}
+
+	while( ( de = readdir( dir ) ) ) {
+
+		if(string(".").compare(de->d_name) == 0) continue;
+		if(string("..").compare(de->d_name) == 0) continue;
+
+		checkDir = opendir( string(directory + "/" + de->d_name).c_str() );
+		if( checkDir == NULL ) {
+			listOfFiles.push_back( directory + "/" + string( de->d_name ) );
+		} else {
+			std::vector<std::string> auxVector = listFilesInDirectory(string(directory + "/" + de->d_name));
+			for( unsigned i = 0 ; i < auxVector.size() ; i++ ){
+				listOfFiles.push_back(auxVector[i]);
+			}
+			closedir(checkDir);
+		}
+	}
+
+	std::ofstream outputFile("testResources");
+
+	for( unsigned i = 0 ; i < listOfFiles.size() ; i++ ){
+		outputFile << listOfFiles[i] << std::endl;
+	}
+
+	return listOfFiles;
+
+}
+
+
+/* *****************  RECEPCION DE UN NUEVO JUGADOR **************** */
+
 PlayerInfo* Server::recieveNewPlayer(int clientSocket){
-
 	return ComunicationUtils::recvPlayerInfo(clientSocket);
+}
 
+void Server::sendAproval(int clientSocket, int result){
+	ComunicationUtils::sendNumber(clientSocket,result);
+}
+
+int Server::isNameAbilivable(string playerName){
+	if (playerNames.count(playerName) > 0) return ERROR;
+	return OK;
+}
+
+string Server::getAbilivableName(string playerName){
+
+	int i = 0;
+	string newName = playerName;
+
+	while (playerNames.count(newName) > 0){
+		i++;
+		stringstream indexstream;
+		indexstream << i;
+		newName = playerName + indexstream.str();
+	}
+
+	return newName;
+
+}
+
+void Server::sendNewName(int clientSocket, string newName){
+	ComunicationUtils::sendString(clientSocket, newName);
 }
 
 int Server::addPlayerToGame(int clientSocket, PlayerInfo* info){
@@ -376,6 +380,20 @@ int Server::addPlayerToGame(int clientSocket, PlayerInfo* info){
 	updates[info->getPlayer()->getName()] = vector<PlayerUpdate*>();
 
 	return 0;
+
+}
+
+
+/* *********************** SERVER MAIN LOOP ************************ */
+
+bool Server::exchangeAliveSignals(int clientSocket){
+	string signal = ComunicationUtils::recvString(clientSocket);
+	if (signal.compare(ALIVE_SIGNAL) == 0){
+		ComunicationUtils::sendString(clientSocket, ALIVE_SIGNAL);
+		return true;
+	}
+
+	return false;
 
 }
 
@@ -422,6 +440,17 @@ vector<PlayerEvent*> Server::recvEvents(int clientSocket){
 
 }
 
+void Server::getPlayersUpdates(){
+
+	for (map<string,int>::iterator it = playerNames.begin() ; it != playerNames.end() ; ++it) {
+
+		updates[it->first] = game->getPlayersUpdates();
+
+//		if (update != NULL) delete update;
+	}
+
+}
+
 void Server::sendPlayersUpdates(int clientSocket, string playerName){
 
 	int size = updates[playerName].size();
@@ -439,6 +468,19 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName){
 	updates[playerName].clear();
 
 }
+
+
+/* ************************ SERVER GETTERS ************************* */
+
+MultiplayerGame* Server::getGame(){
+	return game;
+}
+
+ChatServer* Server::getChat(){
+	return this->chat;
+}
+
+/* *********************** SERVER DESTRUCTOR ********************** */
 
 Server::~Server() {
 	close(serverID);

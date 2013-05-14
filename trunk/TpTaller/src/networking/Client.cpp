@@ -26,11 +26,11 @@
 #include <sstream>
 #include <fstream>
 
-#define READING_SIZE 8192
-#define EXTRA_SIZE 1
 #define MAPFILE "./mapita.yaml"
-
-
+#define READING_SIZE 4096
+#define ALIVE_SIGNAL "ALIVE"
+#define OK 0
+#define ERROR -1
 
 using namespace std;
 
@@ -251,6 +251,10 @@ void* transmit(void* _client){
 	client->addLocalPlayer();
 
 	while (playing){
+
+		playing = client->exchangeAliveSignals();
+		if (!playing) break;
+
 		client->checkNewPlayers();
 		client->sendEvents();
 		map<string,PlayerUpdate*> updates = client->recvPlayersUpdates();
@@ -278,6 +282,19 @@ map<string,PlayerUpdate*> Client::recvPlayersUpdates(){
 	}
 
 	return updates;
+
+}
+
+bool Client::exchangeAliveSignals(){
+
+	ComunicationUtils::sendString(clientID, ALIVE_SIGNAL);
+	string signal = ComunicationUtils::recvString(clientID);
+	if (signal.compare(ALIVE_SIGNAL) == 0) return true;
+
+
+	Logs::logErrorMessage("Client: Ha fallado la conexion con el servidor");
+	cout << "Client: Ha fallado la conexion con el servidor" << endl;
+	return false;
 
 }
 
