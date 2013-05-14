@@ -188,7 +188,6 @@ void Client::downloadFile() {
 
 	// Read Picture Size
 	int size;
-	read(clientID, &size, sizeof(int));
 	while (ammountRecv != sizeof(int)) {
 		ammountRecv = read(clientID, &size, sizeof(int));
 	}
@@ -196,7 +195,6 @@ void Client::downloadFile() {
 
 	// Read filename size
 	int filenameSize;
-	read(clientID, &filenameSize, sizeof(int));
 	while (ammountRecv != sizeof(int)) {
 		ammountRecv = read(clientID, &filenameSize, sizeof(int));
 	}
@@ -204,7 +202,6 @@ void Client::downloadFile() {
 
 	// Read picture file name
 	char fileName[filenameSize];
-	read(clientID, fileName, filenameSize * sizeof(char));
 	while (ammountRecv != (filenameSize * sizeof(char))) {
 		ammountRecv = read(clientID, fileName, filenameSize * sizeof(char));
 	}
