@@ -196,6 +196,9 @@ void Client::downloadFile() {
 	char fileName[filenameSize];
 	read(clientID, fileName, filenameSize * sizeof(char));
 
+	char* fileBaseDir = strdup(fileName);
+	char* fileBaseName = strdup(fileName);
+
 	// Read Picture Byte Array
 	char p_array[size];
 	read(clientID, p_array, size);
@@ -203,14 +206,13 @@ void Client::downloadFile() {
 	// Convert it Back into Picture
 	FILE *image;
 
-	// TODO: necesito aca crear el directorio solo si no existe.
-	// puse como ejemplo pasarlo a un directorio con la misma estructura
-	// que el original pero con el "/base" adelante.
-	string dirName = string("./base/")+string(dirname(fileName));
+	string dirName = string("./base/")+string(dirname(fileBaseDir));
 	string makeDir = string("mkdir -p ");
 	system(string(makeDir + dirName).c_str());
 
-	image = fopen(string("./base/" + string(fileName)).c_str(), "w");
+	string outputFile(string("./base/") + string(fileName));
+
+	image = fopen(outputFile.c_str(), "w");
 	fwrite(p_array, 1, sizeof(p_array), image);
 	fclose(image);
 
