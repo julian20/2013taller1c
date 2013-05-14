@@ -33,13 +33,14 @@ public:
 	void setSocketId(int id);
 	void addPlayerToChat(int clientSocket, string nombre);
 	void setMaxConnections(int mc);
+	void setGame(MultiplayerGame* game) ;
 	void getChatUpdates();
 	void sendChatUpdates(int clientSocket, string nombre);
 //	void* enviarMensajes(void* cliente);
 	virtual ~ChatServer();
 private:
 	int socketId;
-	map<string,vector<Chat*> > updates;
+	map<string,Chat* > updates;
 	MultiplayerGame* game;
 	map<string,int> players;
 	int maxConnections;

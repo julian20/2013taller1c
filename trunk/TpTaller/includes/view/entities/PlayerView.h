@@ -8,6 +8,7 @@
 #define	PERSONAJEVISTA_H
 
 #include <model/entities/player/Player.h>
+#include <view/networking/ChatWindowsView.h>
 #include <view/entities/EntityView.h>
 #include <view/TextHandler.h>
 #include <model/entityProperties/Position.h>
@@ -48,7 +49,9 @@ public:
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
 	void playAnimation(SpriteType sprite, SDL_Surface* screen);
+
 private:
+	ChatWindowsView* chatView;
 	void showFrame(SDL_Surface* source, SDL_Surface* screen, SDL_Rect* clip);
 	void showStandingAnimation(SpriteType sprite, SDL_Surface* fondo);
 	void loadPlayerImage();

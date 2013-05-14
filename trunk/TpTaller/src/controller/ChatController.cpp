@@ -1,0 +1,133 @@
+/*
+ * ChatController.cpp
+ *
+ *  Created on: 13/05/2013
+ *      Author: damian
+ */
+
+#include <controller/ChatController.h>
+
+ChatController::ChatController() {
+	this->ready=false;
+	this->text="";
+}
+void ChatController::resetString()
+{
+	this->text="";
+}
+void ChatController::handle_events(SDL_Event ev) {
+	if ((ev.type == SDL_MOUSEBUTTONDOWN)
+			&& (ev.button.button == SDL_BUTTON_LEFT)) {
+		int x = ev.button.x;
+		int y = ev.button.y;
+	} else if (ev.type == SDL_KEYDOWN ) {
+		if (ev.key.keysym.sym == SDLK_KP_ENTER)
+				{
+				//	this->chat->newMessage(string("PEPE"),this->text);
+					this->ready=true;
+				}
+		else{
+		char c = (char) ev.key.keysym.sym;
+		if (c >= 'a' && c <= 'z') {
+			SDLMod m = ev.key.keysym.mod;
+			c = (m & KMOD_CAPS) || (m & KMOD_SHIFT) ?
+					toupper((char) ev.key.keysym.sym) :
+					(char) ev.key.keysym.sym;
+			this->text += c;
+		} else if ((c <= '1' || c >= '0')
+				&& ev.key.keysym.sym != SDLK_LSHIFT) {
+			if (ev.key.keysym.mod & KMOD_SHIFT) {
+				switch (c) {
+				case '1':
+					c = '!';
+					break;
+				case '2':
+					c = '"';
+					break;
+				case '3':
+					c = '#';
+					break;
+				case '4':
+					c = '$';
+					break;
+				case '5':
+					c = '%';
+					break;
+				case '6':
+					c = '^';
+					break;
+				case '7':
+					c = '&';
+					break;
+				case '8':
+					c = '*';
+					break;
+				case '9':
+					c = '(';
+					break;
+				case '0':
+					c = ')';
+					break;
+				case '-':
+					c = '_';
+					break;
+				case '=':
+					c = '+';
+					break;
+				case '[':
+					c = '{';
+					break;
+				case ']':
+					c = '}';
+					break;
+				case ';':
+					c = ':';
+					break;
+				case '\'':
+					c = '@';
+					break;
+				case '#':
+					c = '~';
+					break;
+				case ',':
+					c = '<';
+					break;
+				case '.':
+					c = '>';
+					break;
+				case '/':
+					c = '?';
+					break;
+				default:
+					break;
+				}
+			}
+			this->text += c;
+			//Si apreta borrar armo un substring con dos letras menos
+		}
+		if (ev.key.keysym.sym == SDLK_BACKSPACE) {
+			int longitud = this->text.length() - 2;
+			string aux = (this->text).substr(0, longitud);
+			this->text = aux;
+		}
+
+		//this->draw_text(this->text);
+	}
+}
+}
+string ChatController::getText()
+{
+	return this->text;
+}
+void ChatController::notMoreReady()
+{
+	this->ready=false;
+}
+bool ChatController::isReady()
+{
+	return this->ready;
+}
+ChatController::~ChatController() {
+	// TODO Auto-generated destructor stub
+}
+

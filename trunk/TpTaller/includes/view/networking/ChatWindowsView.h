@@ -20,21 +20,22 @@ using namespace std;
 
 class ChatWindowsView {
 public:
-	ChatWindowsView(SDL_Surface*, int, int, int, int, bool);
+	ChatWindowsView();
 	virtual ~ChatWindowsView();
-	bool drawChatWindow(void);
+	bool drawChatWindow(SDL_Surface* screen);
 	bool draw_text(string text);
 	string get_text(void);
 	void setChat(Chat* chat);
 	Chat * getChat();
-	void drawChatView();
+	void drawChatView(SDL_Surface* screen);
 	void handle_events(SDL_Event event);
+	bool isActive();
 private:
 	SDL_Rect clip;
 	SDL_Surface* _screen;
 	TTF_Font* font;
 	SDL_Colour text_colour;
-	bool focused;
+	bool state;
 	std::string text;
 	Chat * chat;
 };
