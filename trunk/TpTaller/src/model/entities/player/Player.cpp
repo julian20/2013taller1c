@@ -17,6 +17,7 @@ Player::Player() {
 	this->name = "";
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
+	isActive = false;
 	chat= new Chat();
 	attacking = false;
 	blocking = false;
@@ -390,4 +391,16 @@ void Player::setChange(bool change){
 
 bool Player::getChange(){
 	return hasChange;
+}
+
+void Player::setActive() {
+	isActive = true;
+}
+
+void Player::SetUnactive() {
+	isActive = false;
+}
+
+bool Player::playerIsActive() {
+	return isActive;
 }

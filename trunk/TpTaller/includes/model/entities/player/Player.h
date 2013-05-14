@@ -60,6 +60,10 @@ public:
 	void cancelBlock();
 	bool isBlocking();
 
+	bool playerIsActive();
+	void setActive();
+	void SetUnactive();
+
 	void setChange(bool change);
 	bool getChange();
 
@@ -95,6 +99,8 @@ private:
 
 	bool attacking;
 	bool blocking;
+
+	bool isActive;
 
 	bool hasChange;
 };
