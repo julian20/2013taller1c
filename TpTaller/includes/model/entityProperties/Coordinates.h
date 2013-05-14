@@ -22,6 +22,7 @@ public:
 	void setRow(int _row);
 	int getCol() const;
 	void setCol(int _col);
+	bool isEqual(Coordinates coords);
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const Coordinates&);
 
