@@ -221,18 +221,37 @@ std::vector<std::string> Server::listFilesInDirectory(std::string directory) {
 
 	std::vector<std::string> listOfFiles;
 
-	struct dirent *de=NULL;
-	DIR *dir=NULL;
+	struct dirent *de = NULL;
+	DIR *dir = NULL;
+	DIR *checkDir = NULL;
 
-	dir=opendir(directory.c_str());
-	if(dir == NULL) {
+	dir = opendir(directory.c_str());
+	if( dir == NULL ) {
 		Logs::logErrorMessage(std::string("No se pudo abrir el directorio" + directory));
 		return listOfFiles;
 	}
 
-	while(de = readdir(dir)) {
-		listOfFiles.push_back(string(de->d_name));
-		std::cout << string(de->d_name) << std::endl;
+	while( ( de = readdir( dir ) ) ) {
+
+		if(string(".").compare(de->d_name) == 0) continue;
+		if(string("..").compare(de->d_name) == 0) continue;
+
+		checkDir = opendir( string(directory + "/" + de->d_name).c_str() );
+		if( checkDir == NULL ) {
+			listOfFiles.push_back( directory + "/" + string( de->d_name ) );
+		} else {
+			std::vector<std::string> auxVector = listFilesInDirectory(string(directory + "/" + de->d_name));
+			for( unsigned i = 0 ; i < auxVector.size() ; i++ ){
+				listOfFiles.push_back(auxVector[i]);
+			}
+			closedir(checkDir);
+		}
+	}
+
+	std::ofstream outputFile("testResources");
+
+	for( unsigned i = 0 ; i < listOfFiles.size() ; i++ ){
+		outputFile << listOfFiles[i] << std::endl;
 	}
 
 	return listOfFiles;
@@ -240,6 +259,7 @@ std::vector<std::string> Server::listFilesInDirectory(std::string directory) {
 }
 
 void Server::run(MultiplayerGame* game){
+	//this->listFilesInDirectory("./resources");
 	this->game = game;
 	pthread_t thread;
 	pthread_t gameThread;
