@@ -56,9 +56,8 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 
 void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
 
-	if (!(tileCoord->getCol() <= 0 || tileCoord->getRow() < 0)
-			&& !(tileCoord->getCol() > data->getNCols()
-					|| tileCoord->getRow() > data->getNRows())) {
+	if (tileCoord->getCol() >= 0 && tileCoord->getCol() < data->getNCols() &&
+		tileCoord->getRow() >= 0 && tileCoord->getRow() < data->getNRows() ) {
 
 		if (player != NULL) {
 			// TODO: esto no pierde memoria a lo loco?
