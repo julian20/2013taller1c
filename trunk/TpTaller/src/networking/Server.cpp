@@ -289,6 +289,8 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 
 	ComunicationUtils::sendString(sockID,fileDest);
 
+	cout << "ENVIADO: " << fileDest << endl;
+
 	// Send Picture as Byte Array
 	char buffer[READING_SIZE];
 	while (!feof(picture)){
