@@ -48,7 +48,8 @@ bool Player::isRunning() {
 }
 
 void Player::moveImmediately(Coordinates coords){
-	Tile* tile = new Tile(&coords);
+	Coordinates* newCoords = new Coordinates(coords);
+	Tile* tile = new Tile(newCoords);
 	Position* pos = tile->getPosition();
 
 	currentPos->setValues(pos->getX(), pos->getY(), pos->getZ());
