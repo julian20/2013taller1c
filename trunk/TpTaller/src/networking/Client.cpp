@@ -42,7 +42,7 @@ void* transmit(void* _client){
 
 	Client* client = (Client*) _client;
 
-	client->downloadFiles();
+
 	bool playing = true;
 
 	client->registerPlayer();
@@ -147,7 +147,7 @@ void Client::run(){
 	pthread_t thread;
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
-
+	this->downloadFiles();
 	if (pthread_create(&thread, &attr, transmit,(void*)this ) != 0) {
 		Logs::logErrorMessage("Cliente: Error al inicializar transmit thread");
 		exit(0);
