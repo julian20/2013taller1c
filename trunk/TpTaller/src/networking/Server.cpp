@@ -302,6 +302,11 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 
 	}
 
+	for (int i = 0; i < READING_SIZE ; i++){
+		buffer[i] = EOF;
+	}
+	send(sockID,buffer,READING_SIZE,0);
+
 	fclose(picture);
 
 }
