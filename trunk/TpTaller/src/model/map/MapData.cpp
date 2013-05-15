@@ -249,6 +249,11 @@ Tile* MapData::getValidTile(Tile* from, Tile* goal) {
 			current = new Tile(new Coordinates(current->getCoordinates()));
 			emptyTilesContainer(tilesContainer);
 			return current;
+		} else {
+			Coordinates currentCooords = current->getCoordinates();
+			Coordinates fromCoords = from->getCoordinates();
+
+			if (currentCooords.isEqual(fromCoords)) return current;
 		}
 	}
 }
