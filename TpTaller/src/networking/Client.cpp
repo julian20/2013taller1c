@@ -42,7 +42,7 @@ void* transmit(void* _client){
 
 	Client* client = (Client*) _client;
 
-	client->downloadFile();
+	client->downloadFiles();
 	bool playing = true;
 
 	client->registerPlayer();
@@ -180,6 +180,18 @@ void Client::downloadMap(){
 	}
 
 	f.close();
+
+}
+
+void Client::downloadFiles() {
+
+	int size = ComunicationUtils::recvNumber(clientID);
+
+	for( unsigned i = 0 ; i < size ; i++ ) {
+
+		this->downloadFile();
+
+	}
 
 }
 

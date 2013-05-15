@@ -61,7 +61,8 @@ void* handle(void* par){
 		std::vector<std::string> withoutBase = server->listFilesInDirectory("sendFiles");
 
 //		std::cout << withoutBase[0] << std::endl;
-		server->sendFile(withBase[0],withoutBase[0],clientSocket);
+		server->sendFiles(withBase,withoutBase,clientSocket);
+		//server->sendFile(withBase[0],withoutBase[0],clientSocket);
 
 		// Manda las imagenes y sonidos necesarios que se utilizaran.
 		//TODO : sendResources(sockID);
@@ -260,6 +261,18 @@ void Server::sendMap(string mapfile,int sockID){
 	printf("Map Sended.\n");
 
 	map.close();
+}
+
+void Server::sendFiles(std::vector<std::string> wBase, std::vector<std::string> woBase, int sockID) {
+
+	ComunicationUtils::sendNumber(sockID, wBase.size());
+
+	for( unsigned i = 0 ; i < wBase.size() ; i++ ) {
+
+		sendFile(wBase[i], woBase[i], sockID);
+
+	}
+
 }
 
 void Server::sendFile(string fileOrigin, string fileDest, int sockID) {

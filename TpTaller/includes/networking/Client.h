@@ -26,6 +26,7 @@ public:
 
 	void downloadMap();
 	void downloadFile();
+	void downloadFiles();
 
 	void registerPlayer();
 	int getServerAproval();
