@@ -296,11 +296,9 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 	while (!feof(picture)){
 
 		fread(buffer,sizeof(char),READING_SIZE,picture);
-		int sendSize = 0;
-		while (sendSize != READING_SIZE){
-			sendSize = send(sockID,buffer,READING_SIZE,0);
-		}
-
+		string sbuffer;
+		sbuffer.assign(buffer);
+		ComunicationUtils::sendString(sockID,sbuffer);
 
 	}
 
