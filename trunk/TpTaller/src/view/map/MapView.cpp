@@ -116,6 +116,7 @@ map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
 	delete supRight;
 	delete infLeft;
 	delete infRight;
+
 	return mapVisibleLimits;
 }
 

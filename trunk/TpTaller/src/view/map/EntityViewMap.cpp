@@ -79,6 +79,8 @@ void EntityViewMap::updateMovablePos() {
 
 		mapData->updatePersonajePos(initRow, initCol, currentRow, currentCol,
 															(Player*) entity);
+
+		delete c;
 	}
 
 }

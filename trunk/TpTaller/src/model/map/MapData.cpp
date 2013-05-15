@@ -245,16 +245,16 @@ Tile* MapData::getValidTile(Tile* from, Tile* goal) {
 		neighborTiles.sort(compTileList);
 		current = neighborTiles.back();	// El tile mas cercano al punto de partida
 		tileData = getTileData(current->getCoordinates());
-		if (tileData->isWalkable()) {
+
+		Coordinates currentCooords = current->getCoordinates();
+		Coordinates fromCoords = from->getCoordinates();
+
+		if (tileData->isWalkable() || currentCooords.isEqual(fromCoords)) {
 			current = new Tile(new Coordinates(current->getCoordinates()));
 			emptyTilesContainer(tilesContainer);
 			return current;
-		} else {
-			Coordinates currentCooords = current->getCoordinates();
-			Coordinates fromCoords = from->getCoordinates();
-
-			if (currentCooords.isEqual(fromCoords)) return current;
 		}
+
 	}
 }
 
