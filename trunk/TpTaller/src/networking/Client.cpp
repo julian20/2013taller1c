@@ -42,7 +42,7 @@ void* transmit(void* _client){
 
 	Client* client = (Client*) _client;
 
-	//client->downloadFile();
+	client->downloadFile();
 	bool playing = true;
 
 	client->registerPlayer();
@@ -108,6 +108,7 @@ Client::Client(string host, int port, Game* game) {
 	// Conecto al servidor utilizando el socket creado.
 	if (connect(clientID,(struct sockaddr *) &hints,sizeof(hints)) < 0){
 		Logs::logErrorMessage("Cliente: Ha ocurrido un error conectandose al servidor");
+		exit(1);
 	}
 
 	// Devuelvo el socket ID.
@@ -187,28 +188,13 @@ void Client::downloadFile() {
 	int ammountRecv = 0;
 
 	// Read Picture Size
-	int size;
-	while (ammountRecv != sizeof(int)) {
-		ammountRecv = recv(clientID, &size, sizeof(int), MSG_EOR);
-	}
-	ammountRecv = 0;
+	int size = ComunicationUtils::recvNumber(clientID);
 
-	// Read filename size
-	int filenameSize;
-	while (ammountRecv != sizeof(int)) {
-		ammountRecv = recv(clientID, &filenameSize, sizeof(int), MSG_EOR);
-	}
-	ammountRecv = 0;
+	// Read filename
+	string filename = ComunicationUtils::recvString(clientID);
 
-	// Read picture file name
-	char* fileName = (char*) malloc( filenameSize * sizeof(char) );
-	while (ammountRecv != (filenameSize * sizeof(char))) {
-		ammountRecv = recv(clientID, fileName, filenameSize * sizeof(char), MSG_EOR);
-	}
-	ammountRecv = 0;
-
-	char* fileBaseDir = strdup(fileName);
-	char* fileBaseName = strdup(fileName);
+	char* fileBaseDir = strdup(filename.c_str());
+	char* fileBaseName = strdup(filename.c_str());
 
 	// Convert it Back into Picture
 	FILE *image;
@@ -217,28 +203,16 @@ void Client::downloadFile() {
 	string makeDir = string("mkdir -p ");
 	system(string(makeDir + dirName).c_str());
 
-	string outputFile(fileName);
+	string outputFile(filename);
 	image = fopen(outputFile.c_str(), "wb");
 
-	int sizeOfOutput = 0;
-	int bufferSize;
+	int recved = 0;
+	char buffer[READING_SIZE];
+	while (recved <= size){
 
-	// Read Picture Byte Array
-	while(sizeOfOutput != size) {
+		recved += read(clientID,buffer,READING_SIZE);
 
-		while (ammountRecv != sizeof(int)) {
-			ammountRecv = recv(clientID, &bufferSize, sizeof(int),MSG_EOR);
-		}
-		ammountRecv = 0;
-
-		char p_array[bufferSize];
-		while (ammountRecv != bufferSize) {
-			ammountRecv = recv(clientID, p_array, bufferSize,MSG_EOR);
-		}
-		sizeOfOutput += ammountRecv;
-		ammountRecv = 0;
-
-		fwrite(p_array, bufferSize,  sizeof(char), image);
+		fwrite(buffer,1,READING_SIZE,image);
 
 	}
 

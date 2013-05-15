@@ -61,7 +61,7 @@ void* handle(void* par){
 		std::vector<std::string> withoutBase = server->listFilesInDirectory("sendFiles");
 
 //		std::cout << withoutBase[0] << std::endl;
-		//server->sendFile(withBase[0],withoutBase[0],clientSocket);
+		server->sendFile(withBase[0],withoutBase[0],clientSocket);
 
 		// Manda las imagenes y sonidos necesarios que se utilizaran.
 		//TODO : sendResources(sockID);
@@ -273,45 +273,21 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 	fseek(picture, 0, SEEK_SET);
 
 	// Send Picture Size
-	int ammountSent = 0;
-	while (ammountSent != sizeof(size)) {
-		ammountSent = send(sockID, &size, sizeof(size),0);
-	}
-	ammountSent = 0;
+	ComunicationUtils::sendNumber(sockID,size);
 
-	// Send picture file name size
-	int filenameSize = fileDest.size();
-	while (ammountSent != sizeof(int)) {
-		ammountSent = send(sockID, &filenameSize, sizeof(int), 0);
-	}
-	ammountSent = 0;
-
-	// Send picture file name
-	while (ammountSent != (filenameSize * sizeof(char))) {
-		ammountSent = send(sockID, fileDest.c_str(), filenameSize * sizeof(char), 0);
-	}
-	ammountSent = 0;
+	ComunicationUtils::sendString(sockID,fileDest);
 
 	// Send Picture as Byte Array
-	char send_buffer[size];
+	char buffer[READING_SIZE];
 	int bufferSize;
-	while(!feof(picture)) {
+	while (!feof(picture)){
 
-	    fread(send_buffer, 1, size, picture);
+		fread(buffer,sizeof(char),READING_SIZE,picture);
+		send(sockID,buffer,READING_SIZE,0);
 
-	    bufferSize = size;
-		while (ammountSent != sizeof(send_buffer)) {
-			ammountSent = send(sockID, &bufferSize, sizeof(int),0);
-		}
-		ammountSent = 0;
-
-		while (ammountSent != sizeof(send_buffer)) {
-			ammountSent = send(sockID, send_buffer, size,0);
-		}
-		ammountSent = 0;
-
-	    bzero(send_buffer, sizeof(send_buffer));
 	}
+
+	fclose(picture);
 
 }
 

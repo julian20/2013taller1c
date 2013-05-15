@@ -160,9 +160,9 @@ void Game::draw() {
 		tempFps = fps;
 		fpsUpdatingTimer = 0;
 	}
-	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 30, 40, "baramond", textHandler->getColor(255, 0, 0));
-	// Actualiza la screen
+		// Actualiza la screen
 	chatView->drawChatView(screen);
+	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 30, 40, "baramond", textHandler->getColor(255, 0, 0));
 	SDL_Flip(screen);
 }
 
@@ -189,6 +189,7 @@ MenuEvent Game::run() {
 		playersUpdate();
 
 		draw();
+
 
 		applyFPS(ticks);
 	}

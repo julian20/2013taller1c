@@ -124,6 +124,7 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
 				row++) {
 
 			TileData* tileData = mapData->getTileData(row, col);
+			bool drawFog = !(tileData->getIsVisible());
 
 			if (tileData->getWasVisible()) {
 				list<EntityView*> aList = map.at(col).at(row);
@@ -133,7 +134,6 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
 						EntityView* view = *it;
 						if (!view)
 							continue;
-						bool drawFog = !(tileData->getIsVisible());
 						view->draw(screen, cam, drawFog);
 					}
 				}
