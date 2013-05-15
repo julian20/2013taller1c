@@ -291,7 +291,7 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 	// Send Picture as Byte Array
 	char buffer[READING_SIZE];
 	while (!feof(picture)){
-
+		memset(buffer,-1,READING_SIZE);
 		fread(buffer,sizeof(char),READING_SIZE,picture);
 		int sendSize = 0;
 		while (sendSize != READING_SIZE){

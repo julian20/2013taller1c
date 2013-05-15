@@ -230,6 +230,7 @@ void Client::downloadFile() {
 	while (recved < size){
 		int readSize = 0;
 		while (readSize != READING_SIZE){
+			memset(buffer,-1,READING_SIZE);
 			readSize = read(clientID,buffer,READING_SIZE);
 			//El ultimo cachito
 			if (size-recved<READING_SIZE){
