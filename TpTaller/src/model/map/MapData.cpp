@@ -387,6 +387,10 @@ void printPath(list<Tile *>* path) {
 
 void MapData::movePersonaje(Player* personaje, Tile* toTile) {
 	Tile* fromTile = personaje->getTile();
+	Coordinates fromCoords = fromTile->getCoordinates();
+	Coordinates toCoords = toTile->getCoordinates();
+
+	if (fromCoords.isEqual(toCoords)) return;
 
 	list<Tile *> *path = getPath(fromTile, toTile);
 	delete (toTile);
