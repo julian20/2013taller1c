@@ -18,6 +18,7 @@
 #include <networking/NetworkPlayerController.h>
 #include <networking/PlayerUpdate.h>
 #include <view/MapView.h>
+#include <map>
 
 namespace std {
 
@@ -27,6 +28,7 @@ public:
 	virtual MenuEvent run();
 	virtual void addNewPlayer(Player* player, Coordinates* coordiantes);
 	void addEventsToHandle(string playerName, vector<PlayerEvent*> events);
+	void updatePlayersCoordinates();
 	vector<PlayerUpdate*> getPlayersUpdates();
 	Chat* getChatUpdates();
 	virtual ~MultiplayerGame();
@@ -38,6 +40,7 @@ private:
 	map< string, NetworkPlayerController*> controllers;
 
 	list<Player*> players;
+	map<Player*, Coordinates> playersCoords;
 	void playersUpdate();
 
 	int fps;
