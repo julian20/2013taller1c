@@ -222,27 +222,12 @@ void Client::downloadFile() {
 	string outputFile(filename);
 	image = fopen(outputFile.c_str(), "wb");
 
-	int recved = 0;
-	char buffer[READING_SIZE];
-	while (recved < size){
 
-		bool exit = false;
+	for (int i = 0 ; i < size ; i+= READING_SIZE){
 
-		int readSize = 0;
-		while (readSize != READING_SIZE){
-			readSize = read(clientID,buffer,READING_SIZE);
-		}
-		recved += readSize;
+		string sbuffer = ComunicationUtils::recvString(clientID);
 
-		int readsize = READING_SIZE;
-		if (recved > size){
-			readsize -= (recved - size);
-			exit = true;
-		}
-
-		fwrite(buffer,1,readsize,image);
-
-		if (exit) break;
+		fwrite(sbuffer.c_str(),1,sbuffer.size(),image);
 
 	}
 
