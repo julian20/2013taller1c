@@ -287,8 +287,13 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 	size = ftell(picture);
 	fseek(picture, 0, SEEK_SET);
 
+	int result = ERROR;
+
 	// Send Picture Size
-	ComunicationUtils::sendNumber(sockID, size);
+	while (result != OK){
+		ComunicationUtils::sendNumber(sockID, size);
+		result = ComunicationUtils::recvNumber(sockID);
+	}
 
 	ComunicationUtils::sendString(sockID, fileDest);
 
