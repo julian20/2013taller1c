@@ -47,6 +47,16 @@ bool Player::isRunning() {
 	return false;
 }
 
+void Player::moveImmediately(Coordinates coords){
+	Tile* tile = new Tile(&coords);
+	Position* pos = tile->getPosition();
+
+	currentPos->setValues(pos->getX(), pos->getY(), pos->getZ());
+	delete tile;
+
+	this->hasChange = true;
+}
+
 void Player::update() {
 	if (IsMoving() == false) {
 		if (path->size() == 0)
@@ -94,8 +104,6 @@ void Player::update(PlayerUpdate* update){
 	if ( ( !currentTileCoords.isEqual( nextTileCoords ) ) && ( this->path->empty() ) ){
 		this->path->push_front(update->getNextTile());
 	}
-
-
 
 }
 ChatUpdate* Player::generateChatUpdate()
