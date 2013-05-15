@@ -289,23 +289,18 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 
 	ComunicationUtils::sendString(sockID,fileDest);
 
-	cout << "ENVIADO: " << fileDest << endl;
-
 	// Send Picture as Byte Array
 	char buffer[READING_SIZE];
 	while (!feof(picture)){
 
 		fread(buffer,sizeof(char),READING_SIZE,picture);
-		string sbuffer;
-		sbuffer.assign(buffer);
-		ComunicationUtils::sendString(sockID,sbuffer);
+		int sendSize = 0;
+		while (sendSize != READING_SIZE){
+			sendSize = send(sockID,buffer,READING_SIZE,0);
+		}
+
 
 	}
-
-	for (int i = 0; i < READING_SIZE ; i++){
-		buffer[i] = EOF;
-	}
-	send(sockID,buffer,READING_SIZE,0);
 
 	fclose(picture);
 
