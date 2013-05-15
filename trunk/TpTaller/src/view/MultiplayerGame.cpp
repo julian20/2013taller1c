@@ -102,7 +102,20 @@ void MultiplayerGame::applyFPS(int timer) {
 	} else
 		fps = 1000 / elapsedMiliseconds;
 }
+vector<ChatUpdate*> MultiplayerGame::getChatUpdates()
+{
+	vector<ChatUpdate*> updates;
 
+		for ( list<Player*>::iterator player = players.begin() ; player != players.end() ; ++player ){
+			ChatUpdate* update = (*player)->generateChatUpdate();
+			if (update)
+				{
+				updates.push_back(update);
+				}
+		}
+
+		return updates;
+}
 vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 
 	vector<PlayerUpdate*> updates;
@@ -116,10 +129,7 @@ vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 	return updates;
 
 }
-Chat* MultiplayerGame::getChatUpdates()
-{
 
-}
 MultiplayerGame::~MultiplayerGame() {
 	// TODO Auto-generated destructor stub
 }

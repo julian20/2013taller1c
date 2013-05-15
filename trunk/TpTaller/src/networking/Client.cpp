@@ -63,6 +63,8 @@ void* transmit(void* _client){
 		client->sendEvents();
 		map<string,PlayerUpdate*> updates = client->recvPlayersUpdates();
 		if (!updates.empty()) client->updatePlayers(updates);
+		//map<string,ChatUpdate*> updatesChat = client->recvChatUpdates();
+			//	if (!updates.empty()) client->updateChat(updatesChat);
 
 	}
 
@@ -322,7 +324,25 @@ void Client::sendEvents(){
 	game->cleanEvents();
 
 }
+map<string,ChatUpdate*> Client::recvChatUpdates(){
 
+	map<string,ChatUpdate*> updates;
+
+	int nUpdates = ComunicationUtils::recvNumber(clientID);
+//	cout<<"hay "<<nUpdates<<endl;
+	if (nUpdates <= 0) return updates;
+
+	for (int i = 0 ; i < nUpdates ; i++){
+
+		ChatUpdate* update = ComunicationUtils::recvChatUpdate(clientID);
+		string name = update->getReceiver();
+		updates[name] = update;
+
+	}
+
+	return updates;
+
+}
 map<string,PlayerUpdate*> Client::recvPlayersUpdates(){
 
 	map<string,PlayerUpdate*> updates;
@@ -341,13 +361,24 @@ map<string,PlayerUpdate*> Client::recvPlayersUpdates(){
 	return updates;
 
 }
+void Client::updateChat(map<string,ChatUpdate*> updates){
+
+	for (map<string,ChatUpdate*>::iterator it = updates.begin() ; it != updates.end() ; ++it){
+		if (players.count(it->first) != 0){
+			players[it->first]->getChat()->update(it->second);
+		//	players[it->first]->getChat()->update();
+		}
+		delete it->second;
+	}
+
+}
 
 void Client::updatePlayers(map<string,PlayerUpdate*> updates){
 
 	for (map<string,PlayerUpdate*>::iterator it = updates.begin() ; it != updates.end() ; ++it){
 		if (players.count(it->first) != 0){
 			players[it->first]->update(it->second);
-			players[it->first]->update();
+		//	players[it->first]->update();
 		}
 		delete it->second;
 	}

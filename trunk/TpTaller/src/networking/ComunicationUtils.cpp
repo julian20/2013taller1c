@@ -189,6 +189,18 @@ PlayerEvent* ComunicationUtils::recvPlayerEvent(int sockID){
 
 }
 
+void ComunicationUtils::sendChatUpdate(int sockID,ChatUpdate* update){
+
+	stringstream updatestream;
+	updatestream << *update;
+
+	int size = updatestream.str().size() + EXTRA;
+	ComunicationUtils::sendNumber(sockID,size);
+
+	send(sockID,updatestream.str().c_str(), size, MSG_EOR);
+
+}
+
 void ComunicationUtils::sendPlayerUpdate(int sockID,PlayerUpdate* update){
 
 	stringstream updatestream;
@@ -206,6 +218,7 @@ void ComunicationUtils::sendPlayerUpdate(int sockID,PlayerUpdate* update){
 		if (i > ITER_LIMIT) break;
 	}
 }
+
 
 PlayerUpdate* ComunicationUtils::recvPlayerUpdate(int sockID){
 
@@ -232,6 +245,23 @@ PlayerUpdate* ComunicationUtils::recvPlayerUpdate(int sockID){
 
 }
 
+ChatUpdate* ComunicationUtils::recvChatUpdate(int sockID){
+
+	int size = ComunicationUtils::recvNumber(sockID);
+	char updatebuffer[size];
+	stringstream updatestream;
+
+	recv(sockID,updatebuffer,size,MSG_EOR);
+
+	updatestream << updatebuffer;
+
+	ChatUpdate* update = new ChatUpdate();
+
+	updatestream >> *update;
+
+	return update;
+
+}
 
 ComunicationUtils::~ComunicationUtils() {
 	// TODO Auto-generated destructor stub

@@ -38,7 +38,8 @@ public:
 	void sendEvents();
 	map<string,PlayerUpdate*> recvPlayersUpdates();
 	void updatePlayers(map<string,PlayerUpdate*> updates);
-
+	map<string,ChatUpdate*> recvChatUpdates();
+	void updateChat(map<string,ChatUpdate*> updates);
 	Game* getGame();
 
 	virtual ~Client();

@@ -98,7 +98,17 @@ void Player::update(PlayerUpdate* update){
 
 
 }
+ChatUpdate* Player::generateChatUpdate()
+{
+	if(!this->chat->hasChange()) return NULL;
+	ChatUpdate* update =  new ChatUpdate();
 
+	update->setReceiver(this->chat->getReceptor());
+	update->setMessage(this->chat->getMessageSend());
+	update->setSender(this->name);
+
+	return update;
+}
 PlayerUpdate* Player::generatePlayerUpdate(){
 
 	if (!this->hasChange) return NULL;

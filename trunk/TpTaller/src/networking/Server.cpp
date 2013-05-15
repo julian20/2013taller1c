@@ -55,12 +55,12 @@ void* handle(void* par){
 		int clientSocket = parameter->clientID;
 		Server* server = parameter->server;
 		MultiplayerGame* game = server->getGame();
-
 		//Lo primero que hago es mandar el mapa.
 		std::vector<std::string> withBase = server->listFilesInDirectoryWithBase("sendFiles");
 		std::vector<std::string> withoutBase = server->listFilesInDirectory("sendFiles");
 
 //		std::cout << withoutBase[0] << std::endl;
+		//server->sendFile(withBase[0],withoutBase[0],clientSocket);
 		server->sendFiles(withBase,withoutBase,clientSocket);
 		//server->sendFile(withBase[0],withoutBase[0],clientSocket);
 
@@ -68,7 +68,6 @@ void* handle(void* par){
 		//TODO : sendResources(sockID);
 
 		map<int,string> sended;
-
 		PlayerInfo* info = server->recieveNewPlayer(clientSocket);
 		string playerName = info->getPlayer()->getName();
 
@@ -83,11 +82,11 @@ void* handle(void* par){
 
 		sended.insert(pair<int, string>(clientSocket,playerName));
 		server->addPlayerToGame(clientSocket,info);
-		ChatServer* serverChat=server->getChat();
-		serverChat->addPlayerToChat(clientSocket,playerName);
+
 
 		cout << playerName << " has conected.. " << endl;
-
+		//ChatServer* serverChat=server->getChat();
+		//serverChat->addPlayerToChat(clientSocket,playerName);
 		bool playing = true;
 
 		while (playing){
@@ -105,8 +104,8 @@ void* handle(void* par){
 
 			server->getPlayersUpdates();
 			server->sendPlayersUpdates(clientSocket, playerName);
-			serverChat->getChatUpdates();
-		//	serverChat->sendChatUpdates(clientSocket, playerName);
+			//serverChat->getChatUpdates();
+			//serverChat->sendChatUpdates(clientSocket, playerName);
 		}
 
 		server->disconectPlayer(clientSocket,playerName);
@@ -182,10 +181,10 @@ Server::Server(string host, int port) {
 		Logs::logErrorMessage("Servidor: Error de asignacion de direccion");
 		exit(1);
 	}
-	this->chat = new ChatServer();
-	this->chat->setSocketId(serverID);
-	this->chat->setMaxConnections(BACKLOG);
-
+	//this->chat = new ChatServer();
+	//this->chat->setSocketId(serverID);
+	//this->chat->setMaxConnections(BACKLOG);
+//	printf("creo el chatServer\n");
 	freeaddrinfo(res);
 
 	SDL_Init(SDL_INIT_JOYSTICK);

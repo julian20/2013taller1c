@@ -57,6 +57,23 @@ void ChatServer::addPlayerToChat(int clientSocket, string name)
 	}
 }
 
+void ChatServer::sendChatUpdates(int clientSocket, string playerName){
+
+	int size = updates[playerName].size();
+	// Mando la cantidad de actualizaciones
+	ComunicationUtils::sendNumber(clientSocket,updates[playerName].size());
+
+	for (int i = 0 ; i < size ; i++){
+
+		// Envio la actualizacion
+		ComunicationUtils::sendChatUpdate(clientSocket,updates[playerName][i]);
+		delete updates[playerName][i];
+
+	}
+
+	updates[playerName].clear();
+
+}
 void ChatServer::getChatUpdates()
 {
 	for (map<string,int>::iterator it = players.begin() ; it != players.end() ; ++it) {

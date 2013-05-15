@@ -33,6 +33,9 @@ public:
 	static void			sendPlayerUpdate(int sockID,PlayerUpdate* update);
 	static PlayerUpdate* recvPlayerUpdate(int sockID);
 
+	static void 		sendChatUpdate(int sockID,ChatUpdate* update);
+	static ChatUpdate* recvChatUpdate(int sockID);
+
 private:
 	ComunicationUtils();
 	virtual ~ComunicationUtils();
