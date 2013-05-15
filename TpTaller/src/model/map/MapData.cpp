@@ -390,11 +390,14 @@ void MapData::movePersonaje(Player* personaje, Tile* toTile) {
 	Coordinates fromCoords = fromTile->getCoordinates();
 	Coordinates toCoords = toTile->getCoordinates();
 
-	if (fromCoords.isEqual(toCoords)) return;
+	// Si la posicion inicial y final son distintas calcula el path
+	if (!fromCoords.isEqual(toCoords)){
+		list<Tile *> *path = getPath(fromTile, toTile);
+		personaje->assignPath(path);
+	}
 
-	list<Tile *> *path = getPath(fromTile, toTile);
-	delete (toTile);
-	personaje->assignPath(path);
+	delete fromTile;
+	delete toTile;
 
 	// El codigo de aca abajo es para ir directo al tile clickeado
 	/*list<Tile *> *path = new list<Tile *>();
