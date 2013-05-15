@@ -26,6 +26,10 @@ void PlayerUpdate::setName(string playerName){
 	this->name = playerName;
 }
 
+void PlayerUpdate::setChat(Chat* chat){
+	this->chat = chat;
+}
+
 string PlayerUpdate::getName(){
 	return this->name;
 }

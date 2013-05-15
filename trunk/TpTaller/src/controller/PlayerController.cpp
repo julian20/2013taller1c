@@ -19,10 +19,30 @@ PlayerController::~PlayerController() {
 	delete this->camera;
 	delete this->player;
 }
-ChatController* PlayerController::getChatController()
+/*ChatController* PlayerController::getChatController()
 {
 //	Player* miPlayer=this->player;
 	return (player->getChat())->getChatController();
+}*/
+string PlayerController::getLastPlayerTouch()
+{
+	return this->lastPlayerTouch;
+}
+bool PlayerController::clickAnotherPlayer(int x ,int y)
+{
+	Position* cameraPos = this->camera->getPosition();
+
+	Coordinates* coor = Tile::getTileCoordinates(x - cameraPos->getX(),
+					y - cameraPos->getY());
+	TileData* tileData=this->data->getTileData(coor->getRow(),coor->getCol());
+	if(!tileData) return false;
+	Player* player=tileData->getPersonaje();
+	if(player)
+	{
+		this->lastPlayerTouch=player->getName();
+		return true;
+	}
+	else return false;
 }
 void PlayerController::movePlayer(int x, int y) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.

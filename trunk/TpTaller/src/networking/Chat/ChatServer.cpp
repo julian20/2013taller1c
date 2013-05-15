@@ -52,9 +52,8 @@ void* enviarMensajes(void* cliente) {
 }*/
 void ChatServer::addPlayerToChat(int clientSocket, string name)
 {
-	if (players.count(name) == 0){
 		players[name] = clientSocket;
-	}
+	//	cout<<"agrega al chat players a "<<name<<" con id "<<clientSocket<<endl;
 }
 
 void ChatServer::sendChatUpdates(int clientSocket, string playerName){
@@ -76,11 +75,9 @@ void ChatServer::sendChatUpdates(int clientSocket, string playerName){
 }
 void ChatServer::getChatUpdates()
 {
-	for (map<string,int>::iterator it = players.begin() ; it != players.end() ; ++it) {
-
+	for (map<string,int>::iterator it = players.begin() ; it != players.end() ; ++it)
+	{
 		updates[it->first] = game->getChatUpdates();
-
-	//		if (update != NULL) delete update;
 	}
 }
 
