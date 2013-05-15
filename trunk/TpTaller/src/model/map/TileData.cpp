@@ -49,7 +49,7 @@ bool TileData::getIsVisible() {
 }
 
 bool TileData::isWalkable( bool ignorePlayer ) {
-	if (ignorePlayer && personaje != NULL) return false;
+	if (!ignorePlayer && personaje != NULL) return false;
 
 	return walkable;
 }

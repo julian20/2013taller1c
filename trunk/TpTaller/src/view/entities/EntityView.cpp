@@ -187,9 +187,9 @@ void EntityView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 	clip.y = clipFog.y = 0;
 	clip.w = clipFog.w = this->imageWidth * scaleWidth;
 	clip.h = clipFog.h = this->imageHeight * scaleHeight;
-	Coordinates* coords = entity->getCoordinates();
-	int row = coords->getRow();
-	int col = coords->getCol();
+	Coordinates coords = entity->getCoordinates();
+	int row = coords.getRow();
+	int col = coords.getCol();
 
 	SDL_Rect offset, offsetFog;
 	int tileH = Tile::computePositionTile(0, 0).h;

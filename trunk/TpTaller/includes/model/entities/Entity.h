@@ -31,7 +31,7 @@ public:
 	void setBase(Base* base);
 	std::string getName();
 	void setName(std::string name);
-	Coordinates* getCoordinates();
+	Coordinates getCoordinates();
 	void setCoordinates(int row, int col);
 	void setBaseSizes(int width, int height);
 protected:

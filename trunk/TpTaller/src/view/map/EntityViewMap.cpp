@@ -59,8 +59,8 @@ void EntityViewMap::updateMovablePos() {
 		EntityView* entityView = *it;
 		Entity* entity = entityView->getEntity();
 
-		int initRow = entity->getCoordinates()->getRow();
-		int initCol = entity->getCoordinates()->getCol();
+		int initRow = entity->getCoordinates().getRow();
+		int initCol = entity->getCoordinates().getCol();
 		Vector3* entityPos = entity->getCurrentPos();
 		Coordinates* c = Tile::getTileCoordinates(entityPos->getX(),
 				entityPos->getY());
@@ -68,7 +68,7 @@ void EntityViewMap::updateMovablePos() {
 		int currentCol = c->getCol();
 
 		if (initRow == currentRow && initCol == currentCol)
-			return;
+			continue;
 
 		list<EntityView*> coord = getListAtRowAndCol(initRow, initCol);
 		if (!coord.empty())
@@ -86,32 +86,7 @@ void EntityViewMap::updateMovablePos() {
 void EntityViewMap::assingEntitiesView(EntityHolder* entityHolder) {
 	this->entityHolder = entityHolder;
 }
-/*void EntityViewMap::drawEntities(TileData* tileData,SDL_Surface* screen, Position* cam, int row, int col)
- {
- for(int i=0; i<tileData->getNumberOfEntitiesOnTile();i++)
- {
- Entity* entity= tileData->getNextEntity();
- EntityViewData* viewData= entityHolder->getEntity(entity->getName());
- SDL_Surface* imageEntity=viewData->getEntityImage();
- //Se la paso a una entityView y listo singleton.
- SDL_Rect clip;
- clip.x = viewData->getImageWidth() * 1 * 1;
- clip.y = 0;
- clip.w = viewData->getImageWidth() ;
- clip.h = viewData->getImageHeight() ;
- Vector3* position = entity->getCurrentPos();
- int x = (int) position->getX();
- int y = (int) position->getY();
 
- SDL_Rect offset;
- offset.x = (int) (Tile::computePositionTile(x, y, true).x + cam->getX() - (int)viewData->getImageWidth()/ 2);
- offset.y = (int) (Tile::computePositionTile(x, y, true).y + cam->getY() - (int)viewData->getImageHeight() / 2);
- offset.h = clip.h;
- offset.w = clip.w;
-
- SDL_BlitSurface(imageEntity, &clip, screen, &offset);
- }
- }*/
 void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
 		std::map<string, int> visibleTiles) {
 

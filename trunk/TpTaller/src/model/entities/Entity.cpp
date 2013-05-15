@@ -31,10 +31,10 @@ Vector3* Entity::getCurrentPos() {
 	return currentPos;
 }
 
-Coordinates* Entity::getCoordinates() {
-	Coordinates* retval = new Coordinates();
-	retval->setRow(coord->getRow());
-	retval->setCol(coord->getCol());
+Coordinates Entity::getCoordinates() {
+	Coordinates retval;
+	retval.setRow(coord->getRow());
+	retval.setCol(coord->getCol());
 
 	return retval;
 }

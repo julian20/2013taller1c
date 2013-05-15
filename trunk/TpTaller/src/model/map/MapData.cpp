@@ -268,7 +268,7 @@ Tile* MapData::getValidTile(Tile* from, Tile* goal) {
  */
 list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 	TileData* data = getTileData(from->getCoordinates());
-	if (data->isWalkable(false) == false) {
+	if (data->isWalkable(true) == false) {
 		std::cout << "El tile donde se encuentra el jugador no es transitable"
 																<< std::endl;
 		return new list<Tile *>();
