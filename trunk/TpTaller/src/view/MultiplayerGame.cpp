@@ -54,6 +54,29 @@ void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes){
 	controllers.insert(pair<string, NetworkPlayerController*>(player->getName(),controller));
 	players.push_back(player);
 
+	Coordinates coords;
+	coords.setRow(coordiantes->getRow());
+	coords.setCol(coordiantes->getCol());
+	playersCoords[player] = coords;
+}
+
+void MultiplayerGame::updatePlayersCoordinates(){
+	Player* player;
+	for ( list<Player*>::iterator playerIterator = players.begin() ; playerIterator != players.end() ; ++playerIterator ){
+		player = *playerIterator;
+
+		Coordinates initCoords = playersCoords[player];
+		Coordinates currentCoords = player->getTile()->getCoordinates();
+
+		if (currentCoords.isEqual( initCoords ))
+			continue;
+
+		playersCoords[player] = currentCoords;
+
+		view->getMapData()->updatePersonajePos(initCoords.getRow(), initCoords.getCol(),
+											   currentCoords.getRow(), currentCoords.getCol(),
+											   player);
+	}
 }
 
 void MultiplayerGame::playersUpdate(){
@@ -62,6 +85,7 @@ void MultiplayerGame::playersUpdate(){
 		(*player)->update();
 	}
 
+	updatePlayersCoordinates();
 }
 
 void MultiplayerGame::applyFPS(int timer) {
@@ -86,9 +110,7 @@ vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 	for ( list<Player*>::iterator player = players.begin() ; player != players.end() ; ++player ){
 		PlayerUpdate* update = (*player)->generatePlayerUpdate();
 		if (update)
-			{
 			updates.push_back(update);
-			}
 	}
 
 	return updates;
