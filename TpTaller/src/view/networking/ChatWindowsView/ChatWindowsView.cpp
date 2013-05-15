@@ -18,7 +18,7 @@ ChatWindowsView::ChatWindowsView(){
 
 	this->state = true;
 	this->chat=NULL;
-
+	this->pos=0;
 	this->clip.x = 0;
 	this->clip.y = 0;
 	this->clip.h = WINDOWSHEIGHT;
@@ -37,8 +37,15 @@ void ChatWindowsView::drawChatView(SDL_Surface* screen)
 	if(this->isActive())
 	{
 		this->drawChatWindow(screen);
-		this->text=chat->getMessage();
-		this->draw_text(this->text);
+		vector<string> v=chat->getMessage();
+		string recibido=v[0];
+
+		string enviado=v[1];
+		//this->text=;
+		this->pos=60;
+		if(recibido!="") this->draw_text(recibido);
+		this->pos=80;
+		this->draw_text(enviado);
 		if(this->chat->NewLine())
 		{
 

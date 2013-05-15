@@ -22,6 +22,8 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <string.h>
+#include <networking/ChatUpdate.h>
+#include <networking/ComunicationUtils.h>
 #include <MultiplayerGame.h>
 #include <model/Chat.h>
 
@@ -40,7 +42,7 @@ public:
 	virtual ~ChatServer();
 private:
 	int socketId;
-	map<string,Chat* > updates;
+	map<string, vector<ChatUpdate*> > updates;
 	MultiplayerGame* game;
 	map<string,int> players;
 	int maxConnections;

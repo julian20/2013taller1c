@@ -11,7 +11,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <stdio.h>
-
+#include <vector>
 #include <string>
 #include <iostream>
 #include <model/Chat.h>
@@ -32,6 +32,7 @@ public:
 	bool isActive();
 private:
 	SDL_Rect clip;
+	int pos;
 	SDL_Surface* _screen;
 	TTF_Font* font;
 	SDL_Colour text_colour;

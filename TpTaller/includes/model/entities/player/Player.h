@@ -16,6 +16,7 @@
 #include <model/Vector2.h>	// Capas hay q volarlo
 #include <model/Vector3.h>
 #include <networking/PlayerUpdate.h>
+#include <networking/ChatUpdate.h>
 
 using namespace std;
 
@@ -82,6 +83,7 @@ public:
 	void setSpeedMagnitude(int mag);
 	string getClassName();
 	Chat* getChat();
+	ChatUpdate* generateChatUpdate();
 private:
 	Chat* chat;
 	void loadNextPosition();

@@ -17,6 +17,7 @@
 #include <networking/PlayerEvent.h>
 #include <networking/NetworkPlayerController.h>
 #include <networking/PlayerUpdate.h>
+#include <networking/ChatUpdate.h>
 #include <view/MapView.h>
 #include <map>
 
@@ -30,7 +31,7 @@ public:
 	void addEventsToHandle(string playerName, vector<PlayerEvent*> events);
 	void updatePlayersCoordinates();
 	vector<PlayerUpdate*> getPlayersUpdates();
-	Chat* getChatUpdates();
+	vector<ChatUpdate*> getChatUpdates();
 	virtual ~MultiplayerGame();
 private:
 

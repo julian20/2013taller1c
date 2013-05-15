@@ -10,7 +10,9 @@
 Chat::Chat() {
 	this->playerName="";
 	this->receptor="";
+	this->msjRec="";
 	newline=false;
+	change=false;
 	this->controlador= new ChatController();
 }
 bool Chat::NewLine()
@@ -30,11 +32,29 @@ void Chat::assignPlayer(string name)
 {
 	this->playerName=name;
 }
+bool Chat::hasChange()
+{
+	return change;
+}
 void Chat::newMessage(string name, string msj)
 {
+	change=true;
 	messages[name]=msj;
 }
-string Chat::getMessage()
+string Chat::getReceptor()
+{
+	return this->receptor;
+}
+vector<string> Chat::getMessage()
+{
+	//primero dibujo los recibidos y abajo los enviados
+	vector<string> vector;
+
+	vector.push_back(this->getMessagerec());
+	vector.push_back(this->getMessageSend());
+	return vector;
+}
+string Chat::getMessageSend()
 {
 	this->newline=false;
 	if(this->controlador->isReady())
@@ -47,7 +67,18 @@ string Chat::getMessage()
 	return this->playerName+": "+(this->controlador->getText());
 
 }
-
+string Chat::getMessagerec()
+{
+	return this->msjRec;
+}
+bool Chat::isEmpty()
+{
+	return this->messages.empty();
+}
+void Chat::update(ChatUpdate* update)
+{
+	this->msjRec=update->getSender()+": "+update->getMessage();
+}
 Chat::~Chat() {
 	// TODO Auto-generated destructor stub
 }
