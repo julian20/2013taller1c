@@ -270,7 +270,6 @@ void Server::sendFiles(std::vector<std::string> wBase, std::vector<std::string> 
 	for( unsigned i = 0 ; i < wBase.size() ; i++ ) {
 
 		sendFile(wBase[i], woBase[i], sockID);
-
 	}
 
 }
@@ -296,7 +295,12 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 	while (!feof(picture)){
 
 		fread(buffer,sizeof(char),READING_SIZE,picture);
-		send(sockID,buffer,READING_SIZE,0);
+		int sendSize = 0;
+		while (sendSize != READING_SIZE){
+			sendSize = send(sockID,buffer,READING_SIZE,0);
+			if (sendSize == -1) return;
+		}
+
 
 	}
 

@@ -211,7 +211,9 @@ void Client::downloadFile() {
 	// Convert it Back into Picture
 	FILE *image;
 
+
 	string dirName = string(dirname(fileBaseDir));
+
 	string makeDir = string("mkdir -p ");
 	system(string(makeDir + dirName).c_str());
 
@@ -222,7 +224,13 @@ void Client::downloadFile() {
 	char buffer[READING_SIZE];
 	while (recved <= size){
 
-		recved += read(clientID,buffer,READING_SIZE);
+		int readSize = 0;
+		while (readSize != READING_SIZE){
+			readSize = read(clientID,buffer,READING_SIZE);
+			if (readSize == -1) break;
+			recved += readSize;
+		}
+
 
 		fwrite(buffer,1,READING_SIZE,image);
 
