@@ -224,7 +224,9 @@ void Client::downloadFile() {
 
 	int recved = 0;
 	char buffer[READING_SIZE];
-	while (true){
+	while (recved < size){
+
+		bool exit = false;
 
 		int readSize = 0;
 		while (readSize != READING_SIZE){
@@ -232,17 +234,15 @@ void Client::downloadFile() {
 		}
 		recved += readSize;
 
-		bool exit = true;
-		for (int i = 0; i <  READING_SIZE ; i++){
-			if (buffer[i] != EOF){
-				exit = false;
-				break;
-			}
+		int readsize = READING_SIZE;
+		if (recved > size){
+			readsize -= (recved - size);
+			exit = true;
 		}
 
-		if (exit) break;
+		fwrite(buffer,1,readsize,image);
 
-		fwrite(buffer,1,READING_SIZE,image);
+		if (exit) break;
 
 	}
 
