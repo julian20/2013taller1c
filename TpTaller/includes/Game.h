@@ -26,6 +26,7 @@
 #include <controller/MapController.h>
 #include <controller/MapCameraController.h>
 #include <controller/PlayerController.h>
+#include <controller/ChatController.h>
 #include <view/configuration/GameConfiguration.h>
 #include <view/MapView.h>
 #include <view/MapCameraView.h>
@@ -63,7 +64,7 @@ private:
         SDL_Rect posFondo;
         SDL_Surface* fondo;
 
-        Chat* chat ;
+        ChatController* chatController ;
         ChatWindowsView* chatView;
 
         Player* personaje;

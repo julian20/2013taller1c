@@ -109,14 +109,22 @@ void Player::update(PlayerUpdate* update){
 }
 ChatUpdate* Player::generateChatUpdate()
 {
-	if(!this->chat->hasChange()) return NULL;
-	ChatUpdate* update =  new ChatUpdate();
+	//cout<<this->chat->getMessageSend()<<endl;
+	if(!this->chat->hasChange())
+		{
+			return NULL;
+		}
+	else
+	{
+		cout<<"cambio el chat"<<endl;
+		ChatUpdate* update =  new ChatUpdate();
 
-	update->setReceiver(this->chat->getReceptor());
-	update->setMessage(this->chat->getMessageSend());
-	update->setSender(this->name);
+		update->setReceiver(this->chat->getReceptor());
+		update->setMessage(this->chat->getMessageSend());
+		update->setSender(this->name);
 
-	return update;
+		return update;
+	}
 }
 PlayerUpdate* Player::generatePlayerUpdate(){
 
@@ -227,6 +235,7 @@ std::string Player::getName() {
 
 void Player::setName(std::string name) {
 	this->name = name;
+	this->chat->assignPlayer(name);
 }
 
 std::vector<Power*> Player::getPowers() {

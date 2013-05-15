@@ -106,11 +106,13 @@ vector<ChatUpdate*> MultiplayerGame::getChatUpdates()
 {
 	vector<ChatUpdate*> updates;
 
-		for ( list<Player*>::iterator player = players.begin() ; player != players.end() ; ++player ){
+		for ( list<Player*>::iterator player = players.begin() ; player != players.end() ; ++player )
+		{
 			ChatUpdate* update = (*player)->generateChatUpdate();
 			if (update)
 				{
-				updates.push_back(update);
+					cout<<"hay update"<<endl;
+					updates.push_back(update);
 				}
 		}
 

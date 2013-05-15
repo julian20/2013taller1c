@@ -56,9 +56,11 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	personajeVista = (configuration->getViewList())[0];
 
-	chat = new Chat();
-	chat->assignPlayer(personaje->getName());
+	Chat* chat= personaje->getChat();
+
+	chatController = new ChatController(playerController);
 	chatView = new ChatWindowsView();
+	chatController->setChat(chat);
 	chatView->setChat(chat);
 	
 }
@@ -178,7 +180,7 @@ MenuEvent Game::run() {
 		while (SDL_PollEvent(&event)) {
 
 			mapController->clickListener(event);
-			chat->getChatController()->handle_events(event);
+			chatController->handle_events(event);
 			if (event.type == SDL_QUIT)
 				exit = true;
 
@@ -276,11 +278,11 @@ MapCameraView* Game::getMapCameraView(){
 MapData* Game::getMapData(){
 	return mapView->getMapData();
 }
-
+/*
 Chat* Game::getChat(){
 	return chat;
 }
-
+*/
 Game::~Game() {
 	delete mapView;
 	delete mapController;

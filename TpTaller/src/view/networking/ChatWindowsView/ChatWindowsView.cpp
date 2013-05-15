@@ -34,7 +34,7 @@ bool ChatWindowsView::isActive()
 }
 void ChatWindowsView::drawChatView(SDL_Surface* screen)
 {
-	if(this->isActive())
+	if(this->chat->isEnable())
 	{
 		this->drawChatWindow(screen);
 		vector<string> v=chat->getMessage();

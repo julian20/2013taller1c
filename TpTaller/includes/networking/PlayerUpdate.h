@@ -16,7 +16,7 @@
 #include <model/Chat.h>
 #include <model/entityProperties/Speed.h>
 #include <model/entityProperties/Coordinates.h>
-
+#include <model/Chat.h>
 namespace std {
 
 class PlayerUpdate {
@@ -45,6 +45,7 @@ public:
 	void setInitCoordinates(Coordinates* initCoords);
 	void setNextTile(Tile* nextTile);
 	Tile* getNextTile();
+	void setChat(Chat* chat);
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const PlayerUpdate&);

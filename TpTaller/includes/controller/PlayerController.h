@@ -10,7 +10,7 @@
 
 #include <model/map/MapData.h>
 #include <model/entities/player/Player.h>
-#include <controller/ChatController.h>
+//#include <controller/ChatController.h>
 #include <view/MapCameraView.h>
 #include <networking/PlayerEvent.h>
 
@@ -30,15 +30,17 @@ public:
 	void playerCancelAttack();
 	void playerBlock();
 	void playerCancelBlock();
-	ChatController * getChatController();
+//	ChatController * getChatController();
 	void generateEventList(bool activated);
 	list<PlayerEvent*> getEventList();
 	void cleanEventList();
-
+	bool clickAnotherPlayer(int x, int y);
+	string getLastPlayerTouch();
 protected:
 	MapCameraView* camera;
 	MapData* data;
 	Player* player;
+	string lastPlayerTouch;
 	bool listEvents;
 
 	list<PlayerEvent*> events;

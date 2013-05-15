@@ -64,13 +64,19 @@ void* transmit(void* _client) {
 		map<string, PlayerUpdate*> updates = client->recvPlayersUpdates();
 		if (!updates.empty())
 			client->updatePlayers(updates);
-		//map<string,ChatUpdate*> updatesChat = client->recvChatUpdates();
-		//	if (!updates.empty()) client->updateChat(updatesChat);
+
+		map<string,ChatUpdate*> updatesChat = client->recvChatUpdates();
+				if (!updatesChat.empty()) {
+					client->updateChat(updatesChat);
+				}
+
 
 	}
 
+
 	return NULL;
 }
+
 
 /* ***************************************************************** */
 /* *************************  CLASE CLIENT ************************* */
@@ -153,9 +159,10 @@ void Client::initPlayerInfo(PlayerView* view) {
 	this->player = view->getPersonaje();
 }
 
+
 /* **************************** CLIENT RUN ************************** */
 
-void Client::run() {
+void Client::run(){
 
 	pthread_t thread;
 	pthread_attr_t attr;
@@ -273,7 +280,7 @@ void Client::recvNewName() {
 	this->player->setName(newName);
 	this->view->setShowableName(newName);
 	this->info->setName(newName);
-	this->game->getChat()->assignPlayer(newName);
+//	this->game->getChat()->assignPlayer(newName);
 }
 
 void Client::addLocalPlayer() {
@@ -385,13 +392,13 @@ map<string, PlayerUpdate*> Client::recvPlayersUpdates() {
 	return updates;
 
 }
-void Client::updateChat(map<string, ChatUpdate*> updates) {
+void Client::updateChat(map<string,ChatUpdate*> updates){
 
-	for (map<string, ChatUpdate*>::iterator it = updates.begin();
-			it != updates.end(); ++it) {
-		if (players.count(it->first) != 0) {
+	for (map<string,ChatUpdate*>::iterator it = updates.begin() ; it != updates.end() ; ++it){
+		if (players.count(it->first) != 0){
+			cout << "agarra el chat de "<<it->first<<" y lo updatea"<<endl;
 			players[it->first]->getChat()->update(it->second);
-			//	players[it->first]->getChat()->update();
+		//	players[it->first]->getChat()->update();
 		}
 		delete it->second;
 	}

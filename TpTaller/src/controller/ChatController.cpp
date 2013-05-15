@@ -7,24 +7,38 @@
 
 #include <controller/ChatController.h>
 
-ChatController::ChatController() {
+ChatController::ChatController(PlayerController* playerController) {
+	this->chat=NULL;
 	this->ready=false;
 	this->text="";
+	this->playerController=playerController;
+}
+
+void ChatController::setChat(Chat* chat)
+{
+	this->chat=chat;
 }
 void ChatController::resetString()
 {
 	this->text="";
 }
 void ChatController::handle_events(SDL_Event ev) {
+
 	if ((ev.type == SDL_MOUSEBUTTONDOWN)
 			&& (ev.button.button == SDL_BUTTON_LEFT)) {
-		int x = ev.button.x;
-		int y = ev.button.y;
-	} else if (ev.type == SDL_KEYDOWN ) {
-		if (ev.key.keysym.sym == SDLK_KP_ENTER)
+			int x = ev.button.x;
+			int y = ev.button.y;
+			if(this->playerController->clickAnotherPlayer(x,y))
 				{
-				//	this->chat->newMessage(string("PEPE"),this->text);
-					this->ready=true;
+					this->chat->Enable();
+					this->chat->setReceptor(this->playerController->getLastPlayerTouch());
+				//	this->chat->Disable();
+				}
+	} else if (ev.type == SDL_KEYDOWN ) {
+		if (ev.key.keysym.sym == SDLK_KP_ENTER || ev.key.keysym.sym == SDLK_RETURN)
+				{
+					this->chat->newMessage(this->text);
+					this->text="";
 				}
 		else{
 		char c = (char) ev.key.keysym.sym;
@@ -110,10 +124,9 @@ void ChatController::handle_events(SDL_Event ev) {
 			string aux = (this->text).substr(0, longitud);
 			this->text = aux;
 		}
-
-		//this->draw_text(this->text);
 	}
 }
+	this->chat->setWrittingMsj(this->text);
 }
 string ChatController::getText()
 {

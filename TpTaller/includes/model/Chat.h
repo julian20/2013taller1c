@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include <controller/ChatController.h>
+//#include <controller/ChatController.h>
 #include <map>
 
 using namespace std;
@@ -21,10 +21,11 @@ using namespace std;
 class Chat {
 public:
 	Chat();
-	void newMessage(string name, string msj);
+	void newMessage( string msj);
 	void assignPlayer(string name);
 	virtual ~Chat();
-	ChatController* getChatController();
+	void setWrittingMsj(string msj);
+	//ChatController* getChatController();
 	vector<string> getMessage();
 	string getMessageSend();
 	string getMessagerec();
@@ -34,14 +35,19 @@ public:
 	bool isEmpty();
 	bool hasChange();
 	void update(ChatUpdate* update);
+	void Enable();
+	void Disable();
+	bool isEnable();
 private:
 	bool change;
+	bool enable;
 	string playerName;
 	string receptor;
 	string msjRec;
+	string msjSend;
 	bool newline;
 
-	ChatController* controlador;
+	//ChatController* controlador;
 	//primero reciebe el nombre a quien manda el string y luego el msj
 	map<string,string> messages;
 
