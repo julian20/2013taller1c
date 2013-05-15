@@ -225,17 +225,30 @@ void Client::downloadFile() {
 
 	int recved = 0;
 	char buffer[READING_SIZE];
+	int sizeCachitoSobrante;
+	int flag=0;
 	while (recved < size){
-
 		int readSize = 0;
 		while (readSize != READING_SIZE){
 			readSize = read(clientID,buffer,READING_SIZE);
+			//El ultimo cachito
+			if (size-recved<READING_SIZE){
+				sizeCachitoSobrante=size-recved;
+				flag=1;
+				break;
+			}
 		}
-		recved += readSize;
+		recved += READING_SIZE;
 
-		fwrite(buffer,1,READING_SIZE,image);
-
+		if (flag==0)
+			fwrite(buffer,1,READING_SIZE,image);
+		else{
+			fwrite(buffer,1,sizeCachitoSobrante,image);
+			break;
+		}
 	}
+
+	cout << recved-READING_SIZE+sizeCachitoSobrante<<"size: "<< size<<endl;
 
 	fclose(image);
 
