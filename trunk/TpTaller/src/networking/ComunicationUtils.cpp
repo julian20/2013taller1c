@@ -15,7 +15,7 @@
 
 namespace std {
 
-#define NUMBER_SIZE 10*sizeof(char)
+#define NUMBER_SIZE 10
 #define EXTRA 3
 
 ComunicationUtils::ComunicationUtils() {

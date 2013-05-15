@@ -35,10 +35,13 @@
 
 // TODO: LEER ESTO DE UN YAML
 #define BACKLOG     10  /* Passed to listen() */
-#define READING_SIZE 1024
+#define READING_SIZE 4092
 #define ALIVE_SIGNAL "ALIVE"
 #define OK 0
 #define ERROR -1
+
+#define STARTING "start"
+#define ENDED "ended"
 
 using namespace std;
 
@@ -293,16 +296,23 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 	cout << "Starting to send..."<<endl;
 	int sentSize=0;
 	while (!feof(picture)){
+
 		memset(buffer,-1,READING_SIZE);
-		fread(buffer,sizeof(char),READING_SIZE,picture);
+
+		int readSize = fread(buffer,sizeof(char),READING_SIZE,picture);
+
+		ComunicationUtils::sendNumber(sockID, readSize);
+
 		int sendSize = 0;
-		while (sendSize != READING_SIZE){
-			sendSize = send(sockID,buffer,READING_SIZE,0);
+		while (sendSize != readSize){
+			sendSize = send(sockID,buffer,readSize,0);
 		}
 		sentSize+=sendSize;
 
 	}
+
 	cout << "Sent size: "<<sentSize<<endl;
+
 	fclose(picture);
 
 }
