@@ -31,6 +31,7 @@ public:
 	void update();
 	void update(PlayerUpdate* update);
 	PlayerUpdate* generatePlayerUpdate();
+	void moveImmediately(Coordinates coords);
 	Vector2* getMovementDirection();
 	bool IsMoving();
 	void setPosition(Position* position);
