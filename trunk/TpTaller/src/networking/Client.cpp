@@ -211,9 +211,17 @@ void Client::downloadFiles() {
 void Client::downloadFile() {
 
 	int ammountRecv = 0;
+	int size = 0;
 
 	// Read Picture Size
-	int size = ComunicationUtils::recvNumber(clientID);
+	while (size == 0){
+		size = ComunicationUtils::recvNumber(clientID);
+		if (size == 0){
+			ComunicationUtils::sendNumber(clientID,ERROR);
+		} else {
+			ComunicationUtils::sendNumber(clientID,OK);
+		}
+	}
 
 	// Read filename
 	string filename = ComunicationUtils::recvString(clientID);
