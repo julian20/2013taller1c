@@ -27,10 +27,13 @@
 #include <fstream>
 
 #define MAPFILE "./mapita.yaml"
-#define READING_SIZE 1024
+#define READING_SIZE 4092
 #define ALIVE_SIGNAL "ALIVE"
 #define OK 0
 #define ERROR -1
+
+#define STARTING "start"
+#define ENDED "ended"
 
 using namespace std;
 
@@ -241,33 +244,41 @@ void Client::downloadFile() {
 	image = fopen(outputFile.c_str(), "wb");
 
 	int recved = 0;
-	char buffer[READING_SIZE];
+	unsigned char buffer[READING_SIZE];
 	int sizeCachitoSobrante;
 	int flag=0;
 	cout << "Starting download..."<<endl;
 	while (recved < size){
-		int readSize = 0;
-		while (readSize != READING_SIZE){
-			memset(buffer,-1,READING_SIZE);
-			readSize = read(clientID,buffer,READING_SIZE);
-			//El ultimo cachito
-			if (size-recved<READING_SIZE){
-				sizeCachitoSobrante=size-recved;
-				flag=1;
-				break;
-			}
-		}
-		recved += READING_SIZE;
 
-		if (flag==0)
-			fwrite(buffer,1,READING_SIZE,image);
-		else{
-			fwrite(buffer,1,sizeCachitoSobrante,image);
-			break;
+//		cout << "RECIBO SIZE" << endl;
+
+		int sendedSize = ComunicationUtils::recvNumber(clientID);
+
+//		cout << "RECIBIDO" << endl;
+
+		int readSize = 0;
+
+//		cout << "RECIBO PACK" << endl;
+
+		while (readSize != sendedSize){
+			memset(buffer,-1,READING_SIZE);
+			readSize = read(clientID,buffer,sendedSize);
+//			if (readSize != sendedSize) {
+//				cout << "RECIBO CON ERROR " << readSize << " BYTES" << endl;
+//			}
 		}
+
+//		cout << "RECIBIDO" << endl;
+		recved += sendedSize;
+
+		fwrite(buffer,sizeof(char),readSize,image);
 	}
 
-	cout << "Download ok? (1=ok): "<<(size==recved-READING_SIZE+sizeCachitoSobrante)<<endl;
+	fseek(image,0,SEEK_END);
+
+	cout << "File size " << ftell(image) <<endl;
+
+	cout << "Download ok? (1=ok): "<< (size == ftell(image)) <<endl;
 	fclose(image);
 
 }
