@@ -291,14 +291,12 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 
 	// Send Picture as Byte Array
 	char buffer[READING_SIZE];
-	int bufferSize;
 	while (!feof(picture)){
 
 		fread(buffer,sizeof(char),READING_SIZE,picture);
 		int sendSize = 0;
 		while (sendSize != READING_SIZE){
 			sendSize = send(sockID,buffer,READING_SIZE,0);
-			if (sendSize == -1) return;
 		}
 
 

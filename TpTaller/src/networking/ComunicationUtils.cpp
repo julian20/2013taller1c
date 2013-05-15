@@ -11,6 +11,7 @@
 
 #include <sstream>
 
+#define ITER_LIMIT 100
 
 namespace std {
 
@@ -29,7 +30,14 @@ void ComunicationUtils::sendNumber(int sockID,int number){
 
 	nstream << number;
 
-	send(sockID,nstream.str().c_str(),size,MSG_EOR);
+	int sendSize = 0;
+	int i = 0;
+
+	while (sendSize != size){
+		sendSize = send(sockID,nstream.str().c_str(),size,MSG_EOR);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
 
 }
 
@@ -38,7 +46,15 @@ int ComunicationUtils::recvNumber(int sockID){
 	char nbuffer[NUMBER_SIZE];
 	int n = -1;
 
-	recv(sockID,nbuffer,NUMBER_SIZE, MSG_EOR);
+	int recvSize = 0;
+	int i = 0;
+
+	while (recvSize != NUMBER_SIZE){
+		recvSize = recv(sockID,nbuffer,NUMBER_SIZE, MSG_EOR);
+		i++;
+		if (i > ITER_LIMIT) break;
+
+	}
 
 	stringstream nstream;
 	nstream << nbuffer;
@@ -57,7 +73,14 @@ void ComunicationUtils::sendString(int sockID,string string){
 
 	ComunicationUtils::sendNumber(sockID,size);
 
-	send(sockID,sstream.str().c_str(),size,MSG_EOR);
+	int sendSize = 0;
+	int i = 0;
+
+	while (sendSize != size){
+		sendSize = send(sockID,sstream.str().c_str(),size,MSG_EOR);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
 
 }
 
@@ -67,7 +90,14 @@ string ComunicationUtils::recvString(int sockID){
 
 	char sbuffer[size];
 
-	recv(sockID,sbuffer,size,MSG_EOR);
+	int recvSize = 0;
+	int i = 0;
+
+	while (recvSize != size){
+		recvSize = recv(sockID,sbuffer,size,MSG_EOR);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
 
 	string srecv = string(sbuffer);
 
@@ -84,8 +114,14 @@ void ComunicationUtils::sendPlayerInfo(int sockID,PlayerInfo* info){
 	ComunicationUtils::sendNumber(sockID,size);
 
 	// SEND PLAYER INFO
-	send(sockID,infostream.str().c_str(),size, MSG_EOR);
+	int sendSize = 0;
+	int i = 0;
 
+	while (sendSize != size){
+		sendSize = send(sockID,infostream.str().c_str(),size, MSG_EOR);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
 }
 
 PlayerInfo* ComunicationUtils::recvPlayerInfo(int sockID){
@@ -95,7 +131,15 @@ PlayerInfo* ComunicationUtils::recvPlayerInfo(int sockID){
 
 	char infobuffer[size];
 
-	recv(sockID,infobuffer,size,MSG_EOR);
+	int recvSize = 0;
+	int i = 0;
+
+	while (recvSize != size){
+		recvSize = recv(sockID,infobuffer,size,MSG_EOR);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
+
 	stringstream infostream;
 	infostream << infobuffer;
 
@@ -112,8 +156,14 @@ void ComunicationUtils::sendPlayerEvent(int sockID,PlayerEvent* event){
 	int size = eventstream.str().size() + EXTRA;
 	ComunicationUtils::sendNumber(sockID,size);
 
-	send(sockID,eventstream.str().c_str(),size, MSG_EOR);
+	int sendSize = 0;
+	int i = 0;
 
+	while (sendSize != size){
+		sendSize = send(sockID,eventstream.str().c_str(),size, MSG_EOR);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
 }
 
 PlayerEvent* ComunicationUtils::recvPlayerEvent(int sockID){
@@ -122,7 +172,14 @@ PlayerEvent* ComunicationUtils::recvPlayerEvent(int sockID){
 	PlayerEvent* event = new PlayerEvent();
 	char eventbuffer[size];
 
-	recv(sockID,eventbuffer,size,MSG_EOR);
+	int recvSize = 0;
+	int i = 0;
+
+	while (recvSize != size){
+		recvSize = recv(sockID,eventbuffer,size,MSG_EOR);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
 
 	stringstream eventstream;
 	eventstream << eventbuffer;
@@ -140,8 +197,14 @@ void ComunicationUtils::sendPlayerUpdate(int sockID,PlayerUpdate* update){
 	int size = updatestream.str().size() + EXTRA;
 	ComunicationUtils::sendNumber(sockID,size);
 
-	send(sockID,updatestream.str().c_str(), size, MSG_EOR);
+	int sendSize = 0;
+	int i = 0;
 
+	while (sendSize != size){
+		sendSize = send(sockID,updatestream.str().c_str(), size, MSG_EOR);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
 }
 
 PlayerUpdate* ComunicationUtils::recvPlayerUpdate(int sockID){
@@ -150,7 +213,14 @@ PlayerUpdate* ComunicationUtils::recvPlayerUpdate(int sockID){
 	char updatebuffer[size];
 	stringstream updatestream;
 
-	recv(sockID,updatebuffer,size,MSG_EOR);
+	int recvSize = 0;
+	int i = 0;
+
+	while (recvSize != size){
+		recvSize = recv(sockID,updatebuffer,size,MSG_EOR);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
 
 	updatestream << updatebuffer;
 

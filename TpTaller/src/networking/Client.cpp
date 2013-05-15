@@ -222,15 +222,13 @@ void Client::downloadFile() {
 
 	int recved = 0;
 	char buffer[READING_SIZE];
-	while (recved <= size){
+	while (recved < size){
 
 		int readSize = 0;
 		while (readSize != READING_SIZE){
 			readSize = read(clientID,buffer,READING_SIZE);
-			if (readSize == -1) break;
-			recved += readSize;
 		}
-
+		recved += readSize;
 
 		fwrite(buffer,1,READING_SIZE,image);
 
