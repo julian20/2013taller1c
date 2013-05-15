@@ -218,7 +218,7 @@ void Client::downloadFile() {
 	system(string(makeDir + dirName).c_str());
 
 	string outputFile(fileName);
-	image = fopen(outputFile.c_str(), "w");
+	image = fopen(outputFile.c_str(), "wb");
 
 	int sizeOfOutput = 0;
 	int bufferSize;
@@ -238,7 +238,7 @@ void Client::downloadFile() {
 		sizeOfOutput += ammountRecv;
 		ammountRecv = 0;
 
-		fwrite(p_array, 1, sizeof(p_array), image);
+		fwrite(p_array, bufferSize,  sizeof(char), image);
 
 	}
 

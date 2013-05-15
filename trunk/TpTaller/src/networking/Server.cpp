@@ -297,16 +297,16 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 	int bufferSize;
 	while(!feof(picture)) {
 
-	    fread(send_buffer, 1, sizeof(send_buffer), picture);
+	    fread(send_buffer, 1, size, picture);
 
-	    bufferSize = sizeof(send_buffer);
+	    bufferSize = size;
 		while (ammountSent != sizeof(send_buffer)) {
 			ammountSent = send(sockID, &bufferSize, sizeof(int),0);
 		}
 		ammountSent = 0;
 
 		while (ammountSent != sizeof(send_buffer)) {
-			ammountSent = send(sockID, send_buffer, sizeof(send_buffer),0);
+			ammountSent = send(sockID, send_buffer, size,0);
 		}
 		ammountSent = 0;
 
