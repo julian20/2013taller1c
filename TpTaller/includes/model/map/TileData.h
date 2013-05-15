@@ -26,7 +26,7 @@ public:
 	int getNumberOfEntitiesOnTile();
 	bool getWasVisible();
 	bool getIsVisible();
-	bool isWalkable( bool ignorePlayer = true );
+	bool isWalkable( bool ignorePlayer = false );
 
 	//Setters
 	void setType(std::string type);

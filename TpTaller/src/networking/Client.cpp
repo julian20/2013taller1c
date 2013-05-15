@@ -132,7 +132,8 @@ void Client::initPlayerInfo(PlayerView* view){
 	info->setFPS(view->getFps());
 	info->setImageDimentions(view->getImageWidth(), view->getImageHeight());
 	info->setPlayer(view->getPersonaje());
-	Coordinates* c = new Coordinates(view->getPersonaje()->getCoordinates()->getRow(), view->getPersonaje()->getCoordinates()->getCol());
+	Coordinates* c = new Coordinates(view->getPersonaje()->getCoordinates().getRow(),
+									 view->getPersonaje()->getCoordinates().getCol());
 	info->setInitCoordinates(c);
 
 	this->view = view;

@@ -1368,7 +1368,7 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		Player* personaje = (Player*) parsedEntityView->getEntity();
 
 		entityViewMap->positionEntityView(parsedEntityView,
-				*(personaje->getCoordinates()));
+				personaje->getCoordinates());
 	}
 
 }
@@ -1381,8 +1381,8 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		Entity* entity = parsedEntityView->getEntity();
 
 		Coordinates coordinates = Coordinates(
-				entity->getCoordinates()->getRow(),
-				entity->getCoordinates()->getCol());
+				entity->getCoordinates().getRow(),
+				entity->getCoordinates().getCol());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
 	}
@@ -1392,8 +1392,8 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
 	for (unsigned i = 0; i < entities.size(); i++) {
 		Entity* currentEntity = entities[i];
-		Coordinates* coor = currentEntity->getCoordinates();
-		mapData->addEntity(coor->getRow(), coor->getCol(), currentEntity);
+		Coordinates coor = currentEntity->getCoordinates();
+		mapData->addEntity(coor.getRow(), coor.getCol(), currentEntity);
 	}
 }
 std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
