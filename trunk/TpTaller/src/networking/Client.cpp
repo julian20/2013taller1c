@@ -27,7 +27,7 @@
 #include <fstream>
 
 #define MAPFILE "./mapita.yaml"
-#define READING_SIZE 4096
+#define READING_SIZE 1024
 #define ALIVE_SIGNAL "ALIVE"
 #define OK 0
 #define ERROR -1
@@ -218,26 +218,19 @@ void Client::downloadFiles() {
 void Client::downloadFile() {
 
 	int ammountRecv = 0;
-	int size = 0;
 
 	// Read Picture Size
-	while (size == 0){
-		size = ComunicationUtils::recvNumber(clientID);
-		if (size == 0){
-			ComunicationUtils::sendNumber(clientID,ERROR);
-		} else {
-			ComunicationUtils::sendNumber(clientID,OK);
-		}
-	}
-
+	int size = ComunicationUtils::recvNumber(clientID);
+	cout << "Receiving file of size: "<<size<<endl;
 	// Read filename
 	string filename = ComunicationUtils::recvString(clientID);
-
+	cout << "Filename: "<<filename<<endl;
 	char* fileBaseDir = strdup(filename.c_str());
 	char* fileBaseName = strdup(filename.c_str());
 
 	// Convert it Back into Picture
 	FILE *image;
+
 
 	string dirName = string(dirname(fileBaseDir));
 
@@ -248,21 +241,35 @@ void Client::downloadFile() {
 	image = fopen(outputFile.c_str(), "wb");
 
 	int recved = 0;
-	char* buffer=(char*)malloc(size*sizeof(char));
+	char buffer[READING_SIZE];
 	int sizeCachitoSobrante;
-	int flag = 0;
-	int readSize=0;
-	while (readSize != size) {
-		memset(buffer, -1, size);
-		readSize = read(clientID, buffer, size);
+	int flag=0;
+	cout << "Starting download..."<<endl;
+	while (recved < size){
+		int readSize = 0;
+		while (readSize != READING_SIZE){
+			memset(buffer,-1,READING_SIZE);
+			readSize = read(clientID,buffer,READING_SIZE);
+			//El ultimo cachito
+			if (size-recved<READING_SIZE){
+				sizeCachitoSobrante=size-recved;
+				flag=1;
+				break;
+			}
+		}
+		recved += READING_SIZE;
+
+		if (flag==0)
+			fwrite(buffer,1,READING_SIZE,image);
+		else{
+			fwrite(buffer,1,sizeCachitoSobrante,image);
+			break;
+		}
 	}
 
-	fwrite(buffer, sizeof(char), size, image);
-
-	cout << readSize << "size: " << size << endl;
-
+	cout << "Download ok? (1=ok): "<<(size==recved-READING_SIZE+sizeCachitoSobrante)<<endl;
 	fclose(image);
-	free(buffer);
+
 }
 
 /* *********************  ENVIO DEL NUEVO JUGADOR ****************** */

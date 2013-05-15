@@ -35,7 +35,7 @@
 
 // TODO: LEER ESTO DE UN YAML
 #define BACKLOG     10  /* Passed to listen() */
-#define READING_SIZE 4096
+#define READING_SIZE 1024
 #define ALIVE_SIGNAL "ALIVE"
 #define OK 0
 #define ERROR -1
@@ -281,28 +281,30 @@ void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 	size = ftell(picture);
 	fseek(picture, 0, SEEK_SET);
 
-	int result = ERROR;
-
 	// Send Picture Size
-	while (result != OK){
-		ComunicationUtils::sendNumber(sockID, size);
-		result = ComunicationUtils::recvNumber(sockID);
-	}
+	ComunicationUtils::sendNumber(sockID,size);
+	cout << "Sending file of size: "<<size<<endl;
 
 	ComunicationUtils::sendString(sockID,fileDest);
+	cout << "Filename: "<<fileDest<<endl;
 
 	// Send Picture as Byte Array
-	char* buffer = (char*) malloc(size * sizeof(char));
+	char buffer[READING_SIZE];
+	cout << "Starting to send..."<<endl;
+	int sentSize=0;
+	while (!feof(picture)){
+		memset(buffer,-1,READING_SIZE);
+		fread(buffer,sizeof(char),READING_SIZE,picture);
+		int sendSize = 0;
+		while (sendSize != READING_SIZE){
+			sendSize = send(sockID,buffer,READING_SIZE,0);
+		}
+		sentSize+=sendSize;
 
-	memset(buffer, -1, size);
-	fread(buffer, sizeof(char), size, picture);
-	int sendSize = 0;
-	while (sendSize != size) {
-		sendSize = send(sockID, buffer, size, 0);
 	}
-
+	cout << "Sent size: "<<sentSize<<endl;
 	fclose(picture);
-	free(buffer);
+
 }
 
 std::vector<std::string> Server::listFilesInDirectory(std::string directory) {
