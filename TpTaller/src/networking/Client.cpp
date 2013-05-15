@@ -198,13 +198,14 @@ void Client::downloadFiles() {
 
 void Client::downloadFile() {
 
-	int ammountRecv = 0;
 
 	// Read Picture Size
 	int size = ComunicationUtils::recvNumber(clientID);
 
 	// Read filename
 	string filename = ComunicationUtils::recvString(clientID);
+
+	cout << "RECIBO: " << filename << endl;
 
 	char* fileBaseDir = strdup(filename.c_str());
 	char* fileBaseName = strdup(filename.c_str());
@@ -223,7 +224,7 @@ void Client::downloadFile() {
 
 	int recved = 0;
 	char buffer[READING_SIZE];
-	while (recved < size){
+	while (true){
 
 		int readSize = 0;
 		while (readSize != READING_SIZE){
@@ -231,9 +232,21 @@ void Client::downloadFile() {
 		}
 		recved += readSize;
 
+		bool exit = true;
+		for (int i = 0; i <  READING_SIZE ; i++){
+			if (buffer[i] != EOF){
+				exit = false;
+				break;
+			}
+		}
+
+		if (exit) break;
+
 		fwrite(buffer,1,READING_SIZE,image);
 
 	}
+
+
 
 	fclose(image);
 
