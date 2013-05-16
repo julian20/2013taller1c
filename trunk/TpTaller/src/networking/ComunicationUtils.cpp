@@ -11,7 +11,7 @@
 
 #include <sstream>
 
-#define ITER_LIMIT 100
+#define ITER_LIMIT 10
 
 namespace std {
 

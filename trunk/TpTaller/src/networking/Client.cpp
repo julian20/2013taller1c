@@ -22,6 +22,8 @@
 #include <netdb.h>
 #include <libgen.h>
 
+#include <SDL/SDL.h>
+
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -31,6 +33,8 @@
 #define ALIVE_SIGNAL "ALIVE"
 #define OK 0
 #define ERROR -1
+
+#define DELAY 50
 
 #define STARTING "start"
 #define ENDED "ended"
@@ -59,8 +63,11 @@ void* transmit(void* _client) {
 	while (playing) {
 
 		playing = client->exchangeAliveSignals();
-		if (!playing)
+		if (!playing) {
+			cerr << " SE HA CORTADO LA CONEXION. HA FALLADO LA CONEXION CON EL SERVIDOR " << endl;
 			break;
+		}
+
 
 		client->checkNewPlayers();
 		client->sendEvents();
@@ -68,11 +75,10 @@ void* transmit(void* _client) {
 		if (!updates.empty())
 			client->updatePlayers(updates);
 
-		map<string,ChatUpdate*> updatesChat = client->recvChatUpdates();
-				if (!updatesChat.empty()) {
-					client->updateChat(updatesChat);
-				}
-
+//		map<string,ChatUpdate*> updatesChat = client->recvChatUpdates();
+//		if (!updatesChat.empty()) {
+//			client->updateChat(updatesChat);
+//		}
 
 	}
 
@@ -247,7 +253,12 @@ void Client::downloadFile() {
 
 	string outputFile(filename);
 	image = fopen(outputFile.c_str(), "wb");
-
+	/*if (image == NULL){
+		cerr << "Error al abrir archivo: " << outputFile << ". Se ignorara." << endl;
+		ComunicationUtils::sendNumber(clientID, ERROR);
+		return;
+	}
+*/
 	int recved = 0;
 	unsigned char buffer[READING_SIZE];
 	int sizeCachitoSobrante;
@@ -255,25 +266,14 @@ void Client::downloadFile() {
 	cout << "Starting download..."<<endl;
 	while (recved < size){
 
-//		cout << "RECIBO SIZE" << endl;
-
 		int sendedSize = ComunicationUtils::recvNumber(clientID);
 
-//		cout << "RECIBIDO" << endl;
-
 		int readSize = 0;
-
-//		cout << "RECIBO PACK" << endl;
-
 		while (readSize != sendedSize){
 			memset(buffer,-1,READING_SIZE);
 			readSize = read(clientID,buffer,sendedSize);
-//			if (readSize != sendedSize) {
-//				cout << "RECIBO CON ERROR " << readSize << " BYTES" << endl;
-//			}
 		}
 
-//		cout << "RECIBIDO" << endl;
 		recved += sendedSize;
 
 		fwrite(buffer,sizeof(char),readSize,image);
