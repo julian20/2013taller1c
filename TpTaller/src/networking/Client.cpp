@@ -76,7 +76,12 @@ void* transmit(void* _client) {
 
 	}
 
-
+	// TODO: aca habria que verificar un flag seteado por el
+	// exchange alive signals. Si se salio de esto porque
+	// se murio la conexion hay que mostrar un mensaje, o
+	// salir bien. Digo que es un flag y no siempre, porque
+	// para la entrega 3 podria no estar playing y no haberse
+	// roto la conexion.
 	return NULL;
 }
 
