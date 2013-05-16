@@ -6,7 +6,7 @@
  */
 
 #include <networking/ComunicationUtils.h>
-
+#include <sys/sendfile.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <stdio.h>
@@ -16,12 +16,17 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <sys/stat.h>
+#include <netinet/in.h>
+#include <errno.h>
+#include <fcntl.h>
+
 
 #define ITER_LIMIT 10
 
 namespace std {
 
-#define NUMBER_SIZE 10
+#define NUMBER_SIZE 16
 #define EXTRA 3
 #define READING_SIZE 1024
 
@@ -33,18 +38,11 @@ ComunicationUtils::ComunicationUtils() {
 void ComunicationUtils::sendNumber(int sockID,int number){
 
 	stringstream nstream;
-	int size = NUMBER_SIZE;
 
 	nstream << number;
 
-	int sendSize = 0;
-	int i = 0;
+	send(sockID,nstream.str().c_str(),NUMBER_SIZE,0);
 
-	while (sendSize != size){
-		sendSize = send(sockID,nstream.str().c_str(),size,MSG_EOR);
-		i++;
-		if (i > ITER_LIMIT) break;
-	}
 
 }
 
@@ -57,7 +55,7 @@ int ComunicationUtils::recvNumber(int sockID){
 	int i = 0;
 
 	while (recvSize != NUMBER_SIZE){
-		recvSize = recv(sockID,nbuffer,NUMBER_SIZE, MSG_EOR);
+		recvSize = recv(sockID,nbuffer,NUMBER_SIZE, 0);
 		i++;
 		if (i > ITER_LIMIT) break;
 
@@ -84,7 +82,7 @@ void ComunicationUtils::sendString(int sockID,string string){
 	int i = 0;
 
 	while (sendSize != size){
-		sendSize = send(sockID,sstream.str().c_str(),size,MSG_EOR);
+		sendSize = send(sockID,sstream.str().c_str(),size,0);
 		i++;
 		if (i > ITER_LIMIT) break;
 	}
@@ -101,7 +99,7 @@ string ComunicationUtils::recvString(int sockID){
 	int i = 0;
 
 	while (recvSize != size){
-		recvSize = recv(sockID,sbuffer,size,MSG_EOR);
+		recvSize = recv(sockID,sbuffer,size,0);
 		i++;
 		if (i > ITER_LIMIT) break;
 	}
@@ -125,7 +123,7 @@ void ComunicationUtils::sendPlayerInfo(int sockID,PlayerInfo* info){
 	int i = 0;
 
 	while (sendSize != size){
-		sendSize = send(sockID,infostream.str().c_str(),size, MSG_EOR);
+		sendSize = send(sockID,infostream.str().c_str(),size, 0);
 		i++;
 		if (i > ITER_LIMIT) break;
 	}
@@ -142,7 +140,7 @@ PlayerInfo* ComunicationUtils::recvPlayerInfo(int sockID){
 	int i = 0;
 
 	while (recvSize != size){
-		recvSize = recv(sockID,infobuffer,size,MSG_EOR);
+		recvSize = recv(sockID,infobuffer,size,0);
 		i++;
 		if (i > ITER_LIMIT) break;
 	}
@@ -167,7 +165,7 @@ void ComunicationUtils::sendPlayerEvent(int sockID,PlayerEvent* event){
 	int i = 0;
 
 	while (sendSize != size){
-		sendSize = send(sockID,eventstream.str().c_str(),size, MSG_EOR);
+		sendSize = send(sockID,eventstream.str().c_str(),size, 0);
 		i++;
 		if (i > ITER_LIMIT) break;
 	}
@@ -183,7 +181,7 @@ PlayerEvent* ComunicationUtils::recvPlayerEvent(int sockID){
 	int i = 0;
 
 	while (recvSize != size){
-		recvSize = recv(sockID,eventbuffer,size,MSG_EOR);
+		recvSize = recv(sockID,eventbuffer,size,0);
 		i++;
 		if (i > ITER_LIMIT) break;
 	}
@@ -204,7 +202,7 @@ void ComunicationUtils::sendChatUpdate(int sockID,ChatUpdate* update){
 	int size = updatestream.str().size() + EXTRA;
 	ComunicationUtils::sendNumber(sockID,size);
 
-	send(sockID,updatestream.str().c_str(), size, MSG_EOR);
+	send(sockID,updatestream.str().c_str(), size, 0);
 
 }
 
@@ -220,7 +218,7 @@ void ComunicationUtils::sendPlayerUpdate(int sockID,PlayerUpdate* update){
 	int i = 0;
 
 	while (sendSize != size){
-		sendSize = send(sockID,updatestream.str().c_str(), size, MSG_EOR);
+		sendSize = send(sockID,updatestream.str().c_str(), size, 0);
 		i++;
 		if (i > ITER_LIMIT) break;
 	}
@@ -237,7 +235,7 @@ PlayerUpdate* ComunicationUtils::recvPlayerUpdate(int sockID){
 	int i = 0;
 
 	while (recvSize != size){
-		recvSize = recv(sockID,updatebuffer,size,MSG_EOR);
+		recvSize = recv(sockID,updatebuffer,size,0);
 		i++;
 		if (i > ITER_LIMIT) break;
 	}
@@ -258,7 +256,7 @@ ChatUpdate* ComunicationUtils::recvChatUpdate(int sockID){
 	char updatebuffer[size];
 	stringstream updatestream;
 
-	recv(sockID,updatebuffer,size,MSG_EOR);
+	recv(sockID,updatebuffer,size,0);
 
 	updatestream << updatebuffer;
 
@@ -274,47 +272,24 @@ void ComunicationUtils::downloadFile(int clientID) {
 
 	// Read Picture Size
 	int size = ComunicationUtils::recvNumber(clientID);
-	cout << "Receiving file of size: "<<size<<endl;
+	cout << "Receiving file of size: " << size << endl;
 	// Read filename
 	string filename = ComunicationUtils::recvString(clientID);
-	cout << "Filename: "<<filename<<endl;
+	cout << "Filename: " << filename << endl;
 	char* fileBaseDir = strdup(filename.c_str());
 
-	FILE *file;
-	string dirName = string(dirname(fileBaseDir));
-	string makeDir = string("mkdir -p ");
-	system(string(makeDir + dirName).c_str());
+	FILE* file = fopen(fileBaseDir, "w");
 
-	string outputFile(filename);
-	file = fopen(outputFile.c_str(), "wb");
-	if (file == NULL){
-		cerr << "Error al abrir archivo: " << outputFile << ". Se ignorara." << endl;
-		return;
+	// Send Picture as Byte Array
+	char* buffer = (char*)malloc(size);
+	int aux = recv(clientID,buffer,size,0);
+	fwrite(buffer,1,aux,file);
+	while(aux<size){
+		aux +=recv(clientID,buffer,size-aux,0);
+		fwrite(buffer,1,aux,file);
 	}
+	cout << "Received size: "<<aux<<endl;
 
-	int recved = 0;
-	unsigned char buffer[READING_SIZE];
-	cout << "Starting download..."<<endl;
-	while (recved < size){
-
-		int sentSize = ComunicationUtils::recvNumber(clientID);
-
-		int readSize = 0;
-		readSize = recv(clientID,buffer,sentSize,0);
-		if (readSize<0){
-			Logs::logErrorMessage(strcat("Error de transferencia de archivo ",filename.c_str()));
-			cout << "Error de transferencia de archivo " << filename << endl;
-		}
-		recved += sentSize;
-
-		fwrite(buffer,sizeof(char),readSize,file);
-	}
-
-	fseek(file,0,SEEK_END);
-
-	cout << "File size " << ftell(file) <<endl;
-
-	cout << "Download ok? (1=ok): "<< (size == ftell(file)) <<endl;
 	fclose(file);
 
 }
@@ -323,42 +298,31 @@ void ComunicationUtils::downloadFile(int clientID) {
 void ComunicationUtils::sendFile(string fileOrigin, string fileDest, int sockID) {
 
 	// Get Picture Size
-	FILE *file;
-	file = fopen(fileOrigin.c_str(), "r");
-	if (!file){
-		cout << "ERROR OPENING FILE "<< fileOrigin<<endl;
-		return;
-	}
-	int size;
-	fseek(file, 0, SEEK_END);
-	size = ftell(file);
-	fseek(file, 0, SEEK_SET);
+	int file;
+	file = open(fileOrigin.c_str(), O_RDONLY);
+
+	struct stat stat_buf;
+	fstat(file, &stat_buf);
+
 
 	// Send Picture Size
-	ComunicationUtils::sendNumber(sockID,size);
-	cout << "Sending file of size: "<<size<<endl;
+	ComunicationUtils::sendNumber(sockID,stat_buf.st_size);
+	cout << "Sending file of size: "<<stat_buf.st_size<<endl;
 
 	ComunicationUtils::sendString(sockID,fileDest);
 	cout << "Filename: "<<fileDest<<endl;
 
 	// Send Picture as Byte Array
-	char buffer[READING_SIZE];
-	cout << "Starting to send..."<<endl;
-	int totalSentSize=0;
-	while (!feof(file)){
-		int readSize = fread(buffer,1,READING_SIZE,file);
-		ComunicationUtils::sendNumber(sockID, readSize);
-		int sentSize = 0;
-		while (send(sockID,buffer,readSize,0)<0);
-		if (sentSize<0)
-			cout << "Send error in file "<< fileOrigin << endl;
-		totalSentSize+=sentSize;
 
+	cout << "Starting to send..."<<endl;
+	int aux =sendfile (sockID,file, NULL, stat_buf.st_size);
+	while(aux<stat_buf.st_size){
+		aux +=sendfile (sockID,file, NULL, stat_buf.st_size-aux);
 	}
 
-	cout << "Sent size: "<<totalSentSize<<endl;
+	cout << "Sent size: "<<aux<<endl;
 
-	fclose(file);
+	close(file);
 
 }
 
