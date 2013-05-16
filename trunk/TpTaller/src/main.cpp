@@ -107,7 +107,8 @@ void generateClientYAML(string serverYAML, string clientYAML, string output) {
 
 }
 
-void initMultiplayerGame(PersistentConfiguration* configuration) {
+void initMultiplayerGame(PersistentConfiguration* configuration,
+		string& playerName, string& playerType) {
 
 	std::string serverIP =
 			configuration->getAnimationConfiguration()->getServerIP();
@@ -122,6 +123,10 @@ void initMultiplayerGame(PersistentConfiguration* configuration) {
 			CONFIGURATION_FILE, OUTPUT_FILENAME);
 
 	Game* game = new Game(&downloadedConfig, true);
+
+//	game->getPlayerView()->setName(string(playerType));
+//	game->getPlayerView()->getPersonaje()->setName(string(playerName));
+
 	client->setGame(game);
 	client->initPlayerInfo(game->getPlayerView());
 	client->run();
@@ -143,7 +148,8 @@ void initServer(PersistentConfiguration* configuration) {
 	delete server;
 }
 
-void initMenu(PersistentConfiguration* configuration) {
+void initMenu(PersistentConfiguration* configuration, string& playerName,
+		string& playerType) {
 
 	Menu* menu = new Menu(configuration->getAnimationConfiguration());
 
@@ -168,7 +174,7 @@ void initMenu(PersistentConfiguration* configuration) {
 			break;
 		case MULTIPLAYER_GAME_EVENT:
 			menu->close();
-			initMultiplayerGame(configuration);
+			initMultiplayerGame(configuration, playerName, playerType);
 			break;
 		case SERVER_EVENT:
 			menu->close();
@@ -193,19 +199,29 @@ int main(int argc, char** argv) {
 			string("************Program Starting**************** "));
 	SDL_Init(SDL_INIT_EVERYTHING);
 
+	string playerName("NewPlayer");
+	string playerType("NewPlayer");
+
+	if (argc > 1) {
+		playerName = string(argv[1]);
+	}
+	if (argc > 2) {
+		playerType = string(argv[2]);
+	}
+
 // Lectura del archivo de configuracion
 	ConfigurationReader cfgReader = ConfigurationReader();
 	try {
 		PersistentConfiguration configuration = cfgReader.loadConfiguration(
 				CONFIGURATION_FILE, OUTPUT_FILENAME);
-		initMenu(&configuration);
+		initMenu(&configuration, playerName, playerType);
 	} catch (std::exception& e) {
 		unLog.logErrorMessage(
 				string("Configuration syntax error, ") + e.what()
 						+ string(". Loading default configuration."));
 		PersistentConfiguration configuration = cfgReader.loadConfiguration(
 				DEFAULT_CONFIGURATION_FILE, OUTPUT_FILENAME);
-		initMenu(&configuration);
+		initMenu(&configuration, playerName, playerType);
 	}
 
 	SDL_Quit();
