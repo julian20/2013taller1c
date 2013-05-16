@@ -114,8 +114,12 @@ void initMultiplayerGame(PersistentConfiguration* configuration) {
 	unsigned int serverPort =
 			configuration->getAnimationConfiguration()->getServerPort();
 
+
+	Client* client = new Client(serverIP, serverPort);
+	client->downloadFiles();
+	//client->downloadMap();
 	Game* game = new Game(configuration, true);
-	Client* client = new Client(serverIP, serverPort, game);
+	client->setGame(game);
 	client->initPlayerInfo(game->getPlayerView());
 	client->run();
 	game->run();

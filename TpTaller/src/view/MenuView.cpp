@@ -14,11 +14,11 @@
 
 #include <model/Logs/Logs.h>
 
-#define START_LAUGH "resources/sound/laugh.wav"
-#define START_TAUNT "resources/sound/darkness.wav"
+#define START_LAUGH "resources/menu/sound/laugh.wav"
+#define START_TAUNT "resources/menu/sound/darkness.wav"
 #define ENVIRONMENT_WINDOW "SDL_VIDEO_CENTERED=1"
 
-#define DEFAULT_BACKIMG "resources/lich.jpg"
+#define DEFAULT_BACKIMG "resources/menu/lich.jpg"
 
 namespace std {
 

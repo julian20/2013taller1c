@@ -51,87 +51,85 @@ using namespace std;
 /* *************  FUNCIONES EJECUTADAS EN LOS THREADS ************** */
 /* ***************************************************************** */
 
-
 // Funcion que ejecuta al conectarse cada client
-void* handle(void* par){
+void* handle(void* par) {
 
 	/* send(), recv(), close() */
-		ThreadParameter* parameter = (ThreadParameter*) par;
-		int clientSocket = parameter->clientID;
-		Server* server = parameter->server;
-		MultiplayerGame* game = server->getGame();
-		//Lo primero que hago es mandar el mapa.
-		std::vector<std::string> withBase = server->listFilesInDirectoryWithBase("sendFiles");
-		std::vector<std::string> withoutBase = server->listFilesInDirectory("sendFiles");
+	ThreadParameter* parameter = (ThreadParameter*) par;
+	int clientSocket = parameter->clientID;
+	Server* server = parameter->server;
+	MultiplayerGame* game = server->getGame();
+	//Lo primero que hago es mandar el mapa.
+	std::vector<std::string> withBase = server->listFilesInDirectoryWithBase(
+			"sendFiles");
+	std::vector<std::string> withoutBase = server->listFilesInDirectory(
+			"sendFiles");
 
+	// Manda las imagenes y sonidos necesarios que se utilizaran.
 	server->sendFiles(withBase, withoutBase, clientSocket);
 
-		// Manda las imagenes y sonidos necesarios que se utilizaran.
-		//TODO : sendResources(sockID);
 
-	map<int, string> sended;
+	map<int, string> sent;
 	PlayerInfo* info = server->recieveNewPlayer(clientSocket);
 	string playerName = info->getPlayer()->getName();
 
-		int result = server->isNameAbilivable(playerName);
-		server->sendAproval(clientSocket,result);
-		if (result != OK){
-			playerName = server->getAbilivableName(playerName);
-			server->sendNewName(clientSocket, playerName);
-			info->setName(playerName);
-			info->getPlayer()->setName(playerName);
-		}
+	int result = server->isNameAbilivable(playerName);
+	server->sendAproval(clientSocket, result);
+	if (result != OK) {
+		playerName = server->getAbilivableName(playerName);
+		server->sendNewName(clientSocket, playerName);
+		info->setName(playerName);
+		info->getPlayer()->setName(playerName);
+	}
 
-		sended.insert(pair<int, string>(clientSocket,playerName));
-		server->addPlayerToGame(clientSocket,info);
+	sent.insert(pair<int, string>(clientSocket, playerName));
+	server->addPlayerToGame(clientSocket, info);
 
+	cout << playerName << " has conected.. " << endl;
+	/*ChatServer* serverChat=server->getChat();
+	 serverChat->setGame(game);
+	 serverChat->addPlayerToChat(clientSocket,playerName);*/bool playing = true;
 
-		cout << playerName << " has conected.. " << endl;
-		/*ChatServer* serverChat=server->getChat();
-		serverChat->setGame(game);
-		serverChat->addPlayerToChat(clientSocket,playerName);*/
-		bool playing = true;
-
-		while (playing){
+	while (playing) {
 
 		playing = server->exchangeAliveSignals(clientSocket);
 		if (!playing)
 			break;
 
-
-			server->sendNewPlayers(clientSocket, &sended);
-			vector<PlayerEvent*> events = server->recvEvents(clientSocket);
-			if (!events.empty()) game->addEventsToHandle(playerName,events);
-			server->getPlayersUpdates();
-			server->sendPlayersUpdates(clientSocket, playerName);
+		server->sendNewPlayers(clientSocket, &sent);
+		vector<PlayerEvent*> events = server->recvEvents(clientSocket);
+		if (!events.empty())
+			game->addEventsToHandle(playerName, events);
+		server->getPlayersUpdates();
+		server->sendPlayersUpdates(clientSocket, playerName);
 //			serverChat->getChatUpdates();
 //			serverChat->sendChatUpdates(clientSocket, playerName);
 
+	}
 
-		}
+	server->disconectPlayer(clientSocket, playerName);
 
-		server->disconectPlayer(clientSocket,playerName);
-
-		return NULL;
+	return NULL;
 
 }
 
 // Funcion que corre la logica de actualizaciones de los jugadores
-void* runGameBackEnd(void* parameter){
+void* runGameBackEnd(void* parameter) {
 	MultiplayerGame* game = (MultiplayerGame*) parameter;
 	game->run();
 	return NULL;
 }
 
 // Funcion que lee eventos para saber cuando cerrar el servidor
-void* readEvents(void* par ){
+void* readEvents(void* par) {
 
-	while (true){
+	while (true) {
 
 		SDL_Event event;
-		while (SDL_PollEvent(&event)){
+		while (SDL_PollEvent(&event)) {
 
-			if ( (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q) || (event.type == SDL_QUIT ) ){
+			if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q)
+					|| (event.type == SDL_QUIT)) {
 				exit(0);
 			}
 		}
@@ -141,7 +139,6 @@ void* readEvents(void* par ){
 	return NULL;
 
 }
-
 
 /* ***************************************************************** */
 /* *************************  CLASE SERVER ************************* */
@@ -160,8 +157,9 @@ Server::Server(string host, int port) {
 	stringstream ssport;
 	ssport << port;
 
-	if (getaddrinfo(host.c_str(), ssport.str().c_str(),&hints, &res) != 0) {
-		Logs::logErrorMessage("Servidor: Error al obtener la informacion de direccion");
+	if (getaddrinfo(host.c_str(), ssport.str().c_str(), &hints, &res) != 0) {
+		Logs::logErrorMessage(
+				"Servidor: Error al obtener la informacion de direccion");
 		exit(1);
 	}
 
@@ -173,8 +171,10 @@ Server::Server(string host, int port) {
 	}
 
 	/* Enable the socket to reuse the address */
-	if (setsockopt(serverID, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(int)) == -1) {
-		Logs::logErrorMessage("Servidor: Error al setear la reutilizacion de direcciones");
+	if (setsockopt(serverID, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(int))
+			== -1) {
+		Logs::logErrorMessage(
+				"Servidor: Error al setear la reutilizacion de direcciones");
 		exit(1);
 	}
 
@@ -183,9 +183,9 @@ Server::Server(string host, int port) {
 		Logs::logErrorMessage("Servidor: Error de asignacion de direccion");
 		exit(1);
 	}
-	this->chat = new ChatServer();
-	this->chat->setSocketId(serverID);
-	this->chat->setMaxConnections(BACKLOG);
+//	this->chat = new ChatServer();
+//	this->chat->setSocketId(serverID);
+//	this->chat->setMaxConnections(BACKLOG);
 //	printf("creo el chatServer\n");
 	freeaddrinfo(res);
 
@@ -193,59 +193,57 @@ Server::Server(string host, int port) {
 
 }
 
-
 /* **************************** SERVER RUN ************************** */
 
-void Server::run(MultiplayerGame* game){
+void Server::run(MultiplayerGame* game) {
 	this->game = game;
 	pthread_t thread;
 	pthread_t gameThread;
 	pthread_t eventThread;
-	pthread_attr_t        attr;
+	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 
-	pthread_create(&eventThread,&attr,readEvents,NULL);
+	pthread_create(&eventThread, &attr, readEvents, NULL);
 
 	/* Listen */
 	if (listen(serverID, BACKLOG) == -1) {
-		Logs::logErrorMessage("Servidor: Error al poner al servidor en modo de recepcion de conexiones");
+		Logs::logErrorMessage(
+				"Servidor: Error al poner al servidor en modo de recepcion de conexiones");
 		exit(1);
 	}
 
-
-	pthread_create(&gameThread,&attr,runGameBackEnd,(void*)game);
-
+	pthread_create(&gameThread, &attr, runGameBackEnd, (void*) game);
 
 	/* Main loop */
 	while (1) {
 		unsigned int size = sizeof(struct sockaddr_in);
 		struct sockaddr_in their_addr;
-		int newsock = accept(serverID, (struct sockaddr*)&their_addr, &size);
+		int newsock = accept(serverID, (struct sockaddr*) &their_addr, &size);
 		if (newsock == -1) {
-			Logs::logErrorMessage("Servidor: El servidor no ha podido aceptar la conexion");
-		}
-		else {
-			ThreadParameter* tp = (ThreadParameter*) malloc(sizeof(ThreadParameter));
+			Logs::logErrorMessage(
+					"Servidor: El servidor no ha podido aceptar la conexion");
+		} else {
+			ThreadParameter* tp = (ThreadParameter*) malloc(
+					sizeof(ThreadParameter));
 			tp->clientID = newsock;
 			tp->server = this;
-			if (pthread_create(&thread, &attr, handle,(void*)tp ) != 0) {
-				Logs::logErrorMessage("Servidor: Error al inicializar handle thread");
+			if (pthread_create(&thread, &attr, handle, (void*) tp) != 0) {
+				Logs::logErrorMessage(
+						"Servidor: Error al inicializar handle thread");
 			}
 
 		}
 
-
 	}
 }
 
-
 /* *****************  FUNCIONES DE ENVIO DE ARCHIVOS *************** */
 
-void Server::sendMap(string mapfile,int sockID){
+void Server::sendMap(string mapfile, int sockID) {
 
 	std::ifstream map;
 	map.open(mapfile.c_str());
-	if (!map.is_open()){
+	if (!map.is_open()) {
 		Logs::logErrorMessage("Servidor: No se ha podido cargar el mapa");
 		exit(1);
 	}
@@ -253,29 +251,30 @@ void Server::sendMap(string mapfile,int sockID){
 	string line;
 
 	printf("Sending map...\n");
-	while (map.good()){
-		std::getline(map,line);
-		send(sockID,line.c_str(),READING_SIZE,0);
+	while (map.good()) {
+		std::getline(map, line);
+		send(sockID, line.c_str(), READING_SIZE, 0);
 	}
 	char end = EOF;
-	send(sockID,&end,READING_SIZE,0);
+	send(sockID, &end, READING_SIZE, 0);
 	printf("Map Sended.\n");
 
 	map.close();
 }
 
-void Server::sendFiles(std::vector<std::string> wBase, std::vector<std::string> woBase, int sockID) {
+void Server::sendFiles(std::vector<std::string> wBase,
+		std::vector<std::string> woBase, int sockID) {
 
 	ComunicationUtils::sendNumber(sockID, wBase.size());
-
-	for( unsigned i = 0 ; i < wBase.size() ; i++ ) {
-
+	cout<<"Sending "<< wBase.size()<<" files\n";
+	int cont =0;
+	for (unsigned i = 0; i < wBase.size(); i++) {
 		ComunicationUtils::sendFile(wBase[i], woBase[i], sockID);
+		cont++;
 	}
+	cout<<"Sent "<< cont <<" files\n";
 
 }
-
-
 
 std::vector<std::string> Server::listFilesInDirectory(std::string directory) {
 
@@ -340,7 +339,6 @@ std::vector<std::string> Server::listFilesInDirectoryWithBase(
 	return listOfFiles;
 
 }
-
 
 /* *****************  RECEPCION DE UN NUEVO JUGADOR **************** */
 

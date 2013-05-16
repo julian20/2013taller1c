@@ -51,8 +51,6 @@ void* transmit(void* _client) {
 
 	bool playing = true;
 
-	client->downloadFiles();
-
 	client->registerPlayer();
 
 	int ok = client->getServerAproval();
@@ -98,7 +96,7 @@ void* transmit(void* _client) {
 /* *************************  CLASE CLIENT ************************* */
 /* ***************************************************************** */
 
-Client::Client(string host, int port, Game* game) {
+Client::Client(string host, int port) {
 	// TODO Auto-generated constructor stub
 	struct sockaddr_in hints;
 	struct hostent *server;
@@ -135,10 +133,15 @@ Client::Client(string host, int port, Game* game) {
 				"Cliente: Ha ocurrido un error conectandose al servidor");
 		exit(1);
 	}
+	this->game=NULL;
+	this->info=NULL;
+	this->view=NULL;
+	this->player=NULL;
 
-	// Devuelvo el socket ID.
+}
+
+void Client::setGame(Game* game){
 	this->game = game;
-
 }
 
 /* ******************** CLIENT SET PLAYER INFO ********************* */
@@ -221,10 +224,13 @@ void Client::downloadMap() {
 void Client::downloadFiles() {
 
 	int size = ComunicationUtils::recvNumber(clientID);
-
-	for (unsigned i = 0; i < size; i++) {
+	cout<<"Downloading "<< size<<" files\n";
+	int cont=0;
+	for (int i = 0; i < size; i++) {
 		ComunicationUtils::downloadFile(clientID);
+		cont++;
 	}
+	cout<<"Downloaded "<< cont<<" files\n";
 
 }
 
