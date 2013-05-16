@@ -73,14 +73,14 @@ void generateClientYAML(string serverYAML, string clientYAML, string output) {
 					flag = false;
 					if (strcmp(lineRead, "") == 0) {
 						fprintf(outputFILE, "- entityLocations:\n");
-						flag=false;
+						flag = false;
 						free(lineRead);
 						continue;
 					}
 					free(lineRead);
 					continue;
 				}
-				fprintf(outputFILE, "%s\n",lineRead);
+				fprintf(outputFILE, "%s\n", lineRead);
 				free(leer_linea(serverFILE));
 				free(lineRead);
 			} else {
@@ -90,7 +90,7 @@ void generateClientYAML(string serverYAML, string clientYAML, string output) {
 					free(lineRead);
 					continue;
 				}
-				fprintf(outputFILE, "%s\n",lineRead);
+				fprintf(outputFILE, "%s\n", lineRead);
 				free(lineRead);
 			}
 
@@ -114,11 +114,14 @@ void initMultiplayerGame(PersistentConfiguration* configuration) {
 	unsigned int serverPort =
 			configuration->getAnimationConfiguration()->getServerPort();
 
-
 	Client* client = new Client(serverIP, serverPort);
 	client->downloadFiles();
-	//client->downloadMap();
-	Game* game = new Game(configuration, true);
+
+	ConfigurationReader newReader = ConfigurationReader();
+	PersistentConfiguration downloadedConfig = newReader.loadConfiguration(
+			CONFIGURATION_FILE, OUTPUT_FILENAME);
+
+	Game* game = new Game(&downloadedConfig, true);
 	client->setGame(game);
 	client->initPlayerInfo(game->getPlayerView());
 	client->run();
@@ -183,8 +186,6 @@ void initMenu(PersistentConfiguration* configuration) {
  *
  */
 int main(int argc, char** argv) {
-
-	generateClientYAML(CONFIGURATION_FILE,CLIENT_CONFIGURATION_FILE,"test.yaml");
 
 	Logs unLog;
 	Logs::openFile();
