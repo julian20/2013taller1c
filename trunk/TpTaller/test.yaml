@@ -12,37 +12,38 @@
     baseRows: 1
     baseCols: 1
     delay: 0.5
-- entityViews:    
-  - name: windmill
-    imageSrc: resources/buildings/windmill.png
-    imageWidth: 224
-    imageHeight: 240
-    numberOfClips: 23
-    anchorPixel: [100, 120]
+- gameConfiguration:
+    serverIP: 127.0.0.1
+    serverPort: 32001
     fps: 30
-    delay: 2 
-    animationRepeats: 7
-    baseRows: 2
-    baseCols: 3
-  - name: watermill
-    imageSrc: resources/buildings/watermill tileset.png
-    imageWidth: 242
-    imageHeight: 235
-    numberOfClips: 31
-    anchorPixel: [115, 142]
-    fps: 20
-    delay: 2 
-    animationRepeats: 5
-    baseRows: 3
-    baseCols: 4
-  - name: aniWater
-    imageSrc: resources/aniWater.png
-    imageWidth: 68
-    imageHeight: 49
-    numberOfClips: 6
-    anchorPixel: [34, 0]
-    baseRows: 1
-    baseCols: 1
+    delay: 10
+    movementMargin: 90
+    gameMusic: resources/sound/NamiLogin.ogg
+    fullscreen: false
+    screenAutoConfig: false
+    defaultScreenHeight: 700
+    defaultScreenWidth: 1200
+    defaultBPP: 0
+    menuBackImage: resources/lich.jpg
+    menuBackMusic: resources/sound/QuinnLogin.ogg
+    tileWidth: 70
+    tileHeight: 50
+- playerLocations:
+  - name: NewPlayer
+    position: [9, 9, 0]
+    speed:
+      magnitude: 4
+      direction: [1, 2]
+    powers:
+      - name: Club
+        damage: 2
+        range: 1
+      - name: Fist
+        damage: 3
+        range: 1
+    mainPlayer: true
+    viewRange: 500
+- entityLocations:
   - name: tree
     imageSrc: resources/tree2.png
     imageWidth: 128
@@ -147,7 +148,7 @@
   - identifier: sandGrassCurveIn135
     imageSrc: resources/texturesTiles/sandGrass/sandGrassCurveIn135.png
 - mapDimensions: [50, 50]
-- playerLocations:
+- entityLocations:
   - name: NewPlayer
     position: [9, 9, 0]
     speed:
@@ -2153,3 +2154,4 @@
     texture: soil
   - position: [8, 6, 0]
     texture: soil
+

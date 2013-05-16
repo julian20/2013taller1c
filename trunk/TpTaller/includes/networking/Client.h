@@ -20,7 +20,7 @@ namespace std {
 
 class Client {
 public:
-	Client(string host, int port, Game* game);
+	Client(string host, int port);
 	void initPlayerInfo(PlayerView* view);
 	void run();
 
@@ -40,7 +40,7 @@ public:
 	map<string,ChatUpdate*> recvChatUpdates();
 	void updateChat(map<string,ChatUpdate*> updates);
 	Game* getGame();
-
+	void setGame(Game* game);
 	virtual ~Client();
 private:
 

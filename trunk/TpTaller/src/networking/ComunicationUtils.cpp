@@ -23,7 +23,7 @@ namespace std {
 
 #define NUMBER_SIZE 10
 #define EXTRA 3
-#define READING_SIZE 8096
+#define READING_SIZE 1024
 
 ComunicationUtils::ComunicationUtils() {
 	// TODO Auto-generated constructor stub
@@ -280,57 +280,59 @@ void ComunicationUtils::downloadFile(int clientID) {
 	cout << "Filename: "<<filename<<endl;
 	char* fileBaseDir = strdup(filename.c_str());
 
-	FILE *image;
+	FILE *file;
 	string dirName = string(dirname(fileBaseDir));
 	string makeDir = string("mkdir -p ");
 	system(string(makeDir + dirName).c_str());
 
 	string outputFile(filename);
-	image = fopen(outputFile.c_str(), "wb");
-	/*if (image == NULL){
+	file = fopen(outputFile.c_str(), "wb");
+	if (file == NULL){
 		cerr << "Error al abrir archivo: " << outputFile << ". Se ignorara." << endl;
-		ComunicationUtils::sendNumber(clientID, ERROR);
 		return;
 	}
-*/
+
 	int recved = 0;
 	unsigned char buffer[READING_SIZE];
 	cout << "Starting download..."<<endl;
 	while (recved < size){
 
-		int sendedSize = ComunicationUtils::recvNumber(clientID);
+		int sentSize = ComunicationUtils::recvNumber(clientID);
 
 		int readSize = 0;
-		while (readSize != sendedSize){
-			memset(buffer,-1,READING_SIZE);
-			readSize = read(clientID,buffer,sendedSize);
+		readSize = recv(clientID,buffer,sentSize,0);
+		if (readSize<0){
+			Logs::logErrorMessage(strcat("Error de transferencia de archivo ",filename.c_str()));
+			cout << "Error de transferencia de archivo " << filename << endl;
 		}
+		recved += sentSize;
 
-		recved += sendedSize;
-
-		fwrite(buffer,sizeof(char),readSize,image);
+		fwrite(buffer,sizeof(char),readSize,file);
 	}
 
-	fseek(image,0,SEEK_END);
+	fseek(file,0,SEEK_END);
 
-	cout << "File size " << ftell(image) <<endl;
+	cout << "File size " << ftell(file) <<endl;
 
-	cout << "Download ok? (1=ok): "<< (size == ftell(image)) <<endl;
-	fclose(image);
+	cout << "Download ok? (1=ok): "<< (size == ftell(file)) <<endl;
+	fclose(file);
 
 }
+
 
 void ComunicationUtils::sendFile(string fileOrigin, string fileDest, int sockID) {
 
 	// Get Picture Size
-	FILE *picture;
-	picture = fopen(fileOrigin.c_str(), "r");
-	if (!picture)
-		cout << "ERROR OPEN FILE "<< fileOrigin<<endl;
+	FILE *file;
+	file = fopen(fileOrigin.c_str(), "r");
+	if (!file){
+		cout << "ERROR OPENING FILE "<< fileOrigin<<endl;
+		return;
+	}
 	int size;
-	fseek(picture, 0, SEEK_END);
-	size = ftell(picture);
-	fseek(picture, 0, SEEK_SET);
+	fseek(file, 0, SEEK_END);
+	size = ftell(file);
+	fseek(file, 0, SEEK_SET);
 
 	// Send Picture Size
 	ComunicationUtils::sendNumber(sockID,size);
@@ -342,26 +344,21 @@ void ComunicationUtils::sendFile(string fileOrigin, string fileDest, int sockID)
 	// Send Picture as Byte Array
 	char buffer[READING_SIZE];
 	cout << "Starting to send..."<<endl;
-	int sentSize=0;
-	while (!feof(picture)){
-
-		memset(buffer,-1,READING_SIZE);
-
-		int readSize = fread(buffer,sizeof(char),READING_SIZE,picture);
-
+	int totalSentSize=0;
+	while (!feof(file)){
+		int readSize = fread(buffer,1,READING_SIZE,file);
 		ComunicationUtils::sendNumber(sockID, readSize);
-
-		int sendSize = 0;
-		while (sendSize != readSize){
-			sendSize = send(sockID,buffer,readSize,0);
-		}
-		sentSize+=sendSize;
+		int sentSize = 0;
+		while (send(sockID,buffer,readSize,0)<0);
+		if (sentSize<0)
+			cout << "Send error in file "<< fileOrigin << endl;
+		totalSentSize+=sentSize;
 
 	}
 
-	cout << "Sent size: "<<sentSize<<endl;
+	cout << "Sent size: "<<totalSentSize<<endl;
 
-	fclose(picture);
+	fclose(file);
 
 }
 
