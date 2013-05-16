@@ -124,6 +124,7 @@ void initMultiplayerGame(PersistentConfiguration* configuration,
 
 	Game* game = new Game(&downloadedConfig, true);
 
+	game->getPlayerView()->setShowableName(string(playerName));
 //	game->getPlayerView()->setName(string(playerType));
 //	game->getPlayerView()->getPersonaje()->setName(string(playerName));
 
