@@ -64,10 +64,7 @@ void* handle(void* par){
 		std::vector<std::string> withBase = server->listFilesInDirectoryWithBase("sendFiles");
 		std::vector<std::string> withoutBase = server->listFilesInDirectory("sendFiles");
 
-//		std::cout << withoutBase[0] << std::endl;
-	//server->sendFile(withBase[0],withoutBase[0],clientSocket);
 	server->sendFiles(withBase, withoutBase, clientSocket);
-	//server->sendFile(withBase[0],withoutBase[0],clientSocket);
 
 		// Manda las imagenes y sonidos necesarios que se utilizaran.
 		//TODO : sendResources(sockID);
