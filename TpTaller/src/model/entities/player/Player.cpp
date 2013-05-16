@@ -53,6 +53,7 @@ void Player::moveImmediately(Coordinates coords){
 	Position* pos = tile->getPosition();
 
 	currentPos->setValues(pos->getX(), pos->getY(), pos->getZ());
+	endPos->setValues(pos->getX(), pos->getY(), pos->getZ());
 	delete tile;
 
 	this->hasChange = true;
@@ -142,7 +143,7 @@ PlayerUpdate* Player::generatePlayerUpdate(){
 	update->setActive(this->isActive);
 	update->setTile(this->currentTile);
 	update->setInitCoordinates(this->coord);
-	if (!this->path->empty()){
+	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {
 		update->setNextTile(this->currentTile);

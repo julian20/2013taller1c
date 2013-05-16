@@ -40,6 +40,8 @@
 #define OK 0
 #define ERROR -1
 
+#define DELAY 50
+
 #define STARTING "start"
 #define ENDED "ended"
 
@@ -88,9 +90,9 @@ void* handle(void* par){
 
 
 		cout << playerName << " has conected.. " << endl;
-		ChatServer* serverChat=server->getChat();
+		/*ChatServer* serverChat=server->getChat();
 		serverChat->setGame(game);
-		serverChat->addPlayerToChat(clientSocket,playerName);
+		serverChat->addPlayerToChat(clientSocket,playerName);*/
 		bool playing = true;
 
 		while (playing){
@@ -105,8 +107,10 @@ void* handle(void* par){
 			if (!events.empty()) game->addEventsToHandle(playerName,events);
 			server->getPlayersUpdates();
 			server->sendPlayersUpdates(clientSocket, playerName);
-			serverChat->getChatUpdates();
-			serverChat->sendChatUpdates(clientSocket, playerName);
+//			serverChat->getChatUpdates();
+//			serverChat->sendChatUpdates(clientSocket, playerName);
+
+
 		}
 
 		server->disconectPlayer(clientSocket,playerName);

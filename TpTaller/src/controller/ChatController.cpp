@@ -25,7 +25,7 @@ void ChatController::resetString()
 void ChatController::handle_events(SDL_Event ev) {
 
 	if ((ev.type == SDL_MOUSEBUTTONDOWN)
-			&& (ev.button.button == SDL_BUTTON_LEFT)) {
+			&& (ev.button.button == SDL_BUTTON_RIGHT)) {
 			int x = ev.button.x;
 			int y = ev.button.y;
 			if(this->playerController->clickAnotherPlayer(x,y))

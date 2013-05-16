@@ -96,17 +96,17 @@ TileData* MapData::getTileData(Coordinates coords) {
 void MapData::addPersonaje(int row, int col, Player* player) {
 	TileData* tileData = getTileData(row, col);
 
+	Tile* personajeTile = new Tile(new Coordinates(row, col));
+	Tile* current;
 	if (tileData->isWalkable()) {	// Si el tile es transitable se agrega el personaje ahi
 		tileData->setPlayer(player);
 
-		Tile* personajeTile = new Tile(new Coordinates(row, col));
 		player->setTile(personajeTile);
 	} else {	// Si no lo es se lo agrega a una posicion adyacente
-		Tile* current = new Tile(new Coordinates(row, col));
 		TileData* currentData;
 		Coordinates currentCoords;
 		map<int, Tile *> tilesContainer;// Uso esto para ir guardando los punteros
-		list<Tile *> neighborTiles = getNeighborTiles(current, &tilesContainer, true);
+		list<Tile *> neighborTiles = getNeighborTiles(personajeTile, &tilesContainer, true);
 
 		list<Tile *>::const_iterator iter;
 		for (iter = neighborTiles.begin(); iter != neighborTiles.end(); ++iter) {
