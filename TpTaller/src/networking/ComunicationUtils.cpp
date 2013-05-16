@@ -285,11 +285,13 @@ void ComunicationUtils::downloadFile(int clientID) {
 	int aux = recv(clientID,buffer,size,0);
 	fwrite(buffer,1,aux,file);
 	while(aux<size){
-		aux +=recv(clientID,buffer,size-aux,0);
-		fwrite(buffer,1,aux,file);
+		int temp = recv(clientID,buffer,size-aux,0);
+		aux +=temp;
+		fwrite(buffer,1,temp,file);
 	}
-	cout << "Received size: "<<aux<<endl;
 
+	cout << "Received size: "<<ftell(file)<<endl;
+	free(buffer);
 	fclose(file);
 
 }
