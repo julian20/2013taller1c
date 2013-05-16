@@ -25,7 +25,6 @@ public:
 	void run();
 
 	void downloadMap();
-	void downloadFile();
 	void downloadFiles();
 
 	void registerPlayer();

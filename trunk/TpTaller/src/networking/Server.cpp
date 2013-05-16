@@ -270,53 +270,12 @@ void Server::sendFiles(std::vector<std::string> wBase, std::vector<std::string> 
 
 	for( unsigned i = 0 ; i < wBase.size() ; i++ ) {
 
-		sendFile(wBase[i], woBase[i], sockID);
+		ComunicationUtils::sendFile(wBase[i], woBase[i], sockID);
 	}
 
 }
 
-void Server::sendFile(string fileOrigin, string fileDest, int sockID) {
 
-	// Get Picture Size
-	FILE *picture;
-	picture = fopen(fileOrigin.c_str(), "r");
-	int size;
-	fseek(picture, 0, SEEK_END);
-	size = ftell(picture);
-	fseek(picture, 0, SEEK_SET);
-
-	// Send Picture Size
-	ComunicationUtils::sendNumber(sockID,size);
-	cout << "Sending file of size: "<<size<<endl;
-
-	ComunicationUtils::sendString(sockID,fileDest);
-	cout << "Filename: "<<fileDest<<endl;
-
-	// Send Picture as Byte Array
-	char buffer[READING_SIZE];
-	cout << "Starting to send..."<<endl;
-	int sentSize=0;
-	while (!feof(picture)){
-
-		memset(buffer,-1,READING_SIZE);
-
-		int readSize = fread(buffer,sizeof(char),READING_SIZE,picture);
-
-		ComunicationUtils::sendNumber(sockID, readSize);
-
-		int sendSize = 0;
-		while (sendSize != readSize){
-			sendSize = send(sockID,buffer,readSize,0);
-		}
-		sentSize+=sendSize;
-
-	}
-
-	cout << "Sent size: "<<sentSize<<endl;
-
-	fclose(picture);
-
-}
 
 std::vector<std::string> Server::listFilesInDirectory(std::string directory) {
 

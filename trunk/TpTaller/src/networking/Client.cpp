@@ -223,71 +223,12 @@ void Client::downloadFiles() {
 	int size = ComunicationUtils::recvNumber(clientID);
 
 	for (unsigned i = 0; i < size; i++) {
-
-		this->downloadFile();
-
+		ComunicationUtils::downloadFile(clientID);
 	}
 
 }
 
-void Client::downloadFile() {
 
-	int ammountRecv = 0;
-
-	// Read Picture Size
-	int size = ComunicationUtils::recvNumber(clientID);
-	cout << "Receiving file of size: "<<size<<endl;
-	// Read filename
-	string filename = ComunicationUtils::recvString(clientID);
-	cout << "Filename: "<<filename<<endl;
-	char* fileBaseDir = strdup(filename.c_str());
-	char* fileBaseName = strdup(filename.c_str());
-
-	// Convert it Back into Picture
-	FILE *image;
-
-
-	string dirName = string(dirname(fileBaseDir));
-
-	string makeDir = string("mkdir -p ");
-	system(string(makeDir + dirName).c_str());
-
-	string outputFile(filename);
-	image = fopen(outputFile.c_str(), "wb");
-	/*if (image == NULL){
-		cerr << "Error al abrir archivo: " << outputFile << ". Se ignorara." << endl;
-		ComunicationUtils::sendNumber(clientID, ERROR);
-		return;
-	}
-*/
-	int recved = 0;
-	unsigned char buffer[READING_SIZE];
-	int sizeCachitoSobrante;
-	int flag=0;
-	cout << "Starting download..."<<endl;
-	while (recved < size){
-
-		int sendedSize = ComunicationUtils::recvNumber(clientID);
-
-		int readSize = 0;
-		while (readSize != sendedSize){
-			memset(buffer,-1,READING_SIZE);
-			readSize = read(clientID,buffer,sendedSize);
-		}
-
-		recved += sendedSize;
-
-		fwrite(buffer,sizeof(char),readSize,image);
-	}
-
-	fseek(image,0,SEEK_END);
-
-	cout << "File size " << ftell(image) <<endl;
-
-	cout << "Download ok? (1=ok): "<< (size == ftell(image)) <<endl;
-	fclose(image);
-
-}
 
 /* *********************  ENVIO DEL NUEVO JUGADOR ****************** */
 
