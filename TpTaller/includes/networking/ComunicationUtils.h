@@ -36,6 +36,9 @@ public:
 	static void 		sendChatUpdate(int sockID,ChatUpdate* update);
 	static ChatUpdate* recvChatUpdate(int sockID);
 
+	static void downloadFile(int clientID);
+	static void sendFile(string fileOriginName, string fileDestName, int sockID);
+
 private:
 	ComunicationUtils();
 	virtual ~ComunicationUtils();

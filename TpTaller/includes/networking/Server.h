@@ -27,7 +27,6 @@ public:
 	void run(MultiplayerGame* game);
 
 	void sendMap(string mapfile,int sockID);
-	void sendFile(string fileName, string fileDest, int sockID);
 	void sendFiles(std::vector<std::string> wBase, std::vector<std::string> woBase, int sockID);
 
 	std::vector<std::string> listFilesInDirectory(std::string directory);
