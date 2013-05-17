@@ -23,7 +23,7 @@ namespace std {
 
 class Server {
 public:
-	Server(string host, int port);
+	Server(int port);
 	void run(MultiplayerGame* game);
 
 	void sendMap(string mapfile,int sockID);

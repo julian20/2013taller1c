@@ -31,82 +31,6 @@ void initGame(PersistentConfiguration* configuration) {
 	delete game;
 }
 
-char *leer_linea(FILE* archivo) {
-	int tam = 256, i = 0;
-	char *linea = (char*) malloc(sizeof(char) * tam);
-	char letra;
-	do {
-		letra = fgetc(archivo);
-		linea[i] = letra;
-		if (tam == i + 1) {
-			tam += 10;
-			char *aux = (char*) realloc(linea, sizeof(char) * tam);
-			if (!aux) {
-				linea[i] = '\0';
-				return linea;
-			} else {
-				linea = aux;
-			}
-		}
-		i++;
-	} while (letra != '\n' && letra != EOF);
-	linea[i - 1] = '\0';
-	return linea;
-}
-
-void generateClientYAML(string serverYAML, string clientYAML, string output) {
-
-	FILE* serverFILE = fopen(serverYAML.c_str(), "r");
-	FILE* clientFILE = fopen(clientYAML.c_str(), "r");
-	FILE* outputFILE = fopen(output.c_str(), "w");
-
-	if (serverFILE != NULL && clientFILE != NULL && outputFILE != NULL) {
-
-		bool flag = true;
-		while (!feof(serverFILE)) {
-			char* lineRead;
-			if (flag) {
-				lineRead = leer_linea(clientFILE);
-
-				if (strcmp(lineRead, "- entityViews:") == 0
-						|| strcmp(lineRead, "") == 0) {
-					flag = false;
-					if (strcmp(lineRead, "") == 0) {
-						fprintf(outputFILE, "- entityLocations:\n");
-						flag = false;
-						free(lineRead);
-						continue;
-					}
-					free(lineRead);
-					continue;
-				}
-				fprintf(outputFILE, "%s\n", lineRead);
-				free(leer_linea(serverFILE));
-				free(lineRead);
-			} else {
-				lineRead = leer_linea(serverFILE);
-				if (strcmp(lineRead, "- playerLocations:") == 0) {
-					flag = true;
-					free(lineRead);
-					continue;
-				}
-				fprintf(outputFILE, "%s\n", lineRead);
-				free(lineRead);
-			}
-
-		}
-
-	} else {
-		Logs::logErrorMessage(
-				string("No se pudo leer los archivos de configuracion"));
-	}
-
-	fclose(serverFILE);
-	fclose(clientFILE);
-	fclose(outputFILE);
-
-}
-
 void initMultiplayerGame(PersistentConfiguration* configuration,
 		string& playerName, string& playerType) {
 
@@ -138,13 +62,11 @@ void initMultiplayerGame(PersistentConfiguration* configuration,
 
 void initServer(PersistentConfiguration* configuration) {
 
-	std::string serverIP =
-			configuration->getAnimationConfiguration()->getServerIP();
 	unsigned int serverPort =
 			configuration->getAnimationConfiguration()->getServerPort();
 
 	MultiplayerGame* game = new MultiplayerGame(configuration);
-	Server* server = new Server(serverIP, serverPort);
+	Server* server = new Server(serverPort);
 	server->run(game);
 	delete server;
 }

@@ -148,48 +148,30 @@ void* readEvents(void* par) {
 
 /* *********************** SERVER CONTRUCTOR ************************ */
 
-Server::Server(string host, int port) {
-	struct addrinfo hints, *res;
+Server::Server(int port) {
+	struct sockaddr_in svInfo;
 	int reuseaddr = 1; /* True */
 
-	/* Get the address info */
-	memset(&hints, 0, sizeof hints);
-	hints.ai_family = AF_INET;
-	hints.ai_socktype = SOCK_STREAM;
-	stringstream ssport;
-	ssport << port;
-
-	if (getaddrinfo(host.c_str(), ssport.str().c_str(), &hints, &res) != 0) {
-		Logs::logErrorMessage(
-				"Servidor: Error al obtener la informacion de direccion");
-		exit(1);
-	}
+	int domain = PF_INET;
+	int type = SOCK_STREAM;
+	int protocol = 0; //SINGLE PROTOCOL
 
 	/* Create the socket */
-	serverID = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+	serverID = socket(domain, type, protocol);
 	if (serverID == -1) {
 		Logs::logErrorMessage("Servidor: Error al inicializar el servidor");
 		exit(1);
 	}
 
-	/* Enable the socket to reuse the address */
-	if (setsockopt(serverID, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(int))
-			== -1) {
-		Logs::logErrorMessage(
-				"Servidor: Error al setear la reutilizacion de direcciones");
-		exit(1);
-	}
+	svInfo.sin_family = AF_INET;
+	svInfo.sin_port = htons(port);
+	svInfo.sin_addr.s_addr = htons(INADDR_ANY);
 
 	/* Bind to the address */
-	if (bind(serverID, res->ai_addr, res->ai_addrlen) == -1) {
+	if (bind(serverID, (struct sockaddr *) &svInfo, sizeof(svInfo)) < 0) {
 		Logs::logErrorMessage("Servidor: Error de asignacion de direccion");
 		exit(1);
 	}
-//	this->chat = new ChatServer();
-//	this->chat->setSocketId(serverID);
-//	this->chat->setMaxConnections(BACKLOG);
-//	printf("creo el chatServer\n");
-	freeaddrinfo(res);
 
 	SDL_Init(SDL_INIT_JOYSTICK);
 
