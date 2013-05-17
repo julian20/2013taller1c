@@ -1,5 +1,5 @@
 #include <model/Logs/Logs.h>
-
+/*
 int main()
 
 {
@@ -9,3 +9,4 @@ int main()
 	delete ml;
 	return 0;
 }
+*/

@@ -83,6 +83,10 @@ Player* NetworkPlayerController::getPlayer(){
 	return this->player;
 }
 
+void NetworkPlayerController::deliverMessage(ChatMessage* msj){
+	player->getChat()->Enable();
+	player->getChat()->newMessage(msj);
+}
 NetworkPlayerController::~NetworkPlayerController() {
 	// TODO Auto-generated destructor stub
 }

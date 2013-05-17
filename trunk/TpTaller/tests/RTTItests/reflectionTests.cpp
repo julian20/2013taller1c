@@ -1,4 +1,5 @@
-#include <iostream>
+
+/*#include <iostream>
 #include <typeinfo>
 #include <string>
 #include <map>
@@ -67,3 +68,4 @@ int main(){
 	return 0;	
     
 }
+*/

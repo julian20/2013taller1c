@@ -15,6 +15,7 @@
 #include <string>
 #include <iostream>
 #include <model/Chat.h>
+#include <model/entities/player/Player.h>
 
 using namespace std;
 
@@ -26,6 +27,7 @@ public:
 	bool draw_text(string text);
 	string get_text(void);
 	void setChat(Chat* chat);
+	void setPlayer(Player* player);
 	Chat * getChat();
 	void drawChatView(SDL_Surface* screen);
 	void handle_events(SDL_Event event);
@@ -39,6 +41,7 @@ private:
 	bool state;
 	std::string text;
 	Chat * chat;
+	Player* player;
 };
 
 #endif /* CHATWINDOWSVIEW_H_ */

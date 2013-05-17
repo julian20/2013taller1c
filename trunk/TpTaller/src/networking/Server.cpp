@@ -102,6 +102,8 @@ void* handle(void* par) {
 			game->addEventsToHandle(playerName, events);
 		server->getPlayersUpdates();
 		server->sendPlayersUpdates(clientSocket, playerName);
+		Chat* chat = server->recvChat(clientSocket);
+		server->deliverMessages(chat);
 //			serverChat->getChatUpdates();
 //			serverChat->sendChatUpdates(clientSocket, playerName);
 
@@ -498,6 +500,19 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName) {
 	}
 
 	updates[playerName].clear();
+
+}
+Chat* Server::recvChat(int clientSocket){
+	Chat* chat = ComunicationUtils::recvChat(clientSocket);
+	return chat;
+}
+
+void Server::deliverMessages(Chat* chat){
+	vector<ChatMessage*> msjs = chat->getMessage();
+
+	for (int i = 0 ; i < msjs.size() ; i++){
+		game->deliverMessage(msjs[i]);
+	}
 
 }
 

@@ -71,6 +71,7 @@ void* transmit(void* _client) {
 
 		client->checkNewPlayers();
 		client->sendEvents();
+		client->sendChatChanges();
 		map<string, PlayerUpdate*> updates = client->recvPlayersUpdates();
 		if (!updates.empty())
 			client->updatePlayers(updates);
@@ -88,7 +89,7 @@ void* transmit(void* _client) {
 	// salir bien. Digo que es un flag y no siempre, porque
 	// para la entrega 3 podria no estar playing y no haberse
 	// roto la conexion.
-	return NULL;
+	//return NULL;
 }
 
 
@@ -137,6 +138,7 @@ Client::Client(string host, int port) {
 	this->info=NULL;
 	this->view=NULL;
 	this->player=NULL;
+	//this->chat= new Chat();
 
 }
 
@@ -322,6 +324,13 @@ void Client::sendEvents() {
 	}
 
 	game->cleanEvents();
+
+}
+void Client::sendChatChanges(){
+
+	Chat* chat = player->getChat();
+
+	ComunicationUtils::sendChat(clientID,chat);
 
 }
 map<string, ChatUpdate*> Client::recvChatUpdates() {

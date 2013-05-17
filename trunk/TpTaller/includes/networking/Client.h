@@ -42,6 +42,7 @@ public:
 	Game* getGame();
 	void setGame(Game* game);
 	virtual ~Client();
+	void sendChatChanges();
 private:
 
 	void sendEvent(PlayerEvent* event);

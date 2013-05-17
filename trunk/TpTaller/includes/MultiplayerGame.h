@@ -33,6 +33,8 @@ public:
 	vector<PlayerUpdate*> getPlayersUpdates();
 	vector<ChatUpdate*> getChatUpdates();
 	virtual ~MultiplayerGame();
+	void deliverMessage(ChatMessage* msj);
+
 private:
 
 	MapView* view;

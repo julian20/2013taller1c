@@ -6,6 +6,7 @@
  */
 
 #include <controller/ChatController.h>
+#include <networking/ChatMessage.h>
 
 ChatController::ChatController(PlayerController* playerController) {
 	this->chat=NULL;
@@ -16,7 +17,7 @@ ChatController::ChatController(PlayerController* playerController) {
 
 void ChatController::setChat(Chat* chat)
 {
-	this->chat=chat;
+	//this->chat=chat;
 }
 void ChatController::resetString()
 {
@@ -30,15 +31,20 @@ void ChatController::handle_events(SDL_Event ev) {
 			int y = ev.button.y;
 			if(this->playerController->clickAnotherPlayer(x,y))
 				{
-					this->chat->Enable();
-					this->chat->setReceptor(this->playerController->getLastPlayerTouch());
+					this->playerController->getPlayer()->getChat()->Enable();
+					this->playerController->getPlayer()->getChat()->setReceptor(this->playerController->getLastPlayerTouch());
+					this->receptor = this->playerController->getLastPlayerTouch();
 				//	this->chat->Disable();
 				}
 	} else if (ev.type == SDL_KEYDOWN ) {
 		if (ev.key.keysym.sym == SDLK_KP_ENTER || ev.key.keysym.sym == SDLK_RETURN)
 				{
-					this->chat->newMessage(this->text);
-					this->text="";
+					if (this->text != ""){
+						string playerName = this->playerController->getPlayer()->getName();
+						this->chat->newMessage(new ChatMessage(this->text,receptor,playerName));
+						this->text="";
+					}
+
 				}
 		else{
 		char c = (char) ev.key.keysym.sym;
@@ -126,7 +132,7 @@ void ChatController::handle_events(SDL_Event ev) {
 		}
 	}
 }
-	this->chat->setWrittingMsj(this->text);
+	this->playerController->getPlayer()->getChat()->setWrittingMsj(this->text);
 }
 string ChatController::getText()
 {

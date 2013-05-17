@@ -27,6 +27,7 @@ Chat* Player::getChat()
 {
 	return this->chat;
 }
+
 void Player::setPos(float x, float y, float z) {
 	currentPos->setValues(x, y, z);
 

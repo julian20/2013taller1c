@@ -29,6 +29,7 @@ private:
 	PlayerController* playerController;
 	bool ready;
 	string text;
+	string receptor;
 	Chat* chat;
 };
 
