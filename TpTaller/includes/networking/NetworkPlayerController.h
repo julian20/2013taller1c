@@ -23,6 +23,7 @@ public:
 	void handleEvents(vector<PlayerEvent*>);
 	void movePlayer(Coordinates* tileCoord);
 	Player* getPlayer();
+	void deliverMessage(ChatMessage* msj);
 	virtual ~NetworkPlayerController();
 private:
 

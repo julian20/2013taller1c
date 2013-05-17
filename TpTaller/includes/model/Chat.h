@@ -9,6 +9,7 @@
 #define CHAT_H_
 #include <string>
 #include <networking/ChatUpdate.h>
+#include <networking/ChatMessage.h>
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,12 +22,14 @@ using namespace std;
 class Chat {
 public:
 	Chat();
-	void newMessage( string msj);
+	void newMessage( ChatMessage* msj);
 	void assignPlayer(string name);
 	virtual ~Chat();
 	void setWrittingMsj(string msj);
 	//ChatController* getChatController();
-	vector<string> getMessage();
+	vector<ChatMessage*> getMessage();
+	void clearNewMessages();
+	void setMessage(vector<ChatMessage*> message);
 	string getMessageSend();
 	string getMessagerec();
 	void setReceptor(string receptor);
@@ -38,6 +41,13 @@ public:
 	void Enable();
 	void Disable();
 	bool isEnable();
+
+	//Operator to transform the object into a stream.
+	friend ostream& operator <<(std::ostream&, const Chat&);
+
+	//Operator to load an object from a stream
+	friend istream& operator >>(std::istream&, Chat&);
+
 private:
 	bool change;
 	bool enable;
@@ -49,7 +59,7 @@ private:
 
 	//ChatController* controlador;
 	//primero reciebe el nombre a quien manda el string y luego el msj
-	map<string,string> messages;
+	vector<ChatMessage*> messages;
 
 };
 

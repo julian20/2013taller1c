@@ -4,7 +4,7 @@
  *  Created on: 24/03/2013
  *      Author: Lucas
  */
- 
+ /*
 #include <stdio.h>
 #include <Game.h>
 
@@ -25,3 +25,4 @@ int main( int argc, char* args[] )
     return 0;
 }
 
+*/

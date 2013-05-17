@@ -39,6 +39,9 @@ public:
 	static void downloadFile(int clientID);
 	static void sendFile(string fileOriginName, string fileDestName, int sockID);
 
+	static void sendChat(int sockID, Chat* chat);
+	static Chat* recvChat(int sockID);
+
 private:
 	ComunicationUtils();
 	virtual ~ComunicationUtils();

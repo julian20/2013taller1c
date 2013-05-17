@@ -6,6 +6,7 @@
  */
 
 #include <view/networking/ChatWindowsView.h>
+#include <networking/ChatMessage.h>
 #include <view/TextHandler.h>
 #define FONT "resources/fonts/robot.ttf"
 #define WINDOWSHEIGHT 100
@@ -32,24 +33,42 @@ bool ChatWindowsView::isActive()
 {
 	return this->state;
 }
+void ChatWindowsView::setPlayer(Player* player)
+{
+	this->player=player;
+}
 void ChatWindowsView::drawChatView(SDL_Surface* screen)
 {
-	if(this->chat->isEnable())
+	Chat* chat=this->player->getChat();
+	if(chat->isEnable())
 	{
 		this->drawChatWindow(screen);
-		vector<string> v=chat->getMessage();
-		string recibido=v[0];
+		this->pos = 80;
+		vector<ChatMessage*> v=chat->getMessage();
 
-		string enviado=v[1];
-		//this->text=;
-		this->pos=60;
-		if(recibido!="") this->draw_text(recibido);
-		this->pos=80;
-		this->draw_text(enviado);
-		if(this->chat->NewLine())
-		{
+		this->draw_text(chat->getMessageSend());
 
-		}
+		int size = v.size();
+
+		for (int i = size - 1 ; i >= 0 ; i--){
+			pos -= 20;
+			if (pos < 0) break;
+			string s = v[i]->getSender() + ": " + v[i]->getMSJ();
+			this->draw_text(s);
+ 		}
+
+//		string recibido=v[0];
+//
+//		string enviado=v[1];
+//		//this->text=;
+//		this->pos=60;
+//		if(recibido!="") this->draw_text(recibido);
+//		this->pos=80;
+//		this->draw_text(enviado);
+//		if(this->chat->NewLine())
+//		{
+//
+//		}
 	}
 }
 void ChatWindowsView::setChat(Chat* chat)
@@ -69,7 +88,7 @@ bool ChatWindowsView::draw_text(string texto) {
 	msg = TTF_RenderText_Solid(this->font, texto.c_str(), this->text_colour);
 	SDL_Rect tmp = this->clip;
 	tmp.x += 5;
-	tmp.y +=80;
+	tmp.y += pos;
 	return SDL_BlitSurface(msg, NULL, this->_screen, &tmp);
 }
 

@@ -4,7 +4,7 @@
  *  Created on: 23/03/2013
  *      Author: tomas
  */
- 
+ /*
 #include <stdio.h>
 #include <view/PersonajeVista.h>
 #include <controller/PersonajeControlador.h>
@@ -19,3 +19,4 @@ int main(){
 	return 0;
 }
 
+*/

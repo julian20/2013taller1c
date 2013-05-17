@@ -69,6 +69,46 @@ int ComunicationUtils::recvNumber(int sockID){
 
 }
 
+void ComunicationUtils::sendChat(int sockID, Chat* chat){
+	stringstream chatstream;
+	chatstream << *(chat);
+
+	int size = chatstream.str().size() + EXTRA;
+	ComunicationUtils::sendNumber(sockID,size);
+
+	int sendSize = 0;
+	int i = 0;
+
+	while (sendSize != size){
+		sendSize = send(sockID,chatstream.str().c_str(),size, MSG_EOR);
+		cout << chatstream.str() << endl;
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
+}
+Chat* ComunicationUtils::recvChat(int sockID){
+
+	int size = ComunicationUtils::recvNumber(sockID);
+	Chat* chat = new Chat();
+	char chatbuffer[size];
+
+	int recvSize = 0;
+	int i = 0;
+
+	while (recvSize != size){
+		recvSize = recv(sockID,chatbuffer,size,MSG_EOR);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
+
+	stringstream chatstream;
+	chatstream << chatbuffer;
+	cout << chatstream.str() << endl;
+	chatstream >> *chat;
+
+	return chat;
+
+}
 void ComunicationUtils::sendString(int sockID,string string){
 
 	stringstream sstream;

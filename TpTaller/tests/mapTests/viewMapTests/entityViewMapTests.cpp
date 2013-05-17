@@ -1,4 +1,4 @@
-#include <view/EntityViewMap.h>
+/*#include <view/EntityViewMap.h>
 #include <model/entities/Entity.h>
 #include <model/entityProperties/Coordinates.h>
 #include <view/entities/EntityView.h>
@@ -59,4 +59,4 @@ int main(){
 	delete view3;
 
 	return 0;
-}
+}*/
