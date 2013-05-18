@@ -49,6 +49,10 @@ public:
         list<PlayerEvent*> getEvents();
         void cleanEvents();
 
+        bool isActive();
+        void setActive();
+        void setInactive();
+
         virtual ~Game();
 protected:
 
@@ -92,6 +96,8 @@ private:
         TextHandler* textHandler;
 
         bool openAudio;
+
+        bool active;
 };
 
 #endif /* GAME_H_ */

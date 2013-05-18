@@ -81,7 +81,6 @@ void ComunicationUtils::sendChat(int sockID, Chat* chat){
 
 	while (sendSize != size){
 		sendSize = send(sockID,chatstream.str().c_str(),size, MSG_EOR);
-		cout << chatstream.str() << endl;
 		i++;
 		if (i > ITER_LIMIT) break;
 	}
@@ -103,7 +102,6 @@ Chat* ComunicationUtils::recvChat(int sockID){
 
 	stringstream chatstream;
 	chatstream << chatbuffer;
-	cout << chatstream.str() << endl;
 	chatstream >> *chat;
 
 	return chat;

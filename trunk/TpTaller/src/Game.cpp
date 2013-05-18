@@ -64,6 +64,8 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 	chatView->setChat(chat);
 	chatView->setPlayer(personaje);
 	
+	active = false;
+
 }
 
 void Game::setUpEntities(MapView* map, MapData* mapData) {
@@ -173,9 +175,9 @@ MenuEvent Game::run() {
 
 	initScreen();
 	SDL_Event event;
-	bool exit = false;
+	active = true;
 
-	while (!exit) {
+	while (active) {
 		int ticks = SDL_GetTicks();
 		cameraController->cameraMoveListener();
 		while (SDL_PollEvent(&event)) {
@@ -183,10 +185,10 @@ MenuEvent Game::run() {
 			mapController->clickListener(event);
 			chatController->handle_events(event);
 			if (event.type == SDL_QUIT)
-				exit = true;
+				active = false;
 
 			if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
-				exit = true;
+				active = false;
 		}
 
 		playersUpdate();
@@ -279,6 +281,19 @@ MapCameraView* Game::getMapCameraView(){
 MapData* Game::getMapData(){
 	return mapView->getMapData();
 }
+
+bool Game::isActive(){
+	return active;
+}
+
+void Game::setActive(){
+	active = true;
+}
+
+void Game::setInactive(){
+	active = false;
+}
+
 /*
 Chat* Game::getChat(){
 	return chat;
@@ -291,6 +306,7 @@ Game::~Game() {
 	delete textHandler;
 	if (musica != NULL) Mix_FreeMusic(musica);
 	if (openAudio) Mix_CloseAudio();
+	SDL_FreeSurface(screen);
 	// TODO Auto-generated destructor stub
 }
 
