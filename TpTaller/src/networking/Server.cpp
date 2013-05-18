@@ -13,7 +13,6 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <netdb.h>
-#include <pthread.h>
 #include <stdbool.h>
 #include <string.h>
 #include <sys/types.h>
@@ -90,7 +89,7 @@ void* handle(void* par) {
 	 serverChat->setGame(game);
 	 serverChat->addPlayerToChat(clientSocket,playerName);*/bool playing = true;
 
-	while (playing) {
+	while (playing && server->isActive()) {
 
 		playing = server->exchangeAliveSignals(clientSocket);
 		if (!playing)
@@ -125,6 +124,8 @@ void* runGameBackEnd(void* parameter) {
 // Funcion que lee eventos para saber cuando cerrar el servidor
 void* readEvents(void* par) {
 
+	Server* server = (Server*) par;
+
 	while (true) {
 
 		SDL_Event event;
@@ -132,7 +133,8 @@ void* readEvents(void* par) {
 
 			if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_q)
 					|| (event.type == SDL_QUIT)) {
-				exit(0);
+				server->setInactive();
+				delete server;
 			}
 		}
 
@@ -150,7 +152,6 @@ void* readEvents(void* par) {
 
 Server::Server(int port) {
 	struct sockaddr_in svInfo;
-	int reuseaddr = 1; /* True */
 
 	int domain = PF_INET;
 	int type = SOCK_STREAM;
@@ -173,6 +174,8 @@ Server::Server(int port) {
 		exit(1);
 	}
 
+	active = false;
+
 }
 
 /* **************************** SERVER RUN ************************** */
@@ -185,7 +188,7 @@ void Server::run(MultiplayerGame* game) {
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 
-	pthread_create(&eventThread, &attr, readEvents, NULL);
+	pthread_create(&eventThread, &attr, readEvents, (void*)this);
 
 	/* Listen */
 	if (listen(serverID, BACKLOG) == -1) {
@@ -194,10 +197,12 @@ void Server::run(MultiplayerGame* game) {
 		exit(1);
 	}
 
+	active = true;
+
 	pthread_create(&gameThread, &attr, runGameBackEnd, (void*) game);
 
 	/* Main loop */
-	while (1) {
+	while (this->isActive()) {
 		unsigned int size = sizeof(struct sockaddr_in);
 		struct sockaddr_in their_addr;
 		int newsock = accept(serverID, (struct sockaddr*) &their_addr, &size);
@@ -213,9 +218,9 @@ void Server::run(MultiplayerGame* game) {
 				Logs::logErrorMessage(
 						"Servidor: Error al inicializar handle thread");
 			}
+			connections[newsock] = thread;
 
 		}
-
 	}
 }
 
@@ -509,7 +514,7 @@ void Server::disconectPlayer(int clientSocket, string playerName) {
 
 }
 
-/* ************************ SERVER GETTERS ************************* */
+/* ***************** SERVER GETTERS & SETTERS ********************** */
 
 MultiplayerGame* Server::getGame() {
 	return game;
@@ -519,9 +524,28 @@ ChatServer* Server::getChat() {
 	return this->chat;
 }
 
+bool Server::isActive(){
+	return active;
+}
+
+void Server::setActive(){
+	this->active = true;
+}
+
+void Server::setInactive(){
+	this->active = false;
+}
+
+
+
 /* *********************** SERVER DESTRUCTOR ********************** */
 
 Server::~Server() {
+	for (map<int,pthread_t>::iterator it = connections.begin() ; it != connections.end() ; ++it){
+		pthread_join(it->second,NULL);
+		close(it->first);
+	}
 	close(serverID);
+	exit(0);
 }
 

@@ -62,6 +62,7 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 	chatView = new ChatWindowsView();
 	chatController->setChat(chat);
 	chatView->setChat(chat);
+	chatView->setPlayer(personaje);
 	
 }
 
