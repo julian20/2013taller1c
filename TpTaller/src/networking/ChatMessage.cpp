@@ -7,10 +7,10 @@
 
 #include <networking/ChatMessage.h>
 
-ChatMessage::ChatMessage(string msj, string receptor, string sender) {
-	this->msj = msj;
-	this->receptor = receptor;
-	this->sender = sender;
+ChatMessage::ChatMessage() {
+	this->msj = "";
+	this->receptor = "";
+	this->sender = "";
 }
 
 string ChatMessage::getMSJ(){

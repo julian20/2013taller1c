@@ -22,16 +22,26 @@ using namespace std;
 class Chat {
 public:
 	Chat();
-	void newMessage( ChatMessage* msj);
+	void newMessageSend( ChatMessage* msj);
+	void newMessageReceive( ChatMessage* msj);
+
 	void assignPlayer(string name);
 	virtual ~Chat();
 	void setWrittingMsj(string msj);
 	//ChatController* getChatController();
-	vector<ChatMessage*> getMessage();
+
+	vector<ChatMessage*> getMessagesSend();
+	vector<ChatMessage*> getMessagesReceive();
+
+	void setMessageSend(vector<ChatMessage*> message);
+	void setMessageReceive(vector<ChatMessage*> message);
+
+
 	void clearNewMessages();
 	void setMessage(vector<ChatMessage*> message);
 	string getMessageSend();
 	string getMessagerec();
+
 	void setReceptor(string receptor);
 	string getReceptor();
 	bool NewLine();
@@ -59,7 +69,8 @@ private:
 
 	//ChatController* controlador;
 	//primero reciebe el nombre a quien manda el string y luego el msj
-	vector<ChatMessage*> messages;
+	vector<ChatMessage*> messagesSend;
+	vector<ChatMessage*> messagesReceive;
 
 };
 

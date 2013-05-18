@@ -27,7 +27,14 @@ Chat* Player::getChat()
 {
 	return this->chat;
 }
-
+void Player::setChat(Chat* chat)
+{
+	if(this->chat)
+	{
+		delete this->chat;
+	}
+	this->chat=chat;
+}
 void Player::setPos(float x, float y, float z) {
 	currentPos->setValues(x, y, z);
 

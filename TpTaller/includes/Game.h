@@ -43,12 +43,10 @@ public:
 
         MapCameraView* getMapCameraView();
         MapData* getMapData();
-
-        Chat* getChat();
-
+        void setChat(Chat* chat);
         list<PlayerEvent*> getEvents();
         void cleanEvents();
-
+        Chat* getChat();
         bool isActive();
         void setActive();
         void setInactive();
@@ -70,7 +68,7 @@ private:
 
         ChatController* chatController ;
         ChatWindowsView* chatView;
-
+        Chat* chat;
         Player* personaje;
         PlayerView* personajeVista;
 

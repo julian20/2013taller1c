@@ -42,6 +42,9 @@ public:
 	static void sendChat(int sockID, Chat* chat);
 	static Chat* recvChat(int sockID);
 
+	static void sendChatMessage(int sockID, ChatMessage* chatmsj);
+	static ChatMessage* recvChatMessage(int sockID);
+
 private:
 	ComunicationUtils();
 	virtual ~ComunicationUtils();

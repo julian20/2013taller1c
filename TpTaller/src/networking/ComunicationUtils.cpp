@@ -243,7 +243,47 @@ void ComunicationUtils::sendChatUpdate(int sockID,ChatUpdate* update){
 	send(sockID,updatestream.str().c_str(), size, 0);
 
 }
+void ComunicationUtils::sendChatMessage(int sockID, ChatMessage* msj)
+{
+	stringstream updatestream;
+	updatestream << *msj;
 
+	int size = updatestream.str().size() + EXTRA;
+	ComunicationUtils::sendNumber(sockID,size);
+
+		int sendSize = 0;
+		int i = 0;
+
+		while (sendSize != size)
+		{
+			sendSize = send(sockID,updatestream.str().c_str(), size, 0);
+			i++;
+			if (i > ITER_LIMIT) break;
+		}
+}
+ChatMessage* ComunicationUtils::recvChatMessage(int sockID)
+{
+	int size = ComunicationUtils::recvNumber(sockID);
+		char updatebuffer[size];
+		stringstream updatestream;
+
+		int recvSize = 0;
+		int i = 0;
+
+		while (recvSize != size){
+			recvSize = recv(sockID,updatebuffer,size,0);
+			i++;
+			if (i > ITER_LIMIT) break;
+		}
+
+		updatestream << updatebuffer;
+
+		ChatMessage* update = new ChatMessage();
+
+		updatestream >> *update;
+
+		return update;
+}
 void ComunicationUtils::sendPlayerUpdate(int sockID,PlayerUpdate* update){
 
 	stringstream updatestream;

@@ -13,6 +13,7 @@
 #include <model/entities/player/Player.h>
 #include <view/entities/PlayerView.h>
 #include <Game.h>
+#include <model/Chat.h>
 
 #include <map>
 
@@ -37,16 +38,17 @@ public:
 	void sendEvents();
 	map<string,PlayerUpdate*> recvPlayersUpdates();
 	void updatePlayers(map<string,PlayerUpdate*> updates);
-	map<string,ChatUpdate*> recvChatUpdates();
-	void updateChat(map<string,ChatUpdate*> updates);
+	vector<ChatMessage*> recvChatUpdates();
+	void updateChat(vector<ChatMessage*> updates);
 	Game* getGame();
+	Chat* getChat();
 	void setGame(Game* game);
 	virtual ~Client();
 	void sendChatChanges();
 private:
 
 	void sendEvent(PlayerEvent* event);
-
+	Chat* chat;
 	int clientID;
 	Game* game;
 	map<string, Player*> players;
