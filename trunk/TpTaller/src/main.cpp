@@ -50,7 +50,7 @@ void initMultiplayerGame(PersistentConfiguration* configuration,
 
 	game->getPlayerView()->setShowableName(string(playerName));
 //	game->getPlayerView()->setName(string(playerType));
-//	game->getPlayerView()->getPersonaje()->setName(string(playerName));
+	game->getPlayerView()->getPersonaje()->setName(string(playerName));
 
 	client->setGame(game);
 	client->initPlayerInfo(game->getPlayerView());

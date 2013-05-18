@@ -11,19 +11,23 @@
 #include <networking/PlayerEvent.h>
 #include <networking/PlayerInfo.h>
 #include <MultiplayerGame.h>
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <exception>
 #include <cstdlib>
+
 #include <stdlib.h>
+#include <pthread.h>
 
 namespace std {
 
 class Server {
 public:
 	Server(int port);
+
 	void run(MultiplayerGame* game);
 
 	void sendMap(string mapfile,int sockID);
@@ -52,6 +56,10 @@ public:
 
 	ChatServer* getChat();
 
+	bool isActive();
+	void setActive();
+	void setInactive();
+
 	virtual ~Server();
 
 private:
@@ -65,6 +73,10 @@ private:
 	map<string,int> conectedPlayers;
 	map<string,int> disconectedPlayers;
 	map<string,vector<PlayerUpdate*> > updates;
+
+	bool active;
+	map<int,pthread_t> connections;
+
 };
 
 typedef struct aux{
