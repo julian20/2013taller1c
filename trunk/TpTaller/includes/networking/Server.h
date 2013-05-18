@@ -45,13 +45,17 @@ public:
 
 	bool exchangeAliveSignals(int clientSocket);
 	void sendNewPlayers(int clientSocket, map<int,string> *sended);
+
+
 	vector<PlayerEvent*> recvEvents(int clientSocket);
+	vector<ChatMessage*> recvChatMessages(int clientSocket);
+
 	void getPlayersUpdates();
 	void sendPlayersUpdates(int clientSocket, string playerName);
 
 	void disconectPlayer(int clientSocket, string playerName);
 	Chat* recvChat(int clientSocket);
-	void deliverMessages(Chat* chat);
+	void deliverMessages(vector<ChatMessage*> msjs);
 	MultiplayerGame* getGame();
 
 	ChatServer* getChat();

@@ -15,7 +15,8 @@ using namespace std;
 
 class ChatMessage {
 public:
-	ChatMessage(string msj, string receptor, string sender);
+
+	ChatMessage();
 	string getMSJ();
 	void setMSJ(string msj);
 	string getReceptor();

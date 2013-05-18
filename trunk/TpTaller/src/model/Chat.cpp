@@ -48,18 +48,23 @@ bool Chat::hasChange()
 {
 	return this->change;
 }
-void Chat::newMessage(ChatMessage* msj)
+void Chat::newMessageSend(ChatMessage* msj)
 {
-	this->change=true;
-	messages.push_back(msj);
+//	this->change=true;
+	messagesSend.push_back(msj);
 	this->msjSend="";
-
-
+}
+void Chat::newMessageReceive(ChatMessage* msj)
+{
+//	this->change=true;
+	messagesReceive.push_back(msj);
+	this->msjSend="";
 }
 string Chat::getReceptor()
 {
 	return this->receptor;
 }
+/*
 vector<ChatMessage*> Chat::getMessage()
 {
 //	//primero dibujo los recibidos y abajo los enviados
@@ -70,9 +75,20 @@ vector<ChatMessage*> Chat::getMessage()
 //	return vector;
 	return messages;
 }
-
-void Chat::setMessage(vector<ChatMessage*> message){
-	this->messages = message;
+*/
+void Chat::setMessageSend(vector<ChatMessage*> message){
+	this->messagesSend = message;
+}
+void Chat::setMessageReceive(vector<ChatMessage*> message){
+	this->messagesReceive = message;
+}
+vector<ChatMessage*> Chat::getMessagesSend()
+{
+	return this->messagesSend;
+}
+vector<ChatMessage*> Chat::getMessagesReceive()
+{
+	return this->messagesReceive;
 }
 void Chat::setWrittingMsj(string msj)
 {
@@ -103,7 +119,7 @@ string Chat::getMessagerec()
 }
 bool Chat::isEmpty()
 {
-	return this->messages.empty();
+	return this->messagesSend.empty();
 }
 void Chat::update(ChatUpdate* update)
 {
@@ -114,10 +130,10 @@ void Chat::update(ChatUpdate* update)
 
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const Chat& chat){
-	out << chat.enable << " " << chat.messages.size() << " ";
+	out << chat.enable << " " << chat.messagesSend.size() << " ";
 
-	for (int i = 0 ; i < chat.messages.size() ; i++){
-		out << *(chat.messages[i]) << " ";
+	for (int i = 0 ; i < chat.messagesSend.size() ; i++){
+		out << *(chat.messagesSend[i]) << " ";
 	}
 
 	return out;
@@ -135,9 +151,9 @@ istream& operator >>(std::istream& in, Chat& chat){
 
 
 	for (int i = 0 ; i < size ; i++){
-		ChatMessage* msj = new ChatMessage("","","");
+		ChatMessage* msj = new ChatMessage();
 		in >> *msj;
-		chat.messages.push_back(msj);
+		chat.messagesSend.push_back(msj);
 	}
 
 	return in;

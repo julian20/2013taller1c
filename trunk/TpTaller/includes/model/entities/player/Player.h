@@ -84,6 +84,7 @@ public:
 	void setSpeedMagnitude(int mag);
 	string getClassName();
 	Chat* getChat();
+	void setChat(Chat* chat);
 	ChatUpdate* generateChatUpdate();
 private:
 	Chat* chat;

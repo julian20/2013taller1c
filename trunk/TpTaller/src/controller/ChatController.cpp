@@ -17,7 +17,7 @@ ChatController::ChatController(PlayerController* playerController) {
 
 void ChatController::setChat(Chat* chat)
 {
-	//this->chat=chat;
+	this->chat=chat;
 }
 void ChatController::resetString()
 {
@@ -34,14 +34,18 @@ void ChatController::handle_events(SDL_Event ev) {
 					this->playerController->getPlayer()->getChat()->Enable();
 					this->playerController->getPlayer()->getChat()->setReceptor(this->playerController->getLastPlayerTouch());
 					this->receptor = this->playerController->getLastPlayerTouch();
-				//	this->chat->Disable();
+					this->chat->setReceptor(this->receptor);
 				}
 	} else if (ev.type == SDL_KEYDOWN ) {
 		if (ev.key.keysym.sym == SDLK_KP_ENTER || ev.key.keysym.sym == SDLK_RETURN)
 				{
 					if (this->text != ""){
 						string playerName = this->playerController->getPlayer()->getName();
-						this->chat->newMessage(new ChatMessage(this->text,receptor,playerName));
+						ChatMessage* cm= new ChatMessage();
+						cm->setMSJ(this->text);
+						cm->setReceptor(receptor);
+						cm->setSender(playerName);
+						this->chat->newMessageSend(cm);
 						this->text="";
 					}
 
@@ -132,7 +136,7 @@ void ChatController::handle_events(SDL_Event ev) {
 		}
 	}
 }
-	this->playerController->getPlayer()->getChat()->setWrittingMsj(this->text);
+	this->chat->setWrittingMsj(this->text);
 }
 string ChatController::getText()
 {

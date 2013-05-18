@@ -11,7 +11,7 @@
 
 
 
-void print_help (){
+void print_help2 (){
 	std::cout << "parametro 1: que texture se va a insertar" << std::endl;
 	std::cout << "parametro 2: la coordenada X en donde se ubicara el extremo superior del rectangulo" << std::endl;
 	std::cout << "parametro 3: la coordenada Y en donde se ubicara el extremo superior del rectangulo" << std::endl;
@@ -32,7 +32,7 @@ int main(int argc, char** argv){
 	char* header = argv[1];
 	
 	if (argc < 6 || strcmp(header,"-h") == 0){
-		print_help();
+		print_help2();
 		return 0;
 	}
 	

@@ -56,18 +56,24 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	personajeVista = (configuration->getViewList())[0];
 
-	Chat* chat= personaje->getChat();
+	//Chat* chat= new Chat();
 
 	chatController = new ChatController(playerController);
 	chatView = new ChatWindowsView();
+	//chatController->setChat(chat);
+//	chatView->setChat(chat);
+	
+}
+Chat* Game::getChat()
+{
+	return this->chat;
+}
+void Game::setChat(Chat* chat)
+{
+	this->chat=chat;
 	chatController->setChat(chat);
 	chatView->setChat(chat);
-	chatView->setPlayer(personaje);
-	
-	active = false;
-
 }
-
 void Game::setUpEntities(MapView* map, MapData* mapData) {
 
 }

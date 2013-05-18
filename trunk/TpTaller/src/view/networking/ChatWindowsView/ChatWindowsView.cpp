@@ -39,12 +39,11 @@ void ChatWindowsView::setPlayer(Player* player)
 }
 void ChatWindowsView::drawChatView(SDL_Surface* screen)
 {
-	Chat* chat=this->player->getChat();
 	if(chat->isEnable())
 	{
 		this->drawChatWindow(screen);
 		this->pos = 80;
-		vector<ChatMessage*> v=chat->getMessage();
+		vector<ChatMessage*> v=chat->getMessagesReceive();
 
 		this->draw_text(chat->getMessageSend());
 

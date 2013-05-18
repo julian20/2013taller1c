@@ -72,13 +72,31 @@ void* transmit(void* _client) {
 		}
 
 
+		cout<<"checkea un new playerr"<<endl;
 		client->checkNewPlayers();
-		client->sendEvents();
-		client->sendChatChanges();
-		map<string, PlayerUpdate*> updates = client->recvPlayersUpdates();
-		if (!updates.empty())
-			client->updatePlayers(updates);
 
+		cout<<"send eventes"<<endl;
+		client->sendEvents();
+
+
+
+		cout<<"recibe player updates"<<endl;
+		map<string, PlayerUpdate*> updates = client->recvPlayersUpdates();
+
+		cout<<"checkea un new player"<<endl;
+		if (!updates.empty()){
+			client->updatePlayers(updates);
+		}
+
+		cout<<"pregunta si cambio el chat"<<endl;
+		Chat* chat=client->getChat();
+		client->sendChatChanges();
+		cout<<"envia los cambios del chat"<<endl;
+		vector<ChatMessage*> chatUpdates = client->recvChatUpdates();
+		cout<<"recibe los chat updates"<<endl;
+		client->updateChat(chatUpdates);
+
+		cout<<"termino de mandar todo"<<endl;
 //		map<string,ChatUpdate*> updatesChat = client->recvChatUpdates();
 //		if (!updatesChat.empty()) {
 //			client->updateChat(updatesChat);
@@ -141,12 +159,18 @@ Client::Client(string host, int port) {
 	this->info=NULL;
 	this->view=NULL;
 	this->player=NULL;
-	//this->chat= new Chat();
+	cout<<"se crea un nuevo chat"<<endl;
+	this->chat= new Chat();
 
 }
-
+Chat* Client::getChat()
+{
+	return this->chat;
+}
 void Client::setGame(Game* game){
 	this->game = game;
+	this->game->setChat(this->chat);
+	//cout<<"Setea el chat al game desde el client"<<endl;
 }
 
 /* ******************** CLIENT SET PLAYER INFO ********************* */
@@ -181,6 +205,9 @@ void Client::initPlayerInfo(PlayerView* view) {
 
 	this->view = view;
 	this->player = view->getPersonaje();
+	//cout<<"setea el player al cliente "<<endl;
+	this->player->setChat(this->chat);
+	cout<<"setea el chat al player"<<endl;
 }
 
 
@@ -327,14 +354,21 @@ void Client::sendEvents() {
 }
 void Client::sendChatChanges(){
 
-	Chat* chat = player->getChat();
+	//Chat* chat = player->getChat();
+	vector<ChatMessage*> mensajesEnviados = this->chat->getMessagesSend();
 
-	ComunicationUtils::sendChat(clientID,chat);
+	// 1ro envio la cantidad de events que voy a mandar
+	cout<<"va a mandar "<<mensajesEnviados.size()<<" mensajes."<<endl;
+	ComunicationUtils::sendNumber(clientID, mensajesEnviados.size());
 
+	for(int i=0; i<mensajesEnviados.size();i++)
+	{
+		ComunicationUtils::sendChatMessage(clientID,mensajesEnviados[i]);
+	}
 }
-map<string, ChatUpdate*> Client::recvChatUpdates() {
+vector<ChatMessage*> Client::recvChatUpdates() {
 
-	map<string, ChatUpdate*> updates;
+	vector<ChatMessage*> updates;
 
 	int nUpdates = ComunicationUtils::recvNumber(clientID);
 
@@ -343,9 +377,9 @@ map<string, ChatUpdate*> Client::recvChatUpdates() {
 
 	for (int i = 0; i < nUpdates; i++) {
 
-		ChatUpdate* update = ComunicationUtils::recvChatUpdate(clientID);
-		string name = update->getReceiver();
-		updates[name] = update;
+		ChatMessage* update = ComunicationUtils::recvChatMessage(clientID);
+		//string name = update->getReceiver();
+		updates.push_back( update);
 
 	}
 
@@ -371,15 +405,13 @@ map<string, PlayerUpdate*> Client::recvPlayersUpdates() {
 	return updates;
 
 }
-void Client::updateChat(map<string,ChatUpdate*> updates){
+void Client::updateChat(vector<ChatMessage*> updates)
+{
 
-	for (map<string,ChatUpdate*>::iterator it = updates.begin() ; it != updates.end() ; ++it){
-		if (players.count(it->first) != 0){
-			cout << "agarra el chat de "<<it->first<<" y lo updatea"<<endl;
-			players[it->first]->getChat()->update(it->second);
-		//	players[it->first]->getChat()->update();
-		}
-		delete it->second;
+	for (int i=0; i<updates.size(); i++)
+	{
+		this->chat->newMessageReceive(updates[i]);
+	//	delete updates[i];
 	}
 
 }
@@ -390,6 +422,7 @@ void Client::updatePlayers(map<string, PlayerUpdate*> updates) {
 			it != updates.end(); ++it) {
 		if (players.count(it->first) != 0) {
 			players[it->first]->update(it->second);
+		//	players[it->first]->setChat(this->chat);
 			//	players[it->first]->update();
 		}
 		delete it->second;

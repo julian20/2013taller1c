@@ -96,13 +96,23 @@ void* handle(void* par) {
 			break;
 
 		server->sendNewPlayers(clientSocket, &sent);
+
 		vector<PlayerEvent*> events = server->recvEvents(clientSocket);
+
 		if (!events.empty())
 			game->addEventsToHandle(playerName, events);
+
+
 		server->getPlayersUpdates();
 		server->sendPlayersUpdates(clientSocket, playerName);
-		Chat* chat = server->recvChat(clientSocket);
-		server->deliverMessages(chat);
+
+
+		vector<ChatMessage*> chatmsj = server->recvChatMessages(clientSocket);
+		//cout<<"va a deliberar los msj"<<endl;
+		cout<<"va a deliberar los msj"<<endl;
+
+		server->deliverMessages(chatmsj);
+		cout<<"ya delibero los cambios"<<endl;
 //			serverChat->getChatUpdates();
 //			serverChat->sendChatUpdates(clientSocket, playerName);
 
@@ -457,7 +467,7 @@ vector<PlayerEvent*> Server::recvEvents(int clientSocket) {
 		if (event != NULL)
 			events.push_back(event);
 	}
-
+//	game->deliverMessage(msjs[i]);
 	return events;
 
 }
@@ -491,17 +501,74 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName) {
 	updates[playerName].clear();
 
 }
-Chat* Server::recvChat(int clientSocket){
-	Chat* chat = ComunicationUtils::recvChat(clientSocket);
-	return chat;
+vector<ChatMessage*> Server::recvChatMessages(int clientSocket){
+
+	vector<ChatMessage*> chatMessages;
+
+	// 1ro recibo la cantidad de cambios que se enviaran
+	int n = ComunicationUtils::recvNumber(clientSocket);
+
+	// No hubo cambios
+	if (n <= 0)
+		return chatMessages;
+
+	// Recibo cada uno de los cambios
+	for (int i = 0; i < n; i++) {
+		ChatMessage* msj = ComunicationUtils::recvChatMessage(clientSocket);
+		if (msj != NULL)
+			chatMessages.push_back(msj);
+	}
+
+	return chatMessages;
 }
 
-void Server::deliverMessages(Chat* chat){
-	vector<ChatMessage*> msjs = chat->getMessage();
+void Server::deliverMessages(vector<ChatMessage*> msjs){
+//	vector<ChatMessage*> msjs = chat->getMessagesReceive();
+	//Hay que filtrar los clientes
 
-	for (int i = 0 ; i < msjs.size() ; i++){
-		game->deliverMessage(msjs[i]);
+	map<int,vector<ChatMessage*> > mapAux;
+	map<int,int>  cantMapAux;
+
+	if(msjs.size()==0)
+	{
+		for (map<string,int>::iterator it = this->conectedPlayers.begin();
+						it != this->conectedPlayers.end(); ++it) {
+
+					int cant=0;
+					int idClient=it->second;
+					ComunicationUtils::sendNumber(idClient, cant);
+				}
 	}
+
+	for (int i = 0 ; i < msjs.size() ; i++)
+	{
+		ChatMessage* msj=msjs[i];
+		string receptor=msj->getReceptor();
+		int idreceptor=this->conectedPlayers[receptor];
+		vector<ChatMessage*> cm = mapAux [idreceptor];
+		cm.push_back(msjs[i]);
+		cantMapAux[idreceptor]++;
+	}
+
+	for (map<int, vector<ChatMessage*> >::iterator it = mapAux.begin();
+				it != mapAux.end(); ++it) {
+
+			int cant=cantMapAux[it->first];
+			int idClient=it->first;
+			vector<ChatMessage*> msjs = it->second;
+			ComunicationUtils::sendNumber(idClient, cant);
+
+			for(int i=0 ; i< msjs.size(); i++)
+			{
+				ComunicationUtils::sendChatMessage(idClient,msjs[i]);
+
+			}
+
+		}
+
+
+
+
 
 }
 
