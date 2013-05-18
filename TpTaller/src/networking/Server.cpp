@@ -173,8 +173,6 @@ Server::Server(int port) {
 		exit(1);
 	}
 
-	SDL_Init(SDL_INIT_JOYSTICK);
-
 }
 
 /* **************************** SERVER RUN ************************** */
