@@ -48,8 +48,10 @@ using namespace std;
 void* transmit(void* _client) {
 
 	Client* client = (Client*) _client;
+	Game* game = client->getGame();
 
-	bool playing = true;
+	// Espero que se active el juego (que comienze a correr)
+	while (!game->isActive());
 
 	client->registerPlayer();
 
@@ -60,11 +62,12 @@ void* transmit(void* _client) {
 
 	client->addLocalPlayer();
 
-	while (playing) {
+	while (game->isActive()) {
 
-		playing = client->exchangeAliveSignals();
-		if (!playing) {
+		bool alive = client->exchangeAliveSignals();
+		if (!alive) {
 			cerr << " SE HA CORTADO LA CONEXION. HA FALLADO LA CONEXION CON EL SERVIDOR " << endl;
+			game->setInactive();
 			break;
 		}
 
@@ -287,12 +290,8 @@ void Client::checkNewPlayers() {
 		PlayerInfo* info = ComunicationUtils::recvPlayerInfo(clientID);
 		string playerName = info->getPlayer()->getName();
 
-		cout << "CANT: " << players.count(playerName) << " PLAYER "
-				<< playerName << endl;
-
 		for (map<string, Player*>::iterator it = players.begin();
 				it != players.end(); ++it) {
-			cout << "REGISTRO: " << it->first << endl;
 		}
 
 		if (players.count(playerName) != 0)
@@ -338,7 +337,7 @@ map<string, ChatUpdate*> Client::recvChatUpdates() {
 	map<string, ChatUpdate*> updates;
 
 	int nUpdates = ComunicationUtils::recvNumber(clientID);
-//	cout<<"hay "<<nUpdates<<endl;
+
 	if (nUpdates <= 0)
 		return updates;
 

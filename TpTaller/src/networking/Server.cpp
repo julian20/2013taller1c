@@ -161,6 +161,7 @@ Server::Server(int port) {
 	serverID = socket(domain, type, protocol);
 	if (serverID == -1) {
 		Logs::logErrorMessage("Servidor: Error al inicializar el servidor");
+		cerr << "Servidor: Error al inicializar el servidor" << endl;
 		exit(1);
 	}
 
@@ -171,6 +172,7 @@ Server::Server(int port) {
 	/* Bind to the address */
 	if (bind(serverID, (struct sockaddr *) &svInfo, sizeof(svInfo)) < 0) {
 		Logs::logErrorMessage("Servidor: Error de asignacion de direccion");
+		cerr << "Servidor: Error de asignacion de direccion" << endl;
 		exit(1);
 	}
 
@@ -194,6 +196,7 @@ void Server::run(MultiplayerGame* game) {
 	if (listen(serverID, BACKLOG) == -1) {
 		Logs::logErrorMessage(
 				"Servidor: Error al poner al servidor en modo de recepcion de conexiones");
+		cerr << "Servidor: Error al poner al servidor en modo de recepcion de conexiones" << endl;
 		exit(1);
 	}
 
@@ -209,6 +212,7 @@ void Server::run(MultiplayerGame* game) {
 		if (newsock == -1) {
 			Logs::logErrorMessage(
 					"Servidor: El servidor no ha podido aceptar la conexion");
+			cerr << "Servidor: El servidor no ha podido aceptar la conexion" << endl;
 		} else {
 			ThreadParameter* tp = (ThreadParameter*) malloc(
 					sizeof(ThreadParameter));

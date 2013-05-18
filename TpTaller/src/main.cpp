@@ -56,8 +56,8 @@ void initMultiplayerGame(PersistentConfiguration* configuration,
 	client->initPlayerInfo(game->getPlayerView());
 	client->run();
 	game->run();
-	delete game;
 	delete client;
+	delete game;
 }
 
 void initServer(PersistentConfiguration* configuration) {
@@ -98,10 +98,12 @@ void initMenu(PersistentConfiguration* configuration, string& playerName,
 		case MULTIPLAYER_GAME_EVENT:
 			menu->close();
 			initMultiplayerGame(configuration, playerName, playerType);
+			event = EXIT_EVENT;
 			break;
 		case SERVER_EVENT:
 			menu->close();
 			initServer(configuration);
+			event = EXIT_EVENT;
 			break;
 
 		}
