@@ -360,7 +360,7 @@ void Client::sendChatChanges(){
 	vector<ChatMessage*> mensajesEnviados = this->chat->getMessagesSend();
 
 	// 1ro envio la cantidad de events que voy a mandar
-	cout<<"cliente va a mandar "<<mensajesEnviados.size()<<" mensajes."<<endl;
+	//cout<<"cliente va a mandar "<<mensajesEnviados.size()<<" mensajes."<<endl;
 	ComunicationUtils::sendNumber(clientID, mensajesEnviados.size());
 
 	for(int i=0; i<mensajesEnviados.size();i++)
@@ -373,9 +373,9 @@ vector<ChatMessage*> Client::recvChatUpdates() {
 
 	vector<ChatMessage*> updates;
 
-	cout<<"Cliente esta esperando la cantidad de datos de chat"<<endl;
+	//cout<<"Cliente esta esperando la cantidad de datos de chat"<<endl;
 	int nUpdates = ComunicationUtils::recvNumber(clientID);
-	cout<<"le vienen "<<nUpdates<<endl;
+	//cout<<"le vienen "<<nUpdates<<endl;
 	if (nUpdates <= 0)
 		return updates;
 
@@ -391,7 +391,7 @@ vector<ChatMessage*> Client::recvChatUpdates() {
 		update->setMSJ(msj);
 		update->setReceptor(reciever);
 		update->setSender(sender);
-		cout<<"el msj que le viene al cliente es "<<update->getMSJ()<< " para "<<update->getReceptor()<<" de "<<update->getSender() <<endl;
+		//cout<<"el msj que le viene al cliente es "<<update->getMSJ()<< " para "<<update->getReceptor()<<" de "<<update->getSender() <<endl;
 		updates.push_back(update);
 
 	}
