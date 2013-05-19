@@ -10,6 +10,7 @@
 #include <model/map/TextureDefinition.h>
 #include <model/map/TextureHolder.h>
 #include <model/Logs/Logs.h>
+#include <view/Popup.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -66,7 +67,8 @@ void* transmit(void* _client) {
 
 		bool alive = client->exchangeAliveSignals();
 		if (!alive) {
-			cerr << " SE HA CORTADO LA CONEXION. HA FALLADO LA CONEXION CON EL SERVIDOR " << endl;
+			Popup::popupWindow(string(" NO SE PUDO CONECTAR CON EL SERVIDOR (Se apagó el servidor?)"));
+			cerr << " SE HA CORTADO LA CONEXION. NO SE PUDO CONECTAR CON EL SERVIDOR  " << endl;
 			game->setInactive();
 			break;
 		}
