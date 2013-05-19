@@ -11,6 +11,8 @@
 #include <string>
 #include <model/Chat.h>
 #include <controller/PlayerController.h>
+#include <iostream>
+#include <algorithm>
 
 using namespace std;
 

@@ -42,6 +42,7 @@ void ChatController::handle_events(SDL_Event ev) {
 					if (this->text != ""){
 						string playerName = this->playerController->getPlayer()->getName();
 						ChatMessage* cm= new ChatMessage();
+						replace(this->text.begin(), this->text.end(), ' ', '/');
 						cm->setMSJ(this->text);
 						cm->setReceptor(receptor);
 						cm->setSender(playerName);
