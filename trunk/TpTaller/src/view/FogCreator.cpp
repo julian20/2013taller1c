@@ -21,7 +21,7 @@ SDL_Surface* FogCreator::getFog(SDL_Surface* image) {
 			pixelValue = pixels[(y * image->w) + x];
 			SDL_GetRGBA(pixelValue, image->format, &red, &green, &blue, &alpha);
 
-			if (alpha == 0)
+			if (alpha < 100)
 				setPixelInvisible(fog, x, y);
 		}
 	}
