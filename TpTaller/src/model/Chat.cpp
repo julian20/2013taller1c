@@ -127,7 +127,15 @@ void Chat::update(ChatUpdate* update)
 	cout<<this->msjRec;
 }
 
-
+void Chat::clearNewMessagesSend()
+{
+	for(int i=0; i<this->messagesSend.size();i++)
+	{
+		cout<<"se va a eliminar el msj "<<messagesSend[i]->getMSJ()<<endl;
+		messagesSend.pop_back();
+	}
+	cout<<"verificacion cantidad de datos "<<this->messagesSend.size()<<endl;
+}
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const Chat& chat){
 	out << chat.enable << " " << chat.messagesSend.size() << " ";

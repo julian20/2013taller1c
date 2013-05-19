@@ -31,8 +31,8 @@ void ChatController::handle_events(SDL_Event ev) {
 			int y = ev.button.y;
 			if(this->playerController->clickAnotherPlayer(x,y))
 				{
-					this->playerController->getPlayer()->getChat()->Enable();
-					this->playerController->getPlayer()->getChat()->setReceptor(this->playerController->getLastPlayerTouch());
+					this->chat->Enable();
+					this->chat->setReceptor(this->playerController->getLastPlayerTouch());
 					this->receptor = this->playerController->getLastPlayerTouch();
 					this->chat->setReceptor(this->receptor);
 				}

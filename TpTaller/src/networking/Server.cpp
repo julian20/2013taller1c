@@ -54,10 +54,14 @@ using namespace std;
 void* handle(void* par) {
 
 	/* send(), recv(), close() */
+
 	ThreadParameter* parameter = (ThreadParameter*) par;
 	int clientSocket = parameter->clientID;
+
 	Server* server = parameter->server;
+
 	MultiplayerGame* game = server->getGame();
+
 	//Lo primero que hago es mandar el mapa.
 	std::vector<std::string> withBase = server->listFilesInDirectoryWithBase(
 			"sendFiles");
@@ -90,7 +94,11 @@ void* handle(void* par) {
 	 serverChat->addPlayerToChat(clientSocket,playerName);*/bool playing = true;
 
 	while (playing && server->isActive()) {
-
+		//cout<<"Conectados :"<<endl;
+		/*for (map<string, int>::iterator it = server->getPlayerConnected().begin();
+					it != server->getPlayerConnected().end(); ++it) {
+			cout<<"nombre: "<<it->first<<" id: "<<it->second<<endl;*/
+	//	}
 		playing = server->exchangeAliveSignals(clientSocket);
 		if (!playing)
 			break;
@@ -107,14 +115,10 @@ void* handle(void* par) {
 		server->sendPlayersUpdates(clientSocket, playerName);
 
 
-		vector<ChatMessage*> chatmsj = server->recvChatMessages(clientSocket);
-		//cout<<"va a deliberar los msj"<<endl;
-		cout<<"va a deliberar los msj"<<endl;
+		server->recvChatMessages(clientSocket);
 
-		server->deliverMessages(chatmsj);
-		cout<<"ya delibero los cambios"<<endl;
-//			serverChat->getChatUpdates();
-//			serverChat->sendChatUpdates(clientSocket, playerName);
+		//server->setMessages(chatmsj);
+		server->deliverMessages(clientSocket);
 
 	}
 
@@ -185,7 +189,6 @@ Server::Server(int port) {
 		cerr << "Servidor: Error de asignacion de direccion" << endl;
 		exit(1);
 	}
-
 	active = false;
 
 }
@@ -501,77 +504,86 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName) {
 	updates[playerName].clear();
 
 }
-vector<ChatMessage*> Server::recvChatMessages(int clientSocket){
+void Server::recvChatMessages(int clientSocket){
 
 	vector<ChatMessage*> chatMessages;
 
 	// 1ro recibo la cantidad de cambios que se enviaran
 	int n = ComunicationUtils::recvNumber(clientSocket);
-
+	cout<<"recibe "<<n<<" mensajes"<<endl;
 	// No hubo cambios
 	if (n <= 0)
-		return chatMessages;
+		return ;
 
 	// Recibo cada uno de los cambios
 	for (int i = 0; i < n; i++) {
 		ChatMessage* msj = ComunicationUtils::recvChatMessage(clientSocket);
+		cout<<"el msj que recibe es"<<msj->getMSJ()<< " para "<<msj->getReceptor() <<endl;
 		if (msj != NULL)
-			chatMessages.push_back(msj);
+			this->messages.push_back(msj);
 	}
-
-	return chatMessages;
 }
 
-void Server::deliverMessages(vector<ChatMessage*> msjs){
+void Server::deliverMessages(int clientSocket){
 //	vector<ChatMessage*> msjs = chat->getMessagesReceive();
 	//Hay que filtrar los clientes
 
-	map<int,vector<ChatMessage*> > mapAux;
+	vector<ChatMessage*> vecAux;
 	map<int,int>  cantMapAux;
 
+	vector<ChatMessage*> msjs=this->messages;
+
+	int cant=0;
 	if(msjs.size()==0)
 	{
-		for (map<string,int>::iterator it = this->conectedPlayers.begin();
-						it != this->conectedPlayers.end(); ++it) {
-
-					int cant=0;
-					int idClient=it->second;
-					ComunicationUtils::sendNumber(idClient, cant);
-				}
+					cant=0;
+					ComunicationUtils::sendNumber(clientSocket, cant);
+					return;
 	}
-
+	else{
 	for (int i = 0 ; i < msjs.size() ; i++)
 	{
 		ChatMessage* msj=msjs[i];
 		string receptor=msj->getReceptor();
 		int idreceptor=this->conectedPlayers[receptor];
-		vector<ChatMessage*> cm = mapAux [idreceptor];
-		cm.push_back(msjs[i]);
-		cantMapAux[idreceptor]++;
-	}
-
-	for (map<int, vector<ChatMessage*> >::iterator it = mapAux.begin();
-				it != mapAux.end(); ++it) {
-
-			int cant=cantMapAux[it->first];
-			int idClient=it->first;
-			vector<ChatMessage*> msjs = it->second;
-			ComunicationUtils::sendNumber(idClient, cant);
-
-			for(int i=0 ; i< msjs.size(); i++)
+		if(idreceptor==clientSocket)
 			{
-				ComunicationUtils::sendChatMessage(idClient,msjs[i]);
+
+				vecAux.push_back(msjs[i]);
+			//	delete msjs[i];
+				 using std::swap;
+				swap(msjs[i], msjs.back());
+				msjs.pop_back();
+				cant++;
 
 			}
+	}
+	cout<<"server le va a mandar al cliente "<<cant<<" msj nuevos"<<endl;
+	ComunicationUtils::sendNumber(clientSocket, cant);
+	for (int i=0; i<cant;i++)
+	{
+		cout<<"al que le tiene q mandar es a "<<vecAux[i]->getReceptor()<<" el mensaje "<<vecAux[i]->getMSJ()<<endl;
+		ComunicationUtils::sendString(clientSocket,vecAux[i]->getMSJ());
+		ComunicationUtils::sendString(clientSocket,vecAux[i]->getReceptor());
+		ComunicationUtils::sendString(clientSocket,vecAux[i]->getSender());
 
-		}
+	//	delete vecAux[i];
+	}
 
-
-
-
+	}
 
 }
 
+
+
+
+void Server::setMessages(vector<ChatMessage*> msjs)
+{
+	for(int i=0; i<msjs.size();i++)
+	{
+		this->messages.push_back(msjs[i]);
+	}
+}
 /* ************************** CLOSE SERVER ************************* */
 
 void Server::disconectPlayer(int clientSocket, string playerName) {
@@ -606,7 +618,10 @@ void Server::setActive(){
 void Server::setInactive(){
 	this->active = false;
 }
-
+map<string,int> Server::getPlayerConnected()
+{
+	return this->conectedPlayers;
+}
 
 
 /* *********************** SERVER DESTRUCTOR ********************** */

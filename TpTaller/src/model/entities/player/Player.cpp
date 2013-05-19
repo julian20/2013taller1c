@@ -18,15 +18,15 @@ Player::Player() {
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	isActive = true;
-	chat= new Chat();
+//	chat= new Chat();
 	attacking = false;
 	blocking = false;
 	hasChange = true;
-}
+}/*
 Chat* Player::getChat()
 {
 	return this->chat;
-}
+}*/
 void Player::setChat(Chat* chat)
 {
 	if(this->chat)
@@ -244,7 +244,7 @@ std::string Player::getName() {
 
 void Player::setName(std::string name) {
 	this->name = name;
-	this->chat->assignPlayer(name);
+//	this->chat->assignPlayer(name);
 }
 
 std::vector<Power*> Player::getPowers() {

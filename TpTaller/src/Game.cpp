@@ -185,7 +185,7 @@ MenuEvent Game::run() {
 
 	while (active) {
 		int ticks = SDL_GetTicks();
-		cameraController->cameraMoveListener();
+		//cameraController->cameraMoveListener();
 		while (SDL_PollEvent(&event)) {
 
 			mapController->clickListener(event);
