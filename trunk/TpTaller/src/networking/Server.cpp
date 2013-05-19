@@ -531,29 +531,29 @@ void Server::deliverMessages(int clientSocket){
 	vector<ChatMessage*> vecAux;
 	map<int,int>  cantMapAux;
 
-	vector<ChatMessage*> msjs=this->messages;
+	this->messages;
 
 	int cant=0;
-	if(msjs.size()==0)
+	if(this->messages.size()==0)
 	{
 					cant=0;
 					ComunicationUtils::sendNumber(clientSocket, cant);
 					return;
 	}
 	else{
-	for (int i = 0 ; i < msjs.size() ; i++)
+	for (int i = 0 ; i < this->messages.size() ; i++)
 	{
-		ChatMessage* msj=msjs[i];
+		ChatMessage* msj=this->messages[i];
 		string receptor=msj->getReceptor();
 		int idreceptor=this->conectedPlayers[receptor];
 		if(idreceptor==clientSocket)
 			{
 
-				vecAux.push_back(msjs[i]);
+				vecAux.push_back(this->messages[i]);
 			//	delete msjs[i];
 				 using std::swap;
-				swap(msjs[i], msjs.back());
-				msjs.pop_back();
+				swap(this->messages[i], this->messages.back());
+				messages.pop_back();
 				cant++;
 
 			}
