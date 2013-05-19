@@ -510,7 +510,7 @@ void Server::recvChatMessages(int clientSocket){
 
 	// 1ro recibo la cantidad de cambios que se enviaran
 	int n = ComunicationUtils::recvNumber(clientSocket);
-	cout<<"recibe "<<n<<" mensajes"<<endl;
+//	cout<<"recibe "<<n<<" mensajes"<<endl;
 	// No hubo cambios
 	if (n <= 0)
 		return ;
@@ -518,7 +518,7 @@ void Server::recvChatMessages(int clientSocket){
 	// Recibo cada uno de los cambios
 	for (int i = 0; i < n; i++) {
 		ChatMessage* msj = ComunicationUtils::recvChatMessage(clientSocket);
-		cout<<"el msj que recibe es"<<msj->getMSJ()<< " para "<<msj->getReceptor() <<endl;
+	//	cout<<"el msj que recibe es"<<msj->getMSJ()<< " para "<<msj->getReceptor() <<endl;
 		if (msj != NULL)
 			this->messages.push_back(msj);
 	}
@@ -558,11 +558,11 @@ void Server::deliverMessages(int clientSocket){
 
 			}
 	}
-	cout<<"server le va a mandar al cliente "<<cant<<" msj nuevos"<<endl;
+//	cout<<"server le va a mandar al cliente "<<cant<<" msj nuevos"<<endl;
 	ComunicationUtils::sendNumber(clientSocket, cant);
 	for (int i=0; i<cant;i++)
 	{
-		cout<<"al que le tiene q mandar es a "<<vecAux[i]->getReceptor()<<" el mensaje "<<vecAux[i]->getMSJ()<<endl;
+	//	cout<<"al que le tiene q mandar es a "<<vecAux[i]->getReceptor()<<" el mensaje "<<vecAux[i]->getMSJ()<<endl;
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getMSJ());
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getReceptor());
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getSender());
