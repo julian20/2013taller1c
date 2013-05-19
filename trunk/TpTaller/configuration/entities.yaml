@@ -12,6 +12,19 @@
     baseRows: 1
     baseCols: 1
     delay: 0.5
+  - name: NewPlayerBlue
+    walkingImageSrc: resources/black_knight/asdBlue.png
+    idleImageSrc: resources/black_knight/warriorStandingBlue.png
+    runningImageSrc: resources/black_knight/asdBlue.png
+    attackImageSrc: resources/black_knight/warriorAttackBlue.png
+    idleBlockingImageSrc: resources/black_knight/warriorBlockingAnimBlue.png
+    imageWidth: 128
+    imageHeight: 128
+    numberOfClips: 8
+    anchorPixel: [64, 70]
+    baseRows: 1
+    baseCols: 1
+    delay: 0.5
 - entityViews:    
   - name: windmill
     imageSrc: resources/buildings/windmill.png
