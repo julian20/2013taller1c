@@ -263,9 +263,10 @@ void Game::playersUpdate(){
 
 void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords){
 	player->setCoordinates(coords->getRow(),coords->getCol());
-	mapView->addNewPlayerView(view,*coords);
 	MapData* map = mapView->getMapData();
 	map->addPersonaje(coords->getRow(),coords->getCol(),player);
+	Coordinates newCoords = player->getCoordinates();
+	mapView->addNewPlayerView(view, newCoords);
 
 	otherPlayers.push_back(player);
 	otherPlayerViews.push_back(view);
