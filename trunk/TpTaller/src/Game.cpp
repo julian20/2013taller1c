@@ -23,6 +23,7 @@
 
 
 Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
+	this->multiplayer = multiplayer;
 
 	MapData* mapData = configuration->getMapData();
 
@@ -58,10 +59,12 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	//Chat* chat= new Chat();
 
-	chatController = new ChatController(playerController);
-	chatView = new ChatWindowsView();
-	//chatController->setChat(chat);
-//	chatView->setChat(chat);
+	if (multiplayer) {
+		chatController = new ChatController(playerController);
+		chatView = new ChatWindowsView();
+		//chatController->setChat(chat);
+		//chatView->setChat(chat);
+	}
 	
 }
 Chat* Game::getChat()
@@ -172,7 +175,7 @@ void Game::draw() {
 		fpsUpdatingTimer = 0;
 	}
 		// Actualiza la screen
-	chatView->drawChatView(screen);
+	if (multiplayer) chatView->drawChatView(screen);
 	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 30, 40, "baramond", textHandler->getColor(255, 0, 0));
 	SDL_Flip(screen);
 }
@@ -189,7 +192,7 @@ MenuEvent Game::run() {
 		while (SDL_PollEvent(&event)) {
 
 			mapController->clickListener(event);
-			chatController->handle_events(event);
+			if (multiplayer) chatController->handle_events(event);
 			if (event.type == SDL_QUIT)
 				active = false;
 
