@@ -13,18 +13,20 @@ using namespace std;
 TextHandler::TextHandler() {
 	// TODO Auto-generated constructor stub
 	if(!TTF_WasInit())
-		{
+		TTF_Init();
+	else
+		printf("Ya esta abierta ttf\n");
 
-			TTF_Init();
-		}else{printf("Ya esta abierta ttf\n");}
 	fontMap["lazy"] = TTF_OpenFont("resources/fonts/lazy.ttf", 28);
 	fontMap["baramond"] = TTF_OpenFont("resources/fonts/robot.ttf", 28);
 
 }
+
 TTF_Font* TextHandler::getFont()
 {
 	return fontMap["baramond"];
 }
+
 SDL_Color TextHandler::getColor(int r, int g, int b) {
 	SDL_Color color;
 	color.r = r;
@@ -86,7 +88,8 @@ void TextHandler::applyTextOnSurfaceCentered(string text, SDL_Surface* surface,
 TextHandler::~TextHandler() {
 	map<string, TTF_Font*>::iterator it;
 	for (it = fontMap.begin(); it != fontMap.end(); it++) {
-		TTF_CloseFont(it->second);
+		// TODO: Ver como carajo liberar esto
+		// TTF_CloseFont(it->second);
 	}
 
 	TTF_Quit();
