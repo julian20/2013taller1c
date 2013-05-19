@@ -71,7 +71,7 @@ void EntityViewMap::updateMovablePos() {
 			continue;
 
 		list<EntityView*> coord = getListAtRowAndCol(initRow, initCol);
-		if (!coord.empty())
+		//if (!coord.empty())
 			coord.remove(entityView);
 		map[initCol][initRow] = coord;
 		entity->setCoordinates(currentRow, currentCol);

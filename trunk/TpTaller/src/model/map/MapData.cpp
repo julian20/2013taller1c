@@ -121,6 +121,7 @@ void MapData::addPersonaje(int row, int col, Player* player) {
 
 		currentData->setPlayer(player);
 
+		delete personajeTile;
 		Tile* personajeTile = new Tile(new Coordinates(currentCoords.getRow(),
 													   currentCoords.getCol()));
 		player->setTile(personajeTile);
