@@ -78,6 +78,8 @@ private:
         MapController* mapController;
         MapCameraController* cameraController;
 
+        bool multiplayer;
+
         void applyFPS(int timer);
         void initMusic();
         void initScreen();
@@ -87,14 +89,11 @@ private:
         void playersUpdate();
 
 
-
-
         //FPS Crap
 
         TextHandler* textHandler;
 
         bool openAudio;
-
         bool active;
 };
 
