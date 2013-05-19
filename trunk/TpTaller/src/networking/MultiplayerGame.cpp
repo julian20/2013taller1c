@@ -50,13 +50,13 @@ void MultiplayerGame::addEventsToHandle(string playerName, vector<PlayerEvent*> 
 
 void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes){
 
-	NetworkPlayerController* controller = new NetworkPlayerController(player,view->getMapData());
-	controllers.insert(pair<string, NetworkPlayerController*>(player->getName(),controller));
+	NetworkPlayerController* controller = new NetworkPlayerController(player, view->getMapData());
+	controllers.insert(pair<string, NetworkPlayerController*>(player->getName(), controller));
 	players.push_back(player);
 
-	Coordinates coords;
-	coords.setRow(coordiantes->getRow());
-	coords.setCol(coordiantes->getCol());
+	view->getMapData()->addPersonaje(coordiantes->getRow(), coordiantes->getCol(), player);
+
+	Coordinates coords = player->getCoordinates();
 	playersCoords[player] = coords;
 }
 
