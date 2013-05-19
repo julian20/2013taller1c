@@ -42,9 +42,6 @@ MenuEvent MultiplayerGame::run(){
 
 }
 
-void MultiplayerGame::deliverMessage(ChatMessage* msj){
-	controllers[msj->getReceptor()]->deliverMessage(msj);
-}
 void MultiplayerGame::addEventsToHandle(string playerName, vector<PlayerEvent*> events){
 
 	controllers[playerName]->handleEvents(events);

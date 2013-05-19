@@ -48,17 +48,19 @@ public:
 
 
 	vector<PlayerEvent*> recvEvents(int clientSocket);
-	vector<ChatMessage*> recvChatMessages(int clientSocket);
+	void recvChatMessages(int clientSocket);
 
 	void getPlayersUpdates();
 	void sendPlayersUpdates(int clientSocket, string playerName);
 
 	void disconectPlayer(int clientSocket, string playerName);
 	Chat* recvChat(int clientSocket);
-	void deliverMessages(vector<ChatMessage*> msjs);
+	void deliverMessages(int clientSocket);
 	MultiplayerGame* getGame();
 
 	ChatServer* getChat();
+	map<string,int> getPlayerConnected();
+	void setMessages(vector<ChatMessage*>);
 
 	bool isActive();
 	void setActive();
@@ -77,7 +79,7 @@ private:
 	map<string,int> conectedPlayers;
 	map<string,int> disconectedPlayers;
 	map<string,vector<PlayerUpdate*> > updates;
-
+	vector<ChatMessage*> messages;
 	bool active;
 	map<int,pthread_t> connections;
 

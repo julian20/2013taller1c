@@ -37,7 +37,7 @@ public:
 	void setMessageReceive(vector<ChatMessage*> message);
 
 
-	void clearNewMessages();
+	void clearNewMessagesSend();
 	void setMessage(vector<ChatMessage*> message);
 	string getMessageSend();
 	string getMessagerec();
