@@ -534,13 +534,13 @@ void Server::deliverMessages(int clientSocket){
 	this->messages;
 
 	int cant=0;
-	if(this->messages.size()==0)
+/*	if(this->messages.size()==0)
 	{
 					cant=0;
 					ComunicationUtils::sendNumber(clientSocket, cant);
 					return;
 	}
-	else{
+	else{*/
 	for (int i = 0 ; i < this->messages.size() ; i++)
 	{
 		ChatMessage* msj=this->messages[i];
@@ -572,7 +572,7 @@ void Server::deliverMessages(int clientSocket){
 
 	}
 
-}
+//}
 
 
 
