@@ -19,6 +19,7 @@
 #include <SDL/SDL.h>
 
 #define CONFIGURATION_FILE "./configuration/entities.yaml"
+#define PLAYER_TYPE_CONFIGURATION_FILE "./configuration/playerType.yaml"
 #define OUTPUT_FILENAME "configuration/parserOutput.yaml"
 #define DEFAULT_CONFIGURATION_FILE "./configuration/.entitiesDefault.yaml"
 #define CLIENT_CONFIGURATION_FILE "./configuration/clientPlayerConfiguration.yaml"
@@ -44,7 +45,7 @@ void initMultiplayerGame(PersistentConfiguration* configuration,
 
 	ConfigurationReader newReader = ConfigurationReader();
 	PersistentConfiguration downloadedConfig = newReader.loadConfiguration(
-			CONFIGURATION_FILE, OUTPUT_FILENAME);
+			PLAYER_TYPE_CONFIGURATION_FILE, OUTPUT_FILENAME);
 
 	Game* game = new Game(&downloadedConfig, true);
 
@@ -134,11 +135,21 @@ int main(int argc, char** argv) {
 		playerType = string(argv[2]);
 	}
 
+	// Reemplazo el tag en el archivo de configuracion por
+	// el player type.
+	string command = string("sed \"s/NAME_TAG/");
+	command += playerType;
+	command += string("/g\" ");
+	command += string(CONFIGURATION_FILE);
+	command += string(" > ");
+	command += string(PLAYER_TYPE_CONFIGURATION_FILE);
+	system(command.c_str());
+
 // Lectura del archivo de configuracion
 	ConfigurationReader cfgReader = ConfigurationReader();
 	try {
 		PersistentConfiguration configuration = cfgReader.loadConfiguration(
-				CONFIGURATION_FILE, OUTPUT_FILENAME);
+				PLAYER_TYPE_CONFIGURATION_FILE, OUTPUT_FILENAME);
 		initMenu(&configuration, playerName, playerType);
 	} catch (std::exception& e) {
 		unLog.logErrorMessage(
