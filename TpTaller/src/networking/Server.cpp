@@ -59,7 +59,6 @@ void* handle(void* par) {
 	int clientSocket = parameter->clientID;
 
 	Server* server = parameter->server;
-
 	MultiplayerGame* game = server->getGame();
 
 	//Lo primero que hago es mandar el mapa.
