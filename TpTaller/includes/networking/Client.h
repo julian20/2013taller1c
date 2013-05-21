@@ -58,6 +58,9 @@ private:
 	Player* player;
 	PlayerView* view;
 
+	// TRANSMIT THREAD
+	pthread_t thread;
+
 };
 
 } /* namespace std */
