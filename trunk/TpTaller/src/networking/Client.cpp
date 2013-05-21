@@ -67,7 +67,7 @@ void* transmit(void* _client) {
 
 		bool alive = client->exchangeAliveSignals();
 		if (!alive) {
-			Popup::popupWindow(string(" NO SE PUDO CONECTAR CON EL SERVIDOR (Se apagó el servidor?)"));
+			Popup::popupWindow(string(" NO SE PUDO CONECTAR CON EL SERVIDOR (¿Se apago el servidor?)"));
 			cerr << " SE HA CORTADO LA CONEXION. NO SE PUDO CONECTAR CON EL SERVIDOR  " << endl;
 			game->setInactive();
 			break;
