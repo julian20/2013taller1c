@@ -15,7 +15,7 @@ TextHandler::TextHandler() {
 	if(!TTF_WasInit())
 		TTF_Init();
 	else
-		printf("Ya esta abierta ttf\n");
+		//printf("Ya esta abierta ttf\n");
 
 	fontMap["lazy"] = TTF_OpenFont("resources/fonts/lazy.ttf", 28);
 	fontMap["baramond"] = TTF_OpenFont("resources/fonts/robot.ttf", 28);
