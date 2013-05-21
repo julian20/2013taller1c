@@ -161,7 +161,7 @@
     imageSrc: resources/texturesTiles/sandGrass/sandGrassCurveIn135.png
 - mapDimensions: [50, 50]
 - playerLocations:
-  - name: NewPlayerBlue
+  - name: NewPlayer
     position: [9, 9, 0]
     speed:
       magnitude: 4

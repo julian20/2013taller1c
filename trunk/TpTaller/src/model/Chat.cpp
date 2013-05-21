@@ -62,6 +62,13 @@ void Chat::newMessageSend(ChatMessage* msj)
 {
 //	this->change=true;
 	messagesSend.push_back(msj);
+	ChatMessage* aux= new ChatMessage();
+	string auxmsj=msj->getMSJ();
+	replace(auxmsj.begin(), auxmsj.end(), '/', ' ');
+	aux->setMSJ(auxmsj);
+	aux->setSender(this->playerName);
+	aux->setReceptor(this->playerName);
+	this->messagesReceive.push_back(aux);
 	this->msjSend = "";
 }
 
@@ -73,7 +80,7 @@ void Chat::newMessageReceive(ChatMessage* msj)
 	msj->setMSJ(aux);
 	messagesReceive.push_back(msj);
 	this->msjSend = "";
-	this->receptor = msj->getReceptor();
+	this->receptor = msj->getSender();
 }
 
 string Chat::getReceptor()
