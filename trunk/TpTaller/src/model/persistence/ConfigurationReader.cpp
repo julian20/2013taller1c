@@ -1380,8 +1380,7 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 		EntityView* parsedEntityView = entityViewVector[j];
 		Entity* entity = parsedEntityView->getEntity();
 
-		Coordinates coordinates = Coordinates(
-				entity->getCoordinates().getRow(),
+		Coordinates coordinates = Coordinates(entity->getCoordinates().getRow(),
 				entity->getCoordinates().getCol());
 
 		entityViewMap->positionEntityView(parsedEntityView, coordinates);
@@ -1583,7 +1582,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 //	printGameConfiguration(animationConfig, outputFile);
 //	printTextureHolder(textureHolder, outputFile);
 //	printMapConfiguration(mapConfiguration, outputFile);
-	printHeader("END OF PARSER");
+	//printHeader("END OF PARSER");
 
 	return configuration;
 }
