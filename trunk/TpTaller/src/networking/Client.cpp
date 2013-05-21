@@ -219,7 +219,6 @@ void Client::initPlayerInfo(PlayerView* view) {
 
 void Client::run(){
 
-	pthread_t thread;
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	if (pthread_create(&thread, &attr, transmit, (void*) this) != 0) {
@@ -455,5 +454,6 @@ Game* Client::getGame() {
 /* ********************** CLIENT DESTRUCTOR ************************ */
 
 Client::~Client() {
+	pthread_join(thread,NULL);
 	close(clientID);
 }
