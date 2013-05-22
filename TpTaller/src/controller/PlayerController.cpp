@@ -54,7 +54,9 @@ void PlayerController::movePlayer(int x, int y) {
 
 	if (listEvents){
 		events.push_back(new PlayerEvent(EVENT_MOVE,*coor));
-		return;
+		if (! player->getCurrentPos()->isEqual(player->getEndPos())){
+			return;
+		}
 	}
 
 	if (coor->getCol() >= 0 && coor->getCol() < data->getNCols() &&
