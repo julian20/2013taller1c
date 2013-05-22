@@ -12,6 +12,7 @@
 #include <networking/NetworkPlayerController.h>
 #include <model/entities/player/Player.h>
 #include <view/entities/PlayerView.h>
+#include <view/timer/Timer.h>
 #include <Game.h>
 #include <model/Chat.h>
 
@@ -64,6 +65,8 @@ private:
 
 	// TRANSMIT THREAD
 	pthread_t thread;
+
+	Timer timer;
 
 };
 
