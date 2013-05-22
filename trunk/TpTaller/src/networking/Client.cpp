@@ -123,6 +123,7 @@ Client::Client(string host, int port) {
 	if (clientID < 0) {
 		Logs::logErrorMessage(
 				"Cliente: El cliente no se ha podido inicializar");
+		Popup::popupWindow(string("Cliente: El cliente no se ha podido inicializar"));
 		exit(1);
 	}
 
@@ -131,6 +132,7 @@ Client::Client(string host, int port) {
 	if (server == NULL) {
 		Logs::logErrorMessage(
 				"Cliente: No se ha podido obtener el host del servidor");
+		Popup::popupWindow(string("Cliente: No se ha podido obtener el host del servidor"));
 		exit(1);
 	}
 
@@ -140,6 +142,7 @@ Client::Client(string host, int port) {
 	if (inet_pton(AF_INET, host.c_str(), &hints.sin_addr) <= 0) {
 		Logs::logErrorMessage(
 				"Cliente: Error al obtener la direccion IP del servidor");
+		Popup::popupWindow(string("Cliente: Error al obtener la direccion IP del servidor"));
 		exit(1);
 	}
 	hints.sin_port = htons(port);
@@ -148,6 +151,7 @@ Client::Client(string host, int port) {
 	if (connect(clientID, (struct sockaddr *) &hints, sizeof(hints)) < 0) {
 		Logs::logErrorMessage(
 				"Cliente: Ha ocurrido un error conectandose al servidor");
+		Popup::popupWindow(string("Cliente: Ha ocurrido un error conectandose al servidor"));
 		exit(1);
 	}
 	this->game=NULL;
