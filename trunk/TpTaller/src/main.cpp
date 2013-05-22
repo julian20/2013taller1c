@@ -18,6 +18,8 @@
 
 #include <SDL/SDL.h>
 
+#include <vector>
+
 #define CONFIGURATION_FILE "./configuration/entities.yaml"
 #define PLAYER_TYPE_CONFIGURATION_FILE "./configuration/playerType.yaml"
 #define OUTPUT_FILENAME "configuration/parserOutput.yaml"
@@ -42,6 +44,16 @@ void initMultiplayerGame(PersistentConfiguration* configuration,
 
 	Client* client = new Client(serverIP, serverPort);
 	client->downloadFiles();
+
+	// Reemplazo el tag en el archivo de configuracion por
+	// el player type.
+	string command = string("sed \"s/NAME_TAG/");
+	command += playerType;
+	command += string("/g\" ");
+	command += string(CONFIGURATION_FILE);
+	command += string(" > ");
+	command += string(PLAYER_TYPE_CONFIGURATION_FILE);
+	system(command.c_str());
 
 	ConfigurationReader newReader = ConfigurationReader();
 	PersistentConfiguration downloadedConfig = newReader.loadConfiguration(
@@ -136,15 +148,19 @@ int main(int argc, char** argv) {
 		playerType = string(argv[2]);
 	}
 
-	// Reemplazo el tag en el archivo de configuracion por
-	// el player type.
-	string command = string("sed \"s/NAME_TAG/");
-	command += playerType;
-	command += string("/g\" ");
-	command += string(CONFIGURATION_FILE);
-	command += string(" > ");
-	command += string(PLAYER_TYPE_CONFIGURATION_FILE);
-	system(command.c_str());
+	std::vector<std::string> validList;
+	validList.push_back(string("NewPlayer"));
+	validList.push_back(string("NewPlayerBlue"));
+
+	bool valid = false;
+
+	for( unsigned i = 0 ; i < validList.size() ; i++ ) {
+		if( playerType == validList[i] ) valid = true;
+	}
+
+	if( ! valid ) playerType = string("NewPlayer");
+
+	std::cout << "Selected player: " << playerType << std::endl;
 
 // Lectura del archivo de configuracion
 	ConfigurationReader cfgReader = ConfigurationReader();

@@ -355,6 +355,12 @@ void ComunicationUtils::downloadFile(int clientID) {
 	string filename = ComunicationUtils::recvString(clientID);
 	cout << "Filename: " << filename << endl;
 	char* fileBaseDir = strdup(filename.c_str());
+	char* fileDir = strdup(filename.c_str());
+
+    string dirName = string(dirname(fileDir));
+
+    string makeDir = string("mkdir -p ");
+    system(string(makeDir + dirName).c_str());
 
 	FILE* file = fopen(fileBaseDir, "w");
 
