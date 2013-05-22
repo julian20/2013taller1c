@@ -42,6 +42,7 @@ public:
 	void updateChat(vector<ChatMessage*> updates);
 	Game* getGame();
 	Chat* getChat();
+	string getPlayerName();
 	void setGame(Game* game);
 	virtual ~Client();
 	void sendChatChanges();
