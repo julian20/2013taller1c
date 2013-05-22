@@ -44,6 +44,9 @@ public:
 	Chat* getChat();
 	string getPlayerName();
 	void setGame(Game* game);
+
+	void chechServerOn();
+
 	virtual ~Client();
 	void sendChatChanges();
 private:
