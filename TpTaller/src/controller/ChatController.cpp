@@ -55,6 +55,10 @@ void ChatController::handle_events(SDL_Event ev) {
 						}
 
 					}
+			else if (ev.key.keysym.sym == SDLK_RCTRL || ev.key.keysym.sym ==SDLK_LCTRL || ev.key.keysym.sym == SDLK_LSHIFT || ev.key.keysym.sym == SDLK_RSHIFT ||ev.key.keysym.sym == SDLK_LALT || ev.key.keysym.sym == SDLK_RALT  )
+			{
+				return;
+			}
 			else{
 			char c = (char) ev.key.keysym.sym;
 			if (c >= 'a' && c <= 'z') {
@@ -66,6 +70,8 @@ void ChatController::handle_events(SDL_Event ev) {
 			} else if ((c <= '1' || c >= '0')
 					&& ev.key.keysym.sym != SDLK_LSHIFT && ev.key.keysym.sym !=SDLK_RSHIFT) {
 				if (ev.key.keysym.mod & KMOD_SHIFT) {
+					int longitud;
+					string aux;
 					switch (c) {
 					case '1':
 						c = '!';
@@ -125,6 +131,9 @@ void ChatController::handle_events(SDL_Event ev) {
 						c = '?';
 						break;
 					case '.':
+						longitud = this->text.length() - 2;
+						aux = (this->text).substr(0, longitud);
+						this->text = aux;
 						this->chat->Disable();
 						break;
 					default:
