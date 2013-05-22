@@ -176,7 +176,7 @@ void Game::draw() {
 	}
 		// Actualiza la screen
 	if (multiplayer) chatView->drawChatView(screen);
-	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 30, 40, "baramond", textHandler->getColor(255, 0, 0));
+	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 800, 40, "baramond", textHandler->getColor(255, 0, 0));
 	SDL_Flip(screen);
 }
 

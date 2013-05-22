@@ -59,6 +59,7 @@ void* transmit(void* _client) {
 	int ok = client->getServerAproval();
 	if (ok != 0) {
 		client->recvNewName();
+		client->getChat()->assignPlayer(client->getPlayerName());
 	}
 
 	client->addLocalPlayer();
@@ -168,6 +169,10 @@ Client::Client(string host, int port) {
 Chat* Client::getChat()
 {
 	return this->chat;
+}
+string Client::getPlayerName()
+{
+	return this->player->getName();
 }
 void Client::setGame(Game* game){
 	this->game = game;
