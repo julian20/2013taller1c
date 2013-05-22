@@ -359,6 +359,8 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 		}
 	}
 
+	emptyTilesContainer(tilesContainer);
+	return new list<Tile *>();
 }
 
 float MapData::heuristicCostEstimate(Tile* from, Tile* to) {
