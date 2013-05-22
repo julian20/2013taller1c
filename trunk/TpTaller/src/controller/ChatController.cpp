@@ -55,7 +55,7 @@ void ChatController::handle_events(SDL_Event ev) {
 						}
 
 					}
-			else if (ev.key.keysym.sym == SDLK_RCTRL || ev.key.keysym.sym ==SDLK_LCTRL || ev.key.keysym.sym == SDLK_LSHIFT || ev.key.keysym.sym == SDLK_RSHIFT ||ev.key.keysym.sym == SDLK_LALT || ev.key.keysym.sym == SDLK_RALT  )
+			else if (ev.key.keysym.sym == SDLK_RCTRL || ev.key.keysym.sym ==SDLK_LCTRL || ev.key.keysym.sym == SDLK_LSHIFT || ev.key.keysym.sym == SDLK_RSHIFT ||ev.key.keysym.sym == SDLK_LALT || ev.key.keysym.sym == SDLK_RALT || ev.key.keysym.sym == SDLK_TAB  )
 			{
 				return;
 			}
@@ -131,9 +131,7 @@ void ChatController::handle_events(SDL_Event ev) {
 						c = '?';
 						break;
 					case '.':
-						longitud = this->text.length() - 2;
-						aux = (this->text).substr(0, longitud);
-						this->text = aux;
+						this->text = "";
 						this->chat->Disable();
 						break;
 					default:

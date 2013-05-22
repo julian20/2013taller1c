@@ -289,14 +289,18 @@ void Client::downloadFiles() {
 
 void Client::chechServerOn(){
 
-	int error = 0;
-	socklen_t len = sizeof (error);
-	int retval = getsockopt (clientID, SOL_SOCKET, SO_ERROR, &error, &len );
 
-	if (error != 0){
-		Popup::popupWindow(string("Se ha perdido la conexion con el servidor"));
+
+	while (true){
+
+		if (timer.getTimeIntervalSinceStart() > 1000){
+			Popup::popupWindow("Se ha perdido la conexion con el servidor");
+			while (timer.getTimeIntervalSinceStart() > 1000){
+			}
+			Popup::popupWindow("Se ha restablecido la conexion");
+		}
+
 	}
-
 }
 
 
@@ -326,6 +330,8 @@ void Client::addLocalPlayer() {
 /* *********************** CLIENT MAIN LOOP ************************ */
 
 bool Client::exchangeAliveSignals() {
+
+	timer.start();
 
 	ComunicationUtils::sendString(clientID, ALIVE_SIGNAL);
 	string signal = ComunicationUtils::recvString(clientID);
