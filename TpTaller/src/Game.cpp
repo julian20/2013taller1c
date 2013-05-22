@@ -207,7 +207,6 @@ MenuEvent Game::run() {
 
 		applyFPS(ticks);
 	}
-
 	return EXIT_EVENT;
 
 }

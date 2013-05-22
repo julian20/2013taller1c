@@ -26,10 +26,11 @@ TextureHolder::TextureHolder() {
 TextureHolder::~TextureHolder() {
 	std::map<std::string, TextureDefinition*>::iterator iter;
 
-	for (iter = textures.begin(); iter != textures.end(); iter++) {
+	for (iter = textures.begin(); iter != textures.end(); ++iter) {
 		string id = iter->first;
 		delete textures[id];
 	}
+
 }
 
 void TextureHolder::addFogTexture(std::string id, SDL_Surface* texture) {
