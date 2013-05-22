@@ -56,9 +56,11 @@ void initMultiplayerGame(PersistentConfiguration* configuration,
 	client->setGame(game);
 	client->initPlayerInfo(game->getPlayerView());
 	client->run();
-	game->run();
+	//game->run();
+
 	delete client;
 	delete game;
+
 }
 
 void initServer(PersistentConfiguration* configuration) {
@@ -110,7 +112,6 @@ void initMenu(PersistentConfiguration* configuration, string& playerName,
 		}
 
 	}
-
 	delete menu;
 }
 
@@ -159,7 +160,6 @@ int main(int argc, char** argv) {
 				DEFAULT_CONFIGURATION_FILE, OUTPUT_FILENAME);
 		initMenu(&configuration, playerName, playerType);
 	}
-
 	SDL_Quit();
 	Logs::logErrorMessage(string("************Program Ended**************** "));
 	Logs::closeFile();

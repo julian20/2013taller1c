@@ -74,29 +74,21 @@ void* transmit(void* _client) {
 			break;
 		}
 
-
-	//	cout<<"checkea un new playerr"<<endl;
 		client->checkNewPlayers();
 
-//		cout<<"send eventes"<<endl;
 		client->sendEvents();
 
-
-
-	//	cout<<"recibe player updates"<<endl;
 		map<string, PlayerUpdate*> updates = client->recvPlayersUpdates();
 
-		//cout<<"checkea un new player"<<endl;
 		if (!updates.empty()){
 			client->updatePlayers(updates);
 		}
 
-		//cout<<"pregunta si cambio el chat"<<endl;
+
 		Chat* chat=client->getChat();
 		client->sendChatChanges();
-		//cout<<"envia los cambios del chat"<<endl;
+
 		vector<ChatMessage*> chatUpdates = client->recvChatUpdates();
-		//cout<<"recibe los chat updates"<<endl;
 		client->updateChat(chatUpdates);
 
 		//cout<<"termino de mandar todo"<<endl;
@@ -113,7 +105,7 @@ void* transmit(void* _client) {
 	// salir bien. Digo que es un flag y no siempre, porque
 	// para la entrega 3 podria no estar playing y no haberse
 	// roto la conexion.
-	//return NULL;
+
 }
 
 
@@ -162,7 +154,7 @@ Client::Client(string host, int port) {
 	this->info=NULL;
 	this->view=NULL;
 	this->player=NULL;
-	cout<<"se crea un nuevo chat"<<endl;
+	//cout<<"se crea un nuevo chat"<<endl;
 	this->chat= new Chat();
 
 }
@@ -226,11 +218,14 @@ void Client::run(){
 
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
-	if (pthread_create(&thread, &attr, transmit, (void*) this) != 0) {
+	int a=pthread_create(&thread, &attr, transmit, (void*) this);
+	if (a != 0) {
 		Logs::logErrorMessage("Cliente: Error al inicializar transmit thread");
 		exit(0);
 	}
-
+	this->game->run();
+	pthread_join(thread,NULL);
+	//return;
 }
 
 /* *************  FUNCIONES DE RECEPCION DE ARCHIVOS *************** */
@@ -459,6 +454,7 @@ Game* Client::getGame() {
 /* ********************** CLIENT DESTRUCTOR ************************ */
 
 Client::~Client() {
-	pthread_join(thread,NULL);
+	//cout<<"va a finalizar el client"<<endl;
 	close(clientID);
+	//cout<<"lo finalizo"<<endl;
 }
