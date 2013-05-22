@@ -40,7 +40,11 @@ bool Chat::NewLine()
 // esta funcion pasandole el nombre dle tipo
 void Chat::setReceptor(string receptor)
 {
-	this->receptor = receptor;
+	if(receptor==this->playerName)
+	{
+		this->Disable();
+	}else{
+	this->receptor = receptor;}
 }
 
 /*ChatController* Chat::getChatController()
