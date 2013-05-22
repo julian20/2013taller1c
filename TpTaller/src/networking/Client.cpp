@@ -46,10 +46,22 @@ using namespace std;
 /* *************  FUNCIONES EJECUTADAS EN LOS THREADS ************** */
 /* ***************************************************************** */
 
+void* connectionChecker(void* par){
+
+	Client* client = (Client*) par;
+
+	client->chechServerOn();
+
+	SDL_Delay(5000);
+
+}
+
+
 void* transmit(void* _client) {
 
 	Client* client = (Client*) _client;
 	Game* game = client->getGame();
+	pthread_t isAliveThread;
 
 	// Espero que se active el juego (que comienze a correr)
 	while (!game->isActive());
@@ -63,6 +75,8 @@ void* transmit(void* _client) {
 	}
 
 	client->addLocalPlayer();
+
+	pthread_create(&isAliveThread,NULL,connectionChecker,(void*)client );
 
 	while (game->isActive()) {
 
@@ -270,6 +284,18 @@ void Client::downloadFiles() {
 		cont++;
 	}
 	cout<<"Downloaded "<< cont<<" files\n";
+
+}
+
+void Client::chechServerOn(){
+
+	int error = 0;
+	socklen_t len = sizeof (error);
+	int retval = getsockopt (clientID, SOL_SOCKET, SO_ERROR, &error, &len );
+
+	if (error != 0){
+		Popup::popupWindow(string("Se ha perdido la conexion con el servidor"));
+	}
 
 }
 
