@@ -289,8 +289,6 @@ void Client::downloadFiles() {
 
 void Client::chechServerOn(){
 
-
-
 	while (true){
 
 		if (timer.getTimeIntervalSinceStart() > 1000){
