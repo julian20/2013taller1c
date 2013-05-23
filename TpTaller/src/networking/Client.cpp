@@ -459,6 +459,7 @@ void Client::updateChat(vector<ChatMessage*> updates)
 	for (int i=0; i<updates.size(); i++)
 	{
 		this->chat->Enable();
+
 		this->chat->newMessageReceive(updates[i]);
 	//	delete updates[i];
 	}
