@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> /* memset() */
+#include <signal.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -189,6 +190,8 @@ Server::Server(int port) {
 		exit(1);
 	}
 	active = false;
+
+	signal(SIGPIPE, SIG_IGN);
 
 }
 
