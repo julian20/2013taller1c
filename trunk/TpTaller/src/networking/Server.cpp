@@ -50,6 +50,32 @@ using namespace std;
 /* *************  FUNCIONES EJECUTADAS EN LOS THREADS ************** */
 /* ***************************************************************** */
 
+typedef struct{
+	Server* sv;
+	string playerName;
+	int socket;
+}Param_t;
+
+void* clientConnectionChecker(void* par){
+
+
+	Param_t* p = (Param_t*) par;
+	Server* server = p->sv;
+	string playerName = p->playerName;
+	int sock = p->socket;
+
+	while (true){
+		bool alive = server->checkClient();
+		if (!alive){
+			server->setInactive();
+			server->disconectPlayer(sock,playerName);
+		}
+	}
+
+	SDL_Delay(1000);
+
+}
+
 // Funcion que ejecuta al conectarse cada client
 void* handle(void* par) {
 
@@ -84,23 +110,24 @@ void* handle(void* par) {
 		info->getPlayer()->setName(playerName);
 	}
 
+	Param_t param = {server,playerName,clientSocket};
+	pthread_t thread_checker;
+	pthread_create(&thread_checker,NULL,clientConnectionChecker,(void*)&param);
+
+
 	sent.insert(pair<int, string>(clientSocket, playerName));
 	server->addPlayerToGame(clientSocket, info);
 
 	cout << playerName << " has conected.. " << endl;
-	/*ChatServer* serverChat=server->getChat();
-	 serverChat->setGame(game);
-	 serverChat->addPlayerToChat(clientSocket,playerName);*/bool playing = true;
+	bool playing = true;
 
 	while (playing && server->isActive()) {
-		//cout<<"Conectados :"<<endl;
-		/*for (map<string, int>::iterator it = server->getPlayerConnected().begin();
-					it != server->getPlayerConnected().end(); ++it) {
-			cout<<"nombre: "<<it->first<<" id: "<<it->second<<endl;*/
-	//	}
-		playing = server->exchangeAliveSignals(clientSocket);
-		if (!playing)
+
+		bool alive = server->exchangeAliveSignals(clientSocket);
+		if (!alive){
 			break;
+		}
+
 
 		server->sendNewPlayers(clientSocket, &sent);
 
@@ -116,10 +143,11 @@ void* handle(void* par) {
 
 		server->recvChatMessages(clientSocket);
 
-		//server->setMessages(chatmsj);
 		server->deliverMessages(clientSocket);
 
 	}
+
+	pthread_cancel(thread_checker);
 
 	server->disconectPlayer(clientSocket, playerName);
 
@@ -345,6 +373,18 @@ std::vector<std::string> Server::listFilesInDirectoryWithBase(
 
 /* *****************  RECEPCION DE UN NUEVO JUGADOR **************** */
 
+bool Server::exchangeAliveSignals(int clientSocket) {
+		timer.start();
+        string signal = ComunicationUtils::recvString(clientSocket);
+        if (signal.compare(ALIVE_SIGNAL) == 0) {
+                ComunicationUtils::sendString(clientSocket, ALIVE_SIGNAL);
+                return true;
+        }
+
+        return false;
+
+}
+
 PlayerInfo* Server::recieveNewPlayer(int clientSocket) {
 	return ComunicationUtils::recvPlayerInfo(clientSocket);
 }
@@ -416,17 +456,6 @@ int Server::reconectPlayer(int clientSocket, string playerName,
 }
 
 /* *********************** SERVER MAIN LOOP ************************ */
-
-bool Server::exchangeAliveSignals(int clientSocket) {
-	string signal = ComunicationUtils::recvString(clientSocket);
-	if (signal.compare(ALIVE_SIGNAL) == 0) {
-		ComunicationUtils::sendString(clientSocket, ALIVE_SIGNAL);
-		return true;
-	}
-
-	return false;
-
-}
 
 void Server::sendNewPlayers(int clientSocket, map<int, string> *sended) {
 
@@ -584,6 +613,15 @@ void Server::setMessages(vector<ChatMessage*> msjs)
 	}
 }
 /* ************************** CLOSE SERVER ************************* */
+
+bool Server::checkClient(){
+
+	if (timer.getTimeIntervalSinceStart() > 1000){
+		return false;
+	}
+
+	return true;
+}
 
 void Server::disconectPlayer(int clientSocket, string playerName) {
 

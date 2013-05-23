@@ -10,6 +10,7 @@
 #include <networking/Chat/ChatServer.h>
 #include <networking/PlayerEvent.h>
 #include <networking/PlayerInfo.h>
+#include <view/timer/Timer.h>
 #include <MultiplayerGame.h>
 
 #include <iostream>
@@ -36,6 +37,7 @@ public:
 	std::vector<std::string> listFilesInDirectory(std::string directory);
 	std::vector<std::string> listFilesInDirectoryWithBase(std::string directory);
 
+	void startLoop();
 	PlayerInfo* recieveNewPlayer(int clientSocket);
 	void sendAproval(int clientSocket, int result);
 	int isNameAbilivable(string playerName);
@@ -43,7 +45,8 @@ public:
 	void sendNewName(int clientSocket, string newName);
 	int addPlayerToGame(int clientSocket, PlayerInfo* info);
 
-	bool exchangeAliveSignals(int clientSocket);
+	bool checkClient();
+
 	void sendNewPlayers(int clientSocket, map<int,string> *sended);
 
 
@@ -53,6 +56,7 @@ public:
 	void getPlayersUpdates();
 	void sendPlayersUpdates(int clientSocket, string playerName);
 
+	bool exchangeAliveSignals(int clientSocket);
 	void disconectPlayer(int clientSocket, string playerName);
 	Chat* recvChat(int clientSocket);
 	void deliverMessages(int clientSocket);
@@ -82,6 +86,8 @@ private:
 	vector<ChatMessage*> messages;
 	bool active;
 	map<int,pthread_t> connections;
+
+	Timer timer;
 
 };
 
