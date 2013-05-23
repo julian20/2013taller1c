@@ -52,6 +52,8 @@ void* connectionChecker(void* par){
 
 	client->chechServerOn();
 
+	SDL_Delay(5000);
+
 }
 
 
@@ -79,7 +81,9 @@ void* transmit(void* _client) {
 	while (game->isActive()) {
 
 		bool alive = client->exchangeAliveSignals();
-		if (!alive){
+		if (!alive) {
+			Popup::popupWindow(string(" NO SE PUDO CONECTAR CON EL SERVIDOR (Se apago el servidor?)"));
+			cerr << " SE HA CORTADO LA CONEXION. NO SE PUDO CONECTAR CON EL SERVIDOR  " << endl;
 			game->setInactive();
 			break;
 		}
@@ -95,6 +99,7 @@ void* transmit(void* _client) {
 		}
 
 
+		Chat* chat=client->getChat();
 		client->sendChatChanges();
 
 		vector<ChatMessage*> chatUpdates = client->recvChatUpdates();
@@ -114,8 +119,6 @@ void* transmit(void* _client) {
 	// salir bien. Digo que es un flag y no siempre, porque
 	// para la entrega 3 podria no estar playing y no haberse
 	// roto la conexion.
-
-	return NULL;
 
 }
 
@@ -288,16 +291,12 @@ void Client::chechServerOn(){
 
 	while (true){
 
-		while (! game->isActive());
-
 		if (timer.getTimeIntervalSinceStart() > 1000){
 			Popup::popupWindow("Se ha perdido la conexion con el servidor");
 			while (timer.getTimeIntervalSinceStart() > 1000){
 			}
 			Popup::popupWindow("Se ha restablecido la conexion");
 		}
-
-		SDL_Delay(1000);
 
 	}
 }
@@ -328,20 +327,18 @@ void Client::addLocalPlayer() {
 
 /* *********************** CLIENT MAIN LOOP ************************ */
 
-
 bool Client::exchangeAliveSignals() {
+
 	timer.start();
-        ComunicationUtils::sendString(clientID, ALIVE_SIGNAL);
-        string signal = ComunicationUtils::recvString(clientID);
-        if (signal.compare(ALIVE_SIGNAL) == 0){
 
-        	return true;
-        }
+	ComunicationUtils::sendString(clientID, ALIVE_SIGNAL);
+	string signal = ComunicationUtils::recvString(clientID);
+	if (signal.compare(ALIVE_SIGNAL) == 0)
+		return true;
 
-        return false;
+	return false;
 
 }
-
 
 void Client::checkNewPlayers() {
 
