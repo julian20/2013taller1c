@@ -482,7 +482,10 @@ void MapData::updateVisibleTiles() {
 		for (int col = leftCol - VisibleTilesMargin;
 				col < rightCol + VisibleTilesMargin; col++) {
 
-			Tile* playerTile = mainPlayer->getTile();
+			//Tile* playerTile = mainPlayer->getTile();
+			int x = mainPlayer->getCurrentPos()->getX();
+			int y = mainPlayer->getCurrentPos()->getY();
+			Tile* playerTile = new Tile(Tile::getTileCoordinates(x, y));
 			Tile currentTile;
 			currentTile.setCoordinates(row, col);
 
@@ -496,7 +499,6 @@ void MapData::updateVisibleTiles() {
 			}
 
 			delete playerTile;
-
 		}
 	}
 
