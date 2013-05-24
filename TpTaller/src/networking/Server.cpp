@@ -89,16 +89,10 @@ void* handle(void* par) {
 	server->addPlayerToGame(clientSocket, info);
 
 	cout << playerName << " has conected.. " << endl;
-	/*ChatServer* serverChat=server->getChat();
-	 serverChat->setGame(game);
-	 serverChat->addPlayerToChat(clientSocket,playerName);*/bool playing = true;
+	bool playing = true;
 
 	while (playing && server->isActive()) {
-		//cout<<"Conectados :"<<endl;
-		/*for (map<string, int>::iterator it = server->getPlayerConnected().begin();
-					it != server->getPlayerConnected().end(); ++it) {
-			cout<<"nombre: "<<it->first<<" id: "<<it->second<<endl;*/
-	//	}
+
 		playing = server->exchangeAliveSignals(clientSocket);
 		if (!playing)
 			break;
@@ -117,7 +111,6 @@ void* handle(void* par) {
 
 		server->recvChatMessages(clientSocket);
 
-		//server->setMessages(chatmsj);
 		server->deliverMessages(clientSocket);
 
 	}
@@ -512,7 +505,6 @@ void Server::recvChatMessages(int clientSocket){
 
 	// 1ro recibo la cantidad de cambios que se enviaran
 	int n = ComunicationUtils::recvNumber(clientSocket);
-//	cout<<"recibe "<<n<<" mensajes"<<endl;
 	// No hubo cambios
 	if (n <= 0)
 		return ;
@@ -520,14 +512,12 @@ void Server::recvChatMessages(int clientSocket){
 	// Recibo cada uno de los cambios
 	for (int i = 0; i < n; i++) {
 		ChatMessage* msj = ComunicationUtils::recvChatMessage(clientSocket);
-	//	cout<<"el msj que recibe es"<<msj->getMSJ()<< " para "<<msj->getReceptor() <<endl;
 		if (msj != NULL)
 			this->messages.push_back(msj);
 	}
 }
 
 void Server::deliverMessages(int clientSocket){
-//	vector<ChatMessage*> msjs = chat->getMessagesReceive();
 	//Hay que filtrar los clientes
 
 	vector<ChatMessage*> vecAux;
@@ -536,13 +526,7 @@ void Server::deliverMessages(int clientSocket){
 	this->messages;
 
 	int cant=0;
-/*	if(this->messages.size()==0)
-	{
-					cant=0;
-					ComunicationUtils::sendNumber(clientSocket, cant);
-					return;
-	}
-	else{*/
+
 	for (int i = 0 ; i < this->messages.size() ; i++)
 	{
 		ChatMessage* msj=this->messages[i];
@@ -560,23 +544,16 @@ void Server::deliverMessages(int clientSocket){
 
 			}
 	}
-//	cout<<"server le va a mandar al cliente "<<cant<<" msj nuevos"<<endl;
 	ComunicationUtils::sendNumber(clientSocket, cant);
 	for (int i=0; i<cant;i++)
 	{
-	//	cout<<"al que le tiene q mandar es a "<<vecAux[i]->getReceptor()<<" el mensaje "<<vecAux[i]->getMSJ()<<endl;
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getMSJ());
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getReceptor());
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getSender());
 
-	//	delete vecAux[i];
 	}
 
-	}
-
-//}
-
-
+}
 
 
 void Server::setMessages(vector<ChatMessage*> msjs)
@@ -586,6 +563,7 @@ void Server::setMessages(vector<ChatMessage*> msjs)
 		this->messages.push_back(msjs[i]);
 	}
 }
+
 /* ************************** CLOSE SERVER ************************* */
 
 void Server::disconectPlayer(int clientSocket, string playerName) {

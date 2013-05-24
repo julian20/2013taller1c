@@ -28,10 +28,11 @@
 #define CLIENT_MAP_FILE "./configuration/client-received/map.yaml"
 
 #define SERVER_CONFIG_FILE "./configuration/server/serverLocalConfig.yaml"
-#define SERVER_SEND_FILE "./configuration/server/entities.yaml"
 #define SERVER_SEND_MAP_LOCATION "./sendFiles/configuration/client-received/entities.yaml"
 
 #define OUTPUT_FILENAME "configuration/parserOutput.yaml"
+
+#define COPY_MAP_SCRIPT "./copyServerSendFile.sh"
 
 using namespace std;
 
@@ -87,7 +88,7 @@ void initServer() {
 	ConfigurationReader serverConfigReader = ConfigurationReader();
 	PersistentConfiguration configuration = serverConfigReader.loadConfiguration(SERVER_CONFIG_FILE,OUTPUT_FILENAME);
 
-	string command = string("cp -f ") + string(SERVER_SEND_FILE) + string(" ") +  string(SERVER_SEND_MAP_LOCATION);
+	string command = string(COPY_MAP_SCRIPT) + string(" ") + string(SERVER_CONFIG_FILE) + string(" ") +  string(SERVER_SEND_MAP_LOCATION);
 	system(command.c_str());
 
 
