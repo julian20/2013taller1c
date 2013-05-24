@@ -1,0 +1,23 @@
+- playerViews:
+- entityViews:    
+- gameConfiguration:
+    serverIP: 127.0.0.1
+    serverPort: 32001
+    fps: 30
+    delay: 10
+    movementMargin: 90
+    gameMusic: resources/sound/NamiLogin.ogg
+    fullscreen: false
+    screenAutoConfig: false
+    defaultScreenHeight: 600
+    defaultScreenWidth: 1000
+    defaultBPP: 0
+    menuBackImage: resources/menu/lich.jpg
+    menuBackMusic: resources/menu/sound/QuinnLogin.ogg
+    tileWidth: 70
+    tileHeight: 50
+- tiles:
+- mapDimensions: [50, 50]
+- playerLocations:
+- entityLocations:
+- tileLocations:
