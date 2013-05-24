@@ -20,11 +20,18 @@
 
 #include <vector>
 
-#define CONFIGURATION_FILE "./configuration/entities.yaml"
-#define PLAYER_TYPE_CONFIGURATION_FILE "./configuration/playerType.yaml"
-#define OUTPUT_FILENAME "configuration/parserOutput.yaml"
+#define SINGLE_PLAYER_CONFIG_FILE "./configuration/singleplayer/entities.yaml"
 #define DEFAULT_CONFIGURATION_FILE "./configuration/.entitiesDefault.yaml"
-#define CLIENT_CONFIGURATION_FILE "./configuration/clientPlayerConfiguration.yaml"
+
+#define CLIENT_CONFIG_FILE "./configuration/client-config/clientLocalConfig.yaml"
+#define CLIENT_RECEIVED_FILE "./configuration/client-received/entities.yaml"
+#define CLIENT_MAP_FILE "./configuration/client-received/map.yaml"
+
+#define SERVER_CONFIG_FILE "./configuration/server/serverLocalConfig.yaml"
+#define SERVER_SEND_FILE "./configuration/server/entities.yaml"
+#define SERVER_SEND_MAP_LOCATION "./sendFiles/configuration/client-received/entities.yaml"
+
+#define OUTPUT_FILENAME "configuration/parserOutput.yaml"
 
 using namespace std;
 
@@ -34,13 +41,15 @@ void initGame(PersistentConfiguration* configuration) {
 	delete game;
 }
 
-void initMultiplayerGame(PersistentConfiguration* configuration,
-		string& playerName, string& playerType) {
+void initMultiplayerGame(string& playerName, string& playerType) {
+
+	ConfigurationReader clientConfigReader = ConfigurationReader();
+	PersistentConfiguration configuration = clientConfigReader.loadConfiguration(CLIENT_CONFIG_FILE,OUTPUT_FILENAME);
 
 	std::string serverIP =
-			configuration->getAnimationConfiguration()->getServerIP();
+			configuration.getAnimationConfiguration()->getServerIP();
 	unsigned int serverPort =
-			configuration->getAnimationConfiguration()->getServerPort();
+			configuration.getAnimationConfiguration()->getServerPort();
 
 	Client* client = new Client(serverIP, serverPort);
 	client->downloadFiles();
@@ -50,37 +59,42 @@ void initMultiplayerGame(PersistentConfiguration* configuration,
 	string command = string("sed \"s/NAME_TAG/");
 	command += playerType;
 	command += string("/g\" ");
-	command += string(CONFIGURATION_FILE);
+	command += string(CLIENT_RECEIVED_FILE);
 	command += string(" > ");
-	command += string(PLAYER_TYPE_CONFIGURATION_FILE);
+	command += string(CLIENT_MAP_FILE);
 	system(command.c_str());
 
 	ConfigurationReader newReader = ConfigurationReader();
 	PersistentConfiguration downloadedConfig = newReader.loadConfiguration(
-			PLAYER_TYPE_CONFIGURATION_FILE, OUTPUT_FILENAME);
+			CLIENT_MAP_FILE, OUTPUT_FILENAME);
 
 	Game* game = new Game(&downloadedConfig, true);
 
 	game->getPlayerView()->setShowableName(string(playerName));
-//	game->getPlayerView()->setName(string(playerType));
 	game->getPlayerView()->getPersonaje()->setName(string(playerName));
 
 	client->setGame(game);
 	client->initPlayerInfo(game->getPlayerView());
 	client->run();
-	//game->run();
 
 	delete client;
 	delete game;
 
 }
 
-void initServer(PersistentConfiguration* configuration) {
+void initServer() {
+
+	ConfigurationReader serverConfigReader = ConfigurationReader();
+	PersistentConfiguration configuration = serverConfigReader.loadConfiguration(SERVER_CONFIG_FILE,OUTPUT_FILENAME);
+
+	string command = string("cp -f ") + string(SERVER_SEND_FILE) + string(" ") +  string(SERVER_SEND_MAP_LOCATION);
+	system(command.c_str());
+
 
 	unsigned int serverPort =
-			configuration->getAnimationConfiguration()->getServerPort();
+			configuration.getAnimationConfiguration()->getServerPort();
 
-	MultiplayerGame* game = new MultiplayerGame(configuration);
+	MultiplayerGame* game = new MultiplayerGame(&configuration);
 	Server* server = new Server(serverPort);
 	server->run(game);
 	delete server;
@@ -112,12 +126,12 @@ void initMenu(PersistentConfiguration* configuration, string& playerName,
 			break;
 		case MULTIPLAYER_GAME_EVENT:
 			menu->close();
-			initMultiplayerGame(configuration, playerName, playerType);
+			initMultiplayerGame(playerName, playerType);
 			event = EXIT_EVENT;
 			break;
 		case SERVER_EVENT:
 			menu->close();
-			initServer(configuration);
+			initServer();
 			event = EXIT_EVENT;
 			break;
 
@@ -166,7 +180,7 @@ int main(int argc, char** argv) {
 	ConfigurationReader cfgReader = ConfigurationReader();
 	try {
 		PersistentConfiguration configuration = cfgReader.loadConfiguration(
-				PLAYER_TYPE_CONFIGURATION_FILE, OUTPUT_FILENAME);
+				SINGLE_PLAYER_CONFIG_FILE, OUTPUT_FILENAME);
 		initMenu(&configuration, playerName, playerType);
 	} catch (std::exception& e) {
 		unLog.logErrorMessage(

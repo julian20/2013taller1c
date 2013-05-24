@@ -105,12 +105,6 @@ void* transmit(void* _client) {
 		vector<ChatMessage*> chatUpdates = client->recvChatUpdates();
 		client->updateChat(chatUpdates);
 
-		//cout<<"termino de mandar todo"<<endl;
-//		map<string,ChatUpdate*> updatesChat = client->recvChatUpdates();
-//		if (!updatesChat.empty()) {
-//			client->updateChat(updatesChat);
-//		}
-
 	}
 
 	// TODO: aca habria que verificar un flag seteado por el
@@ -187,8 +181,6 @@ string Client::getPlayerName()
 void Client::setGame(Game* game){
 	this->game = game;
 	this->game->setChat(this->chat);
-
-	//cout<<"Setea el chat al game desde el client"<<endl;
 }
 
 /* ******************** CLIENT SET PLAYER INFO ********************* */
@@ -243,7 +235,6 @@ void Client::run(){
 	}
 	this->game->run();
 	pthread_join(thread,NULL);
-	//return;
 }
 
 /* *************  FUNCIONES DE RECEPCION DE ARCHIVOS *************** */
