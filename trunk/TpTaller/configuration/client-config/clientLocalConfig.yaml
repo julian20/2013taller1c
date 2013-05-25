@@ -1,7 +1,7 @@
 - playerViews:
 - entityViews:    
 - gameConfiguration:
-    serverIP: 127.0.0.1
+    serverIP: 192.168.0.101
     serverPort: 32001
     fps: 30
     delay: 10

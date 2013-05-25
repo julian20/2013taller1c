@@ -93,3 +93,46 @@ Tile* MobileEntityUpdate::getNextTile(){
 MobileEntityUpdate::~MobileEntityUpdate() {
 	// TODO Auto-generated destructor stub
 }
+
+//Operator to transform the object into a stream.
+ostream& operator <<(std::ostream& out, const MobileEntityUpdate& update){
+
+	out << update.name << " " << *update.currentPos << " " << *update.endPos << " " << *update.speed << " " << update.attacking << " "
+			<< " " << *update.currentTile << " " << *update.nextTile << " " << *update.initCoords << " ";
+
+
+	return out;
+}
+
+	//Operator to load an object from a stream
+istream& operator >>(std::istream& in, MobileEntityUpdate& update){
+
+	string name;
+	in >> name;
+	update.setName(name);
+	Vector3 vect;
+	// 1ro currentPos
+	in >> vect;
+	update.setCurrentPos(&vect);
+	// luego endPos
+	in >> vect;
+	update.setEndPos(&vect);
+	Speed speed;
+	in >> speed;
+	update.setSpeed(&speed);
+	bool attacking;
+	in >> attacking;
+	update.setAttacking(attacking);
+	Tile tile;
+	in >> tile;
+	update.setTile(&tile);
+	in >> tile;
+	update.setNextTile(&tile);
+	Coordinates coords;
+	in >> coords;
+	update.setInitCoordinates(&coords);
+
+
+
+	return in;
+}
