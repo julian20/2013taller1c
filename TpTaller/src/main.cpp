@@ -149,8 +149,7 @@ int main(int argc, char** argv) {
 
 	Logs unLog;
 	Logs::openFile();
-	Logs::logErrorMessage(
-			string("************Program Starting**************** "));
+	Logs::logErrorMessage(string("************Program Starting**************** "));
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	string playerName("NewPlayer");
