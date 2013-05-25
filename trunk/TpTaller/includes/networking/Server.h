@@ -43,7 +43,7 @@ public:
 	void sendNewName(int clientSocket, string newName);
 	int addPlayerToGame(int clientSocket, PlayerInfo* info);
 
-	bool exchangeAliveSignals(int clientSocket);
+	bool exchangeAliveSignals(int clientSocket,string playerName);
 	void sendNewPlayers(int clientSocket, map<int,string> *sended);
 
 
@@ -53,6 +53,7 @@ public:
 	void getPlayersUpdates();
 	void sendPlayersUpdates(int clientSocket, string playerName);
 
+	void checkClientStatus(int clientID, string playerName);
 	void disconectPlayer(int clientSocket, string playerName);
 	Chat* recvChat(int clientSocket);
 	void deliverMessages(int clientSocket);
@@ -83,12 +84,9 @@ private:
 	bool active;
 	map<int,pthread_t> connections;
 
-};
+	map<string,Timer> timers;
 
-typedef struct aux{
-	Server* server;
-	int clientID;
-}ThreadParameter;
+};
 
 } /* namespace std */
 #endif /* SERVER_H_ */

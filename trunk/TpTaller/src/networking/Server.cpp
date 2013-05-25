@@ -29,6 +29,7 @@
 #include <SDL/SDL.h>
 
 #include <model/Logs/Logs.h>
+#include <view/timer/Timer.h>
 #include <networking/Server.h>
 #include <networking/ComunicationUtils.h>
 #include <networking/PlayerInfo.h>
@@ -38,6 +39,7 @@
 #define READING_SIZE 4092
 #define ALIVE_SIGNAL "ALIVE"
 #define OK 0
+#define NAME_CHANGE 1
 #define ERROR -1
 
 #define DELAY 50
@@ -47,22 +49,47 @@
 
 using namespace std;
 
+/* ************ AUXILIARY STRUCTS FOR THREAD PARAMETERS ************ */
+
+typedef struct aux{
+	Server* server;
+	int clientID;
+}HandleThreadParameter;
+
+typedef struct paramAux{
+	Server* server;
+	int clientID;
+	string playerName;
+	bool* playing;
+}TimerThreadParameter;
+
+
 /* ***************************************************************** */
 /* *************  FUNCIONES EJECUTADAS EN LOS THREADS ************** */
 /* ***************************************************************** */
 
+void* timerChecker(void* par){
+
+	TimerThreadParameter* parameters = (TimerThreadParameter*) par;
+
+	Server* sv = parameters->server;
+	int clientID = parameters->clientID;
+	string playerName = parameters->playerName;
+
+	sv->checkClientStatus(clientID,playerName);
+
+	return NULL;
+}
+
 // Funcion que ejecuta al conectarse cada client
 void* handle(void* par) {
 
-	/* send(), recv(), close() */
-
-	ThreadParameter* parameter = (ThreadParameter*) par;
+	HandleThreadParameter* parameter = (HandleThreadParameter*) par;
 	int clientSocket = parameter->clientID;
-
 	Server* server = parameter->server;
 	MultiplayerGame* game = server->getGame();
 
-	//Lo primero que hago es mandar el mapa.
+
 	std::vector<std::string> withBase = server->listFilesInDirectoryWithBase(
 			"sendFiles");
 	std::vector<std::string> withoutBase = server->listFilesInDirectory(
@@ -71,9 +98,12 @@ void* handle(void* par) {
 	// Manda las imagenes y sonidos necesarios que se utilizaran.
 	server->sendFiles(withBase, withoutBase, clientSocket);
 
-
 	map<int, string> sent;
 	PlayerInfo* info = server->recieveNewPlayer(clientSocket);
+	if (!info){
+		Logs::logErrorMessage("No se ha recibido la informacion del jugador");
+		return NULL;
+	}
 	string playerName = info->getPlayer()->getName();
 
 	int result = server->isNameAbilivable(playerName);
@@ -85,15 +115,20 @@ void* handle(void* par) {
 		info->getPlayer()->setName(playerName);
 	}
 
+	bool playing = true;
+	cout << playerName << " has conected.. " << endl;
+
+	// Antes de agregarlo al juego creo el thread para chequear el estado en el que se encuentra.
+	TimerThreadParameter param = {server,clientSocket,playerName, &playing};
+	pthread_t timerThread;
+	pthread_create(&timerThread,NULL,timerChecker,(void*)&param);
+
 	sent.insert(pair<int, string>(clientSocket, playerName));
 	server->addPlayerToGame(clientSocket, info);
 
-	cout << playerName << " has conected.. " << endl;
-	bool playing = true;
-
 	while (playing && server->isActive()) {
 
-		playing = server->exchangeAliveSignals(clientSocket);
+		playing = server->exchangeAliveSignals(clientSocket,playerName);
 		if (!playing)
 			break;
 
@@ -104,10 +139,9 @@ void* handle(void* par) {
 		if (!events.empty())
 			game->addEventsToHandle(playerName, events);
 
-
 		server->getPlayersUpdates();
-		server->sendPlayersUpdates(clientSocket, playerName);
 
+		server->sendPlayersUpdates(clientSocket, playerName);
 
 		server->recvChatMessages(clientSocket);
 
@@ -115,7 +149,11 @@ void* handle(void* par) {
 
 	}
 
-	server->disconectPlayer(clientSocket, playerName);
+	pthread_cancel(timerThread);
+	server->disconectPlayer(clientSocket,playerName);
+	close(clientSocket);
+
+
 
 	return NULL;
 
@@ -222,8 +260,8 @@ void Server::run(MultiplayerGame* game) {
 					"Servidor: El servidor no ha podido aceptar la conexion");
 			cerr << "Servidor: El servidor no ha podido aceptar la conexion" << endl;
 		} else {
-			ThreadParameter* tp = (ThreadParameter*) malloc(
-					sizeof(ThreadParameter));
+			HandleThreadParameter* tp = (HandleThreadParameter*) malloc(
+					sizeof(HandleThreadParameter));
 			tp->clientID = newsock;
 			tp->server = this;
 			if (pthread_create(&thread, &attr, handle, (void*) tp) != 0) {
@@ -351,7 +389,7 @@ void Server::sendAproval(int clientSocket, int result) {
 
 int Server::isNameAbilivable(string playerName) {
 	if (conectedPlayers.count(playerName) > 0)
-		return ERROR;
+		return NAME_CHANGE;
 	return OK;
 }
 
@@ -413,9 +451,11 @@ int Server::reconectPlayer(int clientSocket, string playerName,
 
 /* *********************** SERVER MAIN LOOP ************************ */
 
-bool Server::exchangeAliveSignals(int clientSocket) {
-	string signal = ComunicationUtils::recvString(clientSocket);
+bool Server::exchangeAliveSignals(int clientSocket,string playerName) {
+	string signal = "";
+	signal = ComunicationUtils::recvString(clientSocket);
 	if (signal.compare(ALIVE_SIGNAL) == 0) {
+		timers[playerName].start();
 		ComunicationUtils::sendString(clientSocket, ALIVE_SIGNAL);
 		return true;
 	}
@@ -465,7 +505,7 @@ vector<PlayerEvent*> Server::recvEvents(int clientSocket) {
 		if (event != NULL)
 			events.push_back(event);
 	}
-//	game->deliverMessage(msjs[i]);
+
 	return events;
 
 }
@@ -536,9 +576,7 @@ void Server::deliverMessages(int clientSocket){
 			{
 
 				vecAux.push_back(this->messages[i]);
-			//	delete msjs[i];
-				 using std::swap;
-				swap(this->messages[i], this->messages.back());
+				std::swap(this->messages[i], this->messages.back());
 				messages.pop_back();
 				cant++;
 
@@ -562,6 +600,33 @@ void Server::setMessages(vector<ChatMessage*> msjs)
 	{
 		this->messages.push_back(msjs[i]);
 	}
+}
+
+/* ******************* CHECKING CONNECTION ************************* */
+
+void Server::checkClientStatus(int clientID, string playerName){
+
+	while (true){
+
+		if (timers[playerName].getTimeIntervalSinceStart() > 1000){
+			vector<PlayerEvent*> disconectEvent;
+			disconectEvent.push_back(new PlayerEvent(EVENT_DISCONECT));
+			game->addEventsToHandle(playerName, disconectEvent);
+
+			// Espero a que se reestablezca la conexion
+			while (timers[playerName].getTimeIntervalSinceStart() > 1000){
+				SDL_Delay(1000);
+			}
+
+			vector<PlayerEvent*> conectEvent;
+			conectEvent.push_back(new PlayerEvent(EVENT_CONECT));
+			game->addEventsToHandle(playerName, conectEvent);
+		}
+
+		SDL_Delay(500);
+
+	}
+
 }
 
 /* ************************** CLOSE SERVER ************************* */
@@ -603,13 +668,11 @@ map<string,int> Server::getPlayerConnected()
 	return this->conectedPlayers;
 }
 
-
-/* *********************** SERVER DESTRUCTOR ********************** */
+/* *********************** SERVER DESTRUCTOR *********************** */
 
 Server::~Server() {
 	for (map<int,pthread_t>::iterator it = connections.begin() ; it != connections.end() ; ++it){
 		pthread_join(it->second,NULL);
-		close(it->first);
 	}
 	close(serverID);
 	exit(0);
