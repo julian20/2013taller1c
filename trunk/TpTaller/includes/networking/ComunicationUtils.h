@@ -14,7 +14,7 @@
 
 #include <string>
 
-namespace std {
+using namespace std;
 
 class ComunicationUtils {
 public:
@@ -50,5 +50,4 @@ private:
 	virtual ~ComunicationUtils();
 };
 
-} /* namespace std */
 #endif /* COMUNICATIONUTILS_H_ */

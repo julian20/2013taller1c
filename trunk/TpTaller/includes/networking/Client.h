@@ -17,8 +17,7 @@
 #include <model/Chat.h>
 
 #include <map>
-
-namespace std {
+using namespace std;
 
 class Client {
 public:
@@ -70,5 +69,4 @@ private:
 
 };
 
-} /* namespace std */
 #endif /* CLIENT_H_ */

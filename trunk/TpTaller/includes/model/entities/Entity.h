@@ -23,14 +23,14 @@ using namespace std;
 class Entity {
 public:
 	Entity();
-	virtual void setPos(float x, float y, float z = 0);
+	void setPos(float x, float y, float z = 0);
 	Vector3* getCurrentPos();
 	virtual string getClassName();
 	virtual ~Entity();
 	Base* getBase();
 	void setBase(Base* base);
-	std::string getName();
-	void setName(std::string name);
+	virtual std::string getName();
+	virtual void setName(std::string name);
 	Coordinates getCoordinates();
 	void setCoordinates(int row, int col);
 	void setBaseSizes(int width, int height);

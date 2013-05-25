@@ -15,7 +15,7 @@
 #include <model/entities/player/Player.h>
 #include <view/entities/PlayerView.h>
 
-namespace std {
+using namespace std;
 
 class PlayerInfo {
 public:
@@ -81,5 +81,4 @@ private:
 
 };
 
-} /* namespace std */
 #endif /* PLAYERINFO_H_ */

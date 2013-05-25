@@ -11,7 +11,6 @@
 
 #include <SDL/SDL_events.h>
 
-namespace std {
 
 const char* buttons_released[NUM_BUTTONS] = {
 		"resources/menu/buttons/new_game_button.png",
@@ -126,4 +125,3 @@ Menu::~Menu() {
 	delete view;
 }
 
-} /* namespace std */

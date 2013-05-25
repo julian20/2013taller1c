@@ -54,7 +54,7 @@ void* connectionChecker(void* par){
 	client->chechServerOn();
 
 	SDL_Delay(5000);
-
+	return NULL;
 }
 
 
@@ -103,7 +103,6 @@ void* transmit(void* _client) {
 		}
 
 
-		Chat* chat=client->getChat();
 		client->sendChatChanges();
 
 		vector<ChatMessage*> chatUpdates = client->recvChatUpdates();
@@ -112,7 +111,7 @@ void* transmit(void* _client) {
 	}
 
 	pthread_cancel(isAliveThread);
-
+	return NULL;
 	return NULL;
 }
 

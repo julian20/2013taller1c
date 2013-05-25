@@ -101,7 +101,7 @@ void Game::setUpCharacters(MapView* map, MapData* mapData, EntityViewMap* viewMa
 					if (!view)
 						continue;
 					Entity* entity = view->getEntity();
-					if (entity->getClassName() == "Personaje") {
+					if (entity->getClassName() == "Player") {
 						//TODO - Lucas: "personaje" deberia ser una lista de personajes
 						personaje = (Player*) entity;
 

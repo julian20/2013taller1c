@@ -15,7 +15,7 @@
 #include <view/MapCameraView.h>
 #include <networking/PlayerEvent.h>
 
-namespace std {
+using namespace std;
 
 class NetworkPlayerController : public PlayerController {
 public:
@@ -30,6 +30,4 @@ private:
 
 	void handleEvent(PlayerEvent* event);
 };
-
-} /* namespace std */
 #endif /* NETWORKPLAYERCONTROLLER_H_ */

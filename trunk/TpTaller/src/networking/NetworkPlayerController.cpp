@@ -6,8 +6,7 @@
  */
 
 #include <networking/NetworkPlayerController.h>
-
-namespace std {
+using namespace std;
 
 NetworkPlayerController::NetworkPlayerController(Player* player,MapData* map) {
 	this->player = player;
@@ -86,5 +85,3 @@ Player* NetworkPlayerController::getPlayer(){
 NetworkPlayerController::~NetworkPlayerController() {
 	// TODO Auto-generated destructor stub
 }
-
-} /* namespace std */

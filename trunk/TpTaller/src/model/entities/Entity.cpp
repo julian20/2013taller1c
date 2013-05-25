@@ -71,6 +71,7 @@ std::string Entity::getName() {
 }
 
 void Entity::setName(std::string name) {
+
 	this->name = name;
 }
 

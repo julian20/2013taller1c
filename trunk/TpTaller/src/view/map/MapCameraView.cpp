@@ -8,8 +8,7 @@
 #include <view/MapCameraView.h>
 #include <model/map/Tile.h>
 
-namespace std {
-
+using namespace std;
 MapCameraView::MapCameraView(Position* position, SDL_Surface* screen,
 		int mapRows, int mapCols) {
 	this->camera = position;
@@ -142,4 +141,3 @@ MapCameraView::~MapCameraView() {
 	delete lastTilePosY;
 }
 
-} /* namespace std */

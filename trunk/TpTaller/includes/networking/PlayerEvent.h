@@ -11,7 +11,7 @@
 #include <model/entityProperties/Coordinates.h>
 #include <iostream>
 
-namespace std {
+using namespace std;
 
 typedef enum {
 	EVENT_MOVE, EVENT_RUNNING, EVENT_ATTACK, EVENT_BLOCK, EVENT_CANCEL_BLOCK,
@@ -42,5 +42,4 @@ private:
 	Coordinates* tileCoordinates;
 };
 
-} /* namespace std */
 #endif /* PLAYEREVENT_H_ */

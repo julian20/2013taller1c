@@ -15,7 +15,7 @@
 
 #include <vector>
 
-namespace std {
+using namespace std;
 
 class MenuView {
 public:
@@ -42,5 +42,4 @@ private:
 	bool audioOpen;
 };
 
-} /* namespace std */
 #endif /* MENUVIEW_H_ */
