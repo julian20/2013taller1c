@@ -41,7 +41,7 @@ MenuView::MenuView(GameConfiguration* configuration) {
 				this->gameConfig->getDefaultBPP(),
 				SDL_HWSURFACE | SDL_RESIZABLE);
 	} else {
-		screen = SDL_SetVideoMode(info->current_w, info->current_h,
+		screen = SDL_SetVideoMode(768, 524,
 				info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE | SDL_RESIZABLE);
 
 	}
@@ -161,7 +161,7 @@ void MenuView::startVoice() {
 }
 
 void MenuView::close() {
-	for (int i = 0; i < buttons.size(); i++)
+	for (unsigned i = 0; i < buttons.size(); i++)
 		delete buttons[i];
 	if (screen != NULL)
 		SDL_FreeSurface(screen);

@@ -162,6 +162,7 @@ Client::Client(string host, int port) {
 	this->view=NULL;
 	this->player=NULL;
 	this->chat= new Chat();
+	thread = NULL;
 
 }
 Chat* Client::getChat()
@@ -350,7 +351,7 @@ void Client::sendChatChanges(){
 	// 1ro envio la cantidad de events que voy a mandar
 	ComunicationUtils::sendNumber(clientID, mensajesEnviados.size());
 
-	for(int i=0; i<mensajesEnviados.size();i++)
+	for(unsigned i=0; i<mensajesEnviados.size();i++)
 	{
 		ComunicationUtils::sendChatMessage(clientID,mensajesEnviados[i]);
 	}
@@ -403,7 +404,7 @@ map<string, PlayerUpdate*> Client::recvPlayersUpdates() {
 void Client::updateChat(vector<ChatMessage*> updates)
 {
 
-	for (int i=0; i<updates.size(); i++)
+	for (unsigned i=0; i<updates.size(); i++)
 	{
 		this->chat->Enable();
 
