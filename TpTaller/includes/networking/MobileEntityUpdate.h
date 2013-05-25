@@ -42,6 +42,11 @@ public:
 	void setInitCoordinates(Coordinates* initCoords);
 	void setNextTile(Tile* nextTile);
 	Tile* getNextTile();
+	//Operator to transform the object into a stream.
+	friend ostream& operator <<(std::ostream&, const MobileEntityUpdate&);
+
+	//Operator to load an object from a stream
+	friend istream& operator >>(std::istream&, MobileEntityUpdate&);
 
 
 protected:

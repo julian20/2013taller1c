@@ -328,6 +328,50 @@ PlayerUpdate* ComunicationUtils::recvPlayerUpdate(int sockID){
 
 }
 
+void ComunicationUtils::sendMobileEntityUpdate(int sockID,MobileEntityUpdate* update){
+
+	stringstream updatestream;
+	updatestream << *update;
+
+	int size = updatestream.str().size() + EXTRA;
+	ComunicationUtils::sendNumber(sockID,size);
+
+	int sendSize = 0;
+	int i = 0;
+
+	while (sendSize != size){
+		sendSize = send(sockID,updatestream.str().c_str(), size, 0);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
+}
+
+
+MobileEntityUpdate* ComunicationUtils::recvMobileEntityUpdate(int sockID){
+
+	int size = ComunicationUtils::recvNumber(sockID);
+	char updatebuffer[size];
+	stringstream updatestream;
+
+	int recvSize = 0;
+	int i = 0;
+
+	while (recvSize != size){
+		recvSize = recv(sockID,updatebuffer,size,0);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
+
+	updatestream << updatebuffer;
+
+	MobileEntityUpdate* update = new MobileEntityUpdate();
+
+	updatestream >> *update;
+
+	return update;
+
+}
+
 ChatUpdate* ComunicationUtils::recvChatUpdate(int sockID){
 
 	int size = ComunicationUtils::recvNumber(sockID);
