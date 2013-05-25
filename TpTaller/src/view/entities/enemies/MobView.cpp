@@ -14,15 +14,13 @@
 
 #include <cmath>
 #include <string>
-
-//Posicion de los pies del personaje respecto de la base de la imagen
-#define OFFSET_Y	15
-#define ANIMATION_CHANGE_DELAY 1
-#define STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE 16
-#define DEFAULT_CHARACTER_ID	"characterDefault"
-#define NUMBER_OF_STANDING_FRAMES 3
+#define STANDING "zombieStanding"
+#define STANDING_SRC "resources/zombie/zombieStanding.png"
+#define WALKING "zombieWalking"
+#define WALKING_SRC "resources/zombie/zombieWalking.png"
 
 MobView::MobView(){
-
+	textureHolder->addTexture(new TextureDefinition(STANDING,STANDING_SRC));
+	textureHolder->addTexture(new TextureDefinition(WALKING,WALKING_SRC));
 }
 
