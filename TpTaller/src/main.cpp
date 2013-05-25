@@ -54,10 +54,12 @@ void initMultiplayerGame(string& playerName, string& playerType) {
 
 	Client* client = new Client(serverIP, serverPort);
 	client->downloadFiles();
-
+	string command = string("sed -n \"s/^  - name: NewPlayer.*/^  - name: ")
+			+ playerType +string("/\" ") + string("configuration/entities.yaml");
+	system(command.c_str());
 	// Reemplazo el tag en el archivo de configuracion por
 	// el player type.
-	string command = string("sed \"s/NAME_TAG/");
+	command = string("sed \"s/NAME_TAG/");
 	command += playerType;
 	command += string("/g\" ");
 	command += string(CLIENT_RECEIVED_FILE);

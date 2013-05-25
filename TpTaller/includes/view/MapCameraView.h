@@ -12,7 +12,7 @@
 
 #include <SDL/SDL.h>
 
-namespace std {
+using namespace std;
 
 typedef enum {
 	MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT
@@ -45,5 +45,4 @@ private:
 
 };
 
-} /* namespace std */
 #endif /* MAPCAMERA_H_ */

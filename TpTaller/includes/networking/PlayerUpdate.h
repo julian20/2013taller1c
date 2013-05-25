@@ -16,35 +16,20 @@
 #include <model/Chat.h>
 #include <model/entityProperties/Speed.h>
 #include <model/entityProperties/Coordinates.h>
+#include <networking/MobileEntityUpdate.h>
 #include <model/Chat.h>
-namespace std {
+using namespace std;
 
-class PlayerUpdate {
+class PlayerUpdate : public MobileEntityUpdate {
 public:
 	PlayerUpdate();
 	virtual ~PlayerUpdate();
 
-	void setName(string playerName);
-	string getName();
 	Chat* chat;
-	Vector3* getCurrentPos();
-	void setCurrentPos(Vector3* currentPos);
-	Vector3* getEndPos();
-	void setEndPos(Vector3* endPos);
-	Speed* getSpeed();
-	void setSpeed(Speed* speed);
-	bool isAttacking();
-	void setAttacking(bool attacking);
 	bool isBlocking();
 	void setBlocking(bool blocking);
 	bool isActive();
 	void setActive(bool active);
-	Tile* getTile();
-	void setTile(Tile* tile);
-	Coordinates* getInitCoordinates();
-	void setInitCoordinates(Coordinates* initCoords);
-	void setNextTile(Tile* nextTile);
-	Tile* getNextTile();
 	void setChat(Chat* chat);
 
 	//Operator to transform the object into a stream.
@@ -54,25 +39,12 @@ public:
 	friend istream& operator >>(std::istream&, PlayerUpdate&);
 
 private:
-
-	string name;
-
-	Vector3* currentPos;
-	Vector3* endPos;
-
-	Speed* speed;
-
-	bool attacking;
 	bool blocking;
 	bool active;
 
-	Coordinates* initCoords;
 
-	Tile* currentTile;
-	Tile* nextTile;
 
 
 };
 
-} /* namespace std */
 #endif /* PLAYERUPDATE_H_ */

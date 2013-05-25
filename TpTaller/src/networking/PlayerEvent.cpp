@@ -6,8 +6,7 @@
  */
 
 #include <networking/PlayerEvent.h>
-
-namespace std {
+using namespace std;
 
 PlayerEvent::PlayerEvent(){
 	this->type = EVENT_NONE;
@@ -81,4 +80,3 @@ PlayerEvent::~PlayerEvent() {
 	delete tileCoordinates;
 }
 
-} /* namespace std */

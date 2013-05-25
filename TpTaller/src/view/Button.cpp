@@ -7,8 +7,7 @@
 
 #include <view/Button.h>
 
-namespace std {
-
+using namespace std;
 Button::Button(SDL_Surface* pressed, SDL_Surface* released, SDL_Rect pos,
 		MenuEvent event) {
 	this->pressed = pressed;
@@ -54,4 +53,3 @@ Button::~Button() {
 	SDL_FreeSurface(released);
 }
 
-} /* namespace std */

@@ -24,7 +24,7 @@
 
 #define ITER_LIMIT 10
 
-namespace std {
+using namespace std;
 
 #define NUMBER_SIZE 16
 #define EXTRA 3
@@ -416,4 +416,3 @@ ComunicationUtils::~ComunicationUtils() {
 	// TODO Auto-generated destructor stub
 }
 
-} /* namespace std */

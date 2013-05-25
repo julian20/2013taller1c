@@ -16,7 +16,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 
-namespace std {
+using namespace std;
 
 #define NUM_BUTTONS 4
 
@@ -37,5 +37,4 @@ private:
 
 };
 
-} /* namespace std */
 #endif /* MENU_H_ */

@@ -7,7 +7,7 @@
 
 #include <networking/PlayerUpdate.h>
 
-namespace std {
+using namespace std;
 
 PlayerUpdate::PlayerUpdate(){
 	this->currentPos = new Vector3();
@@ -22,49 +22,9 @@ PlayerUpdate::PlayerUpdate(){
 	this->chat=NULL;
 }
 
-void PlayerUpdate::setName(string playerName){
-	this->name = playerName;
-}
 
 void PlayerUpdate::setChat(Chat* chat){
 	this->chat = chat;
-}
-
-string PlayerUpdate::getName(){
-	return this->name;
-}
-
-Vector3* PlayerUpdate::getCurrentPos(){
-	return currentPos;
-}
-
-void PlayerUpdate::setCurrentPos(Vector3* currentPos){
-	this->currentPos->setValues(currentPos->getX(),currentPos->getY(), currentPos->getZ());
-}
-
-Vector3* PlayerUpdate::getEndPos(){
-	return endPos;
-}
-
-void PlayerUpdate::setEndPos(Vector3* endPos){
-	this->endPos->setValues(endPos->getX(),endPos->getY(), endPos->getZ());
-}
-
-Speed* PlayerUpdate::getSpeed(){
-	return speed;
-}
-
-void PlayerUpdate::setSpeed(Speed* speed){
-	this->speed->setMagnitude(speed->getMagnitude());
-	this->speed->setDirection(speed->getDirection());
-}
-
-bool PlayerUpdate::isAttacking(){
-	return attacking;
-}
-
-void PlayerUpdate::setAttacking(bool attacking){
-	this->attacking = attacking;
 }
 
 bool PlayerUpdate::isBlocking(){
@@ -83,34 +43,6 @@ void PlayerUpdate::setActive(bool active){
 	this->active = active;
 }
 
-Tile* PlayerUpdate::getTile(){
-	return currentTile;
-}
-
-void PlayerUpdate::setTile(Tile* tile){
-	this->currentTile->setFScore(tile->getFScore());
-	this->currentTile->setPosition(tile->getPosition());
-	this->currentTile->setCoordinates(tile->getCoordinates());
-}
-
-Coordinates* PlayerUpdate::getInitCoordinates(){
-	return initCoords;
-}
-
-void PlayerUpdate::setInitCoordinates(Coordinates* initCoords){
-	this->initCoords->setCol(initCoords->getCol());
-	this->initCoords->setRow(initCoords->getRow());
-}
-
-void PlayerUpdate::setNextTile(Tile* nextTile){
-	this->nextTile->setFScore(nextTile->getFScore());
-	this->nextTile->setPosition(nextTile->getPosition());
-	this->nextTile->setCoordinates(nextTile->getCoordinates());
-}
-
-Tile* PlayerUpdate::getNextTile(){
-	return nextTile;
-}
 
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const PlayerUpdate& update){
@@ -165,5 +97,3 @@ istream& operator >>(std::istream& in, PlayerUpdate& update){
 PlayerUpdate::~PlayerUpdate() {
 	// TODO Auto-generated destructor stub
 }
-
-} /* namespace std */

@@ -11,7 +11,7 @@
 #include <model/map/TextureHolder.h>
 #include <model/map/TextureDefinition.h>
 
-namespace std {
+using namespace std;
 
 PlayerInfo::PlayerInfo() {
 
@@ -241,4 +241,3 @@ PlayerInfo::~PlayerInfo() {
 	if (initCoords) delete initCoords;
 }
 
-} /* namespace std */

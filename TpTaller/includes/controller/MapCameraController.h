@@ -11,7 +11,7 @@
 #include <SDL/SDL.h>
 #include <view/MapCameraView.h>
 
-namespace std {
+using namespace std;
 
 typedef enum {
 	MOUSE_TOP,
@@ -44,5 +44,4 @@ private:
 	int movementMargin;
 };
 
-} /* namespace std */
 #endif /* MAPCAMERACONTROLLER_H_ */

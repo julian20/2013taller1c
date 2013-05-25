@@ -8,6 +8,7 @@
 #include <model/entities/player/Player.h>
 #include <model/entities/Entity.h>
 #include <stdio.h>
+using namespace std;
 
 Player::Player() {
 	endPos = new Vector3(0, 0);
@@ -18,53 +19,9 @@ Player::Player() {
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	isActive = true;
-//	chat= new Chat();
 	attacking = false;
 	blocking = false;
-	hasChange = true;
-}/*
-Chat* Player::getChat()
-{
-	return this->chat;
-}*/
-void Player::setChat(Chat* chat)
-{
-	if(this->chat)
-	{
-		delete this->chat;
-	}
-	this->chat=chat;
-}
-void Player::setPos(float x, float y, float z) {
-	currentPos->setValues(x, y, z);
-
-	endPos->setValues(currentPos->getX(), currentPos->getY());
-}
-
-void Player::moveTo(int x, int y, int z) {
-	endPos = new Vector3(x, y, z);
-}
-
-bool Player::IsMoving() {
-	return !(currentPos->isEqual(endPos));
-}
-
-bool Player::isRunning() {
-	if (speed->getMagnitude() >= 2 * initSpeed->getMagnitude())
-		return true;
-	return false;
-}
-
-void Player::moveImmediately(Coordinates coords){
-	Coordinates* newCoords = new Coordinates(coords);
-	Tile* tile = new Tile(newCoords);
-	Position* pos = tile->getPosition();
-
-	currentPos->setValues(pos->getX(), pos->getY(), pos->getZ());
-	endPos->setValues(pos->getX(), pos->getY(), pos->getZ());
-	delete tile;
-
-	this->hasChange = true;
+	hasChanged = true;
 }
 
 void Player::update() {
@@ -96,6 +53,15 @@ void Player::update() {
 		moveDirection->multiplyBy(getSpeed()->getMagnitude());
 		currentPos->add(moveDirection);
 	}
+}
+
+void Player::setChat(Chat* chat)
+{
+	if(this->chat)
+	{
+		delete this->chat;
+	}
+	this->chat=chat;
 }
 
 void Player::update(PlayerUpdate* update){
@@ -135,9 +101,9 @@ ChatUpdate* Player::generateChatUpdate()
 		return update;
 	}
 }
-PlayerUpdate* Player::generatePlayerUpdate(){
 
-	if (!this->hasChange) return NULL;
+PlayerUpdate* Player::generatePlayerUpdate(){
+	if (!this->hasChanged) return NULL;
 
 	PlayerUpdate* update = new PlayerUpdate();
 
@@ -160,34 +126,6 @@ PlayerUpdate* Player::generatePlayerUpdate(){
 	return update;
 }
 
-void Player::loadNextPosition() {
-	if (path->empty())
-		return;
-	Tile* tile = path->front();
-	path->remove(tile);
-
-	Position* tilePos = tile->getPosition();
-	moveTo(tilePos->getX(), tilePos->getY());
-
-	setTile(tile);
-}
-
-Vector2* Player::getMovementDirection() {
-	Vector2* moveDirection = new Vector2(endPos->getX() - currentPos->getX(),
-			endPos->getY() - currentPos->getY());
-	Vector2* v = new Vector2(0, 0);
-
-	if (moveDirection->isEqual(v)) {
-		delete v;
-		return moveDirection;
-	}
-
-	delete v;
-
-	moveDirection->normalize();
-
-	return moveDirection;
-}
 
 Player::Player(string name, Position* position, Speed* speed,
 		vector<Power*> powers) {
@@ -216,36 +154,6 @@ Player::~Player() {
 		delete currentTile;
 }
 
-void Player::setPosition(Position* position) {
-	Position* pos = Tile::computePosition(position->getX(), position->getY());
-	currentPos->setValues(pos->getX(), pos->getY());
-	delete pos;
-}
-
-Speed* Player::getSpeed() {
-	return speed;
-}
-
-void Player::setSpeed(Speed* speed) {
-	if (this->speed)
-		delete this->speed;
-	this->speed = speed;
-	if (initSpeed == NULL)
-		initSpeed = new Speed(speed->getMagnitude(), new Vector2(0, 0));
-}
-
-void Player::setInitSpeed(Speed* initSpeed) {
-	this->initSpeed = initSpeed;
-}
-
-std::string Player::getName() {
-	return name;
-}
-
-void Player::setName(std::string name) {
-	this->name = name;
-//	this->chat->assignPlayer(name);
-}
 
 std::vector<Power*> Player::getPowers() {
 	return powers;
@@ -253,55 +161,6 @@ std::vector<Power*> Player::getPowers() {
 
 void Player::setPowers(std::vector<Power*> powers) {
 	this->powers = powers;
-}
-
-void Player::assignPath(list<Tile *> *_path) {
-	if (path)
-		delete path;
-	this->path = _path;
-
-	loadNextPosition();
-}
-
-void Player::setTile(Tile* _tile) {
-	if (this->currentTile)
-		delete this->currentTile;
-	currentTile = _tile;
-
-	// Las coordinates se actualizan en EntityViewMap
-}
-
-Tile* Player::getTile() {
-	// Devuelve una copia del tile
-	Tile* retval = new Tile();
-	retval->setCoordinates(currentTile->getCoordinates());
-
-	return retval;
-}
-
-string Player::getClassName() {
-	return "Personaje";
-}
-
-void Player::setSpeedMagnitude(int mag) {
-	speed->setMagnitude(mag);
-}
-
-bool Player::isAttacking() {
-	return attacking;
-}
-
-void Player::attack() {
-	attacking = true;
-}
-
-void Player::setAttack(bool attacking){
-	this->attacking = attacking;
-}
-
-void Player::cancelAttack() {
-	attacking = false;
-	hasChange = true;
 }
 
 void Player::block() {
@@ -315,7 +174,7 @@ void Player::setBlock(bool blocking){
 void Player::cancelBlock() {
 	if (blocking){
 		blocking = false;
-		hasChange = true;
+		hasChanged = true;
 	}
 }
 
@@ -337,22 +196,6 @@ void Player::setViewRange(int _viewRange) {
 
 int Player::getViewRange() {
 	return this->viewRange;
-}
-
-void Player::emptyPath() {
-	std::list<Tile *>::iterator iter;
-	for (iter = path->begin(); iter != path->end(); ++iter) {
-		Tile* tile = *iter;
-
-		delete tile;
-	}
-
-	delete path;
-	this->path = new list<Tile *>();
-}
-
-void Player::stop() {
-	emptyPath();
 }
 
 Player& Player::operator=(const Player &other) {
@@ -381,6 +224,9 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 	return out;
 }
 
+string Player::getClassName() {
+	return "Player";
+}
 //Operator to load an object from a stream
 istream& operator >>(std::istream& in, Player& player) {
 	string name;
@@ -416,20 +262,12 @@ istream& operator >>(std::istream& in, Player& player) {
 	return in;
 }
 
-Vector3* Player::getEndPos(){
-	return endPos;
-}
-
-void Player::setEndPos(float x, float y, float z){
-	endPos->setValues(x, y, z);
-}
-
 void Player::setChange(bool change){
-	hasChange = change;
+	hasChanged = change;
 }
 
 bool Player::getChange(){
-	return hasChange;
+	return hasChanged;
 }
 
 void Player::setActive() {

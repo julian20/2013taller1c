@@ -21,7 +21,7 @@
 #include <view/MapView.h>
 #include <map>
 
-namespace std {
+using namespace std;
 
 class MultiplayerGame {
 public:
@@ -54,5 +54,4 @@ private:
 	void applyFPS(int timer);
 };
 
-} /* namespace std */
 #endif /* MULTIPLAYERGAME_H_ */

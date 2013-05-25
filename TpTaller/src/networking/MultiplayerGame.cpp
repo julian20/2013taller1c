@@ -9,7 +9,7 @@
 #include <model/map/MapData.h>
 
 
-namespace std {
+using namespace std;
 
 MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
@@ -138,6 +138,5 @@ MultiplayerGame::~MultiplayerGame() {
 	// TODO Auto-generated destructor stub
 }
 
-} /* namespace std */
 
 

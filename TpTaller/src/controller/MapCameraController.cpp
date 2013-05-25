@@ -7,7 +7,7 @@
 
 #include <controller/MapCameraController.h>
 
-namespace std {
+using namespace std;
 
 MapCameraController::MapCameraController(MapCameraView* camera,
 		unsigned int movementMargin) {
@@ -159,4 +159,3 @@ MapCameraController::~MapCameraController() {
 	// TODO Auto-generated destructor stub
 }
 
-} /* namespace std */

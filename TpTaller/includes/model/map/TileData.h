@@ -12,7 +12,7 @@
 #include <model/entities/player/Player.h>
 #include <vector>
 
-namespace std {
+using namespace std;
 
 class TileData {
 public:
@@ -48,5 +48,4 @@ private:
 	bool walkable;
 };
 
-} /* namespace std */
 #endif /* TILEDATA_H_ */

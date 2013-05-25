@@ -20,8 +20,7 @@
 
 #define DEFAULT_BACKIMG "resources/menu/lich.jpg"
 
-namespace std {
-
+using namespace std;
 MenuView::MenuView(GameConfiguration* configuration) {
 
 	musica = NULL;
@@ -178,4 +177,3 @@ MenuView::~MenuView() {
 	SDL_Quit();
 }
 
-} /* namespace std */

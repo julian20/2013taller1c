@@ -15,7 +15,7 @@
 
 #include <string>
 
-namespace std {
+using namespace std;
 
 typedef enum {
 	BUTTON_PRESSED, BUTTON_RELEASED
@@ -41,5 +41,4 @@ private:
 	ButtonState state;
 };
 
-} /* namespace std */
 #endif /* BUTTON_H_ */

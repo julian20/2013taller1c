@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-namespace std {
+using namespace std;
 
 class Server {
 public:
@@ -31,10 +31,10 @@ public:
 	void run(MultiplayerGame* game);
 
 	void sendMap(string mapfile,int sockID);
-	void sendFiles(std::vector<std::string> wBase, std::vector<std::string> woBase, int sockID);
+	void sendFiles(vector<string> wBase, vector<string> woBase, int sockID);
 
-	std::vector<std::string> listFilesInDirectory(std::string directory);
-	std::vector<std::string> listFilesInDirectoryWithBase(std::string directory);
+	vector<string> listFilesInDirectory(string directory);
+	vector<string> listFilesInDirectoryWithBase(string directory);
 
 	PlayerInfo* recieveNewPlayer(int clientSocket);
 	void sendAproval(int clientSocket, int result);
@@ -88,5 +88,4 @@ private:
 
 };
 
-} /* namespace std */
 #endif /* SERVER_H_ */
