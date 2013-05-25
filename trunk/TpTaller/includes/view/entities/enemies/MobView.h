@@ -21,10 +21,6 @@
 #define _USE_MATH_DEFINES	// To use math.h constants
 #include <math.h>
 
-#define		SCREEN_WIDTH	640
-#define		SCREEN_HEIGHT  	480
-#define		SCREEN_BPP  	32
-
 using namespace std;
 
 class MobView: public MobileEntityView {
