@@ -19,7 +19,7 @@
 
 using namespace std;
 
-class MobileEntity: public Entity {
+class MobileEntity : public Entity {
 public:
 	MobileEntity();
 	MobileEntity(string name, Position* position, Speed* speed);

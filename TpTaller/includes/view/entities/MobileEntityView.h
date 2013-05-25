@@ -1,15 +1,16 @@
 /* 
- * File:   PlayerView.h
+ * File:   MobileEntityView.h
  * Author: damian
  *
  * Created on 23 de marzo de 2013, 12:25
  */
-#ifndef PLAYERVIEW_H
-#define	PLAYERVIEW_H
+#ifndef MOBILEENTITYVIEW_H
+#define	MOBILEENTITYVIEW_H
 
-#include <model/entities/player/Player.h>
+#include <model/entities/MobileEntity.h>
 #include <view/networking/ChatWindowsView.h>
 #include <view/entities/MobileEntityView.h>
+#include <view/entities/EntityView.h>
 #include <view/TextHandler.h>
 #include <model/entityProperties/Position.h>
 #include <SDL/SDL.h>
@@ -21,6 +22,10 @@
 #define _USE_MATH_DEFINES	// To use math.h constants
 #include <math.h>
 
+typedef enum {
+	LEFT, UP_LEFT, UP, UP_RIGHT, RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT
+} SpriteType;
+
 #define		SCREEN_WIDTH	640
 #define		SCREEN_HEIGHT  	480
 #define		SCREEN_BPP  	32
@@ -28,31 +33,31 @@
 using namespace std;
 
 
-class PlayerView: public MobileEntityView {
+
+class MobileEntityView: public EntityView {
 public:
-	PlayerView();
-	PlayerView(PlayerView* otherPlayer);
+	MobileEntityView();
+	MobileEntityView(MobileEntityView* otherMobileEntity);
 	void Show(SDL_Surface* fondo, bool drawFog);
-	void setPersonaje(Player* personaje);
-	Player* getPersonaje();
 	void UpdateCameraPos(Position* _camPos);
-	Player* getEntity();
+	MobileEntity* getEntity();
 	void setEntity(Entity* entity);
 	int getNClips();
 	void setNClips(int clips);
 	void setName(std::string name);
 	void setShowableName(string name);
-	virtual ~PlayerView();
+	void setMobileEntity(MobileEntity* entity);
+	virtual ~MobileEntityView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
 
-private:
-	ChatWindowsView* chatView;
+protected:
+
 	void showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog);
 	void showStandingAnimation(SpriteType sprite, SDL_Surface* fondo, bool drawFog);
 	void playAnimation(SpriteType sprite, SDL_Surface* screen, bool drawFog);
-	void loadPlayerImage();
-	Player* player;
+	void loadMobileEntityImage();
+	MobileEntity* mobileEntity;
 	Position* camPos;
 	SpriteType currentSprite;
 	int marco; 	// Current frame
@@ -63,20 +68,17 @@ private:
 	bool wasStanding;
 
 	SDL_Surface* attackImage;
-	SDL_Surface* attackImageFog;
+
 	int numberOfAttackClips;
 	SDL_Surface* walkingImage;
-	SDL_Surface* walkingImageFog;
+
 	int numberOfWalkingClips;
 	SDL_Surface* idleImage;
-	SDL_Surface* idleImageFog;
+
 	int numberOfIdleClips;
 	SDL_Surface* runningImage;
-	SDL_Surface* runningImageFog;
+
 	int numberOfRunningClips;
-	SDL_Surface* idleBlockImage;
-	SDL_Surface* idleBlockImageFog;
-	int numberOfIdleBlockClips;
 
 	int computeNumberOfClips(SDL_Surface* img);
 
