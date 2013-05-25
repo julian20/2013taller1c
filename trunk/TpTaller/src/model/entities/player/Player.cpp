@@ -22,6 +22,8 @@ Player::Player() {
 	attacking = false;
 	blocking = false;
 	hasChanged = true;
+	chat = NULL;
+	viewRange = 200;
 }
 
 void Player::update() {
@@ -139,6 +141,11 @@ Player::Player(string name, Position* position, Speed* speed,
 	endPos = new Vector3(0, 0, 0);
 	endPos->setValues(currentPos->getX(), currentPos->getY());
 	attacking = false;
+	blocking = false;
+	chat = NULL;
+	isActive = true;
+	mainPlayer = true;
+	viewRange = 200;
 }
 
 Player::~Player() {
@@ -147,7 +154,7 @@ Player::~Player() {
 	delete this->speed;
 	if (initSpeed != NULL)
 		delete initSpeed;
-	for (int i = 0; i < powers.size(); i++) {
+	for (unsigned i = 0; i < powers.size(); i++) {
 		delete powers[i];
 	}
 	if (currentTile)

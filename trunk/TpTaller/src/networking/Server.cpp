@@ -222,6 +222,9 @@ Server::Server(int port) {
 	}
 	active = false;
 
+	chat = NULL;
+	game = NULL;
+
 	signal(SIGPIPE, SIG_IGN);
 
 }
@@ -563,11 +566,9 @@ void Server::deliverMessages(int clientSocket){
 	vector<ChatMessage*> vecAux;
 	map<int,int>  cantMapAux;
 
-	this->messages;
-
 	int cant=0;
 
-	for (int i = 0 ; i < this->messages.size() ; i++)
+	for (unsigned i = 0 ; i < this->messages.size() ; i++)
 	{
 		ChatMessage* msj=this->messages[i];
 		string receptor=msj->getReceptor();
@@ -596,7 +597,7 @@ void Server::deliverMessages(int clientSocket){
 
 void Server::setMessages(vector<ChatMessage*> msjs)
 {
-	for(int i=0; i<msjs.size();i++)
+	for(unsigned i=0; i<msjs.size();i++)
 	{
 		this->messages.push_back(msjs[i]);
 	}

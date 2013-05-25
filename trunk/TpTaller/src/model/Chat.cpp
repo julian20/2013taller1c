@@ -168,7 +168,7 @@ void Chat::update(ChatUpdate* update)
 
 void Chat::clearNewMessagesSend()
 {
-	for(int i=0; i < this->messagesSend.size(); i++)
+	for(unsigned i=0; i < this->messagesSend.size(); i++)
 	{
 	//	cout<<"se va a eliminar el msj "<<messagesSend[i]->getMSJ()<<endl;
 		messagesSend.pop_back();
@@ -180,7 +180,7 @@ void Chat::clearNewMessagesSend()
 ostream& operator <<(std::ostream& out, const Chat& chat){
 	out << chat.enable << " " << chat.messagesSend.size() << " ";
 
-	for (int i = 0 ; i < chat.messagesSend.size() ; i++){
+	for (unsigned i = 0 ; i < chat.messagesSend.size() ; i++){
 		out << *(chat.messagesSend[i]) << " ";
 	}
 

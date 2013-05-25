@@ -23,6 +23,8 @@ ChatWindowsView::ChatWindowsView(){
 	this->clip.x = 0;
 	this->clip.y = 0;
 	this->clip.h = WINDOWSHEIGHT;
+	this->player = NULL;
+	this->_screen = NULL;
 
 	font = TTF_OpenFont(FONT,20);
 	SDL_Colour colour = {1, 1, 1 };

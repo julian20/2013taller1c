@@ -36,8 +36,6 @@ void MapView::setUpPersonajes() {
 			if (personaje != NULL) {
 
 				posTile = Tile::computePositionTile(row, col);
-				Coordinates* coords = Tile::getTileCoordinates(posTile.x,
-						posTile.y);
 				personaje->setPos((float) posTile.x, (float) posTile.y);
 			}
 		}
