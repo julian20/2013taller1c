@@ -19,6 +19,7 @@ Entity::Entity() {
 	this->coord = new Coordinates(0, 0);
 	this->base = new Base();
 	this->name = "";
+	this->life = 100;
 }
 
 void Entity::setPos(float x, float y, float z) {

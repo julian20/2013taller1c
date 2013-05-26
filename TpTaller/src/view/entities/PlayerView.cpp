@@ -10,6 +10,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>
 #include <SDL/SDL_ttf.h>
+#include <SDL/SDL_mixer.h>
 #include <model/Logs/Logs.h>
 
 #include <cmath>
@@ -21,11 +22,27 @@
 #define STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE 16
 #define DEFAULT_CHARACTER_ID	"characterDefault"
 #define NUMBER_OF_STANDING_FRAMES 3
+#define STEPSOUND "resources/sound/player/step.wav"
+
+Mix_Chunk* stepSound;
+void PlayerView::loadSounds() {
+		// Cargamos un sonido
+		stepSound = Mix_LoadWAV(STEPSOUND);
+		if (stepSound == NULL) {
+			Logs::logErrorMessage(
+					"No se puede cargar el sonido: " + string(SDL_GetError()));
+		}
+
+		int volumen = 1000;
+		Mix_VolumeChunk(stepSound, volumen);
+
+	}
 
 PlayerView::PlayerView()
 //Llamamos al constructor de la superclase
 :
 		MobileEntityView() {
+	//loadSounds();
 	camPos = new Position(0, 0);
 	marco = 0;
 	animationChangeRate = 0;
@@ -41,11 +58,12 @@ PlayerView::PlayerView()
 	numberOfAttackClips = 0;
 	currentSprite = DOWN;
 	lastDirection = M_PI * 1 / 2;
+
 }
 
 PlayerView::PlayerView(PlayerView* otherPlayer):
 		MobileEntityView(otherPlayer) {
-
+	//loadSounds();
 	imageHeight = otherPlayer->getImageHeight();
 	imageWidth = otherPlayer->getImageWidth();
 	delay = otherPlayer->getDelay();
@@ -70,6 +88,7 @@ PlayerView::PlayerView(PlayerView* otherPlayer):
 	//chatView = new ChatWindowsView();
 	this->setName(otherPlayer->getName());
 }
+
 
 void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 	SDL_Rect offset, offsetFog;
@@ -283,6 +302,9 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 
 
 	if (player->IsMoving()) {
+
+		if (!Mix_Playing(0))
+			Mix_PlayChannel(0, stepSound, 0);
 		image = walkingImage;
 		fogImage = walkingImageFog;
 		numberOfClips = numberOfWalkingClips;

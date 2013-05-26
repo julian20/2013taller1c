@@ -57,19 +57,19 @@ void Player::update() {
 	}
 }
 
-void Player::setChat(Chat* chat)
-{
-	if(this->chat)
-	{
+void Player::setChat(Chat* chat) {
+	if (this->chat) {
 		delete this->chat;
 	}
-	this->chat=chat;
+	this->chat = chat;
 }
 
-void Player::update(PlayerUpdate* update){
+void Player::update(PlayerUpdate* update) {
 
-	this->currentPos->setValues(update->getCurrentPos()->getX(),update->getCurrentPos()->getY(),update->getCurrentPos()->getZ());
-	this->endPos->setValues(update->getEndPos()->getX(),update->getEndPos()->getY(),update->getEndPos()->getZ());
+	this->currentPos->setValues(update->getCurrentPos()->getX(),
+			update->getCurrentPos()->getY(), update->getCurrentPos()->getZ());
+	this->endPos->setValues(update->getEndPos()->getX(),
+			update->getEndPos()->getY(), update->getEndPos()->getZ());
 	this->speed->setMagnitude(update->getSpeed()->getMagnitude());
 	this->speed->setDirection(update->getSpeed()->getDirection());
 	this->attacking = update->isAttacking();
@@ -79,22 +79,18 @@ void Player::update(PlayerUpdate* update){
 
 	Coordinates currentTileCoords = this->currentTile->getCoordinates();
 	Coordinates nextTileCoords = update->getNextTile()->getCoordinates();
-	if ( ( !currentTileCoords.isEqual( nextTileCoords ) ) && ( this->path->empty() ) ){
+	if ((!currentTileCoords.isEqual(nextTileCoords)) && (this->path->empty())) {
 		this->path->push_front(update->getNextTile());
 	}
 
 }
-ChatUpdate* Player::generateChatUpdate()
-{
+ChatUpdate* Player::generateChatUpdate() {
 	//cout<<this->chat->getMessageSend()<<endl;
-	if(!this->chat->hasChange())
-		{
-			return NULL;
-		}
-	else
-	{
-		cout<<"cambio el chat"<<endl;
-		ChatUpdate* update =  new ChatUpdate();
+	if (!this->chat->hasChange()) {
+		return NULL;
+	} else {
+		cout << "cambio el chat" << endl;
+		ChatUpdate* update = new ChatUpdate();
 
 		update->setReceiver(this->chat->getReceptor());
 		update->setMessage(this->chat->getMessageSend());
@@ -104,8 +100,9 @@ ChatUpdate* Player::generateChatUpdate()
 	}
 }
 
-PlayerUpdate* Player::generatePlayerUpdate(){
-	if (!this->hasChanged) return NULL;
+PlayerUpdate* Player::generatePlayerUpdate() {
+	if (!this->hasChanged)
+		return NULL;
 
 	PlayerUpdate* update = new PlayerUpdate();
 
@@ -127,7 +124,6 @@ PlayerUpdate* Player::generatePlayerUpdate(){
 
 	return update;
 }
-
 
 Player::Player(string name, Position* position, Speed* speed,
 		vector<Power*> powers) {
@@ -161,7 +157,6 @@ Player::~Player() {
 		delete currentTile;
 }
 
-
 std::vector<Power*> Player::getPowers() {
 	return powers;
 }
@@ -174,12 +169,12 @@ void Player::block() {
 	blocking = true;
 }
 
-void Player::setBlock(bool blocking){
+void Player::setBlock(bool blocking) {
 	this->blocking = blocking;
 }
 
 void Player::cancelBlock() {
-	if (blocking){
+	if (blocking) {
 		blocking = false;
 		hasChanged = true;
 	}
@@ -228,6 +223,7 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 		out << *(player.powers[i]) << " ";
 	}
 	out << *(player.currentTile) << " ";
+	out << " " << player.life << " " << player.team;
 	return out;
 }
 
@@ -266,14 +262,20 @@ istream& operator >>(std::istream& in, Player& player) {
 	Tile* tile = new Tile();
 	in >> *tile;
 	player.setTile(tile);
+	int life;
+	in >> life;
+	player.life = life;
+	int team;
+	in >> team;
+	player.team = team;
 	return in;
 }
 
-void Player::setChange(bool change){
+void Player::setChange(bool change) {
 	hasChanged = change;
 }
 
-bool Player::getChange(){
+bool Player::getChange() {
 	return hasChanged;
 }
 

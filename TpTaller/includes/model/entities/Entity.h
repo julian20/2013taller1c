@@ -39,6 +39,7 @@ protected:
 	Base* base;
 	std::string name;
 	Coordinates* coord;
+	int life;
 };
 
 #endif /* ENTITY_H_ */

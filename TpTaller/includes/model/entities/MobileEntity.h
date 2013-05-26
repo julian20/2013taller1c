@@ -81,6 +81,7 @@ protected:
 	bool attacking;
 
 	bool hasChanged;
+	int team;
 };
 
 #endif /* MOBILEENTITY_H_ */
