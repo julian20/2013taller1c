@@ -321,7 +321,7 @@ Game::~Game() {
 	delete cameraController;
 	delete textHandler;
 	if (musica != NULL) Mix_FreeMusic(musica);
-	if (openAudio) Mix_CloseAudio();
+	//if (openAudio) Mix_CloseAudio();
 	SDL_FreeSurface(screen);
 	// TODO Auto-generated destructor stub
 }

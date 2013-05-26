@@ -14,6 +14,7 @@ MobileEntity::MobileEntity() {
 	hasChanged = true;
 	attacking = false;
 	endPos = new Vector3(0, 0);
+	team = 0;
 	this->speed = new Speed(0, new Vector2(0, 0));
 	this->initSpeed = NULL;
 	this->path = new list<Tile *>();
@@ -285,7 +286,8 @@ ostream& operator <<(std::ostream& out, const MobileEntity& MobileEntity) {
 			<< *(MobileEntity.endPos) << " " << *(MobileEntity.speed) << " "
 			<< *(MobileEntity.initSpeed) << " " << *(MobileEntity.base) << " ";
 
-	out << *(MobileEntity.currentTile) << " ";
+	out << *(MobileEntity.currentTile);
+	out << " " << MobileEntity.life <<" "<< MobileEntity.team;
 	return out;
 }
 
@@ -311,6 +313,12 @@ istream& operator >>(std::istream& in, MobileEntity& MobileEntity) {
 	Tile* tile = new Tile();
 	in >> *tile;
 	MobileEntity.setTile(tile);
+	int life;
+	in >> life;
+	MobileEntity.life=life;
+	int team;
+	in >> team;
+	MobileEntity.team=team;
 	return in;
 }
 

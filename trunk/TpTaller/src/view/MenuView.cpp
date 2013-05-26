@@ -17,7 +17,7 @@
 #define START_LAUGH "resources/menu/sound/laugh.wav"
 #define START_TAUNT "resources/menu/sound/darkness.wav"
 #define ENVIRONMENT_WINDOW "SDL_VIDEO_CENTERED=1"
-
+#define AUDIO_CHANNELS 20
 #define DEFAULT_BACKIMG "resources/menu/lich.jpg"
 
 using namespace std;
@@ -117,15 +117,14 @@ void MenuView::initButtons(int numButtons, const char** buttons_released,
 void MenuView::initMusic() {
 	// Inicializamos la librería SDL_Mixer
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-			MIX_DEFAULT_CHANNELS, 4096) < 0) {
+			AUDIO_CHANNELS, 4096) < 0) {
 		Logs::logErrorMessage(
 				"Subsistema de audio no disponible: " + string(SDL_GetError()));
 		musica = NULL;
 		audioOpen = true;
 		return;
 	}
-	//startLaugh();
-
+	Mix_Init(MIX_INIT_OGG);
 	// Cargamos la musica
 	musica = Mix_LoadMUS(this->gameConfig->getMenuBackMusicSrc().c_str());
 
@@ -141,24 +140,6 @@ void MenuView::initMusic() {
 
 }
 
-void MenuView::startVoice() {
-	// Cargamos un sonido
-	darknessVoice = Mix_LoadWAV(START_TAUNT);
-	if (darknessVoice == NULL) {
-		Logs::logErrorMessage(
-				"No se puede cargar el sonido: " + string(SDL_GetError()));
-		darknessVoice = NULL;
-		return;
-	}
-
-	// Establecemos el volumen para el darknessVoice
-	int volumen = 1000;
-	Mix_VolumeChunk(darknessVoice, volumen);
-
-	// Introducimos el sonido en el canal
-	// En el canal 1 con una reproducción (1)
-	Mix_PlayChannel(0, darknessVoice, 0);
-}
 
 void MenuView::close() {
 	for (unsigned i = 0; i < buttons.size(); i++)
@@ -167,10 +148,6 @@ void MenuView::close() {
 		SDL_FreeSurface(screen);
 	if (musica != NULL)
 		Mix_FreeMusic(musica);
-	if (darknessVoice != NULL)
-		Mix_FreeChunk(darknessVoice);
-	if (audioOpen)
-		Mix_CloseAudio();
 }
 
 MenuView::~MenuView() {
