@@ -28,8 +28,8 @@ public:
 	MapData* getMapData();
 
 	void draw(Position* cam);
-	void setUpPersonajes();
-	void assignPersonaje(Player* _personaje);
+	void setUpMobileEntities();
+	void assignMobileEntity(MobileEntity* _personaje);
 	void setUpEntity(EntityView* entityView, Coordinates coor);
 	MapCameraView* getCamera();
 	list<EntityView *> *entitiesView;
@@ -48,7 +48,7 @@ private:
 	string texturesPaths[MapData::AMOUNT_TYPES];
 	SDL_Surface* tilesTextures[MapData::AMOUNT_TYPES];
 	string backgroundPath;
-	Player* player;
+	MobileEntity* mobileEntity;
 
 
 	MapCameraView* camera;

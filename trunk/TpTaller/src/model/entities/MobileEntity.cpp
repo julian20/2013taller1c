@@ -9,6 +9,15 @@
 using namespace std;
 
 MobileEntity::MobileEntity() {
+	speed = new Speed();
+	initSpeed = new Speed();
+	hasChanged = true;
+	attacking = false;
+	endPos = new Vector3(0, 0);
+	this->speed = new Speed(0, new Vector2(0, 0));
+	this->initSpeed = NULL;
+	this->path = new list<Tile *>();
+	this->currentTile = new Tile(new Coordinates(0, 0));
 }
 
 void MobileEntity::setPos(float x, float y, float z) {
@@ -35,7 +44,7 @@ bool MobileEntity::isRunning() {
 	return false;
 }
 
-void MobileEntity::moveImmediately(Coordinates coords){
+void MobileEntity::moveImmediately(Coordinates coords) {
 	Coordinates* newCoords = new Coordinates(coords);
 	Tile* tile = new Tile(newCoords);
 	Position* pos = tile->getPosition();
@@ -78,10 +87,12 @@ void MobileEntity::update() {
 	}
 }
 
-void MobileEntity::update(MobileEntityUpdate* update){
+void MobileEntity::update(MobileEntityUpdate* update) {
 
-	this->currentPos->setValues(update->getCurrentPos()->getX(),update->getCurrentPos()->getY(),update->getCurrentPos()->getZ());
-	this->endPos->setValues(update->getEndPos()->getX(),update->getEndPos()->getY(),update->getEndPos()->getZ());
+	this->currentPos->setValues(update->getCurrentPos()->getX(),
+			update->getCurrentPos()->getY(), update->getCurrentPos()->getZ());
+	this->endPos->setValues(update->getEndPos()->getX(),
+			update->getEndPos()->getY(), update->getEndPos()->getZ());
 	this->speed->setMagnitude(update->getSpeed()->getMagnitude());
 	this->speed->setDirection(update->getSpeed()->getDirection());
 	this->attacking = update->isAttacking();
@@ -89,15 +100,16 @@ void MobileEntity::update(MobileEntityUpdate* update){
 
 	Coordinates currentTileCoords = this->currentTile->getCoordinates();
 	Coordinates nextTileCoords = update->getNextTile()->getCoordinates();
-	if ( ( !currentTileCoords.isEqual( nextTileCoords ) ) && ( this->path->empty() ) ){
+	if ((!currentTileCoords.isEqual(nextTileCoords)) && (this->path->empty())) {
 		this->path->push_front(update->getNextTile());
 	}
 
 }
 
-MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate(){
+MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate() {
 
-	if (!this->hasChanged) return NULL;
+	if (!this->hasChanged)
+		return NULL;
 
 	MobileEntityUpdate* update = new MobileEntityUpdate();
 
@@ -217,7 +229,6 @@ Tile* MobileEntity::getTile() {
 	return retval;
 }
 
-
 void MobileEntity::setSpeedMagnitude(int mag) {
 	speed->setMagnitude(mag);
 }
@@ -230,7 +241,7 @@ void MobileEntity::attack() {
 	attacking = true;
 }
 
-void MobileEntity::setAttack(bool attacking){
+void MobileEntity::setAttack(bool attacking) {
 	this->attacking = attacking;
 }
 
@@ -270,9 +281,9 @@ MobileEntity& MobileEntity::operator=(const MobileEntity &other) {
 
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const MobileEntity& MobileEntity) {
-	out << MobileEntity.name << " " << *(MobileEntity.currentPos) << " " << *(MobileEntity.endPos)
-			<< " " << *(MobileEntity.speed) << " " << *(MobileEntity.initSpeed) << " "
-			<< *(MobileEntity.base) << " ";
+	out << MobileEntity.name << " " << *(MobileEntity.currentPos) << " "
+			<< *(MobileEntity.endPos) << " " << *(MobileEntity.speed) << " "
+			<< *(MobileEntity.initSpeed) << " " << *(MobileEntity.base) << " ";
 
 	out << *(MobileEntity.currentTile) << " ";
 	return out;
@@ -303,20 +314,19 @@ istream& operator >>(std::istream& in, MobileEntity& MobileEntity) {
 	return in;
 }
 
-Vector3* MobileEntity::getEndPos(){
+Vector3* MobileEntity::getEndPos() {
 	return endPos;
 }
 
-void MobileEntity::setEndPos(float x, float y, float z){
+void MobileEntity::setEndPos(float x, float y, float z) {
 	endPos->setValues(x, y, z);
 }
 
-void MobileEntity::setHasChanged(bool change){
+void MobileEntity::setHasChanged(bool change) {
 	hasChanged = change;
 }
 
-bool MobileEntity::getHasChanged(){
+bool MobileEntity::getHasChanged() {
 	return hasChanged;
 }
-
 

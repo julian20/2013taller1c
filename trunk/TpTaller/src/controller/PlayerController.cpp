@@ -36,7 +36,7 @@ bool PlayerController::clickAnotherPlayer(int x ,int y)
 					y - cameraPos->getY());
 	TileData* tileData=this->data->getTileData(coor->getRow(),coor->getCol());
 	if(!tileData) return false;
-	Player* player=tileData->getPersonaje();
+	MobileEntity* player=tileData->getPersonaje();
 	if(player)
 	{
 		this->lastPlayerTouch=player->getName();

@@ -89,13 +89,13 @@ void MobileEntityView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawF
 
 	SDL_BlitSurface(this->image, clip, screen, &offset);
 
-	SDL_Rect offsetNombre;
+	/*SDL_Rect offsetNombre;
 	offsetNombre.x = (int) x + camPos->getX() - nameImage->w / 2;
 	offsetNombre.y = (int) y + camPos->getY() - this->anchorPixel->getY()
 			- h / 2 - 20;
 	offsetNombre.w = nameImage->w;
 	offsetNombre.h = nameImage->h;
-	SDL_BlitSurface(nameImage, NULL, screen, &offsetNombre);
+	SDL_BlitSurface(nameImage, NULL, screen, &offsetNombre);*/
 }
 
 void MobileEntityView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {

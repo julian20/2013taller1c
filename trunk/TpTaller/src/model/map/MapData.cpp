@@ -134,6 +134,44 @@ void MapData::addPersonaje(int row, int col, Player* player) {
 
 }
 
+void MapData::addMobileEntity(int row, int col, MobileEntity* player) {
+	TileData* tileData = getTileData(row, col);
+
+	Tile* personajeTile = new Tile(new Coordinates(row, col));
+	Tile* current;
+	if (tileData->isWalkable()) {	// Si el tile es transitable se agrega el personaje ahi
+		tileData->setPlayer(player);
+
+		player->setTile(personajeTile);
+	} else {	// Si no lo es se lo agrega a una posicion adyacente
+		TileData* currentData;
+		Coordinates currentCoords;
+		map<int, Tile *> tilesContainer;// Uso esto para ir guardando los punteros
+		list<Tile *> neighborTiles = getNeighborTiles(personajeTile, &tilesContainer, true);
+
+		list<Tile *>::const_iterator iter;
+		for (iter = neighborTiles.begin(); iter != neighborTiles.end(); ++iter) {
+			current = *iter;
+
+			currentCoords.setRow(current->getCoordinates().getRow());
+			currentCoords.setCol(current->getCoordinates().getCol());
+			currentData = getTileData(currentCoords);
+			if ( currentData->isWalkable() )
+				break;
+		}
+
+		currentData->setPlayer(player);
+
+		delete personajeTile;
+		Tile* personajeTile = new Tile(new Coordinates(currentCoords.getRow(),
+													   currentCoords.getCol()));
+		player->setTile(personajeTile);
+		player->moveImmediately(currentCoords);
+		player->setCoordinates(currentCoords.getRow(), currentCoords.getCol());
+	}
+
+}
+
 void MapData::updatePersonajePos(int prevRow, int prevCol,
 								 int row, int col, Player* player) {
 
@@ -147,7 +185,7 @@ void MapData::updatePersonajePos(int prevRow, int prevCol,
 	player->setTile(personajeTile);
 }
 
-Player* MapData::getPersonaje(int row, int col) {
+MobileEntity* MapData::getPersonaje(int row, int col) {
 	if( (row < 0 || row >= nrows) || (col < 0 || col >= ncols) ) {
 		std::cout << "Se esta intentando pedir un personaje fuera de rango"
 														<< std::endl;

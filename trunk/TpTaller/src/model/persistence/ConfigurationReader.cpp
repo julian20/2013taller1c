@@ -13,13 +13,15 @@ using namespace std;
  * YAML Configuration file position.
  */
 #define PLAYERVIEWS_POSITION 0
-#define ENTITYVIEWS_POSITION 1
-#define GAME_CONFIGURATION_POSITION 2
-#define TILE_DEFINITION_POSITION 3
-#define MAP_DIMENSION_POSITION 4
-#define PLAYER_LOCATIONS_POSITION 5
-#define ENTITY_LOCATIONS_POSITION 6
-#define MAP_TILES_POSITION 7
+#define MOBILEENTITYVIEWS_POSITION 1
+#define ENTITYVIEWS_POSITION 2
+#define GAME_CONFIGURATION_POSITION 3
+#define TILE_DEFINITION_POSITION 4
+#define MAP_DIMENSION_POSITION 5
+#define PLAYER_LOCATIONS_POSITION 6
+#define MOBILEENTITY_LOCATIONS_POSITION 7
+#define ENTITY_LOCATIONS_POSITION 8
+#define MAP_TILES_POSITION 9
 
 #define DEFAULT_ROWS 50
 #define DEFAULT_COLS 50
@@ -514,8 +516,6 @@ void operator >>(const YAML::Node& yamlNode, Player* personaje) {
 	personaje->setName(auxName);
 	personaje->setPowers(auxPowers);
 	personaje->setCoordinates(auxPosition->getX(), auxPosition->getY());
-	//Tile* newTile = new Tile(personaje->getCoordinates());
-	//personaje->setTile(newTile);
 	Coordinates* playerCoords = new Coordinates(auxPosition->getX(),
 			auxPosition->getY());
 	Tile* newTile = new Tile(playerCoords);
@@ -583,6 +583,79 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 
 	entity->setName(auxName);
 	entity->setCoordinates(auxPosition->getX(), auxPosition->getY());
+}
+
+/**
+ * Sobrecarga de operador >> para llenar los datos de un puntero
+ * a Personaje.
+ */
+void operator >>(const YAML::Node& yamlNode, MobileEntity* mobileEntity) {
+
+	Position* auxPosition = new Position(0, 0, 0);
+	std::string auxName;
+	Speed* auxSpeed = new Speed(0, new Vector2(0, 0));
+	yamlNode["name"] >> auxName;
+
+	try {
+		yamlNode["position"] >> auxPosition;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing Entity position: ")
+						+ yamlException.what());
+	}
+	try {
+		yamlNode["speed"] >> auxSpeed;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing Player speed: ") + yamlException.what());
+		auxSpeed->setMagnitude(DEFAULT_SPEED);
+		auxSpeed->setDirection(new Vector2(0, 0));
+	}
+
+	int row = auxPosition->getX();
+	int col = auxPosition->getY();
+	//printf("row :%i col: %i\n ",row,col);
+
+	stringstream sRow;
+	stringstream sCol;
+	stringstream sZ;
+
+	sRow << row;
+	sCol << col;
+	sZ << auxPosition->getZ();
+
+	if (row < 0 || row >= rows) {
+		Logs::logErrorMessage(
+				string(
+						"Error parsing Entity position >> Entity row out of bound: ")
+						+ string("name: ") + auxName + string(" position: [")
+						+ sRow.str() + string(", ") + sCol.str() + string(", ")
+						+ sZ.str() + string("]"));
+		mobileEntity = NULL;
+		delete auxPosition;
+		return;
+	}
+	if (col < 0 || col >= cols) {
+		Logs::logErrorMessage(
+				string(
+						"Error parsing Entity position >> Entity row out of bound: ")
+						+ string("name: ") + auxName + string(" position: [")
+						+ sRow.str() + string(", ") + sCol.str() + string(", ")
+						+ sZ.str() + string("]"));
+		mobileEntity = NULL;
+		delete auxPosition;
+		return;
+	}
+
+	mobileEntity->setName(auxName);
+	mobileEntity->setSpeed(auxSpeed);
+
+	Coordinates* mobileEntityCoords = new Coordinates(auxPosition->getX(),
+			auxPosition->getY());
+	Tile* newTile = new Tile(mobileEntityCoords);
+
+	mobileEntity->setCoordinates(auxPosition->getX(), auxPosition->getY());
+	mobileEntity->setTile(newTile);
 }
 
 /**
@@ -748,6 +821,182 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	textureHolder->addTexture(idleBlockTexture);
 
 	playerView->setTextureHolder(textureHolder);
+}
+
+/**
+ * Sobrecarga de operador >> para llenar los campos de una PersonajeVista.
+ */
+void operator >>(const YAML::Node& yamlNode,
+		MobileEntityView* mobileEntityView) {
+
+	MobileEntity* auxPlayer = NULL;
+	std::string auxWalkingImageSrc;
+	std::string auxRunningImageSrc;
+	std::string auxIdleImageSrc;
+	std::string auxAttackImageSrc;
+	std::string auxIdleBlocking;
+	std::string auxBlockingAnim;
+	std::string auxName;
+	Vector2* auxAnchorPixel = new Vector2(0, 0);
+	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps,
+			auxAnimationNumberOfRepeats, auxBaseRows, auxBaseCols;
+
+	float auxDelay;
+	try {
+		yamlNode["name"] >> auxName;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView name: ")
+						+ yamlException.what());
+		auxName = DEFAULT_NAME;
+	}
+	try {
+		yamlNode["walkingImageSrc"] >> auxWalkingImageSrc;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView walking image source: ")
+						+ yamlException.what());
+		auxWalkingImageSrc = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["idleImageSrc"] >> auxIdleImageSrc;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView idle image source: ")
+						+ yamlException.what());
+		auxIdleImageSrc = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["runningImageSrc"] >> auxRunningImageSrc;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView running image source: ")
+						+ yamlException.what());
+		auxRunningImageSrc = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["attackImageSrc"] >> auxAttackImageSrc;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView attack image source: ")
+						+ yamlException.what());
+		auxAttackImageSrc = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["idleBlockingImageSrc"] >> auxIdleBlocking;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView idle block image source: ")
+						+ yamlException.what());
+		auxIdleBlocking = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["anchorPixel"] >> auxAnchorPixel;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(
+//				string("Error parsing PlayerView: ") + yamlException.what());
+	}
+	try {
+		yamlNode["imageWidth"] >> auxImageWidth;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView image width: ")
+						+ yamlException.what());
+		auxImageWidth = DEFAULT_IMAGE_WIDTH;
+	}
+	try {
+		yamlNode["imageHeight"] >> auxImageHeight;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView image height: ")
+						+ yamlException.what());
+		auxImageHeight = DEFAULT_IMAGE_HEIGHT;
+	}
+	try {
+		yamlNode["numberOfClips"] >> auxNumberOfClips;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(
+//				string("Error parsing PlayerView: ") + yamlException.what());
+		auxNumberOfClips = DEFAULT_NUMBER_CLIPS;
+	}
+	try {
+		yamlNode["fps"] >> auxFps;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(
+//				string("Error parsing PlayerView: ") + yamlException.what());
+		auxFps = DEFAULT_FPS;
+	}
+	try {
+		yamlNode["delay"] >> auxDelay;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView: ") + yamlException.what());
+		auxDelay = DEFAULT_DELAY;
+	}
+	try {
+		yamlNode["animationRepeats"] >> auxAnimationNumberOfRepeats;
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(
+//				string("Error parsing PlayerView: ") + yamlException.what());
+		auxAnimationNumberOfRepeats = DEFAULT_REPEATS;
+	}
+	try {
+		yamlNode["baseRows"] >> auxBaseRows;
+
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(
+//				string("Error parsing PlayerView: ") + yamlException.what());
+		auxBaseRows = DEFAULT_BASE_ROWS;
+	}
+	try {
+		yamlNode["baseCols"] >> auxBaseCols;
+
+	} catch (YAML::Exception& yamlException) {
+//		Logs::logErrorMessage(
+//				string("Error parsing PlayerView: ") + yamlException.what());
+		auxBaseCols = DEFAULT_BASE_COLS;
+	}
+
+	mobileEntityView->setName(auxName);
+	mobileEntityView->setAnchorPixel(auxAnchorPixel);
+//	playerView->setBaseHeight(auxBaseCols);
+//	playerView->setBaseWidth(auxBaseRows);
+	mobileEntityView->setImageHeight(auxImageHeight);
+	mobileEntityView->setImageWidth(auxImageWidth);
+	mobileEntityView->setNClips(auxNumberOfClips);
+	mobileEntityView->setFps(auxFps);
+	mobileEntityView->setDelay(auxDelay);
+	mobileEntityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
+	mobileEntityView->setEntity(auxPlayer);
+
+	TextureDefinition* walkingTexture = new TextureDefinition(
+			auxName + string(WALKING_MODIFIER), auxWalkingImageSrc);
+	textureHolder->addTexture(walkingTexture);
+	TextureDefinition* idleTexture = new TextureDefinition(
+			auxName + string(IDLE_MODIFIER), auxIdleImageSrc);
+	textureHolder->addTexture(idleTexture);
+	TextureDefinition* runningTexture = new TextureDefinition(
+			auxName + string(RUNNING_MODIFIER), auxRunningImageSrc);
+	textureHolder->addTexture(runningTexture);
+	TextureDefinition* attackTexture = new TextureDefinition(
+			auxName + string(ATTACK_MODIFIER), auxAttackImageSrc);
+	textureHolder->addTexture(attackTexture);
+	TextureDefinition* idleBlockTexture = new TextureDefinition(
+			auxName + string(IDLE_BLOCKING_MODIFIER), auxIdleBlocking);
+	textureHolder->addTexture(idleBlockTexture);
+
+	mobileEntityView->setTextureHolder(textureHolder);
+}
+
+void operator >>(const YAML::Node& yamlNode,
+		std::vector<MobileEntity*>& entityVector) {
+	const YAML::Node& mobileEntityLocations = yamlNode["mobileEntityLocations"];
+	for (unsigned i = 0; i < mobileEntityLocations.size(); i++) {
+		MobileEntity* entity = new MobileEntity();
+		mobileEntityLocations[i] >> entity;
+		if (entity != NULL)
+			entityVector.push_back(entity);
+	}
 }
 
 /**
@@ -927,11 +1176,11 @@ void operator >>(const YAML::Node& yamlNode, EntityView* entityView) {
  entityView->setDelay(auxDelay);
  entityView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
  }*/
+
 void operator >>(const YAML::Node& yamlNode,
 		std::vector<Entity*>& entityVector) {
 	const YAML::Node& entityLocations = yamlNode["entityLocations"];
 	for (unsigned i = 0; i < entityLocations.size(); i++) {
-		// Tomi: Antes controlabamos excepciones. Lo saque porque no se solucionaba nada, solo se logeaba.
 		Entity* entity = new Entity();
 		entityLocations[i] >> entity;
 		if (entity != NULL)
@@ -970,10 +1219,30 @@ void operator >>(const YAML::Node& yamlNode,
 			playerViews[i] >> entityView;
 			entityList.push_back(entityView);
 			playerName[entityView->getName()] = 0;
-			;
 		} catch (YAML::Exception& yamlException) {
 			Logs::logErrorMessage(
 					string("Error parsing PlayerView List: ")
+							+ yamlException.what());
+		}
+	}
+
+}
+
+/**
+ * Sobrecarga de operador >> para llenar los datos de una lista de entidades.
+ */
+void operator >>(const YAML::Node& yamlNode,
+		std::vector<MobileEntityView*>& entityList) {
+	const YAML::Node& mobileEntityViews = yamlNode["mobileEntityViews"];
+	for (unsigned i = 0; i < mobileEntityViews.size(); i++) {
+		MobileEntityView* mobileEntityView = new MobileEntityView();
+		try {
+			mobileEntityViews[i] >> mobileEntityView;
+			entityList.push_back(mobileEntityView);
+			playerName[mobileEntityView->getName()] = 0;
+		} catch (YAML::Exception& yamlException) {
+			Logs::logErrorMessage(
+					string("Error parsing MobileEntityView List: ")
 							+ yamlException.what());
 		}
 	}
@@ -1388,6 +1657,21 @@ void loadEntityViewMap(EntityViewMap* entityViewMap,
 
 }
 
+void loadEntityViewMap(EntityViewMap* entityViewMap,
+		std::vector<MobileEntityView*> entityViewVector) {
+
+	for (unsigned int j = 0; j < entityViewVector.size(); j++) {
+		MobileEntityView* parsedEntityView = entityViewVector[j];
+		MobileEntity* entity = parsedEntityView->getEntity();
+
+		Coordinates coordinates = Coordinates(entity->getCoordinates().getRow(),
+				entity->getCoordinates().getCol());
+
+		entityViewMap->positionEntityView(parsedEntityView, coordinates);
+	}
+
+}
+
 void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
 	for (unsigned i = 0; i < entities.size(); i++) {
 		Entity* currentEntity = entities[i];
@@ -1395,6 +1679,15 @@ void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
 		mapData->addEntity(coor.getRow(), coor.getCol(), currentEntity);
 	}
 }
+
+void assignMobileEntities(MapData* mapData, std::vector<MobileEntity*> entities) {
+	for (unsigned i = 0; i < entities.size(); i++) {
+		MobileEntity* currentEntity = entities[i];
+		Coordinates coor = currentEntity->getCoordinates();
+		mapData->addEntity(coor.getRow(), coor.getCol(), currentEntity);
+	}
+}
+
 std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
 		std::vector<Entity*> entities) {
 	std::vector<EntityView*> completeViews;
@@ -1415,6 +1708,32 @@ std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
 			Logs::logErrorMessage(
 					string(
 							"Could not find entity view with the name "
+									+ entityName));
+		}
+	}
+	return completeViews;
+}
+
+std::vector<MobileEntityView*> assignMobileEntities(std::vector<MobileEntityView*> entityViews,
+		std::vector<MobileEntity*> entities) {
+	std::vector<MobileEntityView*> completeViews;
+	for (unsigned i = 0; i < entities.size(); i++) {
+		MobileEntity* actualEntity = entities[i];
+		std::string entityName = actualEntity->getName();
+		MobileEntityView* duplicate = NULL;
+		for (unsigned j = 0; j < entityViews.size(); j++) {
+			MobileEntityView* actualView = entityViews[j];
+			if ((actualView->getName()).compare(entityName) == 0) {
+				duplicate = new MobileEntityView(actualView);
+				duplicate->setEntity(actualEntity);
+				completeViews.push_back(duplicate);
+			}
+		}
+		// Si no se le asigno ninguna entidad a la vista.
+		if (duplicate == NULL) {
+			Logs::logErrorMessage(
+					string(
+							"Could not find mobile entity view with the name "
 									+ entityName));
 		}
 	}
@@ -1453,6 +1772,17 @@ void cleanUnusedViews(std::vector<PlayerView*> viewVector) {
 
 void cleanUnusedViews(std::vector<EntityView*> viewVector) {
 	std::vector<EntityView*> cleanVector;
+	for (unsigned i = 0; i < viewVector.size(); i++) {
+		if (viewVector[i]->getEntity() == NULL) {
+			delete viewVector[i];
+		} else {
+			cleanVector.push_back(viewVector[i]);
+		}
+	}
+}
+
+void cleanUnusedViews(std::vector<MobileEntityView*> viewVector) {
+	std::vector<MobileEntityView*> cleanVector;
 	for (unsigned i = 0; i < viewVector.size(); i++) {
 		if (viewVector[i]->getEntity() == NULL) {
 			delete viewVector[i];
@@ -1504,7 +1834,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
 	std::ofstream outputFile(outputFilename.c_str());
 
-// Error Check
+	// Error Check
 	if (!inputFile) {
 		//cout << "No se encontro el archivo de configuracion" << std::endl;
 		Logs::logErrorMessage(
@@ -1512,28 +1842,31 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 		exit(1);
 	}
 
-// Parser initialization.
+	// Parser initialization.
 	YAML::Parser parser(inputFile);
 	YAML::Node yamlNode;
 	parser.GetNextDocument(yamlNode);
 
-// Parsing PersonajeVista.
+	// Parsing PlayerViews.
 	std::vector<PlayerView*> playerViewVector;
 	yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
 
-// Parsing EntityViews.
+	std::vector<MobileEntityView*> mobileEntityViewVector;
+	yamlNode[MOBILEENTITYVIEWS_POSITION] >> mobileEntityViewVector;
+
+	// Parsing EntityViews.
 	std::vector<EntityView*> entityViewVector;
 	yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
 
-// Parsing animation configuration.
+	// Parsing animation configuration.
 	GameConfiguration* animationConfig = new GameConfiguration();
 	yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
 
-// Parsing tile definition.
+	// Parsing tile definition.
 	// La declaracion del textureHolder la hice global
 	yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
 
-// Parsing map dimensions.
+	// Parsing map dimensions.
 	AuxMap mapConfiguration;
 	AuxMapDimension mapDimension;
 	yamlNode[MAP_DIMENSION_POSITION] >> mapDimension;
@@ -1542,11 +1875,15 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
 			mapConfiguration.dimension.ncols);
 
-// Parsing player locations.
+	// Parsing player locations.
 	std::vector<Player*> playerVector;
 	yamlNode[PLAYER_LOCATIONS_POSITION] >> playerVector;
 
-// Parsing player locations.
+	// Parsing mobile entity locations.
+	std::vector<MobileEntity*> mobileEntityVector;
+	yamlNode[MOBILEENTITY_LOCATIONS_POSITION] >> mobileEntityVector;
+
+	// Parsing player locations.
 	std::vector<Entity*> entityVector;
 	yamlNode[ENTITY_LOCATIONS_POSITION] >> entityVector;
 
@@ -1554,35 +1891,31 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 			entityVector);
 	std::vector<PlayerView*> cleanPlayerViews = assignPlayers(playerViewVector,
 			playerVector);
+	std::vector<MobileEntityView*> cleanMobileEntityViews =
+			assignMobileEntities(mobileEntityViewVector, mobileEntityVector);
 	assignEntities(mapData, entityVector);
+	assignMobileEntities(mapData, mobileEntityVector);
 	cleanUnusedViews(entityViewVector);
 	cleanUnusedViews(playerViewVector);
+	cleanUnusedViews(mobileEntityViewVector);
 
-// Parsing map tile locations.
+	// Parsing map tile locations.
 	yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
 	mapConfiguration >> mapData;
 
-// Create entityViewMap:
+	// Create entityViewMap:
 	EntityViewMap* entityViewMap = new EntityViewMap(mapData);
 	loadEntityViewMap(entityViewMap, cleanPlayerViews);
-//	entityViewMap->assingEntitiesView(entityViewVector);
 	loadEntityViewMap(entityViewMap, cleanEntityViews);
+	loadEntityViewMap(entityViewMap, cleanMobileEntityViews);
 
-// Packing parser results.
+	// Packing parser results.
 	PersistentConfiguration configuration = PersistentConfiguration();
 	configuration.setEntityViewMap(entityViewMap);
 	configuration.setTextureHolder(textureHolder);
 	configuration.setMapData(mapData);
 	configuration.setAnimationConfiguration(animationConfig);
 	configuration.setViewList(cleanPlayerViews);
-
-// Print parsed elements.
-//	printPlayerViews(playerViewVector, outputFile);
-//	printEntityViews(entityViewVector, outputFile);
-//	printGameConfiguration(animationConfig, outputFile);
-//	printTextureHolder(textureHolder, outputFile);
-//	printMapConfiguration(mapConfiguration, outputFile);
-	//printHeader("END OF PARSER");
 
 	return configuration;
 }
