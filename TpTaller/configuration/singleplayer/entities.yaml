@@ -20,6 +20,20 @@
     idleBlockingImageSrc: resources/black_knight/warriorBlockingAnimBlue.png
     imageWidth: 128
     imageHeight: 128
+    numberOfClips: 4
+    anchorPixel: [64, 70]
+    baseRows: 1
+    baseCols: 1
+    delay: 0.5
+- mobileEntityViews:
+  - name: mob
+    walkingImageSrc: resources/zombie/zombieWalking.png
+    idleImageSrc: resources/zombie/zombieStanding.png
+    runningImageSrc: resources/zombie/zombieWalking.png
+    attackImageSrc: resources/zombie/zombieWalking.png
+    idleBlockingImageSrc: resources/zombie/zombieWalking.png
+    imageWidth: 128
+    imageHeight: 128
     numberOfClips: 8
     anchorPixel: [64, 70]
     baseRows: 1
@@ -175,6 +189,12 @@
         range: 1
     mainPlayer: true
     viewRange: 400
+- mobileEntityLocations:
+  - name: mob
+    position: [10, 10, 0]
+    speed:
+      magnitude: 4
+      direction: [1, 2]
 - entityLocations:
   - name: chapel
     position: [23, 20, 0]

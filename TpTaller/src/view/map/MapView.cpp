@@ -16,7 +16,7 @@ MapView::MapView(MapData* inputData, SDL_Surface* inputScreen,
 			data->getNCols());
 	}
 	entitiesView = NULL;
-	player = NULL;
+	mobileEntity = NULL;
 
 	textureHolder = NULL;
 
@@ -25,18 +25,17 @@ MapView::MapView(MapData* inputData, SDL_Surface* inputScreen,
 MapView::~MapView() {
 }
 
-void MapView::setUpPersonajes() {
+void MapView::setUpMobileEntities() {
 	// Setea la posicion por unica vez de los personajes en el mapa.
 	SDL_Rect posTile;
 
 	for (int col = 0; col < data->getNCols(); col++) {
 		for (int row = 0; row < data->getNRows(); row++) {
 
-			Player* personaje = data->getPersonaje(row, col);
-			if (personaje != NULL) {
-
+			MobileEntity* mobileEntity = data->getPersonaje(row, col);
+			if (mobileEntity != NULL) {
 				posTile = Tile::computePositionTile(row, col);
-				personaje->setPos((float) posTile.x, (float) posTile.y);
+				mobileEntity->setPos((float) posTile.x, (float) posTile.y);
 			}
 		}
 	}
@@ -47,10 +46,10 @@ void MapView::setUpEntity(EntityView* entityView, Coordinates coor) {
 	this->viewMap->positionEntityView(entityView, coor);
 }
 
-void MapView::assignPersonaje(Player* _personaje) {
-	player = _personaje;
-	Position* pos = new Position(player->getCurrentPos()->getX(),
-			player->getCurrentPos()->getY());
+void MapView::assignMobileEntity(MobileEntity* _personaje) {
+	mobileEntity = _personaje;
+	Position* pos = new Position(mobileEntity->getCurrentPos()->getX(),
+			mobileEntity->getCurrentPos()->getY());
 	camera->setPosition(pos);
 }
 

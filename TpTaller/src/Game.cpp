@@ -107,14 +107,21 @@ void Game::setUpCharacters(MapView* map, MapData* mapData, EntityViewMap* viewMa
 
 						Coordinates coord = personaje->getCoordinates();
 						mapData->addPersonaje(coord.getRow(), coord.getCol(), personaje);
+					} else if (entity->getClassName() == "MobileEntity" ) {
+
+						MobileEntity* entityToAdd = (MobileEntity*) entity;
+
+						Coordinates coord = entityToAdd->getCoordinates();
+						mapData->addMobileEntity(coord.getRow(), coord.getCol(), entityToAdd);
+
 					}
 				}
 			}
 		}
 	}
 
-	map->setUpPersonajes();
-	map->assignPersonaje(personaje);
+	map->setUpMobileEntities();
+	map->assignMobileEntity(personaje);
 
 }
 

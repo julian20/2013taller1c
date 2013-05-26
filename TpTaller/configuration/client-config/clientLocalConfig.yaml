@@ -1,5 +1,6 @@
 - playerViews:
-- entityViews:    
+- mobileEntityViews: 
+- entityViews:  
 - gameConfiguration:
     serverIP: 127.0.0.1
     serverPort: 32001
@@ -19,5 +20,6 @@
 - tiles:
 - mapDimensions: [50, 50]
 - playerLocations:
+- mobileEntityLocations:
 - entityLocations:
 - tileLocations:

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <model/entities/Entity.h>
+#include <model/entities/MobileEntity.h>
 #include <model/entities/player/Player.h>
 #include <model/Logs/Logs.h>
 #include <model/map/Tile.h>
@@ -28,7 +29,8 @@ public:
 	TileData* getTileData(Coordinates coords);
 	TileData* getTileData(int row, int col);
 	void addPersonaje(int row, int col, Player* personaje);
-	Player* getPersonaje(int row, int col);
+	void addMobileEntity(int row, int col, MobileEntity* player);
+	MobileEntity* getPersonaje(int row, int col);
 	void updatePersonajePos(int prevRow, int prevCol,
 							int row, int col, Player* personaje);
 	list<Tile *> *getPath(Tile* from, Tile* to);
