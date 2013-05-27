@@ -474,6 +474,8 @@ void Server::sendNewPlayers(int clientSocket, map<int, string> *sended) {
 	for (map<int, PlayerInfo*>::iterator it = gamePlayers.begin();
 			it != gamePlayers.end(); ++it) {
 
+		cout << " Se mando un jugador " << endl;
+
 		// SI NO HA SIDO ENVIADO, LO ENVIO
 		if (sended->count(it->first) == 0) {
 			PlayerInfo* info = it->second;

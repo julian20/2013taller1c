@@ -47,7 +47,6 @@ void initGame() {
 	unsigned int serverPort = configuration.getAnimationConfiguration()->getServerPort();
 
 	MultiplayerGame* MPgame = new MultiplayerGame(&configuration);
-	MPgame->addNewPlayer(new Player(), new Coordinates(9,9));
 	SinglePlayerServer* server = new SinglePlayerServer(serverPort);
 	server->run(MPgame);
 
