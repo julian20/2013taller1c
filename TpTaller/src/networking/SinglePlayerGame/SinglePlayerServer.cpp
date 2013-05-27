@@ -77,8 +77,6 @@ SinglePlayerServer::SinglePlayerServer(int port) {
 
 	game = NULL;
 
-	signal(SIGPIPE, SIG_IGN);
-
 }
 
 
@@ -108,6 +106,8 @@ void SinglePlayerServer::run(MultiplayerGame* game) {
 
 // Funcion que ejecuta al conectarse cada client
 void SinglePlayerServer::handleConnection() {;
+
+	signal(SIGPIPE, SIG_IGN);
 
 	map<int, string> sent;
 	PlayerInfo* info = recieveNewPlayer(clientID);
@@ -140,8 +140,6 @@ void SinglePlayerServer::handleConnection() {;
 		sendNewPlayers(clientID, &sent);
 
 		vector<PlayerEvent*> events = recvEvents(clientID);
-
-		cout << "RECIVED " << events.size() << " EVENTS" << endl;
 
 		if (!events.empty())
 			game->addEventsToHandle(playerName, events);

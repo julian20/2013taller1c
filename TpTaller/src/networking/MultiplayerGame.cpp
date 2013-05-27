@@ -16,7 +16,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	MapData* mapData = configuration->getMapData();
 
 	this->gameConfig = configuration->getAnimationConfiguration();
-	this->fps = 0;
+	this->fps = configuration->getAnimationConfiguration()->getFps();
 	this->fpsUpdatingTimer = 0;
 	this->tempFps = 0;
 	Tile::setTileWidth( gameConfig->getTileWidth() );

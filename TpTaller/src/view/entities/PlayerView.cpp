@@ -18,7 +18,7 @@
 
 //Posicion de los pies del personaje respecto de la base de la imagen
 #define OFFSET_Y	15
-#define ANIMATION_CHANGE_DELAY 1
+#define ANIMATION_CHANGE_DELAY 3
 #define STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE 16
 #define DEFAULT_CHARACTER_ID	"characterDefault"
 #define NUMBER_OF_STANDING_FRAMES 3

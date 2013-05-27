@@ -87,8 +87,7 @@ void initMultiplayerGame(string& playerName, string& playerType) {
 	system(command.c_str());
 
 	ConfigurationReader newReader = ConfigurationReader();
-	PersistentConfiguration downloadedConfig = newReader.loadConfiguration(
-			CLIENT_MAP_FILE, OUTPUT_FILENAME);
+	PersistentConfiguration downloadedConfig = newReader.loadConfiguration(CLIENT_MAP_FILE, OUTPUT_FILENAME);
 
 	Game* game = new Game(&downloadedConfig, true);
 
