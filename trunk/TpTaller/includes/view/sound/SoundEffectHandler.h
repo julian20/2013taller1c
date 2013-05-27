@@ -27,6 +27,7 @@ public:
 	static void playSound(string soundID);
 	static void stopSound(string soundID);
 	static bool isSoundPlaying(string soundID);
+	static void close();
 
 	static void initialize();
 	virtual ~SoundEffectHandler();

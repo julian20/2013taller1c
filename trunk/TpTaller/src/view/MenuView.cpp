@@ -117,7 +117,7 @@ void MenuView::initButtons(int numButtons, const char** buttons_released,
 void MenuView::initMusic() {
 	// Inicializamos la librería SDL_Mixer
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-			2, 4096) < 0) {
+			2, 700) < 0) {
 		Logs::logErrorMessage(
 				"Subsistema de audio no disponible: " + string(SDL_GetError()));
 		musica = NULL;
@@ -134,7 +134,7 @@ void MenuView::initMusic() {
 		musica = NULL;
 		return;
 	}
-	Mix_VolumeMusic(500);
+	Mix_VolumeMusic(30);
 	Mix_FadeInMusic(musica, -1, 3000);
 
 }
@@ -147,6 +147,7 @@ void MenuView::close() {
 		SDL_FreeSurface(screen);
 	if (musica != NULL)
 		Mix_FreeMusic(musica);
+	Mix_CloseAudio();
 }
 
 MenuView::~MenuView() {
