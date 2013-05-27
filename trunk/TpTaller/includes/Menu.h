@@ -34,6 +34,7 @@ private:
 
 	void checkPressedButton(SDL_Event event);
 	MenuEvent checkReleasedButton(SDL_Event event);
+	void checkHoveredButton(SDL_Event event);
 
 };
 

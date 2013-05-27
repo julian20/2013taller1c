@@ -15,6 +15,17 @@ Button::Button(SDL_Surface* pressed, SDL_Surface* released, SDL_Rect pos,
 	this->pos = pos;
 	this->state = BUTTON_RELEASED;
 	this->event = event;
+	this->hovered = NULL;
+}
+
+Button::Button(SDL_Surface* pressed, SDL_Surface* released, SDL_Surface* hovered, SDL_Rect pos,
+		MenuEvent event) {
+	this->pressed = pressed;
+	this->released = released;
+	this->pos = pos;
+	this->state = BUTTON_RELEASED;
+	this->event = event;
+	this->hovered = hovered;
 }
 
 bool Button::isPressed() {
@@ -32,6 +43,10 @@ void Button::changeState() {
 	}
 }
 
+void Button::changeState(ButtonState aState) {
+	state = aState;
+}
+
 void drawImage(SDL_Surface* image, SDL_Surface* screen, SDL_Rect* pos) {
 	SDL_BlitSurface(image, NULL, screen, pos);
 	SDL_UpdateRects(screen, 1, pos);
@@ -45,11 +60,15 @@ void Button::draw(SDL_Surface* screen) {
 	case BUTTON_RELEASED:
 		drawImage(released, screen, &pos);
 		break;
+	case BUTTON_HOVERED:
+		drawImage(hovered, screen, &pos);
+		break;
 	}
 }
 
 Button::~Button() {
 	SDL_FreeSurface(pressed);
 	SDL_FreeSurface(released);
+	SDL_FreeSurface(hovered);
 }
 

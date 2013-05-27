@@ -93,7 +93,7 @@ void MenuView::initScreen() {
 }
 
 void MenuView::initButtons(int numButtons, const char** buttons_released,
-		const char** buttons_pressed, const MenuEvent* buttons_events) {
+		const char** buttons_pressed, const char** buttons_hovered, const MenuEvent* buttons_events) {
 
 	buttons.resize(numButtons);
 
@@ -101,6 +101,7 @@ void MenuView::initButtons(int numButtons, const char** buttons_released,
 		//TODO chequeo de las imagenes
 		SDL_Surface* released = IMG_Load(buttons_released[i]);
 		SDL_Surface* pressed = IMG_Load(buttons_pressed[i]);
+		SDL_Surface* hovered = IMG_Load(buttons_hovered[i]);
 
 		SDL_Rect pos;
 		pos.x = screen->w / 2 - released->w / 2;
@@ -110,7 +111,7 @@ void MenuView::initButtons(int numButtons, const char** buttons_released,
 
 		MenuEvent event = buttons_events[i];
 
-		buttons[i] = new Button(pressed, released, pos, event);
+		buttons[i] = new Button(pressed, released,hovered, pos, event);
 		buttons[i]->draw(screen);
 	}
 }
