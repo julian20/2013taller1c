@@ -18,7 +18,6 @@ SoundEffectHandler::SoundEffectHandler() {
 
 void SoundEffectHandler::loadSound(string soundID, string soundSrc) {
 	// Cargamos un sonido
-	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096);
 	Mix_Chunk* sound = Mix_LoadWAV(soundSrc.c_str());
 	if (sound == NULL) {
 		Logs::logErrorMessage(
@@ -42,7 +41,7 @@ int SoundEffectHandler::getNextChannel() {
 }
 
 void SoundEffectHandler::initialize() {
-	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096);
+
 	Mix_AllocateChannels(DEFAULT_NUMBER_OF_CHANNELS);
 	nextAvailableChannel = 0;
 
@@ -72,6 +71,14 @@ void SoundEffectHandler::stopSound(string soundID) {
 		return;
 	soundPack pack = sounds[soundID];
 	Mix_HaltChannel(pack.channel);
+}
+
+void SoundEffectHandler::close(){
+	for (map<string,soundPack>::iterator it = sounds.begin();it!=sounds.end();++it){
+		soundPack pack = it->second;
+		Mix_FreeChunk(pack.sound);
+	}
+
 }
 
 SoundEffectHandler::~SoundEffectHandler() {

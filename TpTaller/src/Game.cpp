@@ -59,13 +59,10 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	personajeVista = (configuration->getViewList())[0];
 
-	//Chat* chat= new Chat();
 
 	if (multiplayer) {
 		chatController = new ChatController(playerController);
 		chatView = new ChatWindowsView();
-		//chatController->setChat(chat);
-		//chatView->setChat(chat);
 	}
 	
 }
@@ -237,7 +234,7 @@ void Game::applyFPS(int timer) {
 
 void Game::initMusic() {
 	// Inicializamos la librería SDL_Mixer
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
 		Logs::logErrorMessage("Subsistema de audio no disponible: " + string(SDL_GetError()));
 		openAudio = false;
 		musica = NULL;
@@ -252,7 +249,7 @@ void Game::initMusic() {
 		musica = NULL;
 		return;
 	}
-	Mix_VolumeMusic(500);
+	Mix_VolumeMusic(30);
 	Mix_FadeInMusic(musica, -1, 3000);
 
 }
@@ -312,19 +309,15 @@ void Game::setInactive(){
 	active = false;
 }
 
-/*
-Chat* Game::getChat(){
-	return chat;
-}
-*/
+
 Game::~Game() {
 	delete mapView;
 	delete mapController;
 	delete cameraController;
 	delete textHandler;
 	if (musica != NULL) Mix_FreeMusic(musica);
-	//if (openAudio) Mix_CloseAudio();
+	SoundEffectHandler::close();
+	if (openAudio) Mix_CloseAudio();
 	SDL_FreeSurface(screen);
-	// TODO Auto-generated destructor stub
 }
 
