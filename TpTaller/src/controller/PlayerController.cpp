@@ -6,12 +6,23 @@
  */
 
 #include <controller/PlayerController.h>
+#include <view/sound/SoundEffectHandler.h>
 #include <stdio.h>
+
+#define SI "resources/sound/player/si.ogg"
+#define VALE "resources/sound/player/vale.ogg"
+#define VOY "resources/sound/player/voy.ogg"
+#define BATTLE "resources/sound/player/battleCry.ogg"
+
 PlayerController::PlayerController() {
 	this->data = NULL;
 	this->player = NULL;
 	this->camera = NULL;
 	this->listEvents = false;
+	SoundEffectHandler::loadSound(string("si"), SI);
+	SoundEffectHandler::loadSound(string("voy"), VOY);
+	SoundEffectHandler::loadSound(string("vale"), VALE);
+	SoundEffectHandler::loadSound(string("battle"), BATTLE);
 }
 
 PlayerController::~PlayerController() {
@@ -20,48 +31,74 @@ PlayerController::~PlayerController() {
 	delete this->player;
 }
 /*ChatController* PlayerController::getChatController()
-{
-//	Player* miPlayer=this->player;
-	return (player->getChat())->getChatController();
-}*/
-string PlayerController::getLastPlayerTouch()
-{
+ {
+ //	Player* miPlayer=this->player;
+ return (player->getChat())->getChatController();
+ }*/
+string PlayerController::getLastPlayerTouch() {
 	return this->lastPlayerTouch;
 }
-bool PlayerController::clickAnotherPlayer(int x ,int y)
-{
+
+void playBattleSound() {
+	if (!SoundEffectHandler::isSoundPlaying(string("battle")))
+		SoundEffectHandler::playSound(string("battle"));
+}
+
+bool PlayerController::clickAnotherPlayer(int x, int y) {
 	Position* cameraPos = this->camera->getPosition();
 
 	Coordinates* coor = Tile::getTileCoordinates(x - cameraPos->getX(),
-					y - cameraPos->getY());
-	TileData* tileData=this->data->getTileData(coor->getRow(),coor->getCol());
-	if(!tileData) return false;
-	MobileEntity* player=tileData->getPersonaje();
-	if(player)
-	{
-		this->lastPlayerTouch=player->getName();
+			y - cameraPos->getY());
+	TileData* tileData = this->data->getTileData(coor->getRow(),
+			coor->getCol());
+	if (!tileData)
+		return false;
+	MobileEntity* player = tileData->getPersonaje();
+	if (player) {
+		playBattleSound();
+		this->lastPlayerTouch = player->getName();
 		return true;
+	} else
+		return false;
+}
+
+void playSound() {
+	if (!SoundEffectHandler::isSoundPlaying(string("si"))
+			&& !SoundEffectHandler::isSoundPlaying(string("vale"))
+			&& !SoundEffectHandler::isSoundPlaying(string("voy"))
+			&& !SoundEffectHandler::isSoundPlaying(string("battle"))) {
+		int rnd = rand() % 1000;
+		if (rnd > 750)
+			SoundEffectHandler::playSound(string("si"));
+		else if (rnd > 500)
+			SoundEffectHandler::playSound(string("voy"));
+		else if (rnd > 250)
+			SoundEffectHandler::playSound(string("vale"));
+		else
+			SoundEffectHandler::playSound(string("battle"));
+
 	}
-	else return false;
+
 }
 void PlayerController::movePlayer(int x, int y) {
 	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
 	// TODO: Que seleccione la casilla bien!
 	Position* cameraPos = this->camera->getPosition();
+	playSound();
 
 	Coordinates* coor = Tile::getTileCoordinates(x - cameraPos->getX(),
-				y - cameraPos->getY());
+			y - cameraPos->getY());
 
-	if (listEvents){
-		events.push_back(new PlayerEvent(EVENT_MOVE,*coor));
-		if (! player->getCurrentPos()->isEqual(player->getEndPos())){
+	if (listEvents) {
+		events.push_back(new PlayerEvent(EVENT_MOVE, *coor));
+		if (!player->getCurrentPos()->isEqual(player->getEndPos())) {
 			return;
 		}
 		return;
 	}
 
-	if (coor->getCol() >= 0 && coor->getCol() < data->getNCols() &&
-	    coor->getRow() >= 0 && coor->getRow() < data->getNRows() ) {
+	if (coor->getCol() >= 0 && coor->getCol() < data->getNCols()
+			&& coor->getRow() >= 0 && coor->getRow() < data->getNRows()) {
 		SDL_Rect firstTile = Tile::computePositionTile(0, 0);
 		firstTile.x = cameraPos->getX() + firstTile.x;
 		firstTile.y = cameraPos->getY() + firstTile.y;
@@ -73,8 +110,6 @@ void PlayerController::movePlayer(int x, int y) {
 			data->movePersonaje(player, toTile);
 		}
 	}
-
-
 
 	delete coor;
 	delete cameraPos;
@@ -106,14 +141,14 @@ MapData* PlayerController::getMapData() {
 
 //TODO - hardcoded
 void PlayerController::toggleRunning() {
-	if (player->isRunning()){
-		if (listEvents){
+	if (player->isRunning()) {
+		if (listEvents) {
 			events.push_back(new PlayerEvent(EVENT_WALKING));
 			return;
 		}
 		player->setSpeedMagnitude(player->getSpeed()->getMagnitude() / 2);
 
-	}else {
+	} else {
 		if (listEvents) {
 			events.push_back(new PlayerEvent(EVENT_RUNNING));
 			return;
@@ -123,7 +158,7 @@ void PlayerController::toggleRunning() {
 }
 
 void PlayerController::playerAttack() {
-	if (listEvents){
+	if (listEvents) {
 		events.push_back(new PlayerEvent(EVENT_ATTACK));
 		events.push_back(new PlayerEvent(EVENT_STOP));
 		return;
@@ -131,8 +166,8 @@ void PlayerController::playerAttack() {
 	player->attack();
 }
 
-void PlayerController::playerCancelAttack(){
-	if (listEvents){
+void PlayerController::playerCancelAttack() {
+	if (listEvents) {
 		events.push_back(new PlayerEvent(EVENT_CANCEL_ATTACK));
 		return;
 	}
@@ -140,7 +175,7 @@ void PlayerController::playerCancelAttack(){
 }
 
 void PlayerController::playerBlock() {
-	if (listEvents){
+	if (listEvents) {
 		events.push_back(new PlayerEvent(EVENT_BLOCK));
 		events.push_back(new PlayerEvent(EVENT_STOP));
 		return;
@@ -150,7 +185,7 @@ void PlayerController::playerBlock() {
 }
 
 void PlayerController::playerCancelBlock() {
-	if (listEvents){
+	if (listEvents) {
 		events.push_back(new PlayerEvent(EVENT_CANCEL_BLOCK));
 		return;
 	}
@@ -158,16 +193,17 @@ void PlayerController::playerCancelBlock() {
 
 }
 
-void PlayerController::generateEventList(bool activated){
+void PlayerController::generateEventList(bool activated) {
 	this->listEvents = activated;
 }
 
-list<PlayerEvent*> PlayerController::getEventList(){
+list<PlayerEvent*> PlayerController::getEventList() {
 	return events;
 }
 
-void PlayerController::cleanEventList(){
-	for (list<PlayerEvent*>::iterator it = events.begin(); it != events.end() ; ++it){
+void PlayerController::cleanEventList() {
+	for (list<PlayerEvent*>::iterator it = events.begin(); it != events.end();
+			++it) {
 		delete *it;
 	}
 	events.clear();

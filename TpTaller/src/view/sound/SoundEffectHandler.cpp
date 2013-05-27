@@ -8,7 +8,7 @@
 #include <view/sound/SoundEffectHandler.h>
 #include <SDL/SDL_mixer.h>
 #include <model/Logs/Logs.h>
-#define DEFAULT_NUMBER_OF_CHANNELS 16
+#define DEFAULT_NUMBER_OF_CHANNELS 20
 int SoundEffectHandler::nextAvailableChannel = 0;
 map<string,soundPack> SoundEffectHandler::sounds;
 SoundEffectHandler::SoundEffectHandler() {
