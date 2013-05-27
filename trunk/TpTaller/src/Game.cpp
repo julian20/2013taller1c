@@ -30,7 +30,7 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	this->gameConfig = configuration->getAnimationConfiguration();
 	this->textHandler = new TextHandler();
-	this->fps = 0;
+	this->fps = configuration->getAnimationConfiguration()->getFps();
 	this->fpsUpdatingTimer = 0;
 	this->tempFps = 0;
 	Tile::setTileWidth( gameConfig->getTileWidth() );
@@ -101,7 +101,6 @@ void Game::setUpCharacters(MapView* map, MapData* mapData, EntityViewMap* viewMa
 						continue;
 					Entity* entity = view->getEntity();
 					if (entity->getClassName() == "Player") {
-						//TODO - Lucas: "personaje" deberia ser una lista de personajes
 						personaje = (Player*) entity;
 
 						Coordinates coord = personaje->getCoordinates();
@@ -154,7 +153,6 @@ void Game::initScreen() {
 		int flag = 1;
 		flag = SDL_WM_ToggleFullScreen(screen);
 		if (flag == 0) {
-			//TODO escribir en el log
 			Logs::logErrorMessage("Unable to go fullscreen: " + string(SDL_GetError()));
 		}
 	}

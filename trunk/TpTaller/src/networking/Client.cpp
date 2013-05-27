@@ -333,8 +333,6 @@ void Client::checkNewPlayers() {
 void Client::sendEvents() {
 	list<PlayerEvent*> events = game->getEvents();
 
-	cout << "SENDING " << events.size() << " EVENTS" << endl;
-
 	// 1ro envio la cantidad de events que voy a mandar
 	ComunicationUtils::sendNumber(clientID, events.size());
 
