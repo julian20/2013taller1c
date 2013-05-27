@@ -14,9 +14,9 @@
 #define DEFAULT_W       	800 // px
 #define DEFAULT_H       	600 // px
 #define DEFAULT_BPP 		0   // px?
-#define DEFAULT_GAME_MUSIC "resources/sound/gameMusic.ogg"
+#define DEFAULT_GAME_MUSIC "resources/sound/NamiLogin.ogg"
 #define MENU_IMG "resources/lich.jpg"
-#define MENU_MUSIC  "resources/sound/pirates.ogg"
+#define MENU_MUSIC  "resources/menu/sound/QuinnLogin.ogg"
 #define DEFAULT_TILE_WIDTH	70
 #define DEFAULT_TILE_HEIGHT	50
 #define DEFAULT_IP "192.168.190.136"
