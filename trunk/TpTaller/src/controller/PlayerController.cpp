@@ -8,11 +8,18 @@
 #include <controller/PlayerController.h>
 #include <view/sound/SoundEffectHandler.h>
 #include <stdio.h>
+#include <iostream>
 
 #define SI "resources/sound/player/si.ogg"
 #define VALE "resources/sound/player/vale.ogg"
 #define VOY "resources/sound/player/voy.ogg"
 #define BATTLE "resources/sound/player/battleCry.ogg"
+
+using namespace std;
+
+double uniform(double a, double b) {
+	return rand() / (RAND_MAX + 1.0) * (b - a) + a;
+}
 
 PlayerController::PlayerController() {
 	this->data = NULL;
@@ -67,12 +74,12 @@ void playSound() {
 			&& !SoundEffectHandler::isSoundPlaying(string("vale"))
 			&& !SoundEffectHandler::isSoundPlaying(string("voy"))
 			&& !SoundEffectHandler::isSoundPlaying(string("battle"))) {
-		int rnd = rand() % 1000;
-		if (rnd > 750)
+		double rnd = uniform(0.0,1.0);
+		if (rnd > 0.76)
 			SoundEffectHandler::playSound(string("si"));
-		else if (rnd > 500)
+		else if (rnd > 0.5)
 			SoundEffectHandler::playSound(string("voy"));
-		else if (rnd > 250)
+		else if (rnd > 0.25)
 			SoundEffectHandler::playSound(string("vale"));
 		else
 			SoundEffectHandler::playSound(string("battle"));
