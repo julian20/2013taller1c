@@ -105,7 +105,7 @@ void MenuView::initButtons(int numButtons, const char** buttons_released,
 
 		SDL_Rect pos;
 		pos.x = screen->w / 2 - released->w / 2;
-		pos.y = screen->h / 3 - released->h / 2 + i * released->h * 2;
+		pos.y = screen->h / 3 - released->h / 2 + i * released->h *1.5 + 30;
 		pos.h = released->h;
 		pos.w = released->w;
 

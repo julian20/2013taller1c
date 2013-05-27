@@ -12,19 +12,19 @@
 #include <SDL/SDL_events.h>
 
 const char* buttons_released[NUM_BUTTONS] = { "resources/menu/buttons/SP.png",
-		"resources/menu/buttons/multiplayer_button.png",
-		"resources/menu/buttons/server_button.png",
-		"resources/menu/buttons/exit_button.png" };
+		"resources/menu/buttons/MP.png",
+		"resources/menu/buttons/Server.png",
+		"resources/menu/buttons/Exit.png" };
 const char* buttons_pressed[NUM_BUTTONS] = {
 		"resources/menu/buttons/SP_pressed.png",
-		"resources/menu/buttons/multiplayer_pressed.png",
-		"resources/menu/buttons/server_pressed.png",
-		"resources/menu/buttons/exit_pressed.png" };
+		"resources/menu/buttons/MP_pressed.png",
+		"resources/menu/buttons/Server_pressed.png",
+		"resources/menu/buttons/Exit_pressed.png" };
 const char* buttons_hovered[NUM_BUTTONS] = {
 		"resources/menu/buttons/SP_hovered.png",
-		"resources/menu/buttons/multiplayer_button.png",
-		"resources/menu/buttons/server_button.png",
-		"resources/menu/buttons/exit_button.png" };
+		"resources/menu/buttons/MP_hovered.png",
+		"resources/menu/buttons/Server_hovered.png",
+		"resources/menu/buttons/Exit_hovered.png" };
 const MenuEvent buttons_events[NUM_BUTTONS] = { NEWGAME_EVENT,
 		MULTIPLAYER_GAME_EVENT, SERVER_EVENT, EXIT_EVENT };
 
