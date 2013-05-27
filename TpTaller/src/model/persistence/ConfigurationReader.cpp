@@ -44,7 +44,7 @@ using namespace std;
 #define DEFAULT_BASE_ROWS 1
 #define DEFAULT_TEXTURE "grass"
 #define DEFAULT_GAME_MUSIC "resources/sound/NamiLogin.ogg"
-#define DEFAULT_MENU_IMAGE "resources/lich.jpg"
+#define DEFAULT_MENU_IMAGE "resources/wastelands.jpg"
 #define DEFAULT_MENU_MUSIC "resources/sound/pirates.ogg"
 #define DEFAULT_IMAGE_SRC "resources/questionMark.png"
 #define DEFAULT_NAME "UndefinedName"
@@ -1806,7 +1806,7 @@ void setDefaultGameConfiguration(GameConfiguration* gameConf) {
 	gameConf->setDefaultScreenHeight(690);
 	gameConf->setDefaultScreenWidth(1280);
 	gameConf->setDefaultBPP(0);
-	gameConf->setMenuBackImageSrc("resources/lich.jpg");
+	gameConf->setMenuBackImageSrc("resources/wastelands.jpg");
 	gameConf->setMenuBackMusicSrc("resources/sound/pirates.ogg");
 	gameConf->setTileWidth(70);
 	gameConf->setTileHeight(50);

@@ -19,7 +19,7 @@
 #define LOGO "resources/menu/logo.png"
 #define ENVIRONMENT_WINDOW "SDL_VIDEO_CENTERED=1"
 #define AUDIO_CHANNELS 20
-#define DEFAULT_BACKIMG "resources/menu/lich.jpg"
+#define DEFAULT_BACKIMG "resources/menu/wastelands.jpg"
 
 using namespace std;
 MenuView::MenuView(GameConfiguration* configuration) {

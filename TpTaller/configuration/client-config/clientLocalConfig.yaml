@@ -13,7 +13,7 @@
     defaultScreenHeight: 600
     defaultScreenWidth: 1000
     defaultBPP: 0
-    menuBackImage: resources/menu/lich.jpg
+    menuBackImage: resources/menu/wastelands.jpg
     menuBackMusic: resources/menu/sound/QuinnLogin.ogg
     tileWidth: 70
     tileHeight: 50

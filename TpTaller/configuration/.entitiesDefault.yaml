@@ -98,7 +98,7 @@
     defaultScreenHeight: 690
     defaultScreenWidth: 1280
     defaultBPP: 0
-    menuBackImage: resources/lich.jpg
+    menuBackImage: resources/wastelands.jpg
     menuBackMusic: resources/sound/pirates.ogg
     tileWidth: 70
     tileHeight: 50
