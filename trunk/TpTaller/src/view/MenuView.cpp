@@ -16,6 +16,7 @@
 
 #define START_LAUGH "resources/menu/sound/laugh.wav"
 #define START_TAUNT "resources/menu/sound/darkness.wav"
+#define LOGO "resources/menu/logo.png"
 #define ENVIRONMENT_WINDOW "SDL_VIDEO_CENTERED=1"
 #define AUDIO_CHANNELS 20
 #define DEFAULT_BACKIMG "resources/menu/lich.jpg"
@@ -41,8 +42,8 @@ MenuView::MenuView(GameConfiguration* configuration) {
 				this->gameConfig->getDefaultBPP(),
 				SDL_HWSURFACE | SDL_RESIZABLE);
 	} else {
-		screen = SDL_SetVideoMode(768, 524,
-				info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE | SDL_RESIZABLE);
+		screen = SDL_SetVideoMode(768, 524, info->vfmt->BytesPerPixel / 8,
+				SDL_HWSURFACE | SDL_RESIZABLE);
 
 	}
 
@@ -85,7 +86,7 @@ void MenuView::initScreen() {
 	dest.h = background->h;
 	dest.w = background->w;
 	SDL_BlitSurface(background, NULL, screen, &dest);
-
+	initImages();
 	SDL_UpdateRects(screen, 1, &dest);
 
 	SDL_FreeSurface(background);
@@ -114,10 +115,28 @@ void MenuView::initButtons(int numButtons, const char** buttons_released,
 	}
 }
 
+void MenuView::initImages() {
+	//TODO chequeo de las imagenes
+	SDL_Surface* logoTemp = IMG_Load(LOGO);
+
+	float scaleX = (float) screen->w / logoTemp->w /2;
+	float scaleY = (float) screen->h / logoTemp->h /5;
+	SDL_Surface* logo = rotozoomSurfaceXY(logoTemp, 0, scaleX, scaleY, 0);
+	SDL_FreeSurface(logoTemp);
+
+	SDL_Rect pos;
+	pos.x = screen->w / 2 - logo->w / 2;
+	pos.y = screen->h / 3 - logo->h*1.5;
+	pos.h = logo->h;
+	pos.w = logo->w;
+
+	SDL_BlitSurface(logo, NULL, screen, &pos);
+	SDL_FreeSurface(logo);
+}
+
 void MenuView::initMusic() {
 	// Inicializamos la librería SDL_Mixer
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-			2, 700) < 0) {
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 700) < 0) {
 		Logs::logErrorMessage(
 				"Subsistema de audio no disponible: " + string(SDL_GetError()));
 		musica = NULL;
@@ -138,7 +157,6 @@ void MenuView::initMusic() {
 	Mix_FadeInMusic(musica, -1, 3000);
 
 }
-
 
 void MenuView::close() {
 	for (unsigned i = 0; i < buttons.size(); i++)
