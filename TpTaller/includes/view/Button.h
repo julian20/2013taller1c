@@ -18,22 +18,24 @@
 using namespace std;
 
 typedef enum {
-	BUTTON_PRESSED, BUTTON_RELEASED
+	BUTTON_PRESSED, BUTTON_RELEASED, BUTTON_HOVERED
 } ButtonState;
 
 class Button {
 public:
 	Button(SDL_Surface* pressed, SDL_Surface* released, SDL_Rect pos,
 			MenuEvent event);
-
+	Button(SDL_Surface* pressed, SDL_Surface* released, SDL_Surface* hovered, SDL_Rect pos,
+				MenuEvent event);
 	SDL_Rect pos;
 	SDL_Surface* released;
 	SDL_Surface* pressed;
+	SDL_Surface* hovered;
 	MenuEvent event;
 
 	bool isPressed();
 	void changeState();
-
+	void changeState(ButtonState aState);
 	void draw(SDL_Surface* screen);
 
 	virtual ~Button();

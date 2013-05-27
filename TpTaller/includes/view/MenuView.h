@@ -26,7 +26,7 @@ public:
 
 	void initScreen();
 	void initButtons(int numButtons, const char** buttons_released,
-			const char** buttons_pressed, const MenuEvent* buttons_events);
+			const char** buttons_pressed, const char** buttons_hovered, const MenuEvent* buttons_events);
 	void initMusic();
 
 	void close();
