@@ -51,6 +51,7 @@ public:
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
 
+
 protected:
 
 	void showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog);

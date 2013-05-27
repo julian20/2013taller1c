@@ -17,6 +17,7 @@
 //Ours
 #include <Game.h>
 #include <view/entities/PlayerView.h>
+#include <view/sound/SoundEffectHandler.h>
 #include <model/entities/player/Player.h>
 #include <model/persistence/PersistentConfiguration.h>
 #include <model/Logs/Logs.h>
@@ -36,8 +37,9 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 	Tile::setTileHeight( gameConfig->getTileHeight() );
 
 	initScreen();
-	initMusic();
 
+	initMusic();
+	SoundEffectHandler::initialize();
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->mapView = new MapView(mapData, screen, viewMap);
 	this->mapView->setTextureHolder(configuration->getTextureHolder());
@@ -235,7 +237,7 @@ void Game::applyFPS(int timer) {
 
 void Game::initMusic() {
 	// Inicializamos la librería SDL_Mixer
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 6, 4096) < 0) {
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
 		Logs::logErrorMessage("Subsistema de audio no disponible: " + string(SDL_GetError()));
 		openAudio = false;
 		musica = NULL;

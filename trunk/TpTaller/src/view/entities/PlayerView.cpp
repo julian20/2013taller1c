@@ -10,7 +10,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>
 #include <SDL/SDL_ttf.h>
-#include <SDL/SDL_mixer.h>
+#include <view/sound/SoundEffectHandler.h>
 #include <model/Logs/Logs.h>
 
 #include <cmath>
@@ -22,27 +22,14 @@
 #define STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE 16
 #define DEFAULT_CHARACTER_ID	"characterDefault"
 #define NUMBER_OF_STANDING_FRAMES 3
-#define STEPSOUND "resources/sound/player/step.wav"
+#define STEP_SOUND "resources/sound/player/steps.ogg"
+#define ATTACK_SOUND "resources/sound/player/sword.ogg"
 
-Mix_Chunk* stepSound;
-void PlayerView::loadSounds() {
-		// Cargamos un sonido
-		stepSound = Mix_LoadWAV(STEPSOUND);
-		if (stepSound == NULL) {
-			Logs::logErrorMessage(
-					"No se puede cargar el sonido: " + string(SDL_GetError()));
-		}
-
-		int volumen = 1000;
-		Mix_VolumeChunk(stepSound, volumen);
-
-	}
 
 PlayerView::PlayerView()
 //Llamamos al constructor de la superclase
 :
 		MobileEntityView() {
-	//loadSounds();
 	camPos = new Position(0, 0);
 	marco = 0;
 	animationChangeRate = 0;
@@ -61,9 +48,8 @@ PlayerView::PlayerView()
 
 }
 
-PlayerView::PlayerView(PlayerView* otherPlayer):
+PlayerView::PlayerView(PlayerView* otherPlayer) :
 		MobileEntityView(otherPlayer) {
-	//loadSounds();
 	imageHeight = otherPlayer->getImageHeight();
 	imageWidth = otherPlayer->getImageWidth();
 	delay = otherPlayer->getDelay();
@@ -85,32 +71,31 @@ PlayerView::PlayerView(PlayerView* otherPlayer):
 	currentSprite = DOWN;
 	lastDirection = M_PI * 1 / 2;
 	textureHolder = otherPlayer->getTextureHolder();
-	//chatView = new ChatWindowsView();
 	this->setName(otherPlayer->getName());
 }
-
 
 void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 	SDL_Rect offset, offsetFog;
 
-	if (drawFog) return;
+	if (drawFog)
+		return;
 
 	Vector3* position = player->getCurrentPos();
 	float x = position->getX();
 	float y = position->getY();
-	offset.x = offsetFog.x = (int) x + camPos->getX() - this->anchorPixel->getX();
+	offset.x = offsetFog.x = (int) x + camPos->getX()
+			- this->anchorPixel->getX();
 	int h = Tile::computePositionTile(0, 0).h;
-	offset.y = offsetFog.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2;
+	offset.y = offsetFog.y = (int) y + camPos->getY()
+			- this->anchorPixel->getY() - h / 2;
 	offset.w = offsetFog.w = clip->w;
 	offset.h = offsetFog.h = clip->h;
 
 	SDL_BlitSurface(this->image, clip, screen, &offset);
 
-
-	if (player->playerIsActive() == false){
+	if (player->playerIsActive() == false) {
 		SDL_BlitSurface(fogImage, clip, screen, &offsetFog);
 	}
-
 
 	SDL_Rect offsetNombre;
 	offsetNombre.x = (int) x + camPos->getX() - nameImage->w / 2;
@@ -125,7 +110,7 @@ void PlayerView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 
 	UpdateCameraPos(cam);
 	Show(screen, drawFog);
-	//chatView->drawChatView(screen);
+
 }
 
 void PlayerView::UpdateCameraPos(Position* _camPos) {
@@ -138,9 +123,14 @@ void PlayerView::setPersonaje(Player* personaje) {
 	Vector2* anchorPixel = new Vector2(clip.w / 2, OFFSET_Y);
 	player->getBase()->setAnchorPixel(anchorPixel);
 
-	//this->chatView->setChat(player->getChat());
+
 }
 
+void initSounds(){
+	SoundEffectHandler::loadSound(string("walk"),STEP_SOUND);
+	SoundEffectHandler::loadSound(string("attack"),ATTACK_SOUND);
+
+}
 void PlayerView::loadPlayerImage() {
 	walkingImage = textureHolder->getTexture(name + string(WALKING_MODIFIER));
 	idleImage = textureHolder->getTexture(name + string(IDLE_MODIFIER));
@@ -149,10 +139,13 @@ void PlayerView::loadPlayerImage() {
 	idleBlockImage = textureHolder->getTexture(
 			name + string(IDLE_BLOCKING_MODIFIER));
 	// Fogs
-	walkingImageFog = textureHolder->getFogTexture(name + string(WALKING_MODIFIER));
+	walkingImageFog = textureHolder->getFogTexture(
+			name + string(WALKING_MODIFIER));
 	idleImageFog = textureHolder->getFogTexture(name + string(IDLE_MODIFIER));
-	attackImageFog = textureHolder->getFogTexture(name + string(ATTACK_MODIFIER));
-	runningImageFog = textureHolder->getFogTexture(name + string(RUNNING_MODIFIER));
+	attackImageFog = textureHolder->getFogTexture(
+			name + string(ATTACK_MODIFIER));
+	runningImageFog = textureHolder->getFogTexture(
+			name + string(RUNNING_MODIFIER));
 	idleBlockImageFog = textureHolder->getFogTexture(
 			name + string(IDLE_BLOCKING_MODIFIER));
 
@@ -195,6 +188,8 @@ void PlayerView::loadPlayerImage() {
 	numberOfRunningClips = computeNumberOfClips(runningImage);
 	numberOfAttackClips = computeNumberOfClips(attackImage);
 	numberOfIdleBlockClips = computeNumberOfClips(idleBlockImage);
+
+	initSounds();
 }
 
 void PlayerView::setEntity(Entity* entity) {
@@ -238,7 +233,9 @@ void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo,
 }
 
 void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
-
+	//cosas del sound
+	string walkID = string("walk");
+	string attackID = string("attack");
 	if (this->image == NULL)
 		loadPlayerImage();
 
@@ -283,16 +280,19 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 
 	if (player->isAttacking()) {
 		//Si se estaba moviendo, reseteamos el marco para que no quede un # de clip invalido
-		if (player->IsMoving()){
+		if (player->IsMoving()) {
 			marco = 0;
 			player->stop();
 		}
+		if (!SoundEffectHandler::isSoundPlaying(attackID))
+			SoundEffectHandler::playSound(attackID);
 		image = attackImage;
 		fogImage = attackImageFog;
 		numberOfClips = numberOfAttackClips;
 	}
 
 	if (player->isBlocking()) {
+		SoundEffectHandler::stopSound(attackID);
 		marco = 0;
 		player->stop();
 		image = idleBlockImage;
@@ -300,22 +300,23 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		numberOfClips = numberOfIdleBlockClips;
 	}
 
-
 	if (player->IsMoving()) {
-
-		if (!Mix_Playing(0))
-			Mix_PlayChannel(0, stepSound, 0);
+		SoundEffectHandler::stopSound(attackID);
+		if (!SoundEffectHandler::isSoundPlaying(walkID))
+			SoundEffectHandler::playSound(walkID);
 		image = walkingImage;
 		fogImage = walkingImageFog;
 		numberOfClips = numberOfWalkingClips;
 	}
-
+	else
+		SoundEffectHandler::stopSound(walkID);
 	if (!player->IsMoving() && !player->isAttacking()
 			&& !player->isBlocking()) {
 		if (!wasStanding) {
 			timer.start();
 			wasStanding = true;
 		}
+
 		image = idleImage;
 		fogImage = idleImageFog;
 		numberOfClips = numberOfIdleClips;
@@ -326,11 +327,9 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 
 	wasStanding = false;
 	currentSprite = sprite;
-//	if (marco >= numberOfClips)
-//		marco = 0;    // Loop the animation
 
 	lastDirection = direction;
-	playAnimation((SpriteType)currentSprite, fondo, drawFog);
+	playAnimation((SpriteType) currentSprite, fondo, drawFog);
 
 }
 
@@ -361,7 +360,8 @@ void PlayerView::setName(std::string name) {
 	color.g = 255;
 	color.b = 255;
 	TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
-	if (nameImage) SDL_FreeSurface(nameImage);
+	if (nameImage)
+		SDL_FreeSurface(nameImage);
 	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);
 	if (!nameImage || !font)
 		Logs::logErrorMessage(
@@ -369,16 +369,18 @@ void PlayerView::setName(std::string name) {
 
 }
 
-void PlayerView::setShowableName(string name){
+void PlayerView::setShowableName(string name) {
 	SDL_Color color;
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
 	TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
-	if (nameImage) SDL_FreeSurface(nameImage);
+	if (nameImage)
+		SDL_FreeSurface(nameImage);
 	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);
 	if (!nameImage || !font)
-		Logs::logErrorMessage("Error al cargar la fuente para el nombre del personaje");
+		Logs::logErrorMessage(
+				"Error al cargar la fuente para el nombre del personaje");
 }
 
 void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen,

@@ -45,7 +45,6 @@ public:
 	virtual ~PlayerView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
-	void loadSounds();
 private:
 	ChatWindowsView* chatView;
 	void showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog);
@@ -82,6 +81,7 @@ private:
 
 	SDL_Surface* nameImage;
 	TextHandler textHandler;
+
 
 };
 
