@@ -24,6 +24,7 @@
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_mixer.h>
 
 using namespace std;
 class EntityView {
@@ -59,7 +60,6 @@ public:
 	int getBaseCols();
 	std::string getName();
 	virtual void setName(std::string name);
-
 protected:
 	void loadImage();
 	void updateBaseSize();
@@ -90,6 +90,7 @@ protected:
 
 	int numberOfRepeats;
 	int currentRepeat;
+
 };
 
 #endif /* ENTITYVIEW_H */

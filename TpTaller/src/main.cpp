@@ -10,6 +10,7 @@
 #include <string>
 #include <stdio.h>
 #include <model/persistence/ConfigurationReader.h>
+#include <view/sound/SoundEffectHandler.h>
 #include <model/Logs/Logs.h>
 #include <Game.h>
 #include <Menu.h>
@@ -129,6 +130,7 @@ void initMenu(PersistentConfiguration* configuration, string& playerName,
 			break;
 		case MULTIPLAYER_GAME_EVENT:
 			menu->close();
+			SoundEffectHandler::initialize();
 			initMultiplayerGame(playerName, playerType);
 			event = EXIT_EVENT;
 			break;
