@@ -22,10 +22,15 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+#define OK 0
+#define NAME_CHANGE 1
+#define ERROR -1
+
 using namespace std;
 
 class Server {
 public:
+	Server();
 	Server(int port);
 
 	void run(MultiplayerGame* game);
@@ -59,7 +64,6 @@ public:
 	void deliverMessages(int clientSocket);
 	MultiplayerGame* getGame();
 
-	ChatServer* getChat();
 	map<string,int> getPlayerConnected();
 	void setMessages(vector<ChatMessage*>);
 
@@ -69,23 +73,34 @@ public:
 
 	virtual ~Server();
 
+protected:
+	int serverID;
+	MultiplayerGame* game;
+	bool active;
 private:
 
 	int reconectPlayer(int clientSocket, string playerName, PlayerInfo* info);
 
-	int serverID;
-	ChatServer* chat;
-	MultiplayerGame* game;
+
 	map<int,PlayerInfo*> gamePlayers;
 	map<string,int> conectedPlayers;
 	map<string,int> disconectedPlayers;
 	map<string,vector<PlayerUpdate*> > updates;
 	vector<ChatMessage*> messages;
-	bool active;
+
 	map<int,pthread_t> connections;
 
 	map<string,Timer> timers;
 
 };
+
+typedef struct aux{
+	Server* server;
+	int clientID;
+}HandleThreadParameter;
+
+void* handle(void* par);
+
+void* runGameBackEnd(void* parameter);
 
 #endif /* SERVER_H_ */

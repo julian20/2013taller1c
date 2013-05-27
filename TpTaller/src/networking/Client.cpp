@@ -214,7 +214,7 @@ void Client::run(){
 		exit(1);
 	}
 	this->game->run();
-	pthread_join(thread,NULL);
+	pthread_cancel(thread);
 }
 
 /* *************  FUNCIONES DE RECEPCION DE ARCHIVOS *************** */
@@ -332,6 +332,8 @@ void Client::checkNewPlayers() {
 
 void Client::sendEvents() {
 	list<PlayerEvent*> events = game->getEvents();
+
+	cout << "SENDING " << events.size() << " EVENTS" << endl;
 
 	// 1ro envio la cantidad de events que voy a mandar
 	ComunicationUtils::sendNumber(clientID, events.size());

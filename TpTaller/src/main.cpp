@@ -16,6 +16,7 @@
 #include <Menu.h>
 #include <networking/Client.h>
 #include <networking/Server.h>
+#include <networking/SinglePlayerGame/SinglePlayerServer.h>
 
 #include <SDL/SDL.h>
 
@@ -37,10 +38,29 @@
 
 using namespace std;
 
-void initGame(PersistentConfiguration* configuration) {
-	Game* game = new Game(configuration, false);
-	game->run();
+void initGame() {
+
+	ConfigurationReader configReader = ConfigurationReader();
+	PersistentConfiguration configuration = configReader.loadConfiguration(SINGLE_PLAYER_CONFIG_FILE,OUTPUT_FILENAME);
+
+	std::string serverIP = configuration.getAnimationConfiguration()->getServerIP();
+	unsigned int serverPort = configuration.getAnimationConfiguration()->getServerPort();
+
+	MultiplayerGame* MPgame = new MultiplayerGame(&configuration);
+	MPgame->addNewPlayer(new Player(), new Coordinates(9,9));
+	SinglePlayerServer* server = new SinglePlayerServer(serverPort);
+	server->run(MPgame);
+
+	Client* client = new Client(serverIP, serverPort);
+	Game* game = new Game(&configuration, true);
+	client->setGame(game);
+	client->initPlayerInfo(game->getPlayerView());
+	client->run();
+
+	delete client;
 	delete game;
+	delete MPgame;
+	delete server;
 }
 
 void initMultiplayerGame(string& playerName, string& playerType) {
@@ -55,12 +75,10 @@ void initMultiplayerGame(string& playerName, string& playerType) {
 
 	Client* client = new Client(serverIP, serverPort);
 	client->downloadFiles();
-	string command = string("sed -n \"s/^  - name: NewPlayer.*/^  - name: ")
-			+ playerType +string("/\" ") + string("configuration/entities.yaml");
-	system(command.c_str());
+
 	// Reemplazo el tag en el archivo de configuracion por
 	// el player type.
-	command = string("sed \"s/NAME_TAG/");
+	string command = string("sed \"s/NAME_TAG/");
 	command += playerType;
 	command += string("/g\" ");
 	command += string(CLIENT_RECEIVED_FILE);
@@ -121,7 +139,7 @@ void initMenu(PersistentConfiguration* configuration, string& playerName,
 		case NEWGAME_EVENT:
 			//Aca inicio el juego
 			menu->close();
-			initGame(configuration);
+			initGame();
 			event = EXIT_EVENT;
 			break;
 		case CONFIG_EVENT:

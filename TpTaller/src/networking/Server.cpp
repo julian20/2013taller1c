@@ -38,9 +38,7 @@
 #define BACKLOG     10  /* Passed to listen() */
 #define READING_SIZE 4092
 #define ALIVE_SIGNAL "ALIVE"
-#define OK 0
-#define NAME_CHANGE 1
-#define ERROR -1
+
 
 #define DELAY 50
 
@@ -50,11 +48,6 @@
 using namespace std;
 
 /* ************ AUXILIARY STRUCTS FOR THREAD PARAMETERS ************ */
-
-typedef struct aux{
-	Server* server;
-	int clientID;
-}HandleThreadParameter;
 
 typedef struct paramAux{
 	Server* server;
@@ -195,6 +188,8 @@ void* readEvents(void* par) {
 
 /* *********************** SERVER CONTRUCTOR ************************ */
 
+Server::Server(){}
+
 Server::Server(int port) {
 	struct sockaddr_in svInfo;
 
@@ -222,7 +217,6 @@ Server::Server(int port) {
 	}
 	active = false;
 
-	chat = NULL;
 	game = NULL;
 
 	signal(SIGPIPE, SIG_IGN);
@@ -647,10 +641,6 @@ void Server::disconectPlayer(int clientSocket, string playerName) {
 
 MultiplayerGame* Server::getGame() {
 	return game;
-}
-
-ChatServer* Server::getChat() {
-	return this->chat;
 }
 
 bool Server::isActive(){
