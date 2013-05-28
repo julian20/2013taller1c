@@ -30,6 +30,7 @@ ChatWindowsView::ChatWindowsView(){
 	this->clip.h = WINDOWSHEIGHT;
 	this->player = NULL;
 	this->_screen = NULL;
+	this->chatWindow = NULL;
 
 
 	font = TTF_OpenFont(FONT,20);
@@ -63,6 +64,19 @@ void ChatWindowsView::drawChatView(SDL_Surface* screen)
 			string s = v[i]->getSender() + ": " + v[i]->getMSJ();
 			this->draw_text(s);
  		}
+
+//		string recibido=v[0];
+//
+//		string enviado=v[1];
+//		//this->text=;
+//		this->pos=60;
+//		if(recibido!="") this->draw_text(recibido);
+//		this->pos=80;
+//		this->draw_text(enviado);
+//		if(this->chat->NewLine())
+//		{
+//
+//		}
 	}
 }
 void ChatWindowsView::setChat(Chat* chat)
@@ -72,26 +86,27 @@ void ChatWindowsView::setChat(Chat* chat)
 bool ChatWindowsView::drawChatWindow(SDL_Surface* screen) {
 	this->clip.w = screen->w;
 	this->_screen=screen;
+	SDL_Surface* img;
+	if (!chatWindow){
+		img = IMG_Load(CHATWINDOW);
+		if (!img){
+			Logs::logErrorMessage("ChatWindowView: No se pudo cargar la imagen de fondo de la ventana de chat");
+		}
 
-//	Uint32 rmask, gmask, bmask, amask;
-//	rmask = 0x000000ff;
-//	gmask = 0x0000ff00;
-//	bmask = 0x00ff0000;
-//	amask = 0xff000000;
-//
-//	SDL_Surface* retval = SDL_CreateRGBSurface(SDL_SWSURFACE, clip.w, clip.h, 32,
-//			rmask, gmask, bmask, amask);
-//
-//	SDL_FillRect(retval, NULL, 0x90000000);
-//
-//	SDL_BlitSurface(retval,NULL,screen,&clip);
-//
-//	SDL_UpdateRects(screen,1,&clip);
-//
-//
-//	return true;
-	return SDL_FillRect(screen, &this->clip, 0x000000);
+		float scaleX = (float) clip.w / img->w;
+		float scaleY = (float) clip.h / img->h;
 
+		chatWindow = rotozoomSurfaceXY(img,0,scaleX,scaleY,0);
+		if (!chatWindow){
+			Logs::logErrorMessage("ChatWindowView: No se pudo cargar la imagen de fondo de la ventana de chat");
+		}
+	}
+
+	SDL_BlitSurface(chatWindow,NULL,screen,&this->clip);
+	SDL_UpdateRects(screen, 1, &clip);
+
+//	return SDL_FillRect(screen, &this->clip, 0x0D7A3E);
+	return true;
 }
 
 bool ChatWindowsView::draw_text(string texto) {

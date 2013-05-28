@@ -34,6 +34,8 @@ public:
 	bool isActive();
 private:
 
+	SDL_Surface* chatWindow;
+
 	SDL_Rect clip;
 	int pos;
 	SDL_Surface* _screen;
