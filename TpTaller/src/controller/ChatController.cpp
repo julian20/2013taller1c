@@ -32,6 +32,7 @@ void ChatController::handle_events(SDL_Event ev) {
 				int y = ev.button.y;
 				if(this->playerController->clickAnotherPlayer(x,y))
 					{
+						this->text = "";
 						this->chat->Enable();
 						this->chat->setReceptor(this->playerController->getLastPlayerTouch());
 						this->receptor = this->playerController->getLastPlayerTouch();
@@ -131,8 +132,7 @@ void ChatController::handle_events(SDL_Event ev) {
 						c = '?';
 						break;
 					case '.':
-						this->text = "";
-						this->chat->Disable();
+						c = ':';
 						break;
 					default:
 						break;
@@ -140,6 +140,10 @@ void ChatController::handle_events(SDL_Event ev) {
 				}
 				this->text += c;
 				//Si apreta borrar armo un substring con dos letras menos
+			}
+
+			if (ev.key.keysym.sym == SDLK_ESCAPE){
+				this->chat->Disable();
 			}
 			if (ev.key.keysym.sym == SDLK_BACKSPACE) {
 				int longitud = this->text.length() - 2;

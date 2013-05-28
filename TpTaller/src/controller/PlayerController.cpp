@@ -46,11 +46,6 @@ string PlayerController::getLastPlayerTouch() {
 	return this->lastPlayerTouch;
 }
 
-void playBattleSound() {
-	if (!SoundEffectHandler::isSoundPlaying(string("battle")))
-		SoundEffectHandler::playSound(string("battle"));
-}
-
 bool PlayerController::clickAnotherPlayer(int x, int y) {
 	Position* cameraPos = this->camera->getPosition();
 
@@ -62,7 +57,7 @@ bool PlayerController::clickAnotherPlayer(int x, int y) {
 		return false;
 	MobileEntity* player = tileData->getPersonaje();
 	if (player) {
-		playBattleSound();
+		if (player->getClassName().compare("Player") != 0) return false;
 		this->lastPlayerTouch = player->getName();
 		return true;
 	} else
