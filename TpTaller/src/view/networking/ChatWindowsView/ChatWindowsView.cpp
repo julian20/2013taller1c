@@ -87,7 +87,6 @@ void ChatWindowsView::setChat(Chat* chat){
 bool ChatWindowsView::drawChatWindow() {
 
 	SDL_BlitSurface(chatWindow,NULL,screen,&this->clip);
-	SDL_UpdateRects(screen, 1, &clip);
 
 	return true;
 }
