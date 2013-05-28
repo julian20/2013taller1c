@@ -13,6 +13,10 @@
 #include <networking/ChatMessage.h>
 #include <view/TextHandler.h>
 #define FONT "resources/fonts/robot.ttf"
+#define FONT_SIZE 20
+
+#define WINDOW_MARGIN 50
+
 #define WINDOWSHEIGHT 100
 #define CHATWINDOW "resources/fonts/chat-window.png"
 
@@ -25,10 +29,10 @@ ChatWindowsView::ChatWindowsView(SDL_Surface* screen){
 	this->state = true;
 	this->chat=NULL;
 	this->pos=0;
-	this->clip.x = 0;
-	this->clip.y = 0;
+	this->clip.x = WINDOW_MARGIN;
+	this->clip.y = screen->h - WINDOWSHEIGHT;
 	this->clip.h = WINDOWSHEIGHT;
-	this->clip.w = screen->w;
+	this->clip.w = screen->w - 2*WINDOW_MARGIN;
 	this->player = NULL;
 	this->screen = screen;
 
@@ -47,7 +51,7 @@ ChatWindowsView::ChatWindowsView(SDL_Surface* screen){
 
 
 
-	font = TTF_OpenFont(FONT,20);
+	font = TTF_OpenFont(FONT,FONT_SIZE);
 	SDL_Colour colour = {255, 255, 255 };
 	//cout << "asigna color" << endl;
 	this->text_colour = colour;
@@ -62,10 +66,11 @@ void ChatWindowsView::setPlayer(Player* player)
 }
 void ChatWindowsView::drawChatView()
 {
-	if(chat->isEnable())
-	{
+	if(chat->isEnable()){
+
+
 		this->drawChatWindow();
-		this->pos = 80;
+		this->pos = screen->h - FONT_SIZE;
 		vector<ChatMessage*> v=chat->getMessagesReceive();
 
 		this->draw_text(chat->getMessageSend());
@@ -73,11 +78,13 @@ void ChatWindowsView::drawChatView()
 		int size = v.size();
 
 		for (int i = size - 1 ; i >= 0 ; i--){
-			pos -= 20;
-			if (pos < 0) break;
+			pos -= FONT_SIZE;
+			if (pos < clip.y) break;
 			string s = v[i]->getSender() + ": " + v[i]->getMSJ();
 			this->draw_text(s);
  		}
+
+		SDL_Flip(chatWindow);
 	}
 }
 void ChatWindowsView::setChat(Chat* chat){
@@ -98,8 +105,8 @@ bool ChatWindowsView::draw_text(string texto) {
 	msg = TTF_RenderText_Solid(this->font, texto.c_str(), this->text_colour);
 	SDL_Rect tmp = this->clip;
 	tmp.x += 5;
-	tmp.y += pos;
-	return SDL_BlitSurface(msg, NULL, this->screen, &tmp);
+	tmp.y = pos;
+	return SDL_BlitSurface(msg, NULL, screen, &tmp);
 }
 
 std::string ChatWindowsView::get_text(void) {
