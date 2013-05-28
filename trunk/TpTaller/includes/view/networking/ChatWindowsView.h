@@ -21,15 +21,15 @@ using namespace std;
 
 class ChatWindowsView {
 public:
-	ChatWindowsView();
+	ChatWindowsView(SDL_Surface* screen);
 	virtual ~ChatWindowsView();
-	bool drawChatWindow(SDL_Surface* screen);
+	bool drawChatWindow();
 	bool draw_text(string text);
 	string get_text(void);
 	void setChat(Chat* chat);
 	void setPlayer(Player* player);
 	Chat * getChat();
-	void drawChatView(SDL_Surface* screen);
+	void drawChatView();
 	void handle_events(SDL_Event event);
 	bool isActive();
 private:
@@ -38,7 +38,7 @@ private:
 
 	SDL_Rect clip;
 	int pos;
-	SDL_Surface* _screen;
+	SDL_Surface* screen;
 	TTF_Font* font;
 	SDL_Colour text_colour;
 	bool state;
