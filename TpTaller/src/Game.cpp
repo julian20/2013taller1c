@@ -62,7 +62,7 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	if (multiplayer) {
 		chatController = new ChatController(playerController);
-		chatView = new ChatWindowsView();
+		chatView = new ChatWindowsView(screen);
 	}
 	
 }
@@ -170,7 +170,7 @@ void Game::draw() {
 	SDL_FillRect(screen, NULL, 0);
 	Position* cam = mapView->getCamera()->getPosition();
 	mapView->draw(cam);
-	if (multiplayer) chatView->drawChatView(screen);
+	if (multiplayer) chatView->drawChatView();
 	delete cam;
 
 	fpsUpdatingTimer++;

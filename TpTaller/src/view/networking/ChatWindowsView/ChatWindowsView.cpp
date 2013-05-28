@@ -20,7 +20,7 @@ ChatWindowsView::~ChatWindowsView() {
 	// TODO Auto-generated destructor stub
 }
 
-ChatWindowsView::ChatWindowsView(){
+ChatWindowsView::ChatWindowsView(SDL_Surface* screen){
 
 	this->state = true;
 	this->chat=NULL;
@@ -28,9 +28,23 @@ ChatWindowsView::ChatWindowsView(){
 	this->clip.x = 0;
 	this->clip.y = 0;
 	this->clip.h = WINDOWSHEIGHT;
+	this->clip.w = screen->w;
 	this->player = NULL;
-	this->_screen = NULL;
-	this->chatWindow = NULL;
+	this->screen = screen;
+
+	SDL_Surface* img = IMG_Load(CHATWINDOW);
+	if (!img){
+		Logs::logErrorMessage("ChatWindowView: No se pudo cargar la imagen de fondo de la ventana de chat");
+	}
+
+	float scaleX = (float) clip.w / img->w;
+	float scaleY = (float) clip.h / img->h;
+
+	chatWindow = rotozoomSurfaceXY(img,0,scaleX,scaleY,0);
+	if (!chatWindow){
+		Logs::logErrorMessage("ChatWindowView: No se pudo cargar la imagen de fondo de la ventana de chat");
+	}
+
 
 
 	font = TTF_OpenFont(FONT,20);
@@ -46,11 +60,11 @@ void ChatWindowsView::setPlayer(Player* player)
 {
 	this->player=player;
 }
-void ChatWindowsView::drawChatView(SDL_Surface* screen)
+void ChatWindowsView::drawChatView()
 {
 	if(chat->isEnable())
 	{
-		this->drawChatWindow(screen);
+		this->drawChatWindow();
 		this->pos = 80;
 		vector<ChatMessage*> v=chat->getMessagesReceive();
 
@@ -64,48 +78,17 @@ void ChatWindowsView::drawChatView(SDL_Surface* screen)
 			string s = v[i]->getSender() + ": " + v[i]->getMSJ();
 			this->draw_text(s);
  		}
-
-//		string recibido=v[0];
-//
-//		string enviado=v[1];
-//		//this->text=;
-//		this->pos=60;
-//		if(recibido!="") this->draw_text(recibido);
-//		this->pos=80;
-//		this->draw_text(enviado);
-//		if(this->chat->NewLine())
-//		{
-//
-//		}
 	}
 }
-void ChatWindowsView::setChat(Chat* chat)
-{
+void ChatWindowsView::setChat(Chat* chat){
 	this->chat=chat;
 }
-bool ChatWindowsView::drawChatWindow(SDL_Surface* screen) {
-	this->clip.w = screen->w;
-	this->_screen=screen;
-	SDL_Surface* img;
-	if (!chatWindow){
-		img = IMG_Load(CHATWINDOW);
-		if (!img){
-			Logs::logErrorMessage("ChatWindowView: No se pudo cargar la imagen de fondo de la ventana de chat");
-		}
 
-		float scaleX = (float) clip.w / img->w;
-		float scaleY = (float) clip.h / img->h;
-
-		chatWindow = rotozoomSurfaceXY(img,0,scaleX,scaleY,0);
-		if (!chatWindow){
-			Logs::logErrorMessage("ChatWindowView: No se pudo cargar la imagen de fondo de la ventana de chat");
-		}
-	}
+bool ChatWindowsView::drawChatWindow() {
 
 	SDL_BlitSurface(chatWindow,NULL,screen,&this->clip);
 	SDL_UpdateRects(screen, 1, &clip);
 
-//	return SDL_FillRect(screen, &this->clip, 0x0D7A3E);
 	return true;
 }
 
@@ -117,7 +100,7 @@ bool ChatWindowsView::draw_text(string texto) {
 	SDL_Rect tmp = this->clip;
 	tmp.x += 5;
 	tmp.y += pos;
-	return SDL_BlitSurface(msg, NULL, this->_screen, &tmp);
+	return SDL_BlitSurface(msg, NULL, this->screen, &tmp);
 }
 
 std::string ChatWindowsView::get_text(void) {
