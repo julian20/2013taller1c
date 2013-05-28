@@ -320,13 +320,9 @@ std::vector<std::string> Server::listFilesInDirectory(std::string directory) {
 	// Tamaño del dir mas /
 	int length = directory.size() + 1;
 
-	std::ofstream outputFile("testResources");
-
 	for (unsigned i = 0; i < withBase.size(); i++) {
 
 		newVector.push_back(withBase[i].substr(length));
-
-		outputFile << newVector[i] << std::endl;
 
 	}
 
