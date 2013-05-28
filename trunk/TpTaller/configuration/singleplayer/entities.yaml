@@ -132,6 +132,22 @@
     anchorPixel: [35, 0]  
     baseRows: 1
     baseCols: 1
+  - name: grave
+    imageSrc: resources/buildings/grave.png
+    imageWidth: 120
+    imageHeight: 160
+    numberOfClips: 0
+    anchorPixel: [57, 96]  
+    baseRows: 1
+    baseCols: 1
+  - name: calavera
+    imageSrc: resources/buildings/clavera.png
+    imageWidth: 80
+    imageHeight: 60
+    numberOfClips: 0
+    anchorPixel: [30, 0]  
+    baseRows: 1
+    baseCols: 1
 - gameConfiguration:
     serverIP: 127.0.0.1
     serverPort: 32001
@@ -212,7 +228,7 @@
     position: [46, 12, 0]
   - name: tree
     position: [2, 4, 0]
-  - name: tree
+  - name: calavera
     position: [3, 8, 0]
   - name: tree
     position: [15, 10, 0]
@@ -228,13 +244,13 @@
     position: [8, 13, 0]
   - name: farmhouse
     position: [3, 13, 0]
-  - name: tree
+  - name: grave
     position: [29, 25, 0]
-  - name: tree
+  - name: grave
     position: [25, 27, 0]
-  - name: tree
+  - name: grave
     position: [27, 27, 0]
-  - name: tree
+  - name: grave
     position: [29, 27, 0]
   - name: tree
     position: [29, 3, 0]
@@ -246,7 +262,7 @@
     position: [27, 5, 0]
   - name: tree
     position: [29, 5, 0]
-  - name: tree
+  - name: calavera
     position: [27, 7, 0]
   - name: tree
     position: [33, 9, 0]
@@ -270,7 +286,7 @@
     position: [25, 17, 0]
   - name: tree
     position: [27, 17, 0]
-  - name: tree
+  - name: calavera
     position: [35, 17, 0]
   - name: Water
     position: [36, 30, 0]
