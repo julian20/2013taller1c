@@ -71,11 +71,11 @@
     baseRows: 1
     baseCols: 1
   - name: tree
-    imageSrc: resources/tree2.png
-    imageWidth: 128
-    imageHeight: 133
+    imageSrc: resources/tree3.png
+    imageWidth: 102
+    imageHeight: 104
     numberOfClips: 0
-    anchorPixel: [60, 100]
+    anchorPixel: [50, 70]
     baseRows: 1
     baseCols: 1
   - name: barracks
