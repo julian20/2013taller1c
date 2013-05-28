@@ -218,6 +218,10 @@ Server::Server(int port) {
 	active = false;
 
 	game = NULL;
+	gamePlayers.clear();
+	conectedPlayers.clear();
+	disconectedPlayers.clear();
+	updates.clear();
 
 	signal(SIGPIPE, SIG_IGN);
 
@@ -411,6 +415,7 @@ int Server::addPlayerToGame(int clientSocket, PlayerInfo* info) {
 	string playerName = info->getPlayer()->getName();
 
 	if (disconectedPlayers.count(playerName) > 0) {
+		cout << "ENTRO ACA" << endl;
 		return reconectPlayer(clientSocket, playerName, info);
 	}
 
@@ -467,11 +472,7 @@ void Server::sendNewPlayers(int clientSocket, map<int, string> *sended) {
 	if (n == 0)
 		return;
 
-	for (map<int, PlayerInfo*>::iterator it = gamePlayers.begin();
-			it != gamePlayers.end(); ++it) {
-
-		cout << " Se mando un jugador " << endl;
-
+	for (map<int, PlayerInfo*>::iterator it = gamePlayers.begin(); it != gamePlayers.end(); ++it) {
 		// SI NO HA SIDO ENVIADO, LO ENVIO
 		if (sended->count(it->first) == 0) {
 			PlayerInfo* info = it->second;
@@ -629,7 +630,6 @@ void Server::disconectPlayer(int clientSocket, string playerName) {
 	vector<PlayerEvent*> disconectEvent;
 	disconectEvent.push_back(new PlayerEvent(EVENT_DISCONECT));
 	game->addEventsToHandle(playerName, disconectEvent);
-	gamePlayers.erase(clientSocket);
 	conectedPlayers.erase(playerName);
 	disconectedPlayers.insert(pair<string, int>(playerName, clientSocket));
 
