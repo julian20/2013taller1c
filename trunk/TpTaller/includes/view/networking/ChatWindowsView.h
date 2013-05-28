@@ -33,6 +33,7 @@ public:
 	void handle_events(SDL_Event event);
 	bool isActive();
 private:
+
 	SDL_Rect clip;
 	int pos;
 	SDL_Surface* _screen;

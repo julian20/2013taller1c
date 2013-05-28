@@ -5,11 +5,16 @@
  *      Author: damian
  */
 
+#include <SDL/SDL_image.h>
+#include <SDL/SDL_rotozoom.h>
+
+#include <model/Logs/Logs.h>
 #include <view/networking/ChatWindowsView.h>
 #include <networking/ChatMessage.h>
 #include <view/TextHandler.h>
 #define FONT "resources/fonts/robot.ttf"
 #define WINDOWSHEIGHT 100
+#define CHATWINDOW "resources/fonts/chat-window.png"
 
 ChatWindowsView::~ChatWindowsView() {
 	// TODO Auto-generated destructor stub
@@ -26,8 +31,9 @@ ChatWindowsView::ChatWindowsView(){
 	this->player = NULL;
 	this->_screen = NULL;
 
+
 	font = TTF_OpenFont(FONT,20);
-	SDL_Colour colour = {1, 1, 1 };
+	SDL_Colour colour = {255, 255, 255 };
 	//cout << "asigna color" << endl;
 	this->text_colour = colour;
 }
@@ -57,19 +63,6 @@ void ChatWindowsView::drawChatView(SDL_Surface* screen)
 			string s = v[i]->getSender() + ": " + v[i]->getMSJ();
 			this->draw_text(s);
  		}
-
-//		string recibido=v[0];
-//
-//		string enviado=v[1];
-//		//this->text=;
-//		this->pos=60;
-//		if(recibido!="") this->draw_text(recibido);
-//		this->pos=80;
-//		this->draw_text(enviado);
-//		if(this->chat->NewLine())
-//		{
-//
-//		}
 	}
 }
 void ChatWindowsView::setChat(Chat* chat)
@@ -79,7 +72,26 @@ void ChatWindowsView::setChat(Chat* chat)
 bool ChatWindowsView::drawChatWindow(SDL_Surface* screen) {
 	this->clip.w = screen->w;
 	this->_screen=screen;
-	return SDL_FillRect(screen, &this->clip, 0x0D7A3E);
+
+//	Uint32 rmask, gmask, bmask, amask;
+//	rmask = 0x000000ff;
+//	gmask = 0x0000ff00;
+//	bmask = 0x00ff0000;
+//	amask = 0xff000000;
+//
+//	SDL_Surface* retval = SDL_CreateRGBSurface(SDL_SWSURFACE, clip.w, clip.h, 32,
+//			rmask, gmask, bmask, amask);
+//
+//	SDL_FillRect(retval, NULL, 0x90000000);
+//
+//	SDL_BlitSurface(retval,NULL,screen,&clip);
+//
+//	SDL_UpdateRects(screen,1,&clip);
+//
+//
+//	return true;
+	return SDL_FillRect(screen, &this->clip, 0x000000);
+
 }
 
 bool ChatWindowsView::draw_text(string texto) {

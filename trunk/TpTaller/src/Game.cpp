@@ -170,6 +170,7 @@ void Game::draw() {
 	SDL_FillRect(screen, NULL, 0);
 	Position* cam = mapView->getCamera()->getPosition();
 	mapView->draw(cam);
+	if (multiplayer) chatView->drawChatView(screen);
 	delete cam;
 
 	fpsUpdatingTimer++;
@@ -179,7 +180,6 @@ void Game::draw() {
 		fpsUpdatingTimer = 0;
 	}
 		// Actualiza la screen
-	if (multiplayer) chatView->drawChatView(screen);
 	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 800, 40, "baramond", textHandler->getColor(255, 0, 0));
 	SDL_Flip(screen);
 }
@@ -200,8 +200,6 @@ MenuEvent Game::run() {
 			if (event.type == SDL_QUIT)
 				active = false;
 
-			if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
-				active = false;
 		}
 
 		playersUpdate();
