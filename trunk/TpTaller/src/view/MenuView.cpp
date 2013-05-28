@@ -144,7 +144,6 @@ void MenuView::initMusic() {
 		audioOpen = true;
 		return;
 	}
-	Mix_Init(MIX_INIT_OGG);
 	// Cargamos la musica
 	musica = Mix_LoadMUS(this->gameConfig->getMenuBackMusicSrc().c_str());
 
