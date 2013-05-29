@@ -31,8 +31,6 @@ using namespace std;
 #define READING_SIZE 1024
 
 ComunicationUtils::ComunicationUtils() {
-	// TODO Auto-generated constructor stub
-
 }
 
 void ComunicationUtils::sendNumber(int sockID,int number){
@@ -457,6 +455,5 @@ void ComunicationUtils::sendFile(string fileOrigin, string fileDest, int sockID)
 }
 
 ComunicationUtils::~ComunicationUtils() {
-	// TODO Auto-generated destructor stub
 }
 

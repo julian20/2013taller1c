@@ -60,6 +60,5 @@ istream& operator >>(std::istream& in, ChatMessage& chatmsj){
 }
 
 ChatMessage::~ChatMessage() {
-	// TODO Auto-generated destructor stub
 }
 

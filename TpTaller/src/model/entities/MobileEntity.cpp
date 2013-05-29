@@ -172,6 +172,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	attacking = false;
 	hasChanged = false;
 	initSpeed = 0;
+	team = 0;
 }
 
 MobileEntity::~MobileEntity() {

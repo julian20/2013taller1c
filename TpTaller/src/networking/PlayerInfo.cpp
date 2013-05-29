@@ -27,6 +27,9 @@ PlayerInfo::PlayerInfo() {
 	anchorPixel = new Vector2(0,0);
 	fps = 0;
 	delay = 0;
+
+	player = NULL;
+	initCoords = NULL;
 }
 
 void PlayerInfo::setName(string name){

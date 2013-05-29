@@ -26,6 +26,8 @@ EntityViewMap::EntityViewMap(MapData* _mapData) {
 		vector<list<EntityView*> > row(rows, EntityList);
 		map.push_back(row);
 	}
+
+	entityHolder = NULL;
 }
 
 void EntityViewMap::positionEntityView(EntityView* entity,

@@ -12,8 +12,6 @@
 int SoundEffectHandler::nextAvailableChannel = 0;
 map<string,soundPack> SoundEffectHandler::sounds;
 SoundEffectHandler::SoundEffectHandler() {
-	// TODO Auto-generated constructor stub
-
 }
 
 void SoundEffectHandler::loadSound(string soundID, string soundSrc) {

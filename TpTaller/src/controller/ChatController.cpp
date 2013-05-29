@@ -168,6 +168,5 @@ bool ChatController::isReady()
 	return this->ready;
 }
 ChatController::~ChatController() {
-	// TODO Auto-generated destructor stub
 }
 

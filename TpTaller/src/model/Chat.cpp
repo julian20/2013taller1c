@@ -192,7 +192,11 @@ istream& operator >>(std::istream& in, Chat& chat){
 	bool enable;
 	in >> enable;
 
-	chat.enable;
+	if (enable){
+		chat.enable = true;
+	} else {
+		chat.enable = false;
+	}
 
 	int size;
 	in >> size;
@@ -209,6 +213,6 @@ istream& operator >>(std::istream& in, Chat& chat){
 
 
 Chat::~Chat() {
-	// TODO Auto-generated destructor stub
+
 }
 
