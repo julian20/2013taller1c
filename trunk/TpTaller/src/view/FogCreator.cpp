@@ -54,7 +54,6 @@ SDL_Surface* FogCreator::createFogSurface(int width, int heigth) {
 
 	if (retval == NULL) {
 		Logs::logErrorMessage("Fog surface cannot be loaded");
-		// TODO: que mas acemo' aca?
 	}
 
 	return retval;

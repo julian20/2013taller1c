@@ -61,10 +61,10 @@ void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
 		tileCoord->getRow() >= 0 && tileCoord->getRow() < data->getNRows() ) {
 
 		if (player != NULL) {
-			// TODO: esto no pierde memoria a lo loco?
 			Tile* toTile = new Tile(
 					new Coordinates(tileCoord->getRow(), tileCoord->getCol()));
 			data->movePersonaje(player, toTile);
+			delete toTile;
 		}
 
 	}

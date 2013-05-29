@@ -1,9 +1,5 @@
 #include <model/map/MapData.h>
 #include <model/entityProperties/Position.h>
-/**
- * TODO: agregar clases Tile y TileDefinition, cuyos structs
- * son parseados utilizando YAML.
- */
 
 #define VisibleTilesMargin	2
 
@@ -469,7 +465,6 @@ void MapData::movePersonaje(Player* personaje, Tile* toTile) {
 	}
 
 	delete fromTile;
-	delete toTile;
 
 	// El codigo de aca abajo es para ir directo al tile clickeado
 	/*list<Tile *> *path = new list<Tile *>();

@@ -15,7 +15,6 @@ PersistentConfiguration::PersistentConfiguration() {
 }
 
 PersistentConfiguration::~PersistentConfiguration() {
-	//delete this->textureHolder; //TODO: GOnchu aca hay un error que tira una segmentation fault grave. Verificar
 	delete this->mapData;
 	delete this->animationConfiguration;
 	delete this->entityViewMap;

@@ -1827,10 +1827,6 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	}
 	textureHolder = new TextureHolder();
 
-	/**
-	 * TODO: hacer free de los structs auxiliares luego
-	 * de parsear.
-	 */
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
 	std::ofstream outputFile(outputFilename.c_str());
 

@@ -10,13 +10,6 @@
 
 #include <model/Vector2.h>
 
-/**
- * TODO Uso la posicion como un vector para definir la direccion, en realidad
- * la clase Posicion deberia ser un vector, que nosotros usamos para describir
- * la posicion. O de ultima que Posicion herede de un vector y lo reutilizamos
- * para describir distintas cosas.
- */
-
 using namespace std;
 
 class Speed {

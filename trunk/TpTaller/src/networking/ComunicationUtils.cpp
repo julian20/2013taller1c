@@ -205,6 +205,9 @@ void ComunicationUtils::sendPlayerEvent(int sockID,PlayerEvent* event){
 		i++;
 		if (i > ITER_LIMIT) break;
 	}
+
+	//TODO: Borrar el player event que se manda
+
 }
 
 PlayerEvent* ComunicationUtils::recvPlayerEvent(int sockID){

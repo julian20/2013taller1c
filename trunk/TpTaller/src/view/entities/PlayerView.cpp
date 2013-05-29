@@ -158,33 +158,28 @@ void PlayerView::loadPlayerImage() {
 	//If there was a problem loading the sprite
 	if (!walkingImage) {
 		Logs::logErrorMessage("Unable to load walking image");
-		//TODO: cargo una alternativa
 		walkingImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
 		walkingImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
 	}
 
 	if (!idleImage) {
 		Logs::logErrorMessage("Unable to load idle image");
-		//TODO: cargo una alternativa
 		idleImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
 		idleImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
 	}
 
 	if (!attackImage) {
 		Logs::logErrorMessage("Unable to load attack image");
-		//TODO: cargo una alternativa
 		attackImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
 		attackImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
 	}
 	if (!runningImage) {
 		Logs::logErrorMessage("Unable to load running image");
-		//TODO: cargo una alternativa
 		runningImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
 		runningImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
 	}
 	if (!idleBlockImage) {
 		Logs::logErrorMessage("Unable to load idle blocking image");
-		//TODO: cargo una alternativa
 		idleBlockImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
 		idleBlockImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
 	}

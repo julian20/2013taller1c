@@ -83,8 +83,6 @@ void playSound() {
 
 }
 void PlayerController::movePlayer(int x, int y) {
-	// Selecciona la casilla mas o menos bien, idealizandola como un cuadrado.
-	// TODO: Que seleccione la casilla bien!
 	Position* cameraPos = this->camera->getPosition();
 	playSound();
 
@@ -106,10 +104,10 @@ void PlayerController::movePlayer(int x, int y) {
 		firstTile.y = cameraPos->getY() + firstTile.y;
 
 		if (player != NULL) {
-			// TODO: esto no pierde memoria a lo loco?
 			Tile* toTile = new Tile(
 					new Coordinates(coor->getRow(), coor->getCol()));
 			data->movePersonaje(player, toTile);
+			delete toTile;
 		}
 	}
 
