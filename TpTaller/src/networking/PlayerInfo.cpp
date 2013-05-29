@@ -109,10 +109,10 @@ Player* PlayerInfo::getPlayer(){
 	return this->player;
 }
 
-void PlayerInfo::setDelay(int delay){
+void PlayerInfo::setDelay(float delay){
 	this->delay = delay;
 }
-int PlayerInfo::getDelay(){
+float PlayerInfo::getDelay(){
 	return this->delay;
 
 }
@@ -167,7 +167,7 @@ ostream& operator <<(std::ostream& out , const PlayerInfo& info){
 	int imageHeight = info.imageHeight;
 	Vector2* anchorPixel = info.anchorPixel;
 	int fps = info.fps;
-	int delay = info.delay;
+	float delay = info.delay;
 
 	Player* player = info.player;
 	Coordinates* initCoords = info.initCoords;
@@ -191,7 +191,8 @@ istream& operator >>(std::istream& in , PlayerInfo& info){
 	string idleBlockingImageSrc;
 	int imageWidth;
 	int imageHeight;
-	int delay,fps;
+	int fps;
+	float delay;
 	Player* player = new Player();
 	Coordinates* initCoords = new Coordinates();
 	in >> name;
