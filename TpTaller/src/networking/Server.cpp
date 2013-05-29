@@ -116,9 +116,10 @@ void* handle(void* par) {
 	// Antes de agregarlo al juego creo el thread para chequear el estado en el que se encuentra.
 	TimerThreadParameter param = {server,clientSocket,playerName, &playing};
 	pthread_t timerThread;
-	pthread_create(&timerThread,NULL,timerChecker,(void*)&param);
 
 	server->addPlayerToGame(clientSocket, info);
+
+	pthread_create(&timerThread,NULL,timerChecker,(void*)&param);
 
 	while (playing && server->isActive()) {
 
