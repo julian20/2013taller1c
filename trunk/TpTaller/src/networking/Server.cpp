@@ -533,8 +533,7 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName) {
 	for (int i = 0; i < size; i++) {
 
 		// Envio la actualizacion
-		ComunicationUtils::sendPlayerUpdate(clientSocket,
-				updates[playerName][i]);
+		ComunicationUtils::sendPlayerUpdate(clientSocket,updates[playerName][i]);
 		delete updates[playerName][i];
 
 	}
@@ -586,8 +585,11 @@ void Server::deliverMessages(int clientSocket,string playerName){
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getMSJ());
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getReceptor());
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getSender());
+		delete vecAux[i];
 
 	}
+
+
 
 }
 

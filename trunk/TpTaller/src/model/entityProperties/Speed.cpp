@@ -20,6 +20,7 @@ Speed::Speed(int magnitude, Vector2* direction) {
 }
 
 Speed::~Speed() {
+	delete direction;
 }
 
 int Speed::getMagnitude() {

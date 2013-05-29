@@ -61,7 +61,8 @@ void MobileEntityUpdate::setAttacking(bool attacking){
 
 
 Tile* MobileEntityUpdate::getTile(){
-	return currentTile;
+	Tile* tile = new Tile(new Coordinates(currentTile->getCoordinates().getRow(),currentTile->getCoordinates().getCol()));
+	return tile;
 }
 
 void MobileEntityUpdate::setTile(Tile* tile){
@@ -86,12 +87,18 @@ void MobileEntityUpdate::setNextTile(Tile* nextTile){
 }
 
 Tile* MobileEntityUpdate::getNextTile(){
-	return nextTile;
+	Tile* tile = new Tile(new Coordinates(nextTile->getCoordinates().getRow(),nextTile->getCoordinates().getCol()));
+	return tile;
 }
 
 
 MobileEntityUpdate::~MobileEntityUpdate() {
-	// TODO Auto-generated destructor stub
+	delete currentPos;
+	delete endPos;
+	delete initCoords;
+	delete speed;
+	delete currentTile;
+	delete nextTile;
 }
 
 //Operator to transform the object into a stream.
