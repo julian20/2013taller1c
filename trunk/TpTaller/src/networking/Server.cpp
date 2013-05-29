@@ -35,7 +35,7 @@
 #include <networking/PlayerInfo.h>
 
 // TODO: LEER ESTO DE UN YAML
-#define BACKLOG     10  /* Passed to listen() */
+#define BACKLOG     30  /* Passed to listen() */
 #define READING_SIZE 4092
 #define ALIVE_SIGNAL "ALIVE"
 
@@ -77,6 +77,8 @@ void* timerChecker(void* par){
 // Funcion que ejecuta al conectarse cada client
 void* handle(void* par) {
 
+	signal(SIGPIPE, SIG_IGN);
+
 	HandleThreadParameter* parameter = (HandleThreadParameter*) par;
 	int clientSocket = parameter->clientID;
 	Server* server = parameter->server;
@@ -91,7 +93,6 @@ void* handle(void* par) {
 	// Manda las imagenes y sonidos necesarios que se utilizaran.
 	server->sendFiles(withBase, withoutBase, clientSocket);
 
-	map<int, string> sent;
 	PlayerInfo* info = server->recieveNewPlayer(clientSocket);
 	if (!info){
 		Logs::logErrorMessage("No se ha recibido la informacion del jugador");
@@ -109,14 +110,13 @@ void* handle(void* par) {
 	}
 
 	bool playing = true;
-	cout << playerName << " has conected.. " << endl;
+	cout << playerName << " has conected.. " << clientSocket << endl;
 
 	// Antes de agregarlo al juego creo el thread para chequear el estado en el que se encuentra.
 	TimerThreadParameter param = {server,clientSocket,playerName, &playing};
 	pthread_t timerThread;
 	pthread_create(&timerThread,NULL,timerChecker,(void*)&param);
 
-	sent.insert(pair<int, string>(clientSocket, playerName));
 	server->addPlayerToGame(clientSocket, info);
 
 	while (playing && server->isActive()) {
@@ -125,7 +125,7 @@ void* handle(void* par) {
 		if (!playing)
 			break;
 
-		server->sendNewPlayers(clientSocket, &sent);
+		server->sendNewPlayers(clientSocket,playerName);
 
 		vector<PlayerEvent*> events = server->recvEvents(clientSocket);
 
@@ -138,7 +138,7 @@ void* handle(void* par) {
 
 		server->recvChatMessages(clientSocket);
 
-		server->deliverMessages(clientSocket);
+		server->deliverMessages(clientSocket, playerName);
 
 	}
 
@@ -222,8 +222,6 @@ Server::Server(int port) {
 	conectedPlayers.clear();
 	disconectedPlayers.clear();
 	updates.clear();
-
-	signal(SIGPIPE, SIG_IGN);
 
 }
 
@@ -415,16 +413,17 @@ int Server::addPlayerToGame(int clientSocket, PlayerInfo* info) {
 	string playerName = info->getPlayer()->getName();
 
 	if (disconectedPlayers.count(playerName) > 0) {
-		cout << "ENTRO ACA" << endl;
 		return reconectPlayer(clientSocket, playerName, info);
 	}
 
 	game->addNewPlayer(info->getPlayer(), info->getInitCoordinates());
 
-	gamePlayers[clientSocket] = info;
-	conectedPlayers[playerName] = clientSocket;
+	gamePlayers[playerName] = info;
+	conectedPlayers[playerName] = info->getPlayer();
 
 	updates[playerName] = vector<PlayerUpdate*>();
+
+	sended[playerName][playerName] = info->getPlayer();
 
 	return 0;
 
@@ -439,10 +438,11 @@ int Server::reconectPlayer(int clientSocket, string playerName,
 	conectEvent.push_back(new PlayerEvent(EVENT_CONECT));
 	game->addEventsToHandle(playerName, conectEvent);
 
-	gamePlayers.insert(pair<int, PlayerInfo*>(clientSocket, info));
-	conectedPlayers.insert(pair<string, int>(playerName, clientSocket));
+	conectedPlayers[playerName] = info->getPlayer();
 
 	updates[playerName] = vector<PlayerUpdate*>();
+
+	sended[playerName][playerName] = info->getPlayer();
 
 	return 0;
 }
@@ -462,22 +462,22 @@ bool Server::exchangeAliveSignals(int clientSocket,string playerName) {
 
 }
 
-void Server::sendNewPlayers(int clientSocket, map<int, string> *sended) {
+void Server::sendNewPlayers(int clientSocket,string playerName) {
 
 	// 1ro envio la cantidad de players que voy a mandar
-	int n = gamePlayers.size() - sended->size();
+	int n = gamePlayers.size() - sended[playerName].size();
 
 	ComunicationUtils::sendNumber(clientSocket, n);
 
 	if (n == 0)
 		return;
 
-	for (map<int, PlayerInfo*>::iterator it = gamePlayers.begin(); it != gamePlayers.end(); ++it) {
+	for (map<string, PlayerInfo*>::iterator it = gamePlayers.begin(); it != gamePlayers.end(); ++it) {
 		// SI NO HA SIDO ENVIADO, LO ENVIO
-		if (sended->count(it->first) == 0) {
+		if (sended[playerName].count(it->first) == 0) {
 			PlayerInfo* info = it->second;
 			ComunicationUtils::sendPlayerInfo(clientSocket, info);
-			(*sended)[it->first] = it->second->getPlayer()->getName();
+			sended[playerName][it->first] = it->second->getPlayer();
 		}
 
 	}
@@ -508,7 +508,7 @@ vector<PlayerEvent*> Server::recvEvents(int clientSocket) {
 
 void Server::getPlayersUpdates() {
 
-	for (map<string, int>::iterator it = conectedPlayers.begin();
+	for (map<string, Player*>::iterator it = conectedPlayers.begin();
 			it != conectedPlayers.end(); ++it) {
 
 		updates[it->first] = game->getPlayersUpdates();
@@ -553,7 +553,7 @@ void Server::recvChatMessages(int clientSocket){
 	}
 }
 
-void Server::deliverMessages(int clientSocket){
+void Server::deliverMessages(int clientSocket,string playerName){
 	//Hay que filtrar los clientes
 
 	vector<ChatMessage*> vecAux;
@@ -565,20 +565,17 @@ void Server::deliverMessages(int clientSocket){
 	{
 		ChatMessage* msj=this->messages[i];
 		string receptor=msj->getReceptor();
-		int idreceptor=this->conectedPlayers[receptor];
-		if(idreceptor==clientSocket)
-			{
+		if(receptor.compare(playerName) == 0 ){
 
-				vecAux.push_back(this->messages[i]);
-				std::swap(this->messages[i], this->messages.back());
-				messages.pop_back();
-				cant++;
+			vecAux.push_back(this->messages[i]);
+			std::swap(this->messages[i], this->messages.back());
+			messages.pop_back();
+			cant++;
 
-			}
+		}
 	}
 	ComunicationUtils::sendNumber(clientSocket, cant);
-	for (int i=0; i<cant;i++)
-	{
+	for (int i=0; i<cant;i++) {
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getMSJ());
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getReceptor());
 		ComunicationUtils::sendString(clientSocket,vecAux[i]->getSender());
@@ -630,8 +627,14 @@ void Server::disconectPlayer(int clientSocket, string playerName) {
 	vector<PlayerEvent*> disconectEvent;
 	disconectEvent.push_back(new PlayerEvent(EVENT_DISCONECT));
 	game->addEventsToHandle(playerName, disconectEvent);
+
 	conectedPlayers.erase(playerName);
-	disconectedPlayers.insert(pair<string, int>(playerName, clientSocket));
+
+	disconectedPlayers[playerName] = gamePlayers[playerName]->getPlayer();
+
+	updates[playerName] = vector<PlayerUpdate*>();
+
+	sended[playerName].clear();
 
 }
 
@@ -652,7 +655,7 @@ void Server::setActive(){
 void Server::setInactive(){
 	this->active = false;
 }
-map<string,int> Server::getPlayerConnected()
+map<string,Player*> Server::getPlayerConnected()
 {
 	return this->conectedPlayers;
 }

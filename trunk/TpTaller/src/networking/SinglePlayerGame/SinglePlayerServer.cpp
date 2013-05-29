@@ -137,7 +137,7 @@ void SinglePlayerServer::handleConnection() {;
 		if (!playing)
 			break;
 
-		sendNewPlayers(clientID, &sent);
+		sendNewPlayers(clientID,playerName);
 
 		vector<PlayerEvent*> events = recvEvents(clientID);
 
@@ -150,7 +150,7 @@ void SinglePlayerServer::handleConnection() {;
 
 		recvChatMessages(clientID);
 
-		deliverMessages(clientID);
+		deliverMessages(clientID,playerName);
 
 	}
 
