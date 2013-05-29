@@ -76,6 +76,7 @@ void NetworkPlayerController::handleEvents(vector<PlayerEvent*> events){
 
 	for (vector<PlayerEvent*>::iterator it = events.begin() ; it != events.end() ; ++it ){
 		handleEvent(*it);
+		delete *it;
 	}
 
 }

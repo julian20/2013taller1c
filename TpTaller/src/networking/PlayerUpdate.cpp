@@ -95,5 +95,4 @@ istream& operator >>(std::istream& in, PlayerUpdate& update){
 
 
 PlayerUpdate::~PlayerUpdate() {
-	// TODO Auto-generated destructor stub
 }
