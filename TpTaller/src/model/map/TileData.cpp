@@ -12,7 +12,6 @@ using namespace std;
 
 TileData::TileData() {
 	personaje = NULL;
-	//TODO: cambiar tileType de int a string
 	tileType = "neutral";
 	iterator = entities.begin();
 	wasVisible = false;

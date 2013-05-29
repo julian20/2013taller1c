@@ -41,7 +41,6 @@ void MapView::setUpMobileEntities() {
 	}
 }
 
-//TODO - este metodo iria en cfg reader
 void MapView::setUpEntity(EntityView* entityView, Coordinates coor) {
 	this->viewMap->positionEntityView(entityView, coor);
 }
@@ -62,7 +61,6 @@ SDL_Surface* MapView::getDrawingSurface() {
 }
 
 map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
-// TODO: Esto en vez de devolver un diccionario capas q estaria bueno q devuelva una clase, q dicen?
 
 // Obtiene las casillas de los extremos de la pantalla
 	Coordinates *supLeft = Tile::getTileCoordinates(-cam->getX(), -cam->getY());
