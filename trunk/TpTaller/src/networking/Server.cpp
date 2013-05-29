@@ -111,7 +111,7 @@ void* handle(void* par) {
 	}
 
 	bool playing = true;
-	cout << playerName << " has conected.. " << clientSocket << endl;
+	cout << playerName << " has conected.. " << endl;
 
 	// Antes de agregarlo al juego creo el thread para chequear el estado en el que se encuentra.
 	TimerThreadParameter param = {server,clientSocket,playerName, &playing};

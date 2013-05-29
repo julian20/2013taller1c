@@ -53,8 +53,8 @@ public:
 	void setPlayer(Player* player);
 	Player* getPlayer();
 
-	void setDelay(int delay);
-	int getDelay();
+	void setDelay(float delay);
+	float getDelay();
 
 	void setFPS(int fps);
 	int getFPS();
@@ -74,7 +74,8 @@ private:
 	string walkingImageSrc,runningImageSrc,idleImageSrc,attackImageSrc, idleBlockingImageScr;
 	int imageWidth, imageHeight;
 	Vector2* anchorPixel;
-	int fps,delay;
+	int fps;
+	float delay;
 	Coordinates* initCoords;
 
 	Player* player;
