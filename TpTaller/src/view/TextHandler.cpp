@@ -92,6 +92,5 @@ TextHandler::~TextHandler() {
 	}
 
 	TTF_Quit();
-	// TODO Auto-generated destructor stub
 }
 
