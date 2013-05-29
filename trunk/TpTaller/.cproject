@@ -25,8 +25,6 @@
 							<tool id="cdt.managedbuild.tool.gnu.archiver.mingw.base.378290122" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.mingw.base"/>
 							<tool command="g++" id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.573702048" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base">
 								<option id="gnu.cpp.compiler.option.include.paths.109945224" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="/usr/include"/>
-									<listOptionValue builtIn="false" value="/usr/local/include/yaml-cpp"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TpTaller/includes}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.1412061557" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
@@ -41,9 +39,7 @@
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1401872741" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool command="gcc" id="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.1914033155" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.base">
-								<option id="gnu.c.compiler.option.include.paths.1597050360" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TpTaller/includes}&quot;"/>
-								</option>
+								<option id="gnu.c.compiler.option.include.paths.1597050360" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath"/>
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.612753070" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.debugging.level.539441742" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1561558882" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>

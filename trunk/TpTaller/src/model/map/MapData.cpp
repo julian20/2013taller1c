@@ -324,6 +324,8 @@ Tile* MapData::getValidTile(Tile* from, Tile* goal) {
 		}
 
 	}
+
+	return NULL;
 }
 
 /**

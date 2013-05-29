@@ -121,7 +121,6 @@ void* transmit(void* _client) {
 /* ***************************************************************** */
 
 Client::Client(string host, int port) {
-	// TODO Auto-generated constructor stub
 	struct sockaddr_in hints;
 	struct hostent *server;
 
@@ -162,7 +161,8 @@ Client::Client(string host, int port) {
 	this->view=NULL;
 	this->player=NULL;
 	this->chat= new Chat();
-	thread = NULL;
+
+	thread = -1;
 
 }
 Chat* Client::getChat()

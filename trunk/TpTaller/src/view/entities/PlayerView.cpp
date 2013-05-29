@@ -40,11 +40,14 @@ PlayerView::PlayerView()
 	player = NULL;
 	nameImage = runningImage = walkingImage = NULL;
 	idleImage = idleBlockImage = attackImage = NULL;
+	runningImageFog = walkingImageFog = idleBlockImageFog = NULL;
+	idleImageFog = attackImageFog = NULL;
 	numberOfRunningClips = numberOfWalkingClips = 0;
 	numberOfIdleClips = numberOfIdleBlockClips = 0;
 	numberOfAttackClips = 0;
 	currentSprite = DOWN;
 	lastDirection = M_PI * 1 / 2;
+	chatView = NULL;
 
 }
 
@@ -65,6 +68,8 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	player = NULL;
 	nameImage = runningImage = walkingImage = NULL;
 	idleImage = idleBlockImage = attackImage = NULL;
+	runningImageFog = walkingImageFog = idleBlockImageFog = NULL;
+	idleImageFog = attackImageFog = NULL;
 	numberOfRunningClips = numberOfWalkingClips = 0;
 	numberOfIdleClips = numberOfIdleBlockClips = 0;
 	numberOfAttackClips = 0;
@@ -72,6 +77,7 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	lastDirection = M_PI * 1 / 2;
 	textureHolder = otherPlayer->getTextureHolder();
 	this->setName(otherPlayer->getName());
+	chatView = NULL;
 }
 
 void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {

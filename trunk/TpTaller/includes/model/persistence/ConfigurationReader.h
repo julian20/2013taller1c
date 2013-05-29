@@ -17,7 +17,7 @@
 #include <model/persistence/ServerMapPersistentConfiguration.h>
 #include <model/persistence/ClientPlayerPersistentConfiguration.h>
 #include <model/entities/Entity.h>
-#include <model/entities/MobileEntity.h>.h>
+#include <model/entities/MobileEntity.h>
 #include <model/entities/player/Player.h>
 #include <model/map/Tile.h>
 #include <model/map/TextureDefinition.h>

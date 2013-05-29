@@ -32,6 +32,7 @@ Tile::Tile(Coordinates* _coordinates) {
 }
 
 Tile::Tile() {
+	fScore = 0;
 	this->position = new Position(0, 0, 0);
 	this->coordinates = new Coordinates(0, 0);
 }

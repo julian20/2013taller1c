@@ -11,7 +11,6 @@
 using namespace std;
 
 TextHandler::TextHandler() {
-	// TODO Auto-generated constructor stub
 	if(!TTF_WasInit())
 		TTF_Init();
 	else

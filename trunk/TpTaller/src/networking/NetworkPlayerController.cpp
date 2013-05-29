@@ -17,6 +17,8 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 
 	EventType type = event->getEventType();
 	switch (type){
+	case EVENT_NONE:
+		break;
 	case EVENT_RUNNING:
 		this->toggleRunning();
 		break;

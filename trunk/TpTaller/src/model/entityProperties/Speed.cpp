@@ -47,6 +47,7 @@ Speed& Speed::operator=(Speed &other) {
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const Speed& speed) {
 	out << speed.magnitude << " " << *(speed.direction);
+	return out;
 }
 
 //Operator to load an object from a stream

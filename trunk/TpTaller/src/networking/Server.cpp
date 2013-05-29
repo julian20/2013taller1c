@@ -34,13 +34,10 @@
 #include <networking/ComunicationUtils.h>
 #include <networking/PlayerInfo.h>
 
-// TODO: LEER ESTO DE UN YAML
+
 #define BACKLOG     30  /* Passed to listen() */
 #define READING_SIZE 4092
 #define ALIVE_SIGNAL "ALIVE"
-
-
-#define DELAY 50
 
 #define STARTING "start"
 #define ENDED "ended"
@@ -192,7 +189,11 @@ void* readEvents(void* par) {
 
 /* *********************** SERVER CONTRUCTOR ************************ */
 
-Server::Server(){}
+Server::Server(){
+	active = false;
+	serverID = 0;
+	game = NULL;
+}
 
 Server::Server(int port) {
 	struct sockaddr_in svInfo;

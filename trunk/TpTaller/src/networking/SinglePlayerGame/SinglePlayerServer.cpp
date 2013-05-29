@@ -77,6 +77,10 @@ SinglePlayerServer::SinglePlayerServer(int port) {
 
 	game = NULL;
 
+	clientID = -1;
+	gameThread = -1;
+	serverThread = -1;
+
 }
 
 
