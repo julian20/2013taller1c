@@ -48,7 +48,7 @@ public:
 	int addPlayerToGame(int clientSocket, PlayerInfo* info);
 
 	bool exchangeAliveSignals(int clientSocket,string playerName);
-	void sendNewPlayers(int clientSocket, map<int,string> *sended);
+	void sendNewPlayers(int clientSocket, string playerName);
 
 
 	vector<PlayerEvent*> recvEvents(int clientSocket);
@@ -60,10 +60,10 @@ public:
 	void checkClientStatus(int clientID, string playerName);
 	void disconectPlayer(int clientSocket, string playerName);
 	Chat* recvChat(int clientSocket);
-	void deliverMessages(int clientSocket);
+	void deliverMessages(int clientSocket,string playerName);
 	MultiplayerGame* getGame();
 
-	map<string,int> getPlayerConnected();
+	map<string,Player*> getPlayerConnected();
 	void setMessages(vector<ChatMessage*>);
 
 	bool isActive();
@@ -81,9 +81,10 @@ private:
 	int reconectPlayer(int clientSocket, string playerName, PlayerInfo* info);
 
 
-	map<int,PlayerInfo*> gamePlayers;
-	map<string,int> conectedPlayers;
-	map<string,int> disconectedPlayers;
+	map<string,PlayerInfo*> gamePlayers;
+	map<string,Player*> conectedPlayers;
+	map<string,Player*> disconectedPlayers;
+	map<string,map<string,Player*> > sended;
 	map<string,vector<PlayerUpdate*> > updates;
 	vector<ChatMessage*> messages;
 
