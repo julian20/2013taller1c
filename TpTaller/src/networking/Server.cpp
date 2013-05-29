@@ -47,6 +47,10 @@
 
 using namespace std;
 
+/* ******************** MUTEX FOR FILE TRANSFER ******************** */
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 /* ************ AUXILIARY STRUCTS FOR THREAD PARAMETERS ************ */
 
 typedef struct paramAux{
@@ -298,15 +302,16 @@ void Server::sendMap(string mapfile, int sockID) {
 	map.close();
 }
 
-void Server::sendFiles(std::vector<std::string> wBase,
-		std::vector<std::string> woBase, int sockID) {
+void Server::sendFiles(std::vector<std::string> wBase,std::vector<std::string> woBase, int sockID) {
 
 	ComunicationUtils::sendNumber(sockID, wBase.size());
 	cout<<"Sending "<< wBase.size()<<" files\n";
 	int cont =0;
 	for (unsigned i = 0; i < wBase.size(); i++) {
+		pthread_mutex_lock(&mutex);
 		ComunicationUtils::sendFile(wBase[i], woBase[i], sockID);
 		cont++;
+		pthread_mutex_unlock(&mutex);
 	}
 	cout<<"Sent "<< cont <<" files\n";
 
