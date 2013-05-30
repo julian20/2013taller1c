@@ -51,6 +51,7 @@ public:
 	virtual ~PlayerView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
+
 private:
 	ChatWindowsView* chatView;
 	void showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog);
@@ -58,6 +59,10 @@ private:
 			bool drawFog);
 	void playAnimation(SpriteType sprite, SDL_Surface* screen, bool drawFog);
 	void loadPlayerImage();
+	FoggedSprite loadFoggedSprite(const char* modifier);
+	map<string, FoggedSprite> loadSwordImages();
+	map<string, FoggedSprite> loadBowImages();
+
 	Player* player;
 	Position* camPos;
 	SpriteType currentSprite;

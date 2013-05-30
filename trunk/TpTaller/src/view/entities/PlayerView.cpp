@@ -124,71 +124,60 @@ void initSounds() {
 
 }
 
-void PlayerView::loadPlayerImage() {
+FoggedSprite PlayerView::loadFoggedSprite(const char* modifier) {
+	string id = string(modifier);
+	FoggedSprite sprite;
+	sprite.image = textureHolder->getTexture(name + id);
+	sprite.foggedImage = textureHolder->getFogTexture(name + id);
+	sprite.numberOfClips = computeNumberOfClips(sprite.image);
+	return sprite;
+
+}
+
+map<string, FoggedSprite> PlayerView::loadSwordImages() {
 	map<string, FoggedSprite> swordMap;
 	FoggedSprite walkingSprite, blockingSprite, standingSprite, attackSprite;
 
-	walkingSprite.image = textureHolder->getTexture(
-			name + string(WALKING_MODIFIER));
-	walkingSprite.foggedImage = textureHolder->getFogTexture(
-			name + string(WALKING_MODIFIER));
-	walkingSprite.numberOfClips = computeNumberOfClips(walkingSprite.image);
+	walkingSprite = loadFoggedSprite(WALKING_MODIFIER);
 	swordMap[string("walking")] = walkingSprite;
 
-	standingSprite.image = textureHolder->getTexture(
-			name + string(IDLE_MODIFIER));
-	standingSprite.foggedImage = textureHolder->getFogTexture(
-			name + string(IDLE_MODIFIER));
-	standingSprite.numberOfClips = computeNumberOfClips(standingSprite.image);
+	standingSprite = loadFoggedSprite(IDLE_MODIFIER);
 	swordMap[string("standing")] = standingSprite;
 
-	attackSprite.image = textureHolder->getTexture(
-			name + string(ATTACK_MODIFIER));
-	attackSprite.foggedImage = textureHolder->getFogTexture(
-			name + string(ATTACK_MODIFIER));
-	attackSprite.numberOfClips = computeNumberOfClips(attackSprite.image);
+	attackSprite = loadFoggedSprite(ATTACK_MODIFIER);
 	swordMap[string("attacking")] = attackSprite;
 
-	blockingSprite.image = textureHolder->getTexture(
-			name + string(IDLE_BLOCKING_MODIFIER));
-	blockingSprite.foggedImage = textureHolder->getFogTexture(
-			name + string(IDLE_BLOCKING_MODIFIER));
-	blockingSprite.numberOfClips = computeNumberOfClips(blockingSprite.image);
+	blockingSprite = loadFoggedSprite(IDLE_BLOCKING_MODIFIER);
 	swordMap[string("blocking")] = blockingSprite;
+	return swordMap;
 
-	weaponViewMap[string("sword")] = swordMap;
+}
 
+map<string, FoggedSprite> PlayerView::loadBowImages() {
 	map<string, FoggedSprite> bowMap;
+	FoggedSprite walkingSprite, blockingSprite, standingSprite, attackSprite;
 
-	walkingSprite.image = textureHolder->getTexture(
-			name + string(BOW_WALKING_MODIFIER));
-	walkingSprite.foggedImage = textureHolder->getFogTexture(
-			name + string(BOW_WALKING_MODIFIER));
-	walkingSprite.numberOfClips = computeNumberOfClips(walkingSprite.image);
+	walkingSprite = loadFoggedSprite(BOW_WALKING_MODIFIER);
 	bowMap[string("walking")] = walkingSprite;
 
-	standingSprite.image = textureHolder->getTexture(
-			name + string(BOW_IDLE_MODIFIER));
-	standingSprite.foggedImage = textureHolder->getFogTexture(
-			name + string(BOW_IDLE_MODIFIER));
-	standingSprite.numberOfClips = computeNumberOfClips(standingSprite.image);
+	standingSprite = loadFoggedSprite(BOW_IDLE_MODIFIER);
 	bowMap[string("standing")] = standingSprite;
 
-	attackSprite.image = textureHolder->getTexture(
-			name + string(BOW_ATTACK_MODIFIER));
-	attackSprite.foggedImage = textureHolder->getFogTexture(
-			name + string(BOW_ATTACK_MODIFIER));
-	attackSprite.numberOfClips = computeNumberOfClips(attackSprite.image);
+	attackSprite = loadFoggedSprite(BOW_ATTACK_MODIFIER);
 	bowMap[string("attacking")] = attackSprite;
 
-	blockingSprite.image = textureHolder->getTexture(
-			name + string(IDLE_BLOCKING_MODIFIER));
-	blockingSprite.foggedImage = textureHolder->getFogTexture(
-			name + string(IDLE_BLOCKING_MODIFIER));
-	blockingSprite.numberOfClips = computeNumberOfClips(blockingSprite.image);
+	blockingSprite = loadFoggedSprite(IDLE_BLOCKING_MODIFIER);
 	bowMap[string("blocking")] = blockingSprite;
 
-	weaponViewMap[string("bow")] = bowMap;
+	return bowMap;
+
+}
+
+void PlayerView::loadPlayerImage() {
+
+	weaponViewMap[string("sword")] = loadSwordImages();
+
+	weaponViewMap[string("bow")] = loadBowImages();
 
 	initSounds();
 }
@@ -279,14 +268,12 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	else if (step * 13 < direction && direction < step * 15)
 		sprite = UP_RIGHT;
 
-
 	//TODO - Aca se elige el map que corresponda con el arma equipada
 	/*
 	 *	spriteMap=selectWeaponView(this->player);
 	 *
 	 */
 	spriteMap = weaponViewMap[string("bow")];
-
 
 	FoggedSprite spriteToBeShown;
 	if (player->isAttacking()) {
