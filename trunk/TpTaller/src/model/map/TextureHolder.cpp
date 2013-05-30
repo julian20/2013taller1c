@@ -64,7 +64,7 @@ SDL_Surface* TextureHolder::getTexture(std::string id) {
 		return surf;
 	}
 
-	return NULL;
+	return getTexture(DEFAULT_TEXTURE_ID);
 }
 
 SDL_Surface* TextureHolder::getFogTexture(std::string id) {
