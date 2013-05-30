@@ -33,6 +33,9 @@ GameConfiguration::GameConfiguration() {
 	this->gameMusicSrc = DEFAULT_GAME_MUSIC;
 	this->tileWidth = DEFAULT_TILE_WIDTH;
 	this->tileHeight = DEFAULT_TILE_HEIGHT;
+	bFullscreen=NULL;
+	bScreenAutoConfig=false;
+	movementMargin=0;
 }
 
 GameConfiguration::~GameConfiguration() {
