@@ -20,6 +20,7 @@
 #define ENVIRONMENT_WINDOW "SDL_VIDEO_CENTERED=1"
 #define AUDIO_CHANNELS 20
 #define DEFAULT_BACKIMG "resources/menu/wastelands.jpg"
+#define ICON "resources/icon.png"
 
 using namespace std;
 MenuView::MenuView(GameConfiguration* configuration) {
@@ -46,7 +47,11 @@ MenuView::MenuView(GameConfiguration* configuration) {
 				SDL_HWSURFACE | SDL_RESIZABLE);
 
 	}
-	SDL_WM_SetCaption( "Purge - Rise of the brotherhood", NULL );
+	SDL_WM_SetCaption( "Purge - Rise of the brotherhood", "Purge" );
+	SDL_Surface* icon = IMG_Load(ICON);
+	if (icon!=NULL){
+		SDL_WM_SetIcon(icon, NULL);
+	}
 	if (!screen) {
 		Logs::logErrorMessage(
 				"No se pudo establecer el modo de video: "

@@ -21,6 +21,7 @@
 #include <model/entities/player/Player.h>
 #include <model/persistence/PersistentConfiguration.h>
 #include <model/Logs/Logs.h>
+#define ICON "resources/icon.png"
 
 Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 	this->multiplayer = multiplayer;
@@ -154,7 +155,11 @@ void Game::initScreen() {
 				"Unable to get video mode: " + string(SDL_GetError()));
 		exit(1);
 	}
-	SDL_WM_SetCaption( "Purge - Rise of the brotherhood", NULL );
+	SDL_WM_SetCaption( "Purge - Rise of the brotherhood", "Purge" );
+	SDL_Surface* icon = IMG_Load(ICON);
+		if (icon!=NULL){
+			SDL_WM_SetIcon(icon, NULL);
+	}
 	if (gameConfig->fullscreen()) {
 		//La hacemos fullscreen
 		int flag = 1;
