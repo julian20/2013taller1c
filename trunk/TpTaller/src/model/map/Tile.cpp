@@ -31,6 +31,15 @@ Tile::Tile(Coordinates* _coordinates) {
 	updatePosition();
 }
 
+Tile::Tile(Coordinates _coordinates) {
+	this->coordinates = new Coordinates(0, 0);
+	setCoordinates(_coordinates);
+	this->textureIdentifier = "";
+	this->position = new Position(0, 0, 0);
+	this->fScore = 0;
+	updatePosition();
+}
+
 Tile::Tile() {
 	fScore = 0;
 	this->position = new Position(0, 0, 0);
@@ -198,6 +207,20 @@ void Tile::setFScore(float _fScore) {
 
 float Tile::getFScore() {
 	return fScore;
+}
+
+bool Tile::isNeighbor(Tile* otherTile) {
+	int rowDiff = coordinates->getRow() - otherTile->getCoordinates().getRow();
+	int colDiff = coordinates->getCol() - otherTile->getCoordinates().getCol();
+
+	if (rowDiff == 0 && colDiff == 0) return false;
+
+	if ( (rowDiff == 0 || abs(rowDiff) == 1 ) &&
+		 (colDiff == 0 || abs(colDiff) == 1 ) ) {
+			return true;
+	}
+
+	return false;
 }
 
 bool Tile::isEqual(Tile* otherTile) {

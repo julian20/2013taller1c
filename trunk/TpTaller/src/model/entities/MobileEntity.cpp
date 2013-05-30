@@ -6,6 +6,7 @@
  */
 
 #include <model/entities/MobileEntity.h>
+#include <model/map/MapData.h>
 using namespace std;
 
 MobileEntity::MobileEntity() {
@@ -15,10 +16,27 @@ MobileEntity::MobileEntity() {
 	attacking = false;
 	endPos = new Vector3(0, 0);
 	team = 0;
+	attackToEntity = NULL;
 	this->speed = new Speed(0, new Vector2(0, 0));
 	this->initSpeed = NULL;
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
+}
+
+MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
+	this->speed = speed;
+	this->name = name;
+	this->path = new list<Tile *>();
+	currentTile = new Tile(new Coordinates(0, 0));
+	this->currentPos = new Vector3(0, 0, 0);
+	this->base = new Base();
+	attackToEntity = NULL;
+	endPos = new Vector3(0, 0, 0);
+	endPos->setValues(currentPos->getX(), currentPos->getY());
+	attacking = false;
+	hasChanged = false;
+	initSpeed = 0;
+	team = 0;
 }
 
 void MobileEntity::setPos(float x, float y, float z) {
@@ -57,7 +75,29 @@ void MobileEntity::moveImmediately(Coordinates coords) {
 	this->hasChanged = true;
 }
 
-void MobileEntity::update() {
+void MobileEntity::checkAttackToNewPos(MapData* mapData){
+	if (attackToEntity == NULL ) return;
+
+	Tile* enemyTile = new Tile(attackToEntity->getCoordinates());
+	if (path->size() == 0) {
+		assignPath(mapData->getPath(getTile(), enemyTile));
+		delete enemyTile;
+	}
+
+	Tile* lastTile = path->back();
+	bool tilesAreNeighbors = lastTile->isNeighbor(enemyTile);
+
+	if (tilesAreNeighbors == true){
+		delete enemyTile;
+		return;
+	}
+
+	assignPath(mapData->getPath(getTile(), enemyTile));
+	delete enemyTile;
+}
+
+void MobileEntity::update(MapData* mapData) {
+	if (attackToEntity != NULL) checkAttackToNewPos(mapData);
 	if (IsMoving() == false) {
 		if (path->size() == 0)
 			return;
@@ -75,10 +115,7 @@ void MobileEntity::update() {
 	if (moveDirection->getNorm() < getSpeed()->getMagnitude() + 1) {
 		// Close enough to the end position to move in one step.
 		currentPos->setValues(endPos->getX(), endPos->getY());
-		if (path->size() == 0)
-			return;
-		else
-			loadNextPosition();
+		loadNextPosition();
 	} else {
 		moveDirection->normalize();
 		moveDirection->multiplyBy(
@@ -160,21 +197,6 @@ Vector2* MobileEntity::getMovementDirection() {
 	return moveDirection;
 }
 
-MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
-	this->speed = speed;
-	this->name = name;
-	this->path = new list<Tile *>();
-	currentTile = new Tile(new Coordinates(0, 0));
-	this->currentPos = new Vector3(0, 0, 0);
-	this->base = new Base();
-	endPos = new Vector3(0, 0, 0);
-	endPos->setValues(currentPos->getX(), currentPos->getY());
-	attacking = false;
-	hasChanged = false;
-	initSpeed = 0;
-	team = 0;
-}
-
 MobileEntity::~MobileEntity() {
 	delete currentPos;
 	delete endPos;
@@ -208,8 +230,10 @@ void MobileEntity::setInitSpeed(Speed* initSpeed) {
 }
 
 void MobileEntity::assignPath(list<Tile *> *_path) {
-	if (path)
+	if (path) {
+		path->erase(path->begin(), path->end());
 		delete path;
+	}
 	this->path = _path;
 
 	loadNextPosition();
@@ -229,6 +253,11 @@ Tile* MobileEntity::getTile() {
 	retval->setCoordinates(currentTile->getCoordinates());
 
 	return retval;
+}
+
+void MobileEntity::attackTo(Entity* attackTo) {
+	// TODO: Por ahora solo se banca entities de base 1x1
+	attackToEntity = attackTo;
 }
 
 void MobileEntity::setSpeedMagnitude(int mag) {
