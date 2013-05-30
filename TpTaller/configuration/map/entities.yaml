@@ -5,9 +5,6 @@
     runningImageSrc: resources/black_knight/asd.png
     attackImageSrc: resources/black_knight/warriorAttack.png
     idleBlockingImageSrc: resources/black_knight/warriorBlockingAnim.png
-    walkingBowImageSrc: resources/black_knight/warriorWalkingBow.png
-    idleBowImageSrc: resources/black_knight/warriorStandingBow.png
-    attackBowImageSrc: resources/black_knight/warriorAttackBow.png
     imageWidth: 128
     imageHeight: 128
     numberOfClips: 8
@@ -23,7 +20,7 @@
     idleBlockingImageSrc: resources/black_knight/warriorBlockingAnimBlue.png
     imageWidth: 128
     imageHeight: 128
-    numberOfClips: 8
+    numberOfClips: 4
     anchorPixel: [64, 70]
     baseRows: 1
     baseCols: 1
@@ -37,7 +34,7 @@
     idleBlockingImageSrc: resources/zombie/zombieWalking.png
     imageWidth: 128
     imageHeight: 128
-    numberOfClips: 4
+    numberOfClips: 8
     anchorPixel: [64, 70]
     baseRows: 1
     baseCols: 1
@@ -74,11 +71,11 @@
     baseRows: 1
     baseCols: 1
   - name: tree
-    imageSrc: resources/tree2.png
-    imageWidth: 128
-    imageHeight: 133
+    imageSrc: resources/tree3.png
+    imageWidth: 102
+    imageHeight: 104
     numberOfClips: 0
-    anchorPixel: [60, 100]
+    anchorPixel: [50, 70]
     baseRows: 1
     baseCols: 1
   - name: barracks
@@ -135,13 +132,29 @@
     anchorPixel: [35, 0]  
     baseRows: 1
     baseCols: 1
+  - name: grave
+    imageSrc: resources/buildings/grave.png
+    imageWidth: 120
+    imageHeight: 160
+    numberOfClips: 0
+    anchorPixel: [57, 96]  
+    baseRows: 1
+    baseCols: 1
+  - name: calavera
+    imageSrc: resources/buildings/clavera.png
+    imageWidth: 80
+    imageHeight: 60
+    numberOfClips: 0
+    anchorPixel: [30, 0]  
+    baseRows: 1
+    baseCols: 1
 - gameConfiguration:
     serverIP: 127.0.0.1
     serverPort: 32001
     fps: 30
     delay: 10
     movementMargin: 90
-    gameMusic: resources/sound/stalemate.ogg
+    gameMusic: resources/sound/NamiLogin.ogg
     fullscreen: false
     screenAutoConfig: false
     defaultScreenHeight: 600
@@ -215,7 +228,7 @@
     position: [46, 12, 0]
   - name: tree
     position: [2, 4, 0]
-  - name: tree
+  - name: calavera
     position: [3, 8, 0]
   - name: tree
     position: [15, 10, 0]
@@ -231,13 +244,13 @@
     position: [8, 13, 0]
   - name: farmhouse
     position: [3, 13, 0]
-  - name: tree
+  - name: grave
     position: [29, 25, 0]
-  - name: tree
+  - name: grave
     position: [25, 27, 0]
-  - name: tree
+  - name: grave
     position: [27, 27, 0]
-  - name: tree
+  - name: grave
     position: [29, 27, 0]
   - name: tree
     position: [29, 3, 0]
@@ -249,7 +262,7 @@
     position: [27, 5, 0]
   - name: tree
     position: [29, 5, 0]
-  - name: tree
+  - name: calavera
     position: [27, 7, 0]
   - name: tree
     position: [33, 9, 0]
@@ -273,7 +286,7 @@
     position: [25, 17, 0]
   - name: tree
     position: [27, 17, 0]
-  - name: tree
+  - name: calavera
     position: [35, 17, 0]
   - name: Water
     position: [36, 30, 0]

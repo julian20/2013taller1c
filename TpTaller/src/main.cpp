@@ -22,7 +22,7 @@
 
 #include <vector>
 
-#define SINGLE_PLAYER_CONFIG_FILE "./configuration/singleplayer/entities.yaml"
+#define MAP_FILE "./configuration/map/entities.yaml"
 #define DEFAULT_CONFIGURATION_FILE "./configuration/.entitiesDefault.yaml"
 
 #define CLIENT_CONFIG_FILE "./configuration/client-config/clientLocalConfig.yaml"
@@ -30,7 +30,10 @@
 #define CLIENT_MAP_FILE "./configuration/client-received/map.yaml"
 
 #define SERVER_CONFIG_FILE "./configuration/server/serverLocalConfig.yaml"
-#define SERVER_SEND_MAP_LOCATION "./sendFiles/configuration/client-received/entities.yaml"
+#define SERVER_SEND_MAP_LOCATION "./sendFiles/configuration/client-received"
+#define SERVER_SEND_MAP_FILE "./sendFiles/configuration/client-received/entities.yaml"
+
+#define MENU_CONFIG_FILE "./configuration/menu-config/menuConfig.yaml"
 
 #define OUTPUT_FILENAME "configuration/parserOutput.yaml"
 
@@ -41,7 +44,7 @@ using namespace std;
 void initGame() {
 
 	ConfigurationReader configReader = ConfigurationReader();
-	PersistentConfiguration configuration = configReader.loadConfiguration(SINGLE_PLAYER_CONFIG_FILE,OUTPUT_FILENAME);
+	PersistentConfiguration configuration = configReader.loadConfiguration(MAP_FILE,OUTPUT_FILENAME);
 
 	std::string serverIP = configuration.getAnimationConfiguration()->getServerIP();
 	unsigned int serverPort = configuration.getAnimationConfiguration()->getServerPort();
@@ -104,15 +107,17 @@ void initMultiplayerGame(string& playerName, string& playerType) {
 
 void initServer() {
 
-	ConfigurationReader serverConfigReader = ConfigurationReader();
-	PersistentConfiguration configuration = serverConfigReader.loadConfiguration(SERVER_CONFIG_FILE,OUTPUT_FILENAME);
+	ConfigurationReader configReader = ConfigurationReader();
+	PersistentConfiguration serverConfig = configReader.loadConfiguration(SERVER_CONFIG_FILE,OUTPUT_FILENAME);
 
-	string command = string(COPY_MAP_SCRIPT) + string(" ") + string(SERVER_CONFIG_FILE) + string(" ") +  string(SERVER_SEND_MAP_LOCATION);
+	string command = string("mkdir -p ") + string(SERVER_SEND_MAP_LOCATION);
+	system(command.c_str());
+	command = string(COPY_MAP_SCRIPT) + string(" ") + string(MAP_FILE) + string(" ") +  string(SERVER_SEND_MAP_FILE);
 	system(command.c_str());
 
+	unsigned int serverPort = serverConfig.getAnimationConfiguration()->getServerPort();
 
-	unsigned int serverPort =
-			configuration.getAnimationConfiguration()->getServerPort();
+	PersistentConfiguration configuration = configReader.loadConfiguration(MAP_FILE,OUTPUT_FILENAME);
 
 	MultiplayerGame* game = new MultiplayerGame(&configuration);
 	Server* server = new Server(serverPort);
@@ -200,7 +205,7 @@ int main(int argc, char** argv) {
 	ConfigurationReader cfgReader = ConfigurationReader();
 	try {
 		PersistentConfiguration configuration = cfgReader.loadConfiguration(
-				SINGLE_PLAYER_CONFIG_FILE, OUTPUT_FILENAME);
+				MENU_CONFIG_FILE, OUTPUT_FILENAME);
 		initMenu(&configuration, playerName, playerType);
 	} catch (std::exception& e) {
 		unLog.logErrorMessage(
