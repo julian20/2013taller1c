@@ -22,6 +22,8 @@
 #include <model/persistence/PersistentConfiguration.h>
 #include <model/Logs/Logs.h>
 #define ICON "resources/icon.png"
+#define POINTER "resources/pointer.png"
+#define POINTER_CLICKED "resources/pointerClicked.png"
 
 Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 	this->multiplayer = multiplayer;
@@ -64,6 +66,12 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 		chatController = new ChatController(playerController);
 		chatView = new ChatWindowsView(screen);
 	}
+	SDL_Surface* pointerTmp = IMG_Load(POINTER);
+	pointer = SDL_DisplayFormatAlpha(pointerTmp);
+	SDL_FreeSurface(pointerTmp);
+	SDL_Surface* pointerClickedTmp = IMG_Load(POINTER_CLICKED);
+	pointerClicked = SDL_DisplayFormatAlpha(pointerClickedTmp);
+	SDL_FreeSurface(pointerClickedTmp);
 
 }
 Chat* Game::getChat() {
@@ -169,7 +177,7 @@ void Game::initScreen() {
 					"Unable to go fullscreen: " + string(SDL_GetError()));
 		}
 	}
-
+	SDL_ShowCursor(SDL_DISABLE);
 }
 
 string intToString(int number) {
@@ -196,7 +204,24 @@ void Game::draw() {
 	// Actualiza la screen
 	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 800,
 			40, "baramond", textHandler->getColor(255, 0, 0));
+	SDL_Rect rect = updateMousePosition();
+
+	if(SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1))
+		SDL_BlitSurface(pointerClicked,NULL,screen,&rect);
+	else
+		SDL_BlitSurface(pointer,NULL,screen,&rect);
 	SDL_Flip(screen);
+}
+
+SDL_Rect Game::updateMousePosition(){
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+	SDL_Rect rect;
+	rect.x=x;
+	rect.y=y;
+	rect.h=pointer->h;
+	rect.w=pointer->w;
+	return rect;
 }
 
 MenuEvent Game::run() {
@@ -224,6 +249,7 @@ MenuEvent Game::run() {
 
 		applyFPS(ticks);
 	}
+
 	return EXIT_EVENT;
 
 }
@@ -333,6 +359,8 @@ Game::~Game() {
 	SoundEffectHandler::close();
 	if (openAudio)
 		Mix_CloseAudio();
+	SDL_FreeSurface(pointer);
+	SDL_FreeSurface(pointerClicked);
 	SDL_FreeSurface(screen);
 }
 
