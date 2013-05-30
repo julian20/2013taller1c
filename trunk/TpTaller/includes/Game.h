@@ -32,6 +32,7 @@
 #include <view/MapCameraView.h>
 #include <view/TextHandler.h>
 #include <view/networking/ChatWindowsView.h>
+#include <view/Animation.h>
 
 class Game {
 public:
@@ -89,6 +90,7 @@ private:
         void setUpEntities(MapView* map,MapData* mapData);
         void playersUpdate();
         SDL_Rect updateMousePosition();
+        void setAnimationStartup();
 
         //FPS Crap
 
@@ -98,7 +100,8 @@ private:
         bool active;
         SDL_Surface* pointer;
         SDL_Surface* pointerClicked;
-
+        Animation clickAnimation;
+    	SDL_Rect clickedLocation;
 };
 
 #endif /* GAME_H_ */
