@@ -659,19 +659,15 @@ void operator >>(const YAML::Node& yamlNode, MobileEntity* mobileEntity) {
 }
 
 /**
- * Sobrecarga de operador >> para llenar los campos de una PersonajeVista.
+ * Sobrecarga de operador >> para llenar los campos de una Player View.
  */
 void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
-
-	std::vector<Power*> auxPowers;
+	vector<Power*> auxPowers;
 	Player* auxPlayer = NULL;
-	std::string auxWalkingImageSrc;
-	std::string auxRunningImageSrc;
-	std::string auxIdleImageSrc;
-	std::string auxAttackImageSrc;
-	std::string auxIdleBlocking;
-	std::string auxBlockingAnim;
-	std::string auxName;
+	string auxWalkingImageSrc, auxRunningImageSrc, auxIdleImageSrc,
+			auxAttackImageSrc, auxIdleBlocking, auxBlockingAnim,
+			auxWalkingBowImageSrc, auxIdleBowImageSrc, auxAttackBowImageSrc,
+			auxName;
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
 	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps,
 			auxAnimationNumberOfRepeats, auxBaseRows, auxBaseCols;
@@ -724,6 +720,30 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 				string("Error parsing PlayerView idle block image source: ")
 						+ yamlException.what());
 		auxIdleBlocking = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["walkingBowImageSrc"] >> auxWalkingBowImageSrc;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView walking image source: ")
+						+ yamlException.what());
+		auxWalkingImageSrc = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["idleBowImageSrc"] >> auxIdleBowImageSrc;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView idle image source: ")
+						+ yamlException.what());
+		auxIdleImageSrc = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["attackBowImageSrc"] >> auxAttackBowImageSrc;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView attack image source: ")
+						+ yamlException.what());
+		auxAttackImageSrc = DEFAULT_IMAGE_SRC;
 	}
 	try {
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
@@ -819,6 +839,16 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	TextureDefinition* idleBlockTexture = new TextureDefinition(
 			auxName + string(IDLE_BLOCKING_MODIFIER), auxIdleBlocking);
 	textureHolder->addTexture(idleBlockTexture);
+
+	TextureDefinition* walkingBowTexture = new TextureDefinition(
+			auxName + string(BOW_WALKING_MODIFIER), auxWalkingBowImageSrc);
+	textureHolder->addTexture(walkingBowTexture);
+	TextureDefinition* idleBowTexture = new TextureDefinition(
+			auxName + string(BOW_IDLE_MODIFIER), auxIdleBowImageSrc);
+	textureHolder->addTexture(idleBowTexture);
+	TextureDefinition* attackBowTexture = new TextureDefinition(
+			auxName + string(BOW_ATTACK_MODIFIER), auxAttackBowImageSrc);
+	textureHolder->addTexture(attackBowTexture);
 
 	playerView->setTextureHolder(textureHolder);
 }
@@ -1680,7 +1710,8 @@ void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
 	}
 }
 
-void assignMobileEntities(MapData* mapData, std::vector<MobileEntity*> entities) {
+void assignMobileEntities(MapData* mapData,
+		std::vector<MobileEntity*> entities) {
 	for (unsigned i = 0; i < entities.size(); i++) {
 		MobileEntity* currentEntity = entities[i];
 		Coordinates coor = currentEntity->getCoordinates();
@@ -1714,7 +1745,8 @@ std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
 	return completeViews;
 }
 
-std::vector<MobileEntityView*> assignMobileEntities(std::vector<MobileEntityView*> entityViews,
+std::vector<MobileEntityView*> assignMobileEntities(
+		std::vector<MobileEntityView*> entityViews,
 		std::vector<MobileEntity*> entities) {
 	std::vector<MobileEntityView*> completeViews;
 	for (unsigned i = 0; i < entities.size(); i++) {

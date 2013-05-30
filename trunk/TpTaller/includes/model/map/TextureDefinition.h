@@ -17,6 +17,13 @@
 #define RUNNING_MODIFIER "Running"
 #define IDLE_BLOCKING_MODIFIER "IdleBlocking"
 
+
+#define BOW_ATTACK_MODIFIER "AttackBow"
+#define BOW_WALKING_MODIFIER "WalkingBow"
+#define BOW_IDLE_MODIFIER "IdleBow"
+
+
+
 class TextureDefinition {
 public:
 	TextureDefinition();

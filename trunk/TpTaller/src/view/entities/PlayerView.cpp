@@ -25,7 +25,6 @@
 #define STEP_SOUND "resources/sound/player/steps.ogg"
 #define ATTACK_SOUND "resources/sound/player/sword.ogg"
 
-
 PlayerView::PlayerView()
 //Llamamos al constructor de la superclase
 :
@@ -129,66 +128,79 @@ void PlayerView::setPersonaje(Player* personaje) {
 	Vector2* anchorPixel = new Vector2(clip.w / 2, OFFSET_Y);
 	player->getBase()->setAnchorPixel(anchorPixel);
 
+}
+
+void initSounds() {
+	SoundEffectHandler::loadSound(string("walk"), STEP_SOUND);
+	SoundEffectHandler::loadSound(string("attack"), ATTACK_SOUND);
 
 }
 
-void initSounds(){
-	SoundEffectHandler::loadSound(string("walk"),STEP_SOUND);
-	SoundEffectHandler::loadSound(string("attack"),ATTACK_SOUND);
-
-}
 void PlayerView::loadPlayerImage() {
-	walkingImage = textureHolder->getTexture(name + string(WALKING_MODIFIER));
-	idleImage = textureHolder->getTexture(name + string(IDLE_MODIFIER));
-	attackImage = textureHolder->getTexture(name + string(ATTACK_MODIFIER));
-	runningImage = textureHolder->getTexture(name + string(RUNNING_MODIFIER));
-	idleBlockImage = textureHolder->getTexture(
-			name + string(IDLE_BLOCKING_MODIFIER));
-	// Fogs
-	walkingImageFog = textureHolder->getFogTexture(
+	map<string, FoggedSprite> swordMap;
+	FoggedSprite walkingSprite, blockingSprite, standingSprite, attackSprite;
+
+	walkingSprite.image = textureHolder->getTexture(
 			name + string(WALKING_MODIFIER));
-	idleImageFog = textureHolder->getFogTexture(name + string(IDLE_MODIFIER));
-	attackImageFog = textureHolder->getFogTexture(
+	walkingSprite.foggedImage = textureHolder->getFogTexture(
+			name + string(WALKING_MODIFIER));
+	walkingSprite.numberOfClips = computeNumberOfClips(walkingSprite.image);
+	swordMap[string("walking")] = walkingSprite;
+
+	standingSprite.image = textureHolder->getTexture(
+			name + string(IDLE_MODIFIER));
+	standingSprite.foggedImage = textureHolder->getFogTexture(
+			name + string(IDLE_MODIFIER));
+	standingSprite.numberOfClips = computeNumberOfClips(standingSprite.image);
+	swordMap[string("standing")] = standingSprite;
+
+	attackSprite.image = textureHolder->getTexture(
 			name + string(ATTACK_MODIFIER));
-	runningImageFog = textureHolder->getFogTexture(
-			name + string(RUNNING_MODIFIER));
-	idleBlockImageFog = textureHolder->getFogTexture(
+	attackSprite.foggedImage = textureHolder->getFogTexture(
+			name + string(ATTACK_MODIFIER));
+	attackSprite.numberOfClips = computeNumberOfClips(attackSprite.image);
+	swordMap[string("attacking")] = attackSprite;
+
+	blockingSprite.image = textureHolder->getTexture(
 			name + string(IDLE_BLOCKING_MODIFIER));
+	blockingSprite.foggedImage = textureHolder->getFogTexture(
+			name + string(IDLE_BLOCKING_MODIFIER));
+	blockingSprite.numberOfClips = computeNumberOfClips(blockingSprite.image);
+	swordMap[string("blocking")] = blockingSprite;
 
-	//If there was a problem loading the sprite
-	if (!walkingImage) {
-		Logs::logErrorMessage("Unable to load walking image");
-		walkingImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
-		walkingImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
-	}
+	weaponViewMap[string("sword")] = swordMap;
 
-	if (!idleImage) {
-		Logs::logErrorMessage("Unable to load idle image");
-		idleImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
-		idleImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
-	}
+	map<string, FoggedSprite> bowMap;
 
-	if (!attackImage) {
-		Logs::logErrorMessage("Unable to load attack image");
-		attackImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
-		attackImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
-	}
-	if (!runningImage) {
-		Logs::logErrorMessage("Unable to load running image");
-		runningImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
-		runningImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
-	}
-	if (!idleBlockImage) {
-		Logs::logErrorMessage("Unable to load idle blocking image");
-		idleBlockImage = textureHolder->getTexture(DEFAULT_CHARACTER_ID);
-		idleBlockImageFog = textureHolder->getFogTexture(DEFAULT_CHARACTER_ID);
-	}
+	walkingSprite.image = textureHolder->getTexture(
+			name + string(BOW_WALKING_MODIFIER));
+	walkingSprite.foggedImage = textureHolder->getFogTexture(
+			name + string(BOW_WALKING_MODIFIER));
+	walkingSprite.numberOfClips = computeNumberOfClips(walkingSprite.image);
+	bowMap[string("walking")] = walkingSprite;
 
-	numberOfWalkingClips = computeNumberOfClips(walkingImage);
-	numberOfIdleClips = computeNumberOfClips(idleImage);
-	numberOfRunningClips = computeNumberOfClips(runningImage);
-	numberOfAttackClips = computeNumberOfClips(attackImage);
-	numberOfIdleBlockClips = computeNumberOfClips(idleBlockImage);
+	standingSprite.image = textureHolder->getTexture(
+			name + string(BOW_IDLE_MODIFIER));
+	standingSprite.foggedImage = textureHolder->getFogTexture(
+			name + string(BOW_IDLE_MODIFIER));
+	standingSprite.numberOfClips = computeNumberOfClips(standingSprite.image);
+	bowMap[string("standing")] = standingSprite;
+
+	attackSprite.image = textureHolder->getTexture(
+			name + string(BOW_ATTACK_MODIFIER));
+	attackSprite.foggedImage = textureHolder->getFogTexture(
+			name + string(BOW_ATTACK_MODIFIER));
+	attackSprite.numberOfClips = computeNumberOfClips(attackSprite.image);
+	bowMap[string("attacking")] = attackSprite;
+
+	blockingSprite.image = textureHolder->getTexture(
+			name + string(IDLE_BLOCKING_MODIFIER));
+	blockingSprite.foggedImage = textureHolder->getFogTexture(
+			name + string(IDLE_BLOCKING_MODIFIER));
+	blockingSprite.numberOfClips = computeNumberOfClips(blockingSprite.image);
+	bowMap[string("blocking")] = blockingSprite;
+
+	weaponViewMap[string("bow")] = bowMap;
 
 	initSounds();
 }
@@ -279,6 +291,16 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	else if (step * 13 < direction && direction < step * 15)
 		sprite = UP_RIGHT;
 
+
+	//TODO - Aca se elige el map que corresponda con el arma equipada
+	/*
+	 *	spriteMap=selectWeaponView(this->player);
+	 *
+	 */
+	map<string, FoggedSprite> spriteMap = weaponViewMap[string("bow")];
+
+
+	FoggedSprite spriteToBeShown;
 	if (player->isAttacking()) {
 		//Si se estaba moviendo, reseteamos el marco para que no quede un # de clip invalido
 		if (player->IsMoving()) {
@@ -287,40 +309,34 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		}
 		if (!SoundEffectHandler::isSoundPlaying(attackID))
 			SoundEffectHandler::playSound(attackID);
-		image = attackImage;
-		fogImage = attackImageFog;
-		numberOfClips = numberOfAttackClips;
+		spriteToBeShown = spriteMap[string("attacking")];
 	}
 
 	if (player->isBlocking()) {
 		SoundEffectHandler::stopSound(attackID);
 		marco = 0;
 		player->stop();
-		image = idleBlockImage;
-		fogImage = idleBlockImageFog;
-		numberOfClips = numberOfIdleBlockClips;
+		spriteToBeShown = spriteMap[string("blocking")];
 	}
 
 	if (player->IsMoving()) {
 		SoundEffectHandler::stopSound(attackID);
 		if (!SoundEffectHandler::isSoundPlaying(walkID))
 			SoundEffectHandler::playSound(walkID);
-		image = walkingImage;
-		fogImage = walkingImageFog;
-		numberOfClips = numberOfWalkingClips;
-	}
-	else
+		spriteToBeShown = spriteMap[string("walking")];
+	} else
 		SoundEffectHandler::stopSound(walkID);
+
 	if (!player->IsMoving() && !player->isAttacking()
 			&& !player->isBlocking()) {
 		if (!wasStanding) {
 			timer.start();
 			wasStanding = true;
 		}
-
-		image = idleImage;
-		fogImage = idleImageFog;
-		numberOfClips = numberOfIdleClips;
+		spriteToBeShown = spriteMap[string("standing")];
+		image = spriteToBeShown.image;
+		fogImage = spriteToBeShown.foggedImage;
+		numberOfClips = spriteToBeShown.numberOfClips;
 		lastDirection = direction;
 		showStandingAnimation(sprite, fondo, drawFog);
 		return;
@@ -328,7 +344,9 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 
 	wasStanding = false;
 	currentSprite = sprite;
-
+	image = spriteToBeShown.image;
+	fogImage = spriteToBeShown.foggedImage;
+	numberOfClips = spriteToBeShown.numberOfClips;
 	lastDirection = direction;
 	playAnimation((SpriteType) currentSprite, fondo, drawFog);
 
@@ -403,6 +421,3 @@ void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 
 }
 
-int PlayerView::computeNumberOfClips(SDL_Surface* img) {
-	return img->w / imageWidth;
-}
