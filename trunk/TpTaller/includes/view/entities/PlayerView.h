@@ -68,16 +68,6 @@ private:
 	float lastDirection;
 	bool wasStanding;
 
-	SDL_Surface* attackImageFog;
-	SDL_Surface* walkingImageFog;
-	SDL_Surface* idleImageFog;
-	SDL_Surface* runningImage;
-	SDL_Surface* runningImageFog;
-	int numberOfRunningClips;
-	SDL_Surface* idleBlockImage;
-	SDL_Surface* idleBlockImageFog;
-	int numberOfIdleBlockClips;
-
 	SDL_Surface* nameImage;
 	TextHandler textHandler;
 
@@ -85,6 +75,7 @@ private:
 	 * value: vector with FoggedSprites
 	 */
 	map<string, map<string, FoggedSprite > > weaponViewMap;
+	map<string, FoggedSprite>spriteMap;
 
 };
 
