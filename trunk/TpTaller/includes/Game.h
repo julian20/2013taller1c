@@ -87,7 +87,7 @@ private:
         void setUpCharacters(MapView* map,MapData* mapData,EntityViewMap* viewMap);
         void setUpEntities(MapView* map,MapData* mapData);
         void playersUpdate();
-
+        SDL_Rect updateMousePosition();
 
         //FPS Crap
 
@@ -95,6 +95,9 @@ private:
 
         bool openAudio;
         bool active;
+        SDL_Surface* pointer;
+        SDL_Surface* pointerClicked;
+
 };
 
 #endif /* GAME_H_ */
