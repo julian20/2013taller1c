@@ -22,7 +22,6 @@
 #include <model/persistence/PersistentConfiguration.h>
 #include <model/Logs/Logs.h>
 
-
 Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 	this->multiplayer = multiplayer;
 
@@ -33,8 +32,8 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 	this->fps = configuration->getAnimationConfiguration()->getFps();
 	this->fpsUpdatingTimer = 0;
 	this->tempFps = 0;
-	Tile::setTileWidth( gameConfig->getTileWidth() );
-	Tile::setTileHeight( gameConfig->getTileHeight() );
+	Tile::setTileWidth(gameConfig->getTileWidth());
+	Tile::setTileHeight(gameConfig->getTileHeight());
 
 	initScreen();
 
@@ -43,7 +42,8 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->mapView = new MapView(mapData, screen, viewMap);
 	this->mapView->setTextureHolder(configuration->getTextureHolder());
-	this->cameraController = new MapCameraController(this->mapView->getCamera(), gameConfig->getMovementMargin());
+	this->cameraController = new MapCameraController(this->mapView->getCamera(),
+			gameConfig->getMovementMargin());
 
 	setUpCharacters(mapView, mapData, viewMap);
 	setUpEntities(mapView, mapData);
@@ -59,20 +59,17 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 
 	personajeVista = (configuration->getViewList())[0];
 
-
 	if (multiplayer) {
 		chatController = new ChatController(playerController);
 		chatView = new ChatWindowsView(screen);
 	}
-	
+
 }
-Chat* Game::getChat()
-{
+Chat* Game::getChat() {
 	return this->chat;
 }
-void Game::setChat(Chat* chat)
-{
-	this->chat=chat;
+void Game::setChat(Chat* chat) {
+	this->chat = chat;
 	chatController->setChat(chat);
 	chatView->setChat(chat);
 }
@@ -86,7 +83,8 @@ void getEvent() {
 void refreshMap() {
 }
 
-void Game::setUpCharacters(MapView* map, MapData* mapData, EntityViewMap* viewMap) {
+void Game::setUpCharacters(MapView* map, MapData* mapData,
+		EntityViewMap* viewMap) {
 
 	for (int i = 0; i < viewMap->getNCols(); i++) {
 
@@ -104,13 +102,15 @@ void Game::setUpCharacters(MapView* map, MapData* mapData, EntityViewMap* viewMa
 						personaje = (Player*) entity;
 
 						Coordinates coord = personaje->getCoordinates();
-						mapData->addPersonaje(coord.getRow(), coord.getCol(), personaje);
-					} else if (entity->getClassName() == "MobileEntity" ) {
+						mapData->addPersonaje(coord.getRow(), coord.getCol(),
+								personaje);
+					} else if (entity->getClassName() == "MobileEntity") {
 
 						MobileEntity* entityToAdd = (MobileEntity*) entity;
 
 						Coordinates coord = entityToAdd->getCoordinates();
-						mapData->addMobileEntity(coord.getRow(), coord.getCol(), entityToAdd);
+						mapData->addMobileEntity(coord.getRow(), coord.getCol(),
+								entityToAdd);
 
 					}
 				}
@@ -132,31 +132,36 @@ void refreshCharacters() {
 void Game::initScreen() {
 	//Buscamos info sobre la resolucion del escritorio y creamos la screen
 	bool configured = false;
-	//La linea siguiente es para que la window se centre
-		char environment_setting[] = "SDL_VIDEO_CENTERED=1";
-		putenv(environment_setting);
 
+	//La linea siguiente es para que la window se centre
+	char environment_setting[] = "SDL_VIDEO_CENTERED=1";
+	putenv(environment_setting);
 	if (gameConfig->screenAutoConfig()) {
 		const SDL_VideoInfo *info = SDL_GetVideoInfo();
-		screen = SDL_SetVideoMode(info->current_w, info->current_h, info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
+		screen = SDL_SetVideoMode(info->current_w, info->current_h,
+				info->vfmt->BytesPerPixel / 8, SDL_HWSURFACE);
 		configured = true;
 	}
 
 	if (!configured) {
-		screen = SDL_SetVideoMode(this->gameConfig->getDefaultScreenWidth(), this->gameConfig->getDefaultScreenHeight(), this->gameConfig->getDefaultBPP(), SDL_HWSURFACE);
+		screen = SDL_SetVideoMode(this->gameConfig->getDefaultScreenWidth(),
+				this->gameConfig->getDefaultScreenHeight(),
+				this->gameConfig->getDefaultBPP(), SDL_HWSURFACE);
 	}
 
-	if (!screen){
-		Logs::logErrorMessage("Unable to get video mode: " + string(SDL_GetError()));
+	if (!screen) {
+		Logs::logErrorMessage(
+				"Unable to get video mode: " + string(SDL_GetError()));
 		exit(1);
 	}
-
+	SDL_WM_SetCaption( "Purge - Rise of the brotherhood", NULL );
 	if (gameConfig->fullscreen()) {
 		//La hacemos fullscreen
 		int flag = 1;
 		flag = SDL_WM_ToggleFullScreen(screen);
 		if (flag == 0) {
-			Logs::logErrorMessage("Unable to go fullscreen: " + string(SDL_GetError()));
+			Logs::logErrorMessage(
+					"Unable to go fullscreen: " + string(SDL_GetError()));
 		}
 	}
 
@@ -173,7 +178,8 @@ void Game::draw() {
 	SDL_FillRect(screen, NULL, 0);
 	Position* cam = mapView->getCamera()->getPosition();
 	mapView->draw(cam);
-	if (multiplayer) chatView->drawChatView();
+	if (multiplayer)
+		chatView->drawChatView();
 	delete cam;
 
 	fpsUpdatingTimer++;
@@ -182,8 +188,9 @@ void Game::draw() {
 		tempFps = fps;
 		fpsUpdatingTimer = 0;
 	}
-		// Actualiza la screen
-	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 800, 40, "baramond", textHandler->getColor(255, 0, 0));
+	// Actualiza la screen
+	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 800,
+			40, "baramond", textHandler->getColor(255, 0, 0));
 	SDL_Flip(screen);
 }
 
@@ -199,7 +206,8 @@ MenuEvent Game::run() {
 		while (SDL_PollEvent(&event)) {
 
 			mapController->clickListener(event);
-			if (multiplayer) chatController->handle_events(event);
+			if (multiplayer)
+				chatController->handle_events(event);
 			if (event.type == SDL_QUIT)
 				active = false;
 
@@ -208,7 +216,6 @@ MenuEvent Game::run() {
 		playersUpdate();
 
 		draw();
-
 
 		applyFPS(ticks);
 	}
@@ -234,7 +241,8 @@ void Game::applyFPS(int timer) {
 void Game::initMusic() {
 	// Inicializamos la librería SDL_Mixer
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
-		Logs::logErrorMessage("Subsistema de audio no disponible: " + string(SDL_GetError()));
+		Logs::logErrorMessage(
+				"Subsistema de audio no disponible: " + string(SDL_GetError()));
 		openAudio = false;
 		musica = NULL;
 		return;
@@ -244,7 +252,8 @@ void Game::initMusic() {
 	musica = Mix_LoadMUS(this->gameConfig->getGameMusicSrc().c_str());
 
 	if (!musica) {
-		Logs::logErrorMessage("No se puede cargar el sonido: " + string(SDL_GetError()));
+		Logs::logErrorMessage(
+				"No se puede cargar el sonido: " + string(SDL_GetError()));
 		musica = NULL;
 		return;
 	}
@@ -253,22 +262,23 @@ void Game::initMusic() {
 
 }
 
-void Game::playersUpdate(){
+void Game::playersUpdate() {
 
 	personaje->update();
 	personaje->setChange(false);
 
-	for ( list<Player*>::iterator player = otherPlayers.begin() ; player != otherPlayers.end() ; ++player ){
+	for (list<Player*>::iterator player = otherPlayers.begin();
+			player != otherPlayers.end(); ++player) {
 		(*player)->update();
 		(*player)->setChange(false);
 	}
 
 }
 
-void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords){
-	player->setCoordinates(coords->getRow(),coords->getCol());
+void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords) {
+	player->setCoordinates(coords->getRow(), coords->getCol());
 	MapData* map = mapView->getMapData();
-	map->addPersonaje(coords->getRow(),coords->getCol(),player);
+	map->addPersonaje(coords->getRow(), coords->getCol(), player);
 	Coordinates newCoords = player->getCoordinates();
 	mapView->addNewPlayerView(view, newCoords);
 
@@ -277,46 +287,47 @@ void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords){
 
 }
 
-PlayerView* Game::getPlayerView(){
+PlayerView* Game::getPlayerView() {
 	return personajeVista;
 }
 
-list<PlayerEvent*> Game::getEvents(){
+list<PlayerEvent*> Game::getEvents() {
 	return mapController->getEvents();
 }
 
-void Game::cleanEvents(){
+void Game::cleanEvents() {
 	mapController->cleanEvents();
 }
 
-MapCameraView* Game::getMapCameraView(){
+MapCameraView* Game::getMapCameraView() {
 	return mapView->getCamera();
 }
-MapData* Game::getMapData(){
+MapData* Game::getMapData() {
 	return mapView->getMapData();
 }
 
-bool Game::isActive(){
+bool Game::isActive() {
 	return active;
 }
 
-void Game::setActive(){
+void Game::setActive() {
 	active = true;
 }
 
-void Game::setInactive(){
+void Game::setInactive() {
 	active = false;
 }
-
 
 Game::~Game() {
 	delete mapView;
 	delete mapController;
 	delete cameraController;
 	delete textHandler;
-	if (musica != NULL) Mix_FreeMusic(musica);
+	if (musica != NULL)
+		Mix_FreeMusic(musica);
 	SoundEffectHandler::close();
-	if (openAudio) Mix_CloseAudio();
+	if (openAudio)
+		Mix_CloseAudio();
 	SDL_FreeSurface(screen);
 }
 
