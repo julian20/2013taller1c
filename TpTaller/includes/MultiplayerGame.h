@@ -39,7 +39,6 @@ private:
 
 	MapView* view;
 
-	list<PlayerEvent*> events;
 	map< string, NetworkPlayerController*> controllers;
 
 	list<Player*> players;

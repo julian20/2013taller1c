@@ -78,12 +78,12 @@ void Chat::newMessageSend(ChatMessage* msj)
 
 void Chat::newMessageReceive(ChatMessage* msj)
 {
-//	this->change=true;
+
 	string aux = msj->getMSJ();
 	replace(aux.begin(), aux.end(), '/', ' ');
 	msj->setMSJ(aux);
 	messagesReceive.push_back(msj);
-	//this->msjSend = "";
+
 	this->receptor = msj->getSender();
 }
 

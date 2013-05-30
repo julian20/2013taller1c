@@ -79,6 +79,8 @@ void NetworkPlayerController::handleEvents(vector<PlayerEvent*> events){
 		delete *it;
 	}
 
+	events.clear();
+
 }
 
 Player* NetworkPlayerController::getPlayer(){

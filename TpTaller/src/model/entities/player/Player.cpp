@@ -75,6 +75,8 @@ void Player::update(PlayerUpdate* update) {
 	this->attacking = update->isAttacking();
 	this->blocking = update->isBlocking();
 	this->isActive = update->isActive();
+
+	if (currentTile) delete currentTile;
 	this->currentTile = update->getTile();
 
 	Coordinates currentTileCoords = this->currentTile->getCoordinates();
@@ -85,11 +87,9 @@ void Player::update(PlayerUpdate* update) {
 
 }
 ChatUpdate* Player::generateChatUpdate() {
-	//cout<<this->chat->getMessageSend()<<endl;
 	if (!this->chat->hasChange()) {
 		return NULL;
 	} else {
-		cout << "cambio el chat" << endl;
 		ChatUpdate* update = new ChatUpdate();
 
 		update->setReceiver(this->chat->getReceptor());

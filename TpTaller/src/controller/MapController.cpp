@@ -68,6 +68,13 @@ void MapController::clickListener(SDL_Event event) {
 		playerController->playerCancelBlock();
 	}
 
+	if ((event.type == SDL_KEYUP) && (event.key.keysym.sym == SDLK_SPACE)) {
+		Player* player = playerController->getPlayer();
+		Vector3* pos = player->getCurrentPos();
+		Position* newCameraPos = new Position(pos->getX(), pos->getY());
+		mapView->getCamera()->setPosition(newCameraPos);
+	}
+
 
 }
 
