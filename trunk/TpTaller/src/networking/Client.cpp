@@ -418,7 +418,7 @@ void Client::updatePlayers(map<string, PlayerUpdate*> updates) {
 	for (map<string, PlayerUpdate*>::iterator it = updates.begin();
 			it != updates.end(); ++it) {
 		if (players.count(it->first) != 0) {
-			players[it->first]->update(it->second);
+			players[it->first]->updateFromServer(it->second);
 		}
 		delete it->second;
 	}

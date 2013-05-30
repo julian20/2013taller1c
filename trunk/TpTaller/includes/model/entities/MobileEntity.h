@@ -29,7 +29,7 @@ public:
 
 
 	void update();
-	void update(MobileEntityUpdate* update);
+	void updateFromServer(MobileEntityUpdate* update);
 	MobileEntityUpdate* generateMobileEntityUpdate();
 
 	virtual string getClassName();
