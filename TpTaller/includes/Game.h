@@ -66,6 +66,7 @@ private:
         SDL_Rect posFondo;
         SDL_Surface* fondo;
 
+        MapData* mapData;
         ChatController* chatController ;
         ChatWindowsView* chatView;
         Chat* chat;

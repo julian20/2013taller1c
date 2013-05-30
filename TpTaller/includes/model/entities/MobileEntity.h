@@ -17,6 +17,8 @@
 #include <model/Vector3.h>
 #include <networking/MobileEntityUpdate.h>
 
+class MapData;
+
 using namespace std;
 
 class MobileEntity : public Entity {
@@ -28,7 +30,7 @@ public:
 	void setPos(float x, float y, float z = 0);
 
 
-	void update();
+	void update(MapData* mapData);
 	void updateFromServer(MobileEntityUpdate* update);
 	MobileEntityUpdate* generateMobileEntityUpdate();
 
@@ -46,7 +48,7 @@ public:
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
 
-
+	void attackTo(Entity* attackTo);
 	void attack();
 	void setAttack(bool attacking);
 	bool isAttacking();
@@ -82,6 +84,10 @@ protected:
 
 	bool hasChanged;
 	int team;
+private:
+	void checkAttackToNewPos(MapData* mapData);
+
+	Entity* attackToEntity;
 };
 
 #endif /* MOBILEENTITY_H_ */

@@ -28,7 +28,7 @@
 Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 	this->multiplayer = multiplayer;
 
-	MapData* mapData = configuration->getMapData();
+	mapData = configuration->getMapData();
 
 	this->gameConfig = configuration->getAnimationConfiguration();
 	this->textHandler = new TextHandler();
@@ -295,12 +295,12 @@ void Game::initMusic() {
 
 void Game::playersUpdate() {
 
-	personaje->update();
+	personaje->update(mapData);
 	personaje->setChange(false);
 
 	for (list<Player*>::iterator player = otherPlayers.begin();
 			player != otherPlayers.end(); ++player) {
-		(*player)->update();
+		(*player)->update(mapData);
 		(*player)->setChange(false);
 	}
 

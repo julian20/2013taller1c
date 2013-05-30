@@ -22,6 +22,7 @@ public:
 	Tile();
 	Tile(Position* position, std::string textureId);
 	Tile(Coordinates* _coordinates);
+	Tile(Coordinates _coordinates);
 	virtual ~Tile();
 	Position* getPosition();
 	void setPosition(int x, int y);
@@ -35,6 +36,7 @@ public:
 	void setFScore(float _fScore);
 	float getFScore();
 	bool isEqual(Tile* otherTile);
+	bool isNeighbor(Tile* otherTile);
 	int getHashValue();
 	static Position* computePosition(int row, int col, bool toTileZero = false);
 	static SDL_Rect computePositionTile(int row, int col, bool toTileZero =
