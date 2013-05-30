@@ -88,7 +88,7 @@ void MobileEntity::update() {
 	}
 }
 
-void MobileEntity::update(MobileEntityUpdate* update) {
+void MobileEntity::updateFromServer(MobileEntityUpdate* update) {
 
 	this->currentPos->setValues(update->getCurrentPos()->getX(),
 			update->getCurrentPos()->getY(), update->getCurrentPos()->getZ());

@@ -27,8 +27,8 @@ public:
 			std::vector<Power*> powers);
 	virtual ~Player();
 	string getClassName();
-	void update();
-	void update(PlayerUpdate* update);
+
+	void updateFromServer(PlayerUpdate* update);
 	PlayerUpdate* generatePlayerUpdate();
 	std::vector<Power*> getPowers();
 	void setPowers(std::vector<Power*> powers);

@@ -26,37 +26,6 @@ Player::Player() {
 	viewRange = 200;
 }
 
-void Player::update() {
-	if (IsMoving() == false) {
-		if (path->size() == 0)
-			return;
-		else
-			loadNextPosition();
-	}
-
-	float relationSpeed = ((float) Tile::getTileHeight())
-			/ ((float) Tile::getTileWidth());
-
-	Vector3* moveDirection = new Vector3(endPos->getX() - currentPos->getX(),
-			endPos->getY() - currentPos->getY(),
-			endPos->getZ() - currentPos->getZ());
-
-	if (moveDirection->getNorm() < getSpeed()->getMagnitude() + 1) {
-		// Close enough to the end position to move in one step.
-		currentPos->setValues(endPos->getX(), endPos->getY());
-		if (path->size() == 0)
-			return;
-		else
-			loadNextPosition();
-	} else {
-		moveDirection->normalize();
-		moveDirection->multiplyBy(
-				fabs(moveDirection->getY()) * (relationSpeed - 1) + 1);
-		moveDirection->multiplyBy(getSpeed()->getMagnitude());
-		currentPos->add(moveDirection);
-	}
-}
-
 void Player::setChat(Chat* chat) {
 	if (this->chat) {
 		delete this->chat;
@@ -64,7 +33,7 @@ void Player::setChat(Chat* chat) {
 	this->chat = chat;
 }
 
-void Player::update(PlayerUpdate* update) {
+void Player::updateFromServer(PlayerUpdate* update) {
 
 	this->currentPos->setValues(update->getCurrentPos()->getX(),
 			update->getCurrentPos()->getY(), update->getCurrentPos()->getZ());
