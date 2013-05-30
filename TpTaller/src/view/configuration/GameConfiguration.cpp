@@ -14,7 +14,7 @@
 #define DEFAULT_W       	800 // px
 #define DEFAULT_H       	600 // px
 #define DEFAULT_BPP 		0   // px?
-#define DEFAULT_GAME_MUSIC "resources/sound/NamiLogin.ogg"
+#define DEFAULT_GAME_MUSIC "resources/sound/stalemate.ogg"
 #define MENU_IMG "resources/menu/wastelands.jpg"
 #define MENU_MUSIC  "resources/menu/sound/QuinnLogin.ogg"
 #define DEFAULT_TILE_WIDTH	70

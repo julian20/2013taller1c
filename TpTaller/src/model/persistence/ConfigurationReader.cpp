@@ -43,7 +43,7 @@ using namespace std;
 #define DEFAULT_BASE_COLS 1
 #define DEFAULT_BASE_ROWS 1
 #define DEFAULT_TEXTURE "grass"
-#define DEFAULT_GAME_MUSIC "resources/sound/NamiLogin.ogg"
+#define DEFAULT_GAME_MUSIC "resources/sound/stalemate.ogg"
 #define DEFAULT_MENU_IMAGE "resources/wastelands.jpg"
 #define DEFAULT_MENU_MUSIC "resources/sound/pirates.ogg"
 #define DEFAULT_IMAGE_SRC "resources/questionMark.png"
@@ -1832,7 +1832,7 @@ void setDefaultGameConfiguration(GameConfiguration* gameConf) {
 	gameConf->setFps(30);
 	gameConf->setDelay(10);
 	gameConf->setMovementMargin(50);
-	gameConf->setGameMusicSrc("resources/sound/NamiLogin.ogg");
+	gameConf->setGameMusicSrc("resources/sound/stalemate.ogg");
 	gameConf->setFullscreen(true);
 	gameConf->setScreenAutoConfig(true);
 	gameConf->setDefaultScreenHeight(690);
