@@ -46,7 +46,7 @@ MenuView::MenuView(GameConfiguration* configuration) {
 				SDL_HWSURFACE | SDL_RESIZABLE);
 
 	}
-
+	SDL_WM_SetCaption( "Purge - Rise of the brotherhood", NULL );
 	if (!screen) {
 		Logs::logErrorMessage(
 				"No se pudo establecer el modo de video: "
