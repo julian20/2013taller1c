@@ -37,13 +37,7 @@ PlayerView::PlayerView()
 	direction = DOWN;
 	wasStanding = true;
 	player = NULL;
-	nameImage = runningImage = walkingImage = NULL;
-	idleImage = idleBlockImage = attackImage = NULL;
-	runningImageFog = walkingImageFog = idleBlockImageFog = NULL;
-	idleImageFog = attackImageFog = NULL;
-	numberOfRunningClips = numberOfWalkingClips = 0;
-	numberOfIdleClips = numberOfIdleBlockClips = 0;
-	numberOfAttackClips = 0;
+	nameImage = NULL;
 	currentSprite = DOWN;
 	lastDirection = M_PI * 1 / 2;
 	chatView = NULL;
@@ -65,13 +59,7 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	direction = DOWN;
 	wasStanding = true;
 	player = NULL;
-	nameImage = runningImage = walkingImage = NULL;
-	idleImage = idleBlockImage = attackImage = NULL;
-	runningImageFog = walkingImageFog = idleBlockImageFog = NULL;
-	idleImageFog = attackImageFog = NULL;
-	numberOfRunningClips = numberOfWalkingClips = 0;
-	numberOfIdleClips = numberOfIdleBlockClips = 0;
-	numberOfAttackClips = 0;
+	nameImage = NULL;
 	currentSprite = DOWN;
 	lastDirection = M_PI * 1 / 2;
 	textureHolder = otherPlayer->getTextureHolder();
@@ -257,7 +245,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		if (player->isAttacking())
 			player->cancelAttack();
 		if (player->isBlocking())
-			marco = numberOfIdleBlockClips - 1;
+			marco = spriteMap[string("blocking")].numberOfClips - 1;
 	}
 
 	Vector2* movementDirection = this->player->getMovementDirection();
@@ -297,7 +285,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	 *	spriteMap=selectWeaponView(this->player);
 	 *
 	 */
-	map<string, FoggedSprite> spriteMap = weaponViewMap[string("bow")];
+	spriteMap = weaponViewMap[string("bow")];
 
 
 	FoggedSprite spriteToBeShown;
@@ -415,9 +403,8 @@ void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 	if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
 		this->marco++;
 		animationChangeRate = 0; // Move to the next marco in the animation
-	} else {
+	} else
 		animationChangeRate++;
-	}
 
 }
 
