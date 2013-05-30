@@ -27,6 +27,12 @@
 
 using namespace std;
 
+class FoggedSprite{
+public:
+	SDL_Surface* image;
+	SDL_Surface* foggedImage;
+	int numberOfClips;
+};
 
 class PlayerView: public MobileEntityView {
 public:
@@ -48,7 +54,8 @@ public:
 private:
 	ChatWindowsView* chatView;
 	void showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog);
-	void showStandingAnimation(SpriteType sprite, SDL_Surface* fondo, bool drawFog);
+	void showStandingAnimation(SpriteType sprite, SDL_Surface* fondo,
+			bool drawFog);
 	void playAnimation(SpriteType sprite, SDL_Surface* screen, bool drawFog);
 	void loadPlayerImage();
 	Player* player;
@@ -61,15 +68,9 @@ private:
 	float lastDirection;
 	bool wasStanding;
 
-	SDL_Surface* attackImage;
 	SDL_Surface* attackImageFog;
-	int numberOfAttackClips;
-	SDL_Surface* walkingImage;
 	SDL_Surface* walkingImageFog;
-	int numberOfWalkingClips;
-	SDL_Surface* idleImage;
 	SDL_Surface* idleImageFog;
-	int numberOfIdleClips;
 	SDL_Surface* runningImage;
 	SDL_Surface* runningImageFog;
 	int numberOfRunningClips;
@@ -77,11 +78,13 @@ private:
 	SDL_Surface* idleBlockImageFog;
 	int numberOfIdleBlockClips;
 
-	int computeNumberOfClips(SDL_Surface* img);
-
 	SDL_Surface* nameImage;
 	TextHandler textHandler;
 
+	/* Map: key: weapon. Value: map of images; key: animation name,
+	 * value: vector with FoggedSprites
+	 */
+	map<string, map<string, FoggedSprite > > weaponViewMap;
 
 };
 
