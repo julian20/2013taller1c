@@ -21,11 +21,14 @@
 #include <model/entities/player/Player.h>
 #include <model/persistence/PersistentConfiguration.h>
 #include <model/Logs/Logs.h>
+
 #define ICON "resources/icon.png"
 #define POINTER "resources/pointer.png"
 #define POINTER_CLICKED "resources/pointerClicked.png"
+#define CLICK_ANIMATION "resources/click.png"
 
-Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
+Game::Game(PersistentConfiguration* configuration, bool multiplayer) :
+		clickAnimation(CLICK_ANIMATION, 22) {
 	this->multiplayer = multiplayer;
 
 	mapData = configuration->getMapData();
@@ -66,9 +69,11 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) {
 		chatController = new ChatController(playerController);
 		chatView = new ChatWindowsView(screen);
 	}
+
 	SDL_Surface* pointerTmp = IMG_Load(POINTER);
 	pointer = SDL_DisplayFormatAlpha(pointerTmp);
 	SDL_FreeSurface(pointerTmp);
+
 	SDL_Surface* pointerClickedTmp = IMG_Load(POINTER_CLICKED);
 	pointerClicked = SDL_DisplayFormatAlpha(pointerClickedTmp);
 	SDL_FreeSurface(pointerClickedTmp);
@@ -163,10 +168,10 @@ void Game::initScreen() {
 				"Unable to get video mode: " + string(SDL_GetError()));
 		exit(1);
 	}
-	SDL_WM_SetCaption( "Purge - Rise of the brotherhood", "Purge" );
+	SDL_WM_SetCaption("Purge - Rise of the brotherhood", "Purge");
 	SDL_Surface* icon = IMG_Load(ICON);
-		if (icon!=NULL){
-			SDL_WM_SetIcon(icon, NULL);
+	if (icon != NULL) {
+		SDL_WM_SetIcon(icon, NULL);
 	}
 	if (gameConfig->fullscreen()) {
 		//La hacemos fullscreen
@@ -184,6 +189,27 @@ string intToString(int number) {
 	stringstream ss; //create a stringstream
 	ss << number; //add number to the stream
 	return ss.str(); //return a string with the contents of the stream
+}
+
+void Game::setAnimationStartup(){
+	int x,y;
+	SDL_GetMouseState(&x, &y);
+	clickedLocation.x = x;
+	clickedLocation.y = y;
+	clickedLocation.h = pointer->h ;
+	clickedLocation.w = pointer->w;
+	clickAnimation.repeatNTimes(1);
+}
+
+SDL_Rect Game::updateMousePosition() {
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+	SDL_Rect rect;
+	rect.x = x;
+	rect.y = y;
+	rect.h = pointer->h;
+	rect.w = pointer->w;
+	return rect;
 }
 
 void Game::draw() {
@@ -205,24 +231,18 @@ void Game::draw() {
 	textHandler->applyTextOnSurface("FPS: " + intToString(tempFps), screen, 800,
 			40, "baramond", textHandler->getColor(255, 0, 0));
 	SDL_Rect rect = updateMousePosition();
+	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(1)) {
+		SDL_BlitSurface(pointerClicked, NULL, screen, &rect);
+		setAnimationStartup();
+	} else {
+		SDL_BlitSurface(pointer, NULL, screen, &rect);
+		clickAnimation.blitNextFrame(screen, clickedLocation);
+	}
 
-	if(SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1))
-		SDL_BlitSurface(pointerClicked,NULL,screen,&rect);
-	else
-		SDL_BlitSurface(pointer,NULL,screen,&rect);
 	SDL_Flip(screen);
 }
 
-SDL_Rect Game::updateMousePosition(){
-	int x, y;
-	SDL_GetMouseState(&x, &y);
-	SDL_Rect rect;
-	rect.x=x;
-	rect.y=y;
-	rect.h=pointer->h;
-	rect.w=pointer->w;
-	return rect;
-}
+
 
 MenuEvent Game::run() {
 
