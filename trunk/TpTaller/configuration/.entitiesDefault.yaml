@@ -92,7 +92,7 @@
     fps: 30
     delay: 10
     movementMargin: 50
-    gameMusic: resources/sound/NamiLogin.ogg
+    gameMusic: resources/sound/stalemate.ogg
     fullscreen: True
     screenAutoConfig: False
     defaultScreenHeight: 690

@@ -132,6 +132,9 @@ void refreshCharacters() {
 void Game::initScreen() {
 	//Buscamos info sobre la resolucion del escritorio y creamos la screen
 	bool configured = false;
+	//La linea siguiente es para que la window se centre
+		char environment_setting[] = "SDL_VIDEO_CENTERED=1";
+		putenv(environment_setting);
 
 	if (gameConfig->screenAutoConfig()) {
 		const SDL_VideoInfo *info = SDL_GetVideoInfo();
@@ -245,7 +248,7 @@ void Game::initMusic() {
 		musica = NULL;
 		return;
 	}
-	Mix_VolumeMusic(30);
+	Mix_VolumeMusic(40);
 	Mix_FadeInMusic(musica, -1, 3000);
 
 }
