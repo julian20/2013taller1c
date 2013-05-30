@@ -15,7 +15,7 @@
 #include <model/entityProperties/Speed.h>
 #include <model/entityProperties/Power.h>
 #include <model/entityProperties/Base.h>
-
+#include <list>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -34,12 +34,16 @@ public:
 	Coordinates getCoordinates();
 	void setCoordinates(int row, int col);
 	void setBaseSizes(int width, int height);
+	bool isMobile();
+	list<Entity*> getVisibleEnemies();
 protected:
 	Vector3* currentPos;
 	Base* base;
 	std::string name;
 	Coordinates* coord;
 	int life;
+	bool mobile;
+	list<Entity*> enemies;
 };
 
 #endif /* ENTITY_H_ */
