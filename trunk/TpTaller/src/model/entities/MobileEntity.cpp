@@ -87,12 +87,18 @@ void MobileEntity::moveImmediately(Coordinates coords) {
 	this->hasChanged = true;
 }
 
+
 void MobileEntity::checkAttackToNewPos(MapData* mapData){
-	if (attackToEntity == NULL ) return;
+	if (attackToEntity == NULL )
+		return;
 
 	Tile* enemyTile = new Tile(attackToEntity->getCoordinates());
+
+	//Llego hasta el player
 	if (this->currentTile->isNeighbor(enemyTile)) {
 		delete enemyTile;
+		//TODO: this->attackEntity(attackToEntity);
+		cancelAttack();
 		return;
 	}
 
@@ -300,6 +306,7 @@ void MobileEntity::setAttack(bool attacking) {
 void MobileEntity::cancelAttack() {
 	attacking = false;
 	hasChanged = true;
+	attackToEntity = NULL;
 }
 
 void MobileEntity::emptyPath() {

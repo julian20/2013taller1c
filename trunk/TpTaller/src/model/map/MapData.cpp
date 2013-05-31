@@ -465,7 +465,7 @@ void MapData::movePlayer(Player* player, Tile* toTile) {
 	}
 
 	delete fromTile;
-	player->attackTo(NULL);
+	player->cancelAttack();
 }
 
 void MapData::cleanVisibleTilesVector() {
