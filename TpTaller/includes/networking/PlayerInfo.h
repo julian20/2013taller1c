@@ -24,29 +24,11 @@ public:
 	void setName(string name);
 	string getName();
 
-	void setWalkingImageSrc(string img);
-	string getWalkingImageSrc();
+	void setOriginalName(string name);
+	string getOriginalName();
 
-	void setRunningImageSrc(string img);
-	string getRunningImageSrc();
-
-	void setIdleImageSrc(string img);
-	string getIdleImageSrc();
-
-	void setAttackImageSrc(string img);
-	string getAttackImageSrc();
-
-	void setIdleBlockingImageSrc(string img);
-	string getIdleBlockingImageSrc();
-
-	void setBowIdleImageSrc(string img);
-	string getBowIdleImageSrc();
-
-	void setBowAttackingImageSrc(string img);
-	string getBowAttackingImageSrc();
-
-	void setBowWalkingImageSrc(string img);
-	string getBowWalkingImageSrc();
+	void setImages(map<string,string> images);
+	map<string,string> getImages();
 
 	void setImageDimentions(int width, int height);
 	int getImageWidth();
@@ -80,8 +62,10 @@ public:
 	virtual ~PlayerInfo();
 private:
 	string name;
-	string walkingImageSrc, runningImageSrc, idleImageSrc, attackImageSrc,
-			idleBlockingImageScr, bowWalkingImageSrc, bowAttackingImageSrc, bowStandingImageSrc;
+	string originalName;
+
+	map<string,string> images;
+
 	int imageWidth, imageHeight;
 	Vector2* anchorPixel;
 	int fps;

@@ -183,16 +183,9 @@ void Client::setGame(Game* game){
 void Client::initPlayerInfo(PlayerView* view) {
 	this->info = new PlayerInfo();
 	info->setName(view->getPersonaje()->getName());
-	info->setWalkingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(WALKING_MODIFIER)));
-	info->setRunningImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(RUNNING_MODIFIER)));
-	info->setIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_MODIFIER)));
-	info->setAttackImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(ATTACK_MODIFIER)));
-	info->setIdleBlockingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_BLOCKING_MODIFIER)));
+	info->setOriginalName(view->getName());
 
-	info->setBowWalkingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(BOW_WALKING_MODIFIER)));
-	info->setBowAttackingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(BOW_ATTACK_MODIFIER)));
-	info->setBowIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(BOW_IDLE_MODIFIER)));
-
+	info->setImages(view->getTextureHolder()->getPlayerImages(view->getName()));
 	info->setAnchorPixel(view->getAnchorPixel());
 	info->setDelay(view->getDelay());
 	info->setFPS(view->getFps());

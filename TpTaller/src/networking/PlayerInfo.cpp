@@ -15,12 +15,7 @@ using namespace std;
 
 PlayerInfo::PlayerInfo() {
 
-	name = string("DEFAULT");
-	walkingImageSrc = string("DEFAULT");
-	runningImageSrc = string("DEFAULT");
-	idleImageSrc = string("DEFAULT");
-	attackImageSrc = string("DEFAULT");
-	idleBlockingImageScr = string("DEFAULT");
+	name = originalName = string("DEFAULT");
 
 	imageWidth = 0;
 	imageHeight = 0;
@@ -33,58 +28,25 @@ PlayerInfo::PlayerInfo() {
 }
 
 void PlayerInfo::setName(string name) {
-	this->name = string(name);
+	this->name = name;
 }
+
 string PlayerInfo::getName() {
 	return this->name;
 }
 
-void PlayerInfo::setWalkingImageSrc(string img) {
-	this->walkingImageSrc.assign(img);
+void PlayerInfo::setOriginalName(string name){
+	this->originalName = name;
 }
-string PlayerInfo::getWalkingImageSrc() {
-	return this->walkingImageSrc;
-}
-
-void PlayerInfo::setRunningImageSrc(string img) {
-	this->runningImageSrc.assign(img);
-}
-string PlayerInfo::getRunningImageSrc() {
-	return this->runningImageSrc;
+string PlayerInfo::getOriginalName(){
+	return this->originalName;
 }
 
-void PlayerInfo::setIdleImageSrc(string img) {
-	this->idleImageSrc.assign(img);
+void PlayerInfo::setImages(map<string,string> images){
+	this->images = images;
 }
-
-void PlayerInfo::setBowIdleImageSrc(string img) {
-	this->bowStandingImageSrc.assign(img);
-}
-
-void PlayerInfo::setBowAttackingImageSrc(string img) {
-	this->bowAttackingImageSrc.assign(img);
-}
-
-void PlayerInfo::setBowWalkingImageSrc(string img) {
-	this->bowWalkingImageSrc.assign(img);
-}
-
-string PlayerInfo::getIdleImageSrc() {
-	return this->idleImageSrc;
-}
-
-void PlayerInfo::setAttackImageSrc(string img) {
-	this->attackImageSrc.assign(img);
-}
-string PlayerInfo::getAttackImageSrc() {
-	return this->attackImageSrc;
-}
-
-void PlayerInfo::setIdleBlockingImageSrc(string img) {
-	this->idleBlockingImageScr.assign(img);
-}
-string PlayerInfo::getIdleBlockingImageSrc() {
-	return this->idleBlockingImageScr;
+map<string,string> PlayerInfo::getImages(){
+	return this->images;
 }
 
 void PlayerInfo::setImageDimentions(int width, int height) {
@@ -140,8 +102,8 @@ int PlayerInfo::getFPS() {
 PlayerView* PlayerInfo::createPlayerView() {
 	PlayerView* view = new PlayerView();
 	Player* player = this->getPlayer();
-	string playerName = player->getName();
-	view->setName(playerName);
+	view->setName(originalName);
+	view->setShowableName(player->getName());
 	view->setAnchorPixel(this->getAnchorPixel());
 	view->setBaseSizes(player->getBase()->getRows(),
 			player->getBase()->getCols());
@@ -151,37 +113,11 @@ PlayerView* PlayerInfo::createPlayerView() {
 	view->setImageWidth(this->getImageWidth());
 	view->setPersonaje(player);
 
-	string walking = this->getWalkingImageSrc();
-	string running = this->getRunningImageSrc();
-	string attack = this->getAttackImageSrc();
-	string idle = this->getIdleImageSrc();
-	string idle_blocking = this->getIdleBlockingImageSrc();
-
 	TextureHolder* th = new TextureHolder();
-	th->addTexture(
-			new TextureDefinition(playerName + string(WALKING_MODIFIER),
-					walking));
-	th->addTexture(
-			new TextureDefinition(playerName + string(RUNNING_MODIFIER),
-					running));
-	th->addTexture(
-			new TextureDefinition(playerName + string(ATTACK_MODIFIER),
-					attack));
-	th->addTexture(
-			new TextureDefinition(playerName + string(IDLE_MODIFIER), idle));
-	th->addTexture(
-			new TextureDefinition(playerName + string(IDLE_BLOCKING_MODIFIER),
-					idle_blocking));
 
-	th->addTexture(
-			new TextureDefinition(playerName + string(BOW_IDLE_MODIFIER),
-					bowStandingImageSrc));
-	th->addTexture(
-			new TextureDefinition(playerName + string(BOW_ATTACK_MODIFIER),
-					bowAttackingImageSrc));
-	th->addTexture(
-			new TextureDefinition(playerName + string(BOW_WALKING_MODIFIER),
-					bowWalkingImageSrc));
+	for (map<string,string>::iterator it = images.begin() ; it != images.end() ; ++it){
+		th->addTexture(new TextureDefinition(it->first,it->second));
+	}
 
 	view->setTextureHolder(th);
 
@@ -191,11 +127,7 @@ PlayerView* PlayerInfo::createPlayerView() {
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const PlayerInfo& info) {
 	string name = info.name;
-	string walkingImageSrc = info.walkingImageSrc;
-	string runningImageSrc = info.runningImageSrc;
-	string idleImageSrc = info.idleImageSrc;
-	string attackImageSrc = info.attackImageSrc;
-	string idleBlockingImageSrc = info.idleBlockingImageScr;
+
 	int imageWidth = info.imageWidth;
 	int imageHeight = info.imageHeight;
 	Vector2* anchorPixel = info.anchorPixel;
@@ -205,13 +137,16 @@ ostream& operator <<(std::ostream& out, const PlayerInfo& info) {
 	Player* player = info.player;
 	Coordinates* initCoords = info.initCoords;
 
-	out << name << " " << walkingImageSrc << " " << runningImageSrc << " "
-			<< idleImageSrc << " " << attackImageSrc << " "
-			<< idleBlockingImageSrc << " " << info.bowStandingImageSrc << " "
-			<< info.bowWalkingImageSrc << " " << info.bowAttackingImageSrc
-			<< " " << imageWidth << " " << imageHeight << " "
+	out << name << " " << info.originalName << " " << imageWidth << " " << imageHeight << " "
 			<< anchorPixel->getX() << " " << anchorPixel->getY() << " " << fps
-			<< " " << delay << " " << *initCoords << " " << *player;
+			<< " " << delay << " " << *initCoords << " " << *player << " ";
+
+	out << info.images.size() << " ";
+	map<string,string> images = info.images;
+	for (map<string,string>::iterator it = images.begin() ; it != images.end() ; ++it){
+		out << it->first << " " << it->second << " ";
+	}
+
 	return out;
 }
 
@@ -220,11 +155,6 @@ istream& operator >>(std::istream& in, PlayerInfo& info) {
 	float x, y;
 
 	string name;
-	string walkingImageSrc, bowWalkingImageSrc;
-	string runningImageSrc;
-	string idleImageSrc, bowStandingImageSrc;
-	string attackImageSrc, bowAttackingImageSrc;
-	string idleBlockingImageSrc;
 	int imageWidth;
 	int imageHeight;
 	int fps;
@@ -233,23 +163,7 @@ istream& operator >>(std::istream& in, PlayerInfo& info) {
 	Coordinates* initCoords = new Coordinates();
 	in >> name;
 	info.setName(name);
-	in >> walkingImageSrc;
-	info.setWalkingImageSrc(walkingImageSrc);
-	in >> runningImageSrc;
-	info.setRunningImageSrc(runningImageSrc);
-	in >> idleImageSrc;
-	info.setIdleImageSrc(idleImageSrc);
-	in >> attackImageSrc;
-	info.setAttackImageSrc(attackImageSrc);
-	in >> idleBlockingImageSrc;
-	info.setIdleBlockingImageSrc(idleBlockingImageSrc);
-
-	in >> bowStandingImageSrc;
-	info.setBowIdleImageSrc(bowStandingImageSrc);
-	in >> bowWalkingImageSrc;
-	info.setBowWalkingImageSrc(bowWalkingImageSrc);
-	in >> bowAttackingImageSrc;
-	info.setBowAttackingImageSrc(bowAttackingImageSrc);
+	in >> info.originalName;
 
 	in >> imageWidth;
 	in >> imageHeight;
@@ -269,6 +183,16 @@ istream& operator >>(std::istream& in, PlayerInfo& info) {
 
 	in >> *player;
 	info.setPlayer(player);
+
+	int size;
+	in >> size;
+	for (int i = 0 ; i < size ; i++){
+		string id;
+		string imagePath;
+		in >> id;
+		in >> imagePath;
+		info.images.insert(pair<string,string>(id,imagePath));
+	}
 
 	return in;
 }
