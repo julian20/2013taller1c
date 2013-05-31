@@ -129,9 +129,10 @@ void* handle(void* par) {
 			break;
 
 		if (missionManager.hasEndedGame()) {
-			// TODO: mostrar un cartelito diciendo quien gano
-			// o algo. Capaz haya que hacer un flag para diferenciar
-			// entre desconexion y esto.
+			// TODO: hay que mandarle al cliente
+			// un boolean de que el juego termino y
+			// que gano alguien para que pare
+			// de ejecutar y muestre algun cartelito.
 			break;
 		}
 
