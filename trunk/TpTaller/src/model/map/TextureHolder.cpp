@@ -11,7 +11,7 @@
 #define DEFAULT_TEXTURE_PATH "resources/texturesTiles/grass.png"
 
 #define DEFAULT_CHARACTER_ID	"characterDefault"
-#define DEFAULT_CHARACTER_PATH	"resources/soldierSheet.png"
+#define DEFAULT_CHARACTER_PATH	"resources/black_knight/asd.png"
 
 TextureHolder::TextureHolder() {
 	TextureDefinition* defaultTile = new TextureDefinition(DEFAULT_TEXTURE_ID,
@@ -64,7 +64,7 @@ SDL_Surface* TextureHolder::getTexture(std::string id) {
 		return surf;
 	}
 
-	return getTexture(DEFAULT_TEXTURE_ID);
+	return getTexture(DEFAULT_CHARACTER_ID);
 }
 
 SDL_Surface* TextureHolder::getFogTexture(std::string id) {
