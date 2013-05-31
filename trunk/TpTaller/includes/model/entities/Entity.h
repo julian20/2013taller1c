@@ -36,6 +36,7 @@ public:
 	void setBaseSizes(int width, int height);
 	bool isMobile();
 	list<Entity*> getVisibleEnemies();
+	virtual int getLife();
 protected:
 	Vector3* currentPos;
 	Base* base;

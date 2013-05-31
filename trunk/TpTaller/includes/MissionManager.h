@@ -14,16 +14,18 @@
 
 using namespace std;
 
+#include <model/entities/player/Player.h>
+
 class MissionManager {
 public:
 	MissionManager();
 	virtual ~MissionManager();
 
 	// Methods
-	bool hasEndedFlagCapture();
-	bool hasEndedTeamFight();
-	bool hasEndedSuddenDeath();
-	bool hasEndedGame();
+	bool hasEndedFlagCapture(list<Player*> mobileEntities);
+	bool hasEndedTeamFight(list<Player*> mobileEntities);
+	bool hasEndedSuddenDeath(list<Player*> mobileEntities);
+	bool hasEndedGame(list<Player*> mobileEntities);
 
 	// Getters and Setters
 	int getTypeOfMission();

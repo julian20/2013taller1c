@@ -134,6 +134,10 @@ vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 
 }
 
+list<Player*> MultiplayerGame::getPlayers() {
+	return this->players;
+}
+
 MultiplayerGame::~MultiplayerGame() {
 	// TODO Auto-generated destructor stub
 }

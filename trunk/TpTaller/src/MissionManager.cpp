@@ -20,18 +20,27 @@ MissionManager::MissionManager() {
 MissionManager::~MissionManager() {
 }
 
-bool MissionManager::hasEndedFlagCapture() {
-	// TODO: recibiria la Mobile entity que representa la flag.
-	/*
-	 * if( flag->isDead() ) {
-	 * 		winningTeam = flag->getKilledBy();
-	 * 		return true;
-	 * }
-	 */
+bool MissionManager::hasEndedFlagCapture(list<Player*> mobileEntities) {
+
+	list<Player*>::const_iterator iterator;
+	Player* actualMobileEntity;
+	for (iterator = mobileEntities.begin() ; iterator != mobileEntities.end() ; ++iterator) {
+	    actualMobileEntity = (Player*) (*iterator);
+	    // TODO: ver como carajo se que es una flag si lo que tengo es mobile entity.
+	    if( actualMobileEntity->getClassName() == "Flag") {
+	    	/*
+	    	 * if( flag->isDead() ) {
+	    	 * 		winningTeam = flag->getKilledBy();
+	 	 	 * 		return true;
+	 	 	 * }
+	    	 */
+	    }
+	}
+
 	return false;
 }
 
-bool MissionManager::hasEndedTeamFight() {
+bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
 	// TODO: recibiria la lista de todos los players controlados del juego.
 	/*
 	 * vector<Player*> firstTeam;
@@ -39,8 +48,8 @@ bool MissionManager::hasEndedTeamFight() {
 	 *
 	 * Player* actualPlayer = NULL;
 	 *
-	 * for( unsigned i = 0 ; i < playerList.size() ; i++ ) {
-	 * 		actualPlayer = playerList[i];
+	 * for( unsigned i = 0 ; i < mobileEntities.size() ; i++ ) {
+	 * 		actualPlayer = mobileEntities[i];
 	 * 		if( actualPlayer->getTeam() == 1 && ! actualPlayer->isDead() ) {
 	 * 			firstTeam.push_back(actualPlayer);
 	 * 		} else if ( actualPlayer->getTeam() == 2  && ! actualPlayer->isDead() ) {
@@ -68,19 +77,19 @@ bool MissionManager::hasEndedTeamFight() {
 	return false;
 }
 
-bool MissionManager::hasEndedSuddenDeath() {
+bool MissionManager::hasEndedSuddenDeath(list<Player*> mobileEntities) {
 	// En principio seria igual a team vs team.
 	// Cambiaria como spawnean cosas, pero no esta aca.
-	return hasEndedTeamFight();
+	return hasEndedTeamFight(mobileEntities);
 }
 
-bool MissionManager::hasEndedGame() {
+bool MissionManager::hasEndedGame(list<Player*> mobileEntities) {
 	if (typeOfMission == 1) {
-		return hasEndedFlagCapture();
+		return hasEndedFlagCapture(mobileEntities);
 	} else if (typeOfMission == 2) {
-		return hasEndedTeamFight();
+		return hasEndedTeamFight(mobileEntities);
 	} else if (typeOfMission == 3) {
-		return hasEndedSuddenDeath();
+		return hasEndedSuddenDeath(mobileEntities);
 	} else {
 		return false;
 	}
