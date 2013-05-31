@@ -18,8 +18,6 @@
 #include <networking/MobileEntityUpdate.h>
 #include <networking/PlayerEvent.h>
 
-class MapData;
-
 using namespace std;
 
 class MobileEntity : public Entity {
