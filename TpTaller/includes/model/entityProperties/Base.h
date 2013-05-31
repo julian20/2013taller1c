@@ -13,6 +13,7 @@
 class Base {
 public:
 	Base();
+	Base(Base* base);
 	virtual ~Base();
 	int getRows();
 	int getCols();

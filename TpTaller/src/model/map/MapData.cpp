@@ -66,8 +66,10 @@ void MapData::addEntity(int row, int col, Entity* object) {
 
 				currentData = getTileData(currentRow, currentCol);
 
-				currentData->addEntity(object);
-				object->setCoordinates(currentRow,currentCol);
+				//Ponemos una copia
+				Entity* copy = new Entity(object);
+				currentData->addEntity(copy);
+				copy->setCoordinates(currentRow,currentCol);
 				currentData->setWalkable(false);
 
 			}
@@ -466,7 +468,6 @@ void MapData::movePlayer(Player* player, Tile* toTile) {
 	}
 
 	delete fromTile;
-	player->cancelAttack();
 }
 
 void MapData::cleanVisibleTilesVector() {

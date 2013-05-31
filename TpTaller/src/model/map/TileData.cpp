@@ -12,6 +12,7 @@ using namespace std;
 
 TileData::TileData() {
 	mobileEntity = NULL;
+	entity = NULL;
 	tileType = "neutral";
 	iterator = entities.begin();
 	wasVisible = false;
@@ -28,10 +29,6 @@ MobileEntity* TileData::getMobileEntity() {
 }
 
 Entity* TileData::getNextEntity() {
-	if (iterator == entities.end() || getNumberOfEntitiesOnTile() <= 0)
-		return NULL;
-	Entity* entity = *iterator;
-	++iterator;
 	return entity;
 }
 
@@ -47,8 +44,9 @@ bool TileData::getIsVisible() {
 	return isVisible;
 }
 
-bool TileData::isWalkable( bool ignoremobileEntity ) {
-	if (!ignoremobileEntity && mobileEntity != NULL) return false;
+bool TileData::isWalkable(bool ignoremobileEntity) {
+	if (!ignoremobileEntity && mobileEntity != NULL)
+		return false;
 
 	return walkable;
 }
@@ -81,6 +79,7 @@ void TileData::setWalkable(bool _walkable) {
 void TileData::addEntity(Entity* entity) {
 	//Se agrega la entidad al final del vector.
 	entities.push_back(entity);
+	this->entity = entity;
 }
 
 TileData::~TileData() {

@@ -22,6 +22,18 @@ Entity::Entity() {
 	this->life = 100;
 }
 
+Entity::Entity(Entity* entity) {
+	Vector3* pos = entity->getCurrentPos();
+	this->currentPos = new Vector3(pos->getX(),pos->getY(),pos->getZ());
+	Coordinates coordin = entity->getCoordinates();
+	this->coord = new Coordinates(coordin.getCol(), coordin.getRow());
+	Base base = entity->getBase();
+	Base* newBase = new Base(base);
+	this->base = newBase;
+	this->name = entity->getName();
+	this->life = entity->getLife();
+}
+
 void Entity::setPos(float x, float y, float z) {
 	currentPos->setValues(x, y, z);
 	coord->changeTo((int) x / Tile::computePositionTile(0, 0).w,

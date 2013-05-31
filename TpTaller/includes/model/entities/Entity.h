@@ -23,6 +23,7 @@ using namespace std;
 class Entity {
 public:
 	Entity();
+	Entity(Entity* entity);
 	void setPos(float x, float y, float z = 0);
 	Vector3* getCurrentPos();
 	virtual string getClassName();

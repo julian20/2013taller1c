@@ -30,8 +30,8 @@ void MapController::clickListener(SDL_Event event) {
 		int mouseX, mouseY;
 		SDL_GetMouseState(&mouseX, &mouseY);
 
-		if (this->playerController->clickAnotherPlayer(mouseX,mouseY)){
-			playerController->playerAttackTo( playerController->getLastPlayerTouch() );
+		if (this->playerController->playerHasclickedAnEntity(mouseX,mouseY)){
+			playerController->playerAttackTo( playerController->getEntityToCollideTo() );
 		}
 		else
 			playerController->movePlayer(mouseX, mouseY);
