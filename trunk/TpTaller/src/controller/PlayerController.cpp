@@ -42,7 +42,7 @@ PlayerController::~PlayerController() {
  //	Player* miPlayer=this->player;
  return (player->getChat())->getChatController();
  }*/
-string PlayerController::getLastPlayerTouch() {
+MobileEntity* PlayerController::getLastPlayerTouch() {
 	return this->lastPlayerTouch;
 }
 
@@ -58,7 +58,7 @@ bool PlayerController::clickAnotherPlayer(int x, int y) {
 	MobileEntity* player = tileData->getPersonaje();
 	if (player) {
 		if (player->getClassName().compare("Player") != 0) return false;
-		this->lastPlayerTouch = player->getName();
+		this->lastPlayerTouch = player;
 		return true;
 	} else
 		return false;
@@ -106,7 +106,7 @@ void PlayerController::movePlayer(int x, int y) {
 		if (player != NULL) {
 			Tile* toTile = new Tile(
 					new Coordinates(coor->getRow(), coor->getCol()));
-			data->movePersonaje(player, toTile);
+			data->movePlayer(player, toTile);
 			delete toTile;
 		}
 	}
@@ -157,6 +157,10 @@ void PlayerController::toggleRunning() {
 	}
 }
 
+void PlayerController::playerAttackTo(Entity* entity) {
+	player->attackTo(entity);
+}
+
 void PlayerController::playerAttack() {
 	if (listEvents) {
 		events.push_back(new PlayerEvent(EVENT_ATTACK));
@@ -198,6 +202,9 @@ void PlayerController::generateEventList(bool activated) {
 }
 
 list<PlayerEvent*> PlayerController::getEventList() {
+	PlayerEvent* playerEvent = player->getPlayerEvent();
+	if ( playerEvent != NULL ) events.push_back(playerEvent);
+
 	return events;
 }
 

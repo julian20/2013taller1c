@@ -30,14 +30,12 @@ void ChatController::handle_events(SDL_Event ev) {
 				&& (ev.button.button == SDL_BUTTON_RIGHT)) {
 				int x = ev.button.x;
 				int y = ev.button.y;
-				if(this->playerController->clickAnotherPlayer(x,y))
-					{
-						this->text = "";
-						this->chat->Enable();
-						this->chat->setReceptor(this->playerController->getLastPlayerTouch());
-						this->receptor = this->playerController->getLastPlayerTouch();
-						this->chat->setReceptor(this->receptor);
-					}
+				if(this->playerController->clickAnotherPlayer(x,y)) {
+					this->text = "";
+					this->chat->Enable();
+					this->receptor = this->playerController->getLastPlayerTouch()->getName();
+					this->chat->setReceptor(this->receptor);
+				}
 		}
 		if(this->chat->isEnable())
 		{

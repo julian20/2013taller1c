@@ -32,7 +32,7 @@ void MapView::setUpMobileEntities() {
 	for (int col = 0; col < data->getNCols(); col++) {
 		for (int row = 0; row < data->getNRows(); row++) {
 
-			MobileEntity* mobileEntity = data->getPersonaje(row, col);
+			MobileEntity* mobileEntity = data->getPlayer(row, col);
 			if (mobileEntity != NULL) {
 				posTile = Tile::computePositionTile(row, col);
 				mobileEntity->setPos((float) posTile.x, (float) posTile.y);

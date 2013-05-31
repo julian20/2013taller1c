@@ -116,7 +116,7 @@ void Game::setUpCharacters(MapView* map, MapData* mapData,
 						personaje = (Player*) entity;
 
 						Coordinates coord = personaje->getCoordinates();
-						mapData->addPersonaje(coord.getRow(), coord.getCol(),
+						mapData->addPlayer(coord.getRow(), coord.getCol(),
 								personaje);
 					} else if (entity->getClassName() == "MobileEntity") {
 
@@ -316,12 +316,12 @@ void Game::initMusic() {
 void Game::playersUpdate() {
 
 	personaje->update(mapData);
-	personaje->setChange(false);
+	personaje->setHasChanged(false);
 
 	for (list<Player*>::iterator player = otherPlayers.begin();
 			player != otherPlayers.end(); ++player) {
 		(*player)->update(mapData);
-		(*player)->setChange(false);
+		(*player)->setHasChanged(false);
 	}
 
 }
@@ -329,7 +329,7 @@ void Game::playersUpdate() {
 void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords) {
 	player->setCoordinates(coords->getRow(), coords->getCol());
 	MapData* map = mapView->getMapData();
-	map->addPersonaje(coords->getRow(), coords->getCol(), player);
+	map->addPlayer(coords->getRow(), coords->getCol(), player);
 	Coordinates newCoords = player->getCoordinates();
 	mapView->addNewPlayerView(view, newCoords);
 

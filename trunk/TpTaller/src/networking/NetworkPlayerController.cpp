@@ -51,7 +51,7 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 		break;
 	}
 
-	player->setChange(true);
+	player->setHasChanged(true);
 
 }
 
@@ -63,7 +63,7 @@ void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
 		if (player != NULL) {
 			Tile* toTile = new Tile(
 					new Coordinates(tileCoord->getRow(), tileCoord->getCol()));
-			data->movePersonaje(player, toTile);
+			data->movePlayer(player, toTile);
 			delete toTile;
 		}
 

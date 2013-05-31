@@ -16,6 +16,7 @@
 #include <model/Vector2.h>	// Capas hay q volarlo
 #include <model/Vector3.h>
 #include <networking/MobileEntityUpdate.h>
+#include <networking/PlayerEvent.h>
 
 class MapData;
 
@@ -57,6 +58,8 @@ public:
 	void setHasChanged(bool change);
 	bool getHasChanged();
 
+	PlayerEvent* getPlayerEvent();
+
 	void stop();
 	Vector3* getEndPos();
 	void setEndPos(float x, float y, float z);
@@ -83,6 +86,7 @@ protected:
 	bool attacking;
 
 	bool hasChanged;
+	bool addEvent;
 	int team;
 private:
 	void checkAttackToNewPos(MapData* mapData);

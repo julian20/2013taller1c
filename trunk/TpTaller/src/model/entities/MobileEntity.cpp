@@ -17,6 +17,7 @@ MobileEntity::MobileEntity() {
 	endPos = new Vector3(0, 0);
 	team = 0;
 	attackToEntity = NULL;
+	addEvent = false;
 	this->speed = new Speed(0, new Vector2(0, 0));
 	this->initSpeed = NULL;
 	this->path = new list<Tile *>();
@@ -31,12 +32,23 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	this->currentPos = new Vector3(0, 0, 0);
 	this->base = new Base();
 	attackToEntity = NULL;
+	addEvent = false;
 	endPos = new Vector3(0, 0, 0);
 	endPos->setValues(currentPos->getX(), currentPos->getY());
 	attacking = false;
 	hasChanged = false;
 	initSpeed = 0;
 	team = 0;
+}
+
+PlayerEvent* MobileEntity::getPlayerEvent() {
+	if (addEvent && path->size() != 0) {
+		addEvent = false;
+		return new PlayerEvent( EVENT_MOVE, path->back()->getCoordinates() );
+	}
+
+	addEvent = false;
+	return NULL;
 }
 
 void MobileEntity::setPos(float x, float y, float z) {
@@ -79,20 +91,28 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData){
 	if (attackToEntity == NULL ) return;
 
 	Tile* enemyTile = new Tile(attackToEntity->getCoordinates());
-	if (path->size() == 0) {
-		assignPath(mapData->getPath(getTile(), enemyTile));
+	if (this->currentTile->isNeighbor(enemyTile)) {
 		delete enemyTile;
+		return;
+	}
+
+	if (path->size() == 0) {
+		assignPath(mapData->getPath(currentTile, enemyTile));
+		addEvent = true;
+		delete enemyTile;
+		return;
 	}
 
 	Tile* lastTile = path->back();
 	bool tilesAreNeighbors = lastTile->isNeighbor(enemyTile);
 
-	if (tilesAreNeighbors == true){
+	if (tilesAreNeighbors){
 		delete enemyTile;
 		return;
 	}
 
-	assignPath(mapData->getPath(getTile(), enemyTile));
+	assignPath(mapData->getPath(currentTile, enemyTile));
+	addEvent = true;
 	delete enemyTile;
 }
 
@@ -229,7 +249,7 @@ void MobileEntity::setInitSpeed(Speed* initSpeed) {
 	this->initSpeed = initSpeed;
 }
 
-void MobileEntity::assignPath(list<Tile *> *_path) {
+void MobileEntity::assignPath(list<Tile *> *_path ) {
 	if (path) {
 		path->erase(path->begin(), path->end());
 		delete path;
@@ -237,6 +257,7 @@ void MobileEntity::assignPath(list<Tile *> *_path) {
 	this->path = _path;
 
 	loadNextPosition();
+	this->hasChanged = true;
 }
 
 void MobileEntity::setTile(Tile* _tile) {

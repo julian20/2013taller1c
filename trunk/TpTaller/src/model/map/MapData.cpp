@@ -89,7 +89,7 @@ TileData* MapData::getTileData(Coordinates coords) {
 	return getTileData(coords.getRow(), coords.getCol());
 }
 
-void MapData::addPersonaje(int row, int col, Player* player) {
+void MapData::addPlayer(int row, int col, Player* player) {
 	TileData* tileData = getTileData(row, col);
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
@@ -168,7 +168,7 @@ void MapData::addMobileEntity(int row, int col, MobileEntity* player) {
 
 }
 
-void MapData::updatePersonajePos(int prevRow, int prevCol,
+void MapData::updatePlayerPos(int prevRow, int prevCol,
 								 int row, int col, Player* player) {
 
 	TileData* tileDataPrev = getTileData(prevRow, prevCol);
@@ -181,7 +181,7 @@ void MapData::updatePersonajePos(int prevRow, int prevCol,
 	player->setTile(personajeTile);
 }
 
-MobileEntity* MapData::getPersonaje(int row, int col) {
+MobileEntity* MapData::getPlayer(int row, int col) {
 	if( (row < 0 || row >= nrows) || (col < 0 || col >= ncols) ) {
 		std::cout << "Se esta intentando pedir un personaje fuera de rango"
 														<< std::endl;
@@ -324,6 +324,16 @@ Tile* MapData::getValidTile(Tile* from, Tile* goal) {
 	return NULL;
 }
 
+void printPath(list<Tile *>* path) {
+	list<Tile *>::const_iterator iter;
+	for (iter = path->begin(); iter != path->end(); ++iter) {
+		Tile* tile = *iter;
+		Coordinates coords = tile->getCoordinates();
+
+		printf("row: %d  col:%d\n", coords.getRow(), coords.getCol());
+	}
+}
+
 /**
  * TODO: ~~~ Gonchu ~~~
  * Tratar de usar list<Tile*> path en vez de
@@ -443,33 +453,19 @@ list<Tile *> *MapData::reconstructPath(map<int, Tile *> cameFrom,
 	return path;
 }
 
-void printPath(list<Tile *>* path) {
-	list<Tile *>::const_iterator iter;
-	for (iter = path->begin(); iter != path->end(); ++iter) {
-		Tile* tile = *iter;
-		Coordinates coords = tile->getCoordinates();
-
-		printf("row: %d  col:%d\n", coords.getRow(), coords.getCol());
-	}
-}
-
-void MapData::movePersonaje(Player* personaje, Tile* toTile) {
-	Tile* fromTile = personaje->getTile();
+void MapData::movePlayer(Player* player, Tile* toTile) {
+	Tile* fromTile = player->getTile();
 	Coordinates fromCoords = fromTile->getCoordinates();
 	Coordinates toCoords = toTile->getCoordinates();
 
 	// Si la posicion inicial y final son distintas calcula el path
 	if (!fromCoords.isEqual(toCoords)){
 		list<Tile *> *path = getPath(fromTile, toTile);
-		personaje->assignPath(path);
+		player->assignPath(path);
 	}
 
 	delete fromTile;
-
-	// El codigo de aca abajo es para ir directo al tile clickeado
-	/*list<Tile *> *path = new list<Tile *>();
-	 path->insert(path->end(), toTile);
-	 personaje->assignPath(path);*/
+	player->attackTo(NULL);
 }
 
 void MapData::cleanVisibleTilesVector() {

@@ -33,11 +33,10 @@ Tile::Tile(Coordinates* _coordinates) {
 
 Tile::Tile(Coordinates _coordinates) {
 	this->coordinates = new Coordinates(0, 0);
-	setCoordinates(_coordinates);
 	this->textureIdentifier = "";
 	this->position = new Position(0, 0, 0);
 	this->fScore = 0;
-	updatePosition();
+	setCoordinates(_coordinates);
 }
 
 Tile::Tile() {

@@ -26,6 +26,7 @@ public:
 	MapData* getMapData();
 	Player* getPlayer();
 	void toggleRunning();
+	void playerAttackTo(Entity* entity);
 	void playerAttack();
 	void playerCancelAttack();
 	void playerBlock();
@@ -35,12 +36,12 @@ public:
 	list<PlayerEvent*> getEventList();
 	void cleanEventList();
 	bool clickAnotherPlayer(int x, int y);
-	string getLastPlayerTouch();
+	MobileEntity* getLastPlayerTouch();
 protected:
 	MapCameraView* camera;
 	MapData* data;
 	Player* player;
-	string lastPlayerTouch;
+	MobileEntity* lastPlayerTouch;
 	bool listEvents;
 
 	list<PlayerEvent*> events;

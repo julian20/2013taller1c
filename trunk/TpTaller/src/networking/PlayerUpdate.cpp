@@ -18,7 +18,7 @@ PlayerUpdate::PlayerUpdate(){
 	this->active = true;
 	this->currentTile = new Tile();
 	this->nextTile = new Tile();
-	this->initCoords = new Coordinates;
+	this->initCoords = new Coordinates();
 	this->chat=NULL;
 }
 
