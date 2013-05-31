@@ -128,7 +128,7 @@ void* handle(void* par) {
 		if (!playing)
 			break;
 
-		if (missionManager.hasEndedGame()) {
+		if (missionManager.hasEndedGame(game->getPlayers())) {
 			// TODO: hay que mandarle al cliente
 			// un boolean de que el juego termino y
 			// que gano alguien para que pare

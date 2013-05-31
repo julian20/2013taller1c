@@ -83,6 +83,10 @@ void Entity::setName(std::string name) {
 	this->name = name;
 }
 
+int Entity::getLife() {
+	return this->life;
+}
+
 Entity::~Entity() {
 	delete this->coord;
 	delete this->currentPos;

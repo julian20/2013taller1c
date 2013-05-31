@@ -32,6 +32,7 @@ public:
 	void updatePlayersCoordinates();
 	vector<PlayerUpdate*> getPlayersUpdates();
 	vector<ChatUpdate*> getChatUpdates();
+	list<Player*> getPlayers();
 	virtual ~MultiplayerGame();
 	void deliverMessage(ChatMessage* msj);
 
