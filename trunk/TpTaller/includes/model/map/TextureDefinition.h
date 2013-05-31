@@ -10,18 +10,22 @@
 
 #include <SDL/SDL.h>
 #include <string>
+#include <vector>
 
+
+// LEER ANTES DE AGREGAR UN MODIFIER
+// AL AGREGAR UNO NUEVO, HAY QUE AGREGARLO TAMBIEN EN EL VECTOR DEL METODO getModifiers.
+// ATENCION!!!
 #define ATTACK_MODIFIER "Attack"
 #define WALKING_MODIFIER "Walking"
 #define IDLE_MODIFIER "Idle"
 #define RUNNING_MODIFIER "Running"
 #define IDLE_BLOCKING_MODIFIER "IdleBlocking"
-
-
 #define BOW_ATTACK_MODIFIER "AttackBow"
 #define BOW_WALKING_MODIFIER "WalkingBow"
 #define BOW_IDLE_MODIFIER "IdleBow"
 
+using namespace std;
 
 
 class TextureDefinition {
@@ -35,6 +39,8 @@ public:
 	void setTextureImageSrc(std::string imageSrc);
 	std::string getTextureImageSrc();
 	SDL_Surface* getDefaultTextureImage();
+
+	static vector<string> getModifiers();
 private:
 	std::string id, imageSrc, defaultImgSrc;
 	SDL_Surface* openImage;

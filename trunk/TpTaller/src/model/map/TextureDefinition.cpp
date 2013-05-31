@@ -95,3 +95,19 @@ SDL_Surface * TextureDefinition::getDefaultTextureImage() {
 void TextureDefinition::setDefaultImage(std::string imageSrc) {
 	this->defaultImgSrc = imageSrc;
 }
+
+
+vector<string> TextureDefinition::getModifiers(){
+	vector<string> modifiers;
+
+	modifiers.push_back(WALKING_MODIFIER);
+	modifiers.push_back(ATTACK_MODIFIER);
+	modifiers.push_back(RUNNING_MODIFIER);
+	modifiers.push_back(IDLE_MODIFIER);
+	modifiers.push_back(IDLE_BLOCKING_MODIFIER);
+	modifiers.push_back(BOW_WALKING_MODIFIER);
+	modifiers.push_back(BOW_IDLE_MODIFIER);
+	modifiers.push_back(BOW_ATTACK_MODIFIER);
+
+	return modifiers;
+}

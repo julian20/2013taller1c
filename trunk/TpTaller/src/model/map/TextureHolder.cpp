@@ -75,3 +75,18 @@ SDL_Surface* TextureHolder::getFogTexture(std::string id) {
 
 	return fogTextures[id];
 }
+
+map<string,string> TextureHolder::getPlayerImages(string playerName){
+	map<string,string> playerImages;
+
+	vector<string> modifiers = TextureDefinition::getModifiers();
+
+	for (int i = 0 ; i < modifiers.size() ; i++){
+		string id = playerName + modifiers[i];
+		playerImages.insert(pair<string,string>(id,getTextureSrc(id)));
+		cout << "Agregando " << id <<" " << getTextureSrc(id)<<endl;
+	}
+
+	return playerImages;
+
+}

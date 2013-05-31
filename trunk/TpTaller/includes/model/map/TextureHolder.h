@@ -24,6 +24,9 @@ public:
 	void addFogTexture(std::string id, SDL_Surface* texture);
 	SDL_Surface* getTexture(std::string id);
 	SDL_Surface* getFogTexture(std::string id);
+
+	map<string,string> getPlayerImages(string playerName);
+
 	std::string getTextureSrc(std::string id);
 private:
 	std::map<std::string, TextureDefinition*> textures;
