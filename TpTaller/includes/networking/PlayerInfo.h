@@ -39,6 +39,15 @@ public:
 	void setIdleBlockingImageSrc(string img);
 	string getIdleBlockingImageSrc();
 
+	void setBowIdleImageSrc(string img);
+	string getBowIdleImageSrc();
+
+	void setBowAttackingImageSrc(string img);
+	string getBowAttackingImageSrc();
+
+	void setBowWalkingImageSrc(string img);
+	string getBowWalkingImageSrc();
+
 	void setImageDimentions(int width, int height);
 	int getImageWidth();
 	int getImageHeight();
@@ -71,7 +80,8 @@ public:
 	virtual ~PlayerInfo();
 private:
 	string name;
-	string walkingImageSrc,runningImageSrc,idleImageSrc,attackImageSrc, idleBlockingImageScr;
+	string walkingImageSrc, runningImageSrc, idleImageSrc, attackImageSrc,
+			idleBlockingImageScr, bowWalkingImageSrc, bowAttackingImageSrc, bowStandingImageSrc;
 	int imageWidth, imageHeight;
 	Vector2* anchorPixel;
 	int fps;

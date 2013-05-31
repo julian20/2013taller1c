@@ -188,6 +188,11 @@ void Client::initPlayerInfo(PlayerView* view) {
 	info->setIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_MODIFIER)));
 	info->setAttackImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(ATTACK_MODIFIER)));
 	info->setIdleBlockingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(IDLE_BLOCKING_MODIFIER)));
+
+	info->setBowWalkingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(BOW_WALKING_MODIFIER)));
+	info->setBowAttackingImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(BOW_ATTACK_MODIFIER)));
+	info->setBowIdleImageSrc(view->getTextureHolder()->getTextureSrc(view->getName() + string(BOW_IDLE_MODIFIER)));
+
 	info->setAnchorPixel(view->getAnchorPixel());
 	info->setDelay(view->getDelay());
 	info->setFPS(view->getFps());
