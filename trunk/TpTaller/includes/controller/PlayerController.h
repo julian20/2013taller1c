@@ -31,19 +31,21 @@ public:
 	void playerCancelAttack();
 	void playerBlock();
 	void playerCancelBlock();
-//	ChatController * getChatController();
 	void generateEventList(bool activated);
 	list<PlayerEvent*> getEventList();
 	void cleanEventList();
 	bool clickAnotherPlayer(int x, int y);
 	MobileEntity* getLastPlayerTouch();
+
+	bool playerHasclickedAnEntity(int x, int y);
+	Entity* getEntityToCollideTo();
 protected:
 	MapCameraView* camera;
 	MapData* data;
 	Player* player;
-	MobileEntity* lastPlayerTouch;
+	MobileEntity* lastTouchedPlayer;
 	bool listEvents;
-
+	Entity* entityToCollideAgainst;
 	list<PlayerEvent*> events;
 };
 

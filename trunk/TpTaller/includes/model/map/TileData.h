@@ -9,6 +9,7 @@
 #define TILEDATA_H_
 
 #include <model/entities/Entity.h>
+#include <model/entities/MobileEntity.h>
 #include <model/entities/player/Player.h>
 #include <vector>
 
@@ -21,7 +22,7 @@ public:
 
 	//Getters
 	std::string getType();
-	MobileEntity* getPersonaje();
+	MobileEntity* getMobileEntity();
 	Entity* getNextEntity();
 	int getNumberOfEntitiesOnTile();
 	bool getWasVisible();
@@ -30,8 +31,8 @@ public:
 
 	//Setters
 	void setType(std::string type);
-	void setPlayer(MobileEntity* newPersonaje);
-	void cleanPlayer();
+	void setMobileEntity(MobileEntity* newPersonaje);
+	void cleanMobileEntity();
 	void setVisibility(bool value);
 	void setWalkable(bool _walkable);
 
@@ -39,7 +40,7 @@ public:
 
 private:
 	std::string tileType;
-	MobileEntity* personaje;
+	MobileEntity* mobileEntity;
 	std::list<Entity*> entities;
 	std::list<Entity*>::iterator iterator;
 
