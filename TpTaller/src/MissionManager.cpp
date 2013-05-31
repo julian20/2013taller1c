@@ -24,56 +24,64 @@ bool MissionManager::hasEndedFlagCapture(list<Player*> mobileEntities) {
 
 	list<Player*>::const_iterator iterator;
 	Player* actualMobileEntity;
-	for (iterator = mobileEntities.begin() ; iterator != mobileEntities.end() ; ++iterator) {
-	    actualMobileEntity = (Player*) (*iterator);
-	    // TODO: ver como carajo se que es una flag si lo que tengo es mobile entity.
-	    if( actualMobileEntity->getClassName() == "Flag") {
-	    	/*
-	    	 * if( flag->isDead() ) {
-	    	 * 		winningTeam = flag->getKilledBy();
-	 	 	 * 		return true;
-	 	 	 * }
-	    	 */
-	    }
+	for (iterator = mobileEntities.begin(); iterator != mobileEntities.end();
+			++iterator) {
+
+		actualMobileEntity = (Player*) (*iterator);
+
+		// TODO: ver como carajo se que es una flag si lo que tengo es mobile entity.
+		// Una manera fea que se me ocurre es que la flag sea algo asi como el team 3.
+		// Entonces preguntamos el team y listo, pero es feito feito.
+		if (actualMobileEntity->getClassName() == "Flag") {
+
+//			  if( actualMobileEntity->isDead() ) {
+//			  		winningTeam = actualMobileEntity->getKilledBy();
+//			  		return true;
+//			  }
+
+		}
 	}
 
 	return false;
 }
 
 bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
-	// TODO: recibiria la lista de todos los players controlados del juego.
-	/*
-	 * vector<Player*> firstTeam;
-	 * vector<Player*> secondTeam;
-	 *
-	 * Player* actualPlayer = NULL;
-	 *
-	 * for( unsigned i = 0 ; i < mobileEntities.size() ; i++ ) {
-	 * 		actualPlayer = mobileEntities[i];
-	 * 		if( actualPlayer->getTeam() == 1 && ! actualPlayer->isDead() ) {
-	 * 			firstTeam.push_back(actualPlayer);
-	 * 		} else if ( actualPlayer->getTeam() == 2  && ! actualPlayer->isDead() ) {
-	 * 			secondTeam.push_back(actualPlayer);
-	 * 		} else {
-	 * 			cout << "ERROR: Player doesnt have team" << endl;
-	 * 		}
-	 * }
-	 *
-	 * // Se podria ver el caso raro y borde en el que ambos teams tengan
-	 * // 0 integrantes vivos, porque a todos los mato una mob. Lo dejo
-	 * // como TODO.
-	 * if( firstTeam.size() == 0 ) {
-	 * 		winningTeam = 2;
-	 * 		return true;
-	 * 	} else if( firstTeam.size() == 0 ) {
-	 * 		winningTeam = 1;
-	 * 		return true;
-	 * 	} else {
-	 *		return false;
-	 * 		cout << "Game continues" << endl;
-	 * 	}
-	 *
-	 */
+
+	bool someoneAliveFirstTeam = false;
+	bool someoneAliveSecondTeam = false;
+
+	list<Player*>::const_iterator iterator;
+	Player* actualMobileEntity;
+	for (iterator = mobileEntities.begin(); iterator != mobileEntities.end();
+			++iterator) {
+
+		actualMobileEntity = (Player*) (*iterator);
+
+		// TODO: ver como carajo se que es un player si lo que tengo es mobile entity.
+		// Siguiendo lo que dije arriba, las entities tendria team. Team 1 y 2 serian
+		// players, team 3 una flag, y team 0 los demas. Es feo, pero funcaria y no
+		// habria que ver como preguntamos esto.
+		if (actualMobileEntity->getClassName() == "Player") {
+
+//			if (actualMobileEntity->getTeam() == 1
+//					&& actualMobileEntity->getLife() > 0) {
+//				someoneAliveFirstTeam = true
+//			} else if (actualMobileEntity->getTeam() == 2
+//					&& actualMobileEntity->getLife() > 0) {
+//				someoneAliveSecondTeam = true
+//			}
+
+		}
+	}
+
+	if (someoneAliveFirstTeam == false) {
+		winningTeam = 2;
+		return true;
+	} else if (someoneAliveSecondTeam == false) {
+		winningTeam = 1;
+		return true;
+	}
+	// Else
 	return false;
 }
 
