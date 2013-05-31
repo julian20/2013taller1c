@@ -10,6 +10,7 @@
 #include <networking/PlayerEvent.h>
 #include <networking/PlayerInfo.h>
 #include <MultiplayerGame.h>
+#include <MissionManager.h>
 
 #include <iostream>
 #include <fstream>
@@ -63,6 +64,9 @@ public:
 	void deliverMessages(int clientSocket,string playerName);
 	MultiplayerGame* getGame();
 
+	void setMissionManager(MissionManager manager);
+	MissionManager getMissionManager();
+
 	map<string,Player*> getPlayerConnected();
 	void setMessages(vector<ChatMessage*>);
 
@@ -75,6 +79,7 @@ public:
 protected:
 	int serverID;
 	MultiplayerGame* game;
+	MissionManager missionManager;
 	bool active;
 private:
 
