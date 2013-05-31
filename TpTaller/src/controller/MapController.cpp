@@ -20,32 +20,21 @@ MapController::MapController(MapView* mapView, MapData* mapData,
 
 void MapController::clickListener(SDL_Event event) {
 	if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == 1)) {
-		//this->mapView->IdentifyTile(event.button.x,event.button.y);
-		//playerController->movePlayer(event.button.x, event.button.y);
 		buttonPressed = true;
-
-		/*	Mix_Chunk* darknessVoice = Mix_LoadWAV("tomi.wav");
-		 if (darknessVoice == NULL) {
-		 cerr << "No se puede cargar el darknessVoice de darkness"
-		 << SDL_GetError() << endl;
-		 exit(1);
-		 }*/
-
-		// Establecemos el volumen para el darknessVoice
-		//int volumen = 2000;
-		//Mix_VolumeChunk(darknessVoice, volumen);
-		// Introducimos el sonido en el canal
-		// En el canal 1 con una reproducción (1)
-		//Mix_PlayChannel(1, darknessVoice, 0);
 	}
 
-	if ((event.type == SDL_MOUSEBUTTONUP) && (event.button.button == 1))
+	if ((event.type == SDL_MOUSEBUTTONUP) && (event.button.button == SDL_BUTTON_LEFT))
 		buttonPressed = false;
 
 	if (buttonPressed) {
 		int mouseX, mouseY;
 		SDL_GetMouseState(&mouseX, &mouseY);
-		playerController->movePlayer(mouseX, mouseY);
+
+		if (this->playerController->clickAnotherPlayer(mouseX,mouseY))
+			playerController->playerAttackTo( playerController->getLastPlayerTouch() );
+		else
+			playerController->movePlayer(mouseX, mouseY);
+
 	}
 
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_LSHIFT)) {

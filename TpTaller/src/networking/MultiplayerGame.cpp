@@ -57,7 +57,7 @@ void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes){
 	controllers.insert(pair<string, NetworkPlayerController*>(player->getName(), controller));
 	players.push_back(player);
 
-	view->getMapData()->addPersonaje(coordiantes->getRow(), coordiantes->getCol(), player);
+	view->getMapData()->addPlayer(coordiantes->getRow(), coordiantes->getCol(), player);
 
 	Coordinates coords = player->getCoordinates();
 	playersCoords[player] = coords;
@@ -76,7 +76,7 @@ void MultiplayerGame::updatePlayersCoordinates(){
 
 		playersCoords[player] = currentCoords;
 
-		view->getMapData()->updatePersonajePos(initCoords.getRow(), initCoords.getCol(),
+		view->getMapData()->updatePlayerPos(initCoords.getRow(), initCoords.getCol(),
 											   currentCoords.getRow(), currentCoords.getCol(),
 											   player);
 	}

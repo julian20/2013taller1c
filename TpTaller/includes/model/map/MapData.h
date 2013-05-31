@@ -28,14 +28,14 @@ public:
 	int getNCols();
 	TileData* getTileData(Coordinates coords);
 	TileData* getTileData(int row, int col);
-	void addPersonaje(int row, int col, Player* personaje);
+	void addPlayer(int row, int col, Player* personaje);
 	void addMobileEntity(int row, int col, MobileEntity* player);
-	MobileEntity* getPersonaje(int row, int col);
-	void updatePersonajePos(int prevRow, int prevCol,
+	MobileEntity* getPlayer(int row, int col);
+	void updatePlayerPos(int prevRow, int prevCol,
 							int row, int col, Player* personaje);
 	list<Tile *> *getPath(Tile* from, Tile* to);
 	list<Entity *> *Entities;
-	void movePersonaje(Player* personaje, Tile* toTile);
+	void movePlayer(Player* personaje, Tile* toTile);
 	void updateVisibleTiles();
 	void cleanVisibleTilesVector();
 	//void IdentifyTile(int x, int y);

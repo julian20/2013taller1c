@@ -238,9 +238,9 @@ void Client::chechServerOn(){
 
 	while (true){
 
-		if (timer.getTimeIntervalSinceStart() > 1000){
+		if (timer.getTimeIntervalSinceStart() > 100000){
 			Popup::popupWindow("Se ha perdido la conexion con el servidor");
-			while (timer.getTimeIntervalSinceStart() > 1000){
+			while (timer.getTimeIntervalSinceStart() > 100000){
 			}
 			Popup::popupWindow("Se ha restablecido la conexion");
 		}

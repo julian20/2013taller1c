@@ -240,14 +240,6 @@ istream& operator >>(std::istream& in, Player& player) {
 	return in;
 }
 
-void Player::setChange(bool change) {
-	hasChanged = change;
-}
-
-bool Player::getChange() {
-	return hasChanged;
-}
-
 void Player::setActive() {
 	isActive = true;
 }

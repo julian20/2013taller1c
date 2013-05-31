@@ -79,7 +79,7 @@ void EntityViewMap::updateMovablePos() {
 		entity->setCoordinates(currentRow, currentCol);
 		map.at(currentCol).at(currentRow).push_back(entityView);
 
-		mapData->updatePersonajePos(initRow, initCol, currentRow, currentCol,
+		mapData->updatePlayerPos(initRow, initCol, currentRow, currentCol,
 															(Player*) entity);
 
 		delete c;

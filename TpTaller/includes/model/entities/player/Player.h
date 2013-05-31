@@ -48,9 +48,6 @@ public:
 	void setActive();
 	void SetUnactive();
 
-	void setChange(bool change);
-	bool getChange();
-
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const Player&);
 
