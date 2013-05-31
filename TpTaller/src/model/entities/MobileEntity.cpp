@@ -44,7 +44,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 PlayerEvent* MobileEntity::getPlayerEvent() {
 	if (addEvent && path->size() != 0) {
 		addEvent = false;
-		return new PlayerEvent( EVENT_MOVE, path->back()->getCoordinates() );
+		return new PlayerEvent(EVENT_MOVE, path->back()->getCoordinates());
 	}
 
 	addEvent = false;
@@ -87,17 +87,15 @@ void MobileEntity::moveImmediately(Coordinates coords) {
 	this->hasChanged = true;
 }
 
-
-void MobileEntity::checkAttackToNewPos(MapData* mapData){
-	if (attackToEntity == NULL )
+void MobileEntity::checkAttackToNewPos(MapData* mapData) {
+	if (attackToEntity == NULL)
 		return;
-
 	Tile* enemyTile = new Tile(attackToEntity->getCoordinates());
 
 	//Llego hasta el player
 	if (this->currentTile->isNeighbor(enemyTile)) {
 		delete enemyTile;
-		//TODO: this->attackEntity(attackToEntity);
+		//TODO: this->collideTo(attackToEntity);
 		cancelAttack();
 		return;
 	}
@@ -112,7 +110,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData){
 	Tile* lastTile = path->back();
 	bool tilesAreNeighbors = lastTile->isNeighbor(enemyTile);
 
-	if (tilesAreNeighbors){
+	if (tilesAreNeighbors) {
 		delete enemyTile;
 		return;
 	}
@@ -123,7 +121,8 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData){
 }
 
 void MobileEntity::update(MapData* mapData) {
-	if (attackToEntity != NULL) checkAttackToNewPos(mapData);
+	if (attackToEntity != NULL)
+		checkAttackToNewPos(mapData);
 	if (IsMoving() == false) {
 		if (path->size() == 0)
 			return;
@@ -255,7 +254,7 @@ void MobileEntity::setInitSpeed(Speed* initSpeed) {
 	this->initSpeed = initSpeed;
 }
 
-void MobileEntity::assignPath(list<Tile *> *_path ) {
+void MobileEntity::assignPath(list<Tile *> *_path) {
 	if (path) {
 		path->erase(path->begin(), path->end());
 		delete path;
@@ -285,6 +284,8 @@ Tile* MobileEntity::getTile() {
 void MobileEntity::attackTo(Entity* attackTo) {
 	// TODO: Por ahora solo se banca entities de base 1x1
 	attackToEntity = attackTo;
+	if (attackToEntity)
+		cout << "ataco " << attackToEntity << endl;
 }
 
 void MobileEntity::setSpeedMagnitude(int mag) {
@@ -345,7 +346,7 @@ ostream& operator <<(std::ostream& out, const MobileEntity& MobileEntity) {
 			<< *(MobileEntity.initSpeed) << " " << *(MobileEntity.base) << " ";
 
 	out << *(MobileEntity.currentTile);
-	out << " " << MobileEntity.life <<" "<< MobileEntity.team;
+	out << " " << MobileEntity.life << " " << MobileEntity.team;
 	return out;
 }
 
@@ -373,10 +374,10 @@ istream& operator >>(std::istream& in, MobileEntity& MobileEntity) {
 	MobileEntity.setTile(tile);
 	int life;
 	in >> life;
-	MobileEntity.life=life;
+	MobileEntity.life = life;
 	int team;
 	in >> team;
-	MobileEntity.team=team;
+	MobileEntity.team = team;
 	return in;
 }
 

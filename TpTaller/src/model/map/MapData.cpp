@@ -67,6 +67,7 @@ void MapData::addEntity(int row, int col, Entity* object) {
 				currentData = getTileData(currentRow, currentCol);
 
 				currentData->addEntity(object);
+				object->setCoordinates(currentRow,currentCol);
 				currentData->setWalkable(false);
 
 			}
@@ -95,7 +96,7 @@ void MapData::addPlayer(int row, int col, Player* player) {
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
 	Tile* current;
 	if (tileData->isWalkable()) {	// Si el tile es transitable se agrega el personaje ahi
-		tileData->setPlayer(player);
+		tileData->setMobileEntity(player);
 
 		player->setTile(personajeTile);
 	} else {	// Si no lo es se lo agrega a una posicion adyacente
@@ -115,7 +116,7 @@ void MapData::addPlayer(int row, int col, Player* player) {
 				break;
 		}
 
-		currentData->setPlayer(player);
+		currentData->setMobileEntity(player);
 
 		delete personajeTile;
 		Tile* personajeTile = new Tile(new Coordinates(currentCoords.getRow(),
@@ -136,7 +137,7 @@ void MapData::addMobileEntity(int row, int col, MobileEntity* player) {
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
 	Tile* current;
 	if (tileData->isWalkable()) {	// Si el tile es transitable se agrega el personaje ahi
-		tileData->setPlayer(player);
+		tileData->setMobileEntity(player);
 
 		player->setTile(personajeTile);
 	} else {	// Si no lo es se lo agrega a una posicion adyacente
@@ -156,7 +157,7 @@ void MapData::addMobileEntity(int row, int col, MobileEntity* player) {
 				break;
 		}
 
-		currentData->setPlayer(player);
+		currentData->setMobileEntity(player);
 
 		delete personajeTile;
 		Tile* personajeTile = new Tile(new Coordinates(currentCoords.getRow(),
@@ -174,8 +175,8 @@ void MapData::updatePlayerPos(int prevRow, int prevCol,
 	TileData* tileDataPrev = getTileData(prevRow, prevCol);
 	TileData* tileDataCurrent = getTileData(row, col);
 
-	tileDataPrev->cleanPlayer();
-	tileDataCurrent->setPlayer(player);
+	tileDataPrev->cleanMobileEntity();
+	tileDataCurrent->setMobileEntity(player);
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
 	player->setTile(personajeTile);
@@ -188,7 +189,7 @@ MobileEntity* MapData::getPlayer(int row, int col) {
 		return NULL;
 	}
 
-	return data[row + nrows * col].getPersonaje();
+	return data[row + nrows * col].getMobileEntity();
 }
 
 Tile *getTileFromContainer(map<int, Tile *> *tilesContainer, int row, int col) {

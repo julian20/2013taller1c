@@ -19,6 +19,7 @@
 #include <networking/PlayerEvent.h>
 
 using namespace std;
+class MapData;
 
 class MobileEntity : public Entity {
 public:

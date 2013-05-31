@@ -26,6 +26,8 @@ PlayerController::PlayerController() {
 	this->player = NULL;
 	this->camera = NULL;
 	this->listEvents = false;
+	entityToCollideAgainst = NULL;
+	lastTouchedPlayer = NULL;
 	SoundEffectHandler::loadSound(string("si"), SI);
 	SoundEffectHandler::loadSound(string("voy"), VOY);
 	SoundEffectHandler::loadSound(string("vale"), VALE);
@@ -43,7 +45,7 @@ PlayerController::~PlayerController() {
  return (player->getChat())->getChatController();
  }*/
 MobileEntity* PlayerController::getLastPlayerTouch() {
-	return this->lastPlayerTouch;
+	return this->lastTouchedPlayer;
 }
 
 bool PlayerController::clickAnotherPlayer(int x, int y) {
@@ -55,13 +57,43 @@ bool PlayerController::clickAnotherPlayer(int x, int y) {
 			coor->getCol());
 	if (!tileData)
 		return false;
-	MobileEntity* player = tileData->getPersonaje();
+	MobileEntity* player = tileData->getMobileEntity();
 	if (player) {
-		if (player->getClassName().compare("Player") != 0) return false;
-		this->lastPlayerTouch = player;
+		if (player->getClassName().compare("Player") != 0)
+			return false;
+		this->lastTouchedPlayer = player;
 		return true;
 	} else
 		return false;
+}
+
+bool PlayerController::playerHasclickedAnEntity(int x, int y) {
+	Position* cameraPos = this->camera->getPosition();
+
+	Coordinates* coor = Tile::getTileCoordinates(x - cameraPos->getX(),
+			y - cameraPos->getY());
+	TileData* tileData = this->data->getTileData(coor->getRow(),
+			coor->getCol());
+	if (!tileData)
+		return false;
+	Entity* entity = tileData->getMobileEntity();
+	if (entity) {
+		this->entityToCollideAgainst = entity;
+		if (player->getClassName().compare("Player") == 0)
+			this->lastTouchedPlayer = (Player*)entity;
+		return true;
+	} else {
+		entity = tileData->getNextEntity();
+		if (entity) {
+			this->entityToCollideAgainst = entity;
+			return true;
+		}
+	}
+	return false;
+}
+
+Entity* PlayerController::getEntityToCollideTo(){
+	return entityToCollideAgainst;
 }
 
 void playSound() {
@@ -69,7 +101,7 @@ void playSound() {
 			&& !SoundEffectHandler::isSoundPlaying(string("vale"))
 			&& !SoundEffectHandler::isSoundPlaying(string("voy"))
 			&& !SoundEffectHandler::isSoundPlaying(string("battle"))) {
-		double rnd = uniform(0.0,1.0);
+		double rnd = uniform(0.0, 1.0);
 		if (rnd > 0.76)
 			SoundEffectHandler::playSound(string("si"));
 		else if (rnd > 0.5)
@@ -203,7 +235,8 @@ void PlayerController::generateEventList(bool activated) {
 
 list<PlayerEvent*> PlayerController::getEventList() {
 	PlayerEvent* playerEvent = player->getPlayerEvent();
-	if ( playerEvent != NULL ) events.push_back(playerEvent);
+	if (playerEvent != NULL)
+		events.push_back(playerEvent);
 
 	return events;
 }

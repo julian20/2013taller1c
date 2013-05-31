@@ -11,7 +11,7 @@
 using namespace std;
 
 TileData::TileData() {
-	personaje = NULL;
+	mobileEntity = NULL;
 	tileType = "neutral";
 	iterator = entities.begin();
 	wasVisible = false;
@@ -23,8 +23,8 @@ std::string TileData::getType() {
 	return tileType;
 }
 
-MobileEntity* TileData::getPersonaje() {
-	return personaje;
+MobileEntity* TileData::getMobileEntity() {
+	return mobileEntity;
 }
 
 Entity* TileData::getNextEntity() {
@@ -47,8 +47,8 @@ bool TileData::getIsVisible() {
 	return isVisible;
 }
 
-bool TileData::isWalkable( bool ignorePlayer ) {
-	if (!ignorePlayer && personaje != NULL) return false;
+bool TileData::isWalkable( bool ignoremobileEntity ) {
+	if (!ignoremobileEntity && mobileEntity != NULL) return false;
 
 	return walkable;
 }
@@ -57,12 +57,12 @@ void TileData::setType(std::string type) {
 	tileType = type;
 }
 
-void TileData::setPlayer(MobileEntity* newPersonaje) {
-	personaje = newPersonaje;
+void TileData::setMobileEntity(MobileEntity* newPersonaje) {
+	mobileEntity = newPersonaje;
 }
 
-void TileData::cleanPlayer() {
-	personaje = NULL;
+void TileData::cleanMobileEntity() {
+	mobileEntity = NULL;
 }
 
 void TileData::setVisibility(bool value) {
