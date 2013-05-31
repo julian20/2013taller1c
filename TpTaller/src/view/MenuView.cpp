@@ -43,7 +43,7 @@ MenuView::MenuView(GameConfiguration* configuration) {
 				this->gameConfig->getDefaultBPP(),
 				SDL_HWSURFACE | SDL_RESIZABLE);
 	} else {
-		screen = SDL_SetVideoMode(768, 524, info->vfmt->BytesPerPixel / 8,
+		screen = SDL_SetVideoMode(1000, 600, info->vfmt->BytesPerPixel / 8,
 				SDL_HWSURFACE | SDL_RESIZABLE);
 
 	}
