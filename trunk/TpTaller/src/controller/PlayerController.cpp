@@ -122,6 +122,7 @@ void PlayerController::movePlayer(int x, int y) {
 			y - cameraPos->getY());
 
 	if (listEvents) {
+		playerCancelAttack();
 		events.push_back(new PlayerEvent(EVENT_MOVE, *coor));
 		if (!player->getCurrentPos()->isEqual(player->getEndPos())) {
 			return;
@@ -191,6 +192,8 @@ void PlayerController::toggleRunning() {
 
 void PlayerController::playerAttackTo(Entity* entity) {
 	player->attackTo(entity);
+	if (entity)
+	cout << entity->getName()<<endl;
 }
 
 void PlayerController::playerAttack() {

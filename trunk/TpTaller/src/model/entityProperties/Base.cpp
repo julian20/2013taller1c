@@ -13,6 +13,12 @@ Base::Base() {
 	this->rows = 1;
 }
 
+Base::Base(Base* base) {
+	this->anchorPixel = new Vector2(base->getAnchorPixel()->getX(),base->getAnchorPixel()->getY());
+	this->cols = base->getCols();
+	this->rows = base->getRows();
+}
+
 Base::~Base() {
 	delete anchorPixel;
 }

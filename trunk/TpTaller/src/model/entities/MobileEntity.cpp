@@ -88,8 +88,6 @@ void MobileEntity::moveImmediately(Coordinates coords) {
 }
 
 void MobileEntity::checkAttackToNewPos(MapData* mapData) {
-	if (attackToEntity == NULL)
-		return;
 	Tile* enemyTile = new Tile(attackToEntity->getCoordinates());
 
 	//Llego hasta el player
@@ -101,6 +99,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	}
 
 	if (path->size() == 0) {
+		attacking = true;
 		assignPath(mapData->getPath(currentTile, enemyTile));
 		addEvent = true;
 		delete enemyTile;
@@ -123,6 +122,8 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 void MobileEntity::update(MapData* mapData) {
 	if (attackToEntity != NULL)
 		checkAttackToNewPos(mapData);
+	else
+		cancelAttack();
 	if (IsMoving() == false) {
 		if (path->size() == 0)
 			return;
@@ -306,8 +307,8 @@ void MobileEntity::setAttack(bool attacking) {
 
 void MobileEntity::cancelAttack() {
 	attacking = false;
-	hasChanged = true;
 	attackToEntity = NULL;
+	hasChanged = true;
 }
 
 void MobileEntity::emptyPath() {

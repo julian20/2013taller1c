@@ -43,7 +43,7 @@ private:
 	MobileEntity* mobileEntity;
 	std::list<Entity*> entities;
 	std::list<Entity*>::iterator iterator;
-
+	Entity* entity;
 	bool wasVisible;
 	bool isVisible;
 	bool walkable;
