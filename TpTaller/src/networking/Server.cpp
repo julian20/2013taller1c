@@ -84,6 +84,7 @@ void* handle(void* par) {
 	int clientSocket = parameter->clientID;
 	Server* server = parameter->server;
 	MultiplayerGame* game = server->getGame();
+	MissionManager missionManager = server->getMissionManager();
 
 
 	std::vector<std::string> withBase = server->listFilesInDirectoryWithBase(
@@ -126,6 +127,13 @@ void* handle(void* par) {
 		playing = server->exchangeAliveSignals(clientSocket,playerName);
 		if (!playing)
 			break;
+
+		if (missionManager.hasEndedGame()) {
+			// TODO: mostrar un cartelito diciendo quien gano
+			// o algo. Capaz haya que hacer un flag para diferenciar
+			// entre desconexion y esto.
+			break;
+		}
 
 		server->sendNewPlayers(clientSocket,playerName);
 
@@ -667,6 +675,14 @@ void Server::setInactive(){
 map<string,Player*> Server::getPlayerConnected()
 {
 	return this->conectedPlayers;
+}
+
+MissionManager Server::getMissionManager() {
+	return this->missionManager;
+}
+
+void Server::setMissionManager(MissionManager manager) {
+	this->missionManager = manager;
 }
 
 /* *********************** SERVER DESTRUCTOR *********************** */
