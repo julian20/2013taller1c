@@ -22,6 +22,7 @@
 #include <iostream>
 
 class MobileEntity;
+class Item;
 
 using namespace std;
 class Entity {
@@ -43,11 +44,13 @@ public:
 
 	list<Entity*> getVisibleEnemies();
 	virtual int getLife();
+	virtual void setLife(int life);
 	void setTile(Tile* _tile);
 	virtual Tile* getTile();
 	bool isMobile();
 
 	void collideTo(MobileEntity* entity);
+	void collideTo(Item* item);
 
 	// Mission manager.
 	bool isDead();
