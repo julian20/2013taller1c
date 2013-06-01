@@ -21,7 +21,7 @@
 
 #include <networking/SinglePlayerGame/SinglePlayerServer.h>
 
-#define BACKLOG 1
+#define BACKLOG 2
 
 using namespace std;
 

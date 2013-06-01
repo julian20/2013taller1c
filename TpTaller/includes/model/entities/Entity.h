@@ -10,6 +10,7 @@
 
 #include <model/Vector2.h>	// Capas hay que volarlo
 #include <model/Vector3.h>
+#include <model/map/Tile.h>
 #include <model/entityProperties/Coordinates.h>
 #include <model/entityProperties/Position.h>
 #include <model/entityProperties/Speed.h>
@@ -38,6 +39,8 @@ public:
 	bool isMobile();
 	list<Entity*> getVisibleEnemies();
 	virtual int getLife();
+	void setTile(Tile* _tile);
+	Tile* getTile();
 protected:
 	Vector3* currentPos;
 	Base* base;
@@ -46,6 +49,7 @@ protected:
 	int life;
 	bool mobile;
 	list<Entity*> enemies;
+	Tile* currentTile;
 };
 
 #endif /* ENTITY_H_ */

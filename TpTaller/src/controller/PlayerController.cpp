@@ -67,11 +67,8 @@ bool PlayerController::clickAnotherPlayer(int x, int y) {
 		return false;
 }
 
-bool PlayerController::playerHasclickedAnEntity(int x, int y) {
-	Position* cameraPos = this->camera->getPosition();
+bool PlayerController::playerHasclickedAnEntity(Coordinates* coor) {
 
-	Coordinates* coor = Tile::getTileCoordinates(x - cameraPos->getX(),
-			y - cameraPos->getY());
 	TileData* tileData = this->data->getTileData(coor->getRow(),
 			coor->getCol());
 	if (!tileData)
@@ -79,8 +76,6 @@ bool PlayerController::playerHasclickedAnEntity(int x, int y) {
 	Entity* entity = tileData->getMobileEntity();
 	if (entity) {
 		this->entityToCollideAgainst = entity;
-		if (player->getClassName().compare("Player") == 0)
-			this->lastTouchedPlayer = (Player*)entity;
 		return true;
 	} else {
 		entity = tileData->getNextEntity();
@@ -90,6 +85,14 @@ bool PlayerController::playerHasclickedAnEntity(int x, int y) {
 		}
 	}
 	return false;
+}
+
+bool PlayerController::playerHasclickedAnEntity(int x, int y) {
+	Position* cameraPos = this->camera->getPosition();
+
+	Coordinates* coor = Tile::getTileCoordinates(x - cameraPos->getX(),
+			y - cameraPos->getY());
+	return playerHasclickedAnEntity(coor);
 }
 
 Entity* PlayerController::getEntityToCollideTo(){
@@ -192,8 +195,6 @@ void PlayerController::toggleRunning() {
 
 void PlayerController::playerAttackTo(Entity* entity) {
 	player->attackTo(entity);
-	if (entity)
-	cout << entity->getName()<<endl;
 }
 
 void PlayerController::playerAttack() {
@@ -236,9 +237,20 @@ void PlayerController::generateEventList(bool activated) {
 	this->listEvents = activated;
 }
 
+bool PlayerController::hasMoveEvent(list<PlayerEvent*> eventsList) {
+	list<PlayerEvent*>::const_iterator iter;
+	for (iter = eventsList.begin(); iter != eventsList.end(); ++iter) {
+		PlayerEvent* event = *iter;
+
+		if (event->getEventType() == EVENT_MOVE) return true;
+	}
+
+	return false;
+}
+
 list<PlayerEvent*> PlayerController::getEventList() {
 	PlayerEvent* playerEvent = player->getPlayerEvent();
-	if (playerEvent != NULL)
+	if (playerEvent != NULL && !hasMoveEvent(events))
 		events.push_back(playerEvent);
 
 	return events;
