@@ -33,6 +33,18 @@ void Player::setChat(Chat* chat) {
 	this->chat = chat;
 }
 
+void Player::collideTo(Entity* entity){
+	attack(entity);
+}
+
+void Player::reverseCollide(Entity* entity){
+
+}
+
+void Player::attack(Entity* entity){
+	attacking = true;
+}
+
 void Player::updateFromServer(PlayerUpdate* update) {
 
 	this->currentPos->setValues(update->getCurrentPos()->getX(),

@@ -48,6 +48,11 @@ public:
 	void setActive();
 	void SetUnactive();
 
+	void collideTo(Entity* entity);
+	void reverseCollide(Entity* entity);
+	void attack(Entity* entity);
+
+
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const Player&);
 
