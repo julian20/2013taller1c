@@ -40,20 +40,22 @@ void Player::setChat(Chat* chat) {
 	this->chat = chat;
 }
 
-void Player::collideTo(Entity* entity){
+void Player::collideTo(Entity* entity) {
 	attack(entity);
 }
 
-void Player::reverseCollide(Entity* entity){
+void Player::reverseCollide(Entity* entity) {
 
 }
 
-void Player::attack(Entity* entity){
+void Player::attack(Entity* entity) {
+	if (timer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
+		attacking = true;
+		Weapon* weaponToUse = weapons->front();
+		weaponToUse->attack(entity);
+		cout << entity->getLife() << endl;
+	}
 
-	attacking = true;
-	Weapon* weaponToUse = weapons->front();
-	weaponToUse->attack(entity);
-	cout << entity->getLife()<<endl;
 }
 
 void Player::updateFromServer(PlayerUpdate* update) {
@@ -68,7 +70,8 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->blocking = update->isBlocking();
 	this->isActive = update->isActive();
 
-	if (currentTile) delete currentTile;
+	if (currentTile)
+		delete currentTile;
 	this->currentTile = update->getTile();
 
 	Coordinates currentTileCoords = this->currentTile->getCoordinates();
