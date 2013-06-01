@@ -9,6 +9,7 @@
 #include <model/map/Tile.h>
 #include <model/entities/MobileEntity.h>
 #include <model/entities/Item.h>
+#include <model/entities/LifeHeart.h>
 
 #include <vector>
 #include <stdio.h>
@@ -160,6 +161,10 @@ void Entity::collideTo(MobileEntity* mobileEntity) {
 
 void Entity::collideTo(Item* item) {
 	item->applyEffects(this);
+}
+
+void Entity::collideTo(LifeHeart* heart) {
+	heart->applyEffects(this);
 }
 
 void Entity::setLife(int life) {
