@@ -314,6 +314,7 @@ void MobileEntity::reverseCollide(Entity* entity){
 
 void MobileEntity::attack(Entity* entity){
 	attacking = true;
+	cout<<"mobile attack"<<endl;
 }
 
 

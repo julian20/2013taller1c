@@ -61,7 +61,8 @@ public:
 
 	void collideTo(Entity* entity);
 	void reverseCollide(Entity* entity);
-	void attack(Entity* entity);
+
+	virtual void attack(Entity* entity);
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const MobileEntity&);
