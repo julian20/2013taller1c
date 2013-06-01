@@ -90,11 +90,7 @@ void MobileEntity::moveImmediately(Coordinates coords) {
 }
 
 void MobileEntity::checkAttackToNewPos(MapData* mapData) {
-//	int x = attackToEntity->getCurrentPos()->getX();
-//	int y = attackToEntity->getCurrentPos()->getY();
-	Tile* enemyTile = new Tile(attackToEntity->getCoordinates());
-
-	cout << "Atacando " << attackToEntity->getName() << " en " << *enemyTile << endl;
+	Tile* enemyTile = attackToEntity->getTile();
 
 	//Llego hasta el player
 	if (this->currentTile->isNeighbor(enemyTile)) {
@@ -389,5 +385,13 @@ void MobileEntity::setHasChanged(bool change) {
 
 bool MobileEntity::getHasChanged() {
 	return hasChanged;
+}
+
+Tile* MobileEntity::getTile() {
+	// Devuelve una copia del tile
+	Tile* retval = new Tile();
+	retval->setCoordinates(currentTile->getCoordinates());
+
+	return retval;
 }
 

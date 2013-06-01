@@ -111,8 +111,7 @@ void Entity::setTile(Tile* _tile) {
 
 Tile* Entity::getTile() {
 	// Devuelve una copia del tile
-	Tile* retval = new Tile();
-	retval->setCoordinates(currentTile->getCoordinates());
+	Tile* retval = new Tile(new Coordinates(coord->getRow(),coord->getCol()));
 
 	return retval;
 }
