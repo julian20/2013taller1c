@@ -28,8 +28,9 @@ void Weapon::setAccuracy(int accuracy)
 void Weapon::applyDamage(Entity* entity)
 {
 	int randomAccuracy = rand() % MAXACCURACY+1;
-	int damageToApply = ((this->accuracy-randomAccuracy)/MAXACCURACY)*damage;
+	int damageToApply = ceil((float(this->accuracy-randomAccuracy)/MAXACCURACY)*damage);
 	entity->applyDamage(damageToApply);
+	//cout<<"entra a aplicadr daño"<<endl;
 }
 void Weapon::attack(Entity* enemy)
 {
