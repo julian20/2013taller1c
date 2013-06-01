@@ -15,14 +15,9 @@ string Item::getClassName() {
 	return "Item";
 }
 
-void Item::applyEffects(Entity* entity) {
-	// TODO: algun atributo o define de vida original.
-	entity->setLife(100);
-}
+void Item::applyEffects(MobileEntity* entity) {}
 
-void Item::applyEffects(MobileEntity* entity) {
-	entity->setSpeedMagnitude(entity->getSpeed()->getMagnitude() * 2);
-}
+void Item::applyEffects(Entity* entity) {}
 
 Item::~Item() {
 

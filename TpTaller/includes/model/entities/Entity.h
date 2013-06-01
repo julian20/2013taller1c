@@ -23,6 +23,7 @@
 
 class MobileEntity;
 class Item;
+class LifeHeart;
 
 using namespace std;
 class Entity {
@@ -51,6 +52,7 @@ public:
 
 	void collideTo(MobileEntity* entity);
 	void collideTo(Item* item);
+	void collideTo(LifeHeart* heart);
 
 	// Mission manager.
 	bool isDead();
