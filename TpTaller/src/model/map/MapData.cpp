@@ -436,7 +436,22 @@ float MapData::distBetweenTiles(Tile* from, Tile* to) {
 
 	// Devuelvo la norma del vector que une ambos puntos
 	return result;
+}
 
+// Devuelve la distancia entre dos tiles sin considerar obstaculos ni nada
+int MapData::distBetweenTilesInTiles(Tile* from, Tile* to) {
+	Coordinates fromCoords = from->getCoordinates();
+	Coordinates toCoords = to->getCoordinates();
+
+	int colDiff = abs(fromCoords.getCol() - toCoords.getCol());
+	int rowDiff = abs(fromCoords.getRow() - toCoords.getRow());
+
+	// Magic below this comment
+	if (colDiff < rowDiff) {
+		return rowDiff;
+	} else {
+		return colDiff;
+	}
 }
 
 list<Tile *> *MapData::reconstructPath(map<int, Tile *> cameFrom,
@@ -515,7 +530,6 @@ void MapData::updateVisibleTiles() {
 		for (int col = leftCol - VisibleTilesMargin;
 				col < rightCol + VisibleTilesMargin; col++) {
 
-			//Tile* playerTile = mainPlayer->getTile();
 			int x = mainPlayer->getCurrentPos()->getX();
 			int y = mainPlayer->getCurrentPos()->getY();
 			Tile* playerTile = new Tile(Tile::getTileCoordinates(x, y));
@@ -535,6 +549,68 @@ void MapData::updateVisibleTiles() {
 		}
 	}
 
+}
+
+bool compMobileEntitiesList(MobileEntityWithCenterDistance A,
+		MobileEntityWithCenterDistance B) {
+	return (A.centerDistance > B.centerDistance);
+}
+
+// Devuelve una lista ordenada por mas cercano a mas lejano de mobileEntities
+// que esten a 'tilesRange' o menos tiles de distancia de centerCoordinates
+list<MobileEntity *> MapData::getClosestEntities(Coordinates centerCoordinates,
+										int tilesRange) {
+	list<MobileEntityWithCenterDistance> entitiesToSort;
+	Tile* centerTile = new Tile(centerCoordinates);
+
+	int topRow = centerCoordinates.getRow() - tilesRange;
+	int bottomRow = centerCoordinates.getRow() + tilesRange;
+	int leftCol = centerCoordinates.getCol() - tilesRange;
+	int rightCol = centerCoordinates.getCol() + tilesRange;
+
+	if (topRow < 0) topRow = 0;
+	if (leftCol < 0) leftCol = 0;
+	if (bottomRow > nrows) bottomRow = nrows;
+	if (rightCol > ncols) rightCol = ncols;
+
+	for (int row = topRow; row < bottomRow; row++) {
+
+		for (int col = leftCol; col < rightCol; col++) {
+
+			Tile currentTile;
+			currentTile.setCoordinates(row, col);
+
+			int distance = distBetweenTilesInTiles(centerTile, &currentTile);
+
+			if (distance <= tilesRange) {
+
+				TileData* tileData = getTileData(row, col);
+				MobileEntity* currentMobileEntity = tileData->getMobileEntity();
+
+				if (currentMobileEntity) {
+					MobileEntityWithCenterDistance toSortEntity;
+					toSortEntity.entity = currentMobileEntity;
+					toSortEntity.centerDistance = distance;
+
+					entitiesToSort.push_back(toSortEntity);
+				}
+			}
+
+		}
+	}
+
+	entitiesToSort.sort(compMobileEntitiesList);
+
+	MobileEntityWithCenterDistance current;
+	list<MobileEntity *> retval;
+	list<MobileEntityWithCenterDistance>::const_iterator iter;
+	for (iter = entitiesToSort.begin(); iter != entitiesToSort.end(); ++iter) {
+		current = *iter;
+
+		retval.push_back(current.entity);
+	}
+
+	return retval;
 }
 
 int MapData::getNRows() {
