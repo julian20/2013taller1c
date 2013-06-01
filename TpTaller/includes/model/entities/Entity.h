@@ -37,11 +37,19 @@ public:
 	Coordinates getCoordinates();
 	void setCoordinates(int row, int col);
 	void setBaseSizes(int width, int height);
-	bool isMobile();
+
 	list<Entity*> getVisibleEnemies();
 	virtual int getLife();
 	void setTile(Tile* _tile);
 	virtual Tile* getTile();
+	bool isMobile();
+
+	// Mission manager.
+	bool isDead();
+	int getTeam();
+	int getKilledBy();
+	void setTeam(int team);
+	void setKilledBy(int team);
 protected:
 	Vector3* currentPos;
 	Base* base;
@@ -51,6 +59,10 @@ protected:
 	bool mobile;
 	list<Entity*> enemies;
 	Tile* currentTile;
+
+	// Mission manager.
+	int team;
+	int killedBy;
 };
 
 #endif /* ENTITY_H_ */

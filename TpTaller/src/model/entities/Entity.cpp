@@ -21,6 +21,8 @@ Entity::Entity() {
 	this->base = new Base();
 	this->name = "";
 	this->life = 100;
+	this->team = 0;
+	this->killedBy = 0;
 }
 
 Entity::Entity(Entity* entity) {
@@ -34,6 +36,8 @@ Entity::Entity(Entity* entity) {
 	this->name = entity->getName();
 	this->life = entity->getLife();
 	this->currentTile = NULL;
+	this->team = entity->getTeam();
+	this->killedBy = entity->getKilledBy();
 }
 
 void Entity::setPos(float x, float y, float z) {
@@ -122,6 +126,32 @@ void Entity::applyDamage(int damage)
 	this->life= this->life-damage;
 
 }
+
+
+bool Entity::isDead() {
+	if (this->life <= 0) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+int Entity::getTeam() {
+	return this->team;
+}
+
+int Entity::getKilledBy() {
+	return this->killedBy;
+}
+
+void Entity::setTeam(int team) {
+	this->team = team;
+}
+
+void Entity::setKilledBy(int team) {
+	this->killedBy = team;
+}
+
 Entity::~Entity() {
 	delete this->coord;
 	delete this->currentPos;
