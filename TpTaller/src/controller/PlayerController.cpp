@@ -73,7 +73,6 @@ bool PlayerController::playerHasclickedAnEntity(Coordinates* coor) {
 	Entity* entity = tileData->getMobileEntity();
 	if (entity) {
 		this->entityToCollideAgainst = entity;
-		cout << "entity coords: " <<entity->getCoordinates().getCol()<<" "<< entity->getCoordinates().getRow()<< endl;
 		return true;
 	} else {
 		entity = tileData->getNextEntity();
