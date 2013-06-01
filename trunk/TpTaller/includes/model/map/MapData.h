@@ -11,6 +11,7 @@
 #include <model/map/TileData.h>
 #include <list>
 #include <map>
+#include <math.h>
 
 using namespace std;
 
@@ -38,10 +39,12 @@ public:
 	void movePlayer(Player* personaje, Tile* toTile);
 	void updateVisibleTiles();
 	void cleanVisibleTilesVector();
-	//void IdentifyTile(int x, int y);
+	list<MobileEntity *> getClosestEntities(Coordinates centerCoordinates,
+										int tilesRange);
 private:
 	float heuristicCostEstimate(Tile* from, Tile* to);
 	float distBetweenTiles(Tile* from, Tile* to);
+	int distBetweenTilesInTiles(Tile* from, Tile* to);
 	void addTileToList(list<Tile *> *list, map<int, Tile *> *tilesContainer,
 			int row, int col, bool getNoWalkableTiles);
 	list<Tile *> *reconstructPath(map<int, Tile *> cameFrom, Tile* goal);
@@ -57,6 +60,12 @@ private:
 
 	void initializeData();
 	void checkRowColsValue(int row, int col);
+};
+
+class MobileEntityWithCenterDistance{
+public:
+	MobileEntity* entity;
+	int centerDistance;
 };
 
 #endif	/* MAPDATA_H */

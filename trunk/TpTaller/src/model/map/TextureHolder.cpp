@@ -81,7 +81,7 @@ map<string,string> TextureHolder::getPlayerImages(string playerName){
 
 	vector<string> modifiers = TextureDefinition::getModifiers();
 
-	for (int i = 0 ; i < modifiers.size() ; i++){
+	for (unsigned int i = 0 ; i < modifiers.size() ; i++){
 		string id = playerName + modifiers[i];
 		playerImages.insert(pair<string,string>(id,getTextureSrc(id)));
 	}
