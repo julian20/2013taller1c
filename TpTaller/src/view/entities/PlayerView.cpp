@@ -260,6 +260,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 			player->cancelAttack();
 			attacking = false;
 			player->addEvent(new PlayerEvent(EVENT_CANCEL_ATTACK));
+			SoundEffectHandler::stopSound(attackID);
 		}
 		if (player->isBlocking())
 			marco = spriteMap[string("blocking")].numberOfClips - 1;
