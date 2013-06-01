@@ -61,7 +61,7 @@ bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
 		// Siguiendo lo que dije arriba, las entities tendria team. Team 1 y 2 serian
 		// players, team 3 una flag, y team 0 los demas. Es feo, pero funcaria y no
 		// habria que ver como preguntamos esto.
-		if (actualMobileEntity->getClassName() == "Player") {
+		//if (actualMobileEntity->getClassName() == "Player") {
 
 //			if (actualMobileEntity->getTeam() == 1
 //					&& actualMobileEntity->getLife() > 0) {
@@ -71,7 +71,7 @@ bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
 //				someoneAliveSecondTeam = true
 //			}
 
-		}
+		//}
 	}
 
 	if (someoneAliveFirstTeam == false) {
