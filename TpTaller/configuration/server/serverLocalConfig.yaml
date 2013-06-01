@@ -5,9 +5,15 @@
     runningImageSrc: resources/black_knight/asd.png
     attackImageSrc: resources/black_knight/warriorAttack.png
     idleBlockingImageSrc: resources/black_knight/warriorBlockingAnim.png
+    castSpellImageSrc: resources/black_knight/warriorCastSpell.png
+    hitImageSrc: resources/black_knight/warriorHit.png
+    dieImageSrc: resources/black_knight/warriorDie.png
     walkingBowImageSrc: resources/black_knight/warriorWalkingBow.png
     idleBowImageSrc: resources/black_knight/warriorStandingBow.png
     attackBowImageSrc: resources/black_knight/warriorAttackBow.png
+    castSpellBowImageSrc: resources/black_knight/warriorCastSpellBow.png
+    hitBowImageSrc: resources/black_knight/warriorHitBow.png
+    dieBowImageSrc: resources/black_knight/warriorDieBow.png
     imageWidth: 128
     imageHeight: 128
     numberOfClips: 8

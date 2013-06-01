@@ -667,7 +667,7 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	string auxWalkingImageSrc, auxRunningImageSrc, auxIdleImageSrc,
 			auxAttackImageSrc, auxIdleBlocking, auxBlockingAnim,
 			auxWalkingBowImageSrc, auxIdleBowImageSrc, auxAttackBowImageSrc,
-			auxName;
+			auxHit, auxDie, auxCast, auxHitBow, auxDieBow, auxCastBow, auxName;
 	Vector2* auxAnchorPixel = new Vector2(0, 0);
 	int auxImageWidth, auxImageHeight, auxNumberOfClips, auxFps,
 			auxAnimationNumberOfRepeats, auxBaseRows, auxBaseCols;
@@ -721,13 +721,38 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 						+ yamlException.what());
 		auxIdleBlocking = DEFAULT_IMAGE_SRC;
 	}
+
+	try {
+		yamlNode["castSpellImageSrc"] >> auxCast;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView idle block image source: ")
+						+ yamlException.what());
+		auxCast = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["hitImageSrc"] >> auxHit;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView idle block image source: ")
+						+ yamlException.what());
+		auxHit = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["dieImageSrc"] >> auxDie;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView idle block image source: ")
+						+ yamlException.what());
+		auxDie = DEFAULT_IMAGE_SRC;
+	}
 	try {
 		yamlNode["walkingBowImageSrc"] >> auxWalkingBowImageSrc;
 	} catch (YAML::Exception& yamlException) {
 		Logs::logErrorMessage(
 				string("Error parsing PlayerView walking image source: ")
 						+ yamlException.what());
-		auxWalkingImageSrc = DEFAULT_IMAGE_SRC;
+		auxWalkingBowImageSrc = DEFAULT_IMAGE_SRC;
 	}
 	try {
 		yamlNode["idleBowImageSrc"] >> auxIdleBowImageSrc;
@@ -735,7 +760,7 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 		Logs::logErrorMessage(
 				string("Error parsing PlayerView idle image source: ")
 						+ yamlException.what());
-		auxIdleImageSrc = DEFAULT_IMAGE_SRC;
+		auxIdleBowImageSrc = DEFAULT_IMAGE_SRC;
 	}
 	try {
 		yamlNode["attackBowImageSrc"] >> auxAttackBowImageSrc;
@@ -743,8 +768,34 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 		Logs::logErrorMessage(
 				string("Error parsing PlayerView attack image source: ")
 						+ yamlException.what());
-		auxAttackImageSrc = DEFAULT_IMAGE_SRC;
+		auxAttackBowImageSrc = DEFAULT_IMAGE_SRC;
 	}
+
+	try {
+		yamlNode["castSpellBowImageSrc"] >> auxCastBow;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView idle block image source: ")
+						+ yamlException.what());
+		auxCastBow = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["hitBowImageSrc"] >> auxHitBow;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView idle block image source: ")
+						+ yamlException.what());
+		auxHitBow = DEFAULT_IMAGE_SRC;
+	}
+	try {
+		yamlNode["dieBowImageSrc"] >> auxDieBow;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing PlayerView idle block image source: ")
+						+ yamlException.what());
+		auxDieBow = DEFAULT_IMAGE_SRC;
+	}
+
 	try {
 		yamlNode["anchorPixel"] >> auxAnchorPixel;
 	} catch (YAML::Exception& yamlException) {
@@ -840,6 +891,16 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 			auxName + string(IDLE_BLOCKING_MODIFIER), auxIdleBlocking);
 	textureHolder->addTexture(idleBlockTexture);
 
+	TextureDefinition* castTexture = new TextureDefinition(
+			auxName + string(CAST_SPELL_MODIFIER), auxCast);
+	textureHolder->addTexture(castTexture);
+	TextureDefinition* hitTexture = new TextureDefinition(
+			auxName + string(HIT_MODIFIER), auxHit);
+	textureHolder->addTexture(hitTexture);
+	TextureDefinition* dieTexture = new TextureDefinition(
+			auxName + string(DIE_MODIFIER), auxDie);
+	textureHolder->addTexture(dieTexture);
+
 	TextureDefinition* walkingBowTexture = new TextureDefinition(
 			auxName + string(BOW_WALKING_MODIFIER), auxWalkingBowImageSrc);
 	textureHolder->addTexture(walkingBowTexture);
@@ -849,6 +910,16 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	TextureDefinition* attackBowTexture = new TextureDefinition(
 			auxName + string(BOW_ATTACK_MODIFIER), auxAttackBowImageSrc);
 	textureHolder->addTexture(attackBowTexture);
+
+	TextureDefinition* castTextureBow = new TextureDefinition(
+			auxName + string(BOW_CAST_SPELL_MODIFIER), auxCastBow);
+	textureHolder->addTexture(castTextureBow);
+	TextureDefinition* hitTextureBow = new TextureDefinition(
+			auxName + string(BOW_HIT_MODIFIER), auxHitBow);
+	textureHolder->addTexture(hitTextureBow);
+	TextureDefinition* dieTextureBow = new TextureDefinition(
+			auxName + string(BOW_DIE_MODIFIER), auxDieBow);
+	textureHolder->addTexture(dieTextureBow);
 
 	playerView->setTextureHolder(textureHolder);
 }
