@@ -72,6 +72,9 @@ public:
 	MobileEntity& operator=(const MobileEntity &other);
 
 	void setSpeedMagnitude(int mag);
+
+	virtual Tile* getTile();
+
 protected:
 	void loadNextPosition();
 	void emptyPath();

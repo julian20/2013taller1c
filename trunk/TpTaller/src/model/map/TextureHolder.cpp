@@ -84,7 +84,6 @@ map<string,string> TextureHolder::getPlayerImages(string playerName){
 	for (int i = 0 ; i < modifiers.size() ; i++){
 		string id = playerName + modifiers[i];
 		playerImages.insert(pair<string,string>(id,getTextureSrc(id)));
-		cout << "Agregando " << id <<" " << getTextureSrc(id)<<endl;
 	}
 
 	return playerImages;

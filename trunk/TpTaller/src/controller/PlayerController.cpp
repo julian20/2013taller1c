@@ -39,11 +39,8 @@ PlayerController::~PlayerController() {
 	delete this->camera;
 	delete this->player;
 }
-/*ChatController* PlayerController::getChatController()
- {
- //	Player* miPlayer=this->player;
- return (player->getChat())->getChatController();
- }*/
+
+
 MobileEntity* PlayerController::getLastPlayerTouch() {
 	return this->lastTouchedPlayer;
 }

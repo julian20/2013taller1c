@@ -40,7 +40,7 @@ public:
 	list<Entity*> getVisibleEnemies();
 	virtual int getLife();
 	void setTile(Tile* _tile);
-	Tile* getTile();
+	virtual Tile* getTile();
 protected:
 	Vector3* currentPos;
 	Base* base;
