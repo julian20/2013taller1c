@@ -8,6 +8,7 @@
 #include <model/entities/Entity.h>
 #include <model/map/Tile.h>
 #include <model/entities/MobileEntity.h>
+#include <model/entities/Item.h>
 
 #include <vector>
 #include <stdio.h>
@@ -155,6 +156,14 @@ void Entity::setKilledBy(int team) {
 
 void Entity::collideTo(MobileEntity* mobileEntity) {
 	mobileEntity->attack(this);
+}
+
+void Entity::collideTo(Item* item) {
+	item->applyEffects(this);
+}
+
+void Entity::setLife(int life) {
+	this->life = life;
 }
 
 Entity::~Entity() {
