@@ -53,6 +53,7 @@ void Player::attack(Entity* entity){
 	attacking = true;
 	Weapon* weaponToUse = weapons->front();
 	weaponToUse->attack(entity);
+	cout << entity->getLife()<<endl;
 }
 
 void Player::updateFromServer(PlayerUpdate* update) {
