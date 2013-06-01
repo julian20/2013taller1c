@@ -136,7 +136,8 @@ FoggedSprite PlayerView::loadFoggedSprite(const char* modifier) {
 
 map<string, FoggedSprite> PlayerView::loadSwordImages() {
 	map<string, FoggedSprite> swordMap;
-	FoggedSprite walkingSprite, blockingSprite, standingSprite, attackSprite;
+	FoggedSprite walkingSprite, blockingSprite, standingSprite, attackSprite,
+			castSprite, hitSprite, dieSprite;
 
 	walkingSprite = loadFoggedSprite(WALKING_MODIFIER);
 	swordMap[string("walking")] = walkingSprite;
@@ -149,13 +150,24 @@ map<string, FoggedSprite> PlayerView::loadSwordImages() {
 
 	blockingSprite = loadFoggedSprite(IDLE_BLOCKING_MODIFIER);
 	swordMap[string("blocking")] = blockingSprite;
+
+	castSprite = loadFoggedSprite(CAST_SPELL_MODIFIER);
+	swordMap[string("cast")] = castSprite;
+
+	hitSprite = loadFoggedSprite(HIT_MODIFIER);
+	swordMap[string("hit")] = hitSprite;
+
+	dieSprite = loadFoggedSprite(DIE_MODIFIER);
+	swordMap[string("die")] = dieSprite;
+
 	return swordMap;
 
 }
 
 map<string, FoggedSprite> PlayerView::loadBowImages() {
 	map<string, FoggedSprite> bowMap;
-	FoggedSprite walkingSprite, blockingSprite, standingSprite, attackSprite;
+	FoggedSprite walkingSprite, blockingSprite, standingSprite, attackSprite,
+			castSprite, hitSprite, dieSprite;
 
 	walkingSprite = loadFoggedSprite(BOW_WALKING_MODIFIER);
 	bowMap[string("walking")] = walkingSprite;
@@ -168,6 +180,15 @@ map<string, FoggedSprite> PlayerView::loadBowImages() {
 
 	blockingSprite = loadFoggedSprite(IDLE_BLOCKING_MODIFIER);
 	bowMap[string("blocking")] = blockingSprite;
+
+	castSprite = loadFoggedSprite(BOW_CAST_SPELL_MODIFIER);
+	bowMap[string("cast")] = castSprite;
+
+	hitSprite = loadFoggedSprite(BOW_HIT_MODIFIER);
+	bowMap[string("hit")] = hitSprite;
+
+	dieSprite = loadFoggedSprite(BOW_DIE_MODIFIER);
+	bowMap[string("die")] = dieSprite;
 
 	return bowMap;
 
@@ -273,7 +294,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	 *	spriteMap=selectWeaponView(this->player);
 	 *
 	 */
-	spriteMap = weaponViewMap[string("bow")];
+	spriteMap = weaponViewMap[string("sword")];
 
 	FoggedSprite spriteToBeShown;
 	if (player->isAttacking()) {

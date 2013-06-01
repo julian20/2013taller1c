@@ -21,9 +21,16 @@
 #define IDLE_MODIFIER "Idle"
 #define RUNNING_MODIFIER "Running"
 #define IDLE_BLOCKING_MODIFIER "IdleBlocking"
+#define HIT_MODIFIER "Hit"
+#define DIE_MODIFIER "Die"
+#define CAST_SPELL_MODIFIER "CastSpell"
+
 #define BOW_ATTACK_MODIFIER "AttackBow"
 #define BOW_WALKING_MODIFIER "WalkingBow"
 #define BOW_IDLE_MODIFIER "IdleBow"
+#define BOW_HIT_MODIFIER "HitBow"
+#define BOW_DIE_MODIFIER "DieBow"
+#define BOW_CAST_SPELL_MODIFIER "CastSpellBow"
 
 using namespace std;
 

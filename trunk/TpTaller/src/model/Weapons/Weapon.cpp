@@ -33,6 +33,8 @@ void Weapon::applyDamage(Entity* entity)
 }
 void Weapon::attack(Entity* enemy)
 {
+	if(!enemy)
+		return;
 	this->applyDamage(enemy);
 }
 
