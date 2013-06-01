@@ -17,7 +17,6 @@ MobileEntity::MobileEntity() {
 	endPos = new Vector3(0, 0);
 	team = 0;
 	attackToEntity = NULL;
-	addEvent = false;
 //	ia = ArtificialIntelligence();
 	this->speed = new Speed(0, new Vector2(0, 0));
 	this->initSpeed = NULL;
@@ -33,7 +32,6 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	this->currentPos = new Vector3(0, 0, 0);
 	this->base = new Base();
 	attackToEntity = NULL;
-	addEvent = false;
 	endPos = new Vector3(0, 0, 0);
 	endPos->setValues(currentPos->getX(), currentPos->getY());
 	attacking = false;
@@ -42,14 +40,14 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	team = 0;
 }
 
-PlayerEvent* MobileEntity::getPlayerEvent() {
-	if (addEvent && path->size() != 0 && attackToEntity != NULL) {
-		addEvent = false;
-		return new PlayerEvent(EVENT_MOVE, path->back()->getCoordinates());
-	}
+list<PlayerEvent*> MobileEntity::getPlayerEvents() {
+	list<PlayerEvent*>aux =events;
+	events.clear();
+	return aux;
+}
 
-	addEvent = false;
-	return NULL;
+void MobileEntity::addEvent(PlayerEvent* event){
+	events.push_back(event);
 }
 
 void MobileEntity::setPos(float x, float y, float z) {
@@ -293,6 +291,7 @@ void MobileEntity::cancelAttack() {
 	attacking = false;
 	attackToEntity = NULL;
 	hasChanged = true;
+
 }
 
 void MobileEntity::emptyPath() {

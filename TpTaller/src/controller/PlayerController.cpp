@@ -246,10 +246,10 @@ bool PlayerController::hasMoveEvent(list<PlayerEvent*> eventsList) {
 }
 
 list<PlayerEvent*> PlayerController::getEventList() {
-	PlayerEvent* playerEvent = player->getPlayerEvent();
-	if (playerEvent != NULL && !hasMoveEvent(events))
-		events.push_back(playerEvent);
-
+	list<PlayerEvent*> playerEvents = player->getPlayerEvents();
+	if (playerEvents.size() != 0 )
+		for (list<PlayerEvent*>::iterator it=playerEvents.begin();it!=playerEvents.end();++it)
+			events.push_back(*it);
 	return events;
 }
 

@@ -12,6 +12,7 @@
 #include <view/entities/MobileEntityView.h>
 #include <view/TextHandler.h>
 #include <model/entityProperties/Position.h>
+#include <networking/PlayerEvent.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <model/Vector2.h>
@@ -52,6 +53,7 @@ public:
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
 
+	list<PlayerEvent*> getPlayerViewEvents();
 private:
 	ChatWindowsView* chatView;
 	void showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog);
@@ -71,11 +73,11 @@ private:
 	int numberOfClips;
 	int direction;
 	float lastDirection;
-	bool wasStanding;
+	bool wasStanding,attacking;
 
 	SDL_Surface* nameImage;
 	TextHandler textHandler;
-
+	list<PlayerEvent*> events;
 	/* Map: key: weapon. Value: map of images; key: animation name,
 	 * value: vector with FoggedSprites
 	 */

@@ -12,7 +12,6 @@
 #include <SDL/SDL_ttf.h>
 #include <view/sound/SoundEffectHandler.h>
 #include <model/Logs/Logs.h>
-
 #include <cmath>
 #include <string>
 
@@ -36,6 +35,7 @@ PlayerView::PlayerView()
 	movable = true;
 	direction = DOWN;
 	wasStanding = true;
+	attacking = false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -58,6 +58,7 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	movable = true;
 	direction = DOWN;
 	wasStanding = true;
+	attacking = false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -67,6 +68,9 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	chatView = NULL;
 }
 
+list<PlayerEvent*> PlayerView::getPlayerViewEvents(){
+	return this->events;
+}
 void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 	SDL_Rect offset, offsetFog;
 
@@ -252,8 +256,11 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 
 	if (marco >= numberOfClips) {
 		marco = 0;
-		if (player->isAttacking())
+		if (player->isAttacking()) {
 			player->cancelAttack();
+			attacking = false;
+			player->addEvent(new PlayerEvent(EVENT_CANCEL_ATTACK));
+		}
 		if (player->isBlocking())
 			marco = spriteMap[string("blocking")].numberOfClips - 1;
 	}
@@ -298,6 +305,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 
 	FoggedSprite spriteToBeShown;
 	if (player->isAttacking()) {
+		attacking = true;
 		//Si se estaba moviendo, reseteamos el marco para que no quede un # de clip invalido
 		if (player->IsMoving()) {
 			marco = 0;
