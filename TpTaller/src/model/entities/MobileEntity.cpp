@@ -58,6 +58,8 @@ void MobileEntity::setPos(float x, float y, float z) {
 }
 
 void MobileEntity::moveTo(int x, int y, int z) {
+	if (endPos)
+		delete endPos;
 	endPos = new Vector3(x, y, z);
 }
 
