@@ -20,6 +20,9 @@
 #include <string>
 #include <vector>
 #include <iostream>
+
+class MobileEntity;
+
 using namespace std;
 class Entity {
 public:
@@ -43,6 +46,8 @@ public:
 	void setTile(Tile* _tile);
 	virtual Tile* getTile();
 	bool isMobile();
+
+	void collideTo(MobileEntity* entity);
 
 	// Mission manager.
 	bool isDead();
