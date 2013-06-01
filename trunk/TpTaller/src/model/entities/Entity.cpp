@@ -16,7 +16,8 @@ using namespace std;
 
 Entity::Entity() {
 	this->currentPos = new Vector3(0, 0, 0);
-	this->coord = new Coordinates(0, 0);
+	this->currentTile = NULL;
+	this->coord = new Coordinates(0,0);
 	this->base = new Base();
 	this->name = "";
 	this->life = 100;
@@ -32,6 +33,7 @@ Entity::Entity(Entity* entity) {
 	this->base = newBase;
 	this->name = entity->getName();
 	this->life = entity->getLife();
+	this->currentTile = NULL;
 }
 
 void Entity::setPos(float x, float y, float z) {
@@ -97,6 +99,22 @@ void Entity::setName(std::string name) {
 
 int Entity::getLife() {
 	return this->life;
+}
+
+void Entity::setTile(Tile* _tile) {
+	if (this->currentTile)
+		delete this->currentTile;
+	currentTile = _tile;
+
+	// Las coordinates se actualizan en EntityViewMap
+}
+
+Tile* Entity::getTile() {
+	// Devuelve una copia del tile
+	Tile* retval = new Tile();
+	retval->setCoordinates(currentTile->getCoordinates());
+
+	return retval;
 }
 
 Entity::~Entity() {

@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <iostream>
 #include <list>
-#include <model/map/Tile.h>
 #include <model/entities/Entity.h>
 #include <model/Vector2.h>	// Capas hay q volarlo
 #include <model/Vector3.h>
@@ -43,8 +42,6 @@ public:
 	void setSpeed(Speed* speed);
 	void setInitSpeed(Speed* initSpeed);
 
-	void setTile(Tile* _tile);
-	Tile* getTile();
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
 
@@ -79,7 +76,6 @@ protected:
 	Speed* speed;
 	Speed* initSpeed;
 
-	Tile* currentTile;
 	list<Tile *> *path;
 
 	bool attacking;

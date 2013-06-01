@@ -37,6 +37,7 @@ public:
 	bool clickAnotherPlayer(int x, int y);
 	MobileEntity* getLastPlayerTouch();
 
+	bool playerHasclickedAnEntity(Coordinates* coor);
 	bool playerHasclickedAnEntity(int x, int y);
 	Entity* getEntityToCollideTo();
 protected:
@@ -47,6 +48,8 @@ protected:
 	bool listEvents;
 	Entity* entityToCollideAgainst;
 	list<PlayerEvent*> events;
+private:
+	bool hasMoveEvent(list<PlayerEvent*> eventsList);
 };
 
 #endif /* PLAYERCONTROLLER_H_ */

@@ -59,6 +59,11 @@ void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
 	if (tileCoord->getCol() >= 0 && tileCoord->getCol() < data->getNCols() &&
 		tileCoord->getRow() >= 0 && tileCoord->getRow() < data->getNRows() ) {
 
+		if (this->playerHasclickedAnEntity(tileCoord)){
+			playerAttackTo(getEntityToCollideTo());
+			return;
+		}
+
 		if (player != NULL) {
 			Tile* toTile = new Tile(
 					new Coordinates(tileCoord->getRow(), tileCoord->getCol()));

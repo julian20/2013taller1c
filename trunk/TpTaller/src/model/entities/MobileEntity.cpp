@@ -42,7 +42,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 }
 
 PlayerEvent* MobileEntity::getPlayerEvent() {
-	if (addEvent && path->size() != 0) {
+	if (addEvent && path->size() != 0 && attackToEntity != NULL) {
 		addEvent = false;
 		return new PlayerEvent(EVENT_MOVE, path->back()->getCoordinates());
 	}
@@ -88,42 +88,41 @@ void MobileEntity::moveImmediately(Coordinates coords) {
 }
 
 void MobileEntity::checkAttackToNewPos(MapData* mapData) {
+//	int x = attackToEntity->getCurrentPos()->getX();
+//	int y = attackToEntity->getCurrentPos()->getY();
 	Tile* enemyTile = new Tile(attackToEntity->getCoordinates());
+
+	cout << "Atacando " << attackToEntity->getName() << " en " << *enemyTile << endl;
 
 	//Llego hasta el player
 	if (this->currentTile->isNeighbor(enemyTile)) {
 		delete enemyTile;
 		//TODO: this->collideTo(attackToEntity);
-		cancelAttack();
+//		cancelAttack();
+		attackToEntity = NULL;
 		return;
 	}
 
 	if (path->size() == 0) {
-		attacking = true;
 		assignPath(mapData->getPath(currentTile, enemyTile));
-		addEvent = true;
 		delete enemyTile;
 		return;
 	}
 
 	Tile* lastTile = path->back();
-	bool tilesAreNeighbors = lastTile->isNeighbor(enemyTile);
 
-	if (tilesAreNeighbors) {
+	if (lastTile->isNeighbor(enemyTile)) {
 		delete enemyTile;
 		return;
 	}
 
 	assignPath(mapData->getPath(currentTile, enemyTile));
-	addEvent = true;
 	delete enemyTile;
 }
 
 void MobileEntity::update(MapData* mapData) {
 	if (attackToEntity != NULL)
 		checkAttackToNewPos(mapData);
-	else
-		cancelAttack();
 	if (IsMoving() == false) {
 		if (path->size() == 0)
 			return;
@@ -266,27 +265,9 @@ void MobileEntity::assignPath(list<Tile *> *_path) {
 	this->hasChanged = true;
 }
 
-void MobileEntity::setTile(Tile* _tile) {
-	if (this->currentTile)
-		delete this->currentTile;
-	currentTile = _tile;
-
-	// Las coordinates se actualizan en EntityViewMap
-}
-
-Tile* MobileEntity::getTile() {
-	// Devuelve una copia del tile
-	Tile* retval = new Tile();
-	retval->setCoordinates(currentTile->getCoordinates());
-
-	return retval;
-}
-
 void MobileEntity::attackTo(Entity* attackTo) {
 	// TODO: Por ahora solo se banca entities de base 1x1
 	attackToEntity = attackTo;
-	if (attackToEntity)
-		cout << "ataco " << attackToEntity << endl;
 }
 
 void MobileEntity::setSpeedMagnitude(int mag) {

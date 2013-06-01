@@ -45,10 +45,6 @@ MenuEvent MultiplayerGame::run(){
 void MultiplayerGame::addEventsToHandle(string playerName, vector<PlayerEvent*> events){
 
 	controllers[playerName]->handleEvents(events);
-	playersUpdate();
-	playersUpdate();
-	playersUpdate();
-
 }
 
 void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes){

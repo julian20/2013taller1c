@@ -49,7 +49,7 @@ void MapData::checkRowColsValue(int row, int col) {
 void MapData::addEntity(int row, int col, Entity* object) {
 	TileData* currentData = getTileData(row, col);
 	currentData->addEntity(object);
-
+	object->setTile(new Tile(new Coordinates(row,col)));
 
 	Base* base = object->getBase();
 	int baseRow = base->getRows();
