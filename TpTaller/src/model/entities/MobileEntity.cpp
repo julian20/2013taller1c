@@ -99,7 +99,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	//Llego hasta el player
 	if (this->currentTile->isNeighbor(enemyTile)) {
 		delete enemyTile;
-		//TODO: this->collideTo(attackToEntity);
+		this->collideTo(attackToEntity);
 //		cancelAttack();
 		attackToEntity = NULL;
 		return;
@@ -280,9 +280,6 @@ bool MobileEntity::isAttacking() {
 	return attacking;
 }
 
-void MobileEntity::attack() {
-	attacking = true;
-}
 
 void MobileEntity::setAttack(bool attacking) {
 	this->attacking = attacking;
@@ -309,6 +306,19 @@ void MobileEntity::emptyPath() {
 void MobileEntity::stop() {
 	emptyPath();
 }
+
+void MobileEntity::collideTo(Entity* entity){
+	attack(entity);
+}
+
+void MobileEntity::reverseCollide(Entity* entity){
+
+}
+
+void MobileEntity::attack(Entity* entity){
+	attacking = true;
+}
+
 
 MobileEntity& MobileEntity::operator=(const MobileEntity &other) {
 

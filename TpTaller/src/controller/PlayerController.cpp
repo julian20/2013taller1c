@@ -76,6 +76,7 @@ bool PlayerController::playerHasclickedAnEntity(Coordinates* coor) {
 	Entity* entity = tileData->getMobileEntity();
 	if (entity) {
 		this->entityToCollideAgainst = entity;
+		cout << "entity coords: " <<entity->getCoordinates().getCol()<<" "<< entity->getCoordinates().getRow()<< endl;
 		return true;
 	} else {
 		entity = tileData->getNextEntity();
@@ -203,7 +204,7 @@ void PlayerController::playerAttack() {
 		events.push_back(new PlayerEvent(EVENT_STOP));
 		return;
 	}
-	player->attack();
+	player->attack(NULL);
 }
 
 void PlayerController::playerCancelAttack() {

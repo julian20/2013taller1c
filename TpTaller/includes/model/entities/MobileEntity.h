@@ -20,14 +20,13 @@
 using namespace std;
 class MapData;
 
-class MobileEntity : public Entity {
+class MobileEntity: public Entity {
 public:
 	MobileEntity();
 	MobileEntity(string name, Position* position, Speed* speed);
 	virtual ~MobileEntity();
 	void moveTo(int x, int y, int z = 0);
 	void setPos(float x, float y, float z = 0);
-
 
 	void update(MapData* mapData);
 	void updateFromServer(MobileEntityUpdate* update);
@@ -59,6 +58,10 @@ public:
 	void stop();
 	Vector3* getEndPos();
 	void setEndPos(float x, float y, float z);
+
+	void collideTo(Entity* entity);
+	void reverseCollide(Entity* entity);
+	void attack(Entity* entity);
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const MobileEntity&);
