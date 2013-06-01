@@ -29,16 +29,12 @@ bool MissionManager::hasEndedFlagCapture(list<Player*> mobileEntities) {
 
 		actualMobileEntity = (Player*) (*iterator);
 
-		// TODO: ver como carajo se que es una flag si lo que tengo es mobile entity.
-		// Una manera fea que se me ocurre es que la flag sea algo asi como el team 3.
-		// Entonces preguntamos el team y listo, pero es feito feito.
-		if (actualMobileEntity->getClassName() == "Flag") {
-
-//			  if( actualMobileEntity->isDead() ) {
-//			  		winningTeam = actualMobileEntity->getKilledBy();
-//			  		return true;
-//			  }
-
+		// La flag es la unica entidad con team = 3.
+		if (actualMobileEntity->getTeam() == 3) {
+			if (actualMobileEntity->isDead()) {
+				winningTeam = actualMobileEntity->getKilledBy();
+				return true;
+			}
 		}
 	}
 
@@ -57,31 +53,32 @@ bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
 
 		actualMobileEntity = (Player*) (*iterator);
 
-		// TODO: ver como carajo se que es un player si lo que tengo es mobile entity.
-		// Siguiendo lo que dije arriba, las entities tendria team. Team 1 y 2 serian
-		// players, team 3 una flag, y team 0 los demas. Es feo, pero funcaria y no
-		// habria que ver como preguntamos esto.
-		//if (actualMobileEntity->getClassName() == "Player") {
+		if (actualMobileEntity->getTeam() == 1
+				&& !actualMobileEntity->isDead()) {
+			someoneAliveFirstTeam = true;
+		} else if (actualMobileEntity->getTeam() == 2
+				&& !actualMobileEntity->isDead()) {
+			someoneAliveSecondTeam = true;
+		}
 
-//			if (actualMobileEntity->getTeam() == 1
-//					&& actualMobileEntity->getLife() > 0) {
-//				someoneAliveFirstTeam = true
-//			} else if (actualMobileEntity->getTeam() == 2
-//					&& actualMobileEntity->getLife() > 0) {
-//				someoneAliveSecondTeam = true
-//			}
+	}
 
-		//}
+	// Caso muy borde.
+	if (someoneAliveFirstTeam == false && someoneAliveSecondTeam == false) {
+		winningTeam = 0;
+		return true;
+	}
+
+	if (someoneAliveSecondTeam == false) {
+		winningTeam = 1;
+		return true;
 	}
 
 	if (someoneAliveFirstTeam == false) {
 		winningTeam = 2;
 		return true;
-	} else if (someoneAliveSecondTeam == false) {
-		winningTeam = 1;
-		return true;
 	}
-	// Else
+
 	return false;
 }
 
