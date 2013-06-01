@@ -16,7 +16,9 @@
 #include <model/Vector3.h>
 #include <networking/MobileEntityUpdate.h>
 #include <networking/PlayerEvent.h>
+#include <view/timer/Timer.h>
 
+#define ATTACK_TIMEOUT 1000
 using namespace std;
 class MapData;
 
@@ -88,6 +90,7 @@ protected:
 
 	bool hasChanged;
 	int team;
+	Timer timer;
 private:
 	void checkAttackToNewPos(MapData* mapData);
 
