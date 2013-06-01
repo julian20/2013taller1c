@@ -53,8 +53,6 @@ public:
 	void setHasChanged(bool change);
 	bool getHasChanged();
 
-	PlayerEvent* getPlayerEvent();
-
 	void stop();
 	Vector3* getEndPos();
 	void setEndPos(float x, float y, float z);
@@ -75,7 +73,8 @@ public:
 	void setSpeedMagnitude(int mag);
 
 	virtual Tile* getTile();
-
+	list<PlayerEvent*> getPlayerEvents();
+	void addEvent(PlayerEvent* event);
 protected:
 	void loadNextPosition();
 	void emptyPath();
@@ -88,12 +87,12 @@ protected:
 	bool attacking;
 
 	bool hasChanged;
-	bool addEvent;
 	int team;
 private:
 	void checkAttackToNewPos(MapData* mapData);
 
 	Entity* attackToEntity;
+	list<PlayerEvent*>events;
 };
 
 #endif /* MOBILEENTITY_H_ */
