@@ -33,6 +33,7 @@
 #include <view/TextHandler.h>
 #include <view/networking/ChatWindowsView.h>
 #include <view/Animation.h>
+#include <AI/ArtificialIntelligence.h>
 
 class Game {
 public:
@@ -102,6 +103,8 @@ private:
         SDL_Surface* pointerClicked;
         Animation clickAnimation;
     	SDL_Rect clickedLocation;
+
+    	map<string,ArtificialIntelligence*>* iaMap;
 };
 
 #endif /* GAME_H_ */

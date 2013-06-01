@@ -18,6 +18,13 @@ Player::Player() {
 	this->name = "";
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
+	this->weapons = new list<Weapon*>;
+	//TODO: sacar este harcode. tendria q venir de yaml
+	Sword* sword = new Sword();
+	sword->setAccuracy(10);
+	sword->setDamage(10);
+	sword->setRange(1);
+	weapons->push_front(sword);
 	isActive = true;
 	attacking = false;
 	blocking = false;
@@ -42,7 +49,10 @@ void Player::reverseCollide(Entity* entity){
 }
 
 void Player::attack(Entity* entity){
+
 	attacking = true;
+	Weapon* weaponToUse = weapons->front();
+	weaponToUse->attack(entity);
 }
 
 void Player::updateFromServer(PlayerUpdate* update) {

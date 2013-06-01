@@ -81,7 +81,7 @@ protected:
 	Vector3* endPos;
 	Speed* speed;
 	Speed* initSpeed;
-
+	//ArtificialIntelligence* ia;
 	list<Tile *> *path;
 
 	bool attacking;

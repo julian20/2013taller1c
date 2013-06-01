@@ -116,6 +116,12 @@ Tile* Entity::getTile() {
 	return retval;
 }
 
+void Entity::applyDamage(int damage)
+{
+	//int totalDamage=damage falta calcular lo q protege el escudo
+	this->life= this->life-damage;
+
+}
 Entity::~Entity() {
 	delete this->coord;
 	delete this->currentPos;

@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #define WATCHSIZE 10
 ArtificialIntelligence::ArtificialIntelligence() {
+	entity=NULL;
 }
 void ArtificialIntelligence::attack(Entity* enemy)
 {
@@ -26,7 +27,7 @@ void ArtificialIntelligence::update()
 			this->attack(enemy);
 	}else
 	{
-		if(this->entity->isMobile()) this->watch();
+		if(entity->getClassName() == "MobileEntity") this->watch();
 	}
 }
 bool ArtificialIntelligence::isAnyEnemyClose()
