@@ -18,6 +18,7 @@ MobileEntity::MobileEntity() {
 	team = 0;
 	attackToEntity = NULL;
 	addEvent = false;
+//	ia = ArtificialIntelligence();
 	this->speed = new Speed(0, new Vector2(0, 0));
 	this->initSpeed = NULL;
 	this->path = new list<Tile *>();

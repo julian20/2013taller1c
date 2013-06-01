@@ -28,6 +28,7 @@ public:
 	void setPos(float x, float y, float z = 0);
 	Vector3* getCurrentPos();
 	virtual string getClassName();
+	virtual void applyDamage(int damage);
 	virtual ~Entity();
 	Base* getBase();
 	void setBase(Base* base);

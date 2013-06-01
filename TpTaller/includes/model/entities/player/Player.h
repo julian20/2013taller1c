@@ -17,6 +17,8 @@
 #include <model/Vector3.h>
 #include <networking/PlayerUpdate.h>
 #include <networking/ChatUpdate.h>
+#include <model/Weapons/Weapon.h>
+#include <model/Weapons/Sword.h>
 
 using namespace std;
 
@@ -71,7 +73,7 @@ private:
 	bool mainPlayer;
 
 	std::vector<Power*> powers;
-
+	list<Weapon*>* weapons;
 
 	bool blocking;
 
