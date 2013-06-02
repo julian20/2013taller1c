@@ -353,12 +353,14 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	Vector2* movementDirection = this->player->getMovementDirection();
 	float direction;
 
-	Vector2* v = new Vector2(0, 0);
-	if (movementDirection->isEqual(v))
-		direction = lastDirection;
-	else
+	if (movementDirection->getNorm() == 0) {
+		if (player->isAttacking())
+			direction = player->getLastAttackingDirecton();
+		else
+			direction = lastDirection;
+	} else {
 		direction = movementDirection->getAngle();
-	delete v;
+	}
 
 	SpriteType sprite = DOWN;
 

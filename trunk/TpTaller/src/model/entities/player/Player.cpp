@@ -220,6 +220,7 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 	}
 	out << *(player.currentTile) << " ";
 	out << " " << player.life << " " << player.team;
+	out << " " << player.lastAttackingDirection;
 	return out;
 }
 
@@ -264,6 +265,9 @@ istream& operator >>(std::istream& in, Player& player) {
 	int team;
 	in >> team;
 	player.team = team;
+	float lastDir;
+	in >> lastDir;
+	player.lastAttackingDirection = lastDir;
 	return in;
 }
 
