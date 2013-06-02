@@ -9,7 +9,7 @@
 
 using namespace std;
 
-PlayerUpdate::PlayerUpdate(){
+PlayerUpdate::PlayerUpdate() {
 	this->currentPos = new Vector3();
 	this->endPos = new Vector3();
 	this->speed = new Speed();
@@ -19,43 +19,43 @@ PlayerUpdate::PlayerUpdate(){
 	this->currentTile = new Tile();
 	this->nextTile = new Tile();
 	this->initCoords = new Coordinates();
-	this->chat=NULL;
+	this->chat = NULL;
 }
 
-
-void PlayerUpdate::setChat(Chat* chat){
+void PlayerUpdate::setChat(Chat* chat) {
 	this->chat = chat;
 }
 
-bool PlayerUpdate::isBlocking(){
+bool PlayerUpdate::isBlocking() {
 	return blocking;
 }
 
-void PlayerUpdate::setBlocking(bool blocking){
+void PlayerUpdate::setBlocking(bool blocking) {
 	this->blocking = blocking;
 }
 
-bool PlayerUpdate::isActive(){
+bool PlayerUpdate::isActive() {
 	return active;
 }
 
-void PlayerUpdate::setActive(bool active){
+void PlayerUpdate::setActive(bool active) {
 	this->active = active;
 }
 
-
 //Operator to transform the object into a stream.
-ostream& operator <<(std::ostream& out, const PlayerUpdate& update){
+ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 
-	out << update.name << " " << *update.currentPos << " " << *update.endPos << " " << *update.speed << " " << update.attacking << " "
-			<< update.blocking << " " << update.active << " " << *update.currentTile << " " << *update.nextTile << " " << *update.initCoords << " ";
-
+	out << update.name << " " << *update.currentPos << " " << *update.endPos
+			<< " " << *update.speed << " " << update.attacking << " "
+			<< update.blocking << " " << update.active << " "
+			<< *update.currentTile << " " << *update.nextTile << " "
+			<< *update.initCoords << " " << update.life << " ";
 
 	return out;
 }
 
-	//Operator to load an object from a stream
-istream& operator >>(std::istream& in, PlayerUpdate& update){
+//Operator to load an object from a stream
+istream& operator >>(std::istream& in, PlayerUpdate& update) {
 
 	string name;
 	in >> name;
@@ -87,12 +87,11 @@ istream& operator >>(std::istream& in, PlayerUpdate& update){
 	Coordinates coords;
 	in >> coords;
 	update.setInitCoordinates(&coords);
-
-
-
+	int life;
+	in >> life;
+	update.setLife(life);
 	return in;
 }
-
 
 PlayerUpdate::~PlayerUpdate() {
 }

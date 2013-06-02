@@ -209,6 +209,7 @@ void PlayerInfo::updatePlayer(PlayerUpdate* update) {
 	player->setAttack(update->isAttacking());
 	player->setBlock(update->isBlocking());
 	player->setTile(update->getTile());
+	player->setLife(update->getLife());
 }
 
 PlayerInfo::~PlayerInfo() {

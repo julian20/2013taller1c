@@ -17,12 +17,15 @@
 
 //Posicion de los pies del personaje respecto de la base de la imagen
 #define OFFSET_Y	15
-#define ANIMATION_CHANGE_DELAY 1
+#define ANIMATION_CHANGE_DELAY 2
 #define STANDING_ANIMATION_LOCATION_IN_IMAGE_FILE 16
 #define DEFAULT_CHARACTER_ID	"characterDefault"
 #define NUMBER_OF_STANDING_FRAMES 3
 #define STEP_SOUND "resources/sound/player/steps.ogg"
 #define ATTACK_SOUND "resources/sound/player/sword.ogg"
+#define HP_BAR_WIDTH 100
+#define HP_BAR_HEIGHT 10
+#define DAMAGE_RECEIVE_TIME_GAP 2000
 
 PlayerView::PlayerView()
 //Llamamos al constructor de la superclase
@@ -35,12 +38,13 @@ PlayerView::PlayerView()
 	movable = true;
 	direction = DOWN;
 	wasStanding = true;
-	attacking = false;
+	attacking = attacked = false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
 	lastDirection = M_PI * 1 / 2;
 	chatView = NULL;
+	previousLife = 0;
 
 	declareTeamColorConstant();
 }
@@ -59,7 +63,7 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	movable = true;
 	direction = DOWN;
 	wasStanding = true;
-	attacking = false;
+	attacking = attacked = false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -67,11 +71,11 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	textureHolder = otherPlayer->getTextureHolder();
 	this->setName(otherPlayer->getName());
 	chatView = NULL;
-
+	previousLife = 0;
 	declareTeamColorConstant();
 }
 
-void PlayerView::declareTeamColorConstant(){
+void PlayerView::declareTeamColorConstant() {
 	// 0xAARRGGBB	A->Alpha	R->Red	G->Green	B->Blue
 	const Uint32 alpha = 0x40000000;
 
@@ -84,14 +88,12 @@ void PlayerView::declareTeamColorConstant(){
 	teamColors[6] = 0x0000FFFF + alpha;	// Amarillo
 }
 
-list<PlayerEvent*> PlayerView::getPlayerViewEvents(){
+list<PlayerEvent*> PlayerView::getPlayerViewEvents() {
 	return this->events;
 }
 void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
-	SDL_Rect offset, offsetFog, offsetColor;	// Se tiene que hacer esto porque al
-												// blitear se cagan algunos valores
-
-
+	SDL_Rect offset, offsetFog, offsetColor;// Se tiene que hacer esto porque al
+											// blitear se cagan algunos valores
 	if (drawFog)
 		return;
 
@@ -101,10 +103,10 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 	offset.x = offsetFog.x = offsetColor.x = (int) x + camPos->getX()
 			- this->anchorPixel->getX();
 	int h = Tile::computePositionTile(0, 0).h;
-	offset.y = offsetFog.y = offsetColor.y =(int) y + camPos->getY()
+	offset.y = offsetFog.y = offsetColor.y = (int) y + camPos->getY()
 			- this->anchorPixel->getY() - h / 2;
-	offset.w = offsetFog.w = offsetColor.w =clip->w;
-	offset.h = offsetFog.h = offsetColor.h =clip->h;
+	offset.w = offsetFog.w = offsetColor.w = clip->w;
+	offset.h = offsetFog.h = offsetColor.h = clip->h;
 
 	SDL_BlitSurface(this->image, clip, screen, &offset);
 	SDL_BlitSurface(this->teamColorImage, clip, screen, &offsetColor);
@@ -113,15 +115,66 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 		SDL_BlitSurface(fogImage, clip, screen, &offsetFog);
 	}
 
+	blitName(screen, x, y);
+
+	blitHPBar(screen, x, y);
+
+}
+
+void PlayerView::blitName(SDL_Surface* screen, int x, int y) {
 	SDL_Rect offsetNombre;
+	int h = Tile::computePositionTile(0, 0).h;
 	offsetNombre.x = (int) x + camPos->getX() - nameImage->w / 2;
 	offsetNombre.y = (int) y + camPos->getY() - this->anchorPixel->getY()
 			- h / 2 - 20;
 	offsetNombre.w = nameImage->w;
 	offsetNombre.h = nameImage->h;
 	SDL_BlitSurface(nameImage, NULL, screen, &offsetNombre);
+
 }
 
+void PlayerView::blitHPBar(SDL_Surface* screen, int x, int y) {
+	SDL_Rect size;
+
+	//Red bar
+	size.x = 0;
+	size.x = 0;
+	size.y = 0;
+	size.h = HP_BAR_HEIGHT;
+	size.w = HP_BAR_WIDTH;
+	SDL_Surface* redBar = SDL_CreateRGBSurface(SDL_SWSURFACE, size.w, size.h, 32,
+			0, 0, 0, 0);
+	Uint32 reDcolor = 0x00FF0000;
+	SDL_FillRect(redBar, &size, reDcolor);
+
+	SDL_Rect offsetRed;
+	int h = Tile::computePositionTile(0, 0).h;
+	offsetRed.x = (int) x + camPos->getX() - nameImage->w / 2 + 14;
+	offsetRed.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2
+			- 20 + nameImage->h;
+	offsetRed.w = redBar->w;
+	offsetRed.h = redBar->h;
+	SDL_BlitSurface(redBar, NULL, screen, &offsetRed);
+	SDL_FreeSurface(redBar);
+
+	int life = player->getLife();
+	if (life<=0) life = 0;
+	size.w = HP_BAR_WIDTH * life / HP_BAR_WIDTH;
+	SDL_Surface* bar = SDL_CreateRGBSurface(SDL_SWSURFACE, size.w, size.h, 32,
+			0, 0, 0, 0);
+	Uint32 color = 0x0000ff00;
+	SDL_FillRect(bar, &size, color);
+
+	SDL_Rect offsetHP;
+	offsetHP.x = (int) x + camPos->getX() - nameImage->w / 2 + 14;
+	offsetHP.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2
+			- 20 + nameImage->h;
+	offsetHP.w = bar->w;
+	offsetHP.h = bar->h;
+	SDL_BlitSurface(bar, NULL, screen, &offsetHP);
+	SDL_FreeSurface(bar);
+
+}
 void PlayerView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 
 	UpdateCameraPos(cam);
@@ -152,7 +205,8 @@ FoggedSprite PlayerView::loadFoggedSprite(const char* modifier) {
 	FoggedSprite sprite;
 	sprite.image = textureHolder->getTexture(name + id);
 	sprite.foggedImage = textureHolder->getFogTexture(name + id);
-	sprite.teamColorImage = FogCreator::getFog(sprite.image, teamColors[player->getTeam()]);
+	sprite.teamColorImage = FogCreator::getFog(sprite.image,
+			teamColors[player->getTeam()]);
 	sprite.numberOfClips = computeNumberOfClips(sprite.image);
 	return sprite;
 
@@ -271,9 +325,11 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	//cosas del sound
 	string walkID = string("walk");
 	string attackID = string("attack");
-	if (this->image == NULL)
+	if (this->image == NULL) {
 		loadPlayerImage();
-
+		previousLife = player->getLife();
+		damageReceivedTimer.start();
+	}
 	if (marco >= numberOfClips) {
 		marco = 0;
 		if (player->isAttacking()) {
@@ -326,7 +382,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 
 	FoggedSprite spriteToBeShown;
 	if (player->isAttacking()) {
-		attacking = true;
+
 		//Si se estaba moviendo, reseteamos el marco para que no quede un # de clip invalido
 		if (player->IsMoving()) {
 			marco = 0;

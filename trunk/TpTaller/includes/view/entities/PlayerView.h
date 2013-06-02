@@ -66,6 +66,9 @@ private:
 	map<string, FoggedSprite> loadSwordImages();
 	map<string, FoggedSprite> loadBowImages();
 
+	void blitName(SDL_Surface* screen, int x, int y);
+	void blitHPBar(SDL_Surface* screen, int x, int y);
+
 	ChatWindowsView* chatView;
 	map<int, Uint32> teamColors;
 
@@ -78,10 +81,12 @@ private:
 	int direction;
 	float lastDirection;
 	bool wasStanding,attacking;
-
+	bool attacked;
+	int previousLife;
 	SDL_Surface* nameImage;
 	TextHandler textHandler;
 	list<PlayerEvent*> events;
+	Timer damageReceivedTimer;
 	/* Map: key: weapon. Value: map of images; key: animation name,
 	 * value: vector with FoggedSprites
 	 */
