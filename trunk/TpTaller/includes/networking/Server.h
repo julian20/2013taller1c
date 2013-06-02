@@ -52,6 +52,7 @@ public:
 	bool exchangeAliveSignals(int clientSocket,string playerName);
 	void sendNewPlayers(int clientSocket, string playerName);
 
+	void sendGameState(int clientSocket, bool state);
 
 	vector<PlayerEvent*> recvEvents(int clientSocket);
 	void recvChatMessages(int clientSocket);

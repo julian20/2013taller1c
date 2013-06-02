@@ -259,7 +259,6 @@ void Server::run(MultiplayerGame* game) {
 	}
 }
 
-
 void Server::runMainLoop(int clientSocket, string playerName){
 	bool playing = true;
 	while (playing && isActive()) {
@@ -270,11 +269,9 @@ void Server::runMainLoop(int clientSocket, string playerName){
 
 		bool gameEnd = missionManager.hasEndedGame(game->getPlayers());
 
+		sendGameState(clientSocket, gameEnd);
+
 		if (gameEnd) {
-			// TODO: hay que mandarle al cliente
-			// un boolean de que el juego termino y
-			// que gano alguien para que pare
-			// de ejecutar y muestre algun cartelito.
 			break;
 		}
 
@@ -619,6 +616,17 @@ void Server::setMessages(vector<ChatMessage*> msjs)
 		this->messages.push_back(msjs[i]);
 	}
 }
+
+void Server::sendGameState(int clientSocket, bool state) {
+
+	int stateNumber = 0;
+
+	if( state == true ) stateNumber = 1;
+
+	ComunicationUtils::sendNumber(clientSocket, stateNumber);
+
+}
+
 
 /* ******************* CHECKING CONNECTION ************************* */
 
