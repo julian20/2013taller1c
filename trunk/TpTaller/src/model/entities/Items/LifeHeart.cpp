@@ -10,13 +10,17 @@
 LifeHeart::LifeHeart() {
 }
 
-void LifeHeart::applyEffects(Entity* entity) {
+void LifeHeart::applyEffects(Entity& entity) {
 	// TODO: algun atributo o define de vida original.
-	entity->setLife(100);
+	entity.setLife(100);
 }
 
-void LifeHeart::applyEffects(MobileEntity* entity) {
-	entity->setLife(100);
+void LifeHeart::applyEffects(MobileEntity& entity) {
+	entity.setLife(100);
+}
+
+void LifeHeart::collideTo(MobileEntity& entity) {
+	applyEffects(entity);
 }
 
 string LifeHeart::getClassName() {

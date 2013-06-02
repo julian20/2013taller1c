@@ -21,6 +21,7 @@
 #define ATTACK_TIMEOUT 1000
 using namespace std;
 class MapData;
+class Item;
 
 class MobileEntity: public Entity {
 public:
@@ -59,10 +60,11 @@ public:
 	Vector3* getEndPos();
 	void setEndPos(float x, float y, float z);
 
-	void collideTo(Entity* entity);
-	void reverseCollide(Entity* entity);
+	void collideTo(Entity& entity);
+	void reverseCollide(Entity& entity);
+	void reverseCollide(Item& entity);
 
-	virtual void attack(Entity* entity);
+	virtual void attack(Entity& entity);
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const MobileEntity&);
