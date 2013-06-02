@@ -11,6 +11,7 @@
 #include <networking/PlayerEvent.h>
 #include <networking/PlayerInfo.h>
 #include <networking/PlayerUpdate.h>
+#include <networking/MobUpdate.h>
 
 #include <string>
 
@@ -47,6 +48,9 @@ public:
 
 	static void sendChatMessage(int sockID, ChatMessage* chatmsj);
 	static ChatMessage* recvChatMessage(int sockID);
+
+	static void         sendMobUpdate(int sockID, MobUpdate* update);
+	static MobUpdate*   recvMobUpdate(int sockID);
 
 private:
 	ComunicationUtils();

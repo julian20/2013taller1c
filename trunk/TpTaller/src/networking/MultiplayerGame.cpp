@@ -24,7 +24,6 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
-	this->textureHolder = configuration->getTextureHolder();
 
 }
 
@@ -134,12 +133,12 @@ vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 }
 
 
-vector<MobileEntityUpdate*> MultiplayerGame::getMobileEntitiesUpdates(){
+vector<MobUpdate*> MultiplayerGame::getMobUpdates(){
 
-	vector<MobileEntityUpdate*> updates;
-	for (map<int,MobileEntity*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
+	vector<MobUpdate*> updates;
+	for (map<int,Mob*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
 
-		MobileEntityUpdate* update = (it->second)->generateMobileEntityUpdate(it->first);
+		MobUpdate* update = (it->second)->generateMobUpdate(it->first);
 		if (update)
 			updates.push_back(update);
 	}
@@ -153,17 +152,14 @@ list<Player*> MultiplayerGame::getPlayers() {
 	return this->players;
 }
 
-map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntitiesInfo(){
+map<int,MobInfo*> MultiplayerGame::getMobInfo(){
 
-	map<int,MobileEntityInfo*> infos;
+	map<int,MobInfo*> infos;
 
-	for (map<int,MobileEntity*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
+	for (map<int,Mob*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
 
-		MobileEntityInfo* info = new MobileEntityInfo();
+		MobInfo* info = new MobInfo();
 		info->setEntity(it->second);
-
-
-
 	}
 
 	return infos;

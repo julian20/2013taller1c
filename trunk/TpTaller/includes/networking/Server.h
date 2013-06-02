@@ -60,7 +60,7 @@ public:
 
 	void getPlayersUpdates();
 	void sendPlayersUpdates(int clientSocket, string playerName);
-	void sendMobilesEntitesUpdates(int clientSocket,vector<MobileEntityUpdate*> mobUpdates);
+	void sendMobUpdates(int clientSocket,vector<MobUpdate*> mobUpdates);
 
 	void checkClientStatus(int clientID, string playerName);
 	void disconectPlayer(int clientSocket, string playerName);
