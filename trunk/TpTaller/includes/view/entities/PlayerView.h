@@ -32,6 +32,7 @@ class FoggedSprite{
 public:
 	SDL_Surface* image;
 	SDL_Surface* foggedImage;
+	SDL_Surface* teamColorImage;
 	int numberOfClips;
 };
 
@@ -55,7 +56,7 @@ public:
 
 	list<PlayerEvent*> getPlayerViewEvents();
 private:
-	ChatWindowsView* chatView;
+	void declareTeamColorConstant();
 	void showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog);
 	void showStandingAnimation(SpriteType sprite, SDL_Surface* fondo,
 			bool drawFog);
@@ -64,6 +65,9 @@ private:
 	FoggedSprite loadFoggedSprite(const char* modifier);
 	map<string, FoggedSprite> loadSwordImages();
 	map<string, FoggedSprite> loadBowImages();
+
+	ChatWindowsView* chatView;
+	map<int, Uint32> teamColors;
 
 	Player* player;
 	Position* camPos;
