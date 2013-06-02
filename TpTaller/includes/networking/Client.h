@@ -10,6 +10,7 @@
 
 #include <networking/PlayerInfo.h>
 #include <networking/NetworkPlayerController.h>
+#include <networking/MobUpdate.h>
 #include <model/entities/player/Player.h>
 #include <view/entities/PlayerView.h>
 #include <view/timer/Timer.h>
@@ -42,8 +43,8 @@ public:
 	void updatePlayers(map<string,PlayerUpdate*> updates);
 	vector<ChatMessage*> recvChatUpdates();
 	void updateChat(vector<ChatMessage*> updates);
-	vector<MobileEntityUpdate*> recvMobUpdates();
-	void updateMobs(vector<MobileEntityUpdate*> mobUpdates);
+	vector<MobUpdate*> recvMobUpdates();
+	void updateMobs(vector<MobUpdate*> mobUpdates);
 
 	Game* getGame();
 	Chat* getChat();
