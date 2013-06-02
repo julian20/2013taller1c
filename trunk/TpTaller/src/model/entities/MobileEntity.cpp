@@ -175,13 +175,14 @@ void MobileEntity::updateFromServer(MobileEntityUpdate* update) {
 
 }
 
-MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate() {
+MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate(int id) {
 
 	if (!this->hasChanged)
 		return NULL;
 
 	MobileEntityUpdate* update = new MobileEntityUpdate();
 
+	update->setId(id);
 	update->setName(this->name);
 
 	update->setCurrentPos(this->currentPos);

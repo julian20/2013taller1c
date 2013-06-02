@@ -135,28 +135,7 @@ void SinglePlayerServer::handleConnection() {;
 	sent.insert(pair<int, string>(clientID, playerName));
 	addPlayerToGame(clientID, info);
 
-	while (playing && isActive()) {
-
-		playing = exchangeAliveSignals(clientID,playerName);
-		if (!playing)
-			break;
-
-		sendNewPlayers(clientID,playerName);
-
-		vector<PlayerEvent*> events = recvEvents(clientID);
-
-		if (!events.empty())
-			game->addEventsToHandle(playerName, events);
-
-		getPlayersUpdates();
-
-		sendPlayersUpdates(clientID, playerName);
-
-		recvChatMessages(clientID);
-
-		deliverMessages(clientID,playerName);
-
-	}
+	runMainLoop(clientID,playerName);
 
 	disconectPlayer(clientID,playerName);
 	close(clientID);

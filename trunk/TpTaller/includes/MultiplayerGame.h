@@ -31,6 +31,7 @@ public:
 	void addEventsToHandle(string playerName, vector<PlayerEvent*> events);
 	void updatePlayersCoordinates();
 	vector<PlayerUpdate*> getPlayersUpdates();
+	vector<MobileEntityUpdate*> getMobileEntitiesUpdates();
 	vector<ChatUpdate*> getChatUpdates();
 	list<Player*> getPlayers();
 	virtual ~MultiplayerGame();
@@ -44,6 +45,9 @@ private:
 
 	list<Player*> players;
 	map<Player*, Coordinates> playersCoords;
+
+	map<int,MobileEntity*> mobileEntities;
+
 	void playersUpdate();
 
 	int fps;

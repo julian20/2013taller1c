@@ -9,6 +9,7 @@
 using namespace std;
 
 MobileEntityUpdate::MobileEntityUpdate(){
+	this->id = 0;
 	this->currentPos = new Vector3();
 	this->endPos = new Vector3();
 	this->speed = new Speed();
@@ -18,6 +19,15 @@ MobileEntityUpdate::MobileEntityUpdate(){
 	this->initCoords = new Coordinates;
 	this->life = 0;
 }
+
+void MobileEntityUpdate::setId(int id){
+	this->id = id;
+}
+
+int MobileEntityUpdate::getId(){
+	return this->id;
+}
+
 
 void MobileEntityUpdate::setName(string MobileEntityName){
 	this->name = MobileEntityName;

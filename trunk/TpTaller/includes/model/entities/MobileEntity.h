@@ -32,7 +32,7 @@ public:
 
 	void update(MapData* mapData);
 	void updateFromServer(MobileEntityUpdate* update);
-	MobileEntityUpdate* generateMobileEntityUpdate();
+	MobileEntityUpdate* generateMobileEntityUpdate(int id);
 
 	virtual string getClassName();
 	void moveImmediately(Coordinates coords);

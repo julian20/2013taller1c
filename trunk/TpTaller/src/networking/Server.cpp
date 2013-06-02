@@ -122,38 +122,7 @@ void* handle(void* par) {
 
 	pthread_create(&timerThread,NULL,timerChecker,(void*)&param);
 
-	while (playing && server->isActive()) {
-
-		playing = server->exchangeAliveSignals(clientSocket,playerName);
-		if (!playing)
-			break;
-
-		bool gameEnd = missionManager.hasEndedGame(game->getPlayers());
-
-		if (gameEnd) {
-			// TODO: hay que mandarle al cliente
-			// un boolean de que el juego termino y
-			// que gano alguien para que pare
-			// de ejecutar y muestre algun cartelito.
-			break;
-		}
-
-		server->sendNewPlayers(clientSocket,playerName);
-
-		vector<PlayerEvent*> events = server->recvEvents(clientSocket);
-
-		if (!events.empty())
-			game->addEventsToHandle(playerName, events);
-
-		server->getPlayersUpdates();
-
-		server->sendPlayersUpdates(clientSocket, playerName);
-
-		server->recvChatMessages(clientSocket);
-
-		server->deliverMessages(clientSocket, playerName);
-
-	}
+	server->runMainLoop(clientSocket,playerName);
 
 	pthread_cancel(timerThread);
 	server->disconectPlayer(clientSocket,playerName);
@@ -288,6 +257,44 @@ void Server::run(MultiplayerGame* game) {
 
 		}
 	}
+}
+
+
+void Server::runMainLoop(int clientSocket, string playerName){
+	bool playing = true;
+	while (playing && isActive()) {
+
+		playing = exchangeAliveSignals(clientSocket,playerName);
+		if (!playing)
+			break;
+
+		bool gameEnd = missionManager.hasEndedGame(game->getPlayers());
+
+		if (gameEnd) {
+			// TODO: hay que mandarle al cliente
+			// un boolean de que el juego termino y
+			// que gano alguien para que pare
+			// de ejecutar y muestre algun cartelito.
+			break;
+		}
+
+		sendNewPlayers(clientSocket,playerName);
+
+		vector<PlayerEvent*> events = recvEvents(clientSocket);
+
+		if (!events.empty())
+			game->addEventsToHandle(playerName, events);
+
+		getPlayersUpdates();
+
+		sendPlayersUpdates(clientSocket, playerName);
+
+		recvChatMessages(clientSocket);
+
+		deliverMessages(clientSocket, playerName);
+
+	}
+
 }
 
 /* *****************  FUNCIONES DE ENVIO DE ARCHIVOS *************** */
