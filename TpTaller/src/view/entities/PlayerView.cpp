@@ -25,7 +25,8 @@
 #define ATTACK_SOUND "resources/sound/player/sword.ogg"
 #define HP_BAR_WIDTH 100
 #define HP_BAR_HEIGHT 10
-#define DAMAGE_RECEIVE_TIME_GAP 2000
+#define EMPTY_BAR_IMG "resources/misc/HPBarEmpty.png"
+#define FULL_BAR_IMG "resources/misc/HPBarFull.png"
 
 PlayerView::PlayerView()
 //Llamamos al constructor de la superclase
@@ -134,45 +135,51 @@ void PlayerView::blitName(SDL_Surface* screen, int x, int y) {
 }
 
 void PlayerView::blitHPBar(SDL_Surface* screen, int x, int y) {
-	SDL_Rect size;
 
-	//Red bar
-	size.x = 0;
-	size.x = 0;
-	size.y = 0;
-	size.h = HP_BAR_HEIGHT;
-	size.w = HP_BAR_WIDTH;
-	SDL_Surface* redBar = SDL_CreateRGBSurface(SDL_SWSURFACE, size.w, size.h, 32,
-			0, 0, 0, 0);
-	Uint32 reDcolor = 0x00FF0000;
-	SDL_FillRect(redBar, &size, reDcolor);
 
-	SDL_Rect offsetRed;
+	//Emtpy bar
+	SDL_Surface* emptyBarTemp = IMG_Load(EMPTY_BAR_IMG);
+	float xScale = (HP_BAR_WIDTH*1.005)/emptyBarTemp->w;
+	SDL_Surface* scaledBar = rotozoomSurfaceXY(emptyBarTemp,0,xScale,1,0);
+	SDL_Surface* emptyBar = SDL_DisplayFormatAlpha(scaledBar);
+	SDL_FreeSurface(emptyBarTemp);
+	SDL_FreeSurface(scaledBar);
+
+	SDL_Rect offsetEmpty;
 	int h = Tile::computePositionTile(0, 0).h;
-	offsetRed.x = (int) x + camPos->getX() - nameImage->w / 2 + 14;
-	offsetRed.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2
+	offsetEmpty.x = (int) x + camPos->getX() - nameImage->w / 2 + 14;
+	offsetEmpty.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2
 			- 20 + nameImage->h;
-	offsetRed.w = redBar->w;
-	offsetRed.h = redBar->h;
-	SDL_BlitSurface(redBar, NULL, screen, &offsetRed);
-	SDL_FreeSurface(redBar);
+	offsetEmpty.w = emptyBar->w;
+	offsetEmpty.h = emptyBar->h;
+	SDL_BlitSurface(emptyBar, NULL, screen, &offsetEmpty);
+	SDL_FreeSurface(emptyBar);
 
 	int life = player->getLife();
-	if (life<=0) life = 0;
-	size.w = HP_BAR_WIDTH * life / HP_BAR_WIDTH;
-	SDL_Surface* bar = SDL_CreateRGBSurface(SDL_SWSURFACE, size.w, size.h, 32,
-			0, 0, 0, 0);
-	Uint32 color = 0x0000ff00;
-	SDL_FillRect(bar, &size, color);
+	if (life <= 0)
+		life = 0;
+
+	SDL_Surface* fullBarTemp = IMG_Load(FULL_BAR_IMG);
+	float xScale2 = (float)HP_BAR_WIDTH/fullBarTemp->w;
+	SDL_Surface* scaledFullBar = rotozoomSurfaceXY(fullBarTemp,0,xScale2,1,0);
+	SDL_Surface* bar = SDL_DisplayFormatAlpha(scaledFullBar);
+	SDL_FreeSurface(fullBarTemp);
+	SDL_FreeSurface(scaledFullBar);
+
+	SDL_Rect size;
+	size.x=0;
+	size.y=0;
+	size.h = bar->h;
+	float hpSize = (float)life/100*HP_BAR_WIDTH;
+	size.w = (int)hpSize ;
 
 	SDL_Rect offsetHP;
 	offsetHP.x = (int) x + camPos->getX() - nameImage->w / 2 + 14;
 	offsetHP.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2
 			- 20 + nameImage->h;
-	offsetHP.w = bar->w;
-	offsetHP.h = bar->h;
-	SDL_BlitSurface(bar, NULL, screen, &offsetHP);
-	SDL_FreeSurface(bar);
+
+	SDL_BlitSurface(bar, &size, screen, &offsetHP);
+	SDL_FreeSurface (bar);
 
 }
 void PlayerView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
