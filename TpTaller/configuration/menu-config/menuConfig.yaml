@@ -21,5 +21,6 @@
 - mapDimensions: [0, 0]
 - playerLocations:
 - mobileEntityLocations:
+- itemLocations:
 - entityLocations:
 - tileLocations:

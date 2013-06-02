@@ -48,7 +48,18 @@
     baseRows: 1
     baseCols: 1
     delay: 0.5
-- entityViews:    
+- entityViews:          
+  - name: lifeheart
+    imageSrc: resources/items/LifeHeart.png
+    imageWidth: 58
+    imageHeight: 50
+    numberOfClips: 1
+    anchorPixel: [20, 20]
+    fps: 30
+    delay: 2 
+    animationRepeats: 7
+    baseRows: 2
+    baseCols: 3  
   - name: windmill
     imageSrc: resources/buildings/windmill.png
     imageWidth: 224
@@ -204,6 +215,9 @@
     speed:
       magnitude: 4
       direction: [1, 2]
+- itemLocations:
+  - name: lifeheart
+    position: [15, 15, 0]
 - entityLocations:
   - name: chapel
     position: [23, 20, 0]

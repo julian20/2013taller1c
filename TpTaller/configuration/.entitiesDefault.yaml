@@ -1,12 +1,39 @@
 - playerViews:
-  - name: player
-    imageSrc: resources/black_knight.png
-    imageWidth: 96
-    imageHeight: 96
+  - name: NewPlayer
+    walkingImageSrc: resources/black_knight/asd.png
+    idleImageSrc: resources/black_knight/warriorStanding.png
+    runningImageSrc: resources/black_knight/asd.png
+    attackImageSrc: resources/black_knight/warriorAttack.png
+    idleBlockingImageSrc: resources/black_knight/warriorBlockingAnim.png
+    castSpellImageSrc: resources/black_knight/warriorCastSpell.png
+    hitImageSrc: resources/black_knight/warriorHit.png
+    dieImageSrc: resources/black_knight/warriorDie.png
+    walkingBowImageSrc: resources/black_knight/warriorWalkingBow.png
+    idleBowImageSrc: resources/black_knight/warriorStandingBow.png
+    attackBowImageSrc: resources/black_knight/warriorAttackBow.png
+    castSpellBowImageSrc: resources/black_knight/warriorCastSpellBow.png
+    hitBowImageSrc: resources/black_knight/warriorHitBow.png
+    dieBowImageSrc: resources/black_knight/warriorDieBow.png
+    imageWidth: 128
+    imageHeight: 128
     numberOfClips: 8
-    anchorPixel: [48, 50]
-    baseWidth: 1
-    baseHeight: 1
+    anchorPixel: [64, 70]
+    baseRows: 1
+    baseCols: 1
+    delay: 0.5
+  - name: NewPlayerBlue
+    walkingImageSrc: resources/black_knight/asdBlue.png
+    idleImageSrc: resources/black_knight/warriorStandingBlue.png
+    runningImageSrc: resources/black_knight/asdBlue.png
+    attackImageSrc: resources/black_knight/warriorAttackBlue.png
+    idleBlockingImageSrc: resources/black_knight/warriorBlockingAnimBlue.png
+    imageWidth: 128
+    imageHeight: 128
+    numberOfClips: 4
+    anchorPixel: [64, 70]
+    baseRows: 1
+    baseCols: 1
+    delay: 0.5
 - mobileEntityViews:
   - name: mob
     walkingImageSrc: resources/zombie/zombieWalking.png
@@ -16,14 +43,25 @@
     idleBlockingImageSrc: resources/zombie/zombieWalking.png
     imageWidth: 128
     imageHeight: 128
-    numberOfClips: 4
+    numberOfClips: 8
     anchorPixel: [64, 70]
     baseRows: 1
     baseCols: 1
     delay: 0.5
-- entityViews:
+- entityViews:  
+  - name: lifeheart
+    imageSrc: resources/items/LifeHeart.png
+    imageWidth: 58
+    imageHeight: 50
+    numberOfClips: 1
+    anchorPixel: [20, 20]
+    fps: 30
+    delay: 2 
+    animationRepeats: 7
+    baseRows: 2
+    baseCols: 3  
   - name: windmill
-    imageSrc: resources/windmill.png
+    imageSrc: resources/buildings/windmill.png
     imageWidth: 224
     imageHeight: 240
     numberOfClips: 23
@@ -31,75 +69,119 @@
     fps: 30
     delay: 2 
     animationRepeats: 7
+    baseRows: 2
+    baseCols: 3
   - name: watermill
-    imageSrc: resources/watermill tileset.png
+    imageSrc: resources/buildings/watermill tileset.png
     imageWidth: 242
     imageHeight: 235
     numberOfClips: 31
-    anchorPixel: [85, 112]
+    anchorPixel: [115, 142]
     fps: 20
     delay: 2 
     animationRepeats: 5
+    baseRows: 3
+    baseCols: 4
   - name: aniWater
     imageSrc: resources/aniWater.png
     imageWidth: 68
     imageHeight: 49
     numberOfClips: 6
     anchorPixel: [34, 0]
+    baseRows: 1
+    baseCols: 1
   - name: tree
-    imageSrc: resources/tree.png
-    imageWidth: 128
-    imageHeight: 133
+    imageSrc: resources/tree3.png
+    imageWidth: 102
+    imageHeight: 104
     numberOfClips: 0
-    anchorPixel: [66, 80]
+    anchorPixel: [50, 70]
+    baseRows: 1
+    baseCols: 1
   - name: barracks
-    imageSrc: resources/barracks.png
-    imageWidth: 320
+    imageSrc: resources/buildings/barracks.png
+    imageWidth: 320 
     imageHeight: 290
     numberOfClips: 0
-    anchorPixel: [172, 209]
+    anchorPixel: [155, 195]
+    baseRows: 4
+    baseCols: 4
   - name: farmhouse
-    imageSrc: resources/farmhouse.png
+    imageSrc: resources/buildings/farmhouse.png
     imageWidth: 238
     imageHeight: 290
     numberOfClips: 0
-    anchorPixel: [120, 139]  
+    anchorPixel: [80, 139]
+    baseRows: 4
+    baseCols: 3
   - name: sawmill
-    imageSrc: resources/sawmill.png
+    imageSrc: resources/buildings/sawmill.png
     imageWidth: 276
     imageHeight: 249
     numberOfClips: 0
     anchorPixel: [120, 180]
   - name: chapel
-    imageSrc: resources/chapel.png
+    imageSrc: resources/buildings/chapel.png
     imageWidth: 220
     imageHeight: 227
     numberOfClips: 0
-    anchorPixel: [110, 160] 
+    anchorPixel: [75, 150] 
+    baseRows: 4
+    baseCols: 3
   - name: pottery
-    imageSrc: resources/pottery.png
+    imageSrc: resources/buildings/pottery.png
     imageWidth: 259
     imageHeight: 247
     numberOfClips: 0
-    anchorPixel: [72, 164]  
+    anchorPixel: [120, 150]
+    baseRows: 3
+    baseCols: 3
   - name: portbuilding
-    imageSrc: resources/portbuilding.png
+    imageSrc: resources/buildings/portbuilding.png
     imageWidth: 287
     imageHeight: 299
     numberOfClips: 0
-    anchorPixel: [117, 133]  
+    anchorPixel: [124, 204]  
+    baseRows: 4
+    baseCols: 4
+  - name: Water
+    imageSrc: resources/texturesTiles/sandWater/shallowWater.png
+    imageWidth: 70
+    imageHeight: 50
+    numberOfClips: 0
+    anchorPixel: [35, 0]  
+    baseRows: 1
+    baseCols: 1
+  - name: grave
+    imageSrc: resources/buildings/grave.png
+    imageWidth: 120
+    imageHeight: 160
+    numberOfClips: 0
+    anchorPixel: [57, 96]  
+    baseRows: 1
+    baseCols: 1
+  - name: calavera
+    imageSrc: resources/buildings/clavera.png
+    imageWidth: 80
+    imageHeight: 60
+    numberOfClips: 0
+    anchorPixel: [30, 0]  
+    baseRows: 1
+    baseCols: 1
 - gameConfiguration:
+    serverIP: 127.0.0.1
+    serverPort: 32001
     fps: 30
     delay: 10
-    movementMargin: 50
+    movementMargin: 90
     gameMusic: resources/sound/stalemate.ogg
-    fullscreen: True
-    screenAutoConfig: False
-    defaultScreenHeight: 690
-    defaultScreenWidth: 1280
+    fullscreen: false
+    screenAutoConfig: false
+    defaultScreenHeight: 600
+    defaultScreenWidth: 1000
     defaultBPP: 0
-    menuBackImage: resources/wastelands.jpg
-    menuBackMusic: resources/sound/pirates.ogg
+    menuBackImage: resources/menu/wastelands.jpg
+    menuBackMusic: resources/menu/sound/QuinnLogin.ogg
     tileWidth: 70
     tileHeight: 50
 - tiles:
@@ -129,10 +211,10 @@
     imageSrc: resources/texturesTiles/sandGrass/sandGrassCurveIn135.png
 - mapDimensions: [50, 50]
 - playerLocations:
-  - name: player
-    position: [20, 20, 0]
+  - name: NewPlayer
+    position: [9, 9, 0]
     speed:
-      magnitude: 2
+      magnitude: 4
       direction: [1, 2]
     powers:
       - name: Club
@@ -141,15 +223,18 @@
       - name: Fist
         damage: 3
         range: 1
+    mainPlayer: true
+    viewRange: 400
 - mobileEntityLocations:
   - name: mob
     position: [10, 10, 0]
     speed:
       magnitude: 4
       direction: [1, 2]
+- itemLocations:
+  - name: lifeheart
+    position: [15, 15, 0]
 - entityLocations:
-  - name: tree
-    position: [0, 0, 0]
   - name: chapel
     position: [23, 20, 0]
   - name: portbuilding
@@ -166,7 +251,7 @@
     position: [46, 12, 0]
   - name: tree
     position: [2, 4, 0]
-  - name: tree
+  - name: calavera
     position: [3, 8, 0]
   - name: tree
     position: [15, 10, 0]
@@ -182,13 +267,13 @@
     position: [8, 13, 0]
   - name: farmhouse
     position: [3, 13, 0]
-  - name: tree
+  - name: grave
     position: [29, 25, 0]
-  - name: tree
+  - name: grave
     position: [25, 27, 0]
-  - name: tree
+  - name: grave
     position: [27, 27, 0]
-  - name: tree
+  - name: grave
     position: [29, 27, 0]
   - name: tree
     position: [29, 3, 0]
@@ -200,7 +285,7 @@
     position: [27, 5, 0]
   - name: tree
     position: [29, 5, 0]
-  - name: tree
+  - name: calavera
     position: [27, 7, 0]
   - name: tree
     position: [33, 9, 0]
@@ -224,8 +309,591 @@
     position: [25, 17, 0]
   - name: tree
     position: [27, 17, 0]
-  - name: tree
+  - name: calavera
     position: [35, 17, 0]
+  - name: Water
+    position: [36, 30, 0]
+  - name: Water
+    position: [36, 31, 0]
+  - name: Water
+    position: [36, 32, 0]
+  - name: Water
+    position: [36, 33, 0]
+  - name: Water
+    position: [36, 34, 0]
+  - name: Water
+    position: [36, 35, 0]
+  - name: Water
+    position: [36, 36, 0]
+  - name: Water
+    position: [36, 37, 0]
+  - name: Water
+    position: [36, 38, 0]
+  - name: Water
+    position: [36, 39, 0]
+  - name: Water
+    position: [36, 40, 0]
+  - name: Water
+    position: [36, 41, 0]
+  - name: Water
+    position: [36, 42, 0]
+  - name: Water
+    position: [36, 43, 0]
+  - name: Water
+    position: [36, 44, 0]
+  - name: Water
+    position: [36, 45, 0]
+  - name: Water
+    position: [36, 46, 0]
+  - name: Water
+    position: [36, 47, 0]
+  - name: Water
+    position: [36, 48, 0]
+  - name: Water
+    position: [36, 49, 0]
+  - name: Water
+    position: [37, 30, 0]
+  - name: Water
+    position: [37, 31, 0]
+  - name: Water
+    position: [37, 32, 0]
+  - name: Water
+    position: [37, 33, 0]
+  - name: Water
+    position: [37, 34, 0]
+  - name: Water
+    position: [37, 35, 0]
+  - name: Water
+    position: [37, 36, 0]
+  - name: Water
+    position: [37, 37, 0]
+  - name: Water
+    position: [37, 38, 0]
+  - name: Water
+    position: [37, 39, 0]
+  - name: Water
+    position: [37, 40, 0]
+  - name: Water
+    position: [37, 41, 0]
+  - name: Water
+    position: [37, 42, 0]
+  - name: Water
+    position: [37, 43, 0]
+  - name: Water
+    position: [37, 44, 0]
+  - name: Water
+    position: [37, 45, 0]
+  - name: Water
+    position: [37, 46, 0]
+  - name: Water
+    position: [37, 47, 0]
+  - name: Water
+    position: [37, 48, 0]
+  - name: Water
+    position: [37, 49, 0]
+  - name: Water
+    position: [38, 30, 0]
+  - name: Water
+    position: [38, 31, 0]
+  - name: Water
+    position: [38, 32, 0]
+  - name: Water
+    position: [38, 33, 0]
+  - name: Water
+    position: [38, 34, 0]
+  - name: Water
+    position: [38, 35, 0]
+  - name: Water
+    position: [38, 36, 0]
+  - name: Water
+    position: [38, 37, 0]
+  - name: Water
+    position: [38, 38, 0]
+  - name: Water
+    position: [38, 39, 0]
+  - name: Water
+    position: [38, 40, 0]
+  - name: Water
+    position: [38, 41, 0]
+  - name: Water
+    position: [38, 42, 0]
+  - name: Water
+    position: [38, 43, 0]
+  - name: Water
+    position: [38, 44, 0]
+  - name: Water
+    position: [38, 45, 0]
+  - name: Water
+    position: [38, 46, 0]
+  - name: Water
+    position: [38, 47, 0]
+  - name: Water
+    position: [38, 48, 0]
+  - name: Water
+    position: [38, 49, 0]
+  - name: Water
+    position: [39, 30, 0]
+  - name: Water
+    position: [39, 31, 0]
+  - name: Water
+    position: [39, 32, 0]
+  - name: Water
+    position: [39, 33, 0]
+  - name: Water
+    position: [39, 34, 0]
+  - name: Water
+    position: [39, 35, 0]
+  - name: Water
+    position: [39, 36, 0]
+  - name: Water
+    position: [39, 37, 0]
+  - name: Water
+    position: [39, 38, 0]
+  - name: Water
+    position: [39, 39, 0]
+  - name: Water
+    position: [39, 40, 0]
+  - name: Water
+    position: [39, 41, 0]
+  - name: Water
+    position: [39, 42, 0]
+  - name: Water
+    position: [39, 43, 0]
+  - name: Water
+    position: [39, 44, 0]
+  - name: Water
+    position: [39, 45, 0]
+  - name: Water
+    position: [39, 46, 0]
+  - name: Water
+    position: [39, 47, 0]
+  - name: Water
+    position: [39, 48, 0]
+  - name: Water
+    position: [39, 49, 0]
+  - name: Water
+    position: [40, 30, 0]
+  - name: Water
+    position: [40, 31, 0]
+  - name: Water
+    position: [40, 32, 0]
+  - name: Water
+    position: [40, 33, 0]
+  - name: Water
+    position: [40, 34, 0]
+  - name: Water
+    position: [40, 35, 0]
+  - name: Water
+    position: [40, 36, 0]
+  - name: Water
+    position: [40, 37, 0]
+  - name: Water
+    position: [40, 38, 0]
+  - name: Water
+    position: [40, 39, 0]
+  - name: Water
+    position: [40, 40, 0]
+  - name: Water
+    position: [40, 41, 0]
+  - name: Water
+    position: [40, 42, 0]
+  - name: Water
+    position: [40, 43, 0]
+  - name: Water
+    position: [40, 44, 0]
+  - name: Water
+    position: [40, 45, 0]
+  - name: Water
+    position: [40, 46, 0]
+  - name: Water
+    position: [40, 47, 0]
+  - name: Water
+    position: [40, 48, 0]
+  - name: Water
+    position: [40, 49, 0]
+  - name: Water
+    position: [41, 30, 0]
+  - name: Water
+    position: [41, 31, 0]
+  - name: Water
+    position: [41, 32, 0]
+  - name: Water
+    position: [41, 33, 0]
+  - name: Water
+    position: [41, 34, 0]
+  - name: Water
+    position: [41, 35, 0]
+  - name: Water
+    position: [41, 36, 0]
+  - name: Water
+    position: [41, 37, 0]
+  - name: Water
+    position: [41, 38, 0]
+  - name: Water
+    position: [41, 39, 0]
+  - name: Water
+    position: [41, 40, 0]
+  - name: Water
+    position: [41, 41, 0]
+  - name: Water
+    position: [41, 42, 0]
+  - name: Water
+    position: [41, 43, 0]
+  - name: Water
+    position: [41, 44, 0]
+  - name: Water
+    position: [41, 45, 0]
+  - name: Water
+    position: [41, 46, 0]
+  - name: Water
+    position: [41, 47, 0]
+  - name: Water
+    position: [41, 48, 0]
+  - name: Water
+    position: [41, 49, 0]
+  - name: Water
+    position: [42, 30, 0]
+  - name: Water
+    position: [42, 31, 0]
+  - name: Water
+    position: [42, 32, 0]
+  - name: Water
+    position: [42, 33, 0]
+  - name: Water
+    position: [42, 34, 0]
+  - name: Water
+    position: [42, 35, 0]
+  - name: Water
+    position: [42, 36, 0]
+  - name: Water
+    position: [42, 37, 0]
+  - name: Water
+    position: [42, 38, 0]
+  - name: Water
+    position: [42, 39, 0]
+  - name: Water
+    position: [42, 40, 0]
+  - name: Water
+    position: [42, 41, 0]
+  - name: Water
+    position: [42, 42, 0]
+  - name: Water
+    position: [42, 43, 0]
+  - name: Water
+    position: [42, 44, 0]
+  - name: Water
+    position: [42, 45, 0]
+  - name: Water
+    position: [42, 46, 0]
+  - name: Water
+    position: [42, 47, 0]
+  - name: Water
+    position: [42, 48, 0]
+  - name: Water
+    position: [42, 49, 0]
+  - name: Water
+    position: [43, 30, 0]
+  - name: Water
+    position: [43, 31, 0]
+  - name: Water
+    position: [43, 32, 0]
+  - name: Water
+    position: [43, 33, 0]
+  - name: Water
+    position: [43, 34, 0]
+  - name: Water
+    position: [43, 35, 0]
+  - name: Water
+    position: [43, 36, 0]
+  - name: Water
+    position: [43, 37, 0]
+  - name: Water
+    position: [43, 38, 0]
+  - name: Water
+    position: [43, 39, 0]
+  - name: Water
+    position: [43, 40, 0]
+  - name: Water
+    position: [43, 41, 0]
+  - name: Water
+    position: [43, 42, 0]
+  - name: Water
+    position: [43, 43, 0]
+  - name: Water
+    position: [43, 44, 0]
+  - name: Water
+    position: [43, 45, 0]
+  - name: Water
+    position: [43, 46, 0]
+  - name: Water
+    position: [43, 47, 0]
+  - name: Water
+    position: [43, 48, 0]
+  - name: Water
+    position: [43, 49, 0]
+  - name: Water
+    position: [44, 30, 0]
+  - name: Water
+    position: [44, 31, 0]
+  - name: Water
+    position: [44, 32, 0]
+  - name: Water
+    position: [44, 33, 0]
+  - name: Water
+    position: [44, 34, 0]
+  - name: Water
+    position: [44, 35, 0]
+  - name: Water
+    position: [44, 36, 0]
+  - name: Water
+    position: [44, 37, 0]
+  - name: Water
+    position: [44, 38, 0]
+  - name: Water
+    position: [44, 39, 0]
+  - name: Water
+    position: [44, 40, 0]
+  - name: Water
+    position: [44, 41, 0]
+  - name: Water
+    position: [44, 42, 0]
+  - name: Water
+    position: [44, 43, 0]
+  - name: Water
+    position: [44, 44, 0]
+  - name: Water
+    position: [44, 45, 0]
+  - name: Water
+    position: [44, 46, 0]
+  - name: Water
+    position: [44, 47, 0]
+  - name: Water
+    position: [44, 48, 0]
+  - name: Water
+    position: [44, 49, 0]
+  - name: Water
+    position: [45, 30, 0]
+  - name: Water
+    position: [45, 31, 0]
+  - name: Water
+    position: [45, 32, 0]
+  - name: Water
+    position: [45, 33, 0]
+  - name: Water
+    position: [45, 34, 0]
+  - name: Water
+    position: [45, 35, 0]
+  - name: Water
+    position: [45, 36, 0]
+  - name: Water
+    position: [45, 37, 0]
+  - name: Water
+    position: [45, 38, 0]
+  - name: Water
+    position: [45, 39, 0]
+  - name: Water
+    position: [45, 40, 0]
+  - name: Water
+    position: [45, 41, 0]
+  - name: Water
+    position: [45, 42, 0]
+  - name: Water
+    position: [45, 43, 0]
+  - name: Water
+    position: [45, 44, 0]
+  - name: Water
+    position: [45, 45, 0]
+  - name: Water
+    position: [45, 46, 0]
+  - name: Water
+    position: [45, 47, 0]
+  - name: Water
+    position: [45, 48, 0]
+  - name: Water
+    position: [45, 49, 0]
+  - name: Water
+    position: [46, 30, 0]
+  - name: Water
+    position: [46, 31, 0]
+  - name: Water
+    position: [46, 32, 0]
+  - name: Water
+    position: [46, 33, 0]
+  - name: Water
+    position: [46, 34, 0]
+  - name: Water
+    position: [46, 35, 0]
+  - name: Water
+    position: [46, 36, 0]
+  - name: Water
+    position: [46, 37, 0]
+  - name: Water
+    position: [46, 38, 0]
+  - name: Water
+    position: [46, 39, 0]
+  - name: Water
+    position: [46, 40, 0]
+  - name: Water
+    position: [46, 41, 0]
+  - name: Water
+    position: [46, 42, 0]
+  - name: Water
+    position: [46, 43, 0]
+  - name: Water
+    position: [46, 44, 0]
+  - name: Water
+    position: [46, 45, 0]
+  - name: Water
+    position: [46, 46, 0]
+  - name: Water
+    position: [46, 47, 0]
+  - name: Water
+    position: [46, 48, 0]
+  - name: Water
+    position: [46, 49, 0]
+  - name: Water
+    position: [47, 30, 0]
+  - name: Water
+    position: [47, 31, 0]
+  - name: Water
+    position: [47, 32, 0]
+  - name: Water
+    position: [47, 33, 0]
+  - name: Water
+    position: [47, 34, 0]
+  - name: Water
+    position: [47, 35, 0]
+  - name: Water
+    position: [47, 36, 0]
+  - name: Water
+    position: [47, 37, 0]
+  - name: Water
+    position: [47, 38, 0]
+  - name: Water
+    position: [47, 39, 0]
+  - name: Water
+    position: [47, 40, 0]
+  - name: Water
+    position: [47, 41, 0]
+  - name: Water
+    position: [47, 42, 0]
+  - name: Water
+    position: [47, 43, 0]
+  - name: Water
+    position: [47, 44, 0]
+  - name: Water
+    position: [47, 45, 0]
+  - name: Water
+    position: [47, 46, 0]
+  - name: Water
+    position: [47, 47, 0]
+  - name: Water
+    position: [47, 48, 0]
+  - name: Water
+    position: [47, 49, 0]
+  - name: Water
+    position: [48, 30, 0]
+  - name: Water
+    position: [48, 31, 0]
+  - name: Water
+    position: [48, 32, 0]
+  - name: Water
+    position: [48, 33, 0]
+  - name: Water
+    position: [48, 34, 0]
+  - name: Water
+    position: [48, 35, 0]
+  - name: Water
+    position: [48, 36, 0]
+  - name: Water
+    position: [48, 37, 0]
+  - name: Water
+    position: [48, 38, 0]
+  - name: Water
+    position: [48, 39, 0]
+  - name: Water
+    position: [48, 40, 0]
+  - name: Water
+    position: [48, 41, 0]
+  - name: Water
+    position: [48, 42, 0]
+  - name: Water
+    position: [48, 43, 0]
+  - name: Water
+    position: [48, 44, 0]
+  - name: Water
+    position: [48, 45, 0]
+  - name: Water
+    position: [48, 46, 0]
+  - name: Water
+    position: [48, 47, 0]
+  - name: Water
+    position: [48, 48, 0]
+  - name: Water
+    position: [48, 49, 0]
+  - name: Water
+    position: [49, 30, 0]
+  - name: Water
+    position: [49, 31, 0]
+  - name: Water
+    position: [49, 32, 0]
+  - name: Water
+    position: [49, 33, 0]
+  - name: Water
+    position: [49, 34, 0]
+  - name: Water
+    position: [49, 35, 0]
+  - name: Water
+    position: [49, 36, 0]
+  - name: Water
+    position: [49, 37, 0]
+  - name: Water
+    position: [49, 38, 0]
+  - name: Water
+    position: [49, 39, 0]
+  - name: Water
+    position: [49, 40, 0]
+  - name: Water
+    position: [49, 41, 0]
+  - name: Water
+    position: [49, 42, 0]
+  - name: Water
+    position: [49, 43, 0]
+  - name: Water
+    position: [49, 44, 0]
+  - name: Water
+    position: [49, 45, 0]
+  - name: Water
+    position: [49, 46, 0]
+  - name: Water
+    position: [49, 47, 0]
+  - name: Water
+    position: [49, 48, 0]
+  - name: Water
+    position: [49, 49, 0]
+	#Laberinto del fauno
+  - name: Water
+    position: [18, 10, 0]
+  - name: Water
+    position: [19, 10, 0]
+  - name: Water
+    position: [20, 10, 0]
+  - name: Water
+    position: [21, 10, 0]
+  - name: Water
+    position: [22, 10, 0]
+  - name: Water
+    position: [22, 11, 0]
+  - name: Water
+    position: [22, 12, 0]
+  - name: Water
+    position: [21, 12, 0]
+  - name: Water
+    position: [20, 12, 0]
+  - name: Water
+    position: [19, 12, 0]
+  - name: Water
+    position: [18, 12, 0]
 - tileLocations:
   - position: [0, 7, 0]
     texture: shallowWater
@@ -1580,3 +2248,4 @@
     texture: soil
   - position: [8, 6, 0]
     texture: soil
+
