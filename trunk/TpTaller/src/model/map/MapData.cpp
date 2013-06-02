@@ -78,6 +78,38 @@ void MapData::addEntity(int row, int col, Entity* object) {
 	}
 }
 
+void MapData::addItem(int row, int col, Item* object) {
+	TileData* currentData = getTileData(row, col);
+	currentData->addEntity(object);
+	object->setTile(new Tile(new Coordinates(row,col)));
+
+	Base* base = object->getBase();
+	int baseRow = base->getRows();
+	int baseCol = base->getCols();
+
+	for (int offsetRow = 0; offsetRow < baseRow; offsetRow++) {
+		for (int offsetCol = 0; offsetCol < baseCol; offsetCol++) {
+
+			int currentRow = row + offsetRow - baseRow/2;
+			int currentCol = col + offsetCol - baseCol/2;
+
+			if (currentRow >= 0 && currentRow < nrows &&
+				currentCol >= 0 && currentCol < ncols) {
+
+				currentData = getTileData(currentRow, currentCol);
+
+				//Ponemos una copia
+				Item* copy = new Item(object);
+				currentData->addEntity(copy);
+				copy->setCoordinates(currentRow,currentCol);
+				currentData->setWalkable(false);
+
+			}
+
+		}
+	}
+}
+
 TileData* MapData::getTileData(int row, int col) {
 	if( (row < 0 || row >= nrows) || (col < 0 || col >= ncols) ) {
 		std::cout << "Se esta intentando pedir un tile fuera de rango"
