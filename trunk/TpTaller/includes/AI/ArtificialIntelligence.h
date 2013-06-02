@@ -10,6 +10,7 @@
 
 #include <model/entities/Entity.h>
 #include <model/entities/MobileEntity.h>
+#include <model/map/MapData.h>
 #include <list>
 class ArtificialIntelligence {
 public:
@@ -17,7 +18,7 @@ public:
 	void setEntity(Entity* entity);
 	virtual ~ArtificialIntelligence();
 	void watch();
-	void update();
+	void update(MapData* mapData);
 	bool isAnyEnemyClose();
 	Entity* getNearestEnemy();
 	void attack(Entity* enemy);

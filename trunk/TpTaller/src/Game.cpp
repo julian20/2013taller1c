@@ -330,7 +330,7 @@ void Game::playersUpdate() {
 	}
 	for (list<ArtificialIntelligence*>::iterator autoPlayer = ias.begin();
 			autoPlayer != ias.end(); ++autoPlayer) {
-		(*autoPlayer)->update();
+		(*autoPlayer)->update(mapData);
 		//(*autoPlayer)->setHasChanged(false);
 	}
 

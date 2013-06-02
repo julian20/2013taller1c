@@ -19,7 +19,7 @@ void ArtificialIntelligence::setEntity(Entity* entity)
 {
 	this->entity=entity;
 }
-void ArtificialIntelligence::update()
+void ArtificialIntelligence::update(MapData* mapData)
 {
 	if(this->isAnyEnemyClose())
 	{
@@ -27,8 +27,14 @@ void ArtificialIntelligence::update()
 			this->attack(enemy);
 	}else
 	{
-		if(entity->getClassName() == "MobileEntity") this->watch();
+		if(entity->getClassName() == "MobileEntity")
+		{
+			this->watch();
+			MobileEntity* mob= (MobileEntity*)entity;
+			mob->update(mapData);
+		}
 	}
+
 }
 bool ArtificialIntelligence::isAnyEnemyClose()
 {
