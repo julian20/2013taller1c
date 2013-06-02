@@ -25,6 +25,9 @@ public:
 	MobileEntityUpdate();
 	virtual ~MobileEntityUpdate();
 
+	void setId(int id);
+	int getId();
+
 	void setName(string MobileEntityName);
 	string getName();
 
@@ -52,7 +55,7 @@ public:
 	void setLife(int life);
 	int getLife();
 protected:
-
+	int id;
 	string name;
 
 	Vector3* currentPos;

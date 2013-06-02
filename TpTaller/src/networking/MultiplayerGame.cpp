@@ -116,6 +116,8 @@ vector<ChatUpdate*> MultiplayerGame::getChatUpdates()
 
 		return updates;
 }
+
+
 vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 
 	vector<PlayerUpdate*> updates;
@@ -129,6 +131,22 @@ vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 	return updates;
 
 }
+
+
+vector<MobileEntityUpdate*> MultiplayerGame::getMobileEntitiesUpdates(){
+
+	vector<MobileEntityUpdate*> updates;
+	for (map<int,MobileEntity*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
+
+		MobileEntityUpdate* update = (it->second)->generateMobileEntityUpdate(it->first);
+		if (update)
+			updates.push_back(update);
+	}
+
+	return updates;
+
+}
+
 
 list<Player*> MultiplayerGame::getPlayers() {
 	return this->players;

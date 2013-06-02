@@ -34,6 +34,7 @@ public:
 	Server(int port);
 
 	void run(MultiplayerGame* game);
+	void runMainLoop(int clientSocket, string playerName);
 
 	void sendMap(string mapfile,int sockID);
 	void sendFiles(vector<string> wBase, vector<string> woBase, int sockID);
