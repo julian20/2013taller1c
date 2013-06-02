@@ -27,6 +27,7 @@ Entity::Entity() {
 	this->magic = 50;
 	this->team = 0;
 	this->killedBy = 0;
+	this->positionInitialized = false;
 }
 
 Entity::Entity(Entity* entity) {
@@ -42,12 +43,17 @@ Entity::Entity(Entity* entity) {
 	this->currentTile = NULL;
 	this->team = entity->getTeam();
 	this->killedBy = entity->getKilledBy();
+	this->positionInitialized = entity->getPositionInitialized();
+}
+
+bool Entity::getPositionInitialized() {
+
 }
 
 void Entity::setPos(float x, float y, float z) {
 	currentPos->setValues(x, y, z);
-	coord->changeTo((int) x / Tile::computePositionTile(0, 0).w,
-			(int) y / Tile::computePositionTile(0, 0).h);
+	//coord->changeTo((int) x / Tile::computePositionTile(0, 0).w,
+	//		(int) y / Tile::computePositionTile(0, 0).h);
 }
 bool Entity::isMobile()
 {
@@ -77,6 +83,13 @@ void Entity::setCoordinates(int row, int col) {
 	}
 
 	coord->changeTo(row, col);
+	if (!positionInitialized) {
+		Position* pos = Tile::computePosition(row, col);
+		setPos(pos->getX(), pos->getY(), pos->getZ());
+		delete pos;
+
+		positionInitialized = true;
+	}
 }
 
 string Entity::getClassName() {
