@@ -133,41 +133,15 @@ void MapData::addPlayer(int row, int col, Player* player) {
 
 }
 
-void MapData::addMobileEntity(int row, int col, MobileEntity* player) {
+void MapData::addMobileEntity(int row, int col, MobileEntity* mobileEntity) {
 	TileData* tileData = getTileData(row, col);
 
-	Tile* personajeTile = new Tile(new Coordinates(row, col));
+	Tile* entityTile = new Tile(new Coordinates(row, col));
 	Tile* current;
-	if (tileData->isWalkable()) {	// Si el tile es transitable se agrega el personaje ahi
-		tileData->setMobileEntity(player);
+	
+	tileData->setMobileEntity(mobileEntity);
 
-		player->setTile(personajeTile);
-	} else {	// Si no lo es se lo agrega a una posicion adyacente
-		TileData* currentData;
-		Coordinates currentCoords;
-		map<int, Tile *> tilesContainer;// Uso esto para ir guardando los punteros
-		list<Tile *> neighborTiles = getNeighborTiles(personajeTile, &tilesContainer, true);
-
-		list<Tile *>::const_iterator iter;
-		for (iter = neighborTiles.begin(); iter != neighborTiles.end(); ++iter) {
-			current = *iter;
-
-			currentCoords.setRow(current->getCoordinates().getRow());
-			currentCoords.setCol(current->getCoordinates().getCol());
-			currentData = getTileData(currentCoords);
-			if ( currentData->isWalkable() )
-				break;
-		}
-
-		currentData->setMobileEntity(player);
-
-		delete personajeTile;
-		Tile* personajeTile = new Tile(new Coordinates(currentCoords.getRow(),
-													   currentCoords.getCol()));
-		player->setTile(personajeTile);
-		player->moveImmediately(currentCoords);
-		player->setCoordinates(currentCoords.getRow(), currentCoords.getCol());
-	}
+	mobileEntity->setTile(entityTile);
 
 }
 
