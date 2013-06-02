@@ -78,6 +78,10 @@ bool MobileEntity::isRunning() {
 	return false;
 }
 
+float MobileEntity::getLastAttackingDirecton() {
+	return lastAttackingDirection;
+}
+
 void MobileEntity::moveImmediately(Coordinates coords) {
 	Coordinates* newCoords = new Coordinates(coords);
 	Tile* tile = new Tile(newCoords);
@@ -88,6 +92,18 @@ void MobileEntity::moveImmediately(Coordinates coords) {
 	delete tile;
 
 	this->hasChanged = true;
+}
+
+void MobileEntity::lookAtEnemy() {
+	Vector3* enemyPos = attackToEntity->getCurrentPos();
+
+	Vector3 attackerDirection;
+	attackerDirection.setValues(enemyPos->getX() - currentPos->getX(),
+								enemyPos->getY() - currentPos->getY(),
+								enemyPos->getZ() - currentPos->getZ());
+
+	lastAttackingDirection = attackerDirection.getAngle();
+	std::cout << lastAttackingDirection << std::endl;
 }
 
 void MobileEntity::checkAttackToNewPos(MapData* mapData) {
@@ -104,6 +120,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		// Solo vamos a poder colisionar con Entity, y nunca podremos
 		// diferenciar si es un player, un item, o que.
 		this->reverseCollide(attackToEntity);
+		lookAtEnemy();
 //		cancelAttack();
 		attackToEntity = NULL;
 		return;

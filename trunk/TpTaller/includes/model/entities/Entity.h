@@ -61,6 +61,7 @@ public:
 	int getKilledBy();
 	void setTeam(int team);
 	void setKilledBy(int team);
+	bool getPositionInitialized();
 protected:
 	Vector3* currentPos;
 	Base* base;
@@ -75,6 +76,8 @@ protected:
 	// Mission manager.
 	int team;
 	int killedBy;
+private:
+	bool positionInitialized;
 };
 
 #endif /* ENTITY_H_ */

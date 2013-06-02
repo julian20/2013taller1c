@@ -77,6 +77,7 @@ public:
 	virtual Tile* getTile();
 	list<PlayerEvent*> getPlayerEvents();
 	void addEvent(PlayerEvent* event);
+	float getLastAttackingDirecton();
 protected:
 	void loadNextPosition();
 	void emptyPath();
@@ -93,9 +94,11 @@ protected:
 	Timer attackTimer;
 private:
 	void checkAttackToNewPos(MapData* mapData);
+	void lookAtEnemy();
 
 	Entity* attackToEntity;
 	list<PlayerEvent*>events;
+	float lastAttackingDirection;
 };
 
 #endif /* MOBILEENTITY_H_ */
