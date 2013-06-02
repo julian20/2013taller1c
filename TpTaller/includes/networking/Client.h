@@ -33,6 +33,8 @@ public:
 	void recvNewName();
 	void addLocalPlayer();
 
+	bool recvGameState();
+
 	bool exchangeAliveSignals();
 	void checkNewPlayers();
 	void sendEvents();

@@ -92,6 +92,14 @@ void* transmit(void* _client) {
 			break;
 		}
 
+		bool gameHasEnded = client->recvGameState();
+
+		if (gameHasEnded) {
+			Popup::popupWindow(string("El juego termino"));
+			game->setInactive();
+			break;
+		}
+
 		client->checkNewPlayers();
 
 		client->sendEvents();
@@ -421,6 +429,15 @@ void Client::updatePlayers(map<string, PlayerUpdate*> updates) {
 		delete it->second;
 	}
 
+}
+
+bool Client::recvGameState() {
+	int stateNumber = ComunicationUtils::recvNumber(clientID);
+
+	if (stateNumber == 0) return false;
+	else if (stateNumber == 1) return true;
+
+	return false;
 }
 
 /* ************************ CLIENT GETTERS ************************* */
