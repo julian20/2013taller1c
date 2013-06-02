@@ -5,7 +5,7 @@
  *      Author: gonchub
  */
 
-#include <model/entities/LifeHeart.h>
+#include <model/entities/Items/LifeHeart.h>
 
 LifeHeart::LifeHeart() {
 }

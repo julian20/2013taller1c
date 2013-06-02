@@ -10,7 +10,7 @@
 
 #include <model/entities/Entity.h>
 #include <model/entities/MobileEntity.h>
-#include <model/entities/Item.h>
+#include <model/entities/Items/Item.h>
 
 using namespace std;
 

@@ -8,8 +8,8 @@
 #include <model/entities/Entity.h>
 #include <model/map/Tile.h>
 #include <model/entities/MobileEntity.h>
-#include <model/entities/Item.h>
-#include <model/entities/LifeHeart.h>
+#include <model/entities/Items/Item.h>
+#include <model/entities/Items/LifeHeart.h>
 
 #include <vector>
 #include <stdio.h>

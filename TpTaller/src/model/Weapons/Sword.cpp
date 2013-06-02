@@ -8,9 +8,9 @@
 #include <model/Weapons/Sword.h>
 
 Sword::Sword() {
-	this->damage=2;
-	this->range=1;
-	this->accuracy=10;
+	this->damage=0;
+	this->range=0;
+	this->accuracy=0;
 
 }
 
