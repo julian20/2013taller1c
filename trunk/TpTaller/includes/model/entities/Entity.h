@@ -45,8 +45,9 @@ public:
 
 	list<Entity*> getVisibleEnemies();
 	virtual int getLife();
+	virtual int getMagic();
 	virtual void setLife(int life);
-
+	virtual void setMagic(int magic);
 	void setTile(Tile* _tile);
 	virtual Tile* getTile();
 	bool isMobile();

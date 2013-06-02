@@ -25,6 +25,7 @@ Player::Player() {
 	sword->setAccuracy(10);
 	sword->setDamage(10);
 	sword->setRange(1);
+	sword->setMagic(0);
 	weapons->push_front(sword);
 	isActive = true;
 	attacking = false;
@@ -52,8 +53,13 @@ void Player::reverseCollide(Entity* entity) {
 void Player::attack(Entity* entity) {
 	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
 		attacking = true;
-		Weapon* weaponToUse = weapons->front();
-		weaponToUse->attack(entity);
+		//this->magic--;
+		if(magic>0)
+		{
+			Weapon* weaponToUse = weapons->front();
+			weaponToUse->attack(entity);
+			this->magic-=weaponToUse->getMagic();
+		}
 	}
 
 }
@@ -113,6 +119,7 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setTile(this->currentTile);
 	update->setInitCoordinates(this->coord);
 	update->setLife(this->life);
+	update->setMagic(this->magic);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {

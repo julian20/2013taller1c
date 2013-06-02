@@ -121,6 +121,9 @@ void Entity::setName(std::string name) {
 int Entity::getLife() {
 	return this->life;
 }
+int Entity::getMagic() {
+	return this->magic;
+}
 
 void Entity::setTile(Tile* _tile) {
 	if (this->currentTile)
@@ -183,6 +186,9 @@ void Entity::collideTo(LifeHeart* heart) {
 
 void Entity::setLife(int life) {
 	this->life = life;
+}
+void Entity::setMagic(int magic) {
+	this->magic = magic;
 }
 
 Entity::~Entity() {

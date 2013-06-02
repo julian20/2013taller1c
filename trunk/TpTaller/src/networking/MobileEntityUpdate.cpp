@@ -44,9 +44,15 @@ Vector3* MobileEntityUpdate::getCurrentPos(){
 void MobileEntityUpdate::setLife(int life){
 	this->life = life;
 }
+void MobileEntityUpdate::setMagic(int magic){
+	this->magic = magic;
+}
 
 int MobileEntityUpdate::getLife(){
 	return life;
+}
+int MobileEntityUpdate::getMagic(){
+	return magic;
 }
 
 void MobileEntityUpdate::setCurrentPos(Vector3* currentPos){
