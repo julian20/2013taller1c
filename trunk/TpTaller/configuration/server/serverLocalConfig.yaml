@@ -50,13 +50,13 @@
     delay: 0.5
 - entityViews:          
   - name: lifeheart
-    imageSrc: resources/items/LifeHeart.png
-    imageWidth: 58
-    imageHeight: 50
-    numberOfClips: 0
-    anchorPixel: [20, 20]
-    fps: 30
-    delay: 2 
+    imageSrc: resources/items/heart.png
+    imageWidth: 64
+    imageHeight: 64
+    numberOfClips: 3
+    anchorPixel: [32, 20]
+    fps: 8
+    delay: 0 
     animationRepeats: 7
     baseRows: 1
     baseCols: 1  
