@@ -1854,7 +1854,7 @@ void assignItems(MapData* mapData, std::vector<Item*> items) {
 	for (unsigned i = 0; i < items.size(); i++) {
 		Item* currentItem = items[i];
 		Coordinates coor = currentItem->getCoordinates();
-		mapData->addEntity(coor.getRow(), coor.getCol(), currentItem);
+		mapData->addItem(coor.getRow(), coor.getCol(), currentItem);
 	}
 }
 

@@ -120,7 +120,8 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		// Solo vamos a poder colisionar con Entity, y nunca podremos
 		// diferenciar si es un player, un item, o que.
 		Entity& attackReference = *attackToEntity;
-		this->reverseCollide(attackReference);
+		MobileEntity& thisMobileEntity = *this;
+		thisMobileEntity.reverseCollide(attackReference);
 		lookAtEnemy();
 //		cancelAttack();
 		attackToEntity = NULL;

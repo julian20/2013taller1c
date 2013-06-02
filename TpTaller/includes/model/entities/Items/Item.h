@@ -16,6 +16,7 @@ using namespace std;
 class Item: public Entity {
 public:
 	Item();
+	Item(Item* item);
 	virtual string getClassName();
 	virtual void applyEffects(Entity& entity);
 	virtual void applyEffects(MobileEntity& entity);
