@@ -24,6 +24,7 @@ Entity::Entity() {
 	this->base = new Base();
 	this->name = "";
 	this->life = 100;
+	this->magic = 50;
 	this->team = 0;
 	this->killedBy = 0;
 }
