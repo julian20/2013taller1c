@@ -27,7 +27,7 @@
 #define HP_BAR_HEIGHT 10
 #define EMPTY_BAR_IMG "resources/misc/HPBarEmpty.png"
 #define FULL_BAR_IMG "resources/misc/HPBarFull.png"
-
+#define FULL_MP_BAR_IMG "resources/misc/MPBarFull.png"
 PlayerView::PlayerView()
 //Llamamos al constructor de la superclase
 :
@@ -141,7 +141,6 @@ void PlayerView::blitHPBar(SDL_Surface* screen, int x, int y) {
 	SDL_Surface* scaledBar = rotozoomSurfaceXY(emptyBarTemp, 0, xScale, 1, 0);
 	SDL_Surface* emptyBar = SDL_DisplayFormatAlpha(scaledBar);
 	SDL_FreeSurface(emptyBarTemp);
-	SDL_FreeSurface(scaledBar);
 
 	SDL_Rect offsetEmpty;
 	int h = Tile::computePositionTile(0, 0).h;
@@ -180,6 +179,41 @@ void PlayerView::blitHPBar(SDL_Surface* screen, int x, int y) {
 	SDL_BlitSurface(bar, &size, screen, &offsetHP);
 	SDL_FreeSurface(bar);
 
+	//Mp bar
+
+	float yScale = 0.5;
+	SDL_Surface* emptyMPBar = rotozoomSurfaceXY(scaledBar, 0, 1, yScale, 0);
+	offsetEmpty.x = (int) x + camPos->getX() - nameImage->w / 2 + 14;
+	offsetEmpty.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2
+			- 20 + nameImage->h + emptyMPBar->h / yScale;
+
+	SDL_BlitSurface(emptyMPBar, NULL, screen, &offsetEmpty);
+	SDL_FreeSurface(scaledBar);
+
+
+	SDL_Surface* fullMPBarTemp = IMG_Load(FULL_MP_BAR_IMG);
+	SDL_Surface* scaledFullMPBar = rotozoomSurfaceXY(fullMPBarTemp, 0, xScale2, yScale,
+			0);
+	SDL_Surface* MPbar = SDL_DisplayFormatAlpha(scaledFullMPBar);
+	SDL_FreeSurface(fullMPBarTemp);
+	SDL_FreeSurface(scaledFullMPBar);
+
+	SDL_Rect MPsize;
+	MPsize.x = 0;
+	MPsize.y = 0;
+	MPsize.h = MPbar->h;
+	float mpSize = (float) player->getMagic() / 100 * HP_BAR_WIDTH;
+	MPsize.w = (int) mpSize;
+	cout << player->getMagic()<<endl;
+
+	SDL_Rect offsetMP;
+	offsetMP.x = (int) x + camPos->getX() - nameImage->w / 2 + 14;
+	offsetMP.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2
+			- 20 + nameImage->h + emptyMPBar->h / yScale;
+
+	SDL_BlitSurface(MPbar, &MPsize, screen, &offsetMP);
+	SDL_FreeSurface(emptyMPBar);
+	SDL_FreeSurface(MPbar);
 }
 void PlayerView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 
@@ -388,7 +422,6 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	else
 		direction = movementDirection->getAngle();
 	delete v;
-
 
 	SpriteType sprite = computeDirection(direction);
 
