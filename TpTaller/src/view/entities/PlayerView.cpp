@@ -39,7 +39,7 @@ PlayerView::PlayerView()
 	movable = true;
 	direction = DOWN;
 	wasStanding = true;
-	attacking = attacked = false;
+	attacking = attacked = loaded =false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -64,7 +64,7 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	movable = true;
 	direction = DOWN;
 	wasStanding = true;
-	attacking = attacked = false;
+	attacking = attacked = loaded=false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -135,9 +135,7 @@ void PlayerView::blitName(SDL_Surface* screen, int x, int y) {
 }
 
 void PlayerView::blitHPBar(SDL_Surface* screen, int x, int y) {
-
-
-	//Emtpy bar
+	//Empty bar
 	SDL_Surface* emptyBarTemp = IMG_Load(EMPTY_BAR_IMG);
 	float xScale = (HP_BAR_WIDTH*1.005)/emptyBarTemp->w;
 	SDL_Surface* scaledBar = rotozoomSurfaceXY(emptyBarTemp,0,xScale,1,0);
@@ -280,7 +278,7 @@ map<string, FoggedSprite> PlayerView::loadBowImages() {
 }
 
 void PlayerView::loadPlayerImage() {
-
+	previousLife = player->getLife();
 	weaponViewMap[string("sword")] = loadSwordImages();
 
 	weaponViewMap[string("bow")] = loadBowImages();
@@ -309,8 +307,6 @@ void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo,
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 
-	//TODO - deberia ser numberOfClips-1 pero parece q esta mal la imagen ?¿
-
 	//Apply delay
 	if (currentClip < (numberOfClips - 1)
 			&& timeSinceLastAnimation >= delay * 1000) {
@@ -332,18 +328,23 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	//cosas del sound
 	string walkID = string("walk");
 	string attackID = string("attack");
-	if (this->image == NULL) {
+	if (!loaded) {
+		loaded =true;
 		loadPlayerImage();
-		previousLife = player->getLife();
 		damageReceivedTimer.start();
 	}
+	int life = player->getLife();
 	if (marco >= numberOfClips) {
 		marco = 0;
+		previousLife = life;
 		if (player->isAttacking()) {
 			player->cancelAttack();
 			attacking = false;
 			player->addEvent(new PlayerEvent(EVENT_CANCEL_ATTACK));
 			SoundEffectHandler::stopSound(attackID);
+		}
+		if (attacked){
+			attacked = false;
 		}
 		if (player->isBlocking())
 			marco = spriteMap[string("blocking")].numberOfClips - 1;
@@ -388,6 +389,15 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	spriteMap = weaponViewMap[string("sword")];
 
 	FoggedSprite spriteToBeShown;
+
+	if (previousLife!=life){
+		cout << previousLife << ":"<< life<<endl;
+		attacked = true;
+		if (marco>=spriteMap[string("hit")].numberOfClips)
+			marco = 0;
+		player->stop();
+		spriteToBeShown = spriteMap[string("hit")];
+	}
 	if (player->isAttacking()) {
 
 		//Si se estaba moviendo, reseteamos el marco para que no quede un # de clip invalido
@@ -406,7 +416,6 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		player->stop();
 		spriteToBeShown = spriteMap[string("blocking")];
 	}
-
 	if (player->IsMoving()) {
 		SoundEffectHandler::stopSound(attackID);
 		if (!SoundEffectHandler::isSoundPlaying(walkID))
@@ -416,7 +425,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		SoundEffectHandler::stopSound(walkID);
 
 	if (!player->IsMoving() && !player->isAttacking()
-			&& !player->isBlocking()) {
+			&& !player->isBlocking() && previousLife==life) {
 		if (!wasStanding) {
 			timer.start();
 			wasStanding = true;
