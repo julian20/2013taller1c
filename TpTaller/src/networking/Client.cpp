@@ -95,7 +95,7 @@ void* transmit(void* _client) {
 		bool gameHasEnded = client->recvGameState();
 
 		if (gameHasEnded) {
-			Popup::popupWindow(string("El juego termino"));
+			Popup::alertWindow(string("El juego termino"));
 			game->setInactive();
 			break;
 		}
