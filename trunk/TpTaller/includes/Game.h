@@ -35,6 +35,7 @@
 #include <view/Animation.h>
 #include <AI/ArtificialIntelligence.h>
 
+using namespace std;
 class Game {
 public:
         Game(PersistentConfiguration* configuration, bool multiplayer);
@@ -78,7 +79,7 @@ private:
 
         list<Player*> otherPlayers;
         list<PlayerView*> otherPlayerViews;
-
+        list<ArtificialIntelligence*> ias;
         MapController* mapController;
         MapCameraController* cameraController;
 
@@ -105,7 +106,7 @@ private:
         Animation clickAnimation;
     	SDL_Rect clickedLocation;
 
-    	map<string,ArtificialIntelligence*>* iaMap;
+
 
     	map<int,MobileEntity*> mobileEntities;
 };
