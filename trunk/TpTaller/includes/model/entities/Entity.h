@@ -46,6 +46,7 @@ public:
 	list<Entity*> getVisibleEnemies();
 	virtual int getLife();
 	virtual void setLife(int life);
+
 	void setTile(Tile* _tile);
 	virtual Tile* getTile();
 	bool isMobile();
@@ -66,6 +67,7 @@ protected:
 	std::string name;
 	Coordinates* coord;
 	int life;
+	int magic;
 	bool mobile;
 	list<Entity*> enemies;
 	Tile* currentTile;

@@ -19,6 +19,9 @@ public:
 	void setDamage(int damage);
 	void setAccuracy(int accuracy);
 	void setRange(int range);
+	int getDamage();
+	int getRange();
+	int getAccuracy();
 
 protected:
 	int damage;

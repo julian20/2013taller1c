@@ -20,6 +20,18 @@ void Weapon::setDamage(int damage)
 {
 	this->damage=damage;
 }
+int Weapon::getDamage()
+{
+	return this->damage;
+}
+int Weapon::getAccuracy()
+{
+	return this->accuracy;
+}
+int Weapon::getRange()
+{
+	return this->range;
+}
 void Weapon::setAccuracy(int accuracy)
 {
 	if(accuracy> MAXACCURACY) this->accuracy=MAXACCURACY;
