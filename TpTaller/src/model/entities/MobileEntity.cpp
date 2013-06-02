@@ -103,7 +103,6 @@ void MobileEntity::lookAtEnemy() {
 								enemyPos->getZ() - currentPos->getZ());
 
 	lastAttackingDirection = attackerDirection.getAngle();
-	std::cout << lastAttackingDirection << std::endl;
 }
 
 void MobileEntity::checkAttackToNewPos(MapData* mapData) {
@@ -232,14 +231,10 @@ void MobileEntity::loadNextPosition() {
 Vector2* MobileEntity::getMovementDirection() {
 	Vector2* moveDirection = new Vector2(endPos->getX() - currentPos->getX(),
 			endPos->getY() - currentPos->getY());
-	Vector2* v = new Vector2(0, 0);
 
-	if (moveDirection->isEqual(v)) {
-		delete v;
+	if (moveDirection->getNorm() == 0) {
 		return moveDirection;
 	}
-
-	delete v;
 
 	moveDirection->normalize();
 
@@ -368,6 +363,7 @@ ostream& operator <<(std::ostream& out, const MobileEntity& MobileEntity) {
 
 	out << *(MobileEntity.currentTile);
 	out << " " << MobileEntity.life << " " << MobileEntity.team;
+	out << " " << MobileEntity.lastAttackingDirection;
 	return out;
 }
 
@@ -399,6 +395,9 @@ istream& operator >>(std::istream& in, MobileEntity& MobileEntity) {
 	int team;
 	in >> team;
 	MobileEntity.team = team;
+	float lastDir;
+	in >> lastDir;
+	MobileEntity.lastAttackingDirection = lastDir;
 	return in;
 }
 

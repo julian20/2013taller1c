@@ -205,12 +205,14 @@ void MobileEntityView::Show(SDL_Surface* fondo, bool drawFog) {
 	Vector2* movementDirection = this->mobileEntity->getMovementDirection();
 	float direction;
 
-	Vector2* v = new Vector2(0, 0);
-	if (movementDirection->isEqual(v))
-		direction = lastDirection;
-	else
+	if (movementDirection->getNorm() == 0) {
+		if (mobileEntity->isAttacking())
+			direction = mobileEntity->getLastAttackingDirecton();
+		else
+			direction = lastDirection;
+	} else {
 		direction = movementDirection->getAngle();
-	delete v;
+	}
 
 	SpriteType sprite = DOWN;
 

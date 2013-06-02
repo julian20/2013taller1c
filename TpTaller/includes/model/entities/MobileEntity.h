@@ -92,13 +92,13 @@ protected:
 	bool hasChanged;
 	int team;
 	Timer attackTimer;
+	float lastAttackingDirection;
 private:
 	void checkAttackToNewPos(MapData* mapData);
 	void lookAtEnemy();
 
 	Entity* attackToEntity;
 	list<PlayerEvent*>events;
-	float lastAttackingDirection;
 };
 
 #endif /* MOBILEENTITY_H_ */
