@@ -68,7 +68,7 @@ private:
 
 	void blitName(SDL_Surface* screen, int x, int y);
 	void blitHPBar(SDL_Surface* screen, int x, int y);
-
+	void showCorpse(SDL_Surface* fondo, bool drawFog, SpriteType sprite);
 	ChatWindowsView* chatView;
 	map<int, Uint32> teamColors;
 

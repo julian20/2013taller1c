@@ -19,6 +19,7 @@ Player::Player() {
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	this->weapons = new list<Weapon*>;
+	this->team = 2;
 	//TODO: sacar este harcode. tendria q venir de yaml
 	Sword* sword = new Sword();
 	sword->setAccuracy(10);
@@ -138,6 +139,7 @@ Player::Player(string name, Position* position, Speed* speed,
 	isActive = true;
 	mainPlayer = true;
 	viewRange = 200;
+
 }
 
 Player::~Player() {
