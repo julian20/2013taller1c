@@ -39,7 +39,7 @@ PlayerView::PlayerView()
 	movable = true;
 	direction = DOWN;
 	wasStanding = true;
-	attacking = attacked = loaded =false;
+	attacking = attacked = loaded = false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -64,7 +64,7 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	movable = true;
 	direction = DOWN;
 	wasStanding = true;
-	attacking = attacked = loaded=false;
+	attacking = attacked = loaded = false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -137,8 +137,8 @@ void PlayerView::blitName(SDL_Surface* screen, int x, int y) {
 void PlayerView::blitHPBar(SDL_Surface* screen, int x, int y) {
 	//Empty bar
 	SDL_Surface* emptyBarTemp = IMG_Load(EMPTY_BAR_IMG);
-	float xScale = (HP_BAR_WIDTH*1.005)/emptyBarTemp->w;
-	SDL_Surface* scaledBar = rotozoomSurfaceXY(emptyBarTemp,0,xScale,1,0);
+	float xScale = (HP_BAR_WIDTH * 1.005) / emptyBarTemp->w;
+	SDL_Surface* scaledBar = rotozoomSurfaceXY(emptyBarTemp, 0, xScale, 1, 0);
 	SDL_Surface* emptyBar = SDL_DisplayFormatAlpha(scaledBar);
 	SDL_FreeSurface(emptyBarTemp);
 	SDL_FreeSurface(scaledBar);
@@ -158,18 +158,19 @@ void PlayerView::blitHPBar(SDL_Surface* screen, int x, int y) {
 		life = 0;
 
 	SDL_Surface* fullBarTemp = IMG_Load(FULL_BAR_IMG);
-	float xScale2 = (float)HP_BAR_WIDTH/fullBarTemp->w;
-	SDL_Surface* scaledFullBar = rotozoomSurfaceXY(fullBarTemp,0,xScale2,1,0);
+	float xScale2 = (float) HP_BAR_WIDTH / fullBarTemp->w;
+	SDL_Surface* scaledFullBar = rotozoomSurfaceXY(fullBarTemp, 0, xScale2, 1,
+			0);
 	SDL_Surface* bar = SDL_DisplayFormatAlpha(scaledFullBar);
 	SDL_FreeSurface(fullBarTemp);
 	SDL_FreeSurface(scaledFullBar);
 
 	SDL_Rect size;
-	size.x=0;
-	size.y=0;
+	size.x = 0;
+	size.y = 0;
 	size.h = bar->h;
-	float hpSize = (float)life/100*HP_BAR_WIDTH;
-	size.w = (int)hpSize ;
+	float hpSize = (float) life / 100 * HP_BAR_WIDTH;
+	size.w = (int) hpSize;
 
 	SDL_Rect offsetHP;
 	offsetHP.x = (int) x + camPos->getX() - nameImage->w / 2 + 14;
@@ -177,7 +178,7 @@ void PlayerView::blitHPBar(SDL_Surface* screen, int x, int y) {
 			- 20 + nameImage->h;
 
 	SDL_BlitSurface(bar, &size, screen, &offsetHP);
-	SDL_FreeSurface (bar);
+	SDL_FreeSurface(bar);
 
 }
 void PlayerView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
@@ -324,48 +325,22 @@ void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo,
 
 }
 
-void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
-	//cosas del sound
-	string walkID = string("walk");
-	string attackID = string("attack");
-	if (!loaded) {
-		loaded =true;
-		loadPlayerImage();
-		damageReceivedTimer.start();
-	}
-	int life = player->getLife();
-	if (marco >= numberOfClips) {
-		marco = 0;
-		previousLife = life;
-		if (player->isAttacking()) {
-			player->cancelAttack();
-			attacking = false;
-			player->addEvent(new PlayerEvent(EVENT_CANCEL_ATTACK));
-			SoundEffectHandler::stopSound(attackID);
-		}
-		if (attacked){
-			attacked = false;
-		}
-		if (player->isBlocking())
-			marco = spriteMap[string("blocking")].numberOfClips - 1;
-	}
+void PlayerView::showCorpse(SDL_Surface* fondo, bool drawFog,
+		SpriteType sprite) {
+	marco = spriteMap[string("die")].numberOfClips - 1;
+	wasStanding = false;
+	currentSprite = sprite;
+	image = spriteMap[string("die")].image;
+	fogImage = spriteMap[string("die")].foggedImage;
+	teamColorImage = spriteMap[string("die")].teamColorImage;
+	numberOfClips = spriteMap[string("die")].numberOfClips;
+	lastDirection = direction;
+	playAnimation(sprite, fondo, drawFog);
+}
 
-	Vector2* movementDirection = this->player->getMovementDirection();
-	float direction;
-
-	if (movementDirection->getNorm() == 0) {
-		if (player->isAttacking())
-			direction = player->getLastAttackingDirecton();
-		else
-			direction = lastDirection;
-	} else {
-		direction = movementDirection->getAngle();
-	}
-
-	SpriteType sprite = DOWN;
-
+SpriteType computeDirection(float direction) {
 	const float step = M_PI * 1 / 8;
-
+	SpriteType sprite = DOWN;
 	if (step * 15 < direction || direction < step)
 		sprite = RIGHT;
 	else if (step < direction && direction < step * 3)
@@ -383,6 +358,61 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	else if (step * 13 < direction && direction < step * 15)
 		sprite = UP_RIGHT;
 
+	return sprite;
+}
+
+void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
+	//cosas del sound
+	string walkID = string("walk");
+	string attackID = string("attack");
+	if (!loaded) {
+		loaded = true;
+		loadPlayerImage();
+		damageReceivedTimer.start();
+	}
+	Vector2* movementDirection = this->player->getMovementDirection();
+	float direction;
+
+	if (movementDirection->getNorm() == 0) {
+		if (player->isAttacking())
+			direction = player->getLastAttackingDirecton();
+		else
+			direction = lastDirection;
+	} else {
+		direction = movementDirection->getAngle();
+	}
+
+	Vector2* v = new Vector2(0, 0);
+	if (movementDirection->isEqual(v))
+		direction = lastDirection;
+	else
+		direction = movementDirection->getAngle();
+	delete v;
+
+
+	SpriteType sprite = computeDirection(direction);
+
+	int life = player->getLife();
+	if (player->isDead()) {
+		showCorpse(fondo, drawFog, sprite);
+		return;
+	}
+	if (marco >= numberOfClips) {
+		marco = 0;
+		previousLife = life;
+		if (player->isAttacking()) {
+			player->cancelAttack();
+			attacking = false;
+			player->addEvent(new PlayerEvent(EVENT_CANCEL_ATTACK));
+			SoundEffectHandler::stopSound(attackID);
+		}
+		if (attacked) {
+			attacked = false;
+		}
+		if (player->isBlocking())
+			marco = spriteMap[string("blocking")].numberOfClips - 1;
+	}
+
 	//TODO - Aca se elige el map que corresponda con el arma equipada
 	/*
 	 *	spriteMap=selectWeaponView(this->player);
@@ -392,13 +422,17 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 
 	FoggedSprite spriteToBeShown;
 
-	if (previousLife!=life){
-		cout << previousLife << ":"<< life<<endl;
+	if (previousLife != life) {
 		attacked = true;
-		if (marco>=spriteMap[string("hit")].numberOfClips)
+		if (marco >= spriteMap[string("hit")].numberOfClips)
 			marco = 0;
 		player->stop();
 		spriteToBeShown = spriteMap[string("hit")];
+	}
+	//DEAD
+	if (player->isDead()) {
+		player->stop();
+		spriteToBeShown = spriteMap[string("die")];
 	}
 	if (player->isAttacking()) {
 
@@ -426,8 +460,8 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	} else
 		SoundEffectHandler::stopSound(walkID);
 
-	if (!player->IsMoving() && !player->isAttacking()
-			&& !player->isBlocking() && previousLife==life) {
+	if (!player->IsMoving() && !player->isAttacking() && !player->isBlocking()
+			&& previousLife == life) {
 		if (!wasStanding) {
 			timer.start();
 			wasStanding = true;
