@@ -41,6 +41,7 @@ public:
         virtual MenuEvent run();
 
         virtual void addNewPlayer(Player* player, PlayerView* view, Coordinates* coords);
+        void handleMobsUpdates(vector<MobileEntityUpdate*> mobUpdates);
         PlayerView* getPlayerView();
 
         MapCameraView* getMapCameraView();
@@ -105,6 +106,8 @@ private:
     	SDL_Rect clickedLocation;
 
     	map<string,ArtificialIntelligence*>* iaMap;
+
+    	map<int,MobileEntity*> mobileEntities;
 };
 
 #endif /* GAME_H_ */

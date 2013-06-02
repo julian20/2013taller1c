@@ -24,6 +24,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
+	this->textureHolder = configuration->getTextureHolder();
 
 }
 
@@ -150,6 +151,23 @@ vector<MobileEntityUpdate*> MultiplayerGame::getMobileEntitiesUpdates(){
 
 list<Player*> MultiplayerGame::getPlayers() {
 	return this->players;
+}
+
+map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntitiesInfo(){
+
+	map<int,MobileEntityInfo*> infos;
+
+	for (map<int,MobileEntity*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
+
+		MobileEntityInfo* info = new MobileEntityInfo();
+		info->setEntity(it->second);
+
+
+
+	}
+
+	return infos;
+
 }
 
 MultiplayerGame::~MultiplayerGame() {

@@ -51,6 +51,7 @@ public:
 
 	bool exchangeAliveSignals(int clientSocket,string playerName);
 	void sendNewPlayers(int clientSocket, string playerName);
+	void sendNewMobs(int clientSocket,string playerName);
 
 	void sendGameState(int clientSocket, bool state);
 
@@ -59,6 +60,7 @@ public:
 
 	void getPlayersUpdates();
 	void sendPlayersUpdates(int clientSocket, string playerName);
+	void sendMobilesEntitesUpdates(int clientSocket,vector<MobileEntityUpdate*> mobUpdates);
 
 	void checkClientStatus(int clientID, string playerName);
 	void disconectPlayer(int clientSocket, string playerName);
@@ -91,7 +93,8 @@ private:
 	map<string,PlayerInfo*> gamePlayers;
 	map<string,Player*> conectedPlayers;
 	map<string,Player*> disconectedPlayers;
-	map<string,map<string,Player*> > sended;
+	map<string,map<string,Player*> > sendedPlayers;
+	map<string,int> sendedMobs;
 	map<string,vector<PlayerUpdate*> > updates;
 	vector<ChatMessage*> messages;
 

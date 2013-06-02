@@ -343,6 +343,15 @@ void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords) {
 
 }
 
+void Game::handleMobsUpdates(vector<MobileEntityUpdate*> mobUpdates){
+	for (int i = 0 ; i < mobUpdates.size() ; i++){
+		int id = mobUpdates[i]->getId();
+
+		mobileEntities[id]->updateFromServer(mobUpdates[i]);
+
+	}
+}
+
 PlayerView* Game::getPlayerView() {
 	return personajeVista;
 }

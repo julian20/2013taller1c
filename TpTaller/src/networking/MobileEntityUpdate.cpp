@@ -129,7 +129,7 @@ MobileEntityUpdate::~MobileEntityUpdate() {
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const MobileEntityUpdate& update){
 
-	out << update.name << " " << *update.currentPos << " " << *update.endPos << " " << *update.speed << " " << update.attacking << " "
+	out << update.id << " " << update.name << " " << *update.currentPos << " " << *update.endPos << " " << *update.speed << " " << update.attacking << " "
 			<< " " << *update.currentTile << " " << *update.nextTile << " " << *update.initCoords << " ";
 
 
@@ -138,10 +138,8 @@ ostream& operator <<(std::ostream& out, const MobileEntityUpdate& update){
 
 	//Operator to load an object from a stream
 istream& operator >>(std::istream& in, MobileEntityUpdate& update){
-
-	string name;
-	in >> name;
-	update.setName(name);
+	in >> update.id;
+	in >> update.name;
 	Vector3 vect;
 	// 1ro currentPos
 	in >> vect;
