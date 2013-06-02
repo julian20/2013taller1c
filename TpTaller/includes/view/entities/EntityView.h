@@ -70,6 +70,7 @@ protected:
 	Entity* entity;
 	SDL_Surface* image;
 	SDL_Surface* fogImage;
+	SDL_Surface* teamColorImage;
 	Vector2* anchorPixel;
 	TextureHolder* textureHolder;
 	std::string name;

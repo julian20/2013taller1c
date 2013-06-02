@@ -8,9 +8,9 @@ FogCreator::~FogCreator() {
 
 }
 
-SDL_Surface* FogCreator::getFog(SDL_Surface* image) {
+SDL_Surface* FogCreator::getFog(SDL_Surface* image, Uint32 color) {
 	SDL_LockSurface(image);
-	SDL_Surface* fog = createFogSurface(image->w, image->h);
+	SDL_Surface* fog = createFogSurface(image->w, image->h, color);
 
 	Uint32 *pixels = (Uint32 *) image->pixels;
 	Uint32 pixelValue;
@@ -39,7 +39,7 @@ void FogCreator::setPixelInvisible(SDL_Surface * surface, int x, int y) {
 	*((Uint32*) pixel) = mask;
 }
 
-SDL_Surface* FogCreator::createFogSurface(int width, int heigth) {
+SDL_Surface* FogCreator::createFogSurface(int width, int heigth, Uint32 color) {
 	Uint32 rmask, gmask, bmask, amask;
 	rmask = 0x000000ff;
 	gmask = 0x0000ff00;
@@ -49,8 +49,7 @@ SDL_Surface* FogCreator::createFogSurface(int width, int heigth) {
 	SDL_Surface* retval = SDL_CreateRGBSurface(SDL_SWSURFACE, width, heigth, 32,
 			rmask, gmask, bmask, amask);
 
-	SDL_FillRect(retval, NULL, 0x90000000);	// Si quieren tocar que tan oscuro es el fog cambien
-											// los dos primeros valores del hexa ese.
+	SDL_FillRect(retval, NULL, color);
 
 	if (retval == NULL) {
 		Logs::logErrorMessage("Fog surface cannot be loaded");

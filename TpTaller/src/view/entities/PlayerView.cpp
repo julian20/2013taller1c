@@ -42,6 +42,7 @@ PlayerView::PlayerView()
 	lastDirection = M_PI * 1 / 2;
 	chatView = NULL;
 
+	declareTeamColorConstant();
 }
 
 PlayerView::PlayerView(PlayerView* otherPlayer) :
@@ -66,13 +67,30 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	textureHolder = otherPlayer->getTextureHolder();
 	this->setName(otherPlayer->getName());
 	chatView = NULL;
+
+	declareTeamColorConstant();
+}
+
+void PlayerView::declareTeamColorConstant(){
+	// 0xAARRGGBB	A->Alpha	R->Red	G->Green	B->Blue
+	const Uint32 alpha = 0x40000000;
+
+	teamColors[0] = 0x00000000 + alpha;	// Sin color
+	teamColors[1] = 0x00FF0000 + alpha;	// Rojo
+	teamColors[2] = 0x0000FF00 + alpha;	// Verde
+	teamColors[3] = 0x000000FF + alpha;	// Azul
+	teamColors[4] = 0x00FF00FF + alpha;	// Violeta
+	teamColors[5] = 0x00FFFF00 + alpha;	// Cian
+	teamColors[6] = 0x0000FFFF + alpha;	// Amarillo
 }
 
 list<PlayerEvent*> PlayerView::getPlayerViewEvents(){
 	return this->events;
 }
 void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
-	SDL_Rect offset, offsetFog;
+	SDL_Rect offset, offsetFog, offsetColor;	// Se tiene que hacer esto porque al
+												// blitear se cagan algunos valores
+
 
 	if (drawFog)
 		return;
@@ -80,15 +98,16 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 	Vector3* position = player->getCurrentPos();
 	float x = position->getX();
 	float y = position->getY();
-	offset.x = offsetFog.x = (int) x + camPos->getX()
+	offset.x = offsetFog.x = offsetColor.x = (int) x + camPos->getX()
 			- this->anchorPixel->getX();
 	int h = Tile::computePositionTile(0, 0).h;
-	offset.y = offsetFog.y = (int) y + camPos->getY()
+	offset.y = offsetFog.y = offsetColor.y =(int) y + camPos->getY()
 			- this->anchorPixel->getY() - h / 2;
-	offset.w = offsetFog.w = clip->w;
-	offset.h = offsetFog.h = clip->h;
+	offset.w = offsetFog.w = offsetColor.w =clip->w;
+	offset.h = offsetFog.h = offsetColor.h =clip->h;
 
 	SDL_BlitSurface(this->image, clip, screen, &offset);
+	SDL_BlitSurface(this->teamColorImage, clip, screen, &offsetColor);
 
 	if (player->playerIsActive() == false) {
 		SDL_BlitSurface(fogImage, clip, screen, &offsetFog);
@@ -133,6 +152,7 @@ FoggedSprite PlayerView::loadFoggedSprite(const char* modifier) {
 	FoggedSprite sprite;
 	sprite.image = textureHolder->getTexture(name + id);
 	sprite.foggedImage = textureHolder->getFogTexture(name + id);
+	sprite.teamColorImage = FogCreator::getFog(sprite.image, teamColors[player->getTeam()]);
 	sprite.numberOfClips = computeNumberOfClips(sprite.image);
 	return sprite;
 
@@ -342,6 +362,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		image = spriteToBeShown.image;
 		fogImage = spriteToBeShown.foggedImage;
 		numberOfClips = spriteToBeShown.numberOfClips;
+		teamColorImage = spriteToBeShown.teamColorImage;
 		lastDirection = direction;
 		showStandingAnimation(sprite, fondo, drawFog);
 		return;
@@ -351,6 +372,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	currentSprite = sprite;
 	image = spriteToBeShown.image;
 	fogImage = spriteToBeShown.foggedImage;
+	teamColorImage = spriteToBeShown.teamColorImage;
 	numberOfClips = spriteToBeShown.numberOfClips;
 	lastDirection = direction;
 	playAnimation((SpriteType) currentSprite, fondo, drawFog);
