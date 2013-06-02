@@ -1348,8 +1348,7 @@ void operator >>(const YAML::Node& yamlNode,
 	}
 }
 
-void operator >>(const YAML::Node& yamlNode,
-		std::vector<Item*>& itemVector) {
+void operator >>(const YAML::Node& yamlNode, std::vector<Item*>& itemVector) {
 	const YAML::Node& itemLocations = yamlNode["itemLocations"];
 	for (unsigned i = 0; i < itemLocations.size(); i++) {
 		Item* item = new Item();
@@ -1853,18 +1852,18 @@ void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
 
 void assignItems(MapData* mapData, std::vector<Item*> items) {
 	for (unsigned i = 0; i < items.size(); i++) {
-		Item* currentEntity = items[i];
-		Coordinates coor = currentEntity->getCoordinates();
-		mapData->addEntity(coor.getRow(), coor.getCol(), currentEntity);
+		Item* currentItem = items[i];
+		Coordinates coor = currentItem->getCoordinates();
+		mapData->addEntity(coor.getRow(), coor.getCol(), currentItem);
 	}
 }
 
 void assignMobileEntities(MapData* mapData,
-		std::vector<MobileEntity*> entities) {
-	for (unsigned i = 0; i < entities.size(); i++) {
-		MobileEntity* currentEntity = entities[i];
-		Coordinates coor = currentEntity->getCoordinates();
-		mapData->addEntity(coor.getRow(), coor.getCol(), currentEntity);
+		std::vector<MobileEntity*> mobileEntities) {
+	for (unsigned i = 0; i < mobileEntities.size(); i++) {
+		MobileEntity* currentMobileEntity = mobileEntities[i];
+		Coordinates coor = currentMobileEntity->getCoordinates();
+		mapData->addMobileEntity(coor.getRow(), coor.getCol(), currentMobileEntity);
 	}
 }
 
