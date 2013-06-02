@@ -210,6 +210,7 @@ void PlayerInfo::updatePlayer(PlayerUpdate* update) {
 	player->setBlock(update->isBlocking());
 	player->setTile(update->getTile());
 	player->setLife(update->getLife());
+	player->setMagic(update->getMagic());
 }
 
 PlayerInfo::~PlayerInfo() {

@@ -53,7 +53,9 @@ public:
 
 
 	void setLife(int life);
+	void setMagic(int magic);
 	int getLife();
+	int getMagic();
 protected:
 	int id;
 	string name;
@@ -61,6 +63,7 @@ protected:
 	Vector3* currentPos;
 	Vector3* endPos;
 	int life;
+	int magic;
 	Speed* speed;
 
 	bool attacking;

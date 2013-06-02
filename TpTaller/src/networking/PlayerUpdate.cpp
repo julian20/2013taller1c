@@ -49,7 +49,7 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 			<< " " << *update.speed << " " << update.attacking << " "
 			<< update.blocking << " " << update.active << " "
 			<< *update.currentTile << " " << *update.nextTile << " "
-			<< *update.initCoords << " " << update.life << " ";
+			<< *update.initCoords << " " << update.life << " "<<update.magic<<" ";
 
 	return out;
 }
@@ -87,9 +87,11 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	Coordinates coords;
 	in >> coords;
 	update.setInitCoordinates(&coords);
-	int life;
+	int life,magic;
 	in >> life;
 	update.setLife(life);
+	in >> magic;
+	update.setMagic(magic);
 	return in;
 }
 
