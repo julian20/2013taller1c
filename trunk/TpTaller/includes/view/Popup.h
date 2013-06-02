@@ -18,6 +18,7 @@ using namespace std;
 class Popup{
 public:
 	static void popupWindow(string message);
+	static void alertWindow(string message);
 private:
 	Popup();
 };
