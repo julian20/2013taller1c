@@ -22,11 +22,13 @@
 
 //Ours
 #include <model/persistence/PersistentConfiguration.h>
+#include <model/entities/enemies/Mob.h>
 #include <model/Chat.h>
 #include <controller/MapController.h>
 #include <controller/MapCameraController.h>
 #include <controller/PlayerController.h>
 #include <controller/ChatController.h>
+#include <networking/MobUpdate.h>
 #include <view/configuration/GameConfiguration.h>
 #include <view/MapView.h>
 #include <view/MapCameraView.h>
@@ -42,7 +44,7 @@ public:
         virtual MenuEvent run();
 
         virtual void addNewPlayer(Player* player, PlayerView* view, Coordinates* coords);
-        void handleMobsUpdates(vector<MobileEntityUpdate*> mobUpdates);
+        void handleMobsUpdates(vector<MobUpdate*> mobUpdates);
         PlayerView* getPlayerView();
 
         MapCameraView* getMapCameraView();
@@ -108,7 +110,7 @@ private:
 
 
 
-    	map<int,MobileEntity*> mobileEntities;
+    	map<int,Mob*> mobileEntities;
 };
 
 #endif /* GAME_H_ */

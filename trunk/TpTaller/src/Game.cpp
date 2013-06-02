@@ -348,7 +348,7 @@ void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords) {
 
 }
 
-void Game::handleMobsUpdates(vector<MobileEntityUpdate*> mobUpdates){
+void Game::handleMobsUpdates(vector<MobUpdate*> mobUpdates){
 	for (int i = 0 ; i < mobUpdates.size() ; i++){
 		int id = mobUpdates[i]->getId();
 

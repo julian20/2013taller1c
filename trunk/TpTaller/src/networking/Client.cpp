@@ -116,7 +116,7 @@ void* transmit(void* _client) {
 		vector<ChatMessage*> chatUpdates = client->recvChatUpdates();
 		client->updateChat(chatUpdates);
 
-		vector<MobileEntityUpdate*> mobUpdates = client->recvMobUpdates();
+		vector<MobUpdate*> mobUpdates = client->recvMobUpdates();
 		if (!mobUpdates.empty()){
 			client->updateMobs(mobUpdates);
 		}
@@ -446,14 +446,14 @@ bool Client::recvGameState() {
 }
 
 
-vector<MobileEntityUpdate*> Client::recvMobUpdates(){
+vector<MobUpdate*> Client::recvMobUpdates(){
 
-	vector<MobileEntityUpdate*> updates;
+	vector<MobUpdate*> updates;
 	int nUpdates = ComunicationUtils::recvNumber(clientID);
 	if (nUpdates <= 0)
 		return updates;
 	for (int i = 0; i < nUpdates; i++) {
-		MobileEntityUpdate* update = ComunicationUtils::recvMobileEntityUpdate(clientID);
+		MobUpdate* update = ComunicationUtils::recvMobUpdate(clientID);
 		updates.push_back(update);
 	}
 
@@ -461,7 +461,7 @@ vector<MobileEntityUpdate*> Client::recvMobUpdates(){
 }
 
 
-void Client::updateMobs(vector<MobileEntityUpdate*> mobUpdates){
+void Client::updateMobs(vector<MobUpdate*> mobUpdates){
 	game->handleMobsUpdates(mobUpdates);
 }
 
