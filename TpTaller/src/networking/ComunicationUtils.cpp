@@ -347,7 +347,6 @@ void ComunicationUtils::sendMobileEntityUpdate(int sockID,MobileEntityUpdate* up
 	}
 }
 
-
 MobileEntityUpdate* ComunicationUtils::recvMobileEntityUpdate(int sockID){
 
 	int size = ComunicationUtils::recvNumber(sockID);
@@ -455,6 +454,48 @@ void ComunicationUtils::sendFile(string fileOrigin, string fileDest, int sockID)
 
 	close(file);
 
+}
+
+
+void ComunicationUtils::sendMobUpdate(int sockID, MobUpdate* update){
+
+	stringstream updatestream;
+	updatestream << *update;
+
+	int size = updatestream.str().size() + EXTRA;
+	ComunicationUtils::sendNumber(sockID,size);
+
+	int sendSize = 0;
+	int i = 0;
+
+	while (sendSize != size){
+		sendSize = send(sockID,updatestream.str().c_str(), size, 0);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
+}
+
+MobUpdate* ComunicationUtils::recvMobUpdate(int sockID){
+	int size = ComunicationUtils::recvNumber(sockID);
+	char updatebuffer[size];
+	stringstream updatestream;
+
+	int recvSize = 0;
+	int i = 0;
+
+	while (recvSize != size){
+		recvSize = recv(sockID,updatebuffer,size,0);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
+
+	updatestream << updatebuffer;
+
+	MobUpdate* update = new MobUpdate();
+
+	updatestream >> *update;
+
+	return update;
 }
 
 ComunicationUtils::~ComunicationUtils() {

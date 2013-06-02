@@ -17,23 +17,15 @@
 
 namespace std {
 
-class MobileEntityInfo {
+class MobInfo {
 public:
-	MobileEntityInfo();
+	MobInfo();
+
+	void setId(int id);
+	int getId();
 
 	void setName(string name);
 	string getName();
-
-	void setImages(map<string,string> images);
-	map<string,string> getImages();
-
-	void setImageDimentions(int width, int height);
-	int getImageWidth();
-	int getImageHeight();
-
-	void setAnchorPixel(float x, float y);
-	void setAnchorPixel(Vector2* anchorPixel);
-	Vector2* getAnchorPixel();
 
 	void setInitCoordinates(Coordinates* coords);
 	Coordinates* getInitCoordinates();
@@ -41,31 +33,22 @@ public:
 	void setEntity(MobileEntity* entity);
 	MobileEntity* getEntity();
 
-	void setDelay(float delay);
-	float getDelay();
-
-	void setFPS(int fps);
-	int getFPS();
-
 	MobileEntityView* createMobileEntityView();
 	void updatePlayer(PlayerUpdate* update);
 
 	//Operator to transform the object into a stream.
-	friend ostream& operator <<(std::ostream&, const MobileEntityInfo&);
+	friend ostream& operator <<(std::ostream&, const MobInfo&);
 
 	//Operator to load an object from a stream
-	friend istream& operator >>(std::istream&, MobileEntityInfo&);
+	friend istream& operator >>(std::istream&, MobInfo&);
 
-	virtual ~MobileEntityInfo();
+	virtual ~MobInfo();
 private:
+	int id;
 	string name;
 
-	map<string,string> images;
 
-	int imageWidth, imageHeight;
-	Vector2* anchorPixel;
-	int fps;
-	float delay;
+
 	Coordinates* initCoords;
 
 	MobileEntity* entity;
