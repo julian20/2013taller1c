@@ -42,6 +42,9 @@ public:
 	void updatePlayers(map<string,PlayerUpdate*> updates);
 	vector<ChatMessage*> recvChatUpdates();
 	void updateChat(vector<ChatMessage*> updates);
+	vector<MobileEntityUpdate*> recvMobUpdates();
+	void updateMobs(vector<MobileEntityUpdate*> mobUpdates);
+
 	Game* getGame();
 	Chat* getChat();
 	string getPlayerName();

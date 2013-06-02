@@ -116,6 +116,11 @@ void* transmit(void* _client) {
 		vector<ChatMessage*> chatUpdates = client->recvChatUpdates();
 		client->updateChat(chatUpdates);
 
+		vector<MobileEntityUpdate*> mobUpdates = client->recvMobUpdates();
+		if (!mobUpdates.empty()){
+			client->updateMobs(mobUpdates);
+		}
+
 	}
 
 	pthread_cancel(isAliveThread);
@@ -438,6 +443,26 @@ bool Client::recvGameState() {
 	else if (stateNumber == 1) return true;
 
 	return false;
+}
+
+
+vector<MobileEntityUpdate*> Client::recvMobUpdates(){
+
+	vector<MobileEntityUpdate*> updates;
+	int nUpdates = ComunicationUtils::recvNumber(clientID);
+	if (nUpdates <= 0)
+		return updates;
+	for (int i = 0; i < nUpdates; i++) {
+		MobileEntityUpdate* update = ComunicationUtils::recvMobileEntityUpdate(clientID);
+		updates.push_back(update);
+	}
+
+	return updates;
+}
+
+
+void Client::updateMobs(vector<MobileEntityUpdate*> mobUpdates){
+	game->handleMobsUpdates(mobUpdates);
 }
 
 /* ************************ CLIENT GETTERS ************************* */

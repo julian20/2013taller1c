@@ -83,7 +83,6 @@ void* handle(void* par) {
 	HandleThreadParameter* parameter = (HandleThreadParameter*) par;
 	int clientSocket = parameter->clientID;
 	Server* server = parameter->server;
-	MultiplayerGame* game = server->getGame();
 	MissionManager missionManager = server->getMissionManager();
 
 
@@ -276,6 +275,7 @@ void Server::runMainLoop(int clientSocket, string playerName){
 		}
 
 		sendNewPlayers(clientSocket,playerName);
+//		sendNewMobs(clientSocket,playerName);
 
 		vector<PlayerEvent*> events = recvEvents(clientSocket);
 
@@ -289,6 +289,9 @@ void Server::runMainLoop(int clientSocket, string playerName){
 		recvChatMessages(clientSocket);
 
 		deliverMessages(clientSocket, playerName);
+
+		vector<MobileEntityUpdate*> mobUpdates = game->getMobileEntitiesUpdates();
+		sendMobilesEntitesUpdates(clientSocket,mobUpdates);
 
 	}
 
@@ -445,7 +448,7 @@ int Server::addPlayerToGame(int clientSocket, PlayerInfo* info) {
 
 	updates[playerName] = vector<PlayerUpdate*>();
 
-	sended[playerName][playerName] = info->getPlayer();
+	sendedPlayers[playerName][playerName] = info->getPlayer();
 
 	return 0;
 
@@ -464,7 +467,7 @@ int Server::reconectPlayer(int clientSocket, string playerName,
 
 	updates[playerName] = vector<PlayerUpdate*>();
 
-	sended[playerName][playerName] = info->getPlayer();
+	sendedPlayers[playerName][playerName] = info->getPlayer();
 
 	return 0;
 }
@@ -487,7 +490,7 @@ bool Server::exchangeAliveSignals(int clientSocket,string playerName) {
 void Server::sendNewPlayers(int clientSocket,string playerName) {
 
 	// 1ro envio la cantidad de players que voy a mandar
-	int n = gamePlayers.size() - sended[playerName].size();
+	int n = gamePlayers.size() - sendedPlayers[playerName].size();
 
 	ComunicationUtils::sendNumber(clientSocket, n);
 
@@ -496,10 +499,10 @@ void Server::sendNewPlayers(int clientSocket,string playerName) {
 
 	for (map<string, PlayerInfo*>::iterator it = gamePlayers.begin(); it != gamePlayers.end(); ++it) {
 		// SI NO HA SIDO ENVIADO, LO ENVIO
-		if (sended[playerName].count(it->first) == 0) {
+		if (sendedPlayers[playerName].count(it->first) == 0) {
 			PlayerInfo* info = it->second;
 			ComunicationUtils::sendPlayerInfo(clientSocket, info);
-			sended[playerName][it->first] = it->second->getPlayer();
+			sendedPlayers[playerName][it->first] = it->second->getPlayer();
 		}
 
 	}
@@ -543,7 +546,7 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName) {
 
 	int size = updates[playerName].size();
 	// Mando la cantidad de actualizaciones
-	ComunicationUtils::sendNumber(clientSocket, updates[playerName].size());
+	ComunicationUtils::sendNumber(clientSocket, size);
 
 	for (int i = 0; i < size; i++) {
 
@@ -556,6 +559,19 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName) {
 	updates[playerName].clear();
 
 }
+
+void Server::sendMobilesEntitesUpdates(int clientSocket,vector<MobileEntityUpdate*> mobUpdates){
+	int size = mobUpdates.size();
+	// Mando la cantidad de actualizaciones
+	ComunicationUtils::sendNumber(clientSocket, size);
+
+	for (int i = 0; i < size; i++) {
+		// Envio la actualizacion
+		ComunicationUtils::sendMobileEntityUpdate(clientSocket,mobUpdates[i]);
+		delete mobUpdates[i];
+	}
+}
+
 void Server::recvChatMessages(int clientSocket){
 
 	vector<ChatMessage*> chatMessages;
@@ -669,7 +685,7 @@ void Server::disconectPlayer(int clientSocket, string playerName) {
 
 	updates[playerName] = vector<PlayerUpdate*>();
 
-	sended[playerName].clear();
+	sendedPlayers[playerName].clear();
 
 }
 
