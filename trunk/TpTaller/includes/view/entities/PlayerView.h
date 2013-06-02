@@ -92,6 +92,7 @@ private:
 	 */
 	map<string, map<string, FoggedSprite > > weaponViewMap;
 	map<string, FoggedSprite>spriteMap;
+	bool loaded;
 
 };
 
