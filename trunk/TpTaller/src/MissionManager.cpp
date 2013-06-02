@@ -13,7 +13,7 @@ MissionManager::MissionManager() {
 	missionTypes["FlagCapture"] = 1;
 	missionTypes["TeamFight"] = 2;
 	missionTypes["SuddenDeath"] = 3;
-	typeOfMission = 1;
+	typeOfMission = 2;
 	winningTeam = 0;
 }
 
@@ -46,12 +46,20 @@ bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
 	bool someoneAliveFirstTeam = false;
 	bool someoneAliveSecondTeam = false;
 
+	int firstTeamPlayers = 0;
+	int secondTeamPlayers = 0;
+
 	list<Player*>::const_iterator iterator;
 	Player* actualMobileEntity;
 	for (iterator = mobileEntities.begin(); iterator != mobileEntities.end();
 			++iterator) {
 
 		actualMobileEntity = (Player*) (*iterator);
+
+		if (actualMobileEntity->getTeam() == 1)
+			firstTeamPlayers++;
+		if (actualMobileEntity->getTeam() == 2)
+			secondTeamPlayers++;
 
 		if (actualMobileEntity->getTeam() == 1
 				&& !actualMobileEntity->isDead()) {
@@ -62,6 +70,10 @@ bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
 		}
 
 	}
+
+	// No se conecto ningun jugador del equipo contrario.
+	if (firstTeamPlayers < 1 || secondTeamPlayers < 1)
+		return false;
 
 	// Caso muy borde.
 	if (someoneAliveFirstTeam == false && someoneAliveSecondTeam == false) {
