@@ -20,8 +20,9 @@ using namespace std;
 #define MAP_DIMENSION_POSITION 5
 #define PLAYER_LOCATIONS_POSITION 6
 #define MOBILEENTITY_LOCATIONS_POSITION 7
-#define ENTITY_LOCATIONS_POSITION 8
-#define MAP_TILES_POSITION 9
+#define ITEM_LOCATIONS_POSITION 8
+#define ENTITY_LOCATIONS_POSITION 9
+#define MAP_TILES_POSITION 10
 
 #define DEFAULT_ROWS 50
 #define DEFAULT_COLS 50
@@ -583,6 +584,64 @@ void operator >>(const YAML::Node& yamlNode, Entity* entity) {
 
 	entity->setName(auxName);
 	entity->setCoordinates(auxPosition->getX(), auxPosition->getY());
+}
+
+/**
+ * Sobrecarga de operador >> para llenar los datos de un puntero
+ * a Personaje.
+ */
+void operator >>(const YAML::Node& yamlNode, Item* item) {
+
+	Position* auxPosition = new Position(0, 0, 0);
+	std::string auxName;
+	//TOMI: Antes controlabamos excepciones. Lo saque, porque no tenia sentido ubicar una Entity que no existia.
+	yamlNode["name"] >> auxName;
+
+	try {
+		yamlNode["position"] >> auxPosition;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing Entity position: ")
+						+ yamlException.what());
+	}
+
+	int row = auxPosition->getX();
+	int col = auxPosition->getY();
+	//printf("row :%i col: %i\n ",row,col);
+
+	stringstream sRow;
+	stringstream sCol;
+	stringstream sZ;
+
+	sRow << row;
+	sCol << col;
+	sZ << auxPosition->getZ();
+
+	if (row < 0 || row >= rows) {
+		Logs::logErrorMessage(
+				string(
+						"Error parsing Entity position >> Entity row out of bound: ")
+						+ string("name: ") + auxName + string(" position: [")
+						+ sRow.str() + string(", ") + sCol.str() + string(", ")
+						+ sZ.str() + string("]"));
+		item = NULL;
+		delete auxPosition;
+		return;
+	}
+	if (col < 0 || col >= cols) {
+		Logs::logErrorMessage(
+				string(
+						"Error parsing Entity position >> Entity row out of bound: ")
+						+ string("name: ") + auxName + string(" position: [")
+						+ sRow.str() + string(", ") + sCol.str() + string(", ")
+						+ sZ.str() + string("]"));
+		item = NULL;
+		delete auxPosition;
+		return;
+	}
+
+	item->setName(auxName);
+	item->setCoordinates(auxPosition->getX(), auxPosition->getY());
 }
 
 /**
@@ -1290,6 +1349,17 @@ void operator >>(const YAML::Node& yamlNode,
 }
 
 void operator >>(const YAML::Node& yamlNode,
+		std::vector<Item*>& itemVector) {
+	const YAML::Node& itemLocations = yamlNode["itemLocations"];
+	for (unsigned i = 0; i < itemLocations.size(); i++) {
+		Item* item = new Item();
+		itemLocations[i] >> item;
+		if (item != NULL)
+			itemVector.push_back(item);
+	}
+}
+
+void operator >>(const YAML::Node& yamlNode,
 		std::vector<Player*>& playerVector) {
 	const YAML::Node& playerLocations = yamlNode["playerLocations"];
 	for (unsigned i = 0; i < playerLocations.size(); i++) {
@@ -1781,6 +1851,14 @@ void assignEntities(MapData* mapData, std::vector<Entity*> entities) {
 	}
 }
 
+void assignItems(MapData* mapData, std::vector<Item*> items) {
+	for (unsigned i = 0; i < items.size(); i++) {
+		Item* currentEntity = items[i];
+		Coordinates coor = currentEntity->getCoordinates();
+		mapData->addEntity(coor.getRow(), coor.getCol(), currentEntity);
+	}
+}
+
 void assignMobileEntities(MapData* mapData,
 		std::vector<MobileEntity*> entities) {
 	for (unsigned i = 0; i < entities.size(); i++) {
@@ -1799,6 +1877,32 @@ std::vector<EntityView*> assignEntities(std::vector<EntityView*> entityViews,
 		EntityView* duplicate = NULL;
 		for (unsigned j = 0; j < entityViews.size(); j++) {
 			EntityView* actualView = entityViews[j];
+			if ((actualView->getName()).compare(entityName) == 0) {
+				duplicate = new EntityView(actualView);
+				duplicate->setEntity(actualEntity);
+				completeViews.push_back(duplicate);
+			}
+		}
+		// Si no se le asigno ninguna entidad a la vista.
+		if (duplicate == NULL) {
+			Logs::logErrorMessage(
+					string(
+							"Could not find entity view with the name "
+									+ entityName));
+		}
+	}
+	return completeViews;
+}
+
+std::vector<EntityView*> assignEntities(std::vector<EntityView*> itemViews,
+		std::vector<Item*> items) {
+	std::vector<EntityView*> completeViews;
+	for (unsigned i = 0; i < items.size(); i++) {
+		Entity* actualEntity = items[i];
+		std::string entityName = actualEntity->getName();
+		EntityView* duplicate = NULL;
+		for (unsigned j = 0; j < itemViews.size(); j++) {
+			EntityView* actualView = itemViews[j];
 			if ((actualView->getName()).compare(entityName) == 0) {
 				duplicate = new EntityView(actualView);
 				duplicate->setEntity(actualEntity);
@@ -1982,17 +2086,25 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	std::vector<MobileEntity*> mobileEntityVector;
 	yamlNode[MOBILEENTITY_LOCATIONS_POSITION] >> mobileEntityVector;
 
+	// Parsing mobile entity locations.
+	std::vector<Item*> itemVector;
+	yamlNode[ITEM_LOCATIONS_POSITION] >> itemVector;
+
 	// Parsing player locations.
 	std::vector<Entity*> entityVector;
 	yamlNode[ENTITY_LOCATIONS_POSITION] >> entityVector;
 
 	std::vector<EntityView*> cleanEntityViews = assignEntities(entityViewVector,
 			entityVector);
+	std::vector<EntityView*> cleanItemViews = assignEntities(entityViewVector,
+			itemVector);
 	std::vector<PlayerView*> cleanPlayerViews = assignPlayers(playerViewVector,
 			playerVector);
 	std::vector<MobileEntityView*> cleanMobileEntityViews =
 			assignMobileEntities(mobileEntityViewVector, mobileEntityVector);
+
 	assignEntities(mapData, entityVector);
+	assignItems(mapData, itemVector);
 	assignMobileEntities(mapData, mobileEntityVector);
 	cleanUnusedViews(entityViewVector);
 	cleanUnusedViews(playerViewVector);
@@ -2006,6 +2118,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	EntityViewMap* entityViewMap = new EntityViewMap(mapData);
 	loadEntityViewMap(entityViewMap, cleanPlayerViews);
 	loadEntityViewMap(entityViewMap, cleanEntityViews);
+	loadEntityViewMap(entityViewMap, cleanItemViews);
 	loadEntityViewMap(entityViewMap, cleanMobileEntityViews);
 
 	// Packing parser results.

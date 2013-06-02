@@ -19,6 +19,8 @@
 #include <model/entities/Entity.h>
 #include <model/entities/MobileEntity.h>
 #include <model/entities/player/Player.h>
+#include <model/entities/Items/Item.h>
+#include <model/entities/Items/LifeHeart.h>
 #include <model/map/Tile.h>
 #include <model/map/TextureDefinition.h>
 #include <model/map/TextureHolder.h>
