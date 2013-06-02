@@ -58,8 +58,8 @@
     fps: 30
     delay: 2 
     animationRepeats: 7
-    baseRows: 2
-    baseCols: 3  
+    baseRows: 1
+    baseCols: 1 
   - name: windmill
     imageSrc: resources/buildings/windmill.png
     imageWidth: 224
