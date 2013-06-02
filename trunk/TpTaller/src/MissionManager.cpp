@@ -51,22 +51,24 @@ bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
 
 	list<Player*>::const_iterator iterator;
 	Player* actualMobileEntity;
+
 	for (iterator = mobileEntities.begin(); iterator != mobileEntities.end();
 			++iterator) {
 
 		actualMobileEntity = (Player*) (*iterator);
 
-		if (actualMobileEntity->getTeam() == 1)
+		if (actualMobileEntity->getTeam() == 1) {
 			firstTeamPlayers++;
-		if (actualMobileEntity->getTeam() == 2)
-			secondTeamPlayers++;
+			if (!actualMobileEntity->isDead()) {
+				someoneAliveFirstTeam = true;
+			}
+		}
 
-		if (actualMobileEntity->getTeam() == 1
-				&& !actualMobileEntity->isDead()) {
-			someoneAliveFirstTeam = true;
-		} else if (actualMobileEntity->getTeam() == 2
-				&& !actualMobileEntity->isDead()) {
-			someoneAliveSecondTeam = true;
+		if (actualMobileEntity->getTeam() == 2) {
+			secondTeamPlayers++;
+			if (!actualMobileEntity->isDead()) {
+				someoneAliveSecondTeam = true;
+			}
 		}
 
 	}
@@ -76,17 +78,17 @@ bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
 		return false;
 
 	// Caso muy borde.
-	if (someoneAliveFirstTeam == false && someoneAliveSecondTeam == false) {
+	if (!someoneAliveFirstTeam && !someoneAliveSecondTeam) {
 		winningTeam = 0;
 		return true;
 	}
 
-	if (someoneAliveSecondTeam == false) {
+	if (!someoneAliveSecondTeam) {
 		winningTeam = 1;
 		return true;
 	}
 
-	if (someoneAliveFirstTeam == false) {
+	if (!someoneAliveFirstTeam) {
 		winningTeam = 2;
 		return true;
 	}
