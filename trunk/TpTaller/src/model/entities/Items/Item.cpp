@@ -5,7 +5,7 @@
  *      Author: gonchub
  */
 
-#include <model/entities/Item.h>
+#include <model/entities/Items/Item.h>
 
 Item::Item() {
 
