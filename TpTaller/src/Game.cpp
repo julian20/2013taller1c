@@ -64,7 +64,7 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) :
 	openAudio = false;
 
 	personajeVista = (configuration->getViewList())[0];
-	iaMap= new map<string,ArtificialIntelligence*>;
+//	iaMap= new map<string,ArtificialIntelligence*>;
 
 	if (multiplayer) {
 		chatController = new ChatController(playerController);
@@ -125,8 +125,8 @@ void Game::setUpCharacters(MapView* map, MapData* mapData,
 
 						ArtificialIntelligence* ia= new ArtificialIntelligence();
 						ia->setEntity(entityToAdd);
-						string name=entity->getName();
-					//	iaMap[name]=ia;
+						string name = entity->getName();
+						ias.push_back(ia);
 						Coordinates coord = entityToAdd->getCoordinates();
 						mapData->addMobileEntity(coord.getRow(), coord.getCol(),
 								entityToAdd);
@@ -327,6 +327,11 @@ void Game::playersUpdate() {
 			player != otherPlayers.end(); ++player) {
 		(*player)->update(mapData);
 		(*player)->setHasChanged(false);
+	}
+	for (list<ArtificialIntelligence*>::iterator autoPlayer = ias.begin();
+			autoPlayer != ias.end(); ++autoPlayer) {
+		(*autoPlayer)->update();
+		//(*autoPlayer)->setHasChanged(false);
 	}
 
 }

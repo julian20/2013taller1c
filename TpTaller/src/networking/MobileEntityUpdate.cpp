@@ -18,6 +18,7 @@ MobileEntityUpdate::MobileEntityUpdate(){
 	this->nextTile = new Tile();
 	this->initCoords = new Coordinates;
 	this->life = 0;
+	this->magic=0;
 }
 
 void MobileEntityUpdate::setId(int id){
