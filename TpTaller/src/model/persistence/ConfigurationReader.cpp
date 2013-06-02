@@ -594,7 +594,7 @@ void operator >>(const YAML::Node& yamlNode, Item* item) {
 
 	Position* auxPosition = new Position(0, 0, 0);
 	std::string auxName;
-	//TOMI: Antes controlabamos excepciones. Lo saque, porque no tenia sentido ubicar una Entity que no existia.
+
 	yamlNode["name"] >> auxName;
 
 	try {
@@ -1863,7 +1863,8 @@ void assignMobileEntities(MapData* mapData,
 	for (unsigned i = 0; i < mobileEntities.size(); i++) {
 		MobileEntity* currentMobileEntity = mobileEntities[i];
 		Coordinates coor = currentMobileEntity->getCoordinates();
-		mapData->addMobileEntity(coor.getRow(), coor.getCol(), currentMobileEntity);
+		mapData->addMobileEntity(coor.getRow(), coor.getCol(),
+				currentMobileEntity);
 	}
 }
 
@@ -2002,6 +2003,34 @@ void setDefaultPlayerView() {
 
 }
 
+std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
+
+	std::vector<Item*> parsedItems;
+
+	Item* actualItem;
+
+	for (unsigned i = 0; i < itemVector.size(); i++) {
+
+		actualItem = itemVector[i];
+
+		if(actualItem->getName() == "lifeheart") {
+
+			LifeHeart* lifeHeart = new LifeHeart();
+
+			lifeHeart->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			lifeHeart->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(lifeHeart);
+
+		}
+
+	}
+
+	return parsedItems;
+
+}
+
 void setDefaultGameConfiguration(GameConfiguration* gameConf) {
 	gameConf->setFps(30);
 	gameConf->setDelay(10);
@@ -2036,7 +2065,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
 	std::ofstream outputFile(outputFilename.c_str());
 
-	// Error Check
+// Error Check
 	if (!inputFile) {
 		//cout << "No se encontro el archivo de configuracion" << std::endl;
 		Logs::logErrorMessage(
@@ -2044,31 +2073,31 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 		exit(1);
 	}
 
-	// Parser initialization.
+// Parser initialization.
 	YAML::Parser parser(inputFile);
 	YAML::Node yamlNode;
 	parser.GetNextDocument(yamlNode);
 
-	// Parsing PlayerViews.
+// Parsing PlayerViews.
 	std::vector<PlayerView*> playerViewVector;
 	yamlNode[PLAYERVIEWS_POSITION] >> playerViewVector;
 
 	std::vector<MobileEntityView*> mobileEntityViewVector;
 	yamlNode[MOBILEENTITYVIEWS_POSITION] >> mobileEntityViewVector;
 
-	// Parsing EntityViews.
+// Parsing EntityViews.
 	std::vector<EntityView*> entityViewVector;
 	yamlNode[ENTITYVIEWS_POSITION] >> entityViewVector;
 
-	// Parsing animation configuration.
+// Parsing animation configuration.
 	GameConfiguration* animationConfig = new GameConfiguration();
 	yamlNode[GAME_CONFIGURATION_POSITION] >> animationConfig;
 
-	// Parsing tile definition.
-	// La declaracion del textureHolder la hice global
+// Parsing tile definition.
+// La declaracion del textureHolder la hice global
 	yamlNode[TILE_DEFINITION_POSITION] >> textureHolder;
 
-	// Parsing map dimensions.
+// Parsing map dimensions.
 	AuxMap mapConfiguration;
 	AuxMapDimension mapDimension;
 	yamlNode[MAP_DIMENSION_POSITION] >> mapDimension;
@@ -2077,50 +2106,52 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
 			mapConfiguration.dimension.ncols);
 
-	// Parsing player locations.
+// Parsing player locations.
 	std::vector<Player*> playerVector;
 	yamlNode[PLAYER_LOCATIONS_POSITION] >> playerVector;
 
-	// Parsing mobile entity locations.
+// Parsing mobile entity locations.
 	std::vector<MobileEntity*> mobileEntityVector;
 	yamlNode[MOBILEENTITY_LOCATIONS_POSITION] >> mobileEntityVector;
 
-	// Parsing mobile entity locations.
+// Parsing mobile entity locations.
 	std::vector<Item*> itemVector;
 	yamlNode[ITEM_LOCATIONS_POSITION] >> itemVector;
 
-	// Parsing player locations.
+	std::vector<Item*> parsedItems = parseItems(itemVector);
+
+// Parsing player locations.
 	std::vector<Entity*> entityVector;
 	yamlNode[ENTITY_LOCATIONS_POSITION] >> entityVector;
 
 	std::vector<EntityView*> cleanEntityViews = assignEntities(entityViewVector,
 			entityVector);
 	std::vector<EntityView*> cleanItemViews = assignEntities(entityViewVector,
-			itemVector);
+			parsedItems);
 	std::vector<PlayerView*> cleanPlayerViews = assignPlayers(playerViewVector,
 			playerVector);
 	std::vector<MobileEntityView*> cleanMobileEntityViews =
 			assignMobileEntities(mobileEntityViewVector, mobileEntityVector);
 
 	assignEntities(mapData, entityVector);
-	assignItems(mapData, itemVector);
+	assignItems(mapData, parsedItems);
 	assignMobileEntities(mapData, mobileEntityVector);
 	cleanUnusedViews(entityViewVector);
 	cleanUnusedViews(playerViewVector);
 	cleanUnusedViews(mobileEntityViewVector);
 
-	// Parsing map tile locations.
+// Parsing map tile locations.
 	yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
 	mapConfiguration >> mapData;
 
-	// Create entityViewMap:
+// Create entityViewMap:
 	EntityViewMap* entityViewMap = new EntityViewMap(mapData);
 	loadEntityViewMap(entityViewMap, cleanPlayerViews);
 	loadEntityViewMap(entityViewMap, cleanEntityViews);
 	loadEntityViewMap(entityViewMap, cleanItemViews);
 	loadEntityViewMap(entityViewMap, cleanMobileEntityViews);
 
-	// Packing parser results.
+// Packing parser results.
 	PersistentConfiguration configuration = PersistentConfiguration();
 	configuration.setEntityViewMap(entityViewMap);
 	configuration.setTextureHolder(textureHolder);
@@ -2150,7 +2181,7 @@ ServerMapPersistentConfiguration ConfigurationReader::loadServerMapConfiguration
 	std::ofstream outputFile(
 			"./configuration/serverMapConfigurationOutput.yaml");
 
-	// Error Check
+// Error Check
 	if (!inputFile) {
 		//cout << "No se encontro el archivo de configuracion" << std::endl;
 		Logs::logErrorMessage(
@@ -2158,23 +2189,23 @@ ServerMapPersistentConfiguration ConfigurationReader::loadServerMapConfiguration
 		exit(1);
 	}
 
-	// Parser initialization.
+// Parser initialization.
 	YAML::Parser parser(inputFile);
 	YAML::Node yamlNode;
 	parser.GetNextDocument(yamlNode);
 
-	// Parsing EntityViews.
+// Parsing EntityViews.
 	std::vector<EntityView*> entityViewVector;
 	yamlNode[entityViewsPosition] >> entityViewVector;
 
-	// Parsing animation configuration.
+// Parsing animation configuration.
 	GameConfiguration* animationConfig = new GameConfiguration();
 	yamlNode[gameConfigurationPosition] >> animationConfig;
 
-	// Parsing tile definition.
+// Parsing tile definition.
 	yamlNode[tileDefinitionPosition] >> textureHolder;
 
-	// Parsing map dimensions.
+// Parsing map dimensions.
 	AuxMap mapConfiguration;
 	AuxMapDimension mapDimension;
 	yamlNode[mapDimensionPosition] >> mapDimension;
@@ -2183,21 +2214,21 @@ ServerMapPersistentConfiguration ConfigurationReader::loadServerMapConfiguration
 	MapData* mapData = new MapData(mapConfiguration.dimension.nrows,
 			mapConfiguration.dimension.ncols);
 
-	// Parsing player locations.
+// Parsing player locations.
 	std::vector<Entity*> entityVector;
 	yamlNode[entityLocationPosition] >> entityVector;
 
-	// Assigning Entities to EntityViews.
+// Assigning Entities to EntityViews.
 	std::vector<EntityView*> cleanEntityViews = assignEntities(entityViewVector,
 			entityVector);
 	assignEntities(mapData, entityVector);
 	cleanUnusedViews(entityViewVector);
 
-	// Parsing map tile locations.
+// Parsing map tile locations.
 	yamlNode[tileLocationPosition] >> mapConfiguration;
 	mapConfiguration >> mapData;
 
-	// Create entityViewMap:
+// Create entityViewMap:
 	EntityViewMap* entityViewMap = new EntityViewMap(mapData);
 	loadEntityViewMap(entityViewMap, cleanEntityViews);
 
@@ -2225,7 +2256,7 @@ ClientPlayerPersistentConfiguration ConfigurationReader::loadClientPlayerConfigu
 
 	std::ifstream inputFile(configurationFile.c_str(), std::ifstream::in);
 
-	// Error Check
+// Error Check
 	if (!inputFile) {
 		//cout << "No se encontro el archivo de configuracion" << std::endl;
 		Logs::logErrorMessage(
@@ -2233,24 +2264,24 @@ ClientPlayerPersistentConfiguration ConfigurationReader::loadClientPlayerConfigu
 		exit(1);
 	}
 
-	// Parser initialization.
+// Parser initialization.
 	YAML::Parser parser(inputFile);
 	YAML::Node yamlNode;
 	parser.GetNextDocument(yamlNode);
 
-	// Parsing PlayerViews.
+// Parsing PlayerViews.
 	std::vector<PlayerView*> playerViewVector;
 	yamlNode[playerViewsPosition] >> playerViewVector;
 
-	// Parsing animation configuration.
+// Parsing animation configuration.
 	GameConfiguration* animationConfig = new GameConfiguration();
 	yamlNode[gameConfigurationPosition] >> animationConfig;
 
-	// Parsing player locations.
+// Parsing player locations.
 	std::vector<Player*> playerVector;
 	yamlNode[playerLocationPosition] >> playerVector;
 
-	// Clean not assigned player views.
+// Clean not assigned player views.
 	std::vector<PlayerView*> cleanPlayerViews = assignPlayers(playerViewVector,
 			playerVector);
 	cleanUnusedViews(playerViewVector);
