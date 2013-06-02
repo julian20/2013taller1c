@@ -22,7 +22,7 @@ MobileEntity::MobileEntity() {
 	this->initSpeed = NULL;
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
-	timer.start();
+	attackTimer.start();
 }
 
 MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
@@ -39,7 +39,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	hasChanged = false;
 	initSpeed = 0;
 	team = 0;
-	timer.start();
+	attackTimer.start();
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {
@@ -320,9 +320,9 @@ void MobileEntity::reverseCollide(Entity* entity){
 }
 
 void MobileEntity::attack(Entity* entity){
-	if (timer.getTimeIntervalSinceStart()>ATTACK_TIMEOUT){
+	if (attackTimer.getTimeIntervalSinceStart()>ATTACK_TIMEOUT){
 		attacking = true;
-		timer.start();
+		attackTimer.start();
 	}
 
 	cout<<"mobile attack"<<endl;

@@ -49,13 +49,15 @@ public:
 	friend istream& operator >>(std::istream&, MobileEntityUpdate&);
 
 
+	void setLife(int life);
+	int getLife();
 protected:
 
 	string name;
 
 	Vector3* currentPos;
 	Vector3* endPos;
-
+	int life;
 	Speed* speed;
 
 	bool attacking;

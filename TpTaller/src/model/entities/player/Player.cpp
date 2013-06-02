@@ -49,11 +49,10 @@ void Player::reverseCollide(Entity* entity) {
 }
 
 void Player::attack(Entity* entity) {
-	if (timer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
+	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
 		attacking = true;
 		Weapon* weaponToUse = weapons->front();
 		weaponToUse->attack(entity);
-		cout << entity->getLife() << endl;
 	}
 
 }
@@ -69,6 +68,7 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->attacking = update->isAttacking();
 	this->blocking = update->isBlocking();
 	this->isActive = update->isActive();
+	this->life = update->getLife();
 
 	if (currentTile)
 		delete currentTile;
@@ -111,6 +111,7 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setActive(this->isActive);
 	update->setTile(this->currentTile);
 	update->setInitCoordinates(this->coord);
+	update->setLife(this->life);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {

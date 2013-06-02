@@ -90,7 +90,7 @@ protected:
 
 	bool hasChanged;
 	int team;
-	Timer timer;
+	Timer attackTimer;
 private:
 	void checkAttackToNewPos(MapData* mapData);
 

@@ -16,6 +16,7 @@ MobileEntityUpdate::MobileEntityUpdate(){
 	this->currentTile = new Tile();
 	this->nextTile = new Tile();
 	this->initCoords = new Coordinates;
+	this->life = 0;
 }
 
 void MobileEntityUpdate::setName(string MobileEntityName){
@@ -28,6 +29,14 @@ string MobileEntityUpdate::getName(){
 
 Vector3* MobileEntityUpdate::getCurrentPos(){
 	return currentPos;
+}
+
+void MobileEntityUpdate::setLife(int life){
+	this->life = life;
+}
+
+int MobileEntityUpdate::getLife(){
+	return life;
 }
 
 void MobileEntityUpdate::setCurrentPos(Vector3* currentPos){
