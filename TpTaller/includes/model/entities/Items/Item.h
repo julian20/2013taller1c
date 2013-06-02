@@ -17,8 +17,9 @@ class Item: public Entity {
 public:
 	Item();
 	virtual string getClassName();
-	virtual void applyEffects(Entity* entity);
-	virtual void applyEffects(MobileEntity* entity);
+	virtual void applyEffects(Entity& entity);
+	virtual void applyEffects(MobileEntity& entity);
+	virtual void collideTo(MobileEntity& mobileEntity);
 	virtual ~Item();
 };
 

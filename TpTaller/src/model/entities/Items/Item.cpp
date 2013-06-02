@@ -15,9 +15,11 @@ string Item::getClassName() {
 	return "Item";
 }
 
-void Item::applyEffects(MobileEntity* entity) {}
+void Item::applyEffects(MobileEntity& entity) {}
 
-void Item::applyEffects(Entity* entity) {}
+void Item::applyEffects(Entity& entity) {}
+
+void Item::collideTo(MobileEntity& mobileEntity) {}
 
 Item::~Item() {
 

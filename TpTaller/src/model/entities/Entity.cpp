@@ -172,16 +172,16 @@ void Entity::setKilledBy(int team) {
 	this->killedBy = team;
 }
 
-void Entity::collideTo(MobileEntity* mobileEntity) {
-	mobileEntity->attack(this);
+void Entity::collideTo(MobileEntity& mobileEntity) {
+	mobileEntity.attack(*this);
 }
 
-void Entity::collideTo(Item* item) {
-	item->applyEffects(this);
+void Entity::collideTo(Item& item) {
+	item.applyEffects(*this);
 }
 
-void Entity::collideTo(LifeHeart* heart) {
-	heart->applyEffects(this);
+void Entity::collideTo(LifeHeart& heart) {
+	heart.applyEffects(*this);
 }
 
 void Entity::setLife(int life) {
