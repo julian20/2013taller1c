@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <vector>
 
+#define DAMAGE_DELAY 1000 //milliseconds
 using namespace std;
 
 Entity::Entity() {
@@ -28,6 +29,7 @@ Entity::Entity() {
 	this->team = 0;
 	this->killedBy = 0;
 	this->positionInitialized = false;
+	this->damageBuffer = 0;
 }
 
 Entity::Entity(Entity* entity) {
@@ -44,10 +46,11 @@ Entity::Entity(Entity* entity) {
 	this->team = entity->getTeam();
 	this->killedBy = entity->getKilledBy();
 	this->positionInitialized = entity->getPositionInitialized();
+	this->damageBuffer = 0;
 }
 
 bool Entity::getPositionInitialized() {
-
+	return positionInitialized;
 }
 
 void Entity::setPos(float x, float y, float z) {
@@ -140,10 +143,20 @@ Tile* Entity::getTile() {
 	return retval;
 }
 
+
+void Entity::updateDamageTaken(){
+	if (damageTimer.getTimeIntervalSinceStart() > DAMAGE_DELAY){
+		this->life -= damageBuffer;
+		damageBuffer = 0;
+	}
+
+}
 void Entity::applyDamage(int damage)
 {
 	//int totalDamage=damage falta calcular lo q protege el escudo
-	this->life= this->life-damage;
+	damageBuffer = damage;
+	damageTimer.start();
+
 
 }
 

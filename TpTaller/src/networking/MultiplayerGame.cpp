@@ -82,6 +82,7 @@ void MultiplayerGame::playersUpdate(){
 
 	for ( list<Player*>::iterator player = players.begin() ; player != players.end() ; ++player ){
 		(*player)->update(view->getMapData());
+		(*player)->updateDamageTaken();
 	}
 
 	updatePlayersCoordinates();
