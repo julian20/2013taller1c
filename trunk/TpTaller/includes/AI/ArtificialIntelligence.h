@@ -19,7 +19,7 @@ public:
 	virtual ~ArtificialIntelligence();
 	void watch();
 	void update(MapData* mapData);
-	bool isAnyEnemyClose();
+	bool isAnyEnemyClose(MapData* mapData);
 	Entity* getNearestEnemy();
 	void attack(Entity* enemy);
 private:

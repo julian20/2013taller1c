@@ -50,14 +50,18 @@ void Player::collideTo(Entity* entity) {
 void Player::reverseCollide(Entity* entity) {
 
 }
-
+Weapon* Player::getCurrentWeapon()
+{
+	Weapon* weaponToUse = weapons->front();
+	return weaponToUse;
+}
 void Player::attack(Entity* entity) {
 	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
 		attacking = true;
 		//this->magic--;
 		if(magic>0)
 		{
-			Weapon* weaponToUse = weapons->front();
+			Weapon* weaponToUse = this->getCurrentWeapon();
 			weaponToUse->attack(entity);
 			this->magic-=weaponToUse->getMagic();
 		}
