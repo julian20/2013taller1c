@@ -16,6 +16,7 @@
 #include <model/entityProperties/Speed.h>
 #include <model/entityProperties/Power.h>
 #include <model/entityProperties/Base.h>
+#include <view/timer/Timer.h>
 #include <list>
 #include <string>
 #include <vector>
@@ -63,6 +64,7 @@ public:
 	void setTeam(int team);
 	void setKilledBy(int team);
 	bool getPositionInitialized();
+	void updateDamageTaken();
 protected:
 	Vector3* currentPos;
 	Base* base;
@@ -77,6 +79,9 @@ protected:
 	// Mission manager.
 	int team;
 	int killedBy;
+	Timer damageTimer;
+	int damageBuffer;
+
 private:
 	bool positionInitialized;
 };
