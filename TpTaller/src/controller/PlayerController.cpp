@@ -200,7 +200,6 @@ void PlayerController::playerAttack() {
 		events.push_back(new PlayerEvent(EVENT_STOP));
 		return;
 	}
-	player->attack(NULL);
 }
 
 void PlayerController::playerCancelAttack() {

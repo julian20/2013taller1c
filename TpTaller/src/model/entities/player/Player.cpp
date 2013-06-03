@@ -6,7 +6,6 @@
  */
 
 #include <model/entities/player/Player.h>
-#include <model/entities/Entity.h>
 #include <stdio.h>
 using namespace std;
 
@@ -42,20 +41,28 @@ void Player::setChat(Chat* chat) {
 	this->chat = chat;
 }
 
-void Player::collideTo(Entity* entity) {
+void Player::collideTo(Entity& entity) {
 	//if(entity->getClassName()=="Item")
 	attack(entity);
 }
 
-void Player::reverseCollide(Entity* entity) {
+void Player::reverseCollide(Entity& entity) {
+	entity.collideTo(*this);
+}
 
+void Player::reverseCollide(Item& item) {
+	item.collideTo(*this);
 }
 Weapon* Player::getCurrentWeapon()
 {
 	Weapon* weaponToUse = weapons->front();
 	return weaponToUse;
 }
-void Player::attack(Entity* entity) {
+void Player::reverseCollide(LifeHeart& item) {
+	item.collideTo(*this);
+}
+
+void Player::attack(Entity& entity) {
 	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
 		attacking = true;
 		//this->magic--;

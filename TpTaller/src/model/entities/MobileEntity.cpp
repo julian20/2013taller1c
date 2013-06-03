@@ -7,6 +7,7 @@
 
 #include <model/entities/MobileEntity.h>
 #include <model/entities/Items/Item.h>
+#include <model/entities/Items/LifeHeart.h>
 #include <model/map/MapData.h>
 using namespace std;
 
@@ -119,9 +120,8 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		// Sino nunca va a cambiar el tipo de clase de lo que colisionamos.
 		// Solo vamos a poder colisionar con Entity, y nunca podremos
 		// diferenciar si es un player, un item, o que.
-		Entity& attackReference = *attackToEntity;
 		MobileEntity& thisMobileEntity = *this;
-		thisMobileEntity.reverseCollide(attackReference);
+		thisMobileEntity.reverseCollide(*attackToEntity);
 		lookAtEnemy();
 //		cancelAttack();
 		attackToEntity = NULL;
@@ -336,6 +336,10 @@ void MobileEntity::reverseCollide(Entity& entity){
 }
 
 void MobileEntity::reverseCollide(Item& item){
+	item.collideTo(*this);
+}
+
+void MobileEntity::reverseCollide(LifeHeart& item){
 	item.collideTo(*this);
 }
 
