@@ -122,6 +122,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		// diferenciar si es un player, un item, o que.
 		MobileEntity& thisMobileEntity = *this;
 		thisMobileEntity.reverseCollide(*attackToEntity);
+		cout << "Life:" << this->getLife() << endl;
 		lookAtEnemy();
 //		cancelAttack();
 		attackToEntity = NULL;

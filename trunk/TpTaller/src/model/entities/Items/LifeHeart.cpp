@@ -31,7 +31,7 @@ void LifeHeart::applyEffects(Entity& entity) {
 }
 
 void LifeHeart::applyEffects(MobileEntity& entity) {
-	entity.setLife(100);
+	entity.setLife(0);
 }
 
 void LifeHeart::collideTo(MobileEntity& entity) {
