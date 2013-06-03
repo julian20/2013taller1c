@@ -6,6 +6,7 @@
 #include <model/entities/Entity.h>
 #include <model/entities/Items/Item.h>
 #include <model/entities/Items/LifeHeart.h>
+#include <model/entities/Items/MagicBottle.h>
 #include <model/entities/MobileEntity.h>
 #include <model/entities/player/Player.h>
 #include <model/Logs/Logs.h>

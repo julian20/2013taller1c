@@ -16,6 +16,7 @@ using namespace std;
 class MagicBottle : public Item {
 public:
 	MagicBottle();
+	MagicBottle(Item* entity);
 	virtual void applyEffects(Entity* entity);
 	//virtual void applyEffects(MobileEntity* entity);
 	virtual string getClassName();

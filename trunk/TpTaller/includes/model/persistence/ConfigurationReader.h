@@ -21,6 +21,7 @@
 #include <model/entities/player/Player.h>
 #include <model/entities/Items/Item.h>
 #include <model/entities/Items/LifeHeart.h>
+#include <model/entities/Items/MagicBottle.h>
 #include <model/map/Tile.h>
 #include <model/map/TextureDefinition.h>
 #include <model/map/TextureHolder.h>

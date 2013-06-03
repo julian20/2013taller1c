@@ -2013,7 +2013,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 
 		actualItem = itemVector[i];
 
-		if(actualItem->getName() == "lifeheart") {
+		if (actualItem->getName() == "lifeheart") {
 
 			LifeHeart* lifeHeart = new LifeHeart();
 
@@ -2022,6 +2022,16 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			lifeHeart->setCoordinates(coord.getRow(), coord.getCol());
 
 			parsedItems.push_back(lifeHeart);
+
+		} else if (actualItem->getName() == "magicbottle") {
+
+			MagicBottle* magicbottle = new MagicBottle();
+
+			magicbottle->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			magicbottle->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(magicbottle);
 
 		}
 
