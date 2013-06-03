@@ -53,9 +53,9 @@ public:
 	virtual Tile* getTile();
 	bool isMobile();
 
-	void collideTo(MobileEntity& entity);
-	void collideTo(Item& item);
-	void collideTo(LifeHeart& heart);
+	virtual void collideTo(MobileEntity& entity);
+	virtual void collideTo(Item& item);
+	virtual void collideTo(LifeHeart& heart);
 
 	// Mission manager.
 	bool isDead();

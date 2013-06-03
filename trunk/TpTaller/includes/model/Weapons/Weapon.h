@@ -14,9 +14,9 @@ class Weapon {
 public:
 	Weapon();
 	virtual ~Weapon();
-	void applyDamage(Entity* entity);
-	void reduceEnergy(Entity* entity);
-	void attack(Entity* entity);
+	void applyDamage(Entity& entity);
+	void reduceEnergy(Entity& entity);
+	void attack(Entity& entity);
 	void setDamage(int damage);
 	void setAccuracy(int accuracy);
 	void setRange(int range);

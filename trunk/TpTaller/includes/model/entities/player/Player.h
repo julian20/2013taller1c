@@ -11,6 +11,7 @@
 #include <iostream>
 #include <list>
 #include <model/map/Tile.h>
+#include <model/entities/Entity.h>
 #include <model/Chat.h>
 #include <model/entities/MobileEntity.h>
 #include <model/Vector2.h>	// Capas hay q volarlo
@@ -19,6 +20,8 @@
 #include <networking/ChatUpdate.h>
 #include <model/Weapons/Weapon.h>
 #include <model/Weapons/Sword.h>
+#include <model/entities/Items/Item.h>
+#include <model/entities/Items/LifeHeart.h>
 
 using namespace std;
 
@@ -50,9 +53,11 @@ public:
 	void setActive();
 	void SetUnactive();
 
-	void collideTo(Entity* entity);
-	void reverseCollide(Entity* entity);
-	void attack(Entity* entity);
+	virtual void collideTo(Entity& entity);
+	virtual void reverseCollide(Item& entity);
+	virtual void reverseCollide(LifeHeart& entity);
+	virtual void reverseCollide(Entity& entity);
+	virtual void attack(Entity& entity);
 
 
 	//Operator to transform the object into a stream.

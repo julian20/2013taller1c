@@ -22,6 +22,7 @@
 using namespace std;
 class MapData;
 class Item;
+class LifeHeart;
 
 class MobileEntity: public Entity {
 public:
@@ -60,9 +61,10 @@ public:
 	Vector3* getEndPos();
 	void setEndPos(float x, float y, float z);
 
-	void collideTo(Entity& entity);
-	void reverseCollide(Entity& entity);
-	void reverseCollide(Item& entity);
+	virtual void collideTo(Entity& entity);
+	virtual void reverseCollide(Entity& entity);
+	virtual void reverseCollide(LifeHeart& entity);
+	virtual void reverseCollide(Item& entity);
 
 	virtual void attack(Entity& entity);
 
