@@ -379,7 +379,7 @@ void PlayerView::showCorpse(SDL_Surface* fondo, bool drawFog,
 	numberOfClips = spriteMap[string("die")].numberOfClips;
 	lastDirection = direction;
 	playAnimation(sprite, fondo, drawFog);
-	marco+=ANIMATION_CHANGE_DELAY;
+	marco += ANIMATION_CHANGE_DELAY;
 }
 
 SpriteType computeDirection(float direction) {
@@ -468,23 +468,24 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	FoggedSprite spriteToBeShown;
 
 	if (previousLife != life) {
-			attacked = true;
-			if (marco >= spriteMap[string("hit")].numberOfClips)
-				//marco = 0;
-				player->stop();
-			spriteToBeShown = spriteMap[string("hit")];
+		attacked = true;
+		if (marco >= spriteMap[string("hit")].numberOfClips)
+			//marco = 0;
+			player->stop();
+		spriteToBeShown = spriteMap[string("hit")];
 	}
 	if (player->isDead()) {
 		spriteToBeShown = spriteMap[string("die")];
 		double rnd = uniform(0.0, 1.0);
-		if (marco >= spriteToBeShown.numberOfClips-1){
+		if ((marco >= spriteToBeShown.numberOfClips - 1)
+				&& (!SoundEffectHandler::isSoundPlaying(string(DIE1_SOUND)))
+				&& (!SoundEffectHandler::isSoundPlaying(string(DIE2_SOUND)))) {
 			if (rnd > 0.5)
 				SoundEffectHandler::playSound(string(DIE1_SOUND));
 			else
 				SoundEffectHandler::playSound(string(DIE2_SOUND));
 		}
 	}
-
 
 	if (player->isAttacking()) {
 
