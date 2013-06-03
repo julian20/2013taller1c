@@ -84,6 +84,8 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->isActive = update->isActive();
 	this->life = update->getLife();
 
+	this->lastAttackingDirection = update->getLastAttackingDirection();
+
 	if (currentTile)
 		delete currentTile;
 	this->currentTile = update->getTile();
@@ -127,12 +129,12 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setInitCoordinates(this->coord);
 	update->setLife(this->life);
 	update->setMagic(this->magic);
+	update->setLastAttackingDirection(lastAttackingDirection);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {
 		update->setNextTile(this->currentTile);
 	}
-
 	return update;
 }
 

@@ -306,29 +306,30 @@ void ComunicationUtils::sendChatMessage(int sockID, ChatMessage* msj)
 			if (i > ITER_LIMIT) break;
 		}
 }
-ChatMessage* ComunicationUtils::recvChatMessage(int sockID)
-{
+
+ChatMessage* ComunicationUtils::recvChatMessage(int sockID) {
 	int size = ComunicationUtils::recvNumber(sockID);
-		char updatebuffer[size];
-		stringstream updatestream;
+	char updatebuffer[size];
+	stringstream updatestream;
 
-		int recvSize = 0;
-		int i = 0;
+	int recvSize = 0;
+	int i = 0;
 
-		while (recvSize != size){
-			recvSize = recv(sockID,updatebuffer,size,0);
-			i++;
-			if (i > ITER_LIMIT) break;
-		}
+	while (recvSize != size){
+		recvSize = recv(sockID,updatebuffer,size,0);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
 
-		updatestream << updatebuffer;
+	updatestream << updatebuffer;
 
-		ChatMessage* update = new ChatMessage();
+	ChatMessage* update = new ChatMessage();
 
-		updatestream >> *update;
+	updatestream >> *update;
 
-		return update;
+	return update;
 }
+
 void ComunicationUtils::sendPlayerUpdate(int sockID,PlayerUpdate* update){
 
 	stringstream updatestream;

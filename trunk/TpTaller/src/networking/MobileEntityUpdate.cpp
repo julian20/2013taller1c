@@ -19,6 +19,7 @@ MobileEntityUpdate::MobileEntityUpdate(){
 	this->initCoords = new Coordinates;
 	this->life = 0;
 	this->magic=0;
+	this->lastAttackingDirection = 0;
 }
 
 void MobileEntityUpdate::setId(int id){
@@ -85,6 +86,13 @@ void MobileEntityUpdate::setAttacking(bool attacking){
 	this->attacking = attacking;
 }
 
+float MobileEntityUpdate::getLastAttackingDirection(){
+	return this->lastAttackingDirection;
+}
+
+void MobileEntityUpdate::setLastAttackingDirection(float dir){
+	this->lastAttackingDirection = dir;
+}
 
 Tile* MobileEntityUpdate::getTile(){
 	Tile* tile = new Tile(new Coordinates(currentTile->getCoordinates().getRow(),currentTile->getCoordinates().getCol()));
@@ -131,7 +139,7 @@ MobileEntityUpdate::~MobileEntityUpdate() {
 ostream& operator <<(std::ostream& out, const MobileEntityUpdate& update){
 
 	out << update.id << " " << update.name << " " << *update.currentPos << " " << *update.endPos << " " << *update.speed << " " << update.attacking << " "
-			<< " " << *update.currentTile << " " << *update.nextTile << " " << *update.initCoords << " ";
+			<< " " << *update.currentTile << " " << *update.nextTile << " " << *update.initCoords << " " << update.lastAttackingDirection;
 
 
 	return out;
@@ -162,6 +170,7 @@ istream& operator >>(std::istream& in, MobileEntityUpdate& update){
 	Coordinates coords;
 	in >> coords;
 	update.setInitCoordinates(&coords);
+	in >> update.lastAttackingDirection;
 
 
 

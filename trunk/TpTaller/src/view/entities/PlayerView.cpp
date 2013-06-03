@@ -427,13 +427,6 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		direction = movementDirection->getAngle();
 	}
 
-	Vector2* v = new Vector2(0, 0);
-	if (movementDirection->isEqual(v))
-		direction = lastDirection;
-	else
-		direction = movementDirection->getAngle();
-	delete v;
-
 	SpriteType sprite = computeDirection(direction);
 
 	int life = player->getLife();
