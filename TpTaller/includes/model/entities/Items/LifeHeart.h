@@ -17,6 +17,7 @@ using namespace std;
 class LifeHeart: public Item {
 public:
 	LifeHeart();
+	LifeHeart(Item* entity);
 	virtual void applyEffects(Entity& entity);
 	virtual void applyEffects(MobileEntity& entity);
 	virtual void collideTo(MobileEntity& entity);
