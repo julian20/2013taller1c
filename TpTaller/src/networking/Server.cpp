@@ -275,7 +275,7 @@ void Server::runMainLoop(int clientSocket, string playerName){
 		}
 
 		sendNewPlayers(clientSocket,playerName);
-//		sendNewMobs(clientSocket,playerName);
+		sendNewMobs(clientSocket,playerName);
 
 		vector<PlayerEvent*> events = recvEvents(clientSocket);
 
@@ -507,6 +507,24 @@ void Server::sendNewPlayers(int clientSocket,string playerName) {
 
 	}
 
+}
+
+void Server::sendNewMobs(int clientSocket,string playerName){
+	// 1ro envio la cantidad de mobs que voy a mandar
+	map<int,MobInfo*> infos = game->getMobInfo();
+	int n = infos.size() - sendedMobs[playerName].size();
+
+	ComunicationUtils::sendNumber(clientSocket, n);
+
+	for (map<int, MobInfo*>::iterator it = infos.begin(); it != infos.end(); ++it) {
+		// SI NO HA SIDO ENVIADO, LO ENVIO
+		if (sendedMobs[playerName].count(it->first) == 0) {
+			MobInfo* info = it->second;
+			ComunicationUtils::sendMobInfo(clientSocket, info);
+			sendedMobs[playerName][it->first] = (Mob*) it->second->getEntity();
+		}
+
+	}
 }
 
 vector<PlayerEvent*> Server::recvEvents(int clientSocket) {

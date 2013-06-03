@@ -38,6 +38,7 @@ public:
 
 	bool exchangeAliveSignals();
 	void checkNewPlayers();
+	void checkNewMobs();
 	void sendEvents();
 	map<string,PlayerUpdate*> recvPlayersUpdates();
 	void updatePlayers(map<string,PlayerUpdate*> updates);

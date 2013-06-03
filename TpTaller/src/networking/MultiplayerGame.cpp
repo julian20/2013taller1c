@@ -102,8 +102,8 @@ void MultiplayerGame::applyFPS(int timer) {
 	} else
 		fps = (1000 / elapsedMiliseconds)+5;
 }
-vector<ChatUpdate*> MultiplayerGame::getChatUpdates()
-{
+
+vector<ChatUpdate*> MultiplayerGame::getChatUpdates() {
 	vector<ChatUpdate*> updates;
 
 		for ( list<Player*>::iterator player = players.begin() ; player != players.end() ; ++player )
@@ -142,6 +142,7 @@ vector<MobUpdate*> MultiplayerGame::getMobUpdates(){
 		MobUpdate* update = (it->second)->generateMobUpdate(it->first);
 		if (update)
 			updates.push_back(update);
+		update->setId(3);
 	}
 
 	return updates;
@@ -160,6 +161,7 @@ map<int,MobInfo*> MultiplayerGame::getMobInfo(){
 	for (map<int,Mob*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
 
 		MobInfo* info = new MobInfo();
+		info->setId(3);
 		info->setEntity(it->second);
 	}
 
