@@ -81,7 +81,7 @@ private:
 
         list<Player*> otherPlayers;
         list<PlayerView*> otherPlayerViews;
-        list<ArtificialIntelligence*> ias;
+       // list<ArtificialIntelligence*> ias;
         MapController* mapController;
         MapCameraController* cameraController;
 

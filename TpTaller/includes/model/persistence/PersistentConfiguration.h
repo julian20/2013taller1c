@@ -34,9 +34,13 @@ public:
 	void setAnimationConfiguration(GameConfiguration* animationConfig);
 	EntityViewMap* getEntityViewMap();
 	void setEntityViewMap(EntityViewMap* entityViewMap);
+	map<int,MobileEntity*> getMobileEntities();
+	void setMobileEntities(std::vector<MobileEntity*> mobiles);
 
 private:
+	map<int,MobileEntity*> mobsMap;
 	std::vector<Player*> entityList;
+	std::vector<MobileEntity*> mobs;
 	std::vector<PlayerView*> viewList;
 	TextureHolder* textureHolder;
 	MapData* mapData;
