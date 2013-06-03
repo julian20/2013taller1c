@@ -30,7 +30,13 @@ string MobInfo::getName() {
 	return this->name;
 }
 
+void MobInfo::setId(int id){
+	this->id = id;
+}
 
+int MobInfo::getId(){
+	return id;
+}
 
 void MobInfo::setInitCoordinates(Coordinates* coords) {
 	this->initCoords = coords;

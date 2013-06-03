@@ -351,6 +351,7 @@ void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords) {
 void Game::handleMobsUpdates(vector<MobUpdate*> mobUpdates){
 	for (int i = 0 ; i < mobUpdates.size() ; i++){
 		int id = mobUpdates[i]->getId();
+		if (mobileEntities.count(id) == 0) continue;
 
 		mobileEntities[id]->updateFromServer(mobUpdates[i]);
 

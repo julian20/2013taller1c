@@ -190,6 +190,52 @@ PlayerInfo* ComunicationUtils::recvPlayerInfo(int sockID){
 
 }
 
+
+void ComunicationUtils::sendMobInfo(int sockID,MobInfo* info){
+
+	stringstream infostream;
+	infostream << *(info);
+
+	int size = infostream.str().size() + EXTRA;
+	ComunicationUtils::sendNumber(sockID,size);
+
+	// SEND MOB INFO
+	int sendSize = 0;
+	int i = 0;
+
+	while (sendSize != size){
+		sendSize = send(sockID,infostream.str().c_str(),size, 0);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
+}
+
+MobInfo* ComunicationUtils::recvMobInfo(int sockID){
+
+	int size = ComunicationUtils::recvNumber(sockID);
+
+	char infobuffer[size];
+
+	int recvSize = 0;
+	int i = 0;
+
+	while (recvSize != size){
+		recvSize = recv(sockID,infobuffer,size,0);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
+
+	stringstream infostream;
+	infostream << infobuffer;
+
+	MobInfo* info = new MobInfo();
+
+	infostream >> *info;
+
+	return info;
+}
+
+
 void ComunicationUtils::sendPlayerEvent(int sockID,PlayerEvent* event){
 	stringstream eventstream;
 	eventstream << *(event);
