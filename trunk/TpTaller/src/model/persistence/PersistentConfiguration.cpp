@@ -64,7 +64,18 @@ EntityViewMap* PersistentConfiguration::getEntityViewMap() {
 void PersistentConfiguration::setEntityViewMap(EntityViewMap* entityViewMap) {
 	this->entityViewMap = entityViewMap;
 }
+void PersistentConfiguration::setMobileEntities(std::vector<MobileEntity*> mobiles)
+{
+	this->mobs= mobiles;
+	for (unsigned int i = 0; i < this->mobs.size(); i++) {
+			mobsMap[i]=mobs[i];
+		}
 
+}
+map<int,MobileEntity*> PersistentConfiguration::getMobileEntities()
+{
+	return this->mobsMap;
+}
 void PersistentConfiguration::setViewList(std::vector<PlayerView*> viewList) {
 	this->viewList = viewList;
 }

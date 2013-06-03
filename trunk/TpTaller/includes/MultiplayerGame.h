@@ -19,6 +19,7 @@
 #include <networking/MobUpdate.h>
 #include <networking/PlayerEvent.h>
 #include <networking/NetworkPlayerController.h>
+#include <AI/ArtificialIntelligence.h>
 #include <networking/PlayerUpdate.h>
 #include <networking/ChatUpdate.h>
 #include <view/MapView.h>
@@ -48,6 +49,7 @@ private:
 	map< string, NetworkPlayerController*> controllers;
 
 	list<Player*> players;
+	list<ArtificialIntelligence*> ias;
 	map<Player*, Coordinates> playersCoords;
 
 	map<int,Mob*> mobileEntities;

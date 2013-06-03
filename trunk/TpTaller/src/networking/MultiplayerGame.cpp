@@ -24,7 +24,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
-
+	this->mobileEntities = configuration->getMobileEntities();
 }
 
 
