@@ -25,6 +25,7 @@ MobileEntity::MobileEntity() {
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	attackTimer.start();
+	lastAttackingDirection = 0;
 }
 
 MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
@@ -42,6 +43,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	initSpeed = 0;
 	team = 0;
 	attackTimer.start();
+	lastAttackingDirection = 0;
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {
@@ -185,6 +187,8 @@ void MobileEntity::updateFromServer(MobileEntityUpdate* update) {
 	this->speed->setDirection(update->getSpeed()->getDirection());
 	this->attacking = update->isAttacking();
 	this->currentTile = update->getTile();
+
+	this->lastAttackingDirection = update->getLastAttackingDirection();
 
 	Coordinates currentTileCoords = this->currentTile->getCoordinates();
 	Coordinates nextTileCoords = update->getNextTile()->getCoordinates();

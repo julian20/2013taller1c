@@ -39,6 +39,8 @@ public:
 	void setSpeed(Speed* speed);
 	bool isAttacking();
 	void setAttacking(bool attacking);
+	float getLastAttackingDirection();
+	void setLastAttackingDirection(float dir);
 	Tile* getTile();
 	void setTile(Tile* tile);
 	Coordinates* getInitCoordinates();
@@ -67,6 +69,7 @@ protected:
 	Speed* speed;
 
 	bool attacking;
+	float lastAttackingDirection;
 
 	Coordinates* initCoords;
 
