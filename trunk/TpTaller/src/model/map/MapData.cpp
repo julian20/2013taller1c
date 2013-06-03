@@ -99,7 +99,11 @@ void MapData::addItem(int row, int col, Item* object) {
 				currentData = getTileData(currentRow, currentCol);
 
 				//Ponemos una copia
-				Item* copy = new Item(object);
+				Item* copy;
+				if(object->getName() == "lifeheart")
+					copy = new LifeHeart(object);
+				else
+					copy = new Item(object);
 				currentData->addEntity(copy);
 				copy->setCoordinates(currentRow,currentCol);
 				currentData->setWalkable(false);
