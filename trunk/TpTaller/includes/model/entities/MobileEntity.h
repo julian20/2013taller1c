@@ -63,8 +63,6 @@ public:
 
 	virtual void collideTo(Entity& entity);
 	virtual void reverseCollide(Entity& entity);
-	virtual void reverseCollide(LifeHeart& entity);
-	virtual void reverseCollide(Item& entity);
 
 	virtual void attack(Entity& entity);
 

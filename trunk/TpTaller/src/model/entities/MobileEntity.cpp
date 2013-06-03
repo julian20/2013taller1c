@@ -335,14 +335,6 @@ void MobileEntity::reverseCollide(Entity& entity){
 	entity.collideTo(*this);
 }
 
-void MobileEntity::reverseCollide(Item& item){
-	item.collideTo(*this);
-}
-
-void MobileEntity::reverseCollide(LifeHeart& item){
-	item.collideTo(*this);
-}
-
 void MobileEntity::attack(Entity& entity){
 	if (attackTimer.getTimeIntervalSinceStart()>ATTACK_TIMEOUT){
 		attacking = true;

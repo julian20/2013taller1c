@@ -50,16 +50,10 @@ void Player::reverseCollide(Entity& entity) {
 	entity.collideTo(*this);
 }
 
-void Player::reverseCollide(Item& item) {
-	item.collideTo(*this);
-}
 Weapon* Player::getCurrentWeapon()
 {
 	Weapon* weaponToUse = weapons->front();
 	return weaponToUse;
-}
-void Player::reverseCollide(LifeHeart& item) {
-	item.collideTo(*this);
 }
 
 void Player::attack(Entity& entity) {
