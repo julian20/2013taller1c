@@ -59,6 +59,7 @@ Weapon* Player::getCurrentWeapon()
 void Player::attack(Entity& entity) {
 	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
 		attacking = true;
+		attackTimer.start();
 		//this->magic--;
 		if(magic>0)
 		{

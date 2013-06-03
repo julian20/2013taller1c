@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <vector>
 
-#define DAMAGE_DELAY 1000 //milliseconds
+#define DAMAGE_DELAY 500 //milliseconds
 using namespace std;
 
 Entity::Entity() {
@@ -78,6 +78,13 @@ Coordinates Entity::getCoordinates() {
 	return retval;
 }
 
+void Entity::setDamageBuffer(int dmg){
+	damageBuffer = dmg;
+}
+
+int Entity::getDamageBuffer(){
+	return damageBuffer;
+}
 void Entity::setCoordinates(int row, int col) {
 	if (row < 0 || col < 0) {
 		std::cout << "Se esta tratando de asignar unas coordenadas"
