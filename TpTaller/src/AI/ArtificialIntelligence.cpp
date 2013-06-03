@@ -21,7 +21,7 @@ void ArtificialIntelligence::setEntity(Entity* entity)
 }
 void ArtificialIntelligence::update(MapData* mapData)
 {
-	if(this->isAnyEnemyClose())
+	if(this->isAnyEnemyClose(mapData))
 	{
 			Entity* enemy=this->getNearestEnemy();
 			this->attack(enemy);
@@ -36,8 +36,9 @@ void ArtificialIntelligence::update(MapData* mapData)
 	}
 
 }
-bool ArtificialIntelligence::isAnyEnemyClose()
+bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData)
 {
+	//mapData->getClosestEntities(entity->getCoordinates(),entity->get)
 	return this->entity->getVisibleEnemies().size()>0;
 }
 Entity* ArtificialIntelligence::getNearestEnemy()

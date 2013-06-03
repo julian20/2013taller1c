@@ -66,6 +66,7 @@ public:
 	Chat* getChat();
 	void setChat(Chat* chat);
 	ChatUpdate* generateChatUpdate();
+	Weapon* getCurrentWeapon();
 private:
 	Chat* chat;
 
