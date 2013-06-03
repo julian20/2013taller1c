@@ -65,6 +65,8 @@ public:
 	void setKilledBy(int team);
 	bool getPositionInitialized();
 	void updateDamageTaken();
+	void setDamageBuffer(int dmg);
+	int getDamageBuffer();
 protected:
 	Vector3* currentPos;
 	Base* base;

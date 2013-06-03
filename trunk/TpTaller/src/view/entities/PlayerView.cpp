@@ -23,11 +23,19 @@
 #define NUMBER_OF_STANDING_FRAMES 3
 #define STEP_SOUND "resources/sound/player/steps.ogg"
 #define ATTACK_SOUND "resources/sound/player/sword.ogg"
+#define DIE1_SOUND "resources/sound/player/die1.ogg"
+#define DIE2_SOUND "resources/sound/player/die2.ogg"
+
 #define HP_BAR_WIDTH 100
 #define HP_BAR_HEIGHT 10
 #define EMPTY_BAR_IMG "resources/misc/HPBarEmpty.png"
 #define FULL_BAR_IMG "resources/misc/HPBarFull.png"
 #define FULL_MP_BAR_IMG "resources/misc/MPBarFull.png"
+
+double uniform(double a, double b) {
+	return rand() / (RAND_MAX + 1.0) * (b - a) + a;
+}
+
 PlayerView::PlayerView()
 //Llamamos al constructor de la superclase
 :
@@ -190,10 +198,9 @@ void PlayerView::blitHPBar(SDL_Surface* screen, int x, int y) {
 	SDL_BlitSurface(emptyMPBar, NULL, screen, &offsetEmpty);
 	SDL_FreeSurface(scaledBar);
 
-
 	SDL_Surface* fullMPBarTemp = IMG_Load(FULL_MP_BAR_IMG);
-	SDL_Surface* scaledFullMPBar = rotozoomSurfaceXY(fullMPBarTemp, 0, xScale2, yScale,
-			0);
+	SDL_Surface* scaledFullMPBar = rotozoomSurfaceXY(fullMPBarTemp, 0, xScale2,
+			yScale, 0);
 	SDL_Surface* MPbar = SDL_DisplayFormatAlpha(scaledFullMPBar);
 	SDL_FreeSurface(fullMPBarTemp);
 	SDL_FreeSurface(scaledFullMPBar);
@@ -204,7 +211,6 @@ void PlayerView::blitHPBar(SDL_Surface* screen, int x, int y) {
 	MPsize.h = MPbar->h;
 	float mpSize = (float) player->getMagic() / 100 * HP_BAR_WIDTH;
 	MPsize.w = (int) mpSize;
-	cout << player->getMagic()<<endl;
 
 	SDL_Rect offsetMP;
 	offsetMP.x = (int) x + camPos->getX() - nameImage->w / 2 + 14;
@@ -237,6 +243,8 @@ void PlayerView::setPersonaje(Player* personaje) {
 void initSounds() {
 	SoundEffectHandler::loadSound(string("walk"), STEP_SOUND);
 	SoundEffectHandler::loadSound(string("attack"), ATTACK_SOUND);
+	SoundEffectHandler::loadSound(string(DIE1_SOUND), DIE1_SOUND);
+	SoundEffectHandler::loadSound(string(DIE2_SOUND), DIE2_SOUND);
 
 }
 
@@ -248,6 +256,7 @@ FoggedSprite PlayerView::loadFoggedSprite(const char* modifier) {
 	sprite.teamColorImage = FogCreator::getFog(sprite.image,
 			teamColors[player->getTeam()]);
 	sprite.numberOfClips = computeNumberOfClips(sprite.image);
+	cout << name + id << " " << sprite.numberOfClips << endl;
 	return sprite;
 
 }
@@ -370,6 +379,7 @@ void PlayerView::showCorpse(SDL_Surface* fondo, bool drawFog,
 	numberOfClips = spriteMap[string("die")].numberOfClips;
 	lastDirection = direction;
 	playAnimation(sprite, fondo, drawFog);
+	marco+=ANIMATION_CHANGE_DELAY;
 }
 
 SpriteType computeDirection(float direction) {
@@ -404,6 +414,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		loadPlayerImage();
 		damageReceivedTimer.start();
 	}
+	player->updateDamageTaken();
 	Vector2* movementDirection = this->player->getMovementDirection();
 	float direction;
 
@@ -426,21 +437,22 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	SpriteType sprite = computeDirection(direction);
 
 	int life = player->getLife();
-	if (player->isDead()) {
-		showCorpse(fondo, drawFog, sprite);
-		return;
-	}
+
 	if (marco >= numberOfClips) {
-		marco = 0;
 		previousLife = life;
+		if (attacked)
+			attacked = false;
+		if (player->isDead()) {
+			showCorpse(fondo, drawFog, sprite);
+			return;
+		}
+
+		marco = 0;
 		if (player->isAttacking()) {
 			player->cancelAttack();
 			attacking = false;
 			player->addEvent(new PlayerEvent(EVENT_CANCEL_ATTACK));
 			SoundEffectHandler::stopSound(attackID);
-		}
-		if (attacked) {
-			attacked = false;
 		}
 		if (player->isBlocking())
 			marco = spriteMap[string("blocking")].numberOfClips - 1;
@@ -456,17 +468,24 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	FoggedSprite spriteToBeShown;
 
 	if (previousLife != life) {
-		attacked = true;
-		if (marco >= spriteMap[string("hit")].numberOfClips)
-			marco = 0;
-		player->stop();
-		spriteToBeShown = spriteMap[string("hit")];
+			attacked = true;
+			if (marco >= spriteMap[string("hit")].numberOfClips)
+				//marco = 0;
+				player->stop();
+			spriteToBeShown = spriteMap[string("hit")];
 	}
-	//DEAD
 	if (player->isDead()) {
-		player->stop();
 		spriteToBeShown = spriteMap[string("die")];
+		double rnd = uniform(0.0, 1.0);
+		if (marco >= spriteToBeShown.numberOfClips-1){
+			if (rnd > 0.5)
+				SoundEffectHandler::playSound(string(DIE1_SOUND));
+			else
+				SoundEffectHandler::playSound(string(DIE2_SOUND));
+		}
 	}
+
+
 	if (player->isAttacking()) {
 
 		//Si se estaba moviendo, reseteamos el marco para que no quede un # de clip invalido
@@ -494,7 +513,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		SoundEffectHandler::stopSound(walkID);
 
 	if (!player->IsMoving() && !player->isAttacking() && !player->isBlocking()
-			&& previousLife == life) {
+			&& previousLife == life && !player->isDead()) {
 		if (!wasStanding) {
 			timer.start();
 			wasStanding = true;
@@ -579,8 +598,7 @@ void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 	clipToDraw.h = imageHeight * scaleHeight;
 
 	showFrame(screen, &clipToDraw, drawFog);
-
-	if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
+	if (animationChangeRate >= ANIMATION_CHANGE_DELAY) {
 		this->marco++;
 		animationChangeRate = 0; // Move to the next marco in the animation
 	} else

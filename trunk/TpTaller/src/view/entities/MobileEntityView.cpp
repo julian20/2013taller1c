@@ -336,5 +336,7 @@ void MobileEntityView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 }
 
 int MobileEntityView::computeNumberOfClips(SDL_Surface* img) {
-	return img->w / imageWidth;
+	float number = (float)img->w / imageWidth;
+	float aux = round(number);
+	return (int)aux;
 }

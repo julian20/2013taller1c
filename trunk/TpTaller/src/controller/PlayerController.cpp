@@ -17,7 +17,7 @@
 
 using namespace std;
 
-double uniform(double a, double b) {
+double uniform2(double a, double b) {
 	return rand() / (RAND_MAX + 1.0) * (b - a) + a;
 }
 
@@ -101,7 +101,7 @@ void playSound() {
 			&& !SoundEffectHandler::isSoundPlaying(string("vale"))
 			&& !SoundEffectHandler::isSoundPlaying(string("voy"))
 			&& !SoundEffectHandler::isSoundPlaying(string("battle"))) {
-		double rnd = uniform(0.0, 1.0);
+		double rnd = uniform2(0.0, 1.0);
 		if (rnd > 0.76)
 			SoundEffectHandler::playSound(string("si"));
 		else if (rnd > 0.5)
