@@ -27,7 +27,7 @@ void ArtificialIntelligence::update(MapData* mapData)
 			this->attack(enemy);
 	}else
 	{
-		if(entity->getClassName() == "MobileEntity")
+		if(entity->getClassName() == "Mob")
 		{
 			this->watch();
 			MobileEntity* mob= (MobileEntity*)entity;

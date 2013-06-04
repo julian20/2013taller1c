@@ -41,6 +41,7 @@ public:
 	map<int,MobInfo*> getMobInfo();
 	virtual ~MultiplayerGame();
 	void deliverMessage(ChatMessage* msj);
+	void updateMobs();
 
 private:
 

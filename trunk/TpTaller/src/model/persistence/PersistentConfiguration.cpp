@@ -68,11 +68,11 @@ void PersistentConfiguration::setMobileEntities(std::vector<MobileEntity*> mobil
 {
 	this->mobs= mobiles;
 	for (unsigned int i = 0; i < this->mobs.size(); i++) {
-			mobsMap[i]=mobs[i];
+			mobsMap[i]=(Mob*)mobs[i];
 		}
 
 }
-map<int,MobileEntity*> PersistentConfiguration::getMobileEntities()
+map<int,Mob*> PersistentConfiguration::getMobileEntities()
 {
 	return this->mobsMap;
 }

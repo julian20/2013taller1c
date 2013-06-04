@@ -24,7 +24,12 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
-	//this->mobileEntities = configuration->getMobileEntities();
+	this->mobileEntities = configuration->getMobileEntities();
+	for ( map<int,Mob*>::iterator mobs = mobileEntities.begin() ; mobs != mobileEntities.end() ; ++mobs ){
+	    ArtificialIntelligence* ia= new ArtificialIntelligence();
+	    ia->setEntity(mobs->second);
+	    ias.push_back(ia);
+	}
 }
 
 
@@ -59,6 +64,14 @@ void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes){
 	playersCoords[player] = coords;
 }
 
+void MultiplayerGame::updateMobs()
+{
+	MapData* map = view->getMapData();
+	for ( list<ArtificialIntelligence*>::iterator ia = ias.begin() ; ia != ias.end() ; ++ia )
+	{
+		(*ia)->update(map);
+	}
+}
 void MultiplayerGame::updatePlayersCoordinates(){
 	Player* player;
 	for ( list<Player*>::iterator playerIterator = players.begin() ; playerIterator != players.end() ; ++playerIterator ){
@@ -86,6 +99,7 @@ void MultiplayerGame::playersUpdate(){
 	}
 
 	updatePlayersCoordinates();
+	updateMobs();
 }
 
 void MultiplayerGame::applyFPS(int timer) {
