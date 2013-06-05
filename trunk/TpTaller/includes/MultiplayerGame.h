@@ -35,7 +35,7 @@ public:
 	void addEventsToHandle(string playerName, vector<PlayerEvent*> events);
 	void updatePlayersCoordinates();
 	vector<PlayerUpdate*> getPlayersUpdates();
-	vector<MobUpdate*> getMobileEntitiesUpdates();
+	vector<MobileEntityUpdate*> getMobileEntitiesUpdates();
 	vector<ChatUpdate*> getChatUpdates();
 	list<Player*> getPlayers();
 	map<int,MobileEntityInfo*> getMobileEntityInfo();
@@ -53,7 +53,9 @@ private:
 	list<ArtificialIntelligence*> ias;
 	map<Player*, Coordinates> playersCoords;
 
-	map<int,Mob*> mobileEntities;
+	map<int,MobileEntity*> mobileEntities;
+	map<int,MobileEntityView*> mobEntView;
+	int lastAddedView;
 
 	void playersUpdate();
 
