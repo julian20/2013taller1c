@@ -158,11 +158,9 @@ vector<MobileEntityUpdate*> MultiplayerGame::getMobileEntitiesUpdates(){
 
 	vector<MobileEntityUpdate*> updates;
 	for (map<int,MobileEntity*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
-
 		MobileEntityUpdate* update = (it->second)->generateMobileEntityUpdate(it->first);
 		if (update)
 			updates.push_back(update);
-		update->setId(3);
 	}
 
 	return updates;
