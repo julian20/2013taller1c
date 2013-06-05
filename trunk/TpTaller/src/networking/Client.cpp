@@ -199,7 +199,7 @@ void Client::initPlayerInfo(PlayerView* view) {
 	info->setName(view->getPersonaje()->getName());
 	info->setOriginalName(view->getName());
 
-	info->setImages(view->getTextureHolder()->getPlayerImages(view->getName()));
+	info->setImages(view->getTextureHolder()->getMobileEntityImages(view->getName()));
 	info->setAnchorPixel(view->getAnchorPixel());
 	info->setDelay(view->getDelay());
 	info->setFPS(view->getFps());

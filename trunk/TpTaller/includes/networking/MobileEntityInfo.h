@@ -27,8 +27,17 @@ public:
 	void setName(string name);
 	string getName();
 
+	void setImages(map<string,string> images);
+	map<string,string> getImages();
+
 	void setInitCoordinates(Coordinates* coords);
 	Coordinates* getInitCoordinates();
+
+	void setDelay(float delay) ;
+	float getDelay();
+
+	void setFPS(int fps);
+	int getFPS();
 
 	void setEntity(MobileEntity* entity);
 	MobileEntity* getEntity();
@@ -47,9 +56,12 @@ private:
 	int id;
 	string name;
 
-
+	map<string,string> images;
 
 	Coordinates* initCoords;
+
+	int fps;
+	float delay;
 
 	MobileEntity* entity;
 };
