@@ -44,6 +44,7 @@ public:
         virtual MenuEvent run();
 
         virtual void addNewPlayer(Player* player, PlayerView* view, Coordinates* coords);
+        virtual void addNewMobileEntity(MobileEntity* entity, MobileEntityView* view, Coordinates* coords, int id);
         void handleMobsUpdates(vector<MobUpdate*> mobUpdates);
         PlayerView* getPlayerView();
 
@@ -110,7 +111,7 @@ private:
 
 
 
-    	map<int,Mob*> mobileEntities;
+    	map<int,MobileEntity*> mobileEntities;
 };
 
 #endif /* GAME_H_ */

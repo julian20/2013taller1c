@@ -347,6 +347,17 @@ void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords) {
 
 }
 
+void Game::addNewMobileEntity(MobileEntity* entity, MobileEntityView* view, Coordinates* coords, int id){
+	entity->setCoordinates(coords->getRow(), coords->getCol());
+	MapData* map = mapView->getMapData();
+	map->addMobileEntity(coords->getRow(), coords->getCol(),entity);
+	Coordinates newCoords = entity->getCoordinates();
+	mapView->addNewMobileEntityView(view, newCoords);
+
+	mobileEntities[id] = entity;
+
+}
+
 void Game::handleMobsUpdates(vector<MobUpdate*> mobUpdates) {
 	for (size_t i = 0; i < mobUpdates.size(); i++) {
 		int id = mobUpdates[i]->getId();

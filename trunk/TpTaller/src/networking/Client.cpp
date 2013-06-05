@@ -355,8 +355,13 @@ void Client::checkNewMobileEntity(){
 		MobileEntityInfo* info = ComunicationUtils::recvMobileEntityInfo(clientID);
 		if (!info){
 			Logs::logErrorMessage("Ciente: No se ha recibido la informacion del mob");
-			return;
+			continue;
 		}
+
+		int id = info->getId();
+		MobileEntity* entity = info->getEntity();
+		MobileEntityView* view = info->createMobileEntityView();
+		game->addNewMobileEntity(entity,view,info->getInitCoordinates(), id);
 
 	}
 }

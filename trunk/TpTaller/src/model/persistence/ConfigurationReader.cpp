@@ -2158,7 +2158,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	loadEntityViewMap(entityViewMap, cleanPlayerViews);
 	loadEntityViewMap(entityViewMap, cleanEntityViews);
 	loadEntityViewMap(entityViewMap, cleanItemViews);
-	loadEntityViewMap(entityViewMap, cleanMobileEntityViews);
+	//loadEntityViewMap(entityViewMap, cleanMobileEntityViews);
 
 // Packing parser results.
 	PersistentConfiguration configuration = PersistentConfiguration();

@@ -20,6 +20,11 @@ MobileEntityInfo::MobileEntityInfo(){
 	id = 0;
 	entity = NULL;
 	initCoords = NULL;
+	imageHeight = 0;
+	imageWidth = 0;
+	fps = 0;
+	delay = 0;
+	anchorPixel = new Vector2();
 }
 
 void MobileEntityInfo::setName(string name) {
@@ -68,6 +73,30 @@ int MobileEntityInfo::getFPS() {
 	return this->fps;
 }
 
+
+void MobileEntityInfo::setImageDimentions(int width, int height) {
+	this->imageHeight = height;
+	this->imageWidth = width;
+}
+int MobileEntityInfo::getImageWidth() {
+	return this->imageWidth;
+}
+int MobileEntityInfo::getImageHeight() {
+	return this->imageHeight;
+}
+
+void MobileEntityInfo::setAnchorPixel(float x, float y) {
+	this->anchorPixel->setValues(x, y);
+}
+void MobileEntityInfo::setAnchorPixel(Vector2* anchorPixel) {
+	*(this->anchorPixel) = *anchorPixel;
+}
+Vector2* MobileEntityInfo::getAnchorPixel() {
+	return this->anchorPixel;
+}
+
+
+
 void MobileEntityInfo::setEntity(MobileEntity* entity){
 	this->entity = entity;
 }
@@ -79,7 +108,21 @@ MobileEntity* MobileEntityInfo::getEntity(){
 
 MobileEntityView* MobileEntityInfo::createMobileEntityView() {
 	MobileEntityView* view = new MobileEntityView();
+	view->setName(name);
+	view->setDelay(delay);
+	view->setFps(fps);
+	view->setImageHeight(imageHeight);
+	view->setImageWidth(imageWidth);
+	view->setAnchorPixel(anchorPixel);
 	view->setEntity(entity);
+
+	TextureHolder* th = new TextureHolder();
+
+	for (map<string,string>::iterator it = images.begin() ; it != images.end() ; ++it){
+		th->addTexture(new TextureDefinition(it->first,it->second));
+	}
+
+	view->setTextureHolder(th);
 
 	return view;
 }
@@ -92,7 +135,8 @@ ostream& operator <<(std::ostream& out, const MobileEntityInfo& info) {
 	MobileEntity* entity = info.entity;
 	Coordinates* initCoords = info.initCoords;
 
-	out << info.id << " " << name << " " << info.fps << " " << info.delay << " " <<  *initCoords << " " << *entity << " " ;
+	out << info.id << " " << name << " " << *info.anchorPixel << " " << info.imageHeight << " " << info.imageWidth <<  " " <<
+			info.fps << " " << info.delay << " " <<  *initCoords << " " << *entity << " " ;
 
 	out << info.images.size() << " ";
 	map<string,string> images = info.images;
@@ -108,6 +152,12 @@ istream& operator >>(std::istream& in, MobileEntityInfo& info) {
 	Coordinates* initCoords = new Coordinates();
 	in >> info.id;
 	in >> info.name;
+
+	info.anchorPixel = new Vector2();
+	in >> *info.anchorPixel;
+	in >> info.imageHeight;
+	in >> info.imageWidth;
+
 	in >> info.fps;
 	in >> info.delay;
 
