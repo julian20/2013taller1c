@@ -523,7 +523,8 @@ void Server::sendNewMobileEntities(int clientSocket,string playerName){
 		if (sendedMobileEntities[playerName].count(it->first) == 0) {
 			MobileEntityInfo* info = it->second;
 			ComunicationUtils::sendMobileEntityInfo(clientSocket, info);
-			sendedMobileEntities[playerName][it->first] = (Mob*) it->second->getEntity();
+			sendedMobileEntities[playerName][it->first] = it->second->getEntity();
+
 		}
 
 	}
@@ -706,6 +707,7 @@ void Server::disconectPlayer(int clientSocket, string playerName) {
 	updates[playerName] = vector<PlayerUpdate*>();
 
 	sendedPlayers[playerName].clear();
+	sendedMobileEntities[playerName].clear();
 
 }
 

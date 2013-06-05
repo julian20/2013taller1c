@@ -92,25 +92,41 @@ ostream& operator <<(std::ostream& out, const MobileEntityInfo& info) {
 	MobileEntity* entity = info.entity;
 	Coordinates* initCoords = info.initCoords;
 
-	out << info.id << " " << name << " " <<  *initCoords << " " << *entity << " " ;
+	out << info.id << " " << name << " " << info.fps << " " << info.delay << " " <<  *initCoords << " " << *entity << " " ;
 
+	out << info.images.size() << " ";
+	map<string,string> images = info.images;
+	for (map<string,string>::iterator it = images.begin() ; it != images.end() ; ++it){
+		out << it->first << " " << it->second << " ";
+	}
 
 	return out;
 }
 
 //Operator to load an object from a stream
 istream& operator >>(std::istream& in, MobileEntityInfo& info) {
-	string name;
 	Coordinates* initCoords = new Coordinates();
-	in >> name;
-	info.setName(name);
-
-
+	in >> info.id;
+	in >> info.name;
+	in >> info.fps;
+	in >> info.delay;
 
 	in >> *initCoords;
 	info.setInitCoordinates(initCoords);
 
+	info.entity = new MobileEntity();
+
 	in >> *info.entity;
+
+	int size;
+	in >> size;
+	for (int i = 0 ; i < size ; i++){
+		string id;
+		string imagePath;
+		in >> id;
+		in >> imagePath;
+		info.images.insert(pair<string,string>(id,imagePath));
+	}
 
 	return in;
 }

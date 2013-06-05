@@ -101,7 +101,7 @@ void* transmit(void* _client) {
 		}
 
 		client->checkNewPlayers();
-		client->checkNewMobs();
+		client->checkNewMobileEntity();
 
 		client->sendEvents();
 
@@ -343,7 +343,7 @@ void Client::checkNewPlayers() {
 }
 
 
-void Client::checkNewMobs(){
+void Client::checkNewMobileEntity(){
 	// 1ro recibo la cantidad de mobs nuevos que hay
 	int n = ComunicationUtils::recvNumber(clientID);
 	// No hay nuevos jugadores
@@ -357,6 +357,7 @@ void Client::checkNewMobs(){
 			Logs::logErrorMessage("Ciente: No se ha recibido la informacion del mob");
 			return;
 		}
+
 	}
 }
 

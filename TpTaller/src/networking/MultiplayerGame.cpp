@@ -25,6 +25,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
 	vector<MobileEntityView*> viewVector = configuration->getMobileEntityViewList();
+	lastAddedView = 0;
 
 	for (int i = 0 ; i < viewVector.size() ; i++){
 		mobileEntities[i] = viewVector[i]->getEntity();
@@ -32,8 +33,9 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 		ArtificialIntelligence* ia= new ArtificialIntelligence();
 		ia->setEntity(mobileEntities[i]);
 		ias.push_back(ia);
-		lastAddedView = i;
+		lastAddedView++;
 	}
+
 }
 
 
@@ -186,9 +188,11 @@ map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo(){
 		info->setDelay(view->getDelay());
 		info->setEntity(ent);
 		info->setImages(view->getTextureHolder()->getMobileEntityImages(info->getName()));
-		Coordinates* tmp = new Coordinates(ent->getCoordinates().getRow(),ent->getCoordinates().getCol());
+		int col = ent->getCoordinates().getCol();
+		int row = ent->getCoordinates().getRow();
+		Coordinates* tmp = new Coordinates(row,col);
 		info->setInitCoordinates(tmp);
-		delete tmp;
+		infos[it->first] = info;
 	}
 
 	return infos;
