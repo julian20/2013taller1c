@@ -15,6 +15,7 @@ MissionManager::MissionManager() {
 	missionTypes["SuddenDeath"] = 3;
 	typeOfMission = 2;
 	winningTeam = 0;
+	nextAvailableTeam = 2;
 }
 
 MissionManager::~MissionManager() {
@@ -39,6 +40,14 @@ bool MissionManager::hasEndedFlagCapture(list<Player*> mobileEntities) {
 	}
 
 	return false;
+}
+
+int MissionManager::getNextAvailableTeam(){
+	if (nextAvailableTeam == 1)
+		nextAvailableTeam++;
+	else
+		nextAvailableTeam = 1;
+	return nextAvailableTeam;
 }
 
 bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {

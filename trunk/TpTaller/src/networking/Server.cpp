@@ -110,9 +110,9 @@ void* handle(void* par) {
 		info->getPlayer()->setName(playerName);
 	}
 
+	info->getPlayer()->setTeam(missionManager.getNextAvailableTeam());
 	bool playing = true;
-	cout << playerName << " has conected.. " << endl;
-
+	cout << playerName << " has conected and joined team: " << info->getPlayer()->getTeam() <<endl;
 	// Antes de agregarlo al juego creo el thread para chequear el estado en el que se encuentra.
 	TimerThreadParameter param = {server,clientSocket,playerName, &playing};
 	pthread_t timerThread;

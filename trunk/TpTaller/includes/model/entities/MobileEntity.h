@@ -92,7 +92,6 @@ protected:
 	bool attacking;
 
 	bool hasChanged;
-	int team;
 	Timer attackTimer;
 	float lastAttackingDirection;
 private:

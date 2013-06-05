@@ -200,8 +200,8 @@ string intToString(int number) {
 void Game::setAnimationStartup() {
 	int x, y;
 	SDL_GetMouseState(&x, &y);
-	clickedLocation.x = x + mapView->getCamera()->getPosition()->getX();
-	clickedLocation.y = y + mapView->getCamera()->getPosition()->getY();
+	clickedLocation.x = x;
+	clickedLocation.y = y;
 	clickedLocation.h = pointer->h;
 	clickedLocation.w = pointer->w;
 	clickAnimation.repeatNTimes(1);

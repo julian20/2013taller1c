@@ -29,6 +29,7 @@ public:
 
 	// Getters and Setters
 	int getTypeOfMission();
+	int getNextAvailableTeam();
 	int getWinningTeam();
 	map<string, int> getMissionTypes();
 	void setTypeOfMission(int type);
@@ -36,7 +37,7 @@ public:
 	void setMissionTypes(map<string, int> missionMap);
 
 private:
-	int typeOfMission;
+	int typeOfMission, nextAvailableTeam;
 	int winningTeam;
 	map<string, int> missionTypes;
 };

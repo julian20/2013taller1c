@@ -205,7 +205,6 @@ void Client::initPlayerInfo(PlayerView* view) {
 	info->setFPS(view->getFps());
 	info->setImageDimentions(view->getImageWidth(), view->getImageHeight());
 	info->setPlayer(view->getPersonaje());
-	cout <<"team inicial: "<<view->getPersonaje()->getTeam()<<endl;
 	Coordinates* c = new Coordinates(view->getPersonaje()->getCoordinates().getRow(),view->getPersonaje()->getCoordinates().getCol());
 	info->setInitCoordinates(c);
 
@@ -332,7 +331,7 @@ void Client::checkNewPlayers() {
 		players.insert(
 				pair<string, Player*>(info->getPlayer()->getName(),
 						info->getPlayer()));
-		cout << info->getPlayer()->getName() << " has conected..." << endl;
+		cout << info->getPlayer()->getName() << " has conected and joined team: " << info->getPlayer()->getTeam() <<endl;
 
 		// Creo la playerView y la registro en el game.
 		PlayerView* view = info->createPlayerView();
