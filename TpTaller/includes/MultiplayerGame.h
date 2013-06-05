@@ -15,7 +15,7 @@
 #include <model/Chat.h>
 #include <model/persistence/PersistentConfiguration.h>
 #include <model/entities/enemies/Mob.h>
-#include <networking/MobInfo.h>
+#include <networking/MobileEntityInfo.h>
 #include <networking/MobUpdate.h>
 #include <networking/PlayerEvent.h>
 #include <networking/NetworkPlayerController.h>
@@ -35,10 +35,10 @@ public:
 	void addEventsToHandle(string playerName, vector<PlayerEvent*> events);
 	void updatePlayersCoordinates();
 	vector<PlayerUpdate*> getPlayersUpdates();
-	vector<MobUpdate*> getMobUpdates();
+	vector<MobUpdate*> getMobileEntitiesUpdates();
 	vector<ChatUpdate*> getChatUpdates();
 	list<Player*> getPlayers();
-	map<int,MobInfo*> getMobInfo();
+	map<int,MobileEntityInfo*> getMobileEntityInfo();
 	virtual ~MultiplayerGame();
 	void deliverMessage(ChatMessage* msj);
 	void updateMobs();

@@ -5,7 +5,7 @@
  *      Author: tomas
  */
 
-#include <networking/MobInfo.h>
+#include <networking/MobileEntityInfo.h>
 #include <model/map/TextureHolder.h>
 #include <model/map/TextureDefinition.h>
 
@@ -14,7 +14,7 @@
 
 namespace std {
 
-MobInfo::MobInfo(){
+MobileEntityInfo::MobileEntityInfo(){
 
 	name = string("DEFAULT");
 	id = 0;
@@ -22,39 +22,39 @@ MobInfo::MobInfo(){
 	initCoords = NULL;
 }
 
-void MobInfo::setName(string name) {
+void MobileEntityInfo::setName(string name) {
 	this->name = name;
 }
 
-string MobInfo::getName() {
+string MobileEntityInfo::getName() {
 	return this->name;
 }
 
-void MobInfo::setId(int id){
+void MobileEntityInfo::setId(int id){
 	this->id = id;
 }
 
-int MobInfo::getId(){
+int MobileEntityInfo::getId(){
 	return id;
 }
 
-void MobInfo::setInitCoordinates(Coordinates* coords) {
+void MobileEntityInfo::setInitCoordinates(Coordinates* coords) {
 	this->initCoords = coords;
 }
-Coordinates* MobInfo::getInitCoordinates() {
+Coordinates* MobileEntityInfo::getInitCoordinates() {
 	return this->initCoords;
 }
 
-void MobInfo::setEntity(MobileEntity* entity){
+void MobileEntityInfo::setEntity(MobileEntity* entity){
 	this->entity = entity;
 }
 
-MobileEntity* MobInfo::getEntity(){
+MobileEntity* MobileEntityInfo::getEntity(){
 	return this->entity;
 }
 
 
-MobileEntityView* MobInfo::createMobileEntityView() {
+MobileEntityView* MobileEntityInfo::createMobileEntityView() {
 	MobileEntityView* view = new MobileEntityView();
 	view->setEntity(entity);
 
@@ -62,7 +62,7 @@ MobileEntityView* MobInfo::createMobileEntityView() {
 }
 
 //Operator to transform the object into a stream.
-ostream& operator <<(std::ostream& out, const MobInfo& info) {
+ostream& operator <<(std::ostream& out, const MobileEntityInfo& info) {
 	string name = info.name;
 
 
@@ -76,7 +76,7 @@ ostream& operator <<(std::ostream& out, const MobInfo& info) {
 }
 
 //Operator to load an object from a stream
-istream& operator >>(std::istream& in, MobInfo& info) {
+istream& operator >>(std::istream& in, MobileEntityInfo& info) {
 	string name;
 	Coordinates* initCoords = new Coordinates();
 	in >> name;
@@ -92,7 +92,7 @@ istream& operator >>(std::istream& in, MobInfo& info) {
 	return in;
 }
 
-MobInfo::~MobInfo() {
+MobileEntityInfo::~MobileEntityInfo() {
 	// TODO Auto-generated destructor stub
 }
 

@@ -277,7 +277,7 @@ void Server::runMainLoop(int clientSocket, string playerName){
 		}
 
 		sendNewPlayers(clientSocket,playerName);
-		sendNewMobs(clientSocket,playerName);
+		sendNewMobileEntities(clientSocket,playerName);
 
 		vector<PlayerEvent*> events = recvEvents(clientSocket);
 
@@ -292,8 +292,8 @@ void Server::runMainLoop(int clientSocket, string playerName){
 
 		deliverMessages(clientSocket, playerName);
 
-		vector<MobUpdate*> mobUpdates = game->getMobUpdates();
-		sendMobUpdates(clientSocket,mobUpdates);
+		vector<MobUpdate*> mobileEntitiesUpdates = game->getMobileEntitiesUpdates();
+		sendMobileEntitiesUpdates(clientSocket,mobileEntitiesUpdates);
 
 	}
 
@@ -511,19 +511,19 @@ void Server::sendNewPlayers(int clientSocket,string playerName) {
 
 }
 
-void Server::sendNewMobs(int clientSocket,string playerName){
+void Server::sendNewMobileEntities(int clientSocket,string playerName){
 	// 1ro envio la cantidad de mobs que voy a mandar
-	map<int,MobInfo*> infos = game->getMobInfo();
-	int n = infos.size() - sendedMobs[playerName].size();
+	map<int,MobileEntityInfo*> infos = game->getMobileEntityInfo();
+	int n = infos.size() - sendedMobileEntities[playerName].size();
 
 	ComunicationUtils::sendNumber(clientSocket, n);
 
-	for (map<int, MobInfo*>::iterator it = infos.begin(); it != infos.end(); ++it) {
+	for (map<int, MobileEntityInfo*>::iterator it = infos.begin(); it != infos.end(); ++it) {
 		// SI NO HA SIDO ENVIADO, LO ENVIO
-		if (sendedMobs[playerName].count(it->first) == 0) {
-			MobInfo* info = it->second;
-			ComunicationUtils::sendMobInfo(clientSocket, info);
-			sendedMobs[playerName][it->first] = (Mob*) it->second->getEntity();
+		if (sendedMobileEntities[playerName].count(it->first) == 0) {
+			MobileEntityInfo* info = it->second;
+			ComunicationUtils::sendMobileEntityInfo(clientSocket, info);
+			sendedMobileEntities[playerName][it->first] = (Mob*) it->second->getEntity();
 		}
 
 	}
@@ -580,7 +580,7 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName) {
 
 }
 
-void Server::sendMobUpdates(int clientSocket,vector<MobUpdate*> mobUpdates){
+void Server::sendMobileEntitiesUpdates(int clientSocket,vector<MobUpdate*> mobUpdates){
 	int size = mobUpdates.size();
 	// Mando la cantidad de actualizaciones
 	ComunicationUtils::sendNumber(clientSocket, size);

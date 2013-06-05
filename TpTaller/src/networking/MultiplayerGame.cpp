@@ -148,7 +148,7 @@ vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 }
 
 
-vector<MobUpdate*> MultiplayerGame::getMobUpdates(){
+vector<MobUpdate*> MultiplayerGame::getMobileEntitiesUpdates(){
 
 	vector<MobUpdate*> updates;
 	for (map<int,Mob*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
@@ -168,13 +168,13 @@ list<Player*> MultiplayerGame::getPlayers() {
 	return this->players;
 }
 
-map<int,MobInfo*> MultiplayerGame::getMobInfo(){
+map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo(){
 
-	map<int,MobInfo*> infos;
+	map<int,MobileEntityInfo*> infos;
 
 	for (map<int,Mob*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
 
-		MobInfo* info = new MobInfo();
+		MobileEntityInfo* info = new MobileEntityInfo();
 		info->setId(3);
 		info->setEntity(it->second);
 	}

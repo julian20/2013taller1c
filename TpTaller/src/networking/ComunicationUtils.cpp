@@ -191,7 +191,7 @@ PlayerInfo* ComunicationUtils::recvPlayerInfo(int sockID){
 }
 
 
-void ComunicationUtils::sendMobInfo(int sockID,MobInfo* info){
+void ComunicationUtils::sendMobileEntityInfo(int sockID,MobileEntityInfo* info){
 
 	stringstream infostream;
 	infostream << *(info);
@@ -210,7 +210,7 @@ void ComunicationUtils::sendMobInfo(int sockID,MobInfo* info){
 	}
 }
 
-MobInfo* ComunicationUtils::recvMobInfo(int sockID){
+MobileEntityInfo* ComunicationUtils::recvMobileEntityInfo(int sockID){
 
 	int size = ComunicationUtils::recvNumber(sockID);
 
@@ -228,7 +228,7 @@ MobInfo* ComunicationUtils::recvMobInfo(int sockID){
 	stringstream infostream;
 	infostream << infobuffer;
 
-	MobInfo* info = new MobInfo();
+	MobileEntityInfo* info = new MobileEntityInfo();
 
 	infostream >> *info;
 
