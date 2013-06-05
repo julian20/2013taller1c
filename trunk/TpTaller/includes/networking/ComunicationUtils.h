@@ -11,7 +11,7 @@
 #include <networking/PlayerEvent.h>
 #include <networking/PlayerInfo.h>
 #include <networking/PlayerUpdate.h>
-#include <networking/MobInfo.h>
+#include <networking/MobileEntityInfo.h>
 #include <networking/MobUpdate.h>
 
 #include <string>
@@ -29,8 +29,8 @@ public:
 	static void 		sendPlayerInfo(int sockID,PlayerInfo* info);
 	static PlayerInfo* 	recvPlayerInfo(int sockID);
 
-	static void 		sendMobInfo(int sockId,MobInfo* info);
-	static MobInfo*		recvMobInfo(int sockId);
+	static void 		sendMobileEntityInfo(int sockId,MobileEntityInfo* info);
+	static MobileEntityInfo*		recvMobileEntityInfo(int sockId);
 
 	static void 		sendPlayerEvent(int sockID,PlayerEvent* event);
 	static PlayerEvent* recvPlayerEvent(int sockID);

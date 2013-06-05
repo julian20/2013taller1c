@@ -352,7 +352,7 @@ void Client::checkNewMobs(){
 
 	for (int i = 0; i < n; i++) {
 
-		MobInfo* info = ComunicationUtils::recvMobInfo(clientID);
+		MobileEntityInfo* info = ComunicationUtils::recvMobileEntityInfo(clientID);
 		if (!info){
 			Logs::logErrorMessage("Ciente: No se ha recibido la informacion del mob");
 			return;

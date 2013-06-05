@@ -17,9 +17,9 @@
 
 namespace std {
 
-class MobInfo {
+class MobileEntityInfo {
 public:
-	MobInfo();
+	MobileEntityInfo();
 
 	void setId(int id);
 	int getId();
@@ -37,12 +37,12 @@ public:
 	void updatePlayer(PlayerUpdate* update);
 
 	//Operator to transform the object into a stream.
-	friend ostream& operator <<(std::ostream&, const MobInfo&);
+	friend ostream& operator <<(std::ostream&, const MobileEntityInfo&);
 
 	//Operator to load an object from a stream
-	friend istream& operator >>(std::istream&, MobInfo&);
+	friend istream& operator >>(std::istream&, MobileEntityInfo&);
 
-	virtual ~MobInfo();
+	virtual ~MobileEntityInfo();
 private:
 	int id;
 	string name;
