@@ -25,7 +25,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
 	this->mobileEntities = configuration->getMobileEntities();
-	for ( map<int,Mob*>::iterator mobs = mobileEntities.begin() ; mobs != mobileEntities.end() ; ++mobs ){
+	for ( map<int,MobileEntity*>::iterator mobs = mobileEntities.begin() ; mobs != mobileEntities.end() ; ++mobs ){
 	    ArtificialIntelligence* ia= new ArtificialIntelligence();
 	    ia->setEntity(mobs->second);
 	    ias.push_back(ia);
@@ -148,12 +148,12 @@ vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 }
 
 
-vector<MobUpdate*> MultiplayerGame::getMobileEntitiesUpdates(){
+vector<MobileEntityUpdate*> MultiplayerGame::getMobileEntitiesUpdates(){
 
-	vector<MobUpdate*> updates;
-	for (map<int,Mob*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
+	vector<MobileEntityUpdate*> updates;
+	for (map<int,MobileEntity*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
 
-		MobUpdate* update = (it->second)->generateMobUpdate(it->first);
+		MobileEntityUpdate* update = (it->second)->generateMobileEntityUpdate(it->first);
 		if (update)
 			updates.push_back(update);
 		update->setId(3);
@@ -172,7 +172,7 @@ map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo(){
 
 	map<int,MobileEntityInfo*> infos;
 
-	for (map<int,Mob*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
+	for (map<int,MobileEntity*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
 
 		MobileEntityInfo* info = new MobileEntityInfo();
 		info->setId(3);

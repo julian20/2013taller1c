@@ -292,7 +292,7 @@ void Server::runMainLoop(int clientSocket, string playerName){
 
 		deliverMessages(clientSocket, playerName);
 
-		vector<MobUpdate*> mobileEntitiesUpdates = game->getMobileEntitiesUpdates();
+		vector<MobileEntityUpdate*> mobileEntitiesUpdates = game->getMobileEntitiesUpdates();
 		sendMobileEntitiesUpdates(clientSocket,mobileEntitiesUpdates);
 
 	}
@@ -580,7 +580,7 @@ void Server::sendPlayersUpdates(int clientSocket, string playerName) {
 
 }
 
-void Server::sendMobileEntitiesUpdates(int clientSocket,vector<MobUpdate*> mobUpdates){
+void Server::sendMobileEntitiesUpdates(int clientSocket,vector<MobileEntityUpdate*> mobUpdates){
 	int size = mobUpdates.size();
 	// Mando la cantidad de actualizaciones
 	ComunicationUtils::sendNumber(clientSocket, size);
