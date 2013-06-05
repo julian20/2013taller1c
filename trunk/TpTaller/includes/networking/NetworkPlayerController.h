@@ -25,6 +25,7 @@ public:
 	Player* getPlayer();
 	void deliverMessage(ChatMessage* msj);
 	virtual ~NetworkPlayerController();
+	void toggleRunning();
 private:
 
 

@@ -183,14 +183,11 @@ void PlayerController::toggleRunning() {
 			events.push_back(new PlayerEvent(EVENT_WALKING));
 			return;
 		}
-		player->setSpeedMagnitude(player->getSpeed()->getMagnitude() / 2);
-
 	} else {
 		if (listEvents) {
 			events.push_back(new PlayerEvent(EVENT_RUNNING));
 			return;
 		}
-		player->setSpeedMagnitude(player->getSpeed()->getMagnitude() * 2);
 	}
 }
 

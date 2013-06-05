@@ -55,6 +55,15 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 
 }
 
+void NetworkPlayerController::toggleRunning() {
+	if (player->isRunning()) {
+		player->setSpeedMagnitude(player->getSpeed()->getMagnitude() / 2);
+
+	} else {
+		player->setSpeedMagnitude(player->getSpeed()->getMagnitude() * 2);
+	}
+}
+
 void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
 	if (tileCoord->getCol() >= 0 && tileCoord->getCol() < data->getNCols() &&
 		tileCoord->getRow() >= 0 && tileCoord->getRow() < data->getNRows() ) {
