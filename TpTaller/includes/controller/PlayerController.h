@@ -25,7 +25,7 @@ public:
 	MapCameraView* getMapCameraView();
 	MapData* getMapData();
 	Player* getPlayer();
-	void toggleRunning();
+	virtual void toggleRunning();
 	void playerAttackTo(Entity* entity);
 	void playerAttack();
 	void playerCancelAttack();
