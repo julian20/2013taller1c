@@ -15,6 +15,7 @@
 #include <view/configuration/GameConfiguration.h>
 #include <view/EntityViewMap.h>
 #include <view/entities/PlayerView.h>
+#include <view/entities/MobileEntityView.h>
 #include <model/entities/enemies/Mob.h>
 
 #include <vector>
@@ -29,6 +30,8 @@ public:
 	void setPersonajeList(std::vector<Player*> entityList);
 	void setViewList(std::vector<PlayerView*> viewList);
 	std::vector<PlayerView*> getViewList();
+	void setMobileEntityViewList(std::vector<MobileEntityView*> viewList);
+	std::vector<MobileEntityView*> getMobileEntityViewList();
 	MapData* getMapData();
 	void setMapData(MapData* mapData);
 	GameConfiguration* getAnimationConfiguration();
@@ -43,6 +46,7 @@ private:
 	std::vector<Player*> entityList;
 	std::vector<MobileEntity*> mobs;
 	std::vector<PlayerView*> viewList;
+	std::vector<MobileEntityView*> mobileEntityViewList;
 	TextureHolder* textureHolder;
 	MapData* mapData;
 	GameConfiguration* animationConfiguration;

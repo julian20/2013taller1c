@@ -2167,6 +2167,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	configuration.setMapData(mapData);
 	configuration.setAnimationConfiguration(animationConfig);
 	configuration.setViewList(cleanPlayerViews);
+	configuration.setMobileEntityViewList(cleanMobileEntityViews);
 	configuration.setMobileEntities(mobileEntityVector);
 
 	return configuration;
