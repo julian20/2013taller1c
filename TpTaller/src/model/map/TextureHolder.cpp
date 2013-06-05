@@ -67,6 +67,10 @@ SDL_Surface* TextureHolder::getTexture(std::string id) {
 	return getTexture(DEFAULT_CHARACTER_ID);
 }
 
+bool TextureHolder::existsTexture(std::string id){
+	return !(textures.find(id) == textures.end());
+}
+
 SDL_Surface* TextureHolder::getFogTexture(std::string id) {
 
 	if (fogTextures.find(id) == fogTextures.end()) {// si no existe en el map
@@ -76,13 +80,14 @@ SDL_Surface* TextureHolder::getFogTexture(std::string id) {
 	return fogTextures[id];
 }
 
-map<string,string> TextureHolder::getPlayerImages(string playerName){
+map<string,string> TextureHolder::getMobileEntityImages(string entName){
 	map<string,string> playerImages;
 
 	vector<string> modifiers = TextureDefinition::getModifiers();
 
 	for (unsigned int i = 0 ; i < modifiers.size() ; i++){
-		string id = playerName + modifiers[i];
+		string id = entName + modifiers[i];
+		if (! existsTexture(id) ) continue;
 		playerImages.insert(pair<string,string>(id,getTextureSrc(id)));
 	}
 

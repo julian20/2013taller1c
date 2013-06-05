@@ -38,11 +38,34 @@ int MobileEntityInfo::getId(){
 	return id;
 }
 
+void MobileEntityInfo::setImages(map<string,string> images){
+	this->images = images;
+}
+map<string,string> MobileEntityInfo::getImages(){
+	return this->images;
+}
+
+
 void MobileEntityInfo::setInitCoordinates(Coordinates* coords) {
 	this->initCoords = coords;
 }
 Coordinates* MobileEntityInfo::getInitCoordinates() {
 	return this->initCoords;
+}
+
+void MobileEntityInfo::setDelay(float delay) {
+	this->delay = delay;
+}
+float MobileEntityInfo::getDelay() {
+	return this->delay;
+
+}
+
+void MobileEntityInfo::setFPS(int fps) {
+	this->fps = fps;
+}
+int MobileEntityInfo::getFPS() {
+	return this->fps;
 }
 
 void MobileEntityInfo::setEntity(MobileEntity* entity){

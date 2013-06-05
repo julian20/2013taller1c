@@ -22,10 +22,11 @@ public:
 	virtual ~TextureHolder();
 	void addTexture(TextureDefinition* textureDefinition);
 	void addFogTexture(std::string id, SDL_Surface* texture);
+	bool existsTexture(std::string id);
 	SDL_Surface* getTexture(std::string id);
 	SDL_Surface* getFogTexture(std::string id);
 
-	map<string,string> getPlayerImages(string playerName);
+	map<string,string> getMobileEntityImages(string playerName);
 
 	std::string getTextureSrc(std::string id);
 private:

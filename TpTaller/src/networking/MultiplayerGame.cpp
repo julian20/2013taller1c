@@ -24,11 +24,15 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
-	this->mobileEntities = configuration->getMobileEntities();
-	for ( map<int,MobileEntity*>::iterator mobs = mobileEntities.begin() ; mobs != mobileEntities.end() ; ++mobs ){
-	    ArtificialIntelligence* ia= new ArtificialIntelligence();
-	    ia->setEntity(mobs->second);
-	    ias.push_back(ia);
+	vector<MobileEntityView*> viewVector = configuration->getMobileEntityViewList();
+
+	for (int i = 0 ; i < viewVector.size() ; i++){
+		mobileEntities[i] = viewVector[i]->getEntity();
+		mobEntView[i] = viewVector[i];
+		ArtificialIntelligence* ia= new ArtificialIntelligence();
+		ia->setEntity(mobileEntities[i]);
+		ias.push_back(ia);
+		lastAddedView = i;
 	}
 }
 
@@ -172,11 +176,19 @@ map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo(){
 
 	map<int,MobileEntityInfo*> infos;
 
-	for (map<int,MobileEntity*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
-
+	for (map<int,MobileEntityView*>::iterator it = mobEntView.begin() ; it != mobEntView.end() ; ++it){
+		MobileEntityView* view = it->second;
+		MobileEntity* ent = view->getEntity();
 		MobileEntityInfo* info = new MobileEntityInfo();
-		info->setId(3);
-		info->setEntity(it->second);
+		info->setId(it->first);
+		info->setName(ent->getName());
+		info->setFPS(view->getFps());
+		info->setDelay(view->getDelay());
+		info->setEntity(ent);
+		info->setImages(view->getTextureHolder()->getMobileEntityImages(info->getName()));
+		Coordinates* tmp = new Coordinates(ent->getCoordinates().getRow(),ent->getCoordinates().getCol());
+		info->setInitCoordinates(tmp);
+		delete tmp;
 	}
 
 	return infos;
