@@ -47,6 +47,7 @@ Entity::Entity(Entity* entity) {
 	this->killedBy = entity->getKilledBy();
 	this->positionInitialized = entity->getPositionInitialized();
 	this->damageBuffer = 0;
+	this->magic = entity->getMagic();
 }
 
 bool Entity::getPositionInitialized() {
@@ -58,10 +59,7 @@ void Entity::setPos(float x, float y, float z) {
 	//coord->changeTo((int) x / Tile::computePositionTile(0, 0).w,
 	//		(int) y / Tile::computePositionTile(0, 0).h);
 }
-bool Entity::isMobile()
-{
-	return this->mobile;
-}
+
 list<Entity*> Entity::getVisibleEnemies()
 {
 	return this->enemies;

@@ -175,7 +175,6 @@ void MapData::addMobileEntity(int row, int col, MobileEntity* mobileEntity) {
 	TileData* tileData = getTileData(row, col);
 
 	Tile* entityTile = new Tile(new Coordinates(row, col));
-	Tile* current;
 	
 	tileData->setMobileEntity(mobileEntity);
 
