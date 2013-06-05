@@ -186,6 +186,8 @@ map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo(){
 		info->setName(ent->getName());
 		info->setFPS(view->getFps());
 		info->setDelay(view->getDelay());
+		info->setImageDimentions(view->getImageWidth(),view->getImageHeight());
+		info->setAnchorPixel(view->getAnchorPixel());
 		info->setEntity(ent);
 		info->setImages(view->getTextureHolder()->getMobileEntityImages(info->getName()));
 		int col = ent->getCoordinates().getCol();

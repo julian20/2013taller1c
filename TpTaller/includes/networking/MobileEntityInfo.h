@@ -39,6 +39,16 @@ public:
 	void setFPS(int fps);
 	int getFPS();
 
+	void setImageDimentions(int width, int height);
+	int getImageWidth();
+	int getImageHeight();
+
+	void setAnchorPixel(float x, float y);
+	void setAnchorPixel(Vector2* anchorPixel);
+	Vector2* getAnchorPixel();
+
+
+
 	void setEntity(MobileEntity* entity);
 	MobileEntity* getEntity();
 
@@ -62,6 +72,9 @@ private:
 
 	int fps;
 	float delay;
+
+	int imageWidth, imageHeight;
+	Vector2* anchorPixel;
 
 	MobileEntity* entity;
 };
