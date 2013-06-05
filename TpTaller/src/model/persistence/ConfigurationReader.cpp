@@ -933,7 +933,6 @@ void operator >>(const YAML::Node& yamlNode, PlayerView* playerView) {
 	playerView->setDelay(auxDelay);
 	playerView->setNumberOfRepeats(auxAnimationNumberOfRepeats);
 	playerView->setEntity(auxPlayer);
-
 	TextureDefinition* walkingTexture = new TextureDefinition(
 			auxName + string(WALKING_MODIFIER), auxWalkingImageSrc);
 	textureHolder->addTexture(walkingTexture);

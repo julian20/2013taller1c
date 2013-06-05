@@ -256,7 +256,6 @@ FoggedSprite PlayerView::loadFoggedSprite(const char* modifier) {
 	sprite.teamColorImage = FogCreator::getFog(sprite.image,
 			teamColors[player->getTeam()]);
 	sprite.numberOfClips = computeNumberOfClips(sprite.image);
-	cout << name + id << " " << sprite.numberOfClips << endl;
 	return sprite;
 
 }

@@ -79,7 +79,6 @@ bool PlayerController::playerHasclickedAnEntity(Coordinates* coor) {
 	} else {
 		entity = tileData->getNextEntity();
 		if (entity) {
-			cout << entity->getTeam() << player->getTeam() <<endl;
 			if (entity->getTeam() != player->getTeam()) {
 				this->entityToCollideAgainst = entity;
 				return true;
