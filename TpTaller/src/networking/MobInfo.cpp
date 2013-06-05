@@ -17,7 +17,7 @@ namespace std {
 MobInfo::MobInfo(){
 
 	name = string("DEFAULT");
-
+	id = 0;
 	entity = NULL;
 	initCoords = NULL;
 }
@@ -77,13 +77,7 @@ ostream& operator <<(std::ostream& out, const MobInfo& info) {
 
 //Operator to load an object from a stream
 istream& operator >>(std::istream& in, MobInfo& info) {
-	float x, y;
-
 	string name;
-	int imageWidth;
-	int imageHeight;
-	int fps;
-	float delay;
 	Coordinates* initCoords = new Coordinates();
 	in >> name;
 	info.setName(name);

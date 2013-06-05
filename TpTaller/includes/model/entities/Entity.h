@@ -51,7 +51,6 @@ public:
 	virtual void setMagic(int magic);
 	void setTile(Tile* _tile);
 	virtual Tile* getTile();
-	bool isMobile();
 
 	virtual void collideTo(MobileEntity& entity);
 	virtual void collideTo(Item& item);
@@ -74,7 +73,6 @@ protected:
 	Coordinates* coord;
 	int life;
 	int magic;
-	bool mobile;
 	list<Entity*> enemies;
 	Tile* currentTile;
 

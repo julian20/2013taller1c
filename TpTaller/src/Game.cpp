@@ -123,7 +123,8 @@ void Game::setUpCharacters(MapView* map, MapData* mapData,
 
 						MobileEntity* entityToAdd = (MobileEntity*) entity;
 
-						ArtificialIntelligence* ia= new ArtificialIntelligence();
+						ArtificialIntelligence* ia =
+								new ArtificialIntelligence();
 						ia->setEntity(entityToAdd);
 						string name = entity->getName();
 						//ias.push_back(ia);
@@ -196,12 +197,12 @@ string intToString(int number) {
 	return ss.str(); //return a string with the contents of the stream
 }
 
-void Game::setAnimationStartup(){
-	int x,y;
+void Game::setAnimationStartup() {
+	int x, y;
 	SDL_GetMouseState(&x, &y);
-	clickedLocation.x = x;
-	clickedLocation.y = y;
-	clickedLocation.h = pointer->h ;
+	clickedLocation.x = x + mapView->getCamera()->getPosition()->getX();
+	clickedLocation.y = y + mapView->getCamera()->getPosition()->getY();
+	clickedLocation.h = pointer->h;
 	clickedLocation.w = pointer->w;
 	clickAnimation.repeatNTimes(1);
 }
@@ -246,8 +247,6 @@ void Game::draw() {
 
 	SDL_Flip(screen);
 }
-
-
 
 MenuEvent Game::run() {
 
@@ -328,11 +327,11 @@ void Game::playersUpdate() {
 		(*player)->update(mapData);
 		(*player)->setHasChanged(false);
 	}
-/*	for (list<ArtificialIntelligence*>::iterator autoPlayer = ias.begin();
-			autoPlayer != ias.end(); ++autoPlayer) {
-		(*autoPlayer)->update(mapData);
-		//(*autoPlayer)->setHasChanged(false);
-	}*/
+	/*	for (list<ArtificialIntelligence*>::iterator autoPlayer = ias.begin();
+	 autoPlayer != ias.end(); ++autoPlayer) {
+	 (*autoPlayer)->update(mapData);
+	 //(*autoPlayer)->setHasChanged(false);
+	 }*/
 
 }
 
@@ -348,10 +347,11 @@ void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords) {
 
 }
 
-void Game::handleMobsUpdates(vector<MobUpdate*> mobUpdates){
-	for (int i = 0 ; i < mobUpdates.size() ; i++){
+void Game::handleMobsUpdates(vector<MobUpdate*> mobUpdates) {
+	for (size_t i = 0; i < mobUpdates.size(); i++) {
 		int id = mobUpdates[i]->getId();
-		if (mobileEntities.count(id) == 0) continue;
+		if (mobileEntities.count(id) == 0)
+			continue;
 
 		mobileEntities[id]->updateFromServer(mobUpdates[i]);
 

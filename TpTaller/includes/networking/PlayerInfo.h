@@ -73,7 +73,6 @@ private:
 	Coordinates* initCoords;
 
 	Player* player;
-
 };
 
 #endif /* PLAYERINFO_H_ */

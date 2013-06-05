@@ -40,7 +40,6 @@ PlayerController::~PlayerController() {
 	delete this->player;
 }
 
-
 MobileEntity* PlayerController::getLastPlayerTouch() {
 	return this->lastTouchedPlayer;
 }
@@ -72,13 +71,19 @@ bool PlayerController::playerHasclickedAnEntity(Coordinates* coor) {
 		return false;
 	Entity* entity = tileData->getMobileEntity();
 	if (entity) {
-		this->entityToCollideAgainst = entity;
-		return true;
+		if (entity->getTeam() != player->getTeam()) {
+			this->entityToCollideAgainst = entity;
+			return true;
+		}
+
 	} else {
 		entity = tileData->getNextEntity();
 		if (entity) {
-			this->entityToCollideAgainst = entity;
-			return true;
+			cout << entity->getTeam() << player->getTeam() <<endl;
+			if (entity->getTeam() != player->getTeam()) {
+				this->entityToCollideAgainst = entity;
+				return true;
+			}
 		}
 	}
 	return false;
@@ -92,7 +97,7 @@ bool PlayerController::playerHasclickedAnEntity(int x, int y) {
 	return playerHasclickedAnEntity(coor);
 }
 
-Entity* PlayerController::getEntityToCollideTo(){
+Entity* PlayerController::getEntityToCollideTo() {
 	return entityToCollideAgainst;
 }
 
@@ -238,7 +243,8 @@ bool PlayerController::hasMoveEvent(list<PlayerEvent*> eventsList) {
 	for (iter = eventsList.begin(); iter != eventsList.end(); ++iter) {
 		PlayerEvent* event = *iter;
 
-		if (event->getEventType() == EVENT_MOVE) return true;
+		if (event->getEventType() == EVENT_MOVE)
+			return true;
 	}
 
 	return false;
@@ -246,8 +252,9 @@ bool PlayerController::hasMoveEvent(list<PlayerEvent*> eventsList) {
 
 list<PlayerEvent*> PlayerController::getEventList() {
 	list<PlayerEvent*> playerEvents = player->getPlayerEvents();
-	if (playerEvents.size() != 0 )
-		for (list<PlayerEvent*>::iterator it=playerEvents.begin();it!=playerEvents.end();++it)
+	if (playerEvents.size() != 0)
+		for (list<PlayerEvent*>::iterator it = playerEvents.begin();
+				it != playerEvents.end(); ++it)
 			events.push_back(*it);
 	return events;
 }
