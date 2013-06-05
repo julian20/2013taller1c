@@ -9,7 +9,8 @@
 
 using namespace std;
 
-PlayerUpdate::PlayerUpdate() {
+PlayerUpdate::PlayerUpdate() :
+		MobileEntityUpdate() {
 	this->currentPos = new Vector3();
 	this->endPos = new Vector3();
 	this->speed = new Speed();
@@ -49,7 +50,8 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 			<< " " << *update.speed << " " << update.attacking << " "
 			<< update.blocking << " " << update.active << " "
 			<< *update.currentTile << " " << *update.nextTile << " "
-			<< *update.initCoords << " " << update.life << " " << update.magic << " " << update.lastAttackingDirection;
+			<< *update.initCoords << " " << update.life << " " << update.magic
+			<< " " << update.lastAttackingDirection << " " << update.team;
 
 	return out;
 }
@@ -87,13 +89,15 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	Coordinates coords;
 	in >> coords;
 	update.setInitCoordinates(&coords);
-	int life,magic;
+	int life, magic;
 	in >> life;
 	update.setLife(life);
 	in >> magic;
 	update.setMagic(magic);
 	in >> update.lastAttackingDirection;
-
+	int team;
+	in >> team;
+	update.setTeam(team);
 	return in;
 
 }
