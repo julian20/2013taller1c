@@ -358,13 +358,13 @@ void Game::addNewMobileEntity(MobileEntity* entity, MobileEntityView* view, Coor
 
 }
 
-void Game::handleMobsUpdates(vector<MobUpdate*> mobUpdates) {
-	for (size_t i = 0; i < mobUpdates.size(); i++) {
-		int id = mobUpdates[i]->getId();
+void Game::handleMobileEntityUpdates(vector<MobileEntityUpdate*> mobileEntityUpdates) {
+	for (size_t i = 0; i < mobileEntityUpdates.size(); i++) {
+		int id = mobileEntityUpdates[i]->getId();
 		if (mobileEntities.count(id) == 0)
 			continue;
 
-		mobileEntities[id]->updateFromServer(mobUpdates[i]);
+		mobileEntities[id]->updateFromServer(mobileEntityUpdates[i]);
 
 	}
 }

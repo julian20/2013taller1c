@@ -45,7 +45,7 @@ public:
 
         virtual void addNewPlayer(Player* player, PlayerView* view, Coordinates* coords);
         virtual void addNewMobileEntity(MobileEntity* entity, MobileEntityView* view, Coordinates* coords, int id);
-        void handleMobsUpdates(vector<MobUpdate*> mobUpdates);
+        void handleMobileEntityUpdates(vector<MobileEntityUpdate*> mobileEntityUpdates);
         PlayerView* getPlayerView();
 
         MapCameraView* getMapCameraView();
