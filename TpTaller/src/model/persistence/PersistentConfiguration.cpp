@@ -76,10 +76,19 @@ map<int,Mob*> PersistentConfiguration::getMobileEntities()
 {
 	return this->mobsMap;
 }
+
 void PersistentConfiguration::setViewList(std::vector<PlayerView*> viewList) {
 	this->viewList = viewList;
 }
 
 std::vector<PlayerView*> PersistentConfiguration::getViewList() {
 	return viewList;
+}
+
+void PersistentConfiguration::setMobileEntityViewList(std::vector<MobileEntityView*> viewList) {
+	this->mobileEntityViewList = viewList;
+}
+
+std::vector<MobileEntityView*> PersistentConfiguration::getMobileEntityViewList() {
+	return mobileEntityViewList;
 }
