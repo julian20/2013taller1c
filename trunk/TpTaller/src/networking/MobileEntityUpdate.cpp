@@ -8,7 +8,7 @@
 #include <networking/MobileEntityUpdate.h>
 using namespace std;
 
-MobileEntityUpdate::MobileEntityUpdate(){
+MobileEntityUpdate::MobileEntityUpdate() {
 	this->id = 0;
 	this->currentPos = new Vector3();
 	this->endPos = new Vector3();
@@ -18,113 +18,125 @@ MobileEntityUpdate::MobileEntityUpdate(){
 	this->nextTile = new Tile();
 	this->initCoords = new Coordinates;
 	this->life = 0;
-	this->magic=0;
+	this->magic = 0;
 	this->lastAttackingDirection = 0;
+	this->team = 0;
 }
 
-void MobileEntityUpdate::setId(int id){
+void MobileEntityUpdate::setId(int id) {
 	this->id = id;
 }
 
-int MobileEntityUpdate::getId(){
+int MobileEntityUpdate::getId() {
 	return this->id;
 }
 
-
-void MobileEntityUpdate::setName(string MobileEntityName){
+void MobileEntityUpdate::setName(string MobileEntityName) {
 	this->name = MobileEntityName;
 }
 
-string MobileEntityUpdate::getName(){
+string MobileEntityUpdate::getName() {
 	return this->name;
 }
 
-Vector3* MobileEntityUpdate::getCurrentPos(){
+Vector3* MobileEntityUpdate::getCurrentPos() {
 	return currentPos;
 }
 
-void MobileEntityUpdate::setLife(int life){
+void MobileEntityUpdate::setLife(int life) {
 	this->life = life;
 }
-void MobileEntityUpdate::setMagic(int magic){
+void MobileEntityUpdate::setMagic(int magic) {
 	this->magic = magic;
 }
 
-int MobileEntityUpdate::getLife(){
+int MobileEntityUpdate::getLife() {
 	return life;
 }
-int MobileEntityUpdate::getMagic(){
+int MobileEntityUpdate::getMagic() {
 	return magic;
 }
 
-void MobileEntityUpdate::setCurrentPos(Vector3* currentPos){
-	this->currentPos->setValues(currentPos->getX(),currentPos->getY(), currentPos->getZ());
+void MobileEntityUpdate::setTeam(int team) {
+	this->team = team;
 }
 
-Vector3* MobileEntityUpdate::getEndPos(){
+int MobileEntityUpdate::getTeam() {
+	return team;
+}
+
+void MobileEntityUpdate::setCurrentPos(Vector3* currentPos) {
+	this->currentPos->setValues(currentPos->getX(), currentPos->getY(),
+			currentPos->getZ());
+}
+
+Vector3* MobileEntityUpdate::getEndPos() {
 	return endPos;
 }
 
-void MobileEntityUpdate::setEndPos(Vector3* endPos){
-	this->endPos->setValues(endPos->getX(),endPos->getY(), endPos->getZ());
+void MobileEntityUpdate::setEndPos(Vector3* endPos) {
+	this->endPos->setValues(endPos->getX(), endPos->getY(), endPos->getZ());
 }
 
-Speed* MobileEntityUpdate::getSpeed(){
+Speed* MobileEntityUpdate::getSpeed() {
 	return speed;
 }
 
-void MobileEntityUpdate::setSpeed(Speed* speed){
+void MobileEntityUpdate::setSpeed(Speed* speed) {
 	this->speed->setMagnitude(speed->getMagnitude());
 	this->speed->setDirection(speed->getDirection());
 }
 
-bool MobileEntityUpdate::isAttacking(){
+bool MobileEntityUpdate::isAttacking() {
 	return attacking;
 }
 
-void MobileEntityUpdate::setAttacking(bool attacking){
+void MobileEntityUpdate::setAttacking(bool attacking) {
 	this->attacking = attacking;
 }
 
-float MobileEntityUpdate::getLastAttackingDirection(){
+float MobileEntityUpdate::getLastAttackingDirection() {
 	return this->lastAttackingDirection;
 }
 
-void MobileEntityUpdate::setLastAttackingDirection(float dir){
+void MobileEntityUpdate::setLastAttackingDirection(float dir) {
 	this->lastAttackingDirection = dir;
 }
 
-Tile* MobileEntityUpdate::getTile(){
-	Tile* tile = new Tile(new Coordinates(currentTile->getCoordinates().getRow(),currentTile->getCoordinates().getCol()));
+Tile* MobileEntityUpdate::getTile() {
+	Tile* tile = new Tile(
+			new Coordinates(currentTile->getCoordinates().getRow(),
+					currentTile->getCoordinates().getCol()));
 	return tile;
 }
 
-void MobileEntityUpdate::setTile(Tile* tile){
+void MobileEntityUpdate::setTile(Tile* tile) {
 	this->currentTile->setFScore(tile->getFScore());
 	this->currentTile->setPosition(tile->getPosition());
 	this->currentTile->setCoordinates(tile->getCoordinates());
 }
 
-Coordinates* MobileEntityUpdate::getInitCoordinates(){
+Coordinates* MobileEntityUpdate::getInitCoordinates() {
 	return initCoords;
 }
 
-void MobileEntityUpdate::setInitCoordinates(Coordinates* initCoords){
+void MobileEntityUpdate::setInitCoordinates(Coordinates* initCoords) {
 	this->initCoords->setCol(initCoords->getCol());
 	this->initCoords->setRow(initCoords->getRow());
 }
 
-void MobileEntityUpdate::setNextTile(Tile* nextTile){
+void MobileEntityUpdate::setNextTile(Tile* nextTile) {
 	this->nextTile->setFScore(nextTile->getFScore());
 	this->nextTile->setPosition(nextTile->getPosition());
 	this->nextTile->setCoordinates(nextTile->getCoordinates());
 }
 
-Tile* MobileEntityUpdate::getNextTile(){
-	Tile* tile = new Tile(new Coordinates(nextTile->getCoordinates().getRow(),nextTile->getCoordinates().getCol()));
+Tile* MobileEntityUpdate::getNextTile() {
+	Tile* tile = new Tile(
+			new Coordinates(nextTile->getCoordinates().getRow(),
+					nextTile->getCoordinates().getCol()));
 	return tile;
 }
-
 
 MobileEntityUpdate::~MobileEntityUpdate() {
 	delete currentPos;
@@ -136,17 +148,20 @@ MobileEntityUpdate::~MobileEntityUpdate() {
 }
 
 //Operator to transform the object into a stream.
-ostream& operator <<(std::ostream& out, const MobileEntityUpdate& update){
+ostream& operator <<(std::ostream& out, const MobileEntityUpdate& update) {
 
-	out << update.id << " " << update.name << " " << *update.currentPos << " " << *update.endPos << " " << *update.speed << " " << update.attacking << " "
-			<< " " << *update.currentTile << " " << *update.nextTile << " " << *update.initCoords << " " << update.lastAttackingDirection;
-
+	out << update.id << " " << update.name << " " << *update.currentPos << " "
+			<< *update.endPos << " " << *update.speed << " " << update.attacking
+			<< " " << " " << *update.currentTile << " " << *update.nextTile
+			<< " " << *update.initCoords << " " << update.life << " "
+			<< update.magic << " " << update.lastAttackingDirection << " "
+			<< update.team;
 
 	return out;
 }
 
-	//Operator to load an object from a stream
-istream& operator >>(std::istream& in, MobileEntityUpdate& update){
+//Operator to load an object from a stream
+istream& operator >>(std::istream& in, MobileEntityUpdate& update) {
 	in >> update.id;
 	in >> update.name;
 	Vector3 vect;
@@ -170,9 +185,16 @@ istream& operator >>(std::istream& in, MobileEntityUpdate& update){
 	Coordinates coords;
 	in >> coords;
 	update.setInitCoordinates(&coords);
+	int life, magic;
+	in >> life;
+	update.setLife(life);
+	in >> magic;
+	update.setMagic(magic);
 	in >> update.lastAttackingDirection;
-
-
+	int team;
+	in >> team;
+	update.setTeam(team);
+	return in;
 
 	return in;
 }

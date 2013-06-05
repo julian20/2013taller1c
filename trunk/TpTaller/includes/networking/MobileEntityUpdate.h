@@ -55,9 +55,13 @@ public:
 
 
 	void setLife(int life);
-	void setMagic(int magic);
 	int getLife();
+
+	void setMagic(int magic);
 	int getMagic();
+
+	void setTeam(int team);
+	int getTeam();
 protected:
 	int id;
 	string name;
@@ -67,7 +71,7 @@ protected:
 	int life;
 	int magic;
 	Speed* speed;
-
+	int team;
 	bool attacking;
 	float lastAttackingDirection;
 

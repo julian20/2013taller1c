@@ -18,7 +18,7 @@ Player::Player() {
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	this->weapons = new list<Weapon*>;
-	team = 1;
+	team = 4;
 	//TODO: sacar este harcode. tendria q venir de yaml
 	Sword* sword = new Sword();
 	sword->setAccuracy(10);
@@ -83,6 +83,7 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->blocking = update->isBlocking();
 	this->isActive = update->isActive();
 	this->life = update->getLife();
+	this->team = update->getTeam();
 	this->lastAttackingDirection = update->getLastAttackingDirection();
 
 	if (currentTile)
@@ -129,6 +130,7 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setLife(this->life);
 	update->setMagic(this->magic);
 	update->setLastAttackingDirection(lastAttackingDirection);
+	update->setTeam(this->team);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {
@@ -152,7 +154,7 @@ Player::Player(string name, Position* position, Speed* speed,
 	blocking = false;
 	chat = NULL;
 	isActive = true;
-	team = 1;
+	team = 4;
 	mainPlayer = true;
 	viewRange = 200;
 	weapons=NULL;

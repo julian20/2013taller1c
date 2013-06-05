@@ -76,6 +76,7 @@ void* timerChecker(void* par){
 }
 
 // Funcion que ejecuta al conectarse cada client
+int cont =1;
 void* handle(void* par) {
 
 	signal(SIGPIPE, SIG_IGN);
@@ -109,8 +110,9 @@ void* handle(void* par) {
 		info->setName(playerName);
 		info->getPlayer()->setName(playerName);
 	}
+	cont++;
+	info->getPlayer()->setTeam(cont%2 +1);
 
-	info->getPlayer()->setTeam(missionManager.getNextAvailableTeam());
 	bool playing = true;
 	cout << playerName << " has conected and joined team: " << info->getPlayer()->getTeam() <<endl;
 	// Antes de agregarlo al juego creo el thread para chequear el estado en el que se encuentra.
