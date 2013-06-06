@@ -27,6 +27,8 @@ void ArtificialIntelligence::update(MapData* mapData)
 	{
 			Entity& enemy=this->getNearestEnemy();
 			this->attack(enemy);
+			MobileEntity* mob=(MobileEntity*)this->entity;
+			mob->update(mapData);
 	}else
 	{
 		if(entity->getClassName() == "MobileEntity")
@@ -41,8 +43,9 @@ void ArtificialIntelligence::update(MapData* mapData)
 bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData)
 {
 	entitiesNear=mapData->getClosestEntities(entity->getCoordinates(),WATCHSIZE);
-	//return entitiesNear.size()>0;
-	return false; // TODO :cambiar este harcoding
+
+	return entitiesNear.size()>0;
+	//return false; // TODO :cambiar este harcoding
 }
 Entity& ArtificialIntelligence::getNearestEnemy()
 {
