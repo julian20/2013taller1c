@@ -21,6 +21,7 @@ public:
 	void watch(MapData* mapData);
 	void update(MapData* mapData);
 	bool isAnyEnemyClose(MapData* mapData);
+	void followEnemy(Entity& entity);
 	Entity& getNearestEnemy();
 	void attack(Entity& enemy);
 private:

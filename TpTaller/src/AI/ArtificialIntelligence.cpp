@@ -14,7 +14,8 @@ ArtificialIntelligence::ArtificialIntelligence() {
 void ArtificialIntelligence::attack(Entity& enemy)
 {
 		Mob* toAttack=(Mob*)entity;
-		toAttack->attack(enemy);
+		toAttack->attackTo(&enemy);
+		//toAttack->attack(enemy);
 }
 void ArtificialIntelligence::setEntity(Entity* entity)
 {
@@ -40,7 +41,8 @@ void ArtificialIntelligence::update(MapData* mapData)
 bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData)
 {
 	entitiesNear=mapData->getClosestEntities(entity->getCoordinates(),WATCHSIZE);
-	return entitiesNear.size()>0;
+	//return entitiesNear.size()>0;
+	return false; // TODO :cambiar este harcoding
 }
 Entity& ArtificialIntelligence::getNearestEnemy()
 {
