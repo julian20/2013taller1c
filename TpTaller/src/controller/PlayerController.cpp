@@ -191,6 +191,10 @@ void PlayerController::toggleRunning() {
 	}
 }
 
+void PlayerController::castSpell() {
+	events.push_back(new PlayerEvent(EVENT_CAST_SPELL));
+}
+
 void PlayerController::playerAttackTo(Entity* entity) {
 	player->attackTo(entity);
 }
@@ -248,10 +252,11 @@ bool PlayerController::hasMoveEvent(list<PlayerEvent*> eventsList) {
 
 list<PlayerEvent*> PlayerController::getEventList() {
 	list<PlayerEvent*> playerEvents = player->getPlayerEvents();
-	if (playerEvents.size() != 0)
+	if (playerEvents.size() != 0) {
 		for (list<PlayerEvent*>::iterator it = playerEvents.begin();
 				it != playerEvents.end(); ++it)
 			events.push_back(*it);
+	}
 	return events;
 }
 

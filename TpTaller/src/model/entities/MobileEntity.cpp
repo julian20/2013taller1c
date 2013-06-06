@@ -47,7 +47,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {
-	list<PlayerEvent*>aux =events;
+	list<PlayerEvent*>aux = events;
 	events.clear();
 	return aux;
 }
@@ -84,6 +84,10 @@ bool MobileEntity::isRunning() {
 
 float MobileEntity::getLastAttackingDirecton() {
 	return lastAttackingDirection;
+}
+
+void MobileEntity::castSpell() {
+
 }
 
 void MobileEntity::moveImmediately(Coordinates coords) {
