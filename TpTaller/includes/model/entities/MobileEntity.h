@@ -23,7 +23,6 @@ using namespace std;
 class MapData;
 class Item;
 class LifeHeart;
-class SpellEffect;
 
 class MobileEntity: public Entity {
 public:
@@ -33,7 +32,8 @@ public:
 	void moveTo(int x, int y, int z = 0);
 	void setPos(float x, float y, float z = 0);
 
-	virtual void update(MapData* mapData);
+	virtual void extraUpdate(MapData* mapData);
+	void update(MapData* mapData);
 	void updateFromServer(MobileEntityUpdate* update);
 	MobileEntityUpdate* generateMobileEntityUpdate(int id);
 
@@ -49,14 +49,11 @@ public:
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
 
-	void castSpell();
 	void attackTo(Entity* attackTo);
 	void attack();
 	void setAttack(bool attacking);
 	bool isAttacking();
 	void cancelAttack();
-	void setCastingSpell(bool castingSpell);
-	bool isCastingSpell();
 
 	void setHasChanged(bool change);
 	bool getHasChanged();
@@ -84,7 +81,6 @@ public:
 	list<PlayerEvent*> getPlayerEvents();
 	void addEvent(PlayerEvent* event);
 	float getLastAttackingDirecton();
-	SpellEffect* getCurrentSpell();
 protected:
 	void loadNextPosition();
 	void emptyPath();
@@ -93,22 +89,16 @@ protected:
 	Speed* initSpeed;
 	//ArtificialIntelligence* ia;
 	list<Tile *>* path;
-	list<SpellEffect*>* spellEffects;
 
 	bool attacking;
 
 	bool hasChanged;
 	Timer attackTimer;
 	float lastAttackingDirection;
-	bool castingSpell;
 private:
 	void checkAttackToNewPos(MapData* mapData);
 	void lookAtEnemy();
-	void castSpellNow(MapData* mapData);
-	void setSpellDirection(SpellEffect* spell,
-			Coordinates starting, Coordinates ending);
 
-	bool needCastSpell;
 	Entity* attackToEntity;
 	list<PlayerEvent*>events;
 };

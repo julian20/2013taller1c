@@ -54,10 +54,22 @@ bool TileData::getIsVisible() {
 }
 
 bool TileData::isWalkable(bool ignoremobileEntity) {
-	if (!ignoremobileEntity && mobileEntities.size() != 0)
-		return false;
+	bool allEntitiesWalkable = true;
+	MobileEntity* current;
+	list<MobileEntity *>::const_iterator iter;
+	for (iter = mobileEntities.begin(); iter != mobileEntities.end(); ++iter) {
+		current = *iter;
 
-	return walkable;
+		if ( current->isWalkable() == false)
+			allEntitiesWalkable = false;
+	}
+
+	if (ignoremobileEntity == true && walkable == true)
+		return true;
+
+	if (walkable == false)
+		return false;
+	return allEntitiesWalkable;
 }
 
 void TileData::setType(std::string type) {
