@@ -61,8 +61,6 @@ MenuEvent MultiplayerGame::run(){
 
 void MultiplayerGame::addEventsToHandle(string playerName, vector<PlayerEvent*> events){
 
-	if (events[0]->getEventType() == EVENT_ATTACK) removeMobileEntity(0);
-
 	controllers[playerName]->handleEvents(events);
 }
 
