@@ -43,6 +43,8 @@ public:
 	Coordinates getCoordinates();
 	void setCoordinates(int row, int col);
 	void setBaseSizes(int width, int height);
+	bool isWalkable();
+	bool isAttackable();
 
 	list<Entity*> getVisibleEnemies();
 	virtual int getLife();
@@ -71,10 +73,12 @@ protected:
 	Base* base;
 	std::string name;
 	Coordinates* coord;
-	int life;
-	int magic;
 	list<Entity*> enemies;
 	Tile* currentTile;
+	int life;
+	int magic;
+	bool walkable;
+	bool attackable;
 
 	// Mission manager.
 	int team;

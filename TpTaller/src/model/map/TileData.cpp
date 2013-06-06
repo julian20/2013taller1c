@@ -11,7 +11,6 @@
 using namespace std;
 
 TileData::TileData() {
-	mobileEntity = NULL;
 	entity = NULL;
 	tileType = "neutral";
 	iterator = entities.begin();
@@ -24,8 +23,18 @@ std::string TileData::getType() {
 	return tileType;
 }
 
-MobileEntity* TileData::getMobileEntity() {
-	return mobileEntity;
+MobileEntity* TileData::getAttackableMobileEntity() {
+	MobileEntity* mobileEntity;
+
+	list<MobileEntity *>::const_iterator iter;
+	for (iter = mobileEntities.begin(); iter != mobileEntities.end(); ++iter) {
+		mobileEntity = *iter;
+
+		if (mobileEntity->isAttackable())
+			return mobileEntity;
+	}
+
+	return NULL;
 }
 
 Entity* TileData::getNextEntity() {
@@ -45,7 +54,7 @@ bool TileData::getIsVisible() {
 }
 
 bool TileData::isWalkable(bool ignoremobileEntity) {
-	if (!ignoremobileEntity && mobileEntity != NULL)
+	if (!ignoremobileEntity && mobileEntities.size() != 0)
 		return false;
 
 	return walkable;
@@ -55,12 +64,12 @@ void TileData::setType(std::string type) {
 	tileType = type;
 }
 
-void TileData::setMobileEntity(MobileEntity* newPersonaje) {
-	mobileEntity = newPersonaje;
+void TileData::addMobileEntity(MobileEntity* newMobileEntity) {
+	mobileEntities.push_back(newMobileEntity);
 }
 
-void TileData::cleanMobileEntity() {
-	mobileEntity = NULL;
+void TileData::removeMobileEntity(MobileEntity* mobileEntity) {
+	mobileEntities.remove(mobileEntity);
 }
 
 void TileData::setVisibility(bool value) {
