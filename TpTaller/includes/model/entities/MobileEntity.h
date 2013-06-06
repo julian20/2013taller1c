@@ -98,7 +98,9 @@ protected:
 private:
 	void checkAttackToNewPos(MapData* mapData);
 	void lookAtEnemy();
+	void castSpellNow(MapData* mapData);
 
+	bool needCastSpell;
 	Entity* attackToEntity;
 	list<PlayerEvent*>events;
 };
