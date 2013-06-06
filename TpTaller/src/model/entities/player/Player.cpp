@@ -242,6 +242,7 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 	out << *(player.currentTile) << " ";
 	out << " " << player.life << " " << player.team;
 	out << " " << player.lastAttackingDirection;
+	out << " " << player.castingSpell;
 	return out;
 }
 
@@ -289,6 +290,9 @@ istream& operator >>(std::istream& in, Player& player) {
 	float lastDir;
 	in >> lastDir;
 	player.lastAttackingDirection = lastDir;
+	int castSp;
+	in >> castSp;
+	player.castingSpell = castSp;
 	return in;
 }
 
