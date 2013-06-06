@@ -169,3 +169,7 @@ void MapView::addNewPlayerView(PlayerView* view, Coordinates initCoord) {
 void MapView::addNewMobileEntityView(MobileEntityView* view, Coordinates initCoord){
 	viewMap->positionEntityView(view, initCoord);
 }
+
+void MapView::removeMobileEntity(MobileEntityView* view){
+	viewMap->removeEntityView(view);
+}

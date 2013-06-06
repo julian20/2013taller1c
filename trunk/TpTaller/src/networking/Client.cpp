@@ -347,8 +347,6 @@ void Client::checkNewMobileEntity(){
 	// 1ro recibo la cantidad de mobs nuevos que hay
 	int n = ComunicationUtils::recvNumber(clientID);
 	// No hay nuevos jugadores
-	if (n <= 0)
-		return;
 
 	for (int i = 0; i < n; i++) {
 
@@ -363,6 +361,15 @@ void Client::checkNewMobileEntity(){
 		MobileEntityView* view = info->createMobileEntityView();
 		game->addNewMobileEntity(entity,view,info->getInitCoordinates(), id);
 
+	}
+
+	n = ComunicationUtils::recvNumber(clientID);
+	// No hay mobs borrados
+	if (n <= 0) return;
+
+	for (int i = 0; i < n; i++) {
+		int id = ComunicationUtils::recvNumber(clientID);
+		game->removeMobileEntity(id);
 	}
 }
 

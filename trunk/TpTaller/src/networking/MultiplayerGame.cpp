@@ -61,6 +61,8 @@ MenuEvent MultiplayerGame::run(){
 
 void MultiplayerGame::addEventsToHandle(string playerName, vector<PlayerEvent*> events){
 
+	if (events[0]->getEventType() == EVENT_ATTACK) removeMobileEntity(0);
+
 	controllers[playerName]->handleEvents(events);
 }
 
@@ -207,6 +209,10 @@ map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo(){
 
 }
 
+vector<int> MultiplayerGame::getDeletedMobileEntities(){
+	return deletedMobileEntities;
+}
+
 int MultiplayerGame::addMobileEntity(MobileEntityView* view, MobileEntity* entity, Coordinates coordiantes){
 
 	entity->setCoordinates(coordiantes.getRow(), coordiantes.getCol());
@@ -230,12 +236,13 @@ void MultiplayerGame::removeMobileEntity(int id){
 		}
 
 		mobileEntities.erase(id);
+
+		//TODO: SACARLO TAMBIEN DE MAP DATA
+
+		deletedMobileEntities.push_back(id);
 	}
 
 
-	deletedMobileEntities.push_back(id);
-
-	return;
 }
 
 MultiplayerGame::~MultiplayerGame() {

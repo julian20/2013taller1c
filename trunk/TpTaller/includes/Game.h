@@ -45,6 +45,7 @@ public:
 
         virtual void addNewPlayer(Player* player, PlayerView* view, Coordinates* coords);
         virtual void addNewMobileEntity(MobileEntity* entity, MobileEntityView* view, Coordinates* coords, int id);
+        void removeMobileEntity(int id);
         void handleMobileEntityUpdates(vector<MobileEntityUpdate*> mobileEntityUpdates);
         PlayerView* getPlayerView();
 
@@ -112,6 +113,7 @@ private:
 
 
     	map<int,MobileEntity*> mobileEntities;
+    	map<int,MobileEntityView*> mobileEntitiesView;
 };
 
 #endif /* GAME_H_ */

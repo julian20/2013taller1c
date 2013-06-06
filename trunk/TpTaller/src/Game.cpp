@@ -355,7 +355,16 @@ void Game::addNewMobileEntity(MobileEntity* entity, MobileEntityView* view, Coor
 	mapView->addNewMobileEntityView(view, newCoords);
 
 	mobileEntities[id] = entity;
+	mobileEntitiesView[id] = view;
 
+}
+
+void Game::removeMobileEntity(int id){
+	MobileEntityView* view = mobileEntitiesView[id];
+	mapView->removeMobileEntity(view);
+	// TODO: Estas lineas estan comentadas porque al borrarlo dejo a otro thread accediendo a algo que esta en estado invalido.
+//	delete mobileEntities[id];
+//	delete mobileEntitiesView[id];
 }
 
 void Game::handleMobileEntityUpdates(vector<MobileEntityUpdate*> mobileEntityUpdates) {
