@@ -155,6 +155,30 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	delete enemyTile;
 }
 
+void MobileEntity::setSpellDirection(SpellEffect* spell,
+		Coordinates starting, Coordinates ending) {
+
+	int rowDiff = ending.getRow() - starting.getRow();
+	int colDiff = ending.getCol() - starting.getCol();
+
+	if (rowDiff == 0 && colDiff == 1)
+		spell->setDirection(spell->getRIGHT());
+	if (rowDiff == 0 && colDiff == -1)
+			spell->setDirection(spell->getLEFT());
+	if (rowDiff == 1 && colDiff == 0)
+			spell->setDirection(spell->getDOWN());
+	if (rowDiff == -1 && colDiff == 0)
+			spell->setDirection(spell->getUP());
+	if (rowDiff == 1 && colDiff == 1)
+			spell->setDirection(spell->getDOWN_RIGHT() );
+	if (rowDiff == 1 && colDiff == -1)
+			spell->setDirection(spell->getDOWN_LEFT());
+	if (rowDiff == -1 && colDiff == 1)
+			spell->setDirection(spell->getUP_RIGHT());
+	if (rowDiff == -1 && colDiff == -1)
+			spell->setDirection(spell->getUP_LEFT());
+}
+
 void MobileEntity::castSpellNow(MapData* mapData) {
 	list<Tile *> tiles = mapData->getNeighborTiles(currentTile);
 
@@ -162,11 +186,15 @@ void MobileEntity::castSpellNow(MapData* mapData) {
 	for (iter = tiles.begin(); iter != tiles.end(); ++iter) {
 		Tile* current = *iter;
 
-		Coordinates coords = current->getCoordinates();
+		Coordinates endingCoords = current->getCoordinates();
+		int row = endingCoords.getRow();
+		int col = endingCoords.getCol();
 
 		SpellEffect* spellEffect = new SpellEffect();
-		spellEffect->setCoordinates(coords.getRow(), coords.getCol());
-		// TODO: seteo la direccion y lo agrego a mapData
+		spellEffect->setCoordinates(row, col);
+		setSpellDirection(spellEffect, *coord, endingCoords);
+
+		mapData->addMobileEntity(row, col, spellEffect);
 	}
 
 	tiles.erase(tiles.begin(), tiles.end());
