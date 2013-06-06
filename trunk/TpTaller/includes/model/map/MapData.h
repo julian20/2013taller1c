@@ -46,6 +46,7 @@ public:
 	list<MobileEntity *> getClosestEntities(Coordinates centerCoordinates,
 			int tilesRange, bool removeEntityInPosition = true);
 	static int distBetweenTilesInTiles(Tile* from, Tile* to);
+	list<Tile *> getNeighborTiles(Tile* tile);
 private:
 	float heuristicCostEstimate(Tile* from, Tile* to);
 	float distBetweenTiles(Tile* from, Tile* to);

@@ -279,6 +279,33 @@ list<Tile *> MapData::getNeighborTiles(Tile* tile,
 	return neighborTiles;
 }
 
+list<Tile *> MapData::getNeighborTiles(Tile* tile) {
+	list<Tile *> neighborTiles;
+	Coordinates coords = tile->getCoordinates();
+
+	int col = coords.getCol();
+	int row = coords.getRow();
+
+	if (col > 0)
+		neighborTiles.push_back(new Tile(new Coordinates(row, col - 1)));
+	if (row > 0)
+		neighborTiles.push_back(new Tile(new Coordinates(row - 1, col)));
+	if (col > 0 && row > 0)
+		neighborTiles.push_back(new Tile(new Coordinates(row - 1, col - 1)));
+	if (col < ncols - 1)
+		neighborTiles.push_back(new Tile(new Coordinates(row, col + 1)));
+	if (row < nrows - 1)
+		neighborTiles.push_back(new Tile(new Coordinates(row + 1, col)));
+	if (col < ncols - 1 && row < nrows - 1)
+		neighborTiles.push_back(new Tile(new Coordinates(row + 1, col + 1)));
+	if (col > 0 && row < nrows - 1)
+		neighborTiles.push_back(new Tile(new Coordinates(row + 1, col - 1)));
+	if (col < ncols - 1 && row > 0)
+		neighborTiles.push_back(new Tile(new Coordinates(row - 1, col + 1)));
+
+	return neighborTiles;
+}
+
 bool tileExistInList(list<Tile *> list, Tile* tile) {
 	std::list<Tile *>::const_iterator iter;
 	for (iter = list.begin(); iter != list.end(); ++iter) {

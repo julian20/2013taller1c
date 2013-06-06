@@ -9,6 +9,8 @@
 #include <model/entities/Items/Item.h>
 #include <model/entities/Items/LifeHeart.h>
 #include <model/map/MapData.h>
+#include <model/entities/spells/SpellEffect.h>
+
 using namespace std;
 
 MobileEntity::MobileEntity() {
@@ -26,6 +28,7 @@ MobileEntity::MobileEntity() {
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	attackTimer.start();
 	lastAttackingDirection = 0;
+	needCastSpell = false;
 }
 
 MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
@@ -44,6 +47,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	team = 0;
 	attackTimer.start();
 	lastAttackingDirection = 0;
+	needCastSpell = false;
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {
@@ -87,7 +91,7 @@ float MobileEntity::getLastAttackingDirecton() {
 }
 
 void MobileEntity::castSpell() {
-
+	needCastSpell = true;
 }
 
 void MobileEntity::moveImmediately(Coordinates coords) {
@@ -151,7 +155,26 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	delete enemyTile;
 }
 
+void MobileEntity::castSpellNow(MapData* mapData) {
+	list<Tile *> tiles = mapData->getNeighborTiles(currentTile);
+
+	std::list<Tile *>::const_iterator iter;
+	for (iter = tiles.begin(); iter != tiles.end(); ++iter) {
+		Tile* current = *iter;
+
+		Coordinates coords = current->getCoordinates();
+
+		SpellEffect* spellEffect = new SpellEffect();
+		spellEffect->setCoordinates(coords.getRow(), coords.getCol());
+		// TODO: seteo la direccion y lo agrego a mapData
+	}
+
+	tiles.erase(tiles.begin(), tiles.end());
+}
+
 void MobileEntity::update(MapData* mapData) {
+	if (needCastSpell)
+		castSpellNow(mapData);
 	if (attackToEntity != NULL)
 		checkAttackToNewPos(mapData);
 	if (IsMoving() == false) {
