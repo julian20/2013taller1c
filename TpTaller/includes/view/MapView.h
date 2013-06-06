@@ -38,6 +38,7 @@ public:
 	void setRunningPlayer();
 	void addNewPlayerView(PlayerView* view, Coordinates initCoord);
 	void addNewMobileEntityView(MobileEntityView* view, Coordinates initCoord);
+	void removeMobileEntity(MobileEntityView* view);
 private:
 	map<string, int> getVisibleTilesLimit(Position* cam);
 

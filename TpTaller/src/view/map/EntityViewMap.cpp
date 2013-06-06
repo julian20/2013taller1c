@@ -41,6 +41,23 @@ void EntityViewMap::positionEntityView(EntityView* entity,
 	}
 }
 
+void EntityViewMap::removeEntityView(EntityView* view){
+	int row = view->getEntity()->getCoordinates().getRow();
+	int col = view->getEntity()->getCoordinates().getCol();
+	for (list<EntityView*>::iterator it = map.at(col).at(row).begin() ; it != map.at(col).at(row).end() ; ++it){
+		if ((*it)->getEntity()->getName() == view->getEntity()->getName()){
+			map.at(col).at(row).erase(it);
+			break;
+		}
+	}
+	for (list<EntityView*>::iterator it = movableEntities.begin() ; it != movableEntities.end() ; ++it){
+		if ((*it)->getEntity()->getName() == view->getEntity()->getName()){
+			movableEntities.erase(it);
+			break;
+		}
+	}
+}
+
 int EntityViewMap::getNCols() {
 	return cols;
 }

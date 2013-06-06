@@ -95,6 +95,7 @@ private:
 	map<string,Player*> disconectedPlayers;
 	map<string,map<string,Player*> > sendedPlayers;
 	map<string,map<int,MobileEntity*> > sendedMobileEntities;
+	map<string,map<int,int> > deletedMobileEntities;
 	map<string,vector<PlayerUpdate*> > updates;
 	vector<ChatMessage*> messages;
 

@@ -26,6 +26,7 @@ public:
 	int getNCols();
 	int getNRows();
 	void positionEntityView(EntityView* entity, Coordinates coordinates);
+	void removeEntityView(EntityView* view);
 	void drawViews(SDL_Surface* screen, Position* cam,
 			std::map<string, int> visibleTiles);
 	list<EntityView*> getListAtRowAndCol(int row, int col);
