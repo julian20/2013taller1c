@@ -24,6 +24,8 @@ Item::Item(Item* entity) {
 	this->currentTile = NULL;
 	this->team = entity->getTeam();
 	this->killedBy = entity->getKilledBy();
+	this->attackable = false;
+	this->walkable = true;
 }
 
 string Item::getClassName() {

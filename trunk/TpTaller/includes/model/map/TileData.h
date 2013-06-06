@@ -22,7 +22,7 @@ public:
 
 	//Getters
 	std::string getType();
-	MobileEntity* getMobileEntity();
+	MobileEntity* getAttackableMobileEntity();
 	Entity* getNextEntity();
 	int getNumberOfEntitiesOnTile();
 	bool getWasVisible();
@@ -31,8 +31,8 @@ public:
 
 	//Setters
 	void setType(std::string type);
-	void setMobileEntity(MobileEntity* newPersonaje);
-	void cleanMobileEntity();
+	void addMobileEntity(MobileEntity* newPersonaje);
+	void removeMobileEntity(MobileEntity* newMobileEntity);
 	void setVisibility(bool value);
 	void setWalkable(bool _walkable);
 
@@ -40,7 +40,7 @@ public:
 
 private:
 	std::string tileType;
-	MobileEntity* mobileEntity;
+	std::list<MobileEntity*> mobileEntities;
 	std::list<Entity*> entities;
 	std::list<Entity*>::iterator iterator;
 	Entity* entity;

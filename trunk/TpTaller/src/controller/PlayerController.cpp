@@ -53,7 +53,7 @@ bool PlayerController::clickAnotherPlayer(int x, int y) {
 			coor->getCol());
 	if (!tileData)
 		return false;
-	MobileEntity* player = tileData->getMobileEntity();
+	MobileEntity* player = tileData->getAttackableMobileEntity();
 	if (player) {
 		if (player->getClassName().compare("Player") != 0)
 			return false;
@@ -69,7 +69,7 @@ bool PlayerController::playerHasclickedAnEntity(Coordinates* coor) {
 			coor->getCol());
 	if (!tileData)
 		return false;
-	Entity* entity = tileData->getMobileEntity();
+	Entity* entity = tileData->getAttackableMobileEntity();
 	if (entity) {
 		if (entity->getTeam() != player->getTeam()) {
 			this->entityToCollideAgainst = entity;

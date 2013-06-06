@@ -136,7 +136,7 @@ void MapData::addPlayer(int row, int col, Player* player) {
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
 	Tile* current;
 	if (tileData->isWalkable()) {	// Si el tile es transitable se agrega el personaje ahi
-		tileData->setMobileEntity(player);
+		tileData->addMobileEntity(player);
 
 		player->setTile(personajeTile);
 	} else {	// Si no lo es se lo agrega a una posicion adyacente
@@ -156,7 +156,7 @@ void MapData::addPlayer(int row, int col, Player* player) {
 				break;
 		}
 
-		currentData->setMobileEntity(player);
+		currentData->addMobileEntity(player);
 
 		delete personajeTile;
 		Tile* personajeTile = new Tile(new Coordinates(currentCoords.getRow(),
@@ -176,7 +176,7 @@ void MapData::addMobileEntity(int row, int col, MobileEntity* mobileEntity) {
 
 	Tile* entityTile = new Tile(new Coordinates(row, col));
 	
-	tileData->setMobileEntity(mobileEntity);
+	tileData->addMobileEntity(mobileEntity);
 
 	mobileEntity->setTile(entityTile);
 
@@ -188,8 +188,8 @@ void MapData::updatePlayerPos(int prevRow, int prevCol,
 	TileData* tileDataPrev = getTileData(prevRow, prevCol);
 	TileData* tileDataCurrent = getTileData(row, col);
 
-	tileDataPrev->cleanMobileEntity();
-	tileDataCurrent->setMobileEntity(player);
+	tileDataPrev->removeMobileEntity(player);
+	tileDataCurrent->addMobileEntity(player);
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
 	player->setTile(personajeTile);
@@ -202,7 +202,7 @@ MobileEntity* MapData::getPlayer(int row, int col) {
 		return NULL;
 	}
 
-	return data[row + nrows * col].getMobileEntity();
+	return data[row + nrows * col].getAttackableMobileEntity();
 }
 
 Tile *getTileFromContainer(map<int, Tile *> *tilesContainer, int row, int col) {
@@ -602,7 +602,7 @@ list<MobileEntity *> MapData::getClosestEntities(Coordinates centerCoordinates,
 			if (distance <= tilesRange) {
 
 				TileData* tileData = getTileData(row, col);
-				MobileEntity* currentMobileEntity = tileData->getMobileEntity();
+				MobileEntity* currentMobileEntity = tileData->getAttackableMobileEntity();
 
 				if (currentMobileEntity) {
 					MobileEntityWithCenterDistance toSortEntity;

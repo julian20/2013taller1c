@@ -30,6 +30,8 @@ Entity::Entity() {
 	this->killedBy = 0;
 	this->positionInitialized = false;
 	this->damageBuffer = 0;
+	this->walkable = false;
+	this->attackable = true;
 }
 
 Entity::Entity(Entity* entity) {
@@ -48,6 +50,16 @@ Entity::Entity(Entity* entity) {
 	this->positionInitialized = entity->getPositionInitialized();
 	this->damageBuffer = 0;
 	this->magic = entity->getMagic();
+	this->walkable = false;
+	this->attackable = true;
+}
+
+bool Entity::isWalkable() {
+	return walkable;
+}
+
+bool Entity::isAttackable() {
+	return attackable;
 }
 
 bool Entity::getPositionInitialized() {
