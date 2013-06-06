@@ -45,10 +45,10 @@ public:
 	void cleanVisibleTilesVector();
 	list<MobileEntity *> getClosestEntities(Coordinates centerCoordinates,
 			int tilesRange, bool removeEntityInPosition = true);
+	static int distBetweenTilesInTiles(Tile* from, Tile* to);
 private:
 	float heuristicCostEstimate(Tile* from, Tile* to);
 	float distBetweenTiles(Tile* from, Tile* to);
-	int distBetweenTilesInTiles(Tile* from, Tile* to);
 	void addTileToList(list<Tile *> *list, map<int, Tile *> *tilesContainer,
 			int row, int col, bool getNoWalkableTiles);
 	list<Tile *> *reconstructPath(map<int, Tile *> cameFrom, Tile* goal);
