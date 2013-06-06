@@ -61,7 +61,7 @@ public:
 	std::string getName();
 	virtual void setName(std::string name);
 protected:
-	void loadImage();
+	virtual void loadImage();
 	void updateBaseSize();
 
 	int nClips;

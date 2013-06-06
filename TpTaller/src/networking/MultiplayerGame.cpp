@@ -27,7 +27,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	vector<MobileEntityView*> viewVector = configuration->getMobileEntityViewList();
 	lastAddedView = 0;
 
-	for (int i = 0 ; i < viewVector.size() ; i++){
+	for (unsigned int i = 0 ; i < viewVector.size() ; i++){
 		mobileEntities[i] = viewVector[i]->getEntity();
 		mobEntView[i] = viewVector[i];
 		ArtificialIntelligence* ia= new ArtificialIntelligence();
