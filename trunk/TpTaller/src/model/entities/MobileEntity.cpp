@@ -29,6 +29,7 @@ MobileEntity::MobileEntity() {
 	attackTimer.start();
 	lastAttackingDirection = 0;
 	needCastSpell = false;
+	castingSpell = false;
 }
 
 MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
@@ -48,12 +49,26 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	attackTimer.start();
 	lastAttackingDirection = 0;
 	needCastSpell = false;
+	castingSpell = false;
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {
 	list<PlayerEvent*>aux = events;
 	events.clear();
 	return aux;
+}
+
+SpellEffect* MobileEntity::getCurrentSpell()
+{
+	return spellEffects->front();
+}
+
+void MobileEntity::setCastingSpell(bool castingSpell) {
+	this->castingSpell = castingSpell;
+}
+
+bool MobileEntity::isCastingSpell() {
+	return castingSpell;
 }
 
 void MobileEntity::addEvent(PlayerEvent* event){
@@ -180,6 +195,7 @@ void MobileEntity::setSpellDirection(SpellEffect* spell,
 }
 
 void MobileEntity::castSpellNow(MapData* mapData) {
+	castingSpell = true;
 	list<Tile *> tiles = mapData->getNeighborTiles(currentTile);
 
 	std::list<Tile *>::const_iterator iter;
@@ -190,7 +206,7 @@ void MobileEntity::castSpellNow(MapData* mapData) {
 		int row = endingCoords.getRow();
 		int col = endingCoords.getCol();
 
-		SpellEffect* spellEffect = new SpellEffect();
+		SpellEffect* spellEffect = new SpellEffect(getCurrentSpell());
 		spellEffect->setCoordinates(row, col);
 		setSpellDirection(spellEffect, *coord, endingCoords);
 

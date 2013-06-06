@@ -17,6 +17,16 @@ SpellEffect::SpellEffect() : MobileEntity() {
 	this->direction = LEFT;
 }
 
+SpellEffect::SpellEffect(SpellEffect* spell) : MobileEntity() {
+	this->maxTraveledTiles = spell->getMaxTraveledTiles();
+	this->speed= spell->getSpeed();
+
+	defineConstants();
+
+	Vector3 dir = spell->getDirection();
+	this->direction.setValues(dir.getX(), dir.getY());
+}
+
 void SpellEffect::defineConstants() {
 	LEFT.setValues(-1, 0);
 	UP_LEFT.setValues(-1, -1);

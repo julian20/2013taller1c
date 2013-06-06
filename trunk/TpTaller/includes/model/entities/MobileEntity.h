@@ -55,6 +55,8 @@ public:
 	void setAttack(bool attacking);
 	bool isAttacking();
 	void cancelAttack();
+	void setCastingSpell(bool castingSpell);
+	bool isCastingSpell();
 
 	void setHasChanged(bool change);
 	bool getHasChanged();
@@ -82,6 +84,7 @@ public:
 	list<PlayerEvent*> getPlayerEvents();
 	void addEvent(PlayerEvent* event);
 	float getLastAttackingDirecton();
+	SpellEffect* getCurrentSpell();
 protected:
 	void loadNextPosition();
 	void emptyPath();
@@ -89,7 +92,8 @@ protected:
 	Speed* speed;
 	Speed* initSpeed;
 	//ArtificialIntelligence* ia;
-	list<Tile *> *path;
+	list<Tile *>* path;
+	list<SpellEffect*>* spellEffects;
 
 	bool attacking;
 
@@ -104,6 +108,7 @@ private:
 			Coordinates starting, Coordinates ending);
 
 	bool needCastSpell;
+	bool castingSpell;
 	Entity* attackToEntity;
 	list<PlayerEvent*>events;
 };

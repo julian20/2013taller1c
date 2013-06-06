@@ -83,7 +83,6 @@ private:
 	list<Weapon*>* weapons;
 
 	bool blocking;
-
 	bool isActive;
 
 };

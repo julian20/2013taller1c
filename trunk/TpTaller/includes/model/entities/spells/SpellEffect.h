@@ -14,6 +14,7 @@
 class SpellEffect: public MobileEntity {
 public:
 	SpellEffect();
+	SpellEffect(SpellEffect* spell);
 	virtual void applyEffects(Entity& entity);
 	virtual void applyEffects(MobileEntity& entity);
 	virtual void collideTo(MobileEntity& entity);
