@@ -32,7 +32,7 @@ public:
 	void moveTo(int x, int y, int z = 0);
 	void setPos(float x, float y, float z = 0);
 
-	void update(MapData* mapData);
+	virtual void update(MapData* mapData);
 	void updateFromServer(MobileEntityUpdate* update);
 	MobileEntityUpdate* generateMobileEntityUpdate(int id);
 
