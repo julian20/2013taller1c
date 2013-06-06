@@ -21,6 +21,7 @@ MobileEntityUpdate::MobileEntityUpdate() {
 	this->magic = 0;
 	this->lastAttackingDirection = 0;
 	this->team = 0;
+	this->castingSpell = false;
 }
 
 void MobileEntityUpdate::setId(int id) {
@@ -63,6 +64,14 @@ void MobileEntityUpdate::setTeam(int team) {
 
 int MobileEntityUpdate::getTeam() {
 	return team;
+}
+
+void MobileEntityUpdate::setCastingSpell(bool castingSpell) {
+	this->castingSpell = castingSpell;
+}
+
+bool MobileEntityUpdate::getCastingSpell() {
+	return castingSpell;
 }
 
 void MobileEntityUpdate::setCurrentPos(Vector3* currentPos) {
@@ -155,7 +164,7 @@ ostream& operator <<(std::ostream& out, const MobileEntityUpdate& update) {
 			<< " " << " " << *update.currentTile << " " << *update.nextTile
 			<< " " << *update.initCoords << " " << update.life << " "
 			<< update.magic << " " << update.lastAttackingDirection << " "
-			<< update.team;
+			<< update.team << " " << update.castingSpell;
 
 	return out;
 }
@@ -194,6 +203,9 @@ istream& operator >>(std::istream& in, MobileEntityUpdate& update) {
 	int team;
 	in >> team;
 	update.setTeam(team);
+	int castingSp;
+	in >> castingSp;
+	update.setCastingSpell(castingSp);
 	return in;
 
 	return in;

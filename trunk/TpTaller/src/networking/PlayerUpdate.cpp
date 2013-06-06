@@ -51,7 +51,8 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 			<< update.blocking << " " << update.active << " "
 			<< *update.currentTile << " " << *update.nextTile << " "
 			<< *update.initCoords << " " << update.life << " " << update.magic
-			<< " " << update.lastAttackingDirection << " " << update.team;
+			<< " " << update.lastAttackingDirection << " " << update.team
+			<< " " << update.castingSpell;
 
 	return out;
 }
@@ -98,6 +99,9 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	int team;
 	in >> team;
 	update.setTeam(team);
+	int castingSp;
+	in >> castingSp;
+	update.setCastingSpell(castingSp);
 	return in;
 
 }

@@ -442,6 +442,7 @@ ostream& operator <<(std::ostream& out, const MobileEntity& MobileEntity) {
 	out << *(MobileEntity.currentTile);
 	out << " " << MobileEntity.life << " " << MobileEntity.team;
 	out << " " << MobileEntity.lastAttackingDirection;
+	out << " " << MobileEntity.castingSpell;
 	return out;
 }
 
@@ -476,6 +477,9 @@ istream& operator >>(std::istream& in, MobileEntity& MobileEntity) {
 	float lastDir;
 	in >> lastDir;
 	MobileEntity.lastAttackingDirection = lastDir;
+	int castSp;
+	in >> castSp;
+	MobileEntity.castingSpell = castSp;
 	return in;
 }
 

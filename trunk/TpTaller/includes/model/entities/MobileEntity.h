@@ -100,6 +100,7 @@ protected:
 	bool hasChanged;
 	Timer attackTimer;
 	float lastAttackingDirection;
+	bool castingSpell;
 private:
 	void checkAttackToNewPos(MapData* mapData);
 	void lookAtEnemy();
@@ -108,7 +109,6 @@ private:
 			Coordinates starting, Coordinates ending);
 
 	bool needCastSpell;
-	bool castingSpell;
 	Entity* attackToEntity;
 	list<PlayerEvent*>events;
 };

@@ -60,6 +60,9 @@ public:
 	void setMagic(int magic);
 	int getMagic();
 
+	void setCastingSpell(bool castingSpell);
+	bool getCastingSpell();
+
 	void setTeam(int team);
 	int getTeam();
 protected:
@@ -74,6 +77,7 @@ protected:
 	int team;
 	bool attacking;
 	float lastAttackingDirection;
+	bool castingSpell;
 
 	Coordinates* initCoords;
 
