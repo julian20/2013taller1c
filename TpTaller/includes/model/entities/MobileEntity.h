@@ -23,6 +23,7 @@ using namespace std;
 class MapData;
 class Item;
 class LifeHeart;
+class SpellEffect;
 
 class MobileEntity: public Entity {
 public:
@@ -99,6 +100,8 @@ private:
 	void checkAttackToNewPos(MapData* mapData);
 	void lookAtEnemy();
 	void castSpellNow(MapData* mapData);
+	void setSpellDirection(SpellEffect* spell,
+			Coordinates starting, Coordinates ending);
 
 	bool needCastSpell;
 	Entity* attackToEntity;
