@@ -52,7 +52,7 @@ MenuEvent MultiplayerGame::run(){
 		playersUpdate();
 
 		applyFPS(ticks);
-		removeMobileEntity(0);
+
 	}
 
 	return EXIT_EVENT;
