@@ -63,9 +63,12 @@ private:
 	void playAnimation(SpriteType sprite, SDL_Surface* screen, bool drawFog);
 	void loadPlayerImage();
 	FoggedSprite loadFoggedSprite(const char* modifier);
+	FoggedSprite loadFoggedSpellSprite(const char* modifier);
 	map<string, FoggedSprite> loadSwordImages();
 	map<string, FoggedSprite> loadBowImages();
+	map<string, FoggedSprite> loadSpellImages();
 
+	void blitSpellEffect(SDL_Surface* screen, int x, int y);
 	void blitName(SDL_Surface* screen, int x, int y);
 	void blitHPBar(SDL_Surface* screen, int x, int y);
 	void showCorpse(SDL_Surface* fondo, bool drawFog, SpriteType sprite);
@@ -75,13 +78,13 @@ private:
 	Player* player;
 	Position* camPos;
 	SpriteType currentSprite;
-	int marco; 	// Current frame
+	int marco, currentSpellClip; 	// Current frame
 	int animationChangeRate;
 	int numberOfClips;
 	int direction;
 	float lastDirection;
 	bool wasStanding,attacking;
-	bool attacked;
+	bool attacked, spellBeingCast;
 	int previousLife;
 	SDL_Surface* nameImage;
 	TextHandler textHandler;
@@ -91,7 +94,8 @@ private:
 	 * value: vector with FoggedSprites
 	 */
 	map<string, map<string, FoggedSprite > > weaponViewMap;
-	map<string, FoggedSprite>spriteMap;
+	map<string, FoggedSprite> spriteMap;
+	map<string,FoggedSprite> spellMap;
 	bool loaded;
 
 };
