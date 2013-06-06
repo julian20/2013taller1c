@@ -38,10 +38,23 @@ public:
 	vector<MobileEntityUpdate*> getMobileEntitiesUpdates();
 	vector<ChatUpdate*> getChatUpdates();
 	list<Player*> getPlayers();
+
+	// METODOS PARA AGREGAR Y QUITAR MOBILEENTITIES DEL SERVER.
+	// TODO LO QUE SE AGREGUE O SE QUITE CON ESTOS METODOS SERA ENVIADO AL SERVER.
+
+	// Agrega una mobile Entity a MultiplayerGame. Devuelve el ID que se le asigno.
+	int addMobileEntity(MobileEntityView* view, MobileEntity* entity, Coordinates coordiantes);
+	// Quita del juego la mobileEntity con el id pasado como parametro.
+	void removeMobileEntity(int id);
+
 	map<int,MobileEntityInfo*> getMobileEntityInfo();
-	virtual ~MultiplayerGame();
+	vector<int> getDeletedMobileEntities();
+
+
 	void deliverMessage(ChatMessage* msj);
 	void updateMobs();
+
+	virtual ~MultiplayerGame();
 
 private:
 
@@ -50,11 +63,12 @@ private:
 	map< string, NetworkPlayerController*> controllers;
 
 	list<Player*> players;
-	list<ArtificialIntelligence*> ias;
+	map<int,ArtificialIntelligence*> ias;
 	map<Player*, Coordinates> playersCoords;
 
 	map<int,MobileEntity*> mobileEntities;
 	map<int,MobileEntityView*> mobEntView;
+	vector<int> deletedMobileEntities;
 	int lastAddedView;
 
 	void playersUpdate();

@@ -7,9 +7,12 @@
 
 #include <MultiplayerGame.h>
 #include <model/map/MapData.h>
+#include <pthread.h>
 
 
 using namespace std;
+
+pthread_mutex_t entities_mutex;
 
 MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
@@ -28,12 +31,14 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	lastAddedView = 0;
 
 	for (unsigned int i = 0 ; i < viewVector.size() ; i++){
+
 		mobileEntities[i] = viewVector[i]->getEntity();
 		mobEntView[i] = viewVector[i];
 		ArtificialIntelligence* ia= new ArtificialIntelligence();
 		ia->setEntity(mobileEntities[i]);
-		ias.push_back(ia);
+		ias[i] = ia;
 		lastAddedView++;
+
 	}
 
 }
@@ -47,6 +52,7 @@ MenuEvent MultiplayerGame::run(){
 		playersUpdate();
 
 		applyFPS(ticks);
+		removeMobileEntity(0);
 	}
 
 	return EXIT_EVENT;
@@ -70,14 +76,16 @@ void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes){
 	playersCoords[player] = coords;
 }
 
-void MultiplayerGame::updateMobs()
-{
-	MapData* map = view->getMapData();
-	for ( list<ArtificialIntelligence*>::iterator ia = ias.begin() ; ia != ias.end() ; ++ia )
+void MultiplayerGame::updateMobs(){
+	MapData* mapa = view->getMapData();
+
+	for (map<int,ArtificialIntelligence*>::iterator ia = ias.begin() ; ia != ias.end() ; ++ia )
 	{
-		(*ia)->update(map);
+		(ia->second)->update(mapa);
 	}
+
 }
+
 void MultiplayerGame::updatePlayersCoordinates(){
 	Player* player;
 	for ( list<Player*>::iterator playerIterator = players.begin() ; playerIterator != players.end() ; ++playerIterator ){
@@ -197,6 +205,37 @@ map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo(){
 
 	return infos;
 
+}
+
+int MultiplayerGame::addMobileEntity(MobileEntityView* view, MobileEntity* entity, Coordinates coordiantes){
+
+	entity->setCoordinates(coordiantes.getRow(), coordiantes.getCol());
+	int newId = lastAddedView + 1;
+	mobileEntities[newId] = entity;
+	mobEntView[newId] = view;
+	lastAddedView = newId;
+
+
+	return newId;
+}
+
+void MultiplayerGame::removeMobileEntity(int id){
+	if (mobileEntities.count(id) != 0){
+		if (ias.count(id) != 0){
+			delete ias[id];
+			ias.erase(id);
+		}
+		if (mobEntView.count(id) != 0){
+			mobEntView.erase(id);
+		}
+
+		mobileEntities.erase(id);
+	}
+
+
+	deletedMobileEntities.push_back(id);
+
+	return;
 }
 
 MultiplayerGame::~MultiplayerGame() {
