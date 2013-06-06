@@ -26,10 +26,16 @@ public:
 	void setMaxTraveledTiles(int maxTraveledTiles);
 	int getMaxTraveledTiles();
 
-	virtual ~SpellEffect();
+	Vector3 getLEFT();
+	Vector3 getUP_LEFT();
+	Vector3 getUP();
+	Vector3 getUP_RIGHT();
+	Vector3 getRIGHT();
+	Vector3 getDOWN_RIGHT();
+	Vector3 getDOWN();
+	Vector3 getDOWN_LEFT();
 
-	static Vector3 LEFT, UP_LEFT, UP, UP_RIGHT, RIGHT,
-	DOWN_RIGHT, DOWN, DOWN_LEFT;
+	virtual ~SpellEffect();
 protected:
 	int maxTraveledTiles;
 	Vector3 direction;
@@ -37,6 +43,9 @@ protected:
 private:
 	bool reachMaxDistance();
 	void defineConstants();
+
+	Vector3 LEFT, UP_LEFT, UP, UP_RIGHT, RIGHT,
+	DOWN_RIGHT, DOWN, DOWN_LEFT;
 };
 
 #endif /* SPELLEFFECT_H_ */

@@ -97,3 +97,37 @@ int SpellEffect::getMaxTraveledTiles(){
 SpellEffect::~SpellEffect() {
 
 }
+
+// Constantes
+
+Vector3 SpellEffect::getLEFT() {
+	return LEFT;
+}
+
+Vector3 SpellEffect::getUP_LEFT() {
+	return UP_LEFT;
+}
+
+Vector3 SpellEffect::getUP() {
+	return UP;
+}
+
+Vector3 SpellEffect::getUP_RIGHT() {
+	return UP_RIGHT;
+}
+
+Vector3 SpellEffect::getRIGHT() {
+	return RIGHT;
+}
+
+Vector3 SpellEffect::getDOWN_RIGHT() {
+	return DOWN_RIGHT;
+}
+
+Vector3 SpellEffect::getDOWN() {
+	return DOWN;
+}
+
+Vector3 SpellEffect::getDOWN_LEFT() {
+	return DOWN_LEFT;
+}
