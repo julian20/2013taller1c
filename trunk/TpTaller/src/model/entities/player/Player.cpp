@@ -6,10 +6,12 @@
  */
 
 #include <model/entities/player/Player.h>
+#include <model/map/MapData.h>
+
 #include <stdio.h>
 using namespace std;
 
-Player::Player() {
+Player::Player() : MobileEntity() {
 	endPos = new Vector3(0, 0);
 	this->mainPlayer = false;
 	this->speed = new Speed(0, new Vector2(0, 0));
@@ -32,6 +34,80 @@ Player::Player() {
 	hasChanged = true;
 	chat = NULL;
 	viewRange = 200;
+	needCastSpell = false;
+	castingSpell = false;
+	spellEffects.push_back(new SpellEffect());
+}
+
+void Player::setCastingSpell(bool castingSpell) {
+	this->castingSpell = castingSpell;
+}
+
+bool Player::isCastingSpell() {
+	return castingSpell;
+}
+
+SpellEffect* Player::getCurrentSpell()
+{
+	if (spellEffects.size() == 0)
+		return NULL;
+
+	return spellEffects.front();
+}
+
+void Player::castSpell() {
+	needCastSpell = true;
+}
+
+void Player::setSpellDirection(SpellEffect* spell,
+		Coordinates starting, Coordinates ending) {
+
+	int rowDiff = ending.getRow() - starting.getRow();
+	int colDiff = ending.getCol() - starting.getCol();
+
+	if (rowDiff == 0 && colDiff == 1)
+		spell->setDirection(spell->getRIGHT());
+	if (rowDiff == 0 && colDiff == -1)
+			spell->setDirection(spell->getLEFT());
+	if (rowDiff == 1 && colDiff == 0)
+			spell->setDirection(spell->getDOWN());
+	if (rowDiff == -1 && colDiff == 0)
+			spell->setDirection(spell->getUP());
+	if (rowDiff == 1 && colDiff == 1)
+			spell->setDirection(spell->getDOWN_RIGHT() );
+	if (rowDiff == 1 && colDiff == -1)
+			spell->setDirection(spell->getDOWN_LEFT());
+	if (rowDiff == -1 && colDiff == 1)
+			spell->setDirection(spell->getUP_RIGHT());
+	if (rowDiff == -1 && colDiff == -1)
+			spell->setDirection(spell->getUP_LEFT());
+}
+
+void Player::castSpellNow(MapData* mapData) {
+	castingSpell = true;
+	list<Tile *> tiles = mapData->getNeighborTiles(currentTile);
+
+	std::list<Tile *>::const_iterator iter;
+	for (iter = tiles.begin(); iter != tiles.end(); ++iter) {
+		Tile* current = *iter;
+
+		Coordinates endingCoords = current->getCoordinates();
+		int row = endingCoords.getRow();
+		int col = endingCoords.getCol();
+
+		SpellEffect* spellEffect = new SpellEffect(getCurrentSpell());
+		spellEffect->setCoordinates(row, col);
+		setSpellDirection(spellEffect, *coord, endingCoords);
+
+		mapData->addMobileEntity(row, col, spellEffect);
+	}
+
+	tiles.erase(tiles.begin(), tiles.end());
+}
+
+void Player::extraUpdate(MapData* mapData) {
+	if (needCastSpell)
+		castSpellNow(mapData);
 }
 
 void Player::setChat(Chat* chat) {

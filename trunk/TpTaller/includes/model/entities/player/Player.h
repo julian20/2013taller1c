@@ -22,6 +22,7 @@
 #include <model/Weapons/Sword.h>
 #include <model/entities/Items/Item.h>
 #include <model/entities/Items/LifeHeart.h>
+#include <model/entities/spells/SpellEffect.h>
 
 #define QUAKE_SPELL_ID "quake"
 #define NONE_SPELL_ID "none"
@@ -43,9 +44,14 @@ public:
 	void setViewRange(int _viewRange);
 	int getViewRange();
 
+	void extraUpdate(MapData* mapData);
 	bool isMainPlayer();
 	void setAsMainPlayer();
 
+	void setCastingSpell(bool castingSpell);
+	bool isCastingSpell();
+	void castSpell();
+	SpellEffect* getCurrentSpell();
 
 	void block();
 	void setBlock(bool blocking);
@@ -74,6 +80,10 @@ public:
 	ChatUpdate* generateChatUpdate();
 	Weapon* getCurrentWeapon();
 private:
+	void castSpellNow(MapData* mapData);
+	void setSpellDirection(SpellEffect* spell,
+			Coordinates starting, Coordinates ending);
+
 	Chat* chat;
 
 	int viewRange;
@@ -81,7 +91,10 @@ private:
 
 	std::vector<Power*> powers;
 	list<Weapon*>* weapons;
+	list<SpellEffect*> spellEffects;
 
+	bool castingSpell;
+	bool needCastSpell;
 	bool blocking;
 	bool isActive;
 

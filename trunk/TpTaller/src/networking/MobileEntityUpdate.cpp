@@ -164,7 +164,7 @@ ostream& operator <<(std::ostream& out, const MobileEntityUpdate& update) {
 			<< " " << " " << *update.currentTile << " " << *update.nextTile
 			<< " " << *update.initCoords << " " << update.life << " "
 			<< update.magic << " " << update.lastAttackingDirection << " "
-			<< update.team << " " << update.castingSpell;
+			<< update.team;
 
 	return out;
 }
@@ -203,9 +203,6 @@ istream& operator >>(std::istream& in, MobileEntityUpdate& update) {
 	int team;
 	in >> team;
 	update.setTeam(team);
-	int castingSp;
-	in >> castingSp;
-	update.setCastingSpell(castingSp);
 	return in;
 
 	return in;

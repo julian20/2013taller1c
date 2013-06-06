@@ -8,18 +8,22 @@
 #include <model/entities/spells/SpellEffect.h>
 #include <model/map/MapData.h>
 
-SpellEffect::SpellEffect() : MobileEntity() {
+SpellEffect::SpellEffect() {
 	this->maxTraveledTiles = 0;
 	this->speed->setMagnitude(6);
+	this->currentTile = new Tile(new Coordinates(0, 0));
+	this->walkable = true;
 
 	defineConstants();
 
 	this->direction = LEFT;
 }
 
-SpellEffect::SpellEffect(SpellEffect* spell) : MobileEntity() {
+SpellEffect::SpellEffect(SpellEffect* spell) {
 	this->maxTraveledTiles = spell->getMaxTraveledTiles();
 	this->speed= spell->getSpeed();
+	this->currentTile = new Tile(new Coordinates(0, 0));
+	this->walkable = true;
 
 	defineConstants();
 

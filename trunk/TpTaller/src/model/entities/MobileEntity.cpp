@@ -9,7 +9,6 @@
 #include <model/entities/Items/Item.h>
 #include <model/entities/Items/LifeHeart.h>
 #include <model/map/MapData.h>
-#include <model/entities/spells/SpellEffect.h>
 
 using namespace std;
 
@@ -28,8 +27,6 @@ MobileEntity::MobileEntity() {
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	attackTimer.start();
 	lastAttackingDirection = 0;
-	needCastSpell = false;
-	castingSpell = false;
 }
 
 MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
@@ -48,27 +45,12 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	team = 0;
 	attackTimer.start();
 	lastAttackingDirection = 0;
-	needCastSpell = false;
-	castingSpell = false;
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {
 	list<PlayerEvent*>aux = events;
 	events.clear();
 	return aux;
-}
-
-SpellEffect* MobileEntity::getCurrentSpell()
-{
-	return spellEffects->front();
-}
-
-void MobileEntity::setCastingSpell(bool castingSpell) {
-	this->castingSpell = castingSpell;
-}
-
-bool MobileEntity::isCastingSpell() {
-	return castingSpell;
 }
 
 void MobileEntity::addEvent(PlayerEvent* event){
@@ -103,10 +85,6 @@ bool MobileEntity::isRunning() {
 
 float MobileEntity::getLastAttackingDirecton() {
 	return lastAttackingDirection;
-}
-
-void MobileEntity::castSpell() {
-	needCastSpell = true;
 }
 
 void MobileEntity::moveImmediately(Coordinates coords) {
@@ -170,55 +148,12 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	delete enemyTile;
 }
 
-void MobileEntity::setSpellDirection(SpellEffect* spell,
-		Coordinates starting, Coordinates ending) {
+void MobileEntity::extraUpdate(MapData* mapData) {
 
-	int rowDiff = ending.getRow() - starting.getRow();
-	int colDiff = ending.getCol() - starting.getCol();
-
-	if (rowDiff == 0 && colDiff == 1)
-		spell->setDirection(spell->getRIGHT());
-	if (rowDiff == 0 && colDiff == -1)
-			spell->setDirection(spell->getLEFT());
-	if (rowDiff == 1 && colDiff == 0)
-			spell->setDirection(spell->getDOWN());
-	if (rowDiff == -1 && colDiff == 0)
-			spell->setDirection(spell->getUP());
-	if (rowDiff == 1 && colDiff == 1)
-			spell->setDirection(spell->getDOWN_RIGHT() );
-	if (rowDiff == 1 && colDiff == -1)
-			spell->setDirection(spell->getDOWN_LEFT());
-	if (rowDiff == -1 && colDiff == 1)
-			spell->setDirection(spell->getUP_RIGHT());
-	if (rowDiff == -1 && colDiff == -1)
-			spell->setDirection(spell->getUP_LEFT());
-}
-
-void MobileEntity::castSpellNow(MapData* mapData) {
-	castingSpell = true;
-	list<Tile *> tiles = mapData->getNeighborTiles(currentTile);
-
-	std::list<Tile *>::const_iterator iter;
-	for (iter = tiles.begin(); iter != tiles.end(); ++iter) {
-		Tile* current = *iter;
-
-		Coordinates endingCoords = current->getCoordinates();
-		int row = endingCoords.getRow();
-		int col = endingCoords.getCol();
-
-		SpellEffect* spellEffect = new SpellEffect(getCurrentSpell());
-		spellEffect->setCoordinates(row, col);
-		setSpellDirection(spellEffect, *coord, endingCoords);
-
-		mapData->addMobileEntity(row, col, spellEffect);
-	}
-
-	tiles.erase(tiles.begin(), tiles.end());
 }
 
 void MobileEntity::update(MapData* mapData) {
-	if (needCastSpell)
-		castSpellNow(mapData);
+	extraUpdate(mapData);
 	if (attackToEntity != NULL)
 		checkAttackToNewPos(mapData);
 	if (IsMoving() == false) {
@@ -442,7 +377,6 @@ ostream& operator <<(std::ostream& out, const MobileEntity& MobileEntity) {
 	out << *(MobileEntity.currentTile);
 	out << " " << MobileEntity.life << " " << MobileEntity.team;
 	out << " " << MobileEntity.lastAttackingDirection;
-	out << " " << MobileEntity.castingSpell;
 	return out;
 }
 
@@ -477,9 +411,6 @@ istream& operator >>(std::istream& in, MobileEntity& MobileEntity) {
 	float lastDir;
 	in >> lastDir;
 	MobileEntity.lastAttackingDirection = lastDir;
-	int castSp;
-	in >> castSp;
-	MobileEntity.castingSpell = castSp;
 	return in;
 }
 
