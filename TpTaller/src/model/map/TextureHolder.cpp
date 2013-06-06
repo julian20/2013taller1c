@@ -21,6 +21,11 @@ TextureHolder::TextureHolder() {
 	TextureDefinition* defaultCharacter = new TextureDefinition(
 			DEFAULT_CHARACTER_ID, DEFAULT_CHARACTER_PATH);
 	textures[defaultCharacter->getTextureId()] = defaultCharacter;
+
+	TextureDefinition* quake = new TextureDefinition(
+			QUAKE_IMG_ID, QUAKE_IMG_ID);
+		textures[QUAKE_IMG_ID] = quake;
+
 }
 
 TextureHolder::~TextureHolder() {

@@ -14,6 +14,8 @@
 #include <string>
 #include <map>
 
+#define QUAKE_IMG_ID "resources/spells/quake.png"
+
 using namespace std;
 
 class TextureHolder {

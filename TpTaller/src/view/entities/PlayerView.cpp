@@ -47,7 +47,7 @@ PlayerView::PlayerView()
 	movable = true;
 	direction = DOWN;
 	wasStanding = true;
-	attacking = attacked = loaded = false;
+	attacking = attacked = loaded = spellBeingCast = false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -72,7 +72,7 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	movable = true;
 	direction = DOWN;
 	wasStanding = true;
-	attacking = attacked = loaded = false;
+	attacking = attacked = loaded = spellBeingCast = false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -124,9 +124,40 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 		SDL_BlitSurface(fogImage, clip, screen, &offsetFog);
 	}
 
+	blitSpellEffect(screen, x, y);
 	blitName(screen, x, y);
 
 	blitHPBar(screen, x, y);
+
+}
+
+void PlayerView::blitSpellEffect(SDL_Surface* screen, int x, int y) {
+	if (!spellBeingCast)
+		return;
+//	string spell = player->getSpellBeingCast();
+	string spell("");
+	if (spell.compare(NONE_SPELL_ID) == 0)
+		return;
+	SDL_Surface* spellSprite = spellMap[spell].image;
+	int numberOfClips = spellMap[spell].numberOfClips;
+	if (currentSpellClip >= numberOfClips) {
+		spellBeingCast = false;
+		currentSpellClip = 0;
+		return;
+	}
+	SDL_Rect offsetSpell, currentClip;
+	int frameWidth = spellSprite->w / numberOfClips;
+	int h = Tile::computePositionTile(0, 0).h;
+	offsetSpell.x = (int) x + camPos->getX() - frameWidth / 2;
+	offsetSpell.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2
+			- 20;
+
+	currentClip.x = currentSpellClip * frameWidth;
+	currentClip.y = 0;
+	currentClip.w = frameWidth;
+	currentClip.h = spellSprite->h;
+	SDL_BlitSurface(spellSprite, &currentClip, screen, &offsetSpell);
+	currentSpellClip++;
 
 }
 
@@ -260,6 +291,18 @@ FoggedSprite PlayerView::loadFoggedSprite(const char* modifier) {
 
 }
 
+FoggedSprite PlayerView::loadFoggedSpellSprite(const char* modifier) {
+	string id = string(modifier);
+	FoggedSprite sprite;
+	sprite.image = textureHolder->getTexture(id);
+	sprite.foggedImage = textureHolder->getFogTexture(id);
+	sprite.teamColorImage = FogCreator::getFog(sprite.image,
+			teamColors[player->getTeam()]);
+	sprite.numberOfClips = computeNumberOfClips(sprite.image);
+	return sprite;
+
+}
+
 map<string, FoggedSprite> PlayerView::loadSwordImages() {
 	map<string, FoggedSprite> swordMap;
 	FoggedSprite walkingSprite, blockingSprite, standingSprite, attackSprite,
@@ -320,8 +363,20 @@ map<string, FoggedSprite> PlayerView::loadBowImages() {
 
 }
 
+map<string, FoggedSprite> PlayerView::loadSpellImages() {
+	map<string, FoggedSprite> spellMap;
+	FoggedSprite quakeSprite;
+
+	quakeSprite = loadFoggedSpellSprite(QUAKE_IMG_ID);
+	spellMap[QUAKE_SPELL_ID] = quakeSprite;
+
+	return spellMap;
+
+}
+
 void PlayerView::loadPlayerImage() {
 	previousLife = player->getLife();
+	spellMap = loadSpellImages();
 	weaponViewMap[string("sword")] = loadSwordImages();
 
 	weaponViewMap[string("bow")] = loadBowImages();
@@ -438,7 +493,8 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 			showCorpse(fondo, drawFog, sprite);
 			return;
 		}
-
+		if (spellBeingCast)
+			spellBeingCast = false;
 		marco = 0;
 		if (player->isAttacking()) {
 			player->cancelAttack();
@@ -479,16 +535,27 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		}
 	}
 
-	if (player->isAttacking()) {
+//	if (player->isCasting()) {
+//		spriteToBeShown = spriteMap[string("cast")];
+//		//reseteamos el marco para que no quede un # de clip invalido
+//		if (marco >= spriteToBeShown.numberOfClips)
+//			marco = 0;
+//		if (player->IsMoving()) {
+//			player->stop();
+//		}
+//		spellBeingCast = true;
+//	}
 
+	if (player->isAttacking()) {
+		spriteToBeShown = spriteMap[string("attacking")];
 		//Si se estaba moviendo, reseteamos el marco para que no quede un # de clip invalido
 		if (player->IsMoving()) {
-			marco = 0;
+			if (marco >= spriteToBeShown.numberOfClips)
+				marco = 0;
 			player->stop();
 		}
 		if (!SoundEffectHandler::isSoundPlaying(attackID))
 			SoundEffectHandler::playSound(attackID);
-		spriteToBeShown = spriteMap[string("attacking")];
 	}
 
 	if (player->isBlocking()) {

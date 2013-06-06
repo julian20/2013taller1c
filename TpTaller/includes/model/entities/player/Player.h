@@ -23,6 +23,9 @@
 #include <model/entities/Items/Item.h>
 #include <model/entities/Items/LifeHeart.h>
 
+#define QUAKE_SPELL_ID "quake"
+#define NONE_SPELL_ID "none"
+
 using namespace std;
 
 class Player: public MobileEntity {
