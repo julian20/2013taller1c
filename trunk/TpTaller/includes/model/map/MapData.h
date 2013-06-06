@@ -44,7 +44,7 @@ public:
 	void updateVisibleTiles();
 	void cleanVisibleTilesVector();
 	list<MobileEntity *> getClosestEntities(Coordinates centerCoordinates,
-										int tilesRange);
+			int tilesRange, bool removeEntityInPosition = true);
 private:
 	float heuristicCostEstimate(Tile* from, Tile* to);
 	float distBetweenTiles(Tile* from, Tile* to);

@@ -569,8 +569,10 @@ bool compMobileEntitiesList(MobileEntityWithCenterDistance A,
 
 // Devuelve una lista ordenada por mas cercano a mas lejano de mobileEntities
 // que esten a 'tilesRange' o menos tiles de distancia de centerCoordinates
+// Si removeEntityInPosition es true no se devuelve la entidad que se encuentre en
+// centerCoordinates.
 list<MobileEntity *> MapData::getClosestEntities(Coordinates centerCoordinates,
-										int tilesRange) {
+										int tilesRange, bool removeEntityInPosition) {
 	list<MobileEntityWithCenterDistance> entitiesToSort;
 	Tile* centerTile = new Tile(centerCoordinates);
 
@@ -590,6 +592,10 @@ list<MobileEntity *> MapData::getClosestEntities(Coordinates centerCoordinates,
 
 			Tile currentTile;
 			currentTile.setCoordinates(row, col);
+
+			if (removeEntityInPosition &&
+					currentTile.getCoordinates().isEqual(centerCoordinates))
+				continue;
 
 			int distance = distBetweenTilesInTiles(centerTile, &currentTile);
 
