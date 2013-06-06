@@ -7,13 +7,14 @@
 
 #include <AI/ArtificialIntelligence.h>
 #include <stdlib.h>
-#define WATCHSIZE 10
+#define WATCHSIZE 5
 ArtificialIntelligence::ArtificialIntelligence() {
 	entity=NULL;
 }
-void ArtificialIntelligence::attack(Entity* enemy)
+void ArtificialIntelligence::attack(Entity& enemy)
 {
-
+		Mob* toAttack=(Mob*)entity;
+		toAttack->attack(enemy);
 }
 void ArtificialIntelligence::setEntity(Entity* entity)
 {
@@ -23,13 +24,13 @@ void ArtificialIntelligence::update(MapData* mapData)
 {
 	if(this->isAnyEnemyClose(mapData))
 	{
-			Entity* enemy=this->getNearestEnemy();
+			Entity& enemy=this->getNearestEnemy();
 			this->attack(enemy);
 	}else
 	{
-		if(entity->getClassName() == "Mob")
+		if(entity->getClassName() == "MobileEntity")
 		{
-			this->watch();
+			this->watch(mapData);
 			MobileEntity* mob= (MobileEntity*)entity;
 			mob->update(mapData);
 		}
@@ -38,36 +39,44 @@ void ArtificialIntelligence::update(MapData* mapData)
 }
 bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData)
 {
-	//mapData->getClosestEntities(entity->getCoordinates(),entity->get)
-	return this->entity->getVisibleEnemies().size()>0;
+	entitiesNear=mapData->getClosestEntities(entity->getCoordinates(),WATCHSIZE);
+	return entitiesNear.size()>0;
 }
-Entity* ArtificialIntelligence::getNearestEnemy()
+Entity& ArtificialIntelligence::getNearestEnemy()
 {
-	list<Entity*> list=this->entity->getVisibleEnemies();
-	Entity* enemy=list.front();
-	return enemy;
+
+	Entity* enemy=entitiesNear.front();
+	return (*enemy);
 }
-void ArtificialIntelligence::watch()
+void ArtificialIntelligence::watch(MapData* mapData)
 {
 	 MobileEntity* mobile=(MobileEntity*)(this->entity);
 	 Coordinates coor=this->entity->getCoordinates();
+
+	 Tile* tile;
 	 //Si no se esta moviendo o atacando busco a otro contrincante
-	 if(!mobile->IsMoving() || !mobile->isAttacking())
+	 if(!mobile->IsMoving() )
 	 {
 		 int direction = rand() % 4 ;
 		 if(direction==0)
 		 {
-			 mobile->moveTo(coor.getCol(),coor.getRow()+WATCHSIZE);
+			 //mobile->moveTo(coor.getCol(),coor.getRow()+WATCHSIZE);
+			 tile =  new Tile( new Coordinates(coor.getRow(),coor.getCol()+WATCHSIZE));
+
 		 }else if(direction==1)
 		 {
-			 mobile->moveTo(coor.getCol(),coor.getRow()-WATCHSIZE);
+			 //mobile->moveTo(coor.getCol(),coor.getRow()-WATCHSIZE);
+			 tile =  new Tile( new Coordinates(coor.getRow(),coor.getCol()-WATCHSIZE));
 		 }else if(direction==2)
 		 {
-			 mobile->moveTo(coor.getCol()+WATCHSIZE,coor.getRow());
+			 //mobile->moveTo(coor.getCol()+WATCHSIZE,coor.getRow());
+			 tile =  new Tile( new Coordinates(coor.getRow()+WATCHSIZE,coor.getCol()));
 		 }else if(direction==3)
 		 {
-			 mobile->moveTo(coor.getCol()-WATCHSIZE,coor.getRow());
+			 //mobile->moveTo(coor.getCol()-WATCHSIZE,coor.getRow());
+			 tile =  new Tile( new Coordinates(coor.getRow()-WATCHSIZE,coor.getCol()));
 		 }
+		 mapData->moveMob((Mob*)this->entity,tile);
 	 }
 }
 ArtificialIntelligence::~ArtificialIntelligence() {

@@ -11,19 +11,21 @@
 #include <model/entities/Entity.h>
 #include <model/entities/MobileEntity.h>
 #include <model/map/MapData.h>
+#include <model/entities/enemies/Mob.h>
 #include <list>
 class ArtificialIntelligence {
 public:
 	ArtificialIntelligence();
 	void setEntity(Entity* entity);
 	virtual ~ArtificialIntelligence();
-	void watch();
+	void watch(MapData* mapData);
 	void update(MapData* mapData);
 	bool isAnyEnemyClose(MapData* mapData);
-	Entity* getNearestEnemy();
-	void attack(Entity* enemy);
+	Entity& getNearestEnemy();
+	void attack(Entity& enemy);
 private:
 	Entity* entity;
+	list<MobileEntity*> entitiesNear;
 };
 
 #endif /* ARTIFICIALINTELLIGENCE_H_ */

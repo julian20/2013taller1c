@@ -12,6 +12,7 @@
 #include <model/Logs/Logs.h>
 #include <model/map/Tile.h>
 #include <model/map/TileData.h>
+#include <model/entities/enemies/Mob.h>
 #include <list>
 #include <map>
 #include <math.h>
@@ -41,6 +42,7 @@ public:
 	list<Tile *> *getPath(Tile* from, Tile* to);
 	list<Entity *> *Entities;
 	void movePlayer(Player* personaje, Tile* toTile);
+	void moveMob(Mob* mob, Tile* toTile);
 	void updateVisibleTiles();
 	void cleanVisibleTilesVector();
 	list<MobileEntity *> getClosestEntities(Coordinates centerCoordinates,

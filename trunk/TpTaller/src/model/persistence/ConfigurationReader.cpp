@@ -1151,7 +1151,8 @@ void operator >>(const YAML::Node& yamlNode,
 		std::vector<MobileEntity*>& entityVector) {
 	const YAML::Node& mobileEntityLocations = yamlNode["mobileEntityLocations"];
 	for (unsigned i = 0; i < mobileEntityLocations.size(); i++) {
-		MobileEntity* entity = new MobileEntity();
+	//	MobileEntity* entity = new MobileEntity();
+		Mob* entity = new Mob();
 		mobileEntityLocations[i] >> entity;
 		if (entity != NULL)
 			entityVector.push_back(entity);

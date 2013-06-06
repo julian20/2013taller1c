@@ -125,9 +125,9 @@ void Game::setUpCharacters(MapView* map, MapData* mapData,
 
 						ArtificialIntelligence* ia =
 								new ArtificialIntelligence();
-						ia->setEntity(entityToAdd);
+					//	ia->setEntity(entityToAdd);
 						string name = entity->getName();
-						//ias.push_back(ia);
+						ias.push_back(ia);
 						Coordinates coord = entityToAdd->getCoordinates();
 						mapData->addMobileEntity(coord.getRow(), coord.getCol(),
 								entityToAdd);
@@ -327,7 +327,7 @@ void Game::playersUpdate() {
 		(*player)->update(mapData);
 		(*player)->setHasChanged(false);
 	}
-	/*	for (list<ArtificialIntelligence*>::iterator autoPlayer = ias.begin();
+/*		for (list<ArtificialIntelligence*>::iterator autoPlayer = ias.begin();
 	 autoPlayer != ias.end(); ++autoPlayer) {
 	 (*autoPlayer)->update(mapData);
 	 //(*autoPlayer)->setHasChanged(false);
