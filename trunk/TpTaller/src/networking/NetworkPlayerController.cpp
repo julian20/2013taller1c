@@ -49,6 +49,8 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 	case EVENT_CONECT:
 		this->player->setActive();
 		break;
+	case EVENT_CAST_SPELL:
+		this->player->castSpell();
 	}
 
 	player->setHasChanged(true);

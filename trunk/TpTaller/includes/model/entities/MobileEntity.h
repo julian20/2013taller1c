@@ -48,6 +48,7 @@ public:
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
 
+	void castSpell();
 	void attackTo(Entity* attackTo);
 	void attack();
 	void setAttack(bool attacking);

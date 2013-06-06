@@ -26,6 +26,7 @@ public:
 	MapData* getMapData();
 	Player* getPlayer();
 	virtual void toggleRunning();
+	void castSpell();
 	void playerAttackTo(Entity* entity);
 	void playerAttack();
 	void playerCancelAttack();
