@@ -523,6 +523,20 @@ void MapData::movePlayer(Player* player, Tile* toTile) {
 	delete fromTile;
 }
 
+void MapData::moveMob(Mob* mob, Tile* toTile)
+{
+	Tile* fromTile = mob->getTile();
+	Coordinates fromCoords = fromTile->getCoordinates();
+	Coordinates toCoords = toTile->getCoordinates();
+
+	// Si la posicion inicial y final son distintas calcula el path
+	if (!fromCoords.isEqual(toCoords)){
+		list<Tile *> *path = getPath(fromTile, toTile);
+		mob->assignPath(path);
+	}
+
+	delete fromTile;
+}
 void MapData::cleanVisibleTilesVector() {
 	std::vector<TileData *>::iterator iter;
 	for (iter = visibleTiles.begin(); iter != visibleTiles.end(); ++iter) {

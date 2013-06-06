@@ -17,6 +17,8 @@
 #include <model/Vector3.h>
 #include <model/entities/MobileEntity.h>
 #include <networking/MobUpdate.h>
+#include <model/Weapons/Weapon.h>
+#include <model/Weapons/Sword.h>
 
 using namespace std;
 
@@ -28,11 +30,17 @@ public:
 	void setType(MobType type);
 	MobType getType();
 	MobUpdate* generateMobUpdate(int id);
+	Weapon* getCurrentWeapon();
+	void collideTo(Entity& entity);
+	void reverseCollide(Entity& entity);
+	void attack(Entity& entity);
 
 protected:
 
 private:
 	MobType type;
+	list<Weapon*>* weapons;
+
 };
 
 #endif /* Mob_H_ */
