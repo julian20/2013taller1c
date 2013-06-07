@@ -23,6 +23,10 @@ std::string TileData::getType() {
 	return tileType;
 }
 
+std::list<Entity*> TileData::getEntities() {
+	return entities;
+}
+
 MobileEntity* TileData::getAttackableMobileEntity() {
 	MobileEntity* mobileEntity;
 

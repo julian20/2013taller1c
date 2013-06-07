@@ -7,10 +7,10 @@
 
 #include <model/entities/Items/LifeHeart.h>
 
-LifeHeart::LifeHeart() {
+LifeHeart::LifeHeart() : Item() {
 }
 
-LifeHeart::LifeHeart(Item* entity) {
+LifeHeart::LifeHeart(Item* entity) : Item(entity) {
 	Vector3* pos = entity->getCurrentPos();
 	this->currentPos = new Vector3(pos->getX(), pos->getY(), pos->getZ());
 	Coordinates coordin = entity->getCoordinates();

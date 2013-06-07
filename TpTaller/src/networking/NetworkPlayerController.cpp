@@ -78,8 +78,13 @@ void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
 		tileCoord->getRow() >= 0 && tileCoord->getRow() < data->getNRows() ) {
 
 		if (this->playerHasclickedAnEntity(tileCoord)){
-			playerAttackTo(getEntityToCollideTo());
-			return;
+			Entity* entityColliding = getEntityToCollideTo();
+
+			if (entityColliding->isAttackable())
+				playerAttackTo(entityColliding);
+
+			if (!entityColliding->isWalkable())
+				return;
 		}
 
 		if (player != NULL) {
