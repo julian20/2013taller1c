@@ -46,7 +46,7 @@ PlayerView::PlayerView()
 	numberOfClips = 0;
 	movable = true;
 	direction = DOWN;
-	wasStanding = true;
+	wasStanding = spellHasEnded = true;
 	attacking = attacked = loaded = spellBeingCast = false;
 	player = NULL;
 	nameImage = NULL;
@@ -71,7 +71,7 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	setNumberOfRepeats(otherPlayer->getNumberOfRepeats());
 	movable = true;
 	direction = DOWN;
-	wasStanding = true;
+	wasStanding = spellHasEnded = true;
 	attacking = attacked = loaded = spellBeingCast = false;
 	player = NULL;
 	nameImage = NULL;
@@ -116,7 +116,7 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 			- this->anchorPixel->getY() - h / 2;
 	offset.w = offsetFog.w = offsetColor.w = clip->w;
 	offset.h = offsetFog.h = offsetColor.h = clip->h;
-
+	blitSpellEffect(screen, x, y);
 	SDL_BlitSurface(this->image, clip, screen, &offset);
 	SDL_BlitSurface(this->teamColorImage, clip, screen, &offsetColor);
 
@@ -124,7 +124,6 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 		SDL_BlitSurface(fogImage, clip, screen, &offsetFog);
 	}
 
-	blitSpellEffect(screen, x, y);
 	blitName(screen, x, y);
 
 	blitHPBar(screen, x, y);
@@ -132,25 +131,27 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 }
 
 void PlayerView::blitSpellEffect(SDL_Surface* screen, int x, int y) {
-	if (!spellBeingCast)
+	if (!spellBeingCast || spellHasEnded) {
+		currentSpellClip = 0;
 		return;
+	}
 //	TODO: aca iria la eleccion de la imagen
 //	string spell = player->getSpellBeingCast();
 	string spell("");
-	if (spell.compare(NONE_SPELL_ID) == 0)
+	if (spell.compare(NONE_SPELL_ID) == 0) {
+		currentSpellClip = 0;
 		return;
+	}
 	SDL_Surface* spellSprite = spellMap[QUAKE_IMG_ID].image;
 	int numberOfClips = spellMap[QUAKE_IMG_ID].numberOfClips;
 	if (currentSpellClip >= numberOfClips) {
-		currentSpellClip = 0;
+		spellHasEnded = true;
 		return;
 	}
 	SDL_Rect offsetSpell, currentClip;
 	int frameWidth = spellSprite->w / numberOfClips;
-	int h = Tile::computePositionTile(0, 0).h;
 	offsetSpell.x = (int) x + camPos->getX() - frameWidth / 2;
-	offsetSpell.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2
-			- 20;
+	offsetSpell.y = (int) y + camPos->getY() - this->anchorPixel->getY();
 
 	currentClip.x = currentSpellClip * frameWidth;
 	currentClip.y = 0;
@@ -298,7 +299,7 @@ FoggedSprite PlayerView::loadFoggedSpellSprite(const char* modifier) {
 	sprite.foggedImage = textureHolder->getFogTexture(id);
 	sprite.teamColorImage = FogCreator::getFog(sprite.image,
 			teamColors[player->getTeam()]);
-	sprite.numberOfClips = computeNumberOfClips(sprite.image);
+	sprite.numberOfClips = 6;
 	return sprite;
 
 }
@@ -469,7 +470,6 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		damageReceivedTimer.start();
 	}
 
-
 	player->updateDamageTaken();
 	Vector2* movementDirection = this->player->getMovementDirection();
 	float direction;
@@ -496,8 +496,9 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 			return;
 		}
 		marco = 0;
-		if (spellBeingCast){
+		if (spellBeingCast) {
 			spellBeingCast = false;
+			currentSpellClip = 0;
 			player->addEvent(new PlayerEvent(EVENT_CANCEL_CAST));
 		}
 		if (player->isAttacking()) {
@@ -541,6 +542,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	if (player->isCastingSpell()) {
 		spriteToBeShown = spriteMap[string("cast")];
 		spellBeingCast = true;
+		spellHasEnded = false;
 	}
 
 	if (player->isAttacking()) {
@@ -570,7 +572,8 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		SoundEffectHandler::stopSound(walkID);
 
 	if (!player->IsMoving() && !player->isAttacking() && !player->isBlocking()
-			&& previousLife == life && !player->isDead() && !player->isCastingSpell()) {
+			&& previousLife == life && !player->isDead()
+			&& !player->isCastingSpell()) {
 		if (!wasStanding) {
 			timer.start();
 			wasStanding = true;

@@ -84,7 +84,7 @@ private:
 	int direction;
 	float lastDirection;
 	bool wasStanding,attacking;
-	bool attacked, spellBeingCast;
+	bool attacked, spellBeingCast, spellHasEnded;
 	int previousLife;
 	SDL_Surface* nameImage;
 	TextHandler textHandler;
