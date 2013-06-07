@@ -23,6 +23,7 @@ public:
 	//Getters
 	std::string getType();
 	MobileEntity* getAttackableMobileEntity();
+	std::list<Entity*> getEntities();
 	Entity* getNextEntity();
 	int getNumberOfEntitiesOnTile();
 	bool getWasVisible();

@@ -112,17 +112,11 @@ void MobileEntity::lookAtEnemy() {
 
 void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	Tile* enemyTile = attackToEntity->getTile();
+	if (currentTile->isEqual(enemyTile)) return;
 
 	//Llego hasta el player
 	if (this->currentTile->isNeighbor(enemyTile)) {
 		delete enemyTile;
-		// Aca se hace una llamada a:
-		// this->reverseCollide( attackToEntity );
-		// y adentro de esa llamada se hace:
-		// entity->collideTo( this );
-		// Sino nunca va a cambiar el tipo de clase de lo que colisionamos.
-		// Solo vamos a poder colisionar con Entity, y nunca podremos
-		// diferenciar si es un player, un item, o que.
 		MobileEntity& thisMobileEntity = *this;
 		thisMobileEntity.reverseCollide(*attackToEntity);
 		lookAtEnemy();

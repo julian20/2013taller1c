@@ -50,8 +50,8 @@ Entity::Entity(Entity* entity) {
 	this->positionInitialized = entity->getPositionInitialized();
 	this->damageBuffer = 0;
 	this->magic = entity->getMagic();
-	this->walkable = false;
-	this->attackable = true;
+	this->walkable = entity->isWalkable();
+	this->attackable = entity->isAttackable();
 }
 
 bool Entity::isWalkable() {

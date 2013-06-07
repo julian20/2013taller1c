@@ -7,11 +7,12 @@
 
 #include <model/entities/Items/Item.h>
 
-Item::Item() {
-
+Item::Item() : Entity() {
+	this->attackable = false;
+	this->walkable = true;
 }
 
-Item::Item(Item* entity) {
+Item::Item(Item* entity) : Entity(entity) {
 	Vector3* pos = entity->getCurrentPos();
 	this->currentPos = new Vector3(pos->getX(), pos->getY(), pos->getZ());
 	Coordinates coordin = entity->getCoordinates();
