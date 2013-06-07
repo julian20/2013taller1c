@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <model/entities/Entity.h>
+#include <model/entities/Flag.h>
 #include <model/entities/Items/Item.h>
 #include <model/entities/Items/LifeHeart.h>
 #include <model/entities/Items/MagicBottle.h>
@@ -27,6 +28,8 @@ public:
 	virtual ~MapData();
 
 	void addEntity(int row, int col, Entity* object);
+	//void addFlag(int row, int col, Flag* flag);
+
 	void addItem(int row, int col, Item* object);
 	void setTileType(std::string tileType, int row, int col);
 	std::string getTileType(int row, int col);
