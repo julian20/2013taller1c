@@ -40,6 +40,7 @@ public:
 	vector<MobileEntityUpdate*> getMobileEntitiesUpdates();
 	vector<ChatUpdate*> getChatUpdates();
 	list<Player*> getPlayers();
+	Flag* getFlag();
 
 	// METODOS PARA AGREGAR Y QUITAR MOBILEENTITIES DEL SERVER.
 	// TODO LO QUE SE AGREGUE O SE QUITE CON ESTOS METODOS SERA ENVIADO AL SERVER.

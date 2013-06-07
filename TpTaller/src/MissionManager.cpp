@@ -13,7 +13,7 @@ MissionManager::MissionManager() {
 	missionTypes["FlagCapture"] = 1;
 	missionTypes["TeamFight"] = 2;
 	missionTypes["SuddenDeath"] = 3;
-	typeOfMission = 2;
+	typeOfMission = 1;
 	winningTeam = 0;
 	nextAvailableTeam = 2;
 }
@@ -21,22 +21,11 @@ MissionManager::MissionManager() {
 MissionManager::~MissionManager() {
 }
 
-bool MissionManager::hasEndedFlagCapture(list<Player*> mobileEntities) {
+bool MissionManager::hasEndedFlagCapture(Flag* flag) {
 
-	list<Player*>::const_iterator iterator;
-	Player* actualMobileEntity;
-	for (iterator = mobileEntities.begin(); iterator != mobileEntities.end();
-			++iterator) {
-
-		actualMobileEntity = (Player*) (*iterator);
-
-		// La flag es la unica entidad con team = 3.
-		if (actualMobileEntity->getTeam() == 3) {
-			if (actualMobileEntity->isDead()) {
-				winningTeam = actualMobileEntity->getKilledBy();
-				return true;
-			}
-		}
+	if (flag->isDead()) {
+		winningTeam = flag->getKilledBy();
+		return true;
 	}
 
 	return false;
@@ -111,9 +100,9 @@ bool MissionManager::hasEndedSuddenDeath(list<Player*> mobileEntities) {
 	return hasEndedTeamFight(mobileEntities);
 }
 
-bool MissionManager::hasEndedGame(list<Player*> mobileEntities) {
+bool MissionManager::hasEndedGame(list<Player*> mobileEntities, Flag* flag) {
 	if (typeOfMission == 1) {
-		return hasEndedFlagCapture(mobileEntities);
+		return hasEndedFlagCapture(flag);
 	} else if (typeOfMission == 2) {
 		return hasEndedTeamFight(mobileEntities);
 	} else if (typeOfMission == 3) {
@@ -146,4 +135,3 @@ int MissionManager::getWinningTeam() {
 void MissionManager::setWinningTeam(int team) {
 	winningTeam = team;
 }
-

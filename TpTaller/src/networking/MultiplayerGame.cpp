@@ -63,6 +63,10 @@ void MultiplayerGame::createFlag(MapData* mapData)
 
 }
 
+Flag* MultiplayerGame::getFlag() {
+	return flag;
+}
+
 MenuEvent MultiplayerGame::run(){
 
 	while (true) {
