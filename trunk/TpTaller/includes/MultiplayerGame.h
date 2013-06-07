@@ -52,7 +52,6 @@ public:
 	map<int,MobileEntityInfo*> getMobileEntityInfo();
 	vector<int> getDeletedMobileEntities();
 
-
 	void deliverMessage(ChatMessage* msj);
 	void updateMobs();
 	void createFlag(MapData* mapData);
@@ -62,6 +61,7 @@ public:
 private:
 	void updatePlayersCoordinates();
 	void updateMobsCoordinates();
+	void addNewMobileEntities();
 	void playersUpdate();
 	void applyFPS(int timer);
 
