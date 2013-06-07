@@ -15,6 +15,7 @@
 #include <model/Chat.h>
 #include <model/persistence/PersistentConfiguration.h>
 #include <model/entities/enemies/Mob.h>
+#include <model/entities/Flag.h>
 #include <networking/MobileEntityInfo.h>
 #include <networking/MobUpdate.h>
 #include <networking/PlayerEvent.h>
@@ -24,6 +25,7 @@
 #include <networking/ChatUpdate.h>
 #include <view/MapView.h>
 #include <map>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -53,6 +55,7 @@ public:
 
 	void deliverMessage(ChatMessage* msj);
 	void updateMobs();
+	void createFlag(MapData* mapData);
 
 	virtual ~MultiplayerGame();
 
@@ -70,7 +73,7 @@ private:
 	map<int,MobileEntityView*> mobEntView;
 	vector<int> deletedMobileEntities;
 	int lastAddedView;
-
+	Flag* flag;
 	void playersUpdate();
 
 	int fps;

@@ -10,6 +10,7 @@
 #include <pthread.h>
 
 
+
 using namespace std;
 
 pthread_mutex_t entities_mutex;
@@ -40,9 +41,27 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 		lastAddedView++;
 
 	}
+	createFlag(view->getMapData());
 
 }
+void MultiplayerGame::createFlag(MapData* mapData)
+{
+	int cols = mapData->getNCols();
+	int rows = mapData->getNRows();
+	flag = new Flag();
 
+	int rCol= rand() % cols;
+	int rRow= rand() % rows;
+	while (mapData->getTileData(rRow,rCol)->getNumberOfEntitiesOnTile()>0)
+	{
+		rCol= rand() % cols;
+		rRow= rand() % rows;
+	}
+	mapData->addEntity(rRow,rCol,flag);
+	flag->setLife(1000);
+
+
+}
 
 MenuEvent MultiplayerGame::run(){
 
