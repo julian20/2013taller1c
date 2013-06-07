@@ -29,7 +29,7 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 		this->playerAttack();
 		break;
 	case EVENT_CANCEL_ATTACK:
-		this->playerCancelAttack();
+		player->cancelAttack();
 		break;
 	case EVENT_BLOCK:
 		this->playerBlock();
@@ -52,11 +52,17 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 	case EVENT_CAST_SPELL:
 		this->player->castSpell();
 		break;
+	case EVENT_CANCEL_CAST:
+		this->player->setCastingSpell(false);
+		break;
+
 	}
 
 	player->setHasChanged(true);
 
 }
+
+
 
 void NetworkPlayerController::toggleRunning() {
 	if (player->isRunning()) {
