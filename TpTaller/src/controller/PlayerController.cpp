@@ -143,7 +143,7 @@ void PlayerController::movePlayer(int x, int y) {
 		if (player != NULL) {
 			Tile* toTile = new Tile(
 					new Coordinates(coor->getRow(), coor->getCol()));
-			data->movePlayer(player, toTile);
+			data->moveMobileEntity(player, toTile);
 			delete toTile;
 		}
 	}

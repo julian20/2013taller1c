@@ -39,6 +39,30 @@ Player::Player() : MobileEntity() {
 	spellEffects.push_back(new SpellEffect());
 }
 
+Player::Player(string name, Position* position, Speed* speed,
+		vector<Power*> powers) {
+	this->speed = speed;
+	this->name = name;
+	this->powers = powers;
+	this->path = new list<Tile *>();
+	currentTile = new Tile(new Coordinates(0, 0));
+	this->currentPos = new Vector3(0, 0, 0);
+	this->base = new Base();
+	endPos = new Vector3(0, 0, 0);
+	endPos->setValues(currentPos->getX(), currentPos->getY());
+	attacking = false;
+	blocking = false;
+	chat = NULL;
+	isActive = true;
+	team = 4;
+	mainPlayer = true;
+	viewRange = 200;
+	weapons=NULL;
+	needCastSpell = false;
+	castingSpell = false;
+	spellEffects.push_back(new SpellEffect());
+}
+
 void Player::setCastingSpell(bool castingSpell) {
 	this->castingSpell = castingSpell;
 }
@@ -217,41 +241,6 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	return update;
 }
 
-Player::Player(string name, Position* position, Speed* speed,
-		vector<Power*> powers) {
-	this->speed = speed;
-	this->name = name;
-	this->powers = powers;
-	this->path = new list<Tile *>();
-	currentTile = new Tile(new Coordinates(0, 0));
-	this->currentPos = new Vector3(0, 0, 0);
-	this->base = new Base();
-	endPos = new Vector3(0, 0, 0);
-	endPos->setValues(currentPos->getX(), currentPos->getY());
-	attacking = false;
-	blocking = false;
-	chat = NULL;
-	isActive = true;
-	team = 4;
-	mainPlayer = true;
-	viewRange = 200;
-	weapons=NULL;
-
-}
-
-Player::~Player() {
-	delete currentPos;
-	delete endPos;
-	delete this->speed;
-	if (initSpeed != NULL)
-		delete initSpeed;
-	for (unsigned i = 0; i < powers.size(); i++) {
-		delete powers[i];
-	}
-	if (currentTile)
-		delete currentTile;
-}
-
 std::vector<Power*> Player::getPowers() {
 	return powers;
 }
@@ -384,4 +373,17 @@ void Player::SetUnactive() {
 
 bool Player::playerIsActive() {
 	return isActive;
+}
+
+Player::~Player() {
+	delete currentPos;
+	delete endPos;
+	delete this->speed;
+	if (initSpeed != NULL)
+		delete initSpeed;
+	for (unsigned i = 0; i < powers.size(); i++) {
+		delete powers[i];
+	}
+	if (currentTile)
+		delete currentTile;
 }

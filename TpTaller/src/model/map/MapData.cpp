@@ -510,30 +510,16 @@ list<Tile *> *MapData::reconstructPath(map<int, Tile *> cameFrom,
 	return path;
 }
 
-void MapData::movePlayer(Player* player, Tile* toTile) {
-	Tile* fromTile = player->getTile();
-	Coordinates fromCoords = fromTile->getCoordinates();
-	Coordinates toCoords = toTile->getCoordinates();
-
-	// Si la posicion inicial y final son distintas calcula el path
-	if (!fromCoords.isEqual(toCoords)){
-		list<Tile *> *path = getPath(fromTile, toTile);
-		player->assignPath(path);
-	}
-
-	delete fromTile;
-}
-
-void MapData::moveMob(Mob* mob, Tile* toTile)
+void MapData::moveMobileEntity(MobileEntity* mobile, Tile* toTile)
 {
-	Tile* fromTile = mob->getTile();
+	Tile* fromTile = mobile->getTile();
 	Coordinates fromCoords = fromTile->getCoordinates();
 	Coordinates toCoords = toTile->getCoordinates();
 
 	// Si la posicion inicial y final son distintas calcula el path
 	if (!fromCoords.isEqual(toCoords)){
 		list<Tile *> *path = getPath(fromTile, toTile);
-		mob->assignPath(path);
+		mobile->assignPath(path);
 	}
 
 	delete fromTile;
