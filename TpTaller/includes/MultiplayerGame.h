@@ -35,7 +35,6 @@ public:
 	virtual MenuEvent run();
 	virtual void addNewPlayer(Player* player, Coordinates* coordiantes);
 	void addEventsToHandle(string playerName, vector<PlayerEvent*> events);
-	void updatePlayersCoordinates();
 	vector<PlayerUpdate*> getPlayersUpdates();
 	vector<MobileEntityUpdate*> getMobileEntitiesUpdates();
 	vector<ChatUpdate*> getChatUpdates();
@@ -61,6 +60,10 @@ public:
 	virtual ~MultiplayerGame();
 
 private:
+	void updatePlayersCoordinates();
+	void updateMobsCoordinates();
+	void playersUpdate();
+	void applyFPS(int timer);
 
 	MapView* view;
 
@@ -68,21 +71,18 @@ private:
 
 	list<Player*> players;
 	map<int,ArtificialIntelligence*> ias;
-	map<Player*, Coordinates> playersCoords;
+	map<MobileEntity*, Coordinates> mobilesCoords;
 
 	map<int,MobileEntity*> mobileEntities;
 	map<int,MobileEntityView*> mobEntView;
 	vector<int> deletedMobileEntities;
 	int lastAddedView;
 	Flag* flag;
-	void playersUpdate();
 
 	int fps;
 	int tempFps;
 	int fpsUpdatingTimer;
 	GameConfiguration* gameConfig;
-
-	void applyFPS(int timer);
 };
 
 #endif /* MULTIPLAYERGAME_H_ */

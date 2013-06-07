@@ -182,17 +182,18 @@ void MapData::addMobileEntity(int row, int col, MobileEntity* mobileEntity) {
 
 }
 
-void MapData::updatePlayerPos(int prevRow, int prevCol,
-								 int row, int col, Player* player) {
+void MapData::updateMobilePos(int prevRow, int prevCol,
+								 int row, int col, MobileEntity* mobile) {
 
 	TileData* tileDataPrev = getTileData(prevRow, prevCol);
 	TileData* tileDataCurrent = getTileData(row, col);
 
-	tileDataPrev->removeMobileEntity(player);
-	tileDataCurrent->addMobileEntity(player);
+	tileDataPrev->removeMobileEntity(mobile);
+	tileDataCurrent->addMobileEntity(mobile);
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
-	player->setTile(personajeTile);
+	mobile->setTile(personajeTile);
+	mobile->setCoordinates(row, col);
 }
 
 MobileEntity* MapData::getPlayer(int row, int col) {
