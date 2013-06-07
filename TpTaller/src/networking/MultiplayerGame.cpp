@@ -68,12 +68,14 @@ Flag* MultiplayerGame::getFlag() {
 }
 
 MenuEvent MultiplayerGame::run(){
+	view->getMapData()->cleanNewMobileEntities();
 
 	while (true) {
 		int ticks = SDL_GetTicks();
 
 		playersUpdate();
 		updateMobs();
+		addNewMobileEntities();
 
 		applyFPS(ticks);
 
@@ -255,6 +257,20 @@ vector<int> MultiplayerGame::getDeletedMobileEntities(){
 	return deletedMobileEntities;
 }
 
+void MultiplayerGame::addNewMobileEntities() {
+	MapData* mapData = view->getMapData();
+	vector<MobileEntity* > newMobiles = mapData->getnewMobileEntities();
+
+	std::vector<MobileEntity *>::const_iterator iter;
+	for (iter = newMobiles.begin(); iter != newMobiles.end(); ++iter) {
+		MobileEntity* current = *iter;
+
+		//addMobileEntity(
+	}
+
+	mapData->cleanNewMobileEntities();
+}
+
 int MultiplayerGame::addMobileEntity(MobileEntityView* view, MobileEntity* entity, Coordinates coordiantes){
 
 	entity->setCoordinates(coordiantes.getRow(), coordiantes.getCol());
@@ -262,7 +278,6 @@ int MultiplayerGame::addMobileEntity(MobileEntityView* view, MobileEntity* entit
 	mobileEntities[newId] = entity;
 	mobEntView[newId] = view;
 	lastAddedView = newId;
-
 
 	return newId;
 }

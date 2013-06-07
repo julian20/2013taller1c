@@ -46,6 +46,15 @@ void MapData::checkRowColsValue(int row, int col) {
 	}
 }
 
+vector<MobileEntity* > MapData::getnewMobileEntities() {
+	return newMobileEntities;
+}
+
+void MapData::cleanNewMobileEntities() {
+	newMobileEntities.erase(newMobileEntities.begin(),
+							newMobileEntities.end());
+}
+
 void MapData::addEntity(int row, int col, Entity* object) {
 	TileData* currentData = getTileData(row, col);
 	currentData->addEntity(object);
@@ -180,6 +189,7 @@ void MapData::addMobileEntity(int row, int col, MobileEntity* mobileEntity) {
 
 	mobileEntity->setTile(entityTile);
 
+	newMobileEntities.push_back(mobileEntity);
 }
 
 void MapData::updateMobilePos(int prevRow, int prevCol,

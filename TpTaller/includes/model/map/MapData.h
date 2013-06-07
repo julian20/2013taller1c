@@ -36,6 +36,9 @@ public:
 	TileData* getTileData(Coordinates coords);
 	TileData* getTileData(int row, int col);
 
+	vector<MobileEntity* > getnewMobileEntities();
+	void cleanNewMobileEntities();
+
 	void addPlayer(int row, int col, Player* personaje);
 	void addMobileEntity(int row, int col, MobileEntity* player);
 
