@@ -25,6 +25,7 @@
 #define ATTACK_SOUND "resources/sound/player/sword.ogg"
 #define DIE1_SOUND "resources/sound/player/die1.ogg"
 #define DIE2_SOUND "resources/sound/player/die2.ogg"
+#define QUAKE_SOUND "resources/sound/spells/quake.ogg"
 
 #define HP_BAR_WIDTH 100
 #define HP_BAR_HEIGHT 10
@@ -277,6 +278,7 @@ void initSounds() {
 	SoundEffectHandler::loadSound(string("attack"), ATTACK_SOUND);
 	SoundEffectHandler::loadSound(string(DIE1_SOUND), DIE1_SOUND);
 	SoundEffectHandler::loadSound(string(DIE2_SOUND), DIE2_SOUND);
+	SoundEffectHandler::loadSound(string(QUAKE_SOUND), QUAKE_SOUND);
 
 }
 
@@ -543,6 +545,8 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		spriteToBeShown = spriteMap[string("cast")];
 		spellBeingCast = true;
 		spellHasEnded = false;
+		if (!SoundEffectHandler::isSoundPlaying(QUAKE_SOUND))
+					SoundEffectHandler::playSound(QUAKE_SOUND);
 	}
 
 	if (player->isAttacking()) {
