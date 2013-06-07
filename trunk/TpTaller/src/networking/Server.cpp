@@ -268,7 +268,7 @@ void Server::runMainLoop(int clientSocket, string playerName){
 		if (!playing)
 			break;
 
-		bool gameEnd = missionManager.hasEndedGame(game->getPlayers());
+		bool gameEnd = missionManager.hasEndedGame(game->getPlayers(), game->getFlag());
 
 		sendGameState(clientSocket, gameEnd);
 
