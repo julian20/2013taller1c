@@ -134,14 +134,14 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 void PlayerView::blitSpellEffect(SDL_Surface* screen, int x, int y) {
 	if (!spellBeingCast)
 		return;
+//	TODO: aca iria la eleccion de la imagen
 //	string spell = player->getSpellBeingCast();
 	string spell("");
 	if (spell.compare(NONE_SPELL_ID) == 0)
 		return;
-	SDL_Surface* spellSprite = spellMap[spell].image;
-	int numberOfClips = spellMap[spell].numberOfClips;
+	SDL_Surface* spellSprite = spellMap[QUAKE_IMG_ID].image;
+	int numberOfClips = spellMap[QUAKE_IMG_ID].numberOfClips;
 	if (currentSpellClip >= numberOfClips) {
-		spellBeingCast = false;
 		currentSpellClip = 0;
 		return;
 	}
@@ -368,7 +368,7 @@ map<string, FoggedSprite> PlayerView::loadSpellImages() {
 	FoggedSprite quakeSprite;
 
 	quakeSprite = loadFoggedSpellSprite(QUAKE_IMG_ID);
-	spellMap[QUAKE_SPELL_ID] = quakeSprite;
+	spellMap[QUAKE_IMG_ID] = quakeSprite;
 
 	return spellMap;
 
@@ -468,6 +468,8 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		loadPlayerImage();
 		damageReceivedTimer.start();
 	}
+
+
 	player->updateDamageTaken();
 	Vector2* movementDirection = this->player->getMovementDirection();
 	float direction;
@@ -493,11 +495,12 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 			showCorpse(fondo, drawFog, sprite);
 			return;
 		}
-		if (spellBeingCast)
-			spellBeingCast = false;
 		marco = 0;
+		if (spellBeingCast){
+			spellBeingCast = false;
+			player->addEvent(new PlayerEvent(EVENT_CANCEL_CAST));
+		}
 		if (player->isAttacking()) {
-			player->cancelAttack();
 			attacking = false;
 			player->addEvent(new PlayerEvent(EVENT_CANCEL_ATTACK));
 			SoundEffectHandler::stopSound(attackID);
@@ -535,16 +538,10 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		}
 	}
 
-//	if (player->isCasting()) {
-//		spriteToBeShown = spriteMap[string("cast")];
-//		//reseteamos el marco para que no quede un # de clip invalido
-//		if (marco >= spriteToBeShown.numberOfClips)
-//			marco = 0;
-//		if (player->IsMoving()) {
-//			player->stop();
-//		}
-//		spellBeingCast = true;
-//	}
+	if (player->isCastingSpell()) {
+		spriteToBeShown = spriteMap[string("cast")];
+		spellBeingCast = true;
+	}
 
 	if (player->isAttacking()) {
 		spriteToBeShown = spriteMap[string("attacking")];
@@ -573,7 +570,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		SoundEffectHandler::stopSound(walkID);
 
 	if (!player->IsMoving() && !player->isAttacking() && !player->isBlocking()
-			&& previousLife == life && !player->isDead()) {
+			&& previousLife == life && !player->isDead() && !player->isCastingSpell()) {
 		if (!wasStanding) {
 			timer.start();
 			wasStanding = true;

@@ -84,6 +84,7 @@ void Player::setSpellDirection(SpellEffect* spell,
 }
 
 void Player::castSpellNow(MapData* mapData) {
+	needCastSpell = false;
 	castingSpell = true;
 	list<Tile *> tiles = mapData->getNeighborTiles(currentTile);
 
@@ -161,7 +162,7 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->life = update->getLife();
 	this->team = update->getTeam();
 	this->lastAttackingDirection = update->getLastAttackingDirection();
-
+	this->castingSpell = update->getCastingSpell();
 	if (currentTile)
 		delete currentTile;
 	this->currentTile = update->getTile();
@@ -207,6 +208,7 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setMagic(this->magic);
 	update->setLastAttackingDirection(lastAttackingDirection);
 	update->setTeam(this->team);
+	update->setCastingSpell(this->castingSpell);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {

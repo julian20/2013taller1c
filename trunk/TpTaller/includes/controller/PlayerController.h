@@ -29,7 +29,7 @@ public:
 	void castSpell();
 	void playerAttackTo(Entity* entity);
 	void playerAttack();
-	void playerCancelAttack();
+	virtual void playerCancelAttack();
 	void playerBlock();
 	void playerCancelBlock();
 	void generateEventList(bool activated);
