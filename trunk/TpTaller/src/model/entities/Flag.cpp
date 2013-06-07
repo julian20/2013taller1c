@@ -19,6 +19,17 @@ string Flag::getClassName()
 {
 	return this->name;
 }
+void Flag::collideTo(MobileEntity& player) {
+	        receiveDamage(player);
+	        if ( life <= 0 ) {
+	               killedBy = player.getTeam();
+	      }
+}
+
+void Flag::receiveDamage(MobileEntity& player)
+{
+	life-=player.getDamageBuffer();
+}
 Flag::~Flag() {
 }
 
