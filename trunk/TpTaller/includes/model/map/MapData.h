@@ -40,8 +40,8 @@ public:
 	void addPlayer(int row, int col, Player* personaje);
 	void addMobileEntity(int row, int col, MobileEntity* player);
 	MobileEntity* getPlayer(int row, int col);
-	void updatePlayerPos(int prevRow, int prevCol,
-							int row, int col, Player* personaje);
+	void updateMobilePos(int prevRow, int prevCol,
+							int row, int col, MobileEntity* personaje);
 	list<Tile *> *getPath(Tile* from, Tile* to);
 	list<Entity *> *Entities;
 	void movePlayer(Player* personaje, Tile* toTile);

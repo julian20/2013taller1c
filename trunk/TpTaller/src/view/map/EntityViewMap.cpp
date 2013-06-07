@@ -96,8 +96,8 @@ void EntityViewMap::updateMovablePos() {
 		entity->setCoordinates(currentRow, currentCol);
 		map.at(currentCol).at(currentRow).push_back(entityView);
 
-		mapData->updatePlayerPos(initRow, initCol, currentRow, currentCol,
-															(Player*) entity);
+		mapData->updateMobilePos(initRow, initCol, currentRow, currentCol,
+													(Player*) entity);
 
 		delete c;
 	}

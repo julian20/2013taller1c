@@ -73,6 +73,7 @@ MenuEvent MultiplayerGame::run(){
 		int ticks = SDL_GetTicks();
 
 		playersUpdate();
+		updateMobs();
 
 		applyFPS(ticks);
 
@@ -96,7 +97,7 @@ void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes){
 	view->getMapData()->addPlayer(coordiantes->getRow(), coordiantes->getCol(), player);
 
 	Coordinates coords = player->getCoordinates();
-	playersCoords[player] = coords;
+	mobilesCoords[player] = coords;
 }
 
 void MultiplayerGame::updateMobs(){
@@ -107,6 +108,7 @@ void MultiplayerGame::updateMobs(){
 		(ia->second)->update(mapa);
 	}
 
+	updateMobsCoordinates();
 }
 
 void MultiplayerGame::updatePlayersCoordinates(){
@@ -114,17 +116,37 @@ void MultiplayerGame::updatePlayersCoordinates(){
 	for ( list<Player*>::iterator playerIterator = players.begin() ; playerIterator != players.end() ; ++playerIterator ){
 		player = *playerIterator;
 
-		Coordinates initCoords = playersCoords[player];
+		Coordinates initCoords = mobilesCoords[player];
 		Coordinates currentCoords = player->getTile()->getCoordinates();
 
 		if (currentCoords.isEqual( initCoords ))
 			continue;
 
-		playersCoords[player] = currentCoords;
+		mobilesCoords[player] = currentCoords;
 
-		view->getMapData()->updatePlayerPos(initCoords.getRow(), initCoords.getCol(),
-											   currentCoords.getRow(), currentCoords.getCol(),
-											   player);
+		view->getMapData()->updateMobilePos(initCoords.getRow(), initCoords.getCol(),
+											currentCoords.getRow(), currentCoords.getCol(),
+											player);
+	}
+}
+
+void MultiplayerGame::updateMobsCoordinates(){
+	MobileEntity* mobileEntity;
+	for ( map<int,MobileEntity*>::iterator iter = mobileEntities.begin() ;
+			iter != mobileEntities.end() ; ++iter ){
+		mobileEntity = (iter->second);
+
+		Coordinates initCoords = mobilesCoords[mobileEntity];
+		Coordinates currentCoords = mobileEntity->getTile()->getCoordinates();
+
+		if (currentCoords.isEqual( initCoords ))
+			continue;
+
+		mobilesCoords[mobileEntity] = currentCoords;
+
+		view->getMapData()->updateMobilePos(initCoords.getRow(), initCoords.getCol(),
+											currentCoords.getRow(), currentCoords.getCol(),
+											mobileEntity);
 	}
 }
 
@@ -136,7 +158,6 @@ void MultiplayerGame::playersUpdate(){
 	}
 
 	updatePlayersCoordinates();
-	updateMobs();
 }
 
 void MultiplayerGame::applyFPS(int timer) {
