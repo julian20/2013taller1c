@@ -81,7 +81,7 @@ void ArtificialIntelligence::watch(MapData* mapData)
 			 //mobile->moveTo(coor.getCol()-WATCHSIZE,coor.getRow());
 			 tile =  new Tile( new Coordinates(coor.getRow()-WATCHSIZE,coor.getCol()));
 		 }
-		 mapData->moveMob((Mob*)this->entity,tile);
+		 mapData->moveMobileEntity((Mob*)this->entity,tile);
 	 }
 }
 ArtificialIntelligence::~ArtificialIntelligence() {

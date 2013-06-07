@@ -47,8 +47,6 @@ private:
 	SDL_Surface* screen;
 	EntityViewMap* viewMap;
 
-	string texturesPaths[MapData::AMOUNT_TYPES];
-	SDL_Surface* tilesTextures[MapData::AMOUNT_TYPES];
 	string backgroundPath;
 	MobileEntity* mobileEntity;
 

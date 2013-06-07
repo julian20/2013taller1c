@@ -22,37 +22,35 @@ using namespace std;
 
 class MapData {
 public:
-	static const int AMOUNT_TYPES = 4;  // Igual al mayor +1 index de consts
-
 	MapData(int _nrows, int _ncols);
 	virtual ~MapData();
 
 	void addEntity(int row, int col, Entity* object);
+	void addItem(int row, int col, Item* object);
 	//void addFlag(int row, int col, Flag* flag);
 
-	void addItem(int row, int col, Item* object);
 	void setTileType(std::string tileType, int row, int col);
 	std::string getTileType(int row, int col);
 	int getNRows();
 	int getNCols();
 	TileData* getTileData(Coordinates coords);
 	TileData* getTileData(int row, int col);
+
 	void addPlayer(int row, int col, Player* personaje);
 	void addMobileEntity(int row, int col, MobileEntity* player);
+
 	MobileEntity* getPlayer(int row, int col);
 	void updateMobilePos(int prevRow, int prevCol,
 							int row, int col, MobileEntity* personaje);
 	list<Tile *> *getPath(Tile* from, Tile* to);
-	list<Entity *> *Entities;
-	void movePlayer(Player* personaje, Tile* toTile);
-	void moveMob(Mob* mob, Tile* toTile);
-	void updateVisibleTiles();
-	void cleanVisibleTilesVector();
+	void moveMobileEntity(MobileEntity* mobile, Tile* toTile);
 	list<MobileEntity *> getClosestEntities(Coordinates centerCoordinates,
 			int tilesRange, bool removeEntityInPosition = true);
-	static int distBetweenTilesInTiles(Tile* from, Tile* to);
 	list<Tile *> getNeighborTiles(Tile* tile);
+	void updateVisibleTiles();
+	static int distBetweenTilesInTiles(Tile* from, Tile* to);
 private:
+	void cleanVisibleTilesVector();
 	float heuristicCostEstimate(Tile* from, Tile* to);
 	float distBetweenTiles(Tile* from, Tile* to);
 	void addTileToList(list<Tile *> *list, map<int, Tile *> *tilesContainer,
@@ -65,6 +63,8 @@ private:
 	Player* mainPlayer;
 	vector<TileData *> visibleTiles;
 	vector<TileData> data;
+	vector<MobileEntity* > newMobileEntities;
+
 	int nrows;
 	int ncols;
 

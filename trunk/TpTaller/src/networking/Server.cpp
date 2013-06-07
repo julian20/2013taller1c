@@ -533,7 +533,7 @@ void Server::sendNewMobileEntities(int clientSocket,string playerName){
 	n = deleted.size() - deletedMobileEntities[playerName].size();
 	ComunicationUtils::sendNumber(clientSocket, n);
 	if (n < 0) return;
-	for (int i = 0 ; i < deleted.size() ; i++){
+	for (unsigned int i = 0 ; i < deleted.size() ; i++){
 		if (deletedMobileEntities[playerName].count(deleted[i]) == 0){
 			ComunicationUtils::sendNumber(clientSocket,deleted[i]);
 			deletedMobileEntities[playerName][deleted[i]] = deleted[i];
