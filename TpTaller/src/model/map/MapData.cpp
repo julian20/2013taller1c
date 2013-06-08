@@ -113,6 +113,8 @@ void MapData::addItem(int row, int col, Item* object) {
 					copy = new LifeHeart(object);
 				else if(object->getName() == "magicbottle")
 					copy = new MagicBottle(object);
+				else if(object->getName() == "speedboots")
+					copy = new SpeedBoots(object);
 				else
 					copy = new Item(object);
 				currentData->addEntity(copy);
