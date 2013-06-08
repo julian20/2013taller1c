@@ -2033,6 +2033,16 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 
 			parsedItems.push_back(magicbottle);
 
+		} else if (actualItem->getName() == "speedboots") {
+
+			SpeedBoots* speedBoots = new SpeedBoots();
+
+			speedBoots->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			speedBoots->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(speedBoots);
+
 		}
 
 	}

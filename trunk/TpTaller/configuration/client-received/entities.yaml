@@ -59,6 +59,17 @@
     delay: 0 
     animationRepeats: 7
     baseRows: 1
+    baseCols: 1            
+  - name: speedboots
+    imageSrc: resources/items/SpeedBoots.png
+    imageWidth: 64
+    imageHeight: 64
+    numberOfClips: 1
+    anchorPixel: [32, 20]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
     baseCols: 1 
   - name: windmill
     imageSrc: resources/buildings/windmill.png
@@ -234,6 +245,8 @@
 - itemLocations:
   - name: lifeheart
     position: [15, 15, 0]
+  - name: speedboots
+    position: [18, 18, 0]
 - entityLocations:
   - name: chapel
     position: [23, 20, 0]
