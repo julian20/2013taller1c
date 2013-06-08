@@ -219,7 +219,6 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	PlayerUpdate* update = new PlayerUpdate();
 
 	update->setName(this->name);
-
 	update->setCurrentPos(this->currentPos);
 	update->setEndPos(this->endPos);
 	update->setSpeed(this->speed);

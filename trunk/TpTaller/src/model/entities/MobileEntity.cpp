@@ -145,7 +145,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 }
 
 void MobileEntity::extraUpdate(MapData* mapData) {
-
+	// Se overraidea en player
 }
 void MobileEntity::update(MapData* mapData) {
 	extraUpdate(mapData);
@@ -188,7 +188,6 @@ void MobileEntity::updateFromServer(MobileEntityUpdate* update) {
 	this->speed->setDirection(update->getSpeed()->getDirection());
 	this->attacking = update->isAttacking();
 	this->currentTile = update->getTile();
-
 	this->lastAttackingDirection = update->getLastAttackingDirection();
 
 	Coordinates currentTileCoords = this->currentTile->getCoordinates();
@@ -208,13 +207,16 @@ MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate(int id) {
 
 	update->setId(id);
 	update->setName(this->name);
-
 	update->setCurrentPos(this->currentPos);
 	update->setEndPos(this->endPos);
 	update->setSpeed(this->speed);
 	update->setAttacking(this->attacking);
 	update->setTile(this->currentTile);
 	update->setInitCoordinates(this->coord);
+	update->setLastAttackingDirection(this->lastAttackingDirection);
+	update->setLife(this->life);
+	update->setMagic(this->magic);
+	update->setTeam(this->team);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {
