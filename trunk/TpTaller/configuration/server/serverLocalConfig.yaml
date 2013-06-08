@@ -92,6 +92,17 @@
     delay: 0 
     animationRepeats: 7
     baseRows: 1
+    baseCols: 1                
+  - name: shield
+    imageSrc: resources/items/Shield.png
+    imageWidth: 31
+    imageHeight: 50
+    numberOfClips: 0
+    anchorPixel: [25, 30]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
     baseCols: 1  
   - name: windmill
     imageSrc: resources/buildings/windmill.png
@@ -258,6 +269,8 @@
     position: [20, 14, 0]
   - name: lantern
     position: [22, 16, 0]
+  - name: shield
+    position: [22, 15, 0]
 - entityLocations:
   - name: chapel
     position: [23, 20, 0]

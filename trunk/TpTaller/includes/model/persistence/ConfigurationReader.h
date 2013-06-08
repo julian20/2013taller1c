@@ -23,6 +23,7 @@
 #include <model/entities/Items/LifeHeart.h>
 #include <model/entities/Items/MagicBottle.h>
 #include <model/entities/Items/Lantern.h>
+#include <model/entities/Items/Shield.h>
 #include <model/map/Tile.h>
 #include <model/map/TextureDefinition.h>
 #include <model/map/TextureHolder.h>

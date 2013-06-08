@@ -2063,6 +2063,16 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 
 			parsedItems.push_back(lantern);
 
+		} else if (actualItem->getName() == "shield") {
+
+			Shield* shield = new Shield();
+
+			shield->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			shield->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(shield);
+
 		}
 
 	}

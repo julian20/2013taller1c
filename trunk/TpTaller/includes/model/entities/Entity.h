@@ -46,6 +46,9 @@ public:
 	bool isWalkable();
 	bool isAttackable();
 
+	void setShield(int shield);
+	int getShield();
+
 	list<Entity*> getVisibleEnemies();
 	virtual int getLife();
 	virtual int getMagic();
