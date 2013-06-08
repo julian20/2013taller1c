@@ -8,79 +8,72 @@
 #include <AI/ArtificialIntelligence.h>
 #include <stdlib.h>
 #define WATCHSIZE 5
+
 ArtificialIntelligence::ArtificialIntelligence() {
-	entity=NULL;
+	entity = NULL;
 }
-void ArtificialIntelligence::attack(Entity& enemy)
-{
-		Mob* toAttack=(Mob*)entity;
-		toAttack->attackTo(&enemy);
-		//toAttack->attack(enemy);
-}
-void ArtificialIntelligence::setEntity(Entity* entity)
-{
-	this->entity=entity;
-}
-void ArtificialIntelligence::update(MapData* mapData)
-{
-	if(this->isAnyEnemyClose(mapData))
-	{
-			Entity& enemy=this->getNearestEnemy();
-			this->attack(enemy);
-			MobileEntity* mob=(MobileEntity*)this->entity;
-			mob->update(mapData);
 
-	}else
-	{
-		//entity->
-		if(entity->getClassName() == "MobileEntity")
-		{
+void ArtificialIntelligence::setMobileEntity(MobileEntity* entity) {
+	this->entity = entity;
+}
+
+void ArtificialIntelligence::update(MapData* mapData) {
+
+	if (entity->getAttackToEntity() != NULL) {
+		Tile* currentTile = entity->getTile();
+		Tile* enemyTile = entity->getAttackToEntity()->getTile();
+
+		if (mapData->distBetweenTilesInTiles(currentTile, enemyTile) < WATCHSIZE)
+			return;
+	}
 
 
-			MobileEntity* mob= (MobileEntity*)entity;
-			mob->cancelAttack();
+	if (this->isAnyEnemyClose(mapData)) {
+			Entity& enemy = this->getNearestEnemy();
+			entity->attackTo(&enemy);
+	} else {
+		if(entity->getClassName() == "MobileEntity") {
+			entity->cancelAttack();
 			this->watch(mapData);
-			mob->update(mapData);
 		}
 	}
 
 }
-bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData)
-{
-	entitiesNear=mapData->getClosestEntities(entity->getCoordinates(),WATCHSIZE);
-	for ( list<MobileEntity*>::iterator mobIterator = entitiesNear.begin() ; mobIterator != entitiesNear.end() ; ++mobIterator ){
-		MobileEntity* mob = *mobIterator;
-		if(mob->getTeam()!=this->entity->getTeam())
-		{
+
+bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData) {
+
+	entitiesNear = mapData->getClosestEntities(entity->getCoordinates(),WATCHSIZE);
+	list<MobileEntity*>::iterator iter;
+
+	for ( iter = entitiesNear.begin() ; iter != entitiesNear.end() ; ++iter ){
+		MobileEntity* mob = *iter;
+		if(mob->getTeam() != this->entity->getTeam())
 			return true;
-		}
 	}
 	return false;
 	//return false; // TODO :cambiar este harcoding
 }
-Entity& ArtificialIntelligence::getNearestEnemy()
-{
+
+Entity& ArtificialIntelligence::getNearestEnemy() {
 
 	MobileEntity* mob;
-	//Entity* enemy=entitiesNear.front();
-	for ( list<MobileEntity*>::iterator mobIterator = entitiesNear.begin() ; mobIterator != entitiesNear.end() ; ++mobIterator ){
-			mob= *mobIterator;
-			if(mob->getTeam()!=this->entity->getTeam())
-			{
+	list<MobileEntity*>::iterator iter;
+	for ( iter = entitiesNear.begin() ; iter != entitiesNear.end() ; ++iter ){
+			mob = *iter;
+			if(mob->getTeam() != this->entity->getTeam())
 				return *mob;
-			}
 		}
+
 	return *mob;
-	//return (*enemy);
 }
-void ArtificialIntelligence::watch(MapData* mapData)
-{
-	 MobileEntity* mobile=(MobileEntity*)(this->entity);
+
+void ArtificialIntelligence::watch(MapData* mapData) {
+
 	 Coordinates coor=this->entity->getCoordinates();
 
 	 Tile* tile;
 	 //Si no se esta moviendo o atacando busco a otro contrincante
-	 if(!mobile->IsMoving() )
+	 if(!entity->IsMoving() )
 	 {
 		 int direction = rand() % 4 ;
 		 if(direction==0)
@@ -109,7 +102,9 @@ void ArtificialIntelligence::watch(MapData* mapData)
 		 if (tile) delete tile;
 	 }
 }
+
 ArtificialIntelligence::~ArtificialIntelligence() {
+
 }
 
 

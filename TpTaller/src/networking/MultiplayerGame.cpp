@@ -36,7 +36,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 		mobileEntities[i] = viewVector[i]->getEntity();
 		mobEntView[i] = viewVector[i];
 		ArtificialIntelligence* ia= new ArtificialIntelligence();
-		ia->setEntity(mobileEntities[i]);
+		ia->setMobileEntity(mobileEntities[i]);
 		ias[i] = ia;
 		lastAddedView++;
 
@@ -105,9 +105,14 @@ void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes){
 void MultiplayerGame::updateMobs(){
 	MapData* mapa = view->getMapData();
 
-	for (map<int,ArtificialIntelligence*>::iterator ia = ias.begin() ; ia != ias.end() ; ++ia )
-	{
-		(ia->second)->update(mapa);
+	map<int,MobileEntity*>::iterator mobIter;
+	for ( mobIter = mobileEntities.begin() ; mobIter != mobileEntities.end() ; ++mobIter ) {
+		(mobIter->second)->update(mapa);
+	}
+
+	map<int,ArtificialIntelligence*>::iterator iaIter;
+	for ( iaIter = ias.begin() ; iaIter != ias.end() ; ++iaIter ){
+		(iaIter->second)->update(mapa);
 	}
 
 	updateMobsCoordinates();

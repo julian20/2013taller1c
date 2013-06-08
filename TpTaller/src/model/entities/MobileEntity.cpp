@@ -12,7 +12,7 @@
 
 using namespace std;
 
-MobileEntity::MobileEntity() {
+MobileEntity::MobileEntity() : Entity() {
 	speed = new Speed();
 	initSpeed = new Speed();
 	hasChanged = true;
@@ -293,6 +293,10 @@ void MobileEntity::assignPath(list<Tile *> *_path) {
 void MobileEntity::attackTo(Entity* attackTo) {
 	// TODO: Por ahora solo se banca entities de base 1x1
 	attackToEntity = attackTo;
+}
+
+Entity* MobileEntity::getAttackToEntity() {
+	return attackToEntity;
 }
 
 void MobileEntity::setSpeedMagnitude(int mag) {
