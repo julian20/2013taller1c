@@ -72,10 +72,10 @@
     baseRows: 1
     baseCols: 1              
   - name: magicbottle
-    imageSrc: resources/items/MagicBottle.png
+    imageSrc: resources/items/MagicBottleAnimated.png
     imageWidth: 50
-    imageHeight: 74
-    numberOfClips: 0
+    imageHeight: 69
+    numberOfClips: 2
     anchorPixel: [32, 20]
     fps: 8
     delay: 0 
