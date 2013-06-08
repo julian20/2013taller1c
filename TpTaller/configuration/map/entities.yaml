@@ -70,6 +70,17 @@
     delay: 0 
     animationRepeats: 7
     baseRows: 1
+    baseCols: 1              
+  - name: magicbottle
+    imageSrc: resources/items/MagicBottle.png
+    imageWidth: 50
+    imageHeight: 74
+    numberOfClips: 0
+    anchorPixel: [32, 20]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
     baseCols: 1   
   - name: windmill
     imageSrc: resources/buildings/windmill.png
@@ -257,6 +268,8 @@
     position: [15, 15, 0]
   - name: speedboots
     position: [18, 18, 0]
+  - name: magicbottle
+    position: [20, 14, 0]
 - entityLocations:
   - name: chapel
     position: [23, 20, 0]
