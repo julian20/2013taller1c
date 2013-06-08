@@ -29,12 +29,17 @@ void ArtificialIntelligence::update(MapData* mapData)
 			this->attack(enemy);
 			MobileEntity* mob=(MobileEntity*)this->entity;
 			mob->update(mapData);
+
 	}else
 	{
+		//entity->
 		if(entity->getClassName() == "MobileEntity")
 		{
-			this->watch(mapData);
+
+
 			MobileEntity* mob= (MobileEntity*)entity;
+			mob->cancelAttack();
+			this->watch(mapData);
 			mob->update(mapData);
 		}
 	}
@@ -43,15 +48,30 @@ void ArtificialIntelligence::update(MapData* mapData)
 bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData)
 {
 	entitiesNear=mapData->getClosestEntities(entity->getCoordinates(),WATCHSIZE);
-
-	return entitiesNear.size()>0;
+	for ( list<MobileEntity*>::iterator mobIterator = entitiesNear.begin() ; mobIterator != entitiesNear.end() ; ++mobIterator ){
+		MobileEntity* mob = *mobIterator;
+		if(mob->getTeam()!=this->entity->getTeam())
+		{
+			return true;
+		}
+	}
+	return false;
 	//return false; // TODO :cambiar este harcoding
 }
 Entity& ArtificialIntelligence::getNearestEnemy()
 {
 
-	Entity* enemy=entitiesNear.front();
-	return (*enemy);
+	MobileEntity* mob;
+	//Entity* enemy=entitiesNear.front();
+	for ( list<MobileEntity*>::iterator mobIterator = entitiesNear.begin() ; mobIterator != entitiesNear.end() ; ++mobIterator ){
+			mob= *mobIterator;
+			if(mob->getTeam()!=this->entity->getTeam())
+			{
+				return *mob;
+			}
+		}
+	return *mob;
+	//return (*enemy);
 }
 void ArtificialIntelligence::watch(MapData* mapData)
 {
