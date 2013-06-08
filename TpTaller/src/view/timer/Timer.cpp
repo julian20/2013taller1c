@@ -13,7 +13,6 @@ Timer::Timer() {
 	startTime = 0;
 	timeSinceLastAnimation = 0;
 	delay = DELAY;
-
 }
 
 void Timer::start() {
@@ -38,5 +37,4 @@ int Timer::getDelay() {
 }
 
 Timer::~Timer() {
-	// TODO Auto-generated destructor stub
 }

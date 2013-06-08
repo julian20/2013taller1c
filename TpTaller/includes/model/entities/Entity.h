@@ -58,6 +58,8 @@ public:
 	virtual void collideTo(Item& item);
 	virtual void collideTo(LifeHeart& heart);
 
+	void resetRespawnTimer();
+
 	// Mission manager.
 	bool isDead();
 	int getTeam();
@@ -84,6 +86,7 @@ protected:
 	int team;
 	int killedBy;
 	Timer damageTimer;
+	Timer respawnTimer;
 	int damageBuffer;
 
 private:

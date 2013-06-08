@@ -34,8 +34,9 @@ bool MissionManager::hasEndedFlagCapture(Flag* flag, list<Player*> players) {
 		if (actualPlayer->isDead()) {
 			scorage[actualPlayer->getKilledBy()]++;
 			scorage[actualPlayer->getTeam()]--;
-			// TODO:
-			//actualMobileEntity->respawn();
+			actualPlayer->respawn();
+		} else {
+			actualPlayer->resetRespawnTimer();
 		}
 	}
 
