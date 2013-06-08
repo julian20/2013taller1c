@@ -39,7 +39,7 @@
     walkingImageSrc: resources/zombie/zombieWalking.png
     idleImageSrc: resources/zombie/zombieStanding.png
     runningImageSrc: resources/zombie/zombieWalking.png
-    attackImageSrc: resources/zombie/zombieWalking.png
+    attackImageSrc: resources/zombie/zombieAttack.png
     idleBlockingImageSrc: resources/zombie/zombieWalking.png
     imageWidth: 128
     imageHeight: 128
