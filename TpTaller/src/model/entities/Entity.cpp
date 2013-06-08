@@ -228,6 +228,14 @@ void Entity::resetRespawnTimer() {
 	respawnTimer.start();
 }
 
+void Entity::setShield(int shield) {
+	this->shield = shield;
+}
+
+int Entity::getShield() {
+	return this->shield;
+}
+
 Entity::~Entity() {
 	delete this->coord;
 	delete this->currentPos;
