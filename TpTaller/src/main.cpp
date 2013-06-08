@@ -121,6 +121,7 @@ void initServer() {
 
 	MultiplayerGame* game = new MultiplayerGame(&configuration);
 	Server* server = new Server(serverPort);
+	server->getMissionManager().setMission(configuration.getAnimationConfiguration()->getMission());
 	server->run(game);
 	delete server;
 }

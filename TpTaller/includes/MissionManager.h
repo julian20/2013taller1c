@@ -36,6 +36,7 @@ public:
 	void setTypeOfMission(int type);
 	void setWinningTeam(int team);
 	void setMissionTypes(map<string, int> missionMap);
+	void setMission(string mission);
 
 private:
 	int typeOfMission, nextAvailableTeam;

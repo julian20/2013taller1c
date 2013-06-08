@@ -39,7 +39,7 @@
     walkingImageSrc: resources/zombie/zombieWalking.png
     idleImageSrc: resources/zombie/zombieStanding.png
     runningImageSrc: resources/zombie/zombieWalking.png
-    attackImageSrc: resources/zombie/zombieWalking.png
+    attackImageSrc: resources/zombie/zombieAttack.png
     idleBlockingImageSrc: resources/zombie/zombieWalking.png
     imageWidth: 128
     imageHeight: 128
@@ -62,9 +62,9 @@
     baseCols: 1            
   - name: speedboots
     imageSrc: resources/items/SpeedBoots.png
-    imageWidth: 64
-    imageHeight: 64
-    numberOfClips: 1
+    imageWidth: 60
+    imageHeight: 60
+    numberOfClips: 0
     anchorPixel: [32, 20]
     fps: 8
     delay: 0 
@@ -81,7 +81,7 @@
     delay: 0 
     animationRepeats: 7
     baseRows: 1
-    baseCols: 1 
+    baseCols: 1   
   - name: windmill
     imageSrc: resources/buildings/windmill.png
     imageWidth: 224
@@ -250,6 +250,16 @@
 - mobileEntityLocations:
   - name: mob
     position: [10, 10, 0]
+    speed:
+      magnitude: 4
+      direction: [1, 2]
+  - name: mob
+    position: [10, 12, 0]
+    speed:
+      magnitude: 4
+      direction: [1, 2]
+  - name: mob
+    position: [10, 14, 0]
     speed:
       magnitude: 4
       direction: [1, 2]
