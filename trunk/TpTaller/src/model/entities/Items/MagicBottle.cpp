@@ -25,20 +25,22 @@ MagicBottle::MagicBottle(Item* entity) {
 	this->killedBy = entity->getKilledBy();
 }
 
-void MagicBottle::applyEffects(Entity* entity) {
-
-	/*if(!entity)
-		return;
-*/
-	//entity->(100);
+void MagicBottle::applyEffects(Entity& entity) {
+	entity.setMagic(100);
 }
 
+void MagicBottle::applyEffects(MobileEntity& entity) {
+	entity.setMagic(100);
+}
+
+void MagicBottle::collideTo(MobileEntity& entity) {
+	applyEffects(entity);
+}
 
 string MagicBottle::getClassName() {
 	return "MagicBottle";
 }
 
 MagicBottle::~MagicBottle() {
-	// TODO Auto-generated destructor stub
 }
 
