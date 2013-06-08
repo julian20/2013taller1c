@@ -406,14 +406,6 @@ void printPath(list<Tile *>* path) {
 	}
 }
 
-/**
- * TODO: ~~~ Gonchu ~~~
- * Tratar de usar list<Tile*> path en vez de
- * list<Tile*> *path = new list<Tile*>() ya que la primera
- * llama al destructor sobre cada elemento cuando se desreferencia,
- * la segunda hay que llamar al destructor a mano. Si se sabe donde
- * destruir no hay problema, pero es mas complicado me parece.
- */
 list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 	TileData* data = getTileData(from->getCoordinates());
 	if (data->isWalkable(true) == false) {
