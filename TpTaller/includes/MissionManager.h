@@ -23,10 +23,10 @@ public:
 	virtual ~MissionManager();
 
 	// Methods
-	bool hasEndedFlagCapture(Flag* flag);
-	bool hasEndedTeamFight(list<Player*> mobileEntities);
-	bool hasEndedSuddenDeath(list<Player*> mobileEntities);
-	bool hasEndedGame(list<Player*> mobileEntities, Flag* flag);
+	bool hasEndedFlagCapture(Flag* flag, list<Player*> players);
+	bool hasEndedTeamFight(list<Player*> players);
+	bool hasEndedSuddenDeath(list<Player*> players);
+	bool hasEndedGame(list<Player*> players, Flag* flag);
 
 	// Getters and Setters
 	int getTypeOfMission();
@@ -40,6 +40,7 @@ public:
 private:
 	int typeOfMission, nextAvailableTeam;
 	int winningTeam;
+	map<int, int> scorage;
 	map<string, int> missionTypes;
 };
 

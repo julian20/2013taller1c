@@ -16,12 +16,27 @@ MissionManager::MissionManager() {
 	typeOfMission = 1;
 	winningTeam = 0;
 	nextAvailableTeam = 2;
+	scorage[1] = 0;
+	scorage[2] = 0;
 }
 
 MissionManager::~MissionManager() {
 }
 
-bool MissionManager::hasEndedFlagCapture(Flag* flag) {
+bool MissionManager::hasEndedFlagCapture(Flag* flag, list<Player*> players) {
+
+	list<Player*>::const_iterator iterator;
+	Player* actualPlayer;
+
+	for (iterator = players.begin(); iterator != players.end(); ++iterator) {
+		actualPlayer = (Player*) (*iterator);
+		if (actualPlayer->isDead()) {
+			if( actualPlayer->getTeam() == 1 ) scorage[2]++;
+			if( actualPlayer->getTeam() == 2 ) scorage[1]++;
+			// TODO:
+			//actualMobileEntity->respawn();
+		}
+	}
 
 	if (flag->isDead()) {
 		winningTeam = flag->getKilledBy();
@@ -31,7 +46,7 @@ bool MissionManager::hasEndedFlagCapture(Flag* flag) {
 	return false;
 }
 
-int MissionManager::getNextAvailableTeam(){
+int MissionManager::getNextAvailableTeam() {
 	if (nextAvailableTeam == 1)
 		nextAvailableTeam++;
 	else
@@ -39,7 +54,7 @@ int MissionManager::getNextAvailableTeam(){
 	return nextAvailableTeam;
 }
 
-bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
+bool MissionManager::hasEndedTeamFight(list<Player*> players) {
 
 	bool someoneAliveFirstTeam = false;
 	bool someoneAliveSecondTeam = false;
@@ -48,23 +63,22 @@ bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
 	int secondTeamPlayers = 0;
 
 	list<Player*>::const_iterator iterator;
-	Player* actualMobileEntity;
+	Player* actualPlayer;
 
-	for (iterator = mobileEntities.begin(); iterator != mobileEntities.end();
-			++iterator) {
+	for (iterator = players.begin(); iterator != players.end(); ++iterator) {
 
-		actualMobileEntity = (Player*) (*iterator);
+		actualPlayer = (Player*) (*iterator);
 
-		if (actualMobileEntity->getTeam() == 1) {
+		if (actualPlayer->getTeam() == 1) {
 			firstTeamPlayers++;
-			if (!actualMobileEntity->isDead()) {
+			if (!actualPlayer->isDead()) {
 				someoneAliveFirstTeam = true;
 			}
 		}
 
-		if (actualMobileEntity->getTeam() == 2) {
+		if (actualPlayer->getTeam() == 2) {
 			secondTeamPlayers++;
-			if (!actualMobileEntity->isDead()) {
+			if (!actualPlayer->isDead()) {
 				someoneAliveSecondTeam = true;
 			}
 		}
@@ -94,19 +108,19 @@ bool MissionManager::hasEndedTeamFight(list<Player*> mobileEntities) {
 	return false;
 }
 
-bool MissionManager::hasEndedSuddenDeath(list<Player*> mobileEntities) {
+bool MissionManager::hasEndedSuddenDeath(list<Player*> players) {
 	// En principio seria igual a team vs team.
 	// Cambiaria como spawnean cosas, pero no esta aca.
-	return hasEndedTeamFight(mobileEntities);
+	return hasEndedTeamFight(players);
 }
 
-bool MissionManager::hasEndedGame(list<Player*> mobileEntities, Flag* flag) {
+bool MissionManager::hasEndedGame(list<Player*> players, Flag* flag) {
 	if (typeOfMission == 1) {
-		return hasEndedFlagCapture(flag);
+		return hasEndedFlagCapture(flag, players);
 	} else if (typeOfMission == 2) {
-		return hasEndedTeamFight(mobileEntities);
+		return hasEndedTeamFight(players);
 	} else if (typeOfMission == 3) {
-		return hasEndedSuddenDeath(mobileEntities);
+		return hasEndedSuddenDeath(players);
 	} else {
 		return false;
 	}
