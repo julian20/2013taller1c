@@ -38,6 +38,9 @@ public:
 	TileData* getTileData(Coordinates coords);
 	TileData* getTileData(int row, int col);
 
+	void setEarthquake(bool earthquake);
+	bool getEarthquake();
+
 	vector<MobileEntity* > getnewMobileEntities();
 	void cleanNewMobileEntities();
 
@@ -64,6 +67,8 @@ private:
 	list<Tile *> getNeighborTiles(Tile* tile, map<int, Tile *> *tilesContainer,
 			bool getNoWalkableTiles = false);
 	Tile* getValidTile(Tile* from, Tile* goal);
+	void initializeData();
+	void checkRowColsValue(int row, int col);
 
 	Player* mainPlayer;
 	vector<TileData *> visibleTiles;
@@ -73,8 +78,7 @@ private:
 	int nrows;
 	int ncols;
 
-	void initializeData();
-	void checkRowColsValue(int row, int col);
+	bool earthquake;
 };
 
 class MobileEntityWithCenterDistance{

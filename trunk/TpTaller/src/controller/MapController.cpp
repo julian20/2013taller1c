@@ -42,6 +42,14 @@ void MapController::clickListener(SDL_Event event) {
 		playerController->castSpell();
 	}
 
+	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_e)) {
+		mapData->setEarthquake(true);
+	}
+
+	if ((event.type == SDL_KEYUP) && (event.key.keysym.sym == SDLK_e)) {
+		mapData->setEarthquake(false);
+	}
+
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_LSHIFT)) {
 		playerController->toggleRunning();
 	}
