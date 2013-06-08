@@ -37,6 +37,9 @@ public:
 	void updateFromServer(MobileEntityUpdate* update);
 	MobileEntityUpdate* generateMobileEntityUpdate(int id);
 
+	void setViewRange(int _viewRange);
+	int getViewRange();
+
 	virtual string getClassName();
 	void moveImmediately(Coordinates coords);
 	Vector2* getMovementDirection();
@@ -90,6 +93,7 @@ protected:
 	Speed* initSpeed;
 	//ArtificialIntelligence* ia;
 	list<Tile *>* path;
+	int viewRange;
 
 	bool attacking;
 

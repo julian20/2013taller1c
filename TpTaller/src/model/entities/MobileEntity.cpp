@@ -19,6 +19,7 @@ MobileEntity::MobileEntity() : Entity() {
 	attacking = false;
 	endPos = new Vector3(0, 0);
 	team = 0;
+	viewRange = 200;
 	attackToEntity = NULL;
 //	ia = ArtificialIntelligence();
 	this->speed = new Speed(0, new Vector2(0, 0));
@@ -31,6 +32,7 @@ MobileEntity::MobileEntity() : Entity() {
 
 MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	this->speed = speed;
+	viewRange = 200;
 	this->name = name;
 	this->path = new list<Tile *>();
 	currentTile = new Tile(new Coordinates(0, 0));
@@ -433,6 +435,14 @@ void MobileEntity::setHasChanged(bool change) {
 
 bool MobileEntity::getHasChanged() {
 	return hasChanged;
+}
+
+void MobileEntity::setViewRange(int _viewRange) {
+	this->viewRange = _viewRange;
+}
+
+int MobileEntity::getViewRange() {
+	return this->viewRange;
 }
 
 Tile* MobileEntity::getTile() {

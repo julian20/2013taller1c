@@ -42,8 +42,6 @@ public:
 	PlayerUpdate* generatePlayerUpdate();
 	std::vector<Power*> getPowers();
 	void setPowers(std::vector<Power*> powers);
-	void setViewRange(int _viewRange);
-	int getViewRange();
 
 	void extraUpdate(MapData* mapData);
 	bool isMainPlayer();
@@ -89,7 +87,6 @@ private:
 
 	Chat* chat;
 
-	int viewRange;
 	bool mainPlayer;
 
 	std::vector<Power*> powers;
