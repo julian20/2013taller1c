@@ -16,6 +16,7 @@ MissionManager::MissionManager() {
 	typeOfMission = 1;
 	winningTeam = 0;
 	nextAvailableTeam = 2;
+	scorage[0] = 0;
 	scorage[1] = 0;
 	scorage[2] = 0;
 }
@@ -31,10 +32,8 @@ bool MissionManager::hasEndedFlagCapture(Flag* flag, list<Player*> players) {
 	for (iterator = players.begin(); iterator != players.end(); ++iterator) {
 		actualPlayer = (Player*) (*iterator);
 		if (actualPlayer->isDead()) {
-			if (actualPlayer->getTeam() == 1)
-				scorage[2]++;
-			if (actualPlayer->getTeam() == 2)
-				scorage[1]++;
+			scorage[actualPlayer->getKilledBy()]++;
+			scorage[actualPlayer->getTeam()]--;
 			// TODO:
 			//actualMobileEntity->respawn();
 		}
@@ -141,6 +140,14 @@ void MissionManager::setMission(string mission) {
 		setMission("TeamFight");
 	} else {
 		setTypeOfMission(missionTypes[mission]);
+	}
+}
+
+int MissionManager::getScore(int team) {
+	if (scorage.find(team) == scorage.end()) {
+		return 0;
+	} else {
+		return scorage[team];
 	}
 }
 
