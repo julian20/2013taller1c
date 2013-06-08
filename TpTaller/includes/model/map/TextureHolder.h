@@ -16,6 +16,7 @@
 
 #define QUAKE_IMG_ID "resources/spells/quake.png"
 #define ICE_IMG "resources/spells/ice.png"
+#define FIREBALL_IMG "resources/spells/fireball.png"
 
 using namespace std;
 
