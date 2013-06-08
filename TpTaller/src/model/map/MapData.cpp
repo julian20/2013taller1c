@@ -115,6 +115,8 @@ void MapData::addItem(int row, int col, Item* object) {
 					copy = new MagicBottle(object);
 				else if(object->getName() == "speedboots")
 					copy = new SpeedBoots(object);
+				else if(object->getName() == "lantern")
+					copy = new Lantern(object);
 				else
 					copy = new Item(object);
 				currentData->addEntity(copy);

@@ -2053,6 +2053,16 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 
 			parsedItems.push_back(speedBoots);
 
+		} else if (actualItem->getName() == "lantern") {
+
+			Lantern* lantern = new Lantern();
+
+			lantern->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			lantern->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(lantern);
+
 		}
 
 	}
