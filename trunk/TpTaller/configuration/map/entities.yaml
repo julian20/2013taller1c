@@ -61,10 +61,10 @@
     baseRows: 1
     baseCols: 1            
   - name: speedboots
-    imageSrc: resources/items/SpeedBoots.png
-    imageWidth: 60
-    imageHeight: 60
-    numberOfClips: 0
+    imageSrc: resources/items/SpeedBootsAnimated.png
+    imageWidth: 70
+    imageHeight: 70
+    numberOfClips: 2
     anchorPixel: [32, 20]
     fps: 8
     delay: 0 
