@@ -13,8 +13,6 @@
 #define DEFAULT_CHARACTER_ID	"characterDefault"
 #define DEFAULT_CHARACTER_PATH	"resources/black_knight/asd.png"
 
-
-
 TextureHolder::TextureHolder() {
 	TextureDefinition* defaultTile = new TextureDefinition(DEFAULT_TEXTURE_ID,
 			DEFAULT_TEXTURE_PATH);
@@ -28,9 +26,11 @@ TextureHolder::TextureHolder() {
 			QUAKE_IMG_ID);
 	textures[QUAKE_IMG_ID] = quake;
 
-	TextureDefinition* ice = new TextureDefinition(
-			ICE_IMG, ICE_IMG);
-			textures[ICE_IMG] = ice;
+	TextureDefinition* ice = new TextureDefinition(ICE_IMG, ICE_IMG);
+	textures[ICE_IMG] = ice;
+
+	TextureDefinition* fire = new TextureDefinition(FIREBALL_IMG, FIREBALL_IMG);
+	textures[FIREBALL_IMG] = fire;
 
 }
 
