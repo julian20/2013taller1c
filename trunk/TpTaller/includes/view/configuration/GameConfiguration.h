@@ -27,6 +27,7 @@ public:
 	std::string getGameMusicSrc();
 	std::string getMenuBackImageSrc();
 	std::string getMenuBackMusicSrc();
+	std::string getMission();
 	unsigned int getTileWidth();
 	unsigned int getTileHeight();
 	void setServerIP(std::string ipAddress);
@@ -44,6 +45,7 @@ public:
 	void setTileHeight(unsigned int _tileHeight);
 	void setScreenAutoConfig(bool screenAutoConfig);
 	void setFullscreen(bool fullscreen);
+	void setMission(std::string mission);
 private:
 	unsigned int fps;
 	unsigned int delay;
@@ -60,6 +62,7 @@ private:
 	std::string gameMusicSrc;
 	std::string menuBackImageSrc;
 	std::string menuBackMusicSrc;
+	std::string mission;
 };
 
 #endif /* GAMECONFIGURATION_H_ */

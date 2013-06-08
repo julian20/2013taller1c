@@ -193,6 +193,7 @@
 - gameConfiguration:
     serverIP: 127.0.0.1
     serverPort: 32001
+    missionType: TeamFight
     fps: 30
     delay: 10
     movementMargin: 90

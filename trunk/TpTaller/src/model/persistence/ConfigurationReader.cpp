@@ -49,6 +49,7 @@ using namespace std;
 #define DEFAULT_MENU_MUSIC "resources/sound/pirates.ogg"
 #define DEFAULT_IMAGE_SRC "resources/questionMark.png"
 #define DEFAULT_NAME "UndefinedName"
+#define DEFAULT_MISSION "TeamFight"
 #define DEFAULT_PORT 32001
 #define DEFAULT_IP "192.168.190.136"
 #define DEFAULT_TILE_WIDTH	70
@@ -1476,7 +1477,7 @@ void operator >>(const YAML::Node& yamlNode,
 	int auxFps, auxDelay, auxHeight, auxWidth, auxBPP, auxMovementMargin;
 	int auxTileWidth, auxTileHeight, auxPort;
 	bool auxFullscreen, auxAutoConfig;
-	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic, auxIP;
+	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic, auxIP, auxMissionType;
 	try {
 		configuration["serverIP"] >> auxIP;
 	} catch (YAML::Exception& yamlException) {
@@ -1492,6 +1493,14 @@ void operator >>(const YAML::Node& yamlNode,
 				string("Error parsing GameConfiguration Server Port: ")
 						+ yamlException.what());
 		auxPort = DEFAULT_PORT;
+	}
+	try {
+		configuration["missionType"] >> auxMissionType;
+	} catch (YAML::Exception& yamlException) {
+		Logs::logErrorMessage(
+				string("Error parsing GameConfiguration Mission Type: ")
+						+ yamlException.what());
+		auxMissionType = DEFAULT_MISSION;
 	}
 	try {
 		configuration["fps"] >> auxFps;
@@ -1616,6 +1625,7 @@ void operator >>(const YAML::Node& yamlNode,
 	animationConfig->setTileHeight((unsigned int) auxTileHeight);
 	animationConfig->setFullscreen(auxFullscreen);
 	animationConfig->setScreenAutoConfig(auxAutoConfig);
+	animationConfig->setMission(auxMissionType);
 }
 
 /* *********************************************** *

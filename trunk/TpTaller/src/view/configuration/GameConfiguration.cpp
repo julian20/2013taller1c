@@ -85,6 +85,10 @@ std::string GameConfiguration::getMenuBackMusicSrc() {
 	return this->menuBackMusicSrc;
 }
 
+std::string GameConfiguration::getMission() {
+	return this->mission;
+}
+
 unsigned int GameConfiguration::getTileWidth() {
 	return this->tileWidth;
 }
@@ -149,6 +153,10 @@ void GameConfiguration::setServerIP(std::string ipAddress) {
 
 void GameConfiguration::setServerPort(unsigned int serverPort) {
 	this->serverPort = serverPort;
+}
+
+void GameConfiguration::setMission(std::string mission) {
+	this->mission = mission;
 }
 
 unsigned int GameConfiguration::getServerPort() {

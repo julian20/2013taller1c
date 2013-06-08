@@ -31,8 +31,10 @@ bool MissionManager::hasEndedFlagCapture(Flag* flag, list<Player*> players) {
 	for (iterator = players.begin(); iterator != players.end(); ++iterator) {
 		actualPlayer = (Player*) (*iterator);
 		if (actualPlayer->isDead()) {
-			if( actualPlayer->getTeam() == 1 ) scorage[2]++;
-			if( actualPlayer->getTeam() == 2 ) scorage[1]++;
+			if (actualPlayer->getTeam() == 1)
+				scorage[2]++;
+			if (actualPlayer->getTeam() == 2)
+				scorage[1]++;
 			// TODO:
 			//actualMobileEntity->respawn();
 		}
@@ -132,6 +134,14 @@ int MissionManager::getTypeOfMission() {
 
 void MissionManager::setTypeOfMission(int type) {
 	typeOfMission = type;
+}
+
+void MissionManager::setMission(string mission) {
+	if (missionTypes.find(mission) == missionTypes.end()) {
+		setMission("TeamFight");
+	} else {
+		setTypeOfMission(missionTypes[mission]);
+	}
 }
 
 map<string, int> MissionManager::getMissionTypes() {
