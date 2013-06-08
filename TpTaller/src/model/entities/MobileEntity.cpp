@@ -120,12 +120,13 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		MobileEntity& thisMobileEntity = *this;
 		thisMobileEntity.reverseCollide(*attackToEntity);
 		lookAtEnemy();
-//		cancelAttack();
+	//	cancelAttack();
 		attackToEntity = NULL;
 		return;
 	}
 
 	if (path->size() == 0) {
+
 		assignPath(mapData->getPath(currentTile, enemyTile));
 		delete enemyTile;
 		return;
@@ -134,6 +135,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	Tile* lastTile = path->back();
 
 	if (lastTile->isNeighbor(enemyTile)) {
+		cancelAttack();
 		delete enemyTile;
 		return;
 	}
