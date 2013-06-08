@@ -32,6 +32,7 @@ Entity::Entity() {
 	this->damageBuffer = 0;
 	this->walkable = false;
 	this->attackable = true;
+	this->shield = 0;
 }
 
 Entity::Entity(Entity* entity) {
@@ -52,6 +53,7 @@ Entity::Entity(Entity* entity) {
 	this->magic = entity->getMagic();
 	this->walkable = entity->isWalkable();
 	this->attackable = entity->isAttackable();
+	this->shield = 0;
 }
 
 bool Entity::isWalkable() {
@@ -168,6 +170,13 @@ void Entity::updateDamageTaken() {
 }
 void Entity::applyDamage(int damage) {
 	//int totalDamage=damage falta calcular lo q protege el escudo
+	if (shield >= damage) {
+		shield -= damage;
+		damage = 0;
+	} else {
+		damage = damage - shield;
+		shield = 0;
+	}
 	damageBuffer = damage;
 	damageTimer.start();
 }

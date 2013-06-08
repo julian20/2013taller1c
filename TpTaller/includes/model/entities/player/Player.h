@@ -97,7 +97,6 @@ private:
 	bool needCastSpell;
 	bool blocking;
 	bool isActive;
-
 };
 
 #endif	/* PERSONAJE_H */

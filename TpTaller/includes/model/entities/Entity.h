@@ -81,6 +81,7 @@ protected:
 	int magic;
 	bool walkable;
 	bool attackable;
+	int shield;
 
 	// Mission manager.
 	int team;
