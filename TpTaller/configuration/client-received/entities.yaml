@@ -51,37 +51,48 @@
 - entityViews:  
   - name: lifeheart
     imageSrc: resources/items/heart.png
-    imageWidth: 64
-    imageHeight: 64
+    imageWidth: 50
+    imageHeight: 50
     numberOfClips: 3
-    anchorPixel: [32, 20]
+    anchorPixel: [20, 10]
     fps: 8
     delay: 0 
     animationRepeats: 7
     baseRows: 1
     baseCols: 1            
   - name: speedboots
-    imageSrc: resources/items/SpeedBoots.png
-    imageWidth: 60
-    imageHeight: 60
-    numberOfClips: 0
-    anchorPixel: [32, 20]
+    imageSrc: resources/items/SpeedBootsAnimated.png
+    imageWidth: 50
+    imageHeight: 50
+    numberOfClips: 2
+    anchorPixel: [25, 20]
     fps: 8
     delay: 0 
     animationRepeats: 7
     baseRows: 1
     baseCols: 1              
   - name: magicbottle
-    imageSrc: resources/items/MagicBottle.png
-    imageWidth: 50
-    imageHeight: 74
-    numberOfClips: 0
-    anchorPixel: [32, 20]
+    imageSrc: resources/items/MagicBottleAnimated.png
+    imageWidth: 40
+    imageHeight: 55
+    numberOfClips: 2
+    anchorPixel: [20, 20]
     fps: 8
     delay: 0 
     animationRepeats: 7
     baseRows: 1
-    baseCols: 1   
+    baseCols: 1               
+  - name: lantern
+    imageSrc: resources/items/LanternAnimated.png
+    imageWidth: 40
+    imageHeight: 54
+    numberOfClips: 2
+    anchorPixel: [20, 20]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
+    baseCols: 1    
   - name: windmill
     imageSrc: resources/buildings/windmill.png
     imageWidth: 224
@@ -193,6 +204,7 @@
 - gameConfiguration:
     serverIP: 127.0.0.1
     serverPort: 32001
+    missionType: TeamFight
     fps: 30
     delay: 10
     movementMargin: 90
@@ -251,17 +263,17 @@
   - name: mob
     position: [10, 10, 0]
     speed:
-      magnitude: 4
+      magnitude: 1
       direction: [1, 2]
   - name: mob
     position: [10, 12, 0]
     speed:
-      magnitude: 4
+      magnitude: 1
       direction: [1, 2]
   - name: mob
     position: [10, 14, 0]
     speed:
-      magnitude: 4
+      magnitude: 1
       direction: [1, 2]
 - itemLocations:
   - name: lifeheart
@@ -270,6 +282,8 @@
     position: [18, 18, 0]
   - name: magicbottle
     position: [20, 14, 0]
+  - name: lantern
+    position: [22, 16, 0]
 - entityLocations:
   - name: chapel
     position: [23, 20, 0]
