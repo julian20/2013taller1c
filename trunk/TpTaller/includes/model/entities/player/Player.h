@@ -26,6 +26,7 @@
 
 #define QUAKE_SPELL_ID "quake"
 #define NONE_SPELL_ID "none"
+#define RESPAWN_TIMEOUT 15000
 
 using namespace std;
 
@@ -61,6 +62,8 @@ public:
 	bool playerIsActive();
 	void setActive();
 	void SetUnactive();
+
+	void respawn();
 
 	virtual void collideTo(Entity& entity);
 	virtual void reverseCollide(Entity& entity);

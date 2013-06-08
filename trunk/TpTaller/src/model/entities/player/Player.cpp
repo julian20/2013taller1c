@@ -11,7 +11,8 @@
 #include <stdio.h>
 using namespace std;
 
-Player::Player() : MobileEntity() {
+Player::Player() :
+		MobileEntity() {
 	endPos = new Vector3(0, 0);
 	this->mainPlayer = false;
 	this->speed = new Speed(0, new Vector2(0, 0));
@@ -57,7 +58,7 @@ Player::Player(string name, Position* position, Speed* speed,
 	team = 4;
 	mainPlayer = true;
 	viewRange = 200;
-	weapons=NULL;
+	weapons = NULL;
 	needCastSpell = false;
 	castingSpell = false;
 	spellEffects.push_back(new SpellEffect());
@@ -71,8 +72,7 @@ bool Player::isCastingSpell() {
 	return castingSpell;
 }
 
-SpellEffect* Player::getCurrentSpell()
-{
+SpellEffect* Player::getCurrentSpell() {
 	if (spellEffects.size() == 0)
 		return NULL;
 
@@ -83,8 +83,8 @@ void Player::castSpell() {
 	needCastSpell = true;
 }
 
-void Player::setSpellDirection(SpellEffect* spell,
-		Coordinates starting, Coordinates ending) {
+void Player::setSpellDirection(SpellEffect* spell, Coordinates starting,
+		Coordinates ending) {
 
 	int rowDiff = ending.getRow() - starting.getRow();
 	int colDiff = ending.getCol() - starting.getCol();
@@ -92,19 +92,19 @@ void Player::setSpellDirection(SpellEffect* spell,
 	if (rowDiff == 0 && colDiff == 1)
 		spell->setDirection(spell->getRIGHT());
 	if (rowDiff == 0 && colDiff == -1)
-			spell->setDirection(spell->getLEFT());
+		spell->setDirection(spell->getLEFT());
 	if (rowDiff == 1 && colDiff == 0)
-			spell->setDirection(spell->getDOWN());
+		spell->setDirection(spell->getDOWN());
 	if (rowDiff == -1 && colDiff == 0)
-			spell->setDirection(spell->getUP());
+		spell->setDirection(spell->getUP());
 	if (rowDiff == 1 && colDiff == 1)
-			spell->setDirection(spell->getDOWN_RIGHT() );
+		spell->setDirection(spell->getDOWN_RIGHT());
 	if (rowDiff == 1 && colDiff == -1)
-			spell->setDirection(spell->getDOWN_LEFT());
+		spell->setDirection(spell->getDOWN_LEFT());
 	if (rowDiff == -1 && colDiff == 1)
-			spell->setDirection(spell->getUP_RIGHT());
+		spell->setDirection(spell->getUP_RIGHT());
 	if (rowDiff == -1 && colDiff == -1)
-			spell->setDirection(spell->getUP_LEFT());
+		spell->setDirection(spell->getUP_LEFT());
 }
 
 void Player::castSpellNow(MapData* mapData) {
@@ -151,8 +151,7 @@ void Player::reverseCollide(Entity& entity) {
 	entity.collideTo(*this);
 }
 
-Weapon* Player::getCurrentWeapon()
-{
+Weapon* Player::getCurrentWeapon() {
 	Weapon* weaponToUse = weapons->front();
 	return weaponToUse;
 }
@@ -162,11 +161,10 @@ void Player::attack(Entity& entity) {
 		attacking = true;
 		attackTimer.start();
 		//this->magic--;
-		if(magic>0)
-		{
+		if (magic > 0) {
 			Weapon* weaponToUse = this->getCurrentWeapon();
 			weaponToUse->attack(entity);
-			this->magic-=weaponToUse->getMagic();
+			this->magic -= weaponToUse->getMagic();
 		}
 	}
 
@@ -372,6 +370,12 @@ void Player::SetUnactive() {
 
 bool Player::playerIsActive() {
 	return isActive;
+}
+
+void Player::respawn() {
+	if (respawnTimer.getTimeIntervalSinceStart() >= RESPAWN_TIMEOUT) {
+		setLife(100);
+	}
 }
 
 Player::~Player() {

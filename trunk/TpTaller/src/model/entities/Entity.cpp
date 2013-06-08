@@ -21,7 +21,7 @@ using namespace std;
 Entity::Entity() {
 	this->currentPos = new Vector3(0, 0, 0);
 	this->currentTile = NULL;
-	this->coord = new Coordinates(0,0);
+	this->coord = new Coordinates(0, 0);
 	this->base = new Base();
 	this->name = "";
 	this->life = 100;
@@ -36,7 +36,7 @@ Entity::Entity() {
 
 Entity::Entity(Entity* entity) {
 	Vector3* pos = entity->getCurrentPos();
-	this->currentPos = new Vector3(pos->getX(),pos->getY(),pos->getZ());
+	this->currentPos = new Vector3(pos->getX(), pos->getY(), pos->getZ());
 	Coordinates coordin = entity->getCoordinates();
 	this->coord = new Coordinates(coordin.getCol(), coordin.getRow());
 	Base base = entity->getBase();
@@ -72,8 +72,7 @@ void Entity::setPos(float x, float y, float z) {
 	//		(int) y / Tile::computePositionTile(0, 0).h);
 }
 
-list<Entity*> Entity::getVisibleEnemies()
-{
+list<Entity*> Entity::getVisibleEnemies() {
 	return this->enemies;
 }
 Vector3* Entity::getCurrentPos() {
@@ -88,17 +87,17 @@ Coordinates Entity::getCoordinates() {
 	return retval;
 }
 
-void Entity::setDamageBuffer(int dmg){
+void Entity::setDamageBuffer(int dmg) {
 	damageBuffer = dmg;
 }
 
-int Entity::getDamageBuffer(){
+int Entity::getDamageBuffer() {
 	return damageBuffer;
 }
 void Entity::setCoordinates(int row, int col) {
 	if (row < 0 || col < 0) {
 		std::cout << "Se esta tratando de asignar unas coordenadas"
-					 " fuera de rango a una entity" << std::endl;
+				" fuera de rango a una entity" << std::endl;
 		return;
 	}
 
@@ -155,28 +154,23 @@ void Entity::setTile(Tile* _tile) {
 
 Tile* Entity::getTile() {
 	// Devuelve una copia del tile
-	Tile* retval = new Tile(new Coordinates(coord->getRow(),coord->getCol()));
+	Tile* retval = new Tile(new Coordinates(coord->getRow(), coord->getCol()));
 
 	return retval;
 }
 
-
-void Entity::updateDamageTaken(){
-	if (damageTimer.getTimeIntervalSinceStart() > DAMAGE_DELAY){
+void Entity::updateDamageTaken() {
+	if (damageTimer.getTimeIntervalSinceStart() > DAMAGE_DELAY) {
 		this->life -= damageBuffer;
 		damageBuffer = 0;
 	}
 
 }
-void Entity::applyDamage(int damage)
-{
+void Entity::applyDamage(int damage) {
 	//int totalDamage=damage falta calcular lo q protege el escudo
 	damageBuffer = damage;
 	damageTimer.start();
-
-
 }
-
 
 bool Entity::isDead() {
 	if (this->life <= 0) {
@@ -219,6 +213,10 @@ void Entity::setLife(int life) {
 }
 void Entity::setMagic(int magic) {
 	this->magic = magic;
+}
+
+void Entity::resetRespawnTimer() {
+	respawnTimer.start();
 }
 
 Entity::~Entity() {
