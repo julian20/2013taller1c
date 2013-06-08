@@ -273,14 +273,6 @@ void Player::setAsMainPlayer() {
 	this->mainPlayer = true;
 }
 
-void Player::setViewRange(int _viewRange) {
-	this->viewRange = _viewRange;
-}
-
-int Player::getViewRange() {
-	return this->viewRange;
-}
-
 Player& Player::operator=(const Player &other) {
 
 	this->name = other.name;

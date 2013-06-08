@@ -25,16 +25,11 @@ Lantern::Lantern(Item* entity) : Item(entity) {
 	this->killedBy = entity->getKilledBy();
 }
 
-// TODO: como el manejo de colisiones esta en mobile entity,
-// el player cuando colisiona con otra cosa nunca sabe que
-// es de tipo player, o al menos no pude conseguir su tipo
-// bien. Una solucion seria pasar el atributo view range
-// a mobile entity, pero sino nose.
-void Lantern::applyEffects(Player& entity) {
+void Lantern::applyEffects(MobileEntity& entity) {
 	entity.setViewRange(entity.getViewRange() + 50);
 }
 
-void Lantern::collideTo(Player& entity) {
+void Lantern::collideTo(MobileEntity& entity) {
 	applyEffects(entity);
 }
 

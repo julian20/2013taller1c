@@ -23,7 +23,7 @@ public:
 	virtual ~MissionManager();
 
 	// Methods
-	bool hasEndedFlagCapture(Flag* flag, list<Player*> players);
+	bool hasEndedFlagCapture(list<Player*> players, Flag* flag);
 	bool hasEndedTeamFight(list<Player*> players);
 	bool hasEndedSuddenDeath(list<Player*> players);
 	bool hasEndedGame(list<Player*> players, Flag* flag);
