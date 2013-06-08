@@ -15,6 +15,7 @@
 #include <map>
 
 #define QUAKE_IMG_ID "resources/spells/quake.png"
+#define ICE_IMG "resources/spells/ice.png"
 
 using namespace std;
 

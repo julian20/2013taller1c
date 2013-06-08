@@ -5,26 +5,28 @@
  *      Author: fede
  */
 
-#include <view/entities/spells/SpellEffectView.h>
-
-SpellEffectView::SpellEffectView() : MobileEntityView() {
+#include <view/entities/spells/IceSpellView.h>
+#define WIDTH 64
+IceSpellView::IceSpellView() : MobileEntityView() {
 	this->image = NULL;
 	this->spell = NULL;
 }
 
-void SpellEffectView::loadImage() {
-	this->image = textureHolder->getTexture(name);
+void IceSpellView::loadImage() {
+	this->image = textureHolder->getTexture(string(ICE_IMG));
+	this->imageWidth = WIDTH;
+	this->numberOfClips = computeNumberOfClips(image);
 }
 
-void SpellEffectView::setSpellEffect(SpellEffect* spell) {
+void IceSpellView::setSpellEffect(SpellEffect* spell) {
 	this->spell = spell;
 }
 
-SpellEffect* SpellEffectView::getSpellEffect() {
+SpellEffect* IceSpellView::getSpellEffect() {
 	return spell;
 }
 
-void SpellEffectView::draw(SDL_Surface* screen, Position* camera, bool drawFog) {
+void IceSpellView::draw(SDL_Surface* screen, Position* camera, bool drawFog) {
 	UpdateCameraPos(camera);
 
 	if (this->image == NULL)
@@ -53,7 +55,7 @@ void SpellEffectView::draw(SDL_Surface* screen, Position* camera, bool drawFog) 
 	marco++;
 }
 
-SpellEffectView::~SpellEffectView() {
+IceSpellView::~IceSpellView() {
 
 }
 
