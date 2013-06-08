@@ -30,7 +30,7 @@ void ArtificialIntelligence::update(MapData* mapData) {
 
 	if (this->isAnyEnemyClose(mapData)) {
 			Entity& enemy = this->getNearestEnemy();
-			entity->attackTo(&enemy);
+				entity->attackTo(&enemy);
 	} else {
 		if(entity->getClassName() == "MobileEntity") {
 			entity->cancelAttack();
