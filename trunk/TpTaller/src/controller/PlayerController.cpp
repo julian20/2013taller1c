@@ -119,37 +119,39 @@ void playSound() {
 
 }
 void PlayerController::movePlayer(int x, int y) {
-	Position* cameraPos = this->camera->getPosition();
-	playSound();
+	if (!player->isDead()) {
+		Position* cameraPos = this->camera->getPosition();
+		playSound();
 
-	Coordinates* coor = Tile::getTileCoordinates(x - cameraPos->getX(),
-			y - cameraPos->getY());
+		Coordinates* coor = Tile::getTileCoordinates(x - cameraPos->getX(),
+				y - cameraPos->getY());
 
-	if (listEvents) {
-		playerCancelAttack();
-		events.push_back(new PlayerEvent(EVENT_MOVE, *coor));
-		if (!player->getCurrentPos()->isEqual(player->getEndPos())) {
+		if (listEvents) {
+			playerCancelAttack();
+			events.push_back(new PlayerEvent(EVENT_MOVE, *coor));
+			if (!player->getCurrentPos()->isEqual(player->getEndPos())) {
+				return;
+			}
 			return;
 		}
-		return;
-	}
 
-	if (coor->getCol() >= 0 && coor->getCol() < data->getNCols()
-			&& coor->getRow() >= 0 && coor->getRow() < data->getNRows()) {
-		SDL_Rect firstTile = Tile::computePositionTile(0, 0);
-		firstTile.x = cameraPos->getX() + firstTile.x;
-		firstTile.y = cameraPos->getY() + firstTile.y;
+		if (coor->getCol() >= 0 && coor->getCol() < data->getNCols()
+				&& coor->getRow() >= 0 && coor->getRow() < data->getNRows()) {
+			SDL_Rect firstTile = Tile::computePositionTile(0, 0);
+			firstTile.x = cameraPos->getX() + firstTile.x;
+			firstTile.y = cameraPos->getY() + firstTile.y;
 
-		if (player != NULL) {
-			Tile* toTile = new Tile(
-					new Coordinates(coor->getRow(), coor->getCol()));
-			data->moveMobileEntity(player, toTile);
-			delete toTile;
+			if (player != NULL) {
+				Tile* toTile = new Tile(
+						new Coordinates(coor->getRow(), coor->getCol()));
+				data->moveMobileEntity(player, toTile);
+				delete toTile;
+			}
 		}
-	}
 
-	delete coor;
-	delete cameraPos;
+		delete coor;
+		delete cameraPos;
+	}
 }
 
 void PlayerController::setMapCameraView(MapCameraView* cameraView) {
