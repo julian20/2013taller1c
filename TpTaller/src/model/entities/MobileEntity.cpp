@@ -195,6 +195,8 @@ void MobileEntity::updateFromServer(MobileEntityUpdate* update) {
 	if ((!currentTileCoords.isEqual(nextTileCoords)) && (this->path->empty())) {
 		this->path->push_front(update->getNextTile());
 	}
+	this->life = update->getLife();
+	this->team = update->getTeam();
 
 }
 
