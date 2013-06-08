@@ -269,8 +269,12 @@ void MultiplayerGame::addNewMobileEntities() {
 	std::vector<MobileEntity *>::const_iterator iter;
 	for (iter = newMobiles.begin(); iter != newMobiles.end(); ++iter) {
 		MobileEntity* current = *iter;
+		MobileEntityView* view = new MobileEntityView();
+		view->setMobileEntity(current);
 
-		//addMobileEntity(
+		Coordinates coords = current->getCoordinates();
+
+		//addMobileEntity(view, current, coords);
 	}
 
 	mapData->cleanNewMobileEntities();
