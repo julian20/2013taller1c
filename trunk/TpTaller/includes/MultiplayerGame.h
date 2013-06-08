@@ -20,10 +20,11 @@
 #include <networking/MobUpdate.h>
 #include <networking/PlayerEvent.h>
 #include <networking/NetworkPlayerController.h>
-#include <AI/ArtificialIntelligence.h>
 #include <networking/PlayerUpdate.h>
 #include <networking/ChatUpdate.h>
+#include <view/entities/MobileEntityView.h>
 #include <view/MapView.h>
+#include <AI/ArtificialIntelligence.h>
 #include <map>
 #include <stdlib.h>
 
