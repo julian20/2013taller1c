@@ -297,6 +297,8 @@ void MobileEntity::attackTo(Entity* attackTo) {
 
 void MobileEntity::setSpeedMagnitude(int mag) {
 	speed->setMagnitude(mag);
+	// TODO: hardcode maxspeed.
+	if(speed->getMagnitude() > 10) speed->setMagnitude(10);
 }
 
 bool MobileEntity::isAttacking() {
