@@ -570,13 +570,16 @@ void MapData::cleanVisibleTilesVector() {
 	visibleTiles.erase(visibleTiles.begin(), visibleTiles.end());
 }
 
-void MapData::updateVisibleTiles() {
-	cleanVisibleTilesVector();
+void MapData::updateVisibleTiles(MobileEntity* mobile) {
+	if (mobile == NULL)
+		mobile = mainPlayer;
 
-	Vector3* playerPos = mainPlayer->getCurrentPos();
+	Vector3* playerPos = mobile->getCurrentPos();
 	int pX = playerPos->getX();
 	int pY = playerPos->getY();
-	int viewRange = mainPlayer->getViewRange() / sqrt(2);
+	Tile* entityTile = new Tile(Tile::getTileCoordinates(pX, pY));
+
+	int viewRange = mobile->getViewRange() / sqrt(2);
 
 	// La posicion vertical son rows y la horizontal cols.
 	Tile topTile = Tile::getTileCoordinates(pX + viewRange, pY - viewRange);
@@ -604,14 +607,11 @@ void MapData::updateVisibleTiles() {
 		for (int col = leftCol - VisibleTilesMargin;
 				col < rightCol + VisibleTilesMargin; col++) {
 
-			int x = mainPlayer->getCurrentPos()->getX();
-			int y = mainPlayer->getCurrentPos()->getY();
-			Tile* playerTile = new Tile(Tile::getTileCoordinates(x, y));
 			Tile currentTile;
 			currentTile.setCoordinates(row, col);
 
-			if (distBetweenTiles(&currentTile, playerTile)
-					< mainPlayer->getViewRange()) {
+			if (distBetweenTiles(&currentTile, entityTile)
+					< mobile->getViewRange()) {
 
 				TileData* tileData = getTileData(row, col);
 
@@ -619,10 +619,10 @@ void MapData::updateVisibleTiles() {
 				visibleTiles.push_back(tileData);
 			}
 
-			delete playerTile;
 		}
 	}
 
+	delete entityTile;
 }
 
 bool compMobileEntitiesList(MobileEntityWithCenterDistance A,

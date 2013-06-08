@@ -34,10 +34,10 @@ Player::Player() :
 	blocking = false;
 	hasChanged = true;
 	chat = NULL;
-	viewRange = 200;
 	needCastSpell = false;
 	castingSpell = false;
 	spellEffects.push_back(new SpellEffect());
+	viewRange = 200;
 }
 
 Player::Player(string name, Position* position, Speed* speed,
@@ -57,11 +57,11 @@ Player::Player(string name, Position* position, Speed* speed,
 	isActive = true;
 	team = 4;
 	mainPlayer = true;
-	viewRange = 200;
 	weapons = NULL;
 	needCastSpell = false;
 	castingSpell = false;
 	spellEffects.push_back(new SpellEffect());
+	viewRange = 200;
 }
 
 void Player::setCastingSpell(bool castingSpell) {
@@ -185,6 +185,7 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->team = update->getTeam();
 	this->lastAttackingDirection = update->getLastAttackingDirection();
 	this->castingSpell = update->getCastingSpell();
+	this->viewRange = update->getViewRange();
 	if (currentTile)
 		delete currentTile;
 	this->currentTile = update->getTile();
@@ -230,6 +231,7 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setLastAttackingDirection(lastAttackingDirection);
 	update->setTeam(this->team);
 	update->setCastingSpell(this->castingSpell);
+	update->setViewRange(this->viewRange);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {
