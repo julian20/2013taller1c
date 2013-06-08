@@ -175,6 +175,7 @@ Server::Server(){
 	active = false;
 	serverID = 0;
 	game = NULL;
+	missionManager = new MissionManager();
 }
 
 Server::Server(int port) {
