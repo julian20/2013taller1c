@@ -145,7 +145,6 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 void MobileEntity::extraUpdate(MapData* mapData) {
 
 }
-
 void MobileEntity::update(MapData* mapData) {
 	extraUpdate(mapData);
 	if (attackToEntity != NULL)
