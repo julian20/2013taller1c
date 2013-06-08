@@ -50,6 +50,7 @@ public:
 	bool isRunning();
 
 	void attackTo(Entity* attackTo);
+	Entity* getAttackToEntity();
 	void attack();
 	void setAttack(bool attacking);
 	bool isAttacking();

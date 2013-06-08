@@ -17,16 +17,15 @@
 class ArtificialIntelligence {
 public:
 	ArtificialIntelligence();
-	void setEntity(Entity* entity);
+	void setMobileEntity(MobileEntity* entity);
 	virtual ~ArtificialIntelligence();
 	void watch(MapData* mapData);
 	void update(MapData* mapData);
 	bool isAnyEnemyClose(MapData* mapData);
 	void followEnemy(Entity& entity);
 	Entity& getNearestEnemy();
-	void attack(Entity& enemy);
 private:
-	Entity* entity;
+	MobileEntity* entity;
 	list<MobileEntity*> entitiesNear;
 	Timer attackTimer;
 };
