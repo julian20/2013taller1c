@@ -32,6 +32,7 @@ public:
 	int getTypeOfMission();
 	int getNextAvailableTeam();
 	int getWinningTeam();
+	int getScore(int team);
 	map<string, int> getMissionTypes();
 	void setTypeOfMission(int type);
 	void setWinningTeam(int team);
