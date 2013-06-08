@@ -8,17 +8,20 @@
 #include <model/entities/enemies/Mob.h>
 using namespace std;
 
+
+#define MOB_ATTACK_TIMEOUT 3000
 Mob::Mob() {
 	this->weapons = new list<Weapon*>;
 	Sword* sword = new Sword();
-		sword->setAccuracy(10);
-		sword->setDamage(10);
-		sword->setRange(1);
-		sword->setMagic(0);
-		weapons->push_front(sword);
+	sword->setAccuracy(10);
+	sword->setDamage(10);
+	sword->setRange(1);
+	sword->setMagic(0);
+	weapons->push_front(sword);
+	type = TYPE_ZOMBIE;
 }
 
-void Mob::setType(MobType type){
+void Mob::setType(MobType type) {
 	this->type = type;
 }
 
@@ -30,32 +33,31 @@ void Mob::collideTo(Entity& entity) {
 void Mob::reverseCollide(Entity& entity) {
 	entity.collideTo(*this);
 }
-Weapon* Mob::getCurrentWeapon()
-{
+Weapon* Mob::getCurrentWeapon() {
 	Weapon* weaponToUse = weapons->front();
 	return weaponToUse;
 }
 
 void Mob::attack(Entity& entity) {
-	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
+	if (attackTimer.getTimeIntervalSinceStart() > MOB_ATTACK_TIMEOUT) {
 		attacking = true;
 		attackTimer.start();
 		//this->magic--;
-		if(magic>0)
-		{
+		if (magic > 0) {
 			Weapon* weaponToUse = this->getCurrentWeapon();
 			weaponToUse->attack(entity);
-			this->magic-=weaponToUse->getMagic();
+			this->magic -= weaponToUse->getMagic();
 		}
 	}
 
 }
 
-MobType Mob::getType(){
+MobType Mob::getType() {
 	return this->type;
 }
 
-MobUpdate* Mob::generateMobUpdate(int id){
-	MobUpdate* update = (MobUpdate*) MobileEntity::generateMobileEntityUpdate(id);
+MobUpdate* Mob::generateMobUpdate(int id) {
+	MobUpdate* update = (MobUpdate*) MobileEntity::generateMobileEntityUpdate(
+			id);
 	return update;
 }

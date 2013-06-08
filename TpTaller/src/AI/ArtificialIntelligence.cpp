@@ -106,7 +106,7 @@ void ArtificialIntelligence::watch(MapData* mapData)
 				 mapData->moveMobileEntity((Mob*)this->entity,tile);
 			 }
 		 }
-
+		 if (tile) delete tile;
 	 }
 }
 ArtificialIntelligence::~ArtificialIntelligence() {

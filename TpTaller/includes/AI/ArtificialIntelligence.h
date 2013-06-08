@@ -12,6 +12,7 @@
 #include <model/entities/MobileEntity.h>
 #include <model/map/MapData.h>
 #include <model/entities/enemies/Mob.h>
+#include <view/timer/Timer.h>
 #include <list>
 class ArtificialIntelligence {
 public:
@@ -27,6 +28,7 @@ public:
 private:
 	Entity* entity;
 	list<MobileEntity*> entitiesNear;
+	Timer attackTimer;
 };
 
 #endif /* ARTIFICIALINTELLIGENCE_H_ */
