@@ -16,8 +16,6 @@ public:
 	FireballView();
 	void setSpellEffect(SpellEffect* spell);
 	SpellEffect* getSpellEffect();
-	virtual void draw(SDL_Surface* screen, Position* camera, bool drawFog);
-
 	virtual ~FireballView();
 private:
 	virtual void loadImage();
