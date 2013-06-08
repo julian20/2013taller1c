@@ -103,7 +103,6 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	in >> castingSp;
 	update.setCastingSpell(castingSp);
 	return in;
-
 }
 
 PlayerUpdate::~PlayerUpdate() {

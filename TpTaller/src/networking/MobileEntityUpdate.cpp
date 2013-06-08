@@ -204,6 +204,4 @@ istream& operator >>(std::istream& in, MobileEntityUpdate& update) {
 	in >> team;
 	update.setTeam(team);
 	return in;
-
-	return in;
 }
