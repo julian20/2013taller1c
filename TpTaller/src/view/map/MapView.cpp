@@ -2,6 +2,7 @@
 
 #define TilesScale     		1
 #define TilesVisibleMargin	10
+#define EarthquakeStrength	20
 
 using namespace std;
 
@@ -119,6 +120,12 @@ void MapView::draw(Position* cam) {
 	data->updateVisibleTiles();
 	SDL_Rect posTile, posFog;
 	map<string, int> mapVisibleLimits = getVisibleTilesLimit(cam);
+	Position* cameraPos = this->camera->getPosition();
+
+	if (data->getEarthquake()) {
+		cameraPos->setX( cameraPos->getX() + rand() % EarthquakeStrength );
+		cameraPos->setY( cameraPos->getY() + rand() % EarthquakeStrength );
+	}
 
 	for (int col = mapVisibleLimits["StartCol"];
 			col < mapVisibleLimits["EndCol"]; col++) {
@@ -130,10 +137,9 @@ void MapView::draw(Position* cam) {
 
 			if (tileData->getWasVisible()) {
 				posFog = posTile = Tile::computePositionTile(row, col - 1);
-				Position* cameraPos = this->camera->getPosition();
+
 				posFog.x = posTile.x = posTile.x + cameraPos->getX();
 				posFog.y = posTile.y = posTile.y + cameraPos->getY();
-				delete cameraPos;
 
 				std::string textureId = data->getTileType(row, col);
 				SDL_Surface* textureImage = textureHolder->getTexture(
@@ -148,7 +154,7 @@ void MapView::draw(Position* cam) {
 	}
 
 	viewMap->drawViews(screen, cam, mapVisibleLimits);
-
+	delete cameraPos;
 }
 
 MapData* MapView::getMapData(){
