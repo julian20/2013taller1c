@@ -84,7 +84,7 @@ void* handle(void* par) {
 	HandleThreadParameter* parameter = (HandleThreadParameter*) par;
 	int clientSocket = parameter->clientID;
 	Server* server = parameter->server;
-	MissionManager missionManager = server->getMissionManager();
+	MissionManager* missionManager = server->getMissionManager();
 
 
 	std::vector<std::string> withBase = server->listFilesInDirectoryWithBase(
@@ -210,6 +210,8 @@ Server::Server(int port) {
 	disconectedPlayers.clear();
 	updates.clear();
 
+	missionManager = new MissionManager();
+
 }
 
 /* **************************** SERVER RUN ************************** */
@@ -268,7 +270,7 @@ void Server::runMainLoop(int clientSocket, string playerName){
 		if (!playing)
 			break;
 
-		bool gameEnd = missionManager.hasEndedGame(game->getPlayers(), game->getFlag());
+		bool gameEnd = missionManager->hasEndedGame(game->getPlayers(), game->getFlag());
 
 		sendGameState(clientSocket, gameEnd);
 
@@ -745,11 +747,11 @@ map<string,Player*> Server::getPlayerConnected()
 	return this->conectedPlayers;
 }
 
-MissionManager Server::getMissionManager() {
+MissionManager* Server::getMissionManager() {
 	return this->missionManager;
 }
 
-void Server::setMissionManager(MissionManager manager) {
+void Server::setMissionManager(MissionManager* manager) {
 	this->missionManager = manager;
 }
 
