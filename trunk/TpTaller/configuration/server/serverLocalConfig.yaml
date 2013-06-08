@@ -48,13 +48,13 @@
     baseRows: 1
     baseCols: 1
     delay: 0.5
-- entityViews:          
+- entityViews:  
   - name: lifeheart
     imageSrc: resources/items/heart.png
-    imageWidth: 64
-    imageHeight: 64
+    imageWidth: 50
+    imageHeight: 50
     numberOfClips: 3
-    anchorPixel: [32, 20]
+    anchorPixel: [20, 10]
     fps: 8
     delay: 0 
     animationRepeats: 7
@@ -62,10 +62,10 @@
     baseCols: 1            
   - name: speedboots
     imageSrc: resources/items/SpeedBootsAnimated.png
-    imageWidth: 70
-    imageHeight: 70
+    imageWidth: 50
+    imageHeight: 50
     numberOfClips: 2
-    anchorPixel: [32, 20]
+    anchorPixel: [25, 20]
     fps: 8
     delay: 0 
     animationRepeats: 7
@@ -73,10 +73,10 @@
     baseCols: 1              
   - name: magicbottle
     imageSrc: resources/items/MagicBottleAnimated.png
-    imageWidth: 50
-    imageHeight: 69
+    imageWidth: 40
+    imageHeight: 55
     numberOfClips: 2
-    anchorPixel: [32, 20]
+    anchorPixel: [20, 20]
     fps: 8
     delay: 0 
     animationRepeats: 7
@@ -84,10 +84,10 @@
     baseCols: 1               
   - name: lantern
     imageSrc: resources/items/LanternAnimated.png
-    imageWidth: 60
-    imageHeight: 81
+    imageWidth: 40
+    imageHeight: 54
     numberOfClips: 2
-    anchorPixel: [32, 20]
+    anchorPixel: [20, 20]
     fps: 8
     delay: 0 
     animationRepeats: 7
