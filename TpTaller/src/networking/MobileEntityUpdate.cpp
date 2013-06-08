@@ -74,6 +74,14 @@ bool MobileEntityUpdate::getCastingSpell() {
 	return castingSpell;
 }
 
+void MobileEntityUpdate::setViewRange(int viewRange) {
+	this->viewRange = viewRange;
+}
+
+int MobileEntityUpdate::getViewRange() {
+	return viewRange;
+}
+
 void MobileEntityUpdate::setCurrentPos(Vector3* currentPos) {
 	this->currentPos->setValues(currentPos->getX(), currentPos->getY(),
 			currentPos->getZ());
@@ -164,7 +172,7 @@ ostream& operator <<(std::ostream& out, const MobileEntityUpdate& update) {
 			<< " " << " " << *update.currentTile << " " << *update.nextTile
 			<< " " << *update.initCoords << " " << update.life << " "
 			<< update.magic << " " << update.lastAttackingDirection << " "
-			<< update.team;
+			<< update.team << " " << update.viewRange;
 
 	return out;
 }
@@ -203,5 +211,8 @@ istream& operator >>(std::istream& in, MobileEntityUpdate& update) {
 	int team;
 	in >> team;
 	update.setTeam(team);
+	int view;
+	in >> view;
+	update.setViewRange(view);
 	return in;
 }

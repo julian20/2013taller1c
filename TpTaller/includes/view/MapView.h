@@ -40,16 +40,17 @@ public:
 	void addNewMobileEntityView(MobileEntityView* view, Coordinates initCoord);
 	void removeMobileEntity(MobileEntityView* view);
 private:
+	void updateVisibleTiles();
 	map<string, int> getVisibleTilesLimit(Position* cam);
 
 	TextureHolder* textureHolder;
 	MapData* data;
 	SDL_Surface* screen;
 	EntityViewMap* viewMap;
+	list<PlayerView*> players;	// Not including main Player
 
 	string backgroundPath;
 	MobileEntity* mobileEntity;
-
 
 	MapCameraView* camera;
 

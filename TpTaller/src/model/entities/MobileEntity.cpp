@@ -19,7 +19,6 @@ MobileEntity::MobileEntity() : Entity() {
 	attacking = false;
 	endPos = new Vector3(0, 0);
 	team = 0;
-	viewRange = 200;
 	attackToEntity = NULL;
 //	ia = ArtificialIntelligence();
 	this->speed = new Speed(0, new Vector2(0, 0));
@@ -28,11 +27,11 @@ MobileEntity::MobileEntity() : Entity() {
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	attackTimer.start();
 	lastAttackingDirection = 0;
+	viewRange = 200;
 }
 
 MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	this->speed = speed;
-	viewRange = 200;
 	this->name = name;
 	this->path = new list<Tile *>();
 	currentTile = new Tile(new Coordinates(0, 0));
@@ -47,6 +46,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	team = 0;
 	attackTimer.start();
 	lastAttackingDirection = 0;
+	viewRange = 200;
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {
@@ -191,6 +191,7 @@ void MobileEntity::updateFromServer(MobileEntityUpdate* update) {
 	this->attacking = update->isAttacking();
 	this->currentTile = update->getTile();
 	this->lastAttackingDirection = update->getLastAttackingDirection();
+	this->viewRange = update->getViewRange();
 
 	Coordinates currentTileCoords = this->currentTile->getCoordinates();
 	Coordinates nextTileCoords = update->getNextTile()->getCoordinates();
@@ -221,6 +222,7 @@ MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate(int id) {
 	update->setLife(this->life);
 	update->setMagic(this->magic);
 	update->setTeam(this->team);
+	update->setViewRange(this->viewRange);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {
@@ -384,6 +386,8 @@ ostream& operator <<(std::ostream& out, const MobileEntity& MobileEntity) {
 	out << *(MobileEntity.currentTile);
 	out << " " << MobileEntity.life << " " << MobileEntity.team;
 	out << " " << MobileEntity.lastAttackingDirection;
+	out << " " << MobileEntity.viewRange;
+
 	return out;
 }
 
@@ -418,6 +422,10 @@ istream& operator >>(std::istream& in, MobileEntity& MobileEntity) {
 	float lastDir;
 	in >> lastDir;
 	MobileEntity.lastAttackingDirection = lastDir;
+	int view;
+	in >> view;
+	MobileEntity.viewRange = view;
+
 	return in;
 }
 

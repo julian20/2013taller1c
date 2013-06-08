@@ -39,6 +39,8 @@ public:
 	void setSpeed(Speed* speed);
 	bool isAttacking();
 	void setAttacking(bool attacking);
+	void setViewRange(int viewRange);
+	int getViewRange();
 	float getLastAttackingDirection();
 	void setLastAttackingDirection(float dir);
 	Tile* getTile();
@@ -78,6 +80,7 @@ protected:
 	bool attacking;
 	float lastAttackingDirection;
 	bool castingSpell;
+	int viewRange;
 
 	Coordinates* initCoords;
 

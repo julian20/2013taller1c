@@ -56,10 +56,10 @@ public:
 	list<MobileEntity *> getClosestEntities(Coordinates centerCoordinates,
 			int tilesRange, bool removeEntityInPosition = true);
 	list<Tile *> getNeighborTiles(Tile* tile);
-	void updateVisibleTiles();
+	void cleanVisibleTilesVector();
+	void updateVisibleTiles(MobileEntity* mobile = NULL);
 	static int distBetweenTilesInTiles(Tile* from, Tile* to);
 private:
-	void cleanVisibleTilesVector();
 	float heuristicCostEstimate(Tile* from, Tile* to);
 	float distBetweenTiles(Tile* from, Tile* to);
 	void addTileToList(list<Tile *> *list, map<int, Tile *> *tilesContainer,

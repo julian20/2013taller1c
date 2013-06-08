@@ -36,15 +36,15 @@
     delay: 0.5
 - mobileEntityViews:
   - name: mob
-    walkingImageSrc: resources/zombie/zombieWalking.png
-    idleImageSrc: resources/zombie/zombieStanding.png
+    walkingImageSrc: resources/golem/movingGolem.png
+    idleImageSrc: resources/golem/standingGolem.png
     runningImageSrc: resources/zombie/zombieWalking.png
-    attackImageSrc: resources/zombie/zombieAttack.png
+    attackImageSrc: resources/golem/atackingGolem.png
     idleBlockingImageSrc: resources/zombie/zombieWalking.png
-    imageWidth: 128
-    imageHeight: 128
+    imageWidth: 255
+    imageHeight: 256
     numberOfClips: 8
-    anchorPixel: [64, 70]
+    anchorPixel: [125, 125]
     baseRows: 1
     baseCols: 1
     delay: 0.5

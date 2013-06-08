@@ -116,8 +116,20 @@ map<string, int> MapView::getVisibleTilesLimit(Position* cam) {
 	return mapVisibleLimits;
 }
 
+void MapView::updateVisibleTiles() {
+	data->cleanVisibleTilesVector();
+	data->updateVisibleTiles();	// For main player
+
+	list<PlayerView*>::const_iterator iter;
+	for (iter = players.begin(); iter != players.end(); ++iter) {
+		PlayerView* current = *iter;
+
+		data->updateVisibleTiles(current->getEntity());
+	}
+}
+
 void MapView::draw(Position* cam) {
-	data->updateVisibleTiles();
+	updateVisibleTiles();
 	SDL_Rect posTile, posFog;
 	map<string, int> mapVisibleLimits = getVisibleTilesLimit(cam);
 	Position* cameraPos = this->camera->getPosition();
@@ -170,6 +182,7 @@ void MapView::setTextureHolder(TextureHolder* textureHolder) {
 
 void MapView::addNewPlayerView(PlayerView* view, Coordinates initCoord) {
 	viewMap->positionEntityView(view, initCoord);
+	players.push_back(view);
 }
 
 void MapView::addNewMobileEntityView(MobileEntityView* view, Coordinates initCoord){
