@@ -50,10 +50,10 @@ vector<MobileEntity*> MapData::getnewMobileEntities() {
 	return newMobileEntities;
 }
 
-vector<Entity*> MapData::getDeadEntities() {
-	vector<Entity*> retval;
+list<Entity*> MapData::getDeadEntities() {
+	list<Entity*> retval;
 
-	vector<Entity*>::const_iterator iter;
+	list<Entity*>::const_iterator iter;
 	for (iter = addedEntities.begin(); iter != addedEntities.end(); ++iter) {
 		Entity* current = *iter;
 
@@ -64,6 +64,13 @@ vector<Entity*> MapData::getDeadEntities() {
 			tileData->removeEntity(current);
 			tileData->removeMobileEntity((MobileEntity*) current);
 		}
+	}
+
+	// Elimino las entities que se sacaron de la lista de entities
+	for (iter = retval.begin(); iter != retval.end(); ++iter) {
+		Entity* current = *iter;
+
+		addedEntities.remove(current);
 	}
 
 	return retval;

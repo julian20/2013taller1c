@@ -44,7 +44,7 @@ public:
 	TileData* getTileData(int row, int col);
 
 	vector<MobileEntity* > getnewMobileEntities();
-	vector<Entity*> getDeadEntities();
+	list<Entity*> getDeadEntities();
 	void cleanNewMobileEntities();
 
 	void addPlayer(int row, int col, Player* personaje);
@@ -78,7 +78,7 @@ private:
 	vector<TileData *> visibleTiles;
 	vector<TileData> data;
 	vector<MobileEntity* > newMobileEntities;
-	vector<Entity*> addedEntities;
+	list<Entity*> addedEntities;
 
 	int nrows;
 	int ncols;
