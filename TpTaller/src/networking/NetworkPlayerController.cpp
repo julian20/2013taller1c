@@ -55,14 +55,14 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 	case EVENT_CANCEL_CAST:
 		this->player->setCastingSpell(false);
 		break;
-
+	case EVENT_EARTHQUAKE_START:
+		this->player->setMakingEarthquake(true);
+		break;
 	}
 
 	player->setHasChanged(true);
 
 }
-
-
 
 void NetworkPlayerController::toggleRunning() {
 	if (player->isRunning()) {

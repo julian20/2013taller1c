@@ -128,13 +128,29 @@ void MapView::updateVisibleTiles() {
 	}
 }
 
+bool MapView::isEarthquaking() {
+	Player* mainPlayer = data->getMainPlayer();
+	if (mainPlayer->getMakingEarthquake())
+		return true;
+
+	list<PlayerView*>::const_iterator iter;
+	for (iter = players.begin(); iter != players.end(); ++iter) {
+		PlayerView* current = *iter;
+
+		if (current->getEntity()->getMakingEarthquake())
+			return true;
+	}
+
+	return false;
+}
+
 void MapView::draw(Position* cam) {
 	updateVisibleTiles();
 	SDL_Rect posTile, posFog;
 	map<string, int> mapVisibleLimits = getVisibleTilesLimit(cam);
 	Position* cameraPos = this->camera->getPosition();
 
-	if (data->getEarthquake()) {
+	if (isEarthquaking()) {
 		cameraPos->setX( cameraPos->getX() + rand() % EarthquakeStrength );
 		cameraPos->setY( cameraPos->getY() + rand() % EarthquakeStrength );
 	}

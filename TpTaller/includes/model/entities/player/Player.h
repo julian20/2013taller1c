@@ -27,6 +27,9 @@
 #define QUAKE_SPELL_ID "quake"
 #define NONE_SPELL_ID "none"
 #define RESPAWN_TIMEOUT 15000
+#define EARTHQUAKE_TIMEOUT 2000
+#define EARTHQUAKE_RADIUS 10	// Tiles
+#define EARTHQUAKE_DAMAGE 25
 
 using namespace std;
 
@@ -47,6 +50,9 @@ public:
 	bool isMainPlayer();
 	void setAsMainPlayer();
 
+	void makeEarthquake(MapData* mapData);
+	void setMakingEarthquake(bool makingEarthquake);
+	bool getMakingEarthquake();
 	void setCastingSpell(bool castingSpell);
 	bool isCastingSpell();
 	void castSpell();
@@ -93,10 +99,14 @@ private:
 	list<Weapon*>* weapons;
 	list<SpellEffect*> spellEffects;
 
+	bool makingEarthquake;
 	bool castingSpell;
 	bool needCastSpell;
 	bool blocking;
 	bool isActive;
+
+	Timer earthquakeTimer;
+	bool earthquakeLifeTaked;
 };
 
 #endif	/* PERSONAJE_H */

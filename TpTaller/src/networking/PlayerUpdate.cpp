@@ -43,6 +43,14 @@ void PlayerUpdate::setActive(bool active) {
 	this->active = active;
 }
 
+void PlayerUpdate::setMakingEarthquake(bool makingEarthquake) {
+	this->makingEarthquake = makingEarthquake;
+}
+
+bool PlayerUpdate::getMakingEarthquake() {
+	return makingEarthquake;
+}
+
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 
@@ -52,7 +60,8 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 			<< *update.currentTile << " " << *update.nextTile << " "
 			<< *update.initCoords << " " << update.life << " " << update.magic
 			<< " " << update.lastAttackingDirection << " " << update.team
-			<< " " << update.castingSpell << " " << update.viewRange;
+			<< " " << update.castingSpell << " " << update.viewRange
+			<< " " << update.makingEarthquake;
 
 	return out;
 }
@@ -105,6 +114,9 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	int view;
 	in >> view;
 	update.setViewRange(view);
+	bool earth;
+	in >> earth;
+	update.makingEarthquake = earth;
 	return in;
 }
 

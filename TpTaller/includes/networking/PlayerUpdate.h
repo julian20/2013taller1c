@@ -31,6 +31,8 @@ public:
 	bool isActive();
 	void setActive(bool active);
 	void setChat(Chat* chat);
+	void setMakingEarthquake(bool makingEarthquake);
+	bool getMakingEarthquake();
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const PlayerUpdate&);
@@ -41,9 +43,7 @@ public:
 private:
 	bool blocking;
 	bool active;
-
-
-
+	bool makingEarthquake;
 
 };
 
