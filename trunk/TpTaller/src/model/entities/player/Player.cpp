@@ -290,6 +290,12 @@ void Player::extraUpdate(MapData* mapData) {
 		}
 	}
 	usingMagic();
+	if (!attackQueue.empty()){
+		Entity* entity = attackQueue.front();
+		attackQueue.pop();
+		attack(*entity);
+	}
+
 }
 
 void Player::setChat(Chat* chat) {
@@ -323,6 +329,10 @@ void Player::attack(Entity& entity) {
 			weaponToUse->attack(entity);
 			this->magic -= weaponToUse->getMagic();
 		}
+	}
+	else{
+		attackQueue.push(&entity);
+
 	}
 
 }

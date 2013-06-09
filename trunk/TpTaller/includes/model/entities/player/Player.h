@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <list>
+#include <queue>
 #include <model/map/Tile.h>
 #include <model/entities/Entity.h>
 #include <model/Chat.h>
@@ -24,6 +25,7 @@
 #include <model/entities/Items/LifeHeart.h>
 #include <model/entities/spells/SpellEffect.h>
 #include <model/entities/Golem/Golem.h>
+
 
 #define QUAKE_SPELL_ID "quake"
 #define NONE_SPELL_ID "none"
@@ -143,6 +145,8 @@ private:
 	Timer earthquakeTimer;
 	bool earthquakeLifeTaked;
 	bool golem;
+
+	queue<Entity*> attackQueue;
 };
 
 
