@@ -10,7 +10,7 @@ using namespace std;
 
 
 #define MOB_ATTACK_TIMEOUT 3000
-Mob::Mob() {
+Mob::Mob() : MobileEntity() {
 	this->weapons = new list<Weapon*>;
 	Sword* sword = new Sword();
 	sword->setAccuracy(10);
