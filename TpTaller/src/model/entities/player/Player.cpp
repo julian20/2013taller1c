@@ -242,6 +242,8 @@ void Player::usingMagic() {
 		magic = 0;
 		usingCrystalBall = false;
 		usingInvulnerability = false;
+		if (usingInvulnerability)
+			inventory.shieldSpell = false;
 	}
 }
 
