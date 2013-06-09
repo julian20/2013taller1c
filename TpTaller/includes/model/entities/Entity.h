@@ -48,6 +48,9 @@ public:
 	bool isWalkable();
 	bool isAttackable();
 
+	void setBelongsToGame(bool belongsToGame);
+	bool getBelongsToGame();
+
 	void setShield(int shield);
 	int getShield();
 
@@ -95,6 +98,7 @@ protected:
 	Timer respawnTimer;
 	int damageBuffer;
 
+	bool belongsToGame;
 private:
 	bool positionInitialized;
 };
