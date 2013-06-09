@@ -26,7 +26,9 @@ SpellShieldItem::SpellShieldItem(Item* entity) : Item(entity) {
 }
 
 void SpellShieldItem::applyEffects(Player& entity) {
-	// TODO: lucas agregar spell.
+	Player* player = (Player*)&entity;
+
+	player->addShieldSpell();
 }
 
 void SpellShieldItem::collideTo(Player& entity) {
