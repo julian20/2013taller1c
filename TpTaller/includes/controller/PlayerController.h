@@ -43,6 +43,7 @@ public:
 	bool playerHasclickedAnEntity(Coordinates* coor);
 	bool playerHasclickedAnEntity(int x, int y);
 	Entity* getEntityToCollideTo();
+	void createGolem();
 protected:
 	MapCameraView* camera;
 	MapData* data;

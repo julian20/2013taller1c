@@ -44,6 +44,7 @@ private:
 	bool blocking;
 	bool active;
 	bool makingEarthquake;
+	bool golem;
 
 };
 

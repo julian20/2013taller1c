@@ -386,6 +386,7 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 	out << " " << player.lastAttackingDirection;
 	out << " " << player.castingSpell;
 	out << " " << player.makingEarthquake;
+	out << " " << player.golem;
 
 	return out;
 }
@@ -440,6 +441,9 @@ istream& operator >>(std::istream& in, Player& player) {
 	bool earth;
 	in >> earth;
 	player.makingEarthquake = earth;
+	bool golem;
+	in >> golem;
+	player.golem = golem ;
 	return in;
 }
 
@@ -460,7 +464,17 @@ void Player::respawn() {
 		setLife(100);
 	}
 }
-
+bool Player::hasGolem()
+{
+	return golem;
+}
+void Player::createGolem()
+{
+	Golem golem;
+	int cost =golem.cost();
+	if(this->magic >= cost)
+		this->golem = true;
+}
 Player::~Player() {
 	delete currentPos;
 	delete endPos;

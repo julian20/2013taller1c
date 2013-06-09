@@ -66,7 +66,20 @@ void MultiplayerGame::createFlag(MapData* mapData)
 Flag* MultiplayerGame::getFlag() {
 	return flag;
 }
+void MultiplayerGame::createGolem(string playerName)
+{
+	Golem* golem = new Golem();
+	this->createGolemIa(golem);
+	golemsMap[playerName] = golem ;
 
+}
+void MultiplayerGame::createGolemIa(MobileEntity* golem)
+{
+	ArtificialIntelligence* ia = new ArtificialIntelligence();
+	ia->setMobileEntity(golem);
+	int cant = ias.size();
+	this->ias[cant++] = ia ;
+}
 MenuEvent MultiplayerGame::run(){
 	view->getMapData()->cleanNewMobileEntities();
 
@@ -134,6 +147,10 @@ void MultiplayerGame::updatePlayersCoordinates(){
 		view->getMapData()->updateMobilePos(initCoords.getRow(), initCoords.getCol(),
 											currentCoords.getRow(), currentCoords.getCol(),
 											player);
+		if (player->hasGolem() || golemsMap.find(player->getName()) == golemsMap.end() )
+		{
+			this->createGolem(player->getName());
+		}
 	}
 }
 

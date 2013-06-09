@@ -58,6 +58,8 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 	case EVENT_EARTHQUAKE_START:
 		this->player->setMakingEarthquake(true);
 		break;
+	case EVENT_GOLEM:
+		this->player->createGolem();
 	}
 
 	player->setHasChanged(true);
