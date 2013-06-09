@@ -28,7 +28,6 @@ public:
 	void toggleRunning();
 private:
 
-
 	void handleEvent(PlayerEvent* event);
 };
 #endif /* NETWORKPLAYERCONTROLLER_H_ */

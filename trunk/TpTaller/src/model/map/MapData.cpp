@@ -4,7 +4,6 @@
 #define VisibleTilesMargin	2
 
 MapData::MapData(int _nrows, int _ncols) {
-	earthquake = false;
 	this->mainPlayer = NULL;
 	nrows = _nrows;
 	ncols = _ncols;
@@ -51,17 +50,13 @@ vector<MobileEntity* > MapData::getnewMobileEntities() {
 	return newMobileEntities;
 }
 
-void MapData::setEarthquake(bool earthquake) {
-	this->earthquake = earthquake;
-}
-
-bool MapData::getEarthquake() {
-	return earthquake;
-}
-
 void MapData::cleanNewMobileEntities() {
 	newMobileEntities.erase(newMobileEntities.begin(),
 							newMobileEntities.end());
+}
+
+Player* MapData::getMainPlayer() {
+	return mainPlayer;
 }
 
 void MapData::addEntity(int row, int col, Entity* object) {

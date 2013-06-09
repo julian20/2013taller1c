@@ -43,11 +43,7 @@ void MapController::clickListener(SDL_Event event) {
 	}
 
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_e)) {
-		mapData->setEarthquake(true);
-	}
-
-	if ((event.type == SDL_KEYUP) && (event.key.keysym.sym == SDLK_e)) {
-		mapData->setEarthquake(false);
+		playerController->makeEarthquake();
 	}
 
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_LSHIFT)) {

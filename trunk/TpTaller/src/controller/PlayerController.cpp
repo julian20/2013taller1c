@@ -178,6 +178,10 @@ MapData* PlayerController::getMapData() {
 	return this->data;
 }
 
+void PlayerController::makeEarthquake() {
+	events.push_back(new PlayerEvent(EVENT_EARTHQUAKE_START));
+}
+
 //TODO - hardcoded
 void PlayerController::toggleRunning() {
 	if (player->isRunning()) {

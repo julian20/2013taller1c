@@ -40,6 +40,7 @@ public:
 	void addNewMobileEntityView(MobileEntityView* view, Coordinates initCoord);
 	void removeMobileEntity(MobileEntityView* view);
 private:
+	bool isEarthquaking();
 	void updateVisibleTiles();
 	map<string, int> getVisibleTilesLimit(Position* cam);
 

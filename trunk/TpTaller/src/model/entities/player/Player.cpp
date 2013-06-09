@@ -36,6 +36,8 @@ Player::Player() :
 	chat = NULL;
 	needCastSpell = false;
 	castingSpell = false;
+	makingEarthquake = false;
+	earthquakeLifeTaked = false;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
 }
@@ -60,8 +62,22 @@ Player::Player(string name, Position* position, Speed* speed,
 	weapons = NULL;
 	needCastSpell = false;
 	castingSpell = false;
+	makingEarthquake = false;
+	earthquakeLifeTaked = false;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
+}
+
+void Player::setMakingEarthquake(bool makingEarthquake) {
+	this->makingEarthquake = makingEarthquake;
+
+	if (makingEarthquake) {
+		earthquakeTimer.start();
+	}
+}
+
+bool Player::getMakingEarthquake() {
+	return makingEarthquake;
 }
 
 void Player::setCastingSpell(bool castingSpell) {
@@ -130,9 +146,34 @@ void Player::castSpellNow(MapData* mapData) {
 	tiles.erase(tiles.begin(), tiles.end());
 }
 
+void Player::makeEarthquake(MapData* mapData) {
+	std::cout << earthquakeLifeTaked << std::endl;
+	if (earthquakeLifeTaked == false) {
+		list<MobileEntity*> mobiles = mapData->getClosestEntities(*coord, EARTHQUAKE_RADIUS, true);
+
+		list<MobileEntity*>::iterator iter;
+		for ( iter = mobiles.begin() ; iter != mobiles.end() ; ++iter ){
+			MobileEntity* current = *iter;
+
+			if (current->getTeam() != team)
+				current->setLife( current->getLife() - EARTHQUAKE_DAMAGE );
+
+		}
+
+		earthquakeLifeTaked = true;
+	} else {
+		if (earthquakeTimer.getTimeIntervalSinceStart() > EARTHQUAKE_TIMEOUT)
+			makingEarthquake = earthquakeLifeTaked = false;
+
+	}
+
+}
+
 void Player::extraUpdate(MapData* mapData) {
 	if (needCastSpell)
 		castSpellNow(mapData);
+	if (makingEarthquake)
+		makeEarthquake(mapData);
 }
 
 void Player::setChat(Chat* chat) {
@@ -186,6 +227,7 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->lastAttackingDirection = update->getLastAttackingDirection();
 	this->castingSpell = update->getCastingSpell();
 	this->viewRange = update->getViewRange();
+	this->makingEarthquake = update->getMakingEarthquake();
 	if (currentTile)
 		delete currentTile;
 	this->currentTile = update->getTile();
@@ -232,6 +274,7 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setTeam(this->team);
 	update->setCastingSpell(this->castingSpell);
 	update->setViewRange(this->viewRange);
+	update->setMakingEarthquake(this->makingEarthquake);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {
@@ -301,6 +344,8 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 	out << " " << player.life << " " << player.team;
 	out << " " << player.lastAttackingDirection;
 	out << " " << player.castingSpell;
+	out << " " << player.makingEarthquake;
+
 	return out;
 }
 
@@ -351,6 +396,9 @@ istream& operator >>(std::istream& in, Player& player) {
 	int castSp;
 	in >> castSp;
 	player.castingSpell = castSp;
+	bool earth;
+	in >> earth;
+	player.makingEarthquake = earth;
 	return in;
 }
 
