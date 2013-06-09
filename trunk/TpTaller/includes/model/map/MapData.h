@@ -11,6 +11,7 @@
 #include <model/entities/Items/SpeedBoots.h>
 #include <model/entities/Items/Lantern.h>
 #include <model/entities/Items/Shield.h>
+#include <model/entities/Items/MapItem.h>
 #include <model/entities/Items/EarthquakeItem.h>
 #include <model/entities/Items/CrystalBallItem.h>
 #include <model/entities/MobileEntity.h>
