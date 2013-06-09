@@ -182,7 +182,7 @@ ostream& operator <<(std::ostream& out, const MobileEntityUpdate& update) {
 			<< " " << " " << *update.currentTile << " " << *update.nextTile
 			<< " " << *update.initCoords << " " << update.life << " "
 			<< update.magic << " " << update.lastAttackingDirection << " "
-			<< update.team << " " << update.viewRange;
+			<< update.team << " " << update.viewRange << " " << update.frozen;
 
 	return out;
 }
@@ -224,5 +224,8 @@ istream& operator >>(std::istream& in, MobileEntityUpdate& update) {
 	int view;
 	in >> view;
 	update.setViewRange(view);
+	bool frozen;
+	in >> frozen;
+	update.frozen = frozen;
 	return in;
 }
