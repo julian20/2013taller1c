@@ -12,7 +12,7 @@
 #include <string>
 
 using namespace std;
-class Flag : public MobileEntity {
+class Flag: public MobileEntity {
 public:
 	Flag();
 	void attackedBy(string player);
