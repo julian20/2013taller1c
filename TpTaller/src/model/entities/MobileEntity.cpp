@@ -291,6 +291,15 @@ void MobileEntity::setInitSpeed(Speed* initSpeed) {
 	this->initSpeed = initSpeed;
 }
 
+void MobileEntity::setInitSpeedMagnitude(int _initSpeed) {
+	initSpeed->setMagnitude(_initSpeed);
+	if(initSpeed->getMagnitude() > MAXSPEED) initSpeed->setMagnitude(MAXSPEED);
+}
+
+Speed* MobileEntity::getInitSpeed() {
+	return this->initSpeed;
+}
+
 void MobileEntity::assignPath(list<Tile *> *_path) {
 	if (path) {
 		path->erase(path->begin(), path->end());
@@ -313,8 +322,7 @@ Entity* MobileEntity::getAttackToEntity() {
 
 void MobileEntity::setSpeedMagnitude(int mag) {
 	speed->setMagnitude(mag);
-	// TODO: hardcode maxspeed.
-	if(speed->getMagnitude() > 10) speed->setMagnitude(10);
+	if(speed->getMagnitude() > MAXSPEED) speed->setMagnitude(MAXSPEED);
 }
 
 bool MobileEntity::isAttacking() {
