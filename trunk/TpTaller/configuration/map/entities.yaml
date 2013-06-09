@@ -98,10 +98,10 @@
     baseCols: 1               
   - name: lantern
     imageSrc: resources/items/LanternAnimated.png
-    imageWidth: 40
-    imageHeight: 54
-    numberOfClips: 2
-    anchorPixel: [20, 20]
+    imageWidth: 55
+    imageHeight: 75
+    numberOfClips: 4
+    anchorPixel: [27, 30]
     fps: 8
     delay: 0 
     animationRepeats: 7
