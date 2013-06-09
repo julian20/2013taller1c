@@ -182,6 +182,13 @@ void Entity::applyDamage(int damage) {
 	damageTimer.start();
 }
 
+void Entity::reduceMagic(int quantity) {
+	if (magicDamageDelay.getTimeIntervalSinceStart() > MAGIC_DAMAGE_TIMEOUT) {
+		magicDamageDelay.start();
+		magic -= quantity;
+	}
+}
+
 bool Entity::isDead() {
 	if (this->life <= 0) {
 		return true;

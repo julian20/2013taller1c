@@ -28,6 +28,7 @@ MobileEntity::MobileEntity() : Entity() {
 	attackTimer.start();
 	lastAttackingDirection = 0;
 	viewRange = 200;
+	magicDamageDelay.start();
 }
 
 MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
@@ -47,6 +48,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	attackTimer.start();
 	lastAttackingDirection = 0;
 	viewRange = 200;
+	magicDamageDelay.start();
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {

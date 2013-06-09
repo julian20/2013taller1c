@@ -46,6 +46,10 @@ void MapController::clickListener(SDL_Event event) {
 		playerController->makeEarthquake();
 	}
 
+	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_b)) {
+		playerController->changeStateCrystalBall();
+	}
+
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_LSHIFT)) {
 		playerController->toggleRunning();
 	}

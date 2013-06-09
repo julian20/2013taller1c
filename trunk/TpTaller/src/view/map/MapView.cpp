@@ -120,12 +120,16 @@ void MapView::updateVisibleTiles() {
 	data->cleanVisibleTilesVector();
 	data->updateVisibleTiles();	// For main player
 
-	list<PlayerView*>::const_iterator iter;
-	for (iter = players.begin(); iter != players.end(); ++iter) {
-		PlayerView* current = *iter;
+	if (data->getMainPlayer()->getUsingCrystalBall()) {
 
-		data->updateVisibleTiles(current->getEntity());
+		list<PlayerView*>::const_iterator iter;
+		for (iter = players.begin(); iter != players.end(); ++iter) {
+			PlayerView* current = *iter;
+
+			data->updateVisibleTiles(current->getEntity());
+		}
 	}
+
 }
 
 bool MapView::isEarthquaking() {

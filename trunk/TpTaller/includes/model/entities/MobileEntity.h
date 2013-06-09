@@ -19,6 +19,7 @@
 #include <view/timer/Timer.h>
 
 #define ATTACK_TIMEOUT 1000
+#define MAGIC_DAMAGE_TIMEOUT	1000
 using namespace std;
 class MapData;
 class Item;

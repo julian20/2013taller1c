@@ -37,6 +37,7 @@ Player::Player() :
 	needCastSpell = false;
 	castingSpell = false;
 	makingEarthquake = false;
+	usingCrystalBall = false;
 	earthquakeLifeTaked = true;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
@@ -64,6 +65,7 @@ Player::Player(string name, Position* position, Speed* speed,
 	needCastSpell = false;
 	castingSpell = false;
 	makingEarthquake = false;
+	usingCrystalBall = false;
 	earthquakeLifeTaked = false;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
@@ -71,21 +73,31 @@ Player::Player(string name, Position* position, Speed* speed,
 }
 
 void Player::initializeSpellsInventory() {
-	spellsInventory.earthquake = false;
-	spellsInventory.crystalBall = false;
+	inventory.earthquake = false;
+	inventory.crystalBall = false;
 }
 
 void Player::addEarthquakeSpell() {
-	spellsInventory.earthquake = true;
+	inventory.earthquake = true;
 }
 
 void Player::addCrystalBallSpell() {
-	spellsInventory.crystalBall = true;
+	inventory.crystalBall = true;
+}
+
+void Player::setUsingCrystalBall(bool usingCrystalBall) {
+	if (inventory.crystalBall) {
+		this->usingCrystalBall = usingCrystalBall;
+	}
+}
+
+bool Player::getUsingCrystalBall() {
+	return usingCrystalBall;
 }
 
 void Player::setMakingEarthquake(bool makingEarthquake) {
-	if (spellsInventory.earthquake) {
-		spellsInventory.earthquake = false;
+	if (inventory.earthquake) {
+		inventory.earthquake = false;
 		this->makingEarthquake = makingEarthquake;
 
 		if (makingEarthquake) {
@@ -186,11 +198,23 @@ void Player::makeEarthquake(MapData* mapData) {
 
 }
 
+void Player::usingMagic() {
+	if (usingCrystalBall) {
+		reduceMagic(CRYSTALBALL_MANA);
+	}
+
+	if (magic <= 0) {
+		magic = 0;
+		usingCrystalBall = false;
+	}
+}
+
 void Player::extraUpdate(MapData* mapData) {
 	if (needCastSpell)
 		castSpellNow(mapData);
 	if (makingEarthquake)
 		makeEarthquake(mapData);
+	usingMagic();
 }
 
 void Player::setChat(Chat* chat) {
