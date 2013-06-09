@@ -200,9 +200,14 @@ void EntityView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 	offset.h = offsetFog.h = clip.h;
 	offset.w = offsetFog.w = clip.w;
 
-	SDL_BlitSurface(image, &clip, screen, &offset);
-	if (drawFog)
-		SDL_BlitSurface(fogImage, &clipFog, screen, &offsetFog);
+	if (drawFog == false)
+		SDL_BlitSurface(image, &clip, screen, &offset);
+
+	if (drawFog && entity->getHideInFog() == false) {
+		SDL_BlitSurface(image, &clip, screen, &offset);
+		if (drawFog)
+			SDL_BlitSurface(fogImage, &clipFog, screen, &offsetFog);
+	}
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 

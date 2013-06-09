@@ -35,6 +35,7 @@ Entity::Entity() {
 	this->attackable = true;
 	this->shield = 0;
 	this->removeFromGame = false;
+	this->hideInFog = false;
 }
 
 Entity::Entity(Entity* entity) {
@@ -55,6 +56,7 @@ Entity::Entity(Entity* entity) {
 	this->magic = entity->getMagic();
 	this->walkable = entity->isWalkable();
 	this->attackable = entity->isAttackable();
+	this->hideInFog = entity->getHideInFog();
 	this->shield = 0;
 	this->removeFromGame = false;
 }
@@ -232,6 +234,10 @@ void Entity::setMagic(int magic) {
 
 void Entity::resetRespawnTimer() {
 	respawnTimer.start();
+}
+
+bool Entity::getHideInFog() {
+	return hideInFog;
 }
 
 void Entity::setRemoveFromGame(bool removeFromGame) {

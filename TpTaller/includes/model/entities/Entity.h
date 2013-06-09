@@ -47,6 +47,7 @@ public:
 	void setBaseSizes(int width, int height);
 	bool isWalkable();
 	bool isAttackable();
+	bool getHideInFog();
 
 	void setRemoveFromGame(bool removeFromGame);
 	bool getRemoveFromGame();
@@ -99,6 +100,7 @@ protected:
 	int damageBuffer;
 
 	bool removeFromGame;
+	bool hideInFog;
 private:
 	bool positionInitialized;
 };
