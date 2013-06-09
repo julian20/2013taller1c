@@ -345,9 +345,6 @@ void MobileEntityView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 	if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
 		if (!mobileEntity->isFrozen())
 			this->marco++;
-		else{
-			cout << "CONGELADO"<<endl;
-		}
 		animationChangeRate = 0; // Move to the next marco in the animation
 	} else {
 		animationChangeRate++;
