@@ -105,6 +105,17 @@
     delay: 0 
     animationRepeats: 7
     baseRows: 1
+    baseCols: 1  
+  - name: chest
+    imageSrc: resources/items/Chest.png
+    imageWidth: 50
+    imageHeight: 45
+    numberOfClips: 4
+    anchorPixel: [25, 17]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
     baseCols: 1            
   - name: speedboots
     imageSrc: resources/items/SpeedBootsAnimated.png
@@ -360,6 +371,8 @@
     position: [22, 15, 0]
   - name: mapitem
     position: [5, 5, 0]
+  - name: chest
+    position: [8, 6, 0]
   - name: earthquakeitem
     position: [20, 17, 0]
   - name: crystalballitem
