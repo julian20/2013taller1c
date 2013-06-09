@@ -46,13 +46,12 @@ void MapData::checkRowColsValue(int row, int col) {
 	}
 }
 
-vector<MobileEntity* > MapData::getnewMobileEntities() {
+vector<MobileEntity*> MapData::getnewMobileEntities() {
 	return newMobileEntities;
 }
 
 void MapData::cleanNewMobileEntities() {
-	newMobileEntities.erase(newMobileEntities.begin(),
-							newMobileEntities.end());
+	newMobileEntities.erase(newMobileEntities.begin(), newMobileEntities.end());
 }
 
 Player* MapData::getMainPlayer() {
@@ -62,7 +61,7 @@ Player* MapData::getMainPlayer() {
 void MapData::addEntity(int row, int col, Entity* object) {
 	TileData* currentData = getTileData(row, col);
 	currentData->addEntity(object);
-	object->setTile(new Tile(new Coordinates(row,col)));
+	object->setTile(new Tile(new Coordinates(row, col)));
 
 	Base* base = object->getBase();
 	int baseRow = base->getRows();
@@ -71,18 +70,18 @@ void MapData::addEntity(int row, int col, Entity* object) {
 	for (int offsetRow = 0; offsetRow < baseRow; offsetRow++) {
 		for (int offsetCol = 0; offsetCol < baseCol; offsetCol++) {
 
-			int currentRow = row + offsetRow - baseRow/2;
-			int currentCol = col + offsetCol - baseCol/2;
+			int currentRow = row + offsetRow - baseRow / 2;
+			int currentCol = col + offsetCol - baseCol / 2;
 
-			if (currentRow >= 0 && currentRow < nrows &&
-				currentCol >= 0 && currentCol < ncols) {
+			if (currentRow >= 0 && currentRow < nrows && currentCol >= 0
+					&& currentCol < ncols) {
 
 				currentData = getTileData(currentRow, currentCol);
 
 				//Ponemos una copia
 				Entity* copy = new Entity(object);
 				currentData->addEntity(copy);
-				copy->setCoordinates(currentRow,currentCol);
+				copy->setCoordinates(currentRow, currentCol);
 				currentData->setWalkable(false);
 
 			}
@@ -94,7 +93,7 @@ void MapData::addEntity(int row, int col, Entity* object) {
 void MapData::addItem(int row, int col, Item* object) {
 	TileData* currentData = getTileData(row, col);
 	currentData->addEntity(object);
-	object->setTile(new Tile(new Coordinates(row,col)));
+	object->setTile(new Tile(new Coordinates(row, col)));
 
 	Base* base = object->getBase();
 	int baseRow = base->getRows();
@@ -103,30 +102,32 @@ void MapData::addItem(int row, int col, Item* object) {
 	for (int offsetRow = 0; offsetRow < baseRow; offsetRow++) {
 		for (int offsetCol = 0; offsetCol < baseCol; offsetCol++) {
 
-			int currentRow = row + offsetRow - baseRow/2;
-			int currentCol = col + offsetCol - baseCol/2;
+			int currentRow = row + offsetRow - baseRow / 2;
+			int currentCol = col + offsetCol - baseCol / 2;
 
-			if (currentRow >= 0 && currentRow < nrows &&
-				currentCol >= 0 && currentCol < ncols) {
+			if (currentRow >= 0 && currentRow < nrows && currentCol >= 0
+					&& currentCol < ncols) {
 
 				currentData = getTileData(currentRow, currentCol);
 
 				//Ponemos una copia
 				Item* copy;
-				if(object->getName() == "lifeheart")
+				if (object->getName() == "lifeheart")
 					copy = new LifeHeart(object);
-				else if(object->getName() == "magicbottle")
+				else if (object->getName() == "magicbottle")
 					copy = new MagicBottle(object);
-				else if(object->getName() == "speedboots")
+				else if (object->getName() == "speedboots")
 					copy = new SpeedBoots(object);
-				else if(object->getName() == "lantern")
+				else if (object->getName() == "lantern")
 					copy = new Lantern(object);
-				else if(object->getName() == "shield")
+				else if (object->getName() == "shield")
 					copy = new Shield(object);
+				else if (object->getName() == "earthquakeitem")
+					copy = new EarthquakeItem(object);
 				else
 					copy = new Item(object);
 				currentData->addEntity(copy);
-				copy->setCoordinates(currentRow,currentCol);
+				copy->setCoordinates(currentRow, currentCol);
 
 			}
 
@@ -135,9 +136,9 @@ void MapData::addItem(int row, int col, Item* object) {
 }
 
 TileData* MapData::getTileData(int row, int col) {
-	if( (row < 0 || row >= nrows) || (col < 0 || col >= ncols) ) {
+	if ((row < 0 || row >= nrows) || (col < 0 || col >= ncols)) {
 		std::cout << "Se esta intentando pedir un tile fuera de rango"
-														<< std::endl;
+				<< std::endl;
 		return NULL;
 	}
 
@@ -153,7 +154,7 @@ void MapData::addPlayer(int row, int col, Player* player) {
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
 	Tile* current;
-	if (tileData->isWalkable()) {	// Si el tile es transitable se agrega el personaje ahi
+	if (tileData->isWalkable()) {// Si el tile es transitable se agrega el personaje ahi
 		tileData->addMobileEntity(player);
 
 		player->setTile(personajeTile);
@@ -161,24 +162,27 @@ void MapData::addPlayer(int row, int col, Player* player) {
 		TileData* currentData;
 		Coordinates currentCoords;
 		map<int, Tile *> tilesContainer;// Uso esto para ir guardando los punteros
-		list<Tile *> neighborTiles = getNeighborTiles(personajeTile, &tilesContainer, true);
+		list<Tile *> neighborTiles = getNeighborTiles(personajeTile,
+				&tilesContainer, true);
 
 		list<Tile *>::const_iterator iter;
-		for (iter = neighborTiles.begin(); iter != neighborTiles.end(); ++iter) {
+		for (iter = neighborTiles.begin(); iter != neighborTiles.end();
+				++iter) {
 			current = *iter;
 
 			currentCoords.setRow(current->getCoordinates().getRow());
 			currentCoords.setCol(current->getCoordinates().getCol());
 			currentData = getTileData(currentCoords);
-			if ( currentData->isWalkable() )
+			if (currentData->isWalkable())
 				break;
 		}
 
 		currentData->addMobileEntity(player);
 
 		delete personajeTile;
-		Tile* personajeTile = new Tile(new Coordinates(currentCoords.getRow(),
-													   currentCoords.getCol()));
+		Tile* personajeTile = new Tile(
+				new Coordinates(currentCoords.getRow(),
+						currentCoords.getCol()));
 		player->setTile(personajeTile);
 		player->moveImmediately(currentCoords);
 		player->setCoordinates(currentCoords.getRow(), currentCoords.getCol());
@@ -193,7 +197,7 @@ void MapData::addMobileEntity(int row, int col, MobileEntity* mobileEntity) {
 	TileData* tileData = getTileData(row, col);
 
 	Tile* entityTile = new Tile(new Coordinates(row, col));
-	
+
 	tileData->addMobileEntity(mobileEntity);
 
 	mobileEntity->setTile(entityTile);
@@ -201,10 +205,11 @@ void MapData::addMobileEntity(int row, int col, MobileEntity* mobileEntity) {
 	newMobileEntities.push_back(mobileEntity);
 }
 
-void MapData::updateMobilePos(int prevRow, int prevCol,
-							  int row, int col, MobileEntity* mobile) {
+void MapData::updateMobilePos(int prevRow, int prevCol, int row, int col,
+		MobileEntity* mobile) {
 
-	if (prevRow == row && prevCol == col) return;
+	if (prevRow == row && prevCol == col)
+		return;
 
 	TileData* tileDataPrev = getTileData(prevRow, prevCol);
 	TileData* tileDataCurrent = getTileData(row, col);
@@ -235,9 +240,9 @@ void MapData::updateMobilePos(int prevRow, int prevCol,
 }
 
 MobileEntity* MapData::getPlayer(int row, int col) {
-	if( (row < 0 || row >= nrows) || (col < 0 || col >= ncols) ) {
+	if ((row < 0 || row >= nrows) || (col < 0 || col >= ncols)) {
 		std::cout << "Se esta intentando pedir un personaje fuera de rango"
-														<< std::endl;
+				<< std::endl;
 		return NULL;
 	}
 
@@ -418,7 +423,7 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 	TileData* data = getTileData(from->getCoordinates());
 	if (data->isWalkable(true) == false) {
 		std::cout << "El tile donde se encuentra el jugador no es transitable"
-																<< std::endl;
+				<< std::endl;
 		return new list<Tile *>();
 	}
 
@@ -458,7 +463,7 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 					+ distBetweenTiles(current, neighbor);
 
 			bool existsGScore = !(g_score.find(neighbor->getHashValue())
-								== g_score.end());
+					== g_score.end());
 			if (existsGScore
 					&& (tentativeGScore >= g_score[neighbor->getHashValue()]))
 				continue;
@@ -469,8 +474,8 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 				cameFrom[neighbor->getHashValue()] = current;
 				g_score[neighbor->getHashValue()] = tentativeGScore;
 				neighbor->setFScore(
-							g_score[neighbor->getHashValue()]
-							+ heuristicCostEstimate(neighbor, currentGoal));
+						g_score[neighbor->getHashValue()]
+								+ heuristicCostEstimate(neighbor, currentGoal));
 				if (!neighborInOpenSet)
 					openSet.push_back(neighbor);
 			}
@@ -496,9 +501,9 @@ float MapData::distBetweenTiles(Tile* from, Tile* to) {
 	Position* toPos = Tile::computePosition(toCoords.getRow(),
 			toCoords.getCol());
 
-	float result =
-			sqrt(pow(toPos->getX() - fromPos->getX(), 2)
-			   + pow(toPos->getY() - fromPos->getY(), 2));
+	float result = sqrt(
+			pow(toPos->getX() - fromPos->getX(), 2)
+					+ pow(toPos->getY() - fromPos->getY(), 2));
 
 	delete fromPos;
 	delete toPos;
@@ -540,14 +545,13 @@ list<Tile *> *MapData::reconstructPath(map<int, Tile *> cameFrom,
 	return path;
 }
 
-void MapData::moveMobileEntity(MobileEntity* mobile, Tile* toTile)
-{
+void MapData::moveMobileEntity(MobileEntity* mobile, Tile* toTile) {
 	Tile* fromTile = mobile->getTile();
 	Coordinates fromCoords = fromTile->getCoordinates();
 	Coordinates toCoords = toTile->getCoordinates();
 
 	// Si la posicion inicial y final son distintas calcula el path
-	if (!fromCoords.isEqual(toCoords)){
+	if (!fromCoords.isEqual(toCoords)) {
 		list<Tile *> *path = getPath(fromTile, toTile);
 		mobile->assignPath(path);
 	}
@@ -630,7 +634,7 @@ bool compMobileEntitiesList(MobileEntityWithCenterDistance A,
 // Si removeEntityInPosition es true no se devuelve la entidad que se encuentre en
 // centerCoordinates.
 list<MobileEntity *> MapData::getClosestEntities(Coordinates centerCoordinates,
-										int tilesRange, bool removeEntityInPosition) {
+		int tilesRange, bool removeEntityInPosition) {
 	list<MobileEntityWithCenterDistance> entitiesToSort;
 	Tile* centerTile = new Tile(centerCoordinates);
 
@@ -639,10 +643,14 @@ list<MobileEntity *> MapData::getClosestEntities(Coordinates centerCoordinates,
 	int leftCol = centerCoordinates.getCol() - tilesRange;
 	int rightCol = centerCoordinates.getCol() + tilesRange;
 
-	if (topRow < 0) topRow = 0;
-	if (leftCol < 0) leftCol = 0;
-	if (bottomRow > nrows) bottomRow = nrows;
-	if (rightCol > ncols) rightCol = ncols;
+	if (topRow < 0)
+		topRow = 0;
+	if (leftCol < 0)
+		leftCol = 0;
+	if (bottomRow > nrows)
+		bottomRow = nrows;
+	if (rightCol > ncols)
+		rightCol = ncols;
 
 	for (int row = topRow; row < bottomRow; row++) {
 
@@ -651,8 +659,8 @@ list<MobileEntity *> MapData::getClosestEntities(Coordinates centerCoordinates,
 			Tile currentTile;
 			currentTile.setCoordinates(row, col);
 
-			if (removeEntityInPosition &&
-					currentTile.getCoordinates().isEqual(centerCoordinates))
+			if (removeEntityInPosition
+					&& currentTile.getCoordinates().isEqual(centerCoordinates))
 				continue;
 
 			int distance = distBetweenTilesInTiles(centerTile, &currentTile);
@@ -660,7 +668,8 @@ list<MobileEntity *> MapData::getClosestEntities(Coordinates centerCoordinates,
 			if (distance <= tilesRange) {
 
 				TileData* tileData = getTileData(row, col);
-				MobileEntity* currentMobileEntity = tileData->getAttackableMobileEntity();
+				MobileEntity* currentMobileEntity =
+						tileData->getAttackableMobileEntity();
 
 				if (currentMobileEntity) {
 					MobileEntityWithCenterDistance toSortEntity;

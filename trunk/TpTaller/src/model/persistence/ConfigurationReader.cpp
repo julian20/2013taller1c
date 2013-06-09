@@ -2073,6 +2073,16 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 
 			parsedItems.push_back(shield);
 
+		} else if (actualItem->getName() == "earthquakeitem") {
+
+			EarthquakeItem* earthquakeItem = new EarthquakeItem();
+
+			earthquakeItem->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			earthquakeItem->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(earthquakeItem);
+
 		}
 
 	}
