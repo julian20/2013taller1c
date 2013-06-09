@@ -12,6 +12,7 @@
 #include <model/entities/Items/Lantern.h>
 #include <model/entities/Items/Shield.h>
 #include <model/entities/Items/EarthquakeItem.h>
+#include <model/entities/Items/CrystalBallItem.h>
 #include <model/entities/MobileEntity.h>
 #include <model/entities/player/Player.h>
 #include <model/Logs/Logs.h>

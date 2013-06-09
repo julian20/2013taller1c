@@ -62,6 +62,17 @@
     baseCols: 1
     delay: 0.5
 - entityViews:  
+  - name: crystalballitem
+    imageSrc: resources/items/CrystalBallItem.png
+    imageWidth: 35
+    imageHeight: 46
+    numberOfClips: 0
+    anchorPixel: [17, 17]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
+    baseCols: 1  
   - name: earthquakeitem
     imageSrc: resources/items/EarthquakeItem.png
     imageWidth: 50
@@ -338,6 +349,8 @@
     position: [22, 15, 0]
   - name: earthquakeitem
     position: [20, 17, 0]
+  - name: crystalballitem
+    position: [19, 21, 0]
 - entityLocations:
   - name: chapel
     position: [23, 20, 0]
