@@ -79,13 +79,14 @@ protected:
 	int numberOfIdleClips;
 	SDL_Surface* runningImage;
 
-	int numberOfRunningClips;
+	int numberOfRunningClips, currentSpellClip;
 
 	int computeNumberOfClips(SDL_Surface* img);
 
 	SDL_Surface* nameImage;
 	TextHandler textHandler;
-
+private:
+	void blitIceSpellEffect(SDL_Surface* screen, int x, int y);
 };
 
 #endif	/* PERSONAJEVISTA_H */

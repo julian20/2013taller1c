@@ -31,7 +31,7 @@ MobileEntityView::MobileEntityView()
 	camPos = new Position(0, 0);
 	marco = 0;
 	animationChangeRate = 0;
-	numberOfClips = 0;
+	numberOfClips = currentSpellClip = 0;
 	movable = true;
 	direction = DOWN;
 	wasStanding = true;
@@ -54,7 +54,7 @@ MobileEntityView::MobileEntityView(MobileEntityView* othermobileEntity):
 	fps = othermobileEntity->getFps();
 	camPos = new Position(0, 0);
 	marco = 0;
-	animationChangeRate = 0;
+	animationChangeRate = currentSpellClip= 0;
 	numberOfClips = othermobileEntity->getNClips();
 	setNumberOfRepeats(othermobileEntity->getNumberOfRepeats());
 	movable = true;
@@ -88,14 +88,32 @@ void MobileEntityView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawF
 	offset.h = offsetFog.h = clip->h;
 
 	SDL_BlitSurface(this->image, clip, screen, &offset);
+	blitIceSpellEffect(screen,x,y);
 
-	/*SDL_Rect offsetNombre;
-	offsetNombre.x = (int) x + camPos->getX() - nameImage->w / 2;
-	offsetNombre.y = (int) y + camPos->getY() - this->anchorPixel->getY()
-			- h / 2 - 20;
-	offsetNombre.w = nameImage->w;
-	offsetNombre.h = nameImage->h;
-	SDL_BlitSurface(nameImage, NULL, screen, &offsetNombre);*/
+}
+
+void MobileEntityView::blitIceSpellEffect(SDL_Surface* screen, int x, int y) {
+	if (!mobileEntity->isFrozen()){
+		currentSpellClip = 0;
+		return;
+	}
+	SDL_Surface* spellSprite = textureHolder->getTexture(string(ICE_IMG));
+	int numberOfClips = 4;
+	if (currentSpellClip >= numberOfClips) {
+		currentSpellClip = numberOfClips-1;
+	}
+	SDL_Rect offsetSpell, currentClip;
+	int frameWidth = spellSprite->w / numberOfClips;
+	offsetSpell.x = (int) x + camPos->getX() - frameWidth / 2 + 10;
+	offsetSpell.y = (int) y + camPos->getY() - this->anchorPixel->getY() + frameWidth/10;
+
+	currentClip.x = currentSpellClip * frameWidth;
+	currentClip.y = 0;
+	currentClip.w = frameWidth;
+	currentClip.h = spellSprite->h;
+	SDL_BlitSurface(spellSprite, &currentClip, screen, &offsetSpell);
+	currentSpellClip++;
+
 }
 
 void MobileEntityView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
