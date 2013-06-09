@@ -40,6 +40,8 @@ public:
 	bool isAttacking();
 	void setAttacking(bool attacking);
 	void setViewRange(int viewRange);
+	void setFrozen(bool frozen);
+	bool getFrozen();
 	int getViewRange();
 	float getLastAttackingDirection();
 	void setLastAttackingDirection(float dir);
@@ -81,6 +83,7 @@ protected:
 	float lastAttackingDirection;
 	bool castingSpell;
 	int viewRange;
+	bool frozen;
 
 	Coordinates* initCoords;
 

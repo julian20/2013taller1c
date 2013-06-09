@@ -20,6 +20,7 @@
 
 #define ATTACK_TIMEOUT			1000
 #define MAGIC_DAMAGE_TIMEOUT	1000
+#define FROZEN_TIMEOUT			5000
 #define MAXSPEED				15
 
 using namespace std;
@@ -58,6 +59,7 @@ public:
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
 
+	void froze();
 	void attackTo(Entity* attackTo);
 	Entity* getAttackToEntity();
 	void attack();
@@ -105,6 +107,8 @@ protected:
 
 	bool hasChanged;
 	Timer attackTimer;
+	Timer frozenTimer;
+	bool frozen;
 	float lastAttackingDirection;
 private:
 	void checkAttackToNewPos(MapData* mapData);

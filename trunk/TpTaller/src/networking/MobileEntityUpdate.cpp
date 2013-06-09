@@ -22,6 +22,8 @@ MobileEntityUpdate::MobileEntityUpdate() {
 	this->lastAttackingDirection = 0;
 	this->team = 0;
 	this->castingSpell = false;
+	this->viewRange = 200;
+	this->frozen = false;
 }
 
 void MobileEntityUpdate::setId(int id) {
@@ -76,6 +78,14 @@ bool MobileEntityUpdate::getCastingSpell() {
 
 void MobileEntityUpdate::setViewRange(int viewRange) {
 	this->viewRange = viewRange;
+}
+
+void MobileEntityUpdate::setFrozen(bool frozen) {
+	this->frozen = frozen;
+}
+
+bool MobileEntityUpdate::getFrozen() {
+	return frozen;
 }
 
 int MobileEntityUpdate::getViewRange() {
