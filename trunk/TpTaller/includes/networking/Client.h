@@ -35,6 +35,7 @@ public:
 	void addLocalPlayer();
 
 	bool recvGameState();
+	void recvGameScores();
 
 	bool exchangeAliveSignals();
 	void checkNewPlayers();
