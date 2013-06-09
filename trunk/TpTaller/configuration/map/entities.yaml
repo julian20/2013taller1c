@@ -73,6 +73,17 @@
     animationRepeats: 7
     baseRows: 1
     baseCols: 1  
+  - name: spellshielditem
+    imageSrc: resources/items/SpellShieldItem.png
+    imageWidth: 45
+    imageHeight: 45
+    numberOfClips: 0
+    anchorPixel: [22, 17]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
+    baseCols: 1  
   - name: earthquakeitem
     imageSrc: resources/items/EarthquakeItem.png
     imageWidth: 50
@@ -390,6 +401,8 @@
     position: [20, 17, 0]
   - name: crystalballitem
     position: [19, 21, 0]
+  - name: spellshielditem
+    position: [1, 8, 0]
 - entityLocations:
   - name: chapel
     position: [23, 20, 0]
