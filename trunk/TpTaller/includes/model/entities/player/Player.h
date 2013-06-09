@@ -23,6 +23,7 @@
 #include <model/entities/Items/Item.h>
 #include <model/entities/Items/LifeHeart.h>
 #include <model/entities/spells/SpellEffect.h>
+#include <model/entities/Golem/Golem.h>
 
 #define QUAKE_SPELL_ID "quake"
 #define NONE_SPELL_ID "none"
@@ -98,6 +99,8 @@ public:
 	void setChat(Chat* chat);
 	ChatUpdate* generateChatUpdate();
 	Weapon* getCurrentWeapon();
+	void createGolem();
+	bool hasGolem();
 private:
 	void usingMagic();
 	void initializeSpellsInventory();
@@ -123,6 +126,7 @@ private:
 
 	Timer earthquakeTimer;
 	bool earthquakeLifeTaked;
+	bool golem;
 };
 
 

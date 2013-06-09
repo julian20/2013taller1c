@@ -15,6 +15,7 @@
 #include <model/Chat.h>
 #include <model/persistence/PersistentConfiguration.h>
 #include <model/entities/enemies/Mob.h>
+#include <model/entities/Golem/Golem.h>
 #include <model/entities/Flag.h>
 #include <networking/MobileEntityInfo.h>
 #include <networking/MobUpdate.h>
@@ -50,13 +51,14 @@ public:
 	// Quita del juego la mobileEntity con el id pasado como parametro.
 	void removeMobileEntity(int id);
 
+	void createGolemIa(MobileEntity* golem);
 	map<int,MobileEntityInfo*> getMobileEntityInfo();
 	vector<int> getDeletedMobileEntities();
 
 	void deliverMessage(ChatMessage* msj);
 	void updateMobs();
 	void createFlag(MapData* mapData);
-
+	void createGolem(string playerName);
 	virtual ~MultiplayerGame();
 
 private:
@@ -69,7 +71,7 @@ private:
 	MapView* view;
 
 	map< string, NetworkPlayerController*> controllers;
-
+	map< string, Golem*> golemsMap;
 	list<Player*> players;
 	map<int,ArtificialIntelligence*> ias;
 	map<MobileEntity*, Coordinates> mobilesCoords;

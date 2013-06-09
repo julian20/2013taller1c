@@ -21,6 +21,7 @@ PlayerUpdate::PlayerUpdate() :
 	this->nextTile = new Tile();
 	this->initCoords = new Coordinates();
 	this->chat = NULL;
+	this->golem = false;
 }
 
 void PlayerUpdate::setChat(Chat* chat) {
@@ -61,7 +62,7 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 			<< *update.initCoords << " " << update.life << " " << update.magic
 			<< " " << update.lastAttackingDirection << " " << update.team
 			<< " " << update.castingSpell << " " << update.viewRange
-			<< " " << update.makingEarthquake;
+			<< " " << update.makingEarthquake << " " << update.golem;
 
 	return out;
 }
@@ -117,6 +118,9 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	bool earth;
 	in >> earth;
 	update.makingEarthquake = earth;
+	bool golem;
+	in >> golem;
+	update.golem = golem ;
 	return in;
 }
 
