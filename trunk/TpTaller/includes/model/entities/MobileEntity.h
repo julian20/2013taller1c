@@ -18,8 +18,10 @@
 #include <networking/PlayerEvent.h>
 #include <view/timer/Timer.h>
 
-#define ATTACK_TIMEOUT 1000
+#define ATTACK_TIMEOUT			1000
 #define MAGIC_DAMAGE_TIMEOUT	1000
+#define MAXSPEED				15
+
 using namespace std;
 class MapData;
 class Item;
@@ -48,7 +50,10 @@ public:
 	void setPosition(Position* position);
 	Speed* getSpeed();
 	void setSpeed(Speed* speed);
+
 	void setInitSpeed(Speed* initSpeed);
+	void setInitSpeedMagnitude(int initSpeed);
+	Speed* getInitSpeed();
 
 	void assignPath(list<Tile *> *_path);
 	bool isRunning();
