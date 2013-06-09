@@ -34,6 +34,7 @@ Entity::Entity() {
 	this->walkable = false;
 	this->attackable = true;
 	this->shield = 0;
+	this->removeFromGame = false;
 }
 
 Entity::Entity(Entity* entity) {
@@ -55,6 +56,7 @@ Entity::Entity(Entity* entity) {
 	this->walkable = entity->isWalkable();
 	this->attackable = entity->isAttackable();
 	this->shield = 0;
+	this->removeFromGame = false;
 }
 
 bool Entity::isWalkable() {
@@ -232,12 +234,12 @@ void Entity::resetRespawnTimer() {
 	respawnTimer.start();
 }
 
-void Entity::setBelongsToGame(bool belongsToGame) {
-	this->belongsToGame = belongsToGame;
+void Entity::setRemoveFromGame(bool removeFromGame) {
+	this->removeFromGame = removeFromGame;
 }
 
-bool Entity::getBelongsToGame() {
-	return belongsToGame;
+bool Entity::getRemoveFromGame() {
+	return removeFromGame;
 }
 
 void Entity::setShield(int shield) {
