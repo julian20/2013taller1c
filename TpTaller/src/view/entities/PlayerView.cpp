@@ -128,7 +128,7 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 	blitName(screen, x, y);
 
 	blitHPBar(screen, x, y);
-
+	blitIceSpellEffect(screen,x,y);
 }
 
 void PlayerView::blitSpellEffect(SDL_Surface* screen, int x, int y) {
@@ -660,6 +660,30 @@ void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 		animationChangeRate = 0; // Move to the next marco in the animation
 	} else
 		animationChangeRate++;
+
+}
+
+void PlayerView::blitIceSpellEffect(SDL_Surface* screen, int x, int y) {
+	if (!player->isFrozen()){
+		currentIceSpellClip = 0;
+		return;
+	}
+	SDL_Surface* spellSprite = textureHolder->getTexture(string(ICE_IMG));
+	int numberOfClips = 4;
+	if (currentIceSpellClip >= numberOfClips) {
+		currentIceSpellClip = numberOfClips-1;
+	}
+	SDL_Rect offsetSpell, currentClip;
+	int frameWidth = spellSprite->w / numberOfClips;
+	offsetSpell.x = (int) x + camPos->getX() - frameWidth / 2 + 10;
+	offsetSpell.y = (int) y + camPos->getY() - this->anchorPixel->getY() + frameWidth/10;
+
+	currentClip.x = currentIceSpellClip * frameWidth;
+	currentClip.y = 0;
+	currentClip.w = frameWidth;
+	currentClip.h = spellSprite->h;
+	SDL_BlitSurface(spellSprite, &currentClip, screen, &offsetSpell);
+	currentIceSpellClip++;
 
 }
 

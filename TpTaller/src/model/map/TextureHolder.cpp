@@ -32,6 +32,7 @@ TextureHolder::TextureHolder() {
 	TextureDefinition* fire = new TextureDefinition(FIREBALL_IMG, FIREBALL_IMG);
 	textures[FIREBALL_IMG] = fire;
 
+
 }
 
 TextureHolder::~TextureHolder() {

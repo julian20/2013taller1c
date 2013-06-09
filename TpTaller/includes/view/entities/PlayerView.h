@@ -72,13 +72,14 @@ private:
 	void blitName(SDL_Surface* screen, int x, int y);
 	void blitHPBar(SDL_Surface* screen, int x, int y);
 	void showCorpse(SDL_Surface* fondo, bool drawFog, SpriteType sprite);
+	void blitIceSpellEffect(SDL_Surface* screen, int x, int y);
 	ChatWindowsView* chatView;
 	map<int, Uint32> teamColors;
 
 	Player* player;
 	Position* camPos;
 	SpriteType currentSprite;
-	int marco, currentSpellClip; 	// Current frame
+	int marco, currentSpellClip, currentIceSpellClip; 	// Current frame
 	int animationChangeRate;
 	int numberOfClips;
 	int direction;
