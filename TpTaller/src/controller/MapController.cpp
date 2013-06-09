@@ -43,12 +43,18 @@ void MapController::clickListener(SDL_Event event) {
 		playerController->changeStateUsingShieldSpell();
 	}
 
+	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_f)) {
+		playerController->frozeEnemies();
+	}
+
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_e)) {
 		playerController->makeEarthquake();
 	}
+
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_g)) {
 			playerController->createGolem();
 	}
+
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_b)) {
 		playerController->changeStateCrystalBall();
 	}

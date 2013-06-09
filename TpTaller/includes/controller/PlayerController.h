@@ -27,6 +27,7 @@ public:
 	Player* getPlayer();
 	virtual void toggleRunning();
 	void makeEarthquake();
+	void frozeEnemies();
 	void changeStateCrystalBall();
 	void changeStateUsingShieldSpell();
 	void castSpell();

@@ -33,6 +33,7 @@
 #define EARTHQUAKE_TIMEOUT 2000
 #define EARTHQUAKE_RADIUS 10	// Tiles
 #define EARTHQUAKE_DAMAGE 25
+#define FROZE_RADIUS	8
 
 using namespace std;
 
@@ -69,6 +70,8 @@ public:
 
 	void setUsingShieldSpell(bool usingShieldSpell);
 	bool getUsingShieldSpell();
+
+	void frozeEnemies();
 
 	void setCastingSpell(bool castingSpell);
 	bool isCastingSpell();
@@ -113,6 +116,7 @@ public:
 
 	void updateDamageTaken();
 private:
+	void frozeEnemiesNow(MapData* mapData);
 	void usingMagic();
 	void initializeSpellsInventory();
 	void castSpellNow(MapData* mapData);
@@ -130,6 +134,7 @@ private:
 
 	bool usingCrystalBall,usingInvulnerability;
 	bool makingEarthquake;
+	bool needFrozeEnemies;
 	bool castingSpell;
 	bool needCastSpell;
 	bool blocking;

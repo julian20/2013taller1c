@@ -37,6 +37,7 @@ Player::Player() :
 	needCastSpell = false;
 	castingSpell = false;
 	makingEarthquake = false;
+	needFrozeEnemies = false;
 	usingCrystalBall = usingInvulnerability = false;
 	earthquakeLifeTaked = true;
 	spellEffects.push_back(new SpellEffect());
@@ -65,6 +66,7 @@ Player::Player(string name, Position* position, Speed* speed,
 	needCastSpell = false;
 	castingSpell = false;
 	makingEarthquake = false;
+	needFrozeEnemies = false;
 	usingCrystalBall = usingInvulnerability = false;
 	earthquakeLifeTaked = false;
 	spellEffects.push_back(new SpellEffect());
@@ -147,6 +149,10 @@ void Player::setMakingEarthquake(bool makingEarthquake) {
 
 bool Player::getMakingEarthquake() {
 	return makingEarthquake;
+}
+
+void Player::frozeEnemies() {
+	needFrozeEnemies = true;
 }
 
 void Player::setCastingSpell(bool castingSpell) {
@@ -255,11 +261,28 @@ void Player::usingMagic() {
 	}
 }
 
+void Player::frozeEnemiesNow(MapData* mapData) {
+	needFrozeEnemies = false;
+
+	list<MobileEntity*> mobiles = mapData->getClosestEntities(*coord,
+			FROZE_RADIUS, true);
+
+	list<MobileEntity*>::iterator iter;
+	for (iter = mobiles.begin(); iter != mobiles.end(); ++iter) {
+		MobileEntity* current = *iter;
+
+		if (current->getTeam() != team)
+			current->froze();
+	}
+}
+
 void Player::extraUpdate(MapData* mapData) {
 	if (needCastSpell)
 		castSpellNow(mapData);
 	if (makingEarthquake)
 		makeEarthquake(mapData);
+	if (needFrozeEnemies)
+		frozeEnemiesNow(mapData);
 	if (inventory.map){
 		if (inventory.mapUsed == false) {
 			inventory.mapUsed = true;
@@ -322,6 +345,7 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->viewRange = update->getViewRange();
 	this->makingEarthquake = update->getMakingEarthquake();
 	this->usingInvulnerability = update->getIsInvulnerable();
+	this->frozen = update->getFrozen();
 	if (currentTile)
 		delete currentTile;
 	this->currentTile = update->getTile();
@@ -370,6 +394,7 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setViewRange(this->viewRange);
 	update->setMakingEarthquake(this->makingEarthquake);
 	update->setInvulnerable(this->usingInvulnerability);
+	update->setFrozen(this->frozen);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {
@@ -443,6 +468,7 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 	out << " " << player.usingInvulnerability;
 	out << " " << player.viewRange;
 	out << " " << player.golem;
+	out << " " << player.frozen;
 	return out;
 }
 
@@ -505,6 +531,9 @@ istream& operator >>(std::istream& in, Player& player) {
 	bool golem;
 	in >> golem;
 	player.golem = golem;
+	bool frozen;
+	in >> frozen;
+	player.frozen = frozen;
 	return in;
 }
 

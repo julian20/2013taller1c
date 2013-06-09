@@ -29,6 +29,7 @@ MobileEntity::MobileEntity() : Entity() {
 	lastAttackingDirection = 0;
 	viewRange = 200;
 	magicDamageDelay.start();
+	frozen = false;
 }
 
 MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
@@ -49,6 +50,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	lastAttackingDirection = 0;
 	viewRange = 200;
 	magicDamageDelay.start();
+	frozen = false;
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {
@@ -151,7 +153,15 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 void MobileEntity::extraUpdate(MapData* mapData) {
 	// Se overraidea en player
 }
+
 void MobileEntity::update(MapData* mapData) {
+	if (frozen) {
+		if (frozenTimer.getTimeIntervalSinceStart() > FROZEN_TIMEOUT)
+			frozen = false;
+		else
+			return;
+	}
+
 	extraUpdate(mapData);
 	if (attackToEntity != NULL)
 		checkAttackToNewPos(mapData);
@@ -194,7 +204,7 @@ void MobileEntity::updateFromServer(MobileEntityUpdate* update) {
 	this->currentTile = update->getTile();
 	this->lastAttackingDirection = update->getLastAttackingDirection();
 	this->viewRange = update->getViewRange();
-
+	this->frozen = update->getFrozen();
 	Coordinates currentTileCoords = this->currentTile->getCoordinates();
 	Coordinates nextTileCoords = update->getNextTile()->getCoordinates();
 	if ((!currentTileCoords.isEqual(nextTileCoords)) && (this->path->empty())) {
@@ -225,6 +235,7 @@ MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate(int id) {
 	update->setMagic(this->magic);
 	update->setTeam(this->team);
 	update->setViewRange(this->viewRange);
+	update->setFrozen(frozen);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {
@@ -309,6 +320,11 @@ void MobileEntity::assignPath(list<Tile *> *_path) {
 
 	loadNextPosition();
 	this->hasChanged = true;
+}
+
+void MobileEntity::froze() {
+	frozen = true;
+	frozenTimer.start();
 }
 
 void MobileEntity::attackTo(Entity* attackTo) {
@@ -397,6 +413,7 @@ ostream& operator <<(std::ostream& out, const MobileEntity& MobileEntity) {
 	out << " " << MobileEntity.life << " " << MobileEntity.team;
 	out << " " << MobileEntity.lastAttackingDirection;
 	out << " " << MobileEntity.viewRange;
+	out << " " << MobileEntity.frozen;
 
 	return out;
 }
@@ -435,7 +452,9 @@ istream& operator >>(std::istream& in, MobileEntity& MobileEntity) {
 	int view;
 	in >> view;
 	MobileEntity.viewRange = view;
-
+	bool froze;
+	in >> froze;
+	MobileEntity.frozen = froze;
 	return in;
 }
 

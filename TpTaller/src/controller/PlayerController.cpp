@@ -181,8 +181,12 @@ MapData* PlayerController::getMapData() {
 void PlayerController::makeEarthquake() {
 	events.push_back(new PlayerEvent(EVENT_EARTHQUAKE_START));
 }
-void PlayerController::createGolem()
-{
+
+void PlayerController::frozeEnemies() {
+	events.push_back(new PlayerEvent(EVENT_FROZE_ENEMIES));
+}
+
+void PlayerController::createGolem(){
 	events.push_back(new PlayerEvent(EVENT_GOLEM));
 }
 //TODO - hardcoded

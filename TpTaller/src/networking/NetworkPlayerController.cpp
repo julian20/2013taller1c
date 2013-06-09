@@ -63,6 +63,10 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 		break;
 	case EVENT_CAST_SHIELD:
 		player->setUsingShieldSpell(!player->getUsingShieldSpell());
+		break;
+	case EVENT_FROZE_ENEMIES:
+		player->frozeEnemies();
+		break;
 	}
 
 	player->setHasChanged(true);
