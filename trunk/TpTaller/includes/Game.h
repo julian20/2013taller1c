@@ -53,6 +53,7 @@ public:
 
         MapCameraView* getMapCameraView();
         MapData* getMapData();
+        ItemViewHolder* getIterViewHolder();
         void setChat(Chat* chat);
         list<PlayerEvent*> getEvents();
         void cleanEvents();
@@ -77,6 +78,7 @@ private:
         SDL_Surface* fondo;
 
         MapData* mapData;
+        ItemViewHolder* vh;
         ChatController* chatController ;
         ChatWindowsView* chatView;
         Chat* chat;

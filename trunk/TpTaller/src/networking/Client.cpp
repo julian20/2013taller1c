@@ -390,7 +390,7 @@ void Client::checkNewEntity(){
 
 		int id = info->getId();
 		Entity* entity = info->getEntity();
-		EntityView* view = info->createEntityView();
+		EntityView* view = info->createEntityView(game->getIterViewHolder());
 		game->addNewEntity(entity,view,info->getInitCoordinates(), id);
 
 	}
