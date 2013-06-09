@@ -209,6 +209,14 @@ void MapView::addNewMobileEntityView(MobileEntityView* view, Coordinates initCoo
 	viewMap->positionEntityView(view, initCoord);
 }
 
+void MapView::addNewEntityView(EntityView* view, Coordinates initCoord){
+	viewMap->positionEntityView(view, initCoord);
+}
+
 void MapView::removeMobileEntity(MobileEntityView* view){
+	viewMap->removeEntityView(view);
+}
+
+void MapView::removeEntity(EntityView* view){
 	viewMap->removeEntityView(view);
 }

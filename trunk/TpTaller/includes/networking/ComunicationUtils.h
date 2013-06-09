@@ -12,6 +12,7 @@
 #include <networking/PlayerInfo.h>
 #include <networking/PlayerUpdate.h>
 #include <networking/MobileEntityInfo.h>
+#include <networking/EntityInfo.h>
 #include <networking/MobUpdate.h>
 
 #include <string>
@@ -31,6 +32,9 @@ public:
 
 	static void 		sendMobileEntityInfo(int sockId,MobileEntityInfo* info);
 	static MobileEntityInfo*		recvMobileEntityInfo(int sockId);
+
+	static void 		sendEntityInfo(int sockId,EntityInfo* info);
+	static EntityInfo*		recvEntityInfo(int sockId);
 
 	static void 		sendPlayerEvent(int sockID,PlayerEvent* event);
 	static PlayerEvent* recvPlayerEvent(int sockID);

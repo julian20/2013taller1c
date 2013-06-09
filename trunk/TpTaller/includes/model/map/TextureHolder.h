@@ -31,6 +31,7 @@ public:
 	SDL_Surface* getFogTexture(std::string id);
 
 	map<string,string> getMobileEntityImages(string playerName);
+	map<string, string> getEntityImages(string entName);
 
 	std::string getTextureSrc(std::string id);
 private:

@@ -277,6 +277,7 @@ void Server::runMainLoop(int clientSocket, string playerName){
 
 		sendNewPlayers(clientSocket,playerName);
 		sendNewMobileEntities(clientSocket,playerName);
+		sendNewEntities(clientSocket,playerName);
 
 		vector<PlayerEvent*> events = recvEvents(clientSocket);
 
@@ -536,6 +537,37 @@ void Server::sendNewMobileEntities(int clientSocket,string playerName){
 		if (deletedMobileEntities[playerName].count(deleted[i]) == 0){
 			ComunicationUtils::sendNumber(clientSocket,deleted[i]);
 			deletedMobileEntities[playerName][deleted[i]] = deleted[i];
+		}
+	}
+
+}
+
+void Server::sendNewEntities(int clientSocket,string playerName){
+	// 1ro envio la cantidad de mobs que voy a mandar
+	map<int,EntityInfo*> infos = game->getEntityInfo();
+	int n = infos.size() - sendedEntities[playerName].size();
+
+	ComunicationUtils::sendNumber(clientSocket, n);
+
+	for (map<int, EntityInfo*>::iterator it = infos.begin(); it != infos.end(); ++it) {
+		// SI NO HA SIDO ENVIADO, LO ENVIO
+		if (sendedEntities[playerName].count(it->first) == 0) {
+			EntityInfo* info = it->second;
+			ComunicationUtils::sendEntityInfo(clientSocket, info);
+			sendedEntities[playerName][it->first] = it->second->getEntity();
+
+		}
+
+	}
+
+	vector<int> deleted = game->getDeletedEntities();
+	n = deleted.size() - deletedEntities[playerName].size();
+	ComunicationUtils::sendNumber(clientSocket, n);
+	if (n < 0) return;
+	for (unsigned int i = 0 ; i < deleted.size() ; i++){
+		if (deletedEntities[playerName].count(deleted[i]) == 0){
+			ComunicationUtils::sendNumber(clientSocket,deleted[i]);
+			deletedEntities[playerName][deleted[i]] = deleted[i];
 		}
 	}
 

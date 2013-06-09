@@ -29,6 +29,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
 	vector<MobileEntityView*> viewVector = configuration->getMobileEntityViewList();
+	vector<EntityView*> entviewVector = configuration->getItemViews();
 	lastAddedView = 0;
 
 	for (unsigned int i = 0 ; i < viewVector.size() ; i++){
@@ -41,6 +42,14 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 		lastAddedView++;
 
 	}
+
+	for (unsigned int i = 0 ; i < entviewVector.size() ; i++){
+			int index = lastAddedView + 1;
+			entities[index] = entviewVector[i]->getEntity();
+			entView[index] = entviewVector[i];
+			lastAddedView++;
+	}
+
 	createFlag(view->getMapData());
 
 }
@@ -280,6 +289,38 @@ vector<int> MultiplayerGame::getDeletedMobileEntities(){
 	return deletedMobileEntities;
 }
 
+map<int,EntityInfo*> MultiplayerGame::getEntityInfo(){
+
+	map<int,EntityInfo*> infos;
+
+	for (map<int,EntityView*>::iterator it = entView.begin() ; it != entView.end() ; ++it){
+		EntityView* view = it->second;
+		Entity* ent = view->getEntity();
+		EntityInfo* info = new EntityInfo();
+		info->setId(it->first);
+		info->setName(ent->getName());
+		info->setFPS(view->getFps());
+		info->setDelay(view->getFps());
+		info->setNClips(view->getNClips());
+		info->setImageDimentions(view->getImageWidth(),view->getImageHeight());
+		info->setAnchorPixel(view->getAnchorPixel());
+		info->setEntity(ent);
+		info->setImages(view->getTextureHolder()->getEntityImages(info->getName()));
+		int col = ent->getCoordinates().getCol();
+		int row = ent->getCoordinates().getRow();
+		Coordinates* tmp = new Coordinates(row,col);
+		info->setInitCoordinates(tmp);
+		infos[it->first] = info;
+	}
+
+	return infos;
+
+}
+
+vector<int> MultiplayerGame::getDeletedEntities(){
+	return deletedEntities;
+}
+
 void MultiplayerGame::addNewMobileEntities() {
 	MapData* mapData = view->getMapData();
 	vector<MobileEntity* > newMobiles = mapData->getnewMobileEntities();
@@ -325,9 +366,35 @@ void MultiplayerGame::removeMobileEntity(int id){
 
 		deletedMobileEntities.push_back(id);
 	}
-
-
 }
+
+
+int MultiplayerGame::addEntity(EntityView* view, Entity* entity, Coordinates coordiantes){
+
+	entity->setCoordinates(coordiantes.getRow(), coordiantes.getCol());
+	int newId = lastAddedView + 1;
+	entities[newId] = entity;
+	entView[newId] = view;
+	lastAddedView = newId;
+
+	return newId;
+}
+
+void MultiplayerGame::removeEntity(int id){
+	if (entities.count(id) != 0){
+		if (entView.count(id) != 0){
+			entView.erase(id);
+		}
+
+		entities.erase(id);
+
+		//TODO: SACARLO TAMBIEN DE MAP DATA
+
+		deletedEntities.push_back(id);
+	}
+}
+
+
 
 MultiplayerGame::~MultiplayerGame() {
 	// TODO Auto-generated destructor stub
