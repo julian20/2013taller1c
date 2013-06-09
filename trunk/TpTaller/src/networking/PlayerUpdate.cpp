@@ -62,7 +62,6 @@ bool PlayerUpdate::getIsInvulnerable() {
 	return invulnerable;
 }
 
-
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 
@@ -71,10 +70,10 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 			<< update.blocking << " " << update.active << " "
 			<< *update.currentTile << " " << *update.nextTile << " "
 			<< *update.initCoords << " " << update.life << " " << update.magic
-			<< " " << update.lastAttackingDirection << " " << update.team
-			<< " " << update.castingSpell << " " << update.viewRange
-			<< " " << update.makingEarthquake << " " << update.invulnerable
-			<< " " << update.golem;
+			<< " " << update.lastAttackingDirection << " " << update.team << " "
+			<< update.castingSpell << " " << update.viewRange << " "
+			<< update.makingEarthquake << " " << update.invulnerable << " "
+			<< update.golem << " " << update.frozen;
 
 	return out;
 }
@@ -135,7 +134,10 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	update.invulnerable = inv;
 	bool golem;
 	in >> golem;
-	update.golem = golem ;
+	update.golem = golem;
+	bool frozen;
+	in >> frozen;
+	update.frozen = frozen;
 	return in;
 }
 
