@@ -26,7 +26,9 @@ MapItem::MapItem(Item* entity) : Item(entity) {
 }
 
 void MapItem::applyEffects(Player& entity) {
-	// TODO: fede
+	Player* player = (Player*)&entity;
+
+	player->addMap();
 }
 
 void MapItem::collideTo(Player& entity) {

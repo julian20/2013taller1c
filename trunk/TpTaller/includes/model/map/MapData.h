@@ -63,6 +63,7 @@ public:
 	list<Tile *> getNeighborTiles(Tile* tile);
 	void cleanVisibleTilesVector();
 	void updateVisibleTiles(MobileEntity* mobile = NULL);
+	void showAllMap();
 	static int distBetweenTilesInTiles(Tile* from, Tile* to);
 private:
 	float heuristicCostEstimate(Tile* from, Tile* to);

@@ -76,6 +76,7 @@ void Player::initializeSpellsInventory() {
 	inventory.earthquake = false;
 	inventory.crystalBall = false;
 	inventory.shieldSpell = false;
+	inventory.map = inventory.mapUsed = false;
 }
 
 void Player::setLife(int life) {
@@ -105,6 +106,10 @@ void Player::addCrystalBallSpell() {
 
 void Player::addShieldSpell() {
 	inventory.shieldSpell = true;
+}
+
+void Player::addMap() {
+	inventory.map = true;
 }
 
 void Player::setUsingCrystalBall(bool usingCrystalBall) {
@@ -255,6 +260,12 @@ void Player::extraUpdate(MapData* mapData) {
 		castSpellNow(mapData);
 	if (makingEarthquake)
 		makeEarthquake(mapData);
+	if (inventory.map){
+		if (inventory.mapUsed == false) {
+			inventory.mapUsed = true;
+			mapData->showAllMap();
+		}
+	}
 	usingMagic();
 }
 

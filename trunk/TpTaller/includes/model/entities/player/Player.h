@@ -41,6 +41,7 @@ public:
 	bool earthquake;
 	bool crystalBall;
 	bool shieldSpell;
+	bool map, mapUsed;
 };
 
 class Player: public MobileEntity {
@@ -77,6 +78,7 @@ public:
 	void addEarthquakeSpell();
 	void addCrystalBallSpell();
 	void addShieldSpell();
+	void addMap();
 
 	void block();
 	void setBlock(bool blocking);

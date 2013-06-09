@@ -609,6 +609,19 @@ void MapData::cleanVisibleTilesVector() {
 	visibleTiles.erase(visibleTiles.begin(), visibleTiles.end());
 }
 
+void MapData::showAllMap() {
+
+	for (int row = 0; row < nrows; row++) {
+		for (int col = 0; col < ncols; col++) {
+
+			getTileData(row, col)->setVisibility(true);
+			getTileData(row, col)->setVisibility(false);
+
+		}
+	}
+
+}
+
 void MapData::updateVisibleTiles(MobileEntity* mobile) {
 	if (mobile == NULL)
 		mobile = mainPlayer;
