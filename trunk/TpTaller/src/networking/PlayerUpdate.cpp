@@ -21,6 +21,8 @@ PlayerUpdate::PlayerUpdate() :
 	this->nextTile = new Tile();
 	this->initCoords = new Coordinates();
 	this->chat = NULL;
+	invulnerable = false;
+	makingEarthquake = false;
 	this->golem = false;
 }
 
@@ -52,6 +54,15 @@ bool PlayerUpdate::getMakingEarthquake() {
 	return makingEarthquake;
 }
 
+void PlayerUpdate::setInvulnerable(bool inv) {
+	this->invulnerable = inv;
+}
+
+bool PlayerUpdate::getIsInvulnerable() {
+	return invulnerable;
+}
+
+
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 
@@ -62,7 +73,8 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 			<< *update.initCoords << " " << update.life << " " << update.magic
 			<< " " << update.lastAttackingDirection << " " << update.team
 			<< " " << update.castingSpell << " " << update.viewRange
-			<< " " << update.makingEarthquake << " " << update.golem;
+			<< " " << update.makingEarthquake << " " << update.invulnerable
+			<< " " << update.golem;
 
 	return out;
 }
@@ -118,6 +130,9 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	bool earth;
 	in >> earth;
 	update.makingEarthquake = earth;
+	bool inv;
+	in >> inv;
+	update.invulnerable = inv;
 	bool golem;
 	in >> golem;
 	update.golem = golem ;

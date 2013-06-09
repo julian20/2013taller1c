@@ -47,8 +47,8 @@ PlayerView::PlayerView()
 	numberOfClips = 0;
 	movable = true;
 	direction = DOWN;
-	wasStanding = spellHasEnded = true;
-	attacking = attacked = loaded = spellBeingCast = false;
+	wasStanding  = true;
+	attacking = attacked = loaded = spellBeingCast = spellHasEnded = false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -72,8 +72,8 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	setNumberOfRepeats(otherPlayer->getNumberOfRepeats());
 	movable = true;
 	direction = DOWN;
-	wasStanding = spellHasEnded = true;
-	attacking = attacked = loaded = spellBeingCast = false;
+	wasStanding =  true;
+	attacking = attacked = loaded = spellBeingCast = spellHasEnded =false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -132,27 +132,19 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 }
 
 void PlayerView::blitSpellEffect(SDL_Surface* screen, int x, int y) {
-	if (!spellBeingCast || spellHasEnded) {
-		currentSpellClip = 0;
-		return;
-	}
-//	TODO: aca iria la eleccion de la imagen
-//	string spell = player->getSpellBeingCast();
-	string spell("");
-	if (spell.compare(NONE_SPELL_ID) == 0) {
+	if (!player->getUsingShieldSpell()){
 		currentSpellClip = 0;
 		return;
 	}
 	SDL_Surface* spellSprite = spellMap[QUAKE_IMG_ID].image;
 	int numberOfClips = spellMap[QUAKE_IMG_ID].numberOfClips;
 	if (currentSpellClip >= numberOfClips) {
-		spellHasEnded = true;
-		return;
+		currentSpellClip = 0;
 	}
 	SDL_Rect offsetSpell, currentClip;
 	int frameWidth = spellSprite->w / numberOfClips;
 	offsetSpell.x = (int) x + camPos->getX() - frameWidth / 2;
-	offsetSpell.y = (int) y + camPos->getY() - this->anchorPixel->getY();
+	offsetSpell.y = (int) y + camPos->getY() - this->anchorPixel->getY() - 20;
 
 	currentClip.x = currentSpellClip * frameWidth;
 	currentClip.y = 0;
@@ -301,7 +293,7 @@ FoggedSprite PlayerView::loadFoggedSpellSprite(const char* modifier) {
 	sprite.foggedImage = textureHolder->getFogTexture(id);
 	sprite.teamColorImage = FogCreator::getFog(sprite.image,
 			teamColors[player->getTeam()]);
-	sprite.numberOfClips = 6;
+	sprite.numberOfClips = 4;
 	return sprite;
 
 }
@@ -471,7 +463,8 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		loadPlayerImage();
 		damageReceivedTimer.start();
 	}
-
+	if (player->getMagic()<=0)
+		spellHasEnded = true;
 	player->updateDamageTaken();
 	Vector2* movementDirection = this->player->getMovementDirection();
 	float direction;

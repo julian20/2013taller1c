@@ -29,6 +29,7 @@
 #define NONE_SPELL_ID "none"
 #define RESPAWN_TIMEOUT 15000
 #define CRYSTALBALL_MANA	3
+#define SHIELD_MANA	5
 #define EARTHQUAKE_TIMEOUT 2000
 #define EARTHQUAKE_RADIUS 10	// Tiles
 #define EARTHQUAKE_DAMAGE 25
@@ -39,6 +40,7 @@ class Inventory {
 public:
 	bool earthquake;
 	bool crystalBall;
+	bool shieldSpell;
 };
 
 class Player: public MobileEntity {
@@ -63,6 +65,10 @@ public:
 	bool getUsingCrystalBall();
 	void setMakingEarthquake(bool makingEarthquake);
 	bool getMakingEarthquake();
+
+	void setUsingShieldSpell(bool usingShieldSpell);
+	bool getUsingShieldSpell();
+
 	void setCastingSpell(bool castingSpell);
 	bool isCastingSpell();
 	void castSpell();
@@ -70,6 +76,7 @@ public:
 
 	void addEarthquakeSpell();
 	void addCrystalBallSpell();
+	void addShieldSpell();
 
 	void block();
 	void setBlock(bool blocking);
@@ -85,7 +92,7 @@ public:
 	virtual void collideTo(Entity& entity);
 	virtual void reverseCollide(Entity& entity);
 	virtual void attack(Entity& entity);
-
+	void setLife(int life);
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const Player&);
@@ -101,6 +108,8 @@ public:
 	Weapon* getCurrentWeapon();
 	void createGolem();
 	bool hasGolem();
+
+	void updateDamageTaken();
 private:
 	void usingMagic();
 	void initializeSpellsInventory();
@@ -117,7 +126,7 @@ private:
 	list<SpellEffect*> spellEffects;
 	Inventory inventory;
 
-	bool usingCrystalBall;
+	bool usingCrystalBall,usingInvulnerability;
 	bool makingEarthquake;
 	bool castingSpell;
 	bool needCastSpell;

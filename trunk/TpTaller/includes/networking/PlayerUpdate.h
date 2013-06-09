@@ -34,6 +34,9 @@ public:
 	void setMakingEarthquake(bool makingEarthquake);
 	bool getMakingEarthquake();
 
+	void setInvulnerable(bool invul);
+	bool getIsInvulnerable();
+
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const PlayerUpdate&);
 
@@ -44,6 +47,7 @@ private:
 	bool blocking;
 	bool active;
 	bool makingEarthquake;
+	bool invulnerable;
 	bool golem;
 
 };

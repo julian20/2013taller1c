@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <vector>
 
-#define DAMAGE_DELAY 500 //milliseconds
+
 using namespace std;
 
 Entity::Entity() {
