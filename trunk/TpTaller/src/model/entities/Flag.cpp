@@ -21,7 +21,7 @@ string Flag::getClassName() {
 	return this->name;
 }
 
-void Flag::collideTo(MobileEntity& player) {
+void Flag::collideTo(Player& player) {
 	if (!isDead()) {
 		receiveDamage(player);
 		if (life <= 0) {

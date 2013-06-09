@@ -16,7 +16,7 @@ class Flag: public MobileEntity {
 public:
 	Flag();
 	void attackedBy(string player);
-	void collideTo(MobileEntity& player);
+	void collideTo(Player& player);
 	void receiveDamage(MobileEntity& player);
 	virtual ~Flag();
 	string getClassName();
