@@ -62,9 +62,7 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 		this->player->createGolem();
 		break;
 	case EVENT_CAST_SHIELD:
-		player->addShieldSpell();
 		player->setUsingShieldSpell(!player->getUsingShieldSpell());
-		break;
 	}
 
 	player->setHasChanged(true);

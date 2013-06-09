@@ -114,8 +114,11 @@ void Player::setUsingCrystalBall(bool usingCrystalBall) {
 }
 
 void Player::setUsingShieldSpell(bool usingShieldSpell) {
-	if (inventory.shieldSpell)
+	if (inventory.shieldSpell) {
+		if (!usingShieldSpell)
+			inventory.shieldSpell = false;
 		this->usingInvulnerability = usingShieldSpell;
+	}
 }
 
 bool Player::getUsingCrystalBall() {
@@ -241,9 +244,9 @@ void Player::usingMagic() {
 	if (magic <= 0) {
 		magic = 0;
 		usingCrystalBall = false;
-		usingInvulnerability = false;
 		if (usingInvulnerability)
 			inventory.shieldSpell = false;
+		usingInvulnerability = false;
 	}
 }
 
