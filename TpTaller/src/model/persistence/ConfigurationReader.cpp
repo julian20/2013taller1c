@@ -1152,7 +1152,7 @@ void operator >>(const YAML::Node& yamlNode,
 		std::vector<MobileEntity*>& entityVector) {
 	const YAML::Node& mobileEntityLocations = yamlNode["mobileEntityLocations"];
 	for (unsigned i = 0; i < mobileEntityLocations.size(); i++) {
-	//	MobileEntity* entity = new MobileEntity();
+		//	MobileEntity* entity = new MobileEntity();
 		Mob* entity = new Mob();
 		mobileEntityLocations[i] >> entity;
 		if (entity != NULL)
@@ -1477,7 +1477,8 @@ void operator >>(const YAML::Node& yamlNode,
 	int auxFps, auxDelay, auxHeight, auxWidth, auxBPP, auxMovementMargin;
 	int auxTileWidth, auxTileHeight, auxPort;
 	bool auxFullscreen, auxAutoConfig;
-	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic, auxIP, auxMissionType;
+	std::string auxGameMusicSrc, auxMenuImage, auxMenuMusic, auxIP,
+			auxMissionType;
 	try {
 		configuration["serverIP"] >> auxIP;
 	} catch (YAML::Exception& yamlException) {
@@ -2073,7 +2074,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 
 			parsedItems.push_back(shield);
 
-		}  else if (actualItem->getName() == "mapitem") {
+		} else if (actualItem->getName() == "mapitem") {
 
 			MapItem* mapItem = new MapItem();
 
@@ -2083,7 +2084,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 
 			parsedItems.push_back(mapItem);
 
-		}   else if (actualItem->getName() == "chest") {
+		} else if (actualItem->getName() == "chest") {
 
 			Chest* chest = new Chest();
 
@@ -2092,6 +2093,16 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			chest->setCoordinates(coord.getRow(), coord.getCol());
 
 			parsedItems.push_back(chest);
+
+		} else if (actualItem->getName() == "strengthbuff") {
+
+			StrengthBuff* strengthBuff = new StrengthBuff();
+
+			strengthBuff->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			strengthBuff->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(strengthBuff);
 
 		} else if (actualItem->getName() == "earthquakeitem") {
 

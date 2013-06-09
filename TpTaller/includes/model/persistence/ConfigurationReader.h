@@ -26,6 +26,7 @@
 #include <model/entities/Items/Shield.h>
 #include <model/entities/Items/MapItem.h>
 #include <model/entities/Items/Chest.h>
+#include <model/entities/Items/StrengthBuff.h>
 #include <model/entities/Items/EarthquakeItem.h>
 #include <model/entities/Items/CrystalBallItem.h>
 #include <model/map/Tile.h>

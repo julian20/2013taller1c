@@ -1,16 +1,17 @@
 /*
- * Chest.cpp
+ * StrengthBuff.cpp
  *
  *  Created on: Jun 9, 2013
  *      Author: gonchub
  */
 
-#include <model/entities/Items/Chest.h>
+#include <model/entities/Items/StrengthBuff.h>
 
-Chest::Chest() {
+StrengthBuff::StrengthBuff() {
 }
 
-Chest::Chest(Item* entity) : Item(entity) {
+StrengthBuff::StrengthBuff(Item* entity) :
+		Item(entity) {
 	Vector3* pos = entity->getCurrentPos();
 	this->currentPos = new Vector3(pos->getX(), pos->getY(), pos->getZ());
 	Coordinates coordin = entity->getCoordinates();
@@ -25,17 +26,20 @@ Chest::Chest(Item* entity) : Item(entity) {
 	this->killedBy = entity->getKilledBy();
 }
 
-void Chest::applyEffects(Player& entity) {
+void StrengthBuff::applyEffects(Player& entity) {
+	Player* player = (Player*) &entity;
+	player->getCurrentWeapon()->setDamage(
+			player->getCurrentWeapon()->getDamage() + 5);
 }
 
-void Chest::collideTo(Player& entity) {
+void StrengthBuff::collideTo(Player& entity) {
 	applyEffects(entity);
 }
 
-string Chest::getClassName() {
-	return "Chest";
+string StrengthBuff::getClassName() {
+	return "StrengthBuff";
 }
 
-Chest::~Chest() {
+StrengthBuff::~StrengthBuff() {
 }
 
