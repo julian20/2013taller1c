@@ -656,7 +656,7 @@ void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 
 	showFrame(screen, &clipToDraw, drawFog);
 	if (animationChangeRate >= ANIMATION_CHANGE_DELAY) {
-		this->marco++;
+		if (!player->isFrozen())this->marco++;
 		animationChangeRate = 0; // Move to the next marco in the animation
 	} else
 		animationChangeRate++;
