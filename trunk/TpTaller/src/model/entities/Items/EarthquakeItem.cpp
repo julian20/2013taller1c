@@ -26,7 +26,9 @@ EarthquakeItem::EarthquakeItem(Item* entity) : Item(entity) {
 }
 
 void EarthquakeItem::applyEffects(Player& entity) {
-	// TODO: fede habilitame el spell.
+	Player* player = (Player*)&entity;
+
+	player->addEarthquakeSpell();
 }
 
 void EarthquakeItem::collideTo(Player& entity) {

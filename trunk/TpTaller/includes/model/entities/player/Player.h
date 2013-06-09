@@ -33,6 +33,12 @@
 
 using namespace std;
 
+class SpellInventory {
+public:
+	bool earthquake;
+	bool crystalBall;
+};
+
 class Player: public MobileEntity {
 public:
 	Player();
@@ -57,6 +63,9 @@ public:
 	bool isCastingSpell();
 	void castSpell();
 	SpellEffect* getCurrentSpell();
+
+	void addEarthquakeSpell();
+	void addCrystalBallSpell();
 
 	void block();
 	void setBlock(bool blocking);
@@ -87,6 +96,7 @@ public:
 	ChatUpdate* generateChatUpdate();
 	Weapon* getCurrentWeapon();
 private:
+	void initializeSpellsInventory();
 	void castSpellNow(MapData* mapData);
 	void setSpellDirection(SpellEffect* spell,
 			Coordinates starting, Coordinates ending);
@@ -98,6 +108,7 @@ private:
 	std::vector<Power*> powers;
 	list<Weapon*>* weapons;
 	list<SpellEffect*> spellEffects;
+	SpellInventory spellsInventory;
 
 	bool makingEarthquake;
 	bool castingSpell;
@@ -108,6 +119,8 @@ private:
 	Timer earthquakeTimer;
 	bool earthquakeLifeTaked;
 };
+
+
 
 #endif	/* PERSONAJE_H */
 

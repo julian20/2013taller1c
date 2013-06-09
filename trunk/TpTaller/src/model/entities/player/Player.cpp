@@ -37,9 +37,10 @@ Player::Player() :
 	needCastSpell = false;
 	castingSpell = false;
 	makingEarthquake = false;
-	earthquakeLifeTaked = false;
+	earthquakeLifeTaked = true;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
+	initializeSpellsInventory();
 }
 
 Player::Player(string name, Position* position, Speed* speed,
@@ -66,13 +67,30 @@ Player::Player(string name, Position* position, Speed* speed,
 	earthquakeLifeTaked = false;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
+	initializeSpellsInventory();
+}
+
+void Player::initializeSpellsInventory() {
+	spellsInventory.earthquake = false;
+	spellsInventory.crystalBall = false;
+}
+
+void Player::addEarthquakeSpell() {
+	spellsInventory.earthquake = true;
+}
+
+void Player::addCrystalBallSpell() {
+	spellsInventory.crystalBall = true;
 }
 
 void Player::setMakingEarthquake(bool makingEarthquake) {
-	this->makingEarthquake = makingEarthquake;
+	if (spellsInventory.earthquake) {
+		spellsInventory.earthquake = false;
+		this->makingEarthquake = makingEarthquake;
 
-	if (makingEarthquake) {
-		earthquakeTimer.start();
+		if (makingEarthquake) {
+			earthquakeTimer.start();
+		}
 	}
 }
 

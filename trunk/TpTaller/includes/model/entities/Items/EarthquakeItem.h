@@ -10,6 +10,7 @@
 
 #include <model/entities/player/Player.h>
 #include <model/entities/Items/Item.h>
+#include <model/entities/player/Player.h>
 
 class EarthquakeItem: public Item {
 public:
