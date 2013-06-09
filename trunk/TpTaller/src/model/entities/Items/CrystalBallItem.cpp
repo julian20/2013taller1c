@@ -25,14 +25,11 @@ CrystalBallItem::CrystalBallItem(Item* entity) : Item(entity) {
 	this->killedBy = entity->getKilledBy();
 }
 
-void CrystalBallItem::applyEffects(Entity& entity) {
-}
-
-void CrystalBallItem::applyEffects(MobileEntity& entity) {
+void CrystalBallItem::applyEffects(Player& entity) {
 	// TODO: fede habilitame el spell.
 }
 
-void CrystalBallItem::collideTo(MobileEntity& entity) {
+void CrystalBallItem::collideTo(Player& entity) {
 	applyEffects(entity);
 }
 

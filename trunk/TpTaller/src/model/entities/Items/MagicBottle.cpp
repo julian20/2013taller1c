@@ -25,15 +25,11 @@ MagicBottle::MagicBottle(Item* entity) {
 	this->killedBy = entity->getKilledBy();
 }
 
-void MagicBottle::applyEffects(Entity& entity) {
+void MagicBottle::applyEffects(Player& entity) {
 	entity.setMagic(100);
 }
 
-void MagicBottle::applyEffects(MobileEntity& entity) {
-	entity.setMagic(100);
-}
-
-void MagicBottle::collideTo(MobileEntity& entity) {
+void MagicBottle::collideTo(Player& entity) {
 	applyEffects(entity);
 }
 

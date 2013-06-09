@@ -11,6 +11,8 @@
 #include <model/entities/Entity.h>
 #include <model/entities/MobileEntity.h>
 
+class Player;
+
 using namespace std;
 
 class Item: public Entity {
@@ -21,6 +23,7 @@ public:
 	virtual void applyEffects(Entity& entity);
 	virtual void applyEffects(MobileEntity& entity);
 	virtual void collideTo(MobileEntity& mobileEntity);
+	virtual void collideTo(Player& mobileEntity);
 	virtual ~Item();
 };
 

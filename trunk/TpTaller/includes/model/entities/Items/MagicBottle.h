@@ -7,8 +7,8 @@
 
 #ifndef MAGICBOTTLE_H_
 #define MAGICBOTTLE_H_
-#include <string>
-#include <model/entities/Items/Item.h>
+
+#include <model/entities/player/Player.h>
 #include <model/entities/Entity.h>
 
 using namespace std;
@@ -17,9 +17,8 @@ class MagicBottle : public Item {
 public:
 	MagicBottle();
 	MagicBottle(Item* entity);
-	virtual void applyEffects(Entity& entity);
-	virtual void applyEffects(MobileEntity& entity);
-	virtual void collideTo(MobileEntity& entity);
+	virtual void applyEffects(Player& entity);
+	virtual void collideTo(Player& entity);
 	virtual string getClassName();
 	virtual ~MagicBottle();
 };

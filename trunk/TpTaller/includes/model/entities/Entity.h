@@ -23,6 +23,7 @@
 #include <iostream>
 
 class MobileEntity;
+class Player;
 class Item;
 class LifeHeart;
 
@@ -58,8 +59,7 @@ public:
 	virtual Tile* getTile();
 
 	virtual void collideTo(MobileEntity& entity);
-	virtual void collideTo(Item& item);
-	virtual void collideTo(LifeHeart& heart);
+	virtual void collideTo(Player& entity);
 
 	void resetRespawnTimer();
 
