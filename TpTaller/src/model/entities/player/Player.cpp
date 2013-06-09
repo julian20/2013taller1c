@@ -147,7 +147,6 @@ void Player::castSpellNow(MapData* mapData) {
 }
 
 void Player::makeEarthquake(MapData* mapData) {
-	std::cout << earthquakeLifeTaked << std::endl;
 	if (earthquakeLifeTaked == false) {
 		list<MobileEntity*> mobiles = mapData->getClosestEntities(*coord, EARTHQUAKE_RADIUS, true);
 

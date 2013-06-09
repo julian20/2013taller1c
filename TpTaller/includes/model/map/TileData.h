@@ -38,6 +38,7 @@ public:
 	void setWalkable(bool _walkable);
 
 	void addEntity(Entity* entity);
+	void removeEntity(Entity* entity);
 
 private:
 	std::string tileType;

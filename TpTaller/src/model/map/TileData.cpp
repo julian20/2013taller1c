@@ -107,6 +107,10 @@ void TileData::addEntity(Entity* entity) {
 	this->entity = entity;
 }
 
+void TileData::removeEntity(Entity* entity) {
+	entities.remove(entity);
+}
+
 TileData::~TileData() {
 	// TODO Auto-generated destructor stub
 }
