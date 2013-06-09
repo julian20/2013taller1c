@@ -42,6 +42,7 @@ Player::Player() :
 	earthquakeLifeTaked = true;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
+	golem = false;
 	initializeSpellsInventory();
 }
 
@@ -71,6 +72,7 @@ Player::Player(string name, Position* position, Speed* speed,
 	earthquakeLifeTaked = false;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
+	golem = false;
 	initializeSpellsInventory();
 }
 
@@ -476,9 +478,9 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 	out << " " << player.castingSpell;
 	out << " " << player.makingEarthquake;
 	out << " " << player.usingInvulnerability;
-	out << " " << player.viewRange;
 	out << " " << player.golem;
 	out << " " << player.frozen;
+	out << " " << player.viewRange;
 	return out;
 }
 
@@ -535,15 +537,15 @@ istream& operator >>(std::istream& in, Player& player) {
 	bool inv;
 	in >> inv;
 	player.usingInvulnerability = inv;
-	int view;
-	in >> view;
-	player.viewRange = view;
 	bool golem;
 	in >> golem;
 	player.golem = golem;
 	bool frozen;
 	in >> frozen;
 	player.frozen = frozen;
+	int view;
+	in >> view;
+	player.viewRange = view;
 	return in;
 }
 
@@ -564,15 +566,18 @@ void Player::respawn() {
 		setLife(100);
 	}
 }
+
 bool Player::hasGolem() {
 	return golem;
 }
+
 void Player::createGolem() {
 	Golem golem;
 	int cost = golem.cost();
 	if (this->magic >= cost)
 		this->golem = true;
 }
+
 Player::~Player() {
 	delete currentPos;
 	delete endPos;

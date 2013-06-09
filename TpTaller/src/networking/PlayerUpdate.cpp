@@ -72,8 +72,8 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 			<< *update.initCoords << " " << update.life << " " << update.magic
 			<< " " << update.lastAttackingDirection << " " << update.team << " "
 			<< update.castingSpell << " " << update.viewRange << " "
-			<< update.makingEarthquake << " " << update.invulnerable << " "
-			<< update.golem << " " << update.frozen;
+			<< update.frozen << " " << update.makingEarthquake << " "
+			<< update.invulnerable << " " << update.golem;
 
 	return out;
 }
@@ -126,6 +126,9 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	int view;
 	in >> view;
 	update.setViewRange(view);
+	bool frozen;
+	in >> frozen;
+	update.frozen = frozen;
 	bool earth;
 	in >> earth;
 	update.makingEarthquake = earth;
@@ -135,9 +138,6 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	bool golem;
 	in >> golem;
 	update.golem = golem;
-	bool frozen;
-	in >> frozen;
-	update.frozen = frozen;
 	return in;
 }
 

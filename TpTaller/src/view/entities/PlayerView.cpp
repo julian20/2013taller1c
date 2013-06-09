@@ -400,21 +400,22 @@ void PlayerView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo,
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
 
-	//Apply delay
-	if (currentClip < (numberOfClips - 1)
-			&& timeSinceLastAnimation >= delay * 1000) {
-		//Apply FPS cap
-		if (animationRateTimer.getTimeSinceLastAnimation() >= 1000 / fps) {
-			currentClip++;
-			animationRateTimer.start();
+	if (!player->isFrozen()) {
+		//Apply delay
+		if (currentClip < (numberOfClips - 1)
+				&& timeSinceLastAnimation >= delay * 1000) {
+			//Apply FPS cap
+			if (animationRateTimer.getTimeSinceLastAnimation() >= 1000 / fps) {
+				currentClip++;
+				animationRateTimer.start();
+			}
+
+		} else {
+			if (timeSinceLastAnimation >= delay * 1000)
+				timer.start();
+			currentClip = 0;
 		}
-
-	} else {
-		if (timeSinceLastAnimation >= delay * 1000)
-			timer.start();
-		currentClip = 0;
 	}
-
 }
 
 void PlayerView::showCorpse(SDL_Surface* fondo, bool drawFog,
@@ -656,7 +657,7 @@ void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 
 	showFrame(screen, &clipToDraw, drawFog);
 	if (animationChangeRate >= ANIMATION_CHANGE_DELAY) {
-		if (!player->isFrozen())this->marco++;
+		if (!player->isFrozen()) this->marco++;
 		animationChangeRate = 0; // Move to the next marco in the animation
 	} else
 		animationChangeRate++;
