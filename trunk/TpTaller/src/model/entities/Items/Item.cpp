@@ -11,6 +11,7 @@
 Item::Item() : Entity() {
 	this->attackable = false;
 	this->walkable = true;
+	this->hideInFog = true;
 }
 
 Item::Item(Item* entity) : Entity(entity) {
@@ -28,6 +29,7 @@ Item::Item(Item* entity) : Entity(entity) {
 	this->killedBy = entity->getKilledBy();
 	this->attackable = false;
 	this->walkable = true;
+	this->hideInFog = true;
 }
 
 string Item::getClassName() {
