@@ -2083,6 +2083,16 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 
 			parsedItems.push_back(mapItem);
 
+		}   else if (actualItem->getName() == "chest") {
+
+			Chest* chest = new Chest();
+
+			chest->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			chest->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(chest);
+
 		} else if (actualItem->getName() == "earthquakeitem") {
 
 			EarthquakeItem* earthquakeItem = new EarthquakeItem();

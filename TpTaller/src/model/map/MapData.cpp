@@ -145,6 +145,8 @@ void MapData::addItem(int row, int col, Item* object) {
 					copy = new Shield(object);
 				else if (object->getName() == "mapitem")
 					copy = new MapItem(object);
+				else if (object->getName() == "chest")
+					copy = new Chest(object);
 				else if (object->getName() == "earthquakeitem")
 					copy = new EarthquakeItem(object);
 				else if (object->getName() == "crystalballitem")
