@@ -17,6 +17,7 @@
 #include <networking/MobileEntityUpdate.h>
 #include <networking/PlayerEvent.h>
 #include <view/timer/Timer.h>
+#include <queue>
 
 #define ATTACK_TIMEOUT			1000
 #define MAGIC_DAMAGE_TIMEOUT	1000
