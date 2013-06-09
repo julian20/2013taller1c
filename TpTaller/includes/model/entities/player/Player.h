@@ -27,13 +27,14 @@
 #define QUAKE_SPELL_ID "quake"
 #define NONE_SPELL_ID "none"
 #define RESPAWN_TIMEOUT 15000
+#define CRYSTALBALL_MANA	3
 #define EARTHQUAKE_TIMEOUT 2000
 #define EARTHQUAKE_RADIUS 10	// Tiles
 #define EARTHQUAKE_DAMAGE 25
 
 using namespace std;
 
-class SpellInventory {
+class Inventory {
 public:
 	bool earthquake;
 	bool crystalBall;
@@ -57,6 +58,8 @@ public:
 	void setAsMainPlayer();
 
 	void makeEarthquake(MapData* mapData);
+	void setUsingCrystalBall(bool usingCrystalBall);
+	bool getUsingCrystalBall();
 	void setMakingEarthquake(bool makingEarthquake);
 	bool getMakingEarthquake();
 	void setCastingSpell(bool castingSpell);
@@ -96,6 +99,7 @@ public:
 	ChatUpdate* generateChatUpdate();
 	Weapon* getCurrentWeapon();
 private:
+	void usingMagic();
 	void initializeSpellsInventory();
 	void castSpellNow(MapData* mapData);
 	void setSpellDirection(SpellEffect* spell,
@@ -108,8 +112,9 @@ private:
 	std::vector<Power*> powers;
 	list<Weapon*>* weapons;
 	list<SpellEffect*> spellEffects;
-	SpellInventory spellsInventory;
+	Inventory inventory;
 
+	bool usingCrystalBall;
 	bool makingEarthquake;
 	bool castingSpell;
 	bool needCastSpell;

@@ -27,6 +27,7 @@ public:
 	Player* getPlayer();
 	virtual void toggleRunning();
 	void makeEarthquake();
+	void changeStateCrystalBall();
 	void castSpell();
 	void playerAttackTo(Entity* entity);
 	void playerAttack();

@@ -36,6 +36,7 @@ public:
 	Vector3* getCurrentPos();
 	virtual string getClassName();
 	virtual void applyDamage(int damage);
+	void reduceMagic(int quantity);
 	virtual ~Entity();
 	Base* getBase();
 	void setBase(Base* base);
@@ -90,6 +91,7 @@ protected:
 	int team;
 	int killedBy;
 	Timer damageTimer;
+	Timer magicDamageDelay;
 	Timer respawnTimer;
 	int damageBuffer;
 
