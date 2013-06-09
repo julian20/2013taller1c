@@ -92,3 +92,11 @@ void PersistentConfiguration::setMobileEntityViewList(std::vector<MobileEntityVi
 std::vector<MobileEntityView*> PersistentConfiguration::getMobileEntityViewList() {
 	return mobileEntityViewList;
 }
+
+std::vector<EntityView*> PersistentConfiguration::getItemViews() {
+	return itemViewList;
+}
+
+void PersistentConfiguration::setItemViews(std::vector<EntityView*> itemViews) {
+	itemViewList = itemViews;
+}

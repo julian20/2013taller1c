@@ -2210,6 +2210,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	configuration.setViewList(cleanPlayerViews);
 	configuration.setMobileEntityViewList(cleanMobileEntityViews);
 	configuration.setMobileEntities(mobileEntityVector);
+	configuration.setItemViews(cleanItemViews);
 
 	return configuration;
 }
