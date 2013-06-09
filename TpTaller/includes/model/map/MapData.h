@@ -16,6 +16,7 @@
 #include <model/entities/Items/StrengthBuff.h>
 #include <model/entities/Items/EarthquakeItem.h>
 #include <model/entities/Items/CrystalBallItem.h>
+#include <model/entities/Items/SpellShieldItem.h>
 #include <model/entities/MobileEntity.h>
 #include <model/entities/player/Player.h>
 #include <model/Logs/Logs.h>

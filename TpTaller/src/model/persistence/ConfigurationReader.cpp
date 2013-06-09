@@ -2124,6 +2124,16 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 
 			parsedItems.push_back(earthquakeItem);
 
+		} else if (actualItem->getName() == "spellshielditem") {
+
+			SpellShieldItem* spellShieldItem = new SpellShieldItem();
+
+			spellShieldItem->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			spellShieldItem->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(spellShieldItem);
+
 		}
 
 	}

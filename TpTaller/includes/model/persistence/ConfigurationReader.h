@@ -29,6 +29,7 @@
 #include <model/entities/Items/StrengthBuff.h>
 #include <model/entities/Items/EarthquakeItem.h>
 #include <model/entities/Items/CrystalBallItem.h>
+#include <model/entities/Items/SpellShieldItem.h>
 #include <model/map/Tile.h>
 #include <model/map/TextureDefinition.h>
 #include <model/map/TextureHolder.h>
