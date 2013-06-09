@@ -252,6 +252,9 @@ void ComunicationUtils::sendEntityInfo(int sockID,EntityInfo* info){
 		i++;
 		if (i > ITER_LIMIT) break;
 	}
+
+	cout << "ENVIADO " << *info << endl;
+
 }
 
 EntityInfo* ComunicationUtils::recvEntityInfo(int sockID){
@@ -275,6 +278,8 @@ EntityInfo* ComunicationUtils::recvEntityInfo(int sockID){
 	EntityInfo* info = new EntityInfo();
 
 	infostream >> *info;
+
+	cout << "RECIVIDO " << *info << endl;
 
 	return info;
 }

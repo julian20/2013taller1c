@@ -52,7 +52,7 @@ public:
 	// Quita del juego la mobileEntity con el id pasado como parametro.
 	void removeMobileEntity(int id);
 	// Agrega una Entity a MultiplayerGame. Devuelve el ID que se le asigno.
-	int addEntity(EntityView* view, Entity* entity, Coordinates coordiantes);
+	int addEntity(Entity* entity, Coordinates coordiantes);
 	// Quita del juego la Entity con el id pasado como parametro.
 	void removeEntity(int id);
 
@@ -89,7 +89,6 @@ private:
 	map<int,MobileEntityView*> mobEntView;
 	vector<int> deletedMobileEntities;
 	map<int,Entity*> entities;
-	map<int,EntityView*> entView;
 	vector<int> deletedEntities;
 	int lastAddedView;
 	Flag* flag;
