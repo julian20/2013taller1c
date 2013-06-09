@@ -359,9 +359,29 @@ void Game::addNewMobileEntity(MobileEntity* entity, MobileEntityView* view, Coor
 
 }
 
+void Game::addNewEntity(Entity* entity, EntityView* view, Coordinates* coords, int id){
+	entity->setCoordinates(coords->getRow(), coords->getCol());
+	MapData* map = mapView->getMapData();
+	//map->addEntity(coords->getRow(), coords->getCol(),entity);
+	Coordinates newCoords = entity->getCoordinates();
+	mapView->addNewEntityView(view, newCoords);
+
+	entities[id] = entity;
+	entitiesView[id] = view;
+
+}
+
 void Game::removeMobileEntity(int id){
 	MobileEntityView* view = mobileEntitiesView[id];
 	mapView->removeMobileEntity(view);
+	// TODO: Estas lineas estan comentadas porque al borrarlo dejo a otro thread accediendo a algo que esta en estado invalido.
+//	delete mobileEntities[id];
+//	delete mobileEntitiesView[id];
+}
+
+void Game::removeEntity(int id){
+	EntityView* view = entitiesView[id];
+	mapView->removeEntity(view);
 	// TODO: Estas lineas estan comentadas porque al borrarlo dejo a otro thread accediendo a algo que esta en estado invalido.
 //	delete mobileEntities[id];
 //	delete mobileEntitiesView[id];

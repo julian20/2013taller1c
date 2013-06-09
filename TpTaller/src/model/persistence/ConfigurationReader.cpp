@@ -2259,7 +2259,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	EntityViewMap* entityViewMap = new EntityViewMap(mapData);
 	loadEntityViewMap(entityViewMap, cleanPlayerViews);
 	loadEntityViewMap(entityViewMap, cleanEntityViews);
-	loadEntityViewMap(entityViewMap, cleanItemViews);
+//	loadEntityViewMap(entityViewMap, cleanItemViews);
 	//loadEntityViewMap(entityViewMap, cleanMobileEntityViews);
 
 // Packing parser results.

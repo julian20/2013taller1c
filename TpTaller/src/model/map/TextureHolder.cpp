@@ -109,3 +109,18 @@ map<string, string> TextureHolder::getMobileEntityImages(string entName) {
 	return playerImages;
 
 }
+
+map<string, string> TextureHolder::getEntityImages(string entName) {
+	map<string, string> images;
+
+
+	string id = entName;
+	if (!existsTexture(id))
+		return images;
+	images.insert(pair<string, string>(id, getTextureSrc(id)));
+
+
+	return images;
+
+}
+

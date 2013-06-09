@@ -102,6 +102,7 @@ void* transmit(void* _client) {
 
 		client->checkNewPlayers();
 		client->checkNewMobileEntity();
+		client->checkNewEntity();
 
 		client->sendEvents();
 
@@ -370,6 +371,36 @@ void Client::checkNewMobileEntity(){
 	for (int i = 0; i < n; i++) {
 		int id = ComunicationUtils::recvNumber(clientID);
 		game->removeMobileEntity(id);
+	}
+}
+
+void Client::checkNewEntity(){
+	// 1ro recibo la cantidad de mobs nuevos que hay
+	int n = ComunicationUtils::recvNumber(clientID);
+	// No hay nuevos jugadores
+
+	for (int i = 0; i < n; i++) {
+
+		EntityInfo* info = ComunicationUtils::recvEntityInfo(clientID);
+		if (!info){
+			Logs::logErrorMessage("Ciente: No se ha recibido la informacion del mob");
+			continue;
+		}
+
+		int id = info->getId();
+		Entity* entity = info->getEntity();
+		EntityView* view = info->createEntityView();
+		game->addNewEntity(entity,view,info->getInitCoordinates(), id);
+
+	}
+
+	n = ComunicationUtils::recvNumber(clientID);
+	// No hay mobs borrados
+	if (n <= 0) return;
+
+	for (int i = 0; i < n; i++) {
+		int id = ComunicationUtils::recvNumber(clientID);
+		game->removeEntity(id);
 	}
 }
 

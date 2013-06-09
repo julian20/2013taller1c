@@ -130,8 +130,6 @@ void SinglePlayerServer::handleConnection() {;
 		info->getPlayer()->setName(playerName);
 	}
 
-	bool playing = true;
-
 	sent.insert(pair<int, string>(clientID, playerName));
 	addPlayerToGame(clientID, info);
 

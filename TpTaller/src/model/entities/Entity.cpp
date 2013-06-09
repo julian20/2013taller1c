@@ -256,6 +256,36 @@ int Entity::getShield() {
 	return this->shield;
 }
 
+//Operator to transform the object into a stream.
+ostream& operator <<(std::ostream& out, const Entity& Entity) {
+	out << Entity.name << " " << *(Entity.currentPos) << " " << *(Entity.base) << " " << Entity.life << " " << Entity.team;
+
+
+	return out;
+}
+
+//Operator to load an object from a stream
+istream& operator >>(std::istream& in, Entity& Entity) {
+	string name;
+	in >> name;
+	Entity.setName(name);
+	Vector3 pos;
+	in >> pos;
+	Entity.setPos(pos.getX(), pos.getY(), pos.getZ());
+	Base* base = new Base();
+	in >> *base;
+	Entity.setBase(base);
+	int life;
+	in >> life;
+	Entity.life = life;
+	int team;
+	in >> team;
+	Entity.team = team;
+
+	return in;
+}
+
+
 Entity::~Entity() {
 	delete this->coord;
 	delete this->currentPos;

@@ -68,6 +68,12 @@ public:
 
 	void resetRespawnTimer();
 
+	//Operator to transform the object into a stream.
+	friend ostream& operator <<(std::ostream&, const Entity&);
+
+	//Operator to load an object from a stream
+	friend istream& operator >>(std::istream&, Entity&);
+
 	// Mission manager.
 	bool isDead();
 	int getTeam();

@@ -235,6 +235,50 @@ MobileEntityInfo* ComunicationUtils::recvMobileEntityInfo(int sockID){
 	return info;
 }
 
+void ComunicationUtils::sendEntityInfo(int sockID,EntityInfo* info){
+
+	stringstream infostream;
+	infostream << *(info);
+
+	int size = infostream.str().size() + EXTRA;
+	ComunicationUtils::sendNumber(sockID,size);
+
+	// SEND MOB INFO
+	int sendSize = 0;
+	int i = 0;
+
+	while (sendSize != size){
+		sendSize = send(sockID,infostream.str().c_str(),size, 0);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
+}
+
+EntityInfo* ComunicationUtils::recvEntityInfo(int sockID){
+
+	int size = ComunicationUtils::recvNumber(sockID);
+
+	char infobuffer[size];
+
+	int recvSize = 0;
+	int i = 0;
+
+	while (recvSize != size){
+		recvSize = recv(sockID,infobuffer,size,0);
+		i++;
+		if (i > ITER_LIMIT) break;
+	}
+
+	stringstream infostream;
+	infostream << infobuffer;
+
+	EntityInfo* info = new EntityInfo();
+
+	infostream >> *info;
+
+	return info;
+}
+
 
 void ComunicationUtils::sendPlayerEvent(int sockID,PlayerEvent* event){
 	stringstream eventstream;

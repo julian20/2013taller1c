@@ -38,7 +38,9 @@ public:
 	void setRunningPlayer();
 	void addNewPlayerView(PlayerView* view, Coordinates initCoord);
 	void addNewMobileEntityView(MobileEntityView* view, Coordinates initCoord);
+	void addNewEntityView(EntityView* view, Coordinates initCoord);
 	void removeMobileEntity(MobileEntityView* view);
+	void removeEntity(EntityView* view);
 private:
 	bool isEarthquaking();
 	void updateVisibleTiles();
