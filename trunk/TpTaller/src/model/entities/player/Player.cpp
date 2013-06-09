@@ -427,6 +427,7 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 	out << " " << player.castingSpell;
 	out << " " << player.makingEarthquake;
 	out << " " << player.usingInvulnerability;
+	out << " " << player.viewRange;
 	out << " " << player.golem;
 	return out;
 }
@@ -484,6 +485,9 @@ istream& operator >>(std::istream& in, Player& player) {
 	bool inv;
 	in >> inv;
 	player.usingInvulnerability = inv;
+	int view;
+	in >> view;
+	player.viewRange = view;
 	bool golem;
 	in >> golem;
 	player.golem = golem;
