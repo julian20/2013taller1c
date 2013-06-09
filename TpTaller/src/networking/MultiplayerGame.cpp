@@ -121,6 +121,7 @@ void MultiplayerGame::updateMobs(){
 	map<int,MobileEntity*>::iterator mobIter;
 	for ( mobIter = mobileEntities.begin() ; mobIter != mobileEntities.end() ; ++mobIter ) {
 		(mobIter->second)->update(mapa);
+		(mobIter->second)->updateDamageTaken();
 	}
 
 	map<int,ArtificialIntelligence*>::iterator iaIter;
