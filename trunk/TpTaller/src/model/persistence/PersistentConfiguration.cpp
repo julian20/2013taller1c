@@ -12,6 +12,7 @@ PersistentConfiguration::PersistentConfiguration() {
 	this->mapData = NULL;
 	this->animationConfiguration = NULL;
 	this->entityViewMap = NULL;
+	this->itemViewHolder = NULL;
 }
 
 PersistentConfiguration::~PersistentConfiguration() {
@@ -21,6 +22,7 @@ PersistentConfiguration::~PersistentConfiguration() {
 	for (unsigned int i = 0; i < this->entityList.size(); i++) {
 		delete this->entityList[i];
 	}
+	delete this->itemViewHolder;
 }
 
 TextureHolder* PersistentConfiguration::getTextureHolder() {
@@ -99,4 +101,12 @@ std::vector<EntityView*> PersistentConfiguration::getItemViews() {
 
 void PersistentConfiguration::setItemViews(std::vector<EntityView*> itemViews) {
 	itemViewList = itemViews;
+}
+
+ItemViewHolder* PersistentConfiguration::getItemViewHolder() {
+	return itemViewHolder;
+}
+
+void PersistentConfiguration::setItemViewHolder(ItemViewHolder* itemViewHolder) {
+	this->itemViewHolder = itemViewHolder;
 }

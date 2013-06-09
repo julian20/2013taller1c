@@ -2167,6 +2167,21 @@ void setDefaultGameConfiguration(GameConfiguration* gameConf) {
 	gameConf->setTileWidth(70);
 	gameConf->setTileHeight(50);
 }
+
+void loadItemViewHolder(ItemViewHolder* viewHolder,
+		std::vector<EntityView*> itemViews) {
+
+	std::string className;
+	EntityView* actualView;
+
+	for (unsigned i = 0; i < itemViews.size(); i++) {
+		actualView = itemViews[i];
+		className = actualView->getEntity()->getClassName();
+		viewHolder->loadEntityView(className,actualView);
+	}
+
+}
+
 /* ********************************************* *
  * *********** CONFIGURATION LOADING *********** *
  * ********************************************* */
@@ -2254,6 +2269,9 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	std::vector<MobileEntityView*> cleanMobileEntityViews =
 			assignMobileEntities(mobileEntityViewVector, mobileEntityVector);
 
+	ItemViewHolder* itemViewHolder = new ItemViewHolder();
+	loadItemViewHolder(itemViewHolder,cleanItemViews);
+
 	assignEntities(mapData, entityVector);
 	assignItems(mapData, parsedItems);
 	assignMobileEntities(mapData, mobileEntityVector);
@@ -2282,6 +2300,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	configuration.setMobileEntityViewList(cleanMobileEntityViews);
 	configuration.setMobileEntities(mobileEntityVector);
 	configuration.setItemViews(cleanItemViews);
+	configuration.setItemViewHolder(itemViewHolder);
 
 	return configuration;
 }

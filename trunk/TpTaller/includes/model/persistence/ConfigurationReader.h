@@ -42,6 +42,7 @@
 #include <view/entities/EntityView.h>
 #include <view/entities/PlayerView.h>
 #include <view/entities/MobileEntityView.h>
+#include <view/entities/ItemViewHolder.h>
 #include <model/Logs/Logs.h>
 
 #include <iostream>

@@ -16,6 +16,7 @@
 #include <view/EntityViewMap.h>
 #include <view/entities/PlayerView.h>
 #include <view/entities/MobileEntityView.h>
+#include <view/entities/ItemViewHolder.h>
 #include <model/entities/enemies/Mob.h>
 
 #include <vector>
@@ -42,6 +43,8 @@ public:
 	void setMobileEntities(std::vector<MobileEntity*> mobiles);
 	std::vector<EntityView*> getItemViews();
 	void setItemViews(std::vector<EntityView*> itemViews);
+	ItemViewHolder* getItemViewHolder();
+	void setItemViewHolder(ItemViewHolder* itemViewHolder);
 
 private:
 	map<int,MobileEntity*> mobileEntityMap;
@@ -54,6 +57,7 @@ private:
 	MapData* mapData;
 	GameConfiguration* animationConfiguration;
 	EntityViewMap* entityViewMap;
+	ItemViewHolder* itemViewHolder;
 };
 
 #endif /* PERSISTENTCONFIGURATION_H_ */
