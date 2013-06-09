@@ -61,8 +61,18 @@
     baseRows: 1
     baseCols: 1
     delay: 0.5
-
 - entityViews:  
+  - name: earthquakeitem
+    imageSrc: resources/items/EarthquakeItem.png
+    imageWidth: 50
+    imageHeight: 50
+    numberOfClips: 0
+    anchorPixel: [25, 15]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
+    baseCols: 1  
   - name: lifeheart
     imageSrc: resources/items/heart.png
     imageWidth: 50
@@ -326,6 +336,8 @@
     position: [22, 16, 0]
   - name: shield
     position: [22, 15, 0]
+  - name: earthquakeitem
+    position: [20, 17, 0]
 - entityLocations:
   - name: chapel
     position: [23, 20, 0]
