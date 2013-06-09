@@ -383,6 +383,7 @@ void Game::removeMobileEntity(int id){
 
 void Game::removeEntity(int id){
 	EntityView* view = entitiesView[id];
+	if (!view) return;
 	mapView->removeEntity(view);
 	// TODO: Estas lineas estan comentadas porque al borrarlo dejo a otro thread accediendo a algo que esta en estado invalido.
 //	delete mobileEntities[id];

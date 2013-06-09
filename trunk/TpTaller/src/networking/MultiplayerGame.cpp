@@ -46,7 +46,6 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	for (unsigned int i = 0 ; i < entviewVector.size() ; i++){
 			int index = lastAddedView + 1;
 			entities[index] = entviewVector[i]->getEntity();
-			entView[index] = entviewVector[i];
 			lastAddedView++;
 	}
 
@@ -293,9 +292,8 @@ map<int,EntityInfo*> MultiplayerGame::getEntityInfo(){
 
 	map<int,EntityInfo*> infos;
 
-	for (map<int,EntityView*>::iterator it = entView.begin() ; it != entView.end() ; ++it){
-		EntityView* view = it->second;
-		Entity* ent = view->getEntity();
+	for (map<int,Entity*>::iterator it = entities.begin() ; it != entities.end() ; ++it){
+		Entity* ent = it->second;
 		EntityInfo* info = new EntityInfo();
 		info->setId(it->first);
 		info->setName(ent->getName());
@@ -364,22 +362,21 @@ void MultiplayerGame::removeMobileEntity(int id){
 }
 
 
-int MultiplayerGame::addEntity(EntityView* view, Entity* entity, Coordinates coordiantes){
+int MultiplayerGame::addEntity(Entity* entity, Coordinates coordiantes){
 
 	entity->setCoordinates(coordiantes.getRow(), coordiantes.getCol());
 	int newId = lastAddedView + 1;
 	entities[newId] = entity;
-	entView[newId] = view;
 	lastAddedView = newId;
+
+	view->getMapData()->addItem(coordiantes.getRow(), coordiantes.getCol(),(Item*)entity);
+
 
 	return newId;
 }
 
 void MultiplayerGame::removeEntity(int id){
 	if (entities.count(id) != 0){
-		if (entView.count(id) != 0){
-			entView.erase(id);
-		}
 
 		entities.erase(id);
 
