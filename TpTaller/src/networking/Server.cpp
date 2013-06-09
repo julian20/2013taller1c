@@ -84,8 +84,6 @@ void* handle(void* par) {
 	HandleThreadParameter* parameter = (HandleThreadParameter*) par;
 	int clientSocket = parameter->clientID;
 	Server* server = parameter->server;
-	MissionManager* missionManager = server->getMissionManager();
-
 
 	std::vector<std::string> withBase = server->listFilesInDirectoryWithBase(
 			"sendFiles");
@@ -128,8 +126,6 @@ void* handle(void* par) {
 	pthread_cancel(timerThread);
 	server->disconectPlayer(clientSocket,playerName);
 	close(clientSocket);
-
-
 
 	return NULL;
 
