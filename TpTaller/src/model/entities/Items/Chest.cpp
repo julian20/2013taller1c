@@ -26,6 +26,9 @@ Chest::Chest(Item* entity) : Item(entity) {
 }
 
 void Chest::applyEffects(Player& entity) {
+	Player* player = (Player*)&entity;
+
+	player->getCurrentWeapon()->setDamage(player->getCurrentWeapon()->getDamage()*2);
 }
 
 void Chest::collideTo(Player& entity) {

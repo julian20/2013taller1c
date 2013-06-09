@@ -50,7 +50,14 @@ void Weapon::applyDamage(Entity& entity)
 {
 	int randomAccuracy = rand() % MAXACCURACY+1;
 	int damageToApply = ceil((float(this->accuracy-randomAccuracy)/MAXACCURACY)*damage);
-	entity.applyDamage(damageToApply);
+
+	// Casteo a puntero.
+	Entity* entityPtr = (Entity*)&entity;
+	entityPtr->applyDamage(damageToApply);
+
+	if (damageToApply > 20) {
+		cout << "Buff" << endl;
+	}
 	//cout<<"entra a aplicadr daño"<<endl;
 }
 void Weapon::attack(Entity& enemy)
