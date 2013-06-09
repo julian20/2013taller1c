@@ -299,13 +299,8 @@ map<int,EntityInfo*> MultiplayerGame::getEntityInfo(){
 		EntityInfo* info = new EntityInfo();
 		info->setId(it->first);
 		info->setName(ent->getName());
-		info->setFPS(view->getFps());
-		info->setDelay(view->getFps());
-		info->setNClips(view->getNClips());
-		info->setImageDimentions(view->getImageWidth(),view->getImageHeight());
-		info->setAnchorPixel(view->getAnchorPixel());
+		info->setClassName(ent->getClassName());
 		info->setEntity(ent);
-		info->setImages(view->getTextureHolder()->getEntityImages(info->getName()));
 		int col = ent->getCoordinates().getCol();
 		int row = ent->getCoordinates().getRow();
 		Coordinates* tmp = new Coordinates(row,col);

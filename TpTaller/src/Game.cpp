@@ -79,6 +79,8 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) :
 	pointerClicked = SDL_DisplayFormatAlpha(pointerClickedTmp);
 	SDL_FreeSurface(pointerClickedTmp);
 
+	vh = configuration->getItemViewHolder();
+
 }
 Chat* Game::getChat() {
 	return this->chat;
@@ -415,6 +417,10 @@ MapCameraView* Game::getMapCameraView() {
 }
 MapData* Game::getMapData() {
 	return mapView->getMapData();
+}
+
+ItemViewHolder* Game::getIterViewHolder(){
+	return vh;
 }
 
 bool Game::isActive() {

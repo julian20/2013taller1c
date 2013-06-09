@@ -12,6 +12,7 @@
 #include <model/Vector3.h>
 #include <model/entities/Entity.h>
 #include <view/entities/EntityView.h>
+#include <view/entities/ItemViewHolder.h>
 
 #include <string>
 
@@ -27,36 +28,18 @@ public:
 	void setName(string name);
 	string getName();
 
-	void setImages(map<string,string> images);
-	map<string,string> getImages();
-
 	void setInitCoordinates(Coordinates* coords);
 	Coordinates* getInitCoordinates();
 
-	void setDelay(float delay) ;
-	float getDelay();
 
-	void setFPS(int fps);
-	int getFPS();
-
-	void setNClips(int nClips);
-	int getNClips();
-
-
-	void setImageDimentions(int width, int height);
-	int getImageWidth();
-	int getImageHeight();
-
-	void setAnchorPixel(float x, float y);
-	void setAnchorPixel(Vector2* anchorPixel);
-	Vector2* getAnchorPixel();
-
+	void setClassName(string name);
+	string getClassName();
 
 
 	void setEntity(Entity* entity);
 	Entity* getEntity();
 
-	EntityView* createEntityView();
+	EntityView* createEntityView(ItemViewHolder* vh);
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const EntityInfo&);
@@ -68,17 +51,11 @@ public:
 private:
 	int id;
 	string name;
-
-	map<string,string> images;
+	string className;
 
 	Coordinates* initCoords;
 
-	int fps;
-	float delay;
-	int nClips;
 
-	int imageWidth, imageHeight;
-	Vector2* anchorPixel;
 
 	Entity* entity;
 };
