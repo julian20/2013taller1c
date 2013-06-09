@@ -39,7 +39,8 @@ void MapController::clickListener(SDL_Event event) {
 	}
 
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_q)) {
-		playerController->castSpell();
+
+		playerController->changeStateUsingShieldSpell();
 	}
 
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_e)) {

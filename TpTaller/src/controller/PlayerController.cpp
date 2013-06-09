@@ -201,8 +201,16 @@ void PlayerController::toggleRunning() {
 }
 
 void PlayerController::changeStateCrystalBall() {
-	player->setUsingCrystalBall( !player->getUsingCrystalBall() );
+	player->setUsingCrystalBall(!player->getUsingCrystalBall());
 }
+
+void PlayerController::changeStateUsingShieldSpell() {
+	//player->addShieldSpell();
+	//player->setUsingShieldSpell(!player->getUsingShieldSpell());
+	events.push_back(new PlayerEvent(EVENT_CAST_SHIELD));
+}
+
+
 
 void PlayerController::castSpell() {
 	events.push_back(new PlayerEvent(EVENT_CAST_SPELL));

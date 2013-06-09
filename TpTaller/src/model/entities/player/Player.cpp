@@ -37,7 +37,7 @@ Player::Player() :
 	needCastSpell = false;
 	castingSpell = false;
 	makingEarthquake = false;
-	usingCrystalBall = false;
+	usingCrystalBall = usingInvulnerability = false;
 	earthquakeLifeTaked = true;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
@@ -65,7 +65,7 @@ Player::Player(string name, Position* position, Speed* speed,
 	needCastSpell = false;
 	castingSpell = false;
 	makingEarthquake = false;
-	usingCrystalBall = false;
+	usingCrystalBall = usingInvulnerability = false;
 	earthquakeLifeTaked = false;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
@@ -75,6 +75,24 @@ Player::Player(string name, Position* position, Speed* speed,
 void Player::initializeSpellsInventory() {
 	inventory.earthquake = false;
 	inventory.crystalBall = false;
+	inventory.shieldSpell = false;
+}
+
+void Player::setLife(int life) {
+	if (life < this->life)
+		if (usingInvulnerability)
+			return;
+	this->life = life;
+}
+
+void Player::updateDamageTaken() {
+	if (usingInvulnerability)
+		return;
+	if (damageTimer.getTimeIntervalSinceStart() > DAMAGE_DELAY) {
+		this->setLife(this->getLife() - damageBuffer);
+		damageBuffer = 0;
+	}
+
 }
 
 void Player::addEarthquakeSpell() {
@@ -85,14 +103,26 @@ void Player::addCrystalBallSpell() {
 	inventory.crystalBall = true;
 }
 
+void Player::addShieldSpell() {
+	inventory.shieldSpell = true;
+}
+
 void Player::setUsingCrystalBall(bool usingCrystalBall) {
 	if (inventory.crystalBall) {
 		this->usingCrystalBall = usingCrystalBall;
 	}
 }
 
+void Player::setUsingShieldSpell(bool usingShieldSpell) {
+	this->usingInvulnerability = usingShieldSpell;
+}
+
 bool Player::getUsingCrystalBall() {
 	return usingCrystalBall;
+}
+
+bool Player::getUsingShieldSpell() {
+	return usingInvulnerability;
 }
 
 void Player::setMakingEarthquake(bool makingEarthquake) {
@@ -178,14 +208,15 @@ void Player::castSpellNow(MapData* mapData) {
 
 void Player::makeEarthquake(MapData* mapData) {
 	if (earthquakeLifeTaked == false) {
-		list<MobileEntity*> mobiles = mapData->getClosestEntities(*coord, EARTHQUAKE_RADIUS, true);
+		list<MobileEntity*> mobiles = mapData->getClosestEntities(*coord,
+				EARTHQUAKE_RADIUS, true);
 
 		list<MobileEntity*>::iterator iter;
-		for ( iter = mobiles.begin() ; iter != mobiles.end() ; ++iter ){
+		for (iter = mobiles.begin(); iter != mobiles.end(); ++iter) {
 			MobileEntity* current = *iter;
 
 			if (current->getTeam() != team)
-				current->setLife( current->getLife() - EARTHQUAKE_DAMAGE );
+				current->setLife(current->getLife() - EARTHQUAKE_DAMAGE);
 
 		}
 
@@ -203,9 +234,13 @@ void Player::usingMagic() {
 		reduceMagic(CRYSTALBALL_MANA);
 	}
 
+	if (usingInvulnerability)
+		reduceMagic(SHIELD_MANA);
+
 	if (magic <= 0) {
 		magic = 0;
 		usingCrystalBall = false;
+		usingInvulnerability = false;
 	}
 }
 
@@ -269,6 +304,7 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->castingSpell = update->getCastingSpell();
 	this->viewRange = update->getViewRange();
 	this->makingEarthquake = update->getMakingEarthquake();
+	this->usingInvulnerability = update->getIsInvulnerable();
 	if (currentTile)
 		delete currentTile;
 	this->currentTile = update->getTile();
@@ -316,6 +352,7 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setCastingSpell(this->castingSpell);
 	update->setViewRange(this->viewRange);
 	update->setMakingEarthquake(this->makingEarthquake);
+	update->setInvulnerable(this->usingInvulnerability);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {
@@ -386,8 +423,8 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 	out << " " << player.lastAttackingDirection;
 	out << " " << player.castingSpell;
 	out << " " << player.makingEarthquake;
+	out << " " << player.usingInvulnerability;
 	out << " " << player.golem;
-
 	return out;
 }
 
@@ -441,9 +478,12 @@ istream& operator >>(std::istream& in, Player& player) {
 	bool earth;
 	in >> earth;
 	player.makingEarthquake = earth;
+	bool inv;
+	in >> inv;
+	player.usingInvulnerability = inv;
 	bool golem;
 	in >> golem;
-	player.golem = golem ;
+	player.golem = golem;
 	return in;
 }
 
@@ -464,15 +504,13 @@ void Player::respawn() {
 		setLife(100);
 	}
 }
-bool Player::hasGolem()
-{
+bool Player::hasGolem() {
 	return golem;
 }
-void Player::createGolem()
-{
+void Player::createGolem() {
 	Golem golem;
-	int cost =golem.cost();
-	if(this->magic >= cost)
+	int cost = golem.cost();
+	if (this->magic >= cost)
 		this->golem = true;
 }
 Player::~Player() {

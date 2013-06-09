@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-
+#define DAMAGE_DELAY 500 //milliseconds
 class MobileEntity;
 class Player;
 class Item;
@@ -75,7 +75,7 @@ public:
 	void setTeam(int team);
 	void setKilledBy(int team);
 	bool getPositionInitialized();
-	void updateDamageTaken();
+	virtual void updateDamageTaken();
 	void setDamageBuffer(int dmg);
 	int getDamageBuffer();
 protected:

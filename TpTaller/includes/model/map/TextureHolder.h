@@ -14,7 +14,7 @@
 #include <string>
 #include <map>
 
-#define QUAKE_IMG_ID "resources/spells/quake.png"
+#define QUAKE_IMG_ID "resources/spells/shield.png"
 #define ICE_IMG "resources/spells/ice.png"
 #define FIREBALL_IMG "resources/spells/fireball.png"
 

@@ -28,6 +28,7 @@ public:
 	virtual void toggleRunning();
 	void makeEarthquake();
 	void changeStateCrystalBall();
+	void changeStateUsingShieldSpell();
 	void castSpell();
 	void playerAttackTo(Entity* entity);
 	void playerAttack();
