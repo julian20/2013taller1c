@@ -114,7 +114,8 @@ void Player::setUsingCrystalBall(bool usingCrystalBall) {
 }
 
 void Player::setUsingShieldSpell(bool usingShieldSpell) {
-	this->usingInvulnerability = usingShieldSpell;
+	if (inventory.shieldSpell)
+		this->usingInvulnerability = usingShieldSpell;
 }
 
 bool Player::getUsingCrystalBall() {
