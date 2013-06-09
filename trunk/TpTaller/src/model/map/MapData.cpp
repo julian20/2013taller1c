@@ -57,7 +57,7 @@ vector<Entity*> MapData::getDeadEntities() {
 	for (iter = addedEntities.begin(); iter != addedEntities.end(); ++iter) {
 		Entity* current = *iter;
 
-		if (current->isDead()) {
+		if (current->getBelongsToGame()) {
 			retval.push_back(current);
 
 			TileData* tileData = getTileData(current->getCoordinates());

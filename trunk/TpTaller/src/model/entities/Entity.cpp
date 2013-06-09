@@ -232,6 +232,14 @@ void Entity::resetRespawnTimer() {
 	respawnTimer.start();
 }
 
+void Entity::setBelongsToGame(bool belongsToGame) {
+	this->belongsToGame = belongsToGame;
+}
+
+bool Entity::getBelongsToGame() {
+	return belongsToGame;
+}
+
 void Entity::setShield(int shield) {
 	this->shield = shield;
 }
