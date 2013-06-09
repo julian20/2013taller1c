@@ -19,24 +19,26 @@ void ArtificialIntelligence::setMobileEntity(MobileEntity* entity) {
 
 void ArtificialIntelligence::update(MapData* mapData) {
 
-	if (entity->getAttackToEntity() != NULL && !entity->isDead()) {
-		Tile* currentTile = entity->getTile();
-		Tile* enemyTile = entity->getAttackToEntity()->getTile();
+	if (!entity->isDead() && !entity->isFrozen()) {
+		if (entity->getAttackToEntity() != NULL) {
+			Tile* currentTile = entity->getTile();
+			Tile* enemyTile = entity->getAttackToEntity()->getTile();
 
-		if (mapData->distBetweenTilesInTiles(currentTile, enemyTile) < WATCHSIZE)
-			return;
-	}
+			if (mapData->distBetweenTilesInTiles(currentTile,
+					enemyTile) < WATCHSIZE)
+				return;
+		}
 
-	if (this->isAnyEnemyClose(mapData) && !entity->isDead()) {
-		Entity& enemy = this->getNearestEnemy();
-		entity->attackTo(&enemy);
-	} else {
-		if (entity->getClassName() == "MobileEntity") {
-			entity->cancelAttack();
-			this->watch(mapData);
+		if (this->isAnyEnemyClose(mapData)) {
+			Entity& enemy = this->getNearestEnemy();
+			entity->attackTo(&enemy);
+		} else {
+			if (entity->getClassName() == "MobileEntity") {
+				entity->cancelAttack();
+				this->watch(mapData);
+			}
 		}
 	}
-
 }
 
 bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData) {

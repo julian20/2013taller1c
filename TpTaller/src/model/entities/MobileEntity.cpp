@@ -12,7 +12,8 @@
 
 using namespace std;
 
-MobileEntity::MobileEntity() : Entity() {
+MobileEntity::MobileEntity() :
+		Entity() {
 	speed = new Speed();
 	initSpeed = new Speed();
 	hasChanged = true;
@@ -54,12 +55,12 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {
-	list<PlayerEvent*>aux = events;
+	list<PlayerEvent*> aux = events;
 	events.clear();
 	return aux;
 }
 
-void MobileEntity::addEvent(PlayerEvent* event){
+void MobileEntity::addEvent(PlayerEvent* event) {
 	events.push_back(event);
 }
 
@@ -110,15 +111,16 @@ void MobileEntity::lookAtEnemy() {
 
 	Vector3 attackerDirection;
 	attackerDirection.setValues(enemyPos->getX() - currentPos->getX(),
-								enemyPos->getY() - currentPos->getY(),
-								enemyPos->getZ() - currentPos->getZ());
+			enemyPos->getY() - currentPos->getY(),
+			enemyPos->getZ() - currentPos->getZ());
 
 	lastAttackingDirection = attackerDirection.getAngle();
 }
 
 void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	Tile* enemyTile = attackToEntity->getTile();
-	if (currentTile->isEqual(enemyTile)) return;
+	if (currentTile->isEqual(enemyTile))
+		return;
 
 	//Llego hasta el player
 	if (this->currentTile->isNeighbor(enemyTile)) {
@@ -126,7 +128,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		MobileEntity& thisMobileEntity = *this;
 		thisMobileEntity.reverseCollide(*attackToEntity);
 		lookAtEnemy();
-	//	cancelAttack();
+		//	cancelAttack();
 		attackToEntity = NULL;
 		return;
 	}
@@ -245,6 +247,10 @@ MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate(int id) {
 	return update;
 }
 
+bool MobileEntity::isFrozen() {
+	return frozen;
+}
+
 void MobileEntity::loadNextPosition() {
 	if (path->empty())
 		return;
@@ -304,7 +310,8 @@ void MobileEntity::setInitSpeed(Speed* initSpeed) {
 
 void MobileEntity::setInitSpeedMagnitude(int _initSpeed) {
 	initSpeed->setMagnitude(_initSpeed);
-	if(initSpeed->getMagnitude() > MAXSPEED) initSpeed->setMagnitude(MAXSPEED);
+	if (initSpeed->getMagnitude() > MAXSPEED)
+		initSpeed->setMagnitude(MAXSPEED);
 }
 
 Speed* MobileEntity::getInitSpeed() {
@@ -338,13 +345,13 @@ Entity* MobileEntity::getAttackToEntity() {
 
 void MobileEntity::setSpeedMagnitude(int mag) {
 	speed->setMagnitude(mag);
-	if(speed->getMagnitude() > MAXSPEED) speed->setMagnitude(MAXSPEED);
+	if (speed->getMagnitude() > MAXSPEED)
+		speed->setMagnitude(MAXSPEED);
 }
 
 bool MobileEntity::isAttacking() {
 	return attacking;
 }
-
 
 void MobileEntity::setAttack(bool attacking) {
 	this->attacking = attacking;
@@ -372,23 +379,22 @@ void MobileEntity::stop() {
 	emptyPath();
 }
 
-void MobileEntity::collideTo(Entity& entity){
+void MobileEntity::collideTo(Entity& entity) {
 	attack(entity);
 }
 
-void MobileEntity::reverseCollide(Entity& entity){
+void MobileEntity::reverseCollide(Entity& entity) {
 	entity.collideTo(*this);
 }
 
-void MobileEntity::attack(Entity& entity){
-	if (attackTimer.getTimeIntervalSinceStart()>ATTACK_TIMEOUT){
+void MobileEntity::attack(Entity& entity) {
+	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
 		attacking = true;
 		attackTimer.start();
 	}
 
-	cout<<"mobile attack"<<endl;
+	cout << "mobile attack" << endl;
 }
-
 
 MobileEntity& MobileEntity::operator=(const MobileEntity &other) {
 

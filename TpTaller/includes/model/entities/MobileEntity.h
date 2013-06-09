@@ -61,6 +61,7 @@ public:
 	bool isRunning();
 
 	void froze();
+	bool isFrozen();
 	void attackTo(Entity* attackTo);
 	Entity* getAttackToEntity();
 	void attack();

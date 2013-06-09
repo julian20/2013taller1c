@@ -265,8 +265,6 @@ void MobileEntityView::Show(SDL_Surface* fondo, bool drawFog) {
 
 	wasStanding = false;
 	currentSprite = sprite;
-//	if (marco >= numberOfClips)
-//		marco = 0;    // Loop the animation
 
 	lastDirection = direction;
 	playAnimation(currentSprite, fondo, drawFog);
@@ -327,7 +325,11 @@ void MobileEntityView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 	showFrame(screen, &clipToDraw, drawFog);
 
 	if (animationChangeRate == ANIMATION_CHANGE_DELAY) {
-		this->marco++;
+		if (!mobileEntity->isFrozen())
+			this->marco++;
+		else{
+			cout << "CONGELADO"<<endl;
+		}
 		animationChangeRate = 0; // Move to the next marco in the animation
 	} else {
 		animationChangeRate++;
