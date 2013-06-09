@@ -26,7 +26,9 @@ CrystalBallItem::CrystalBallItem(Item* entity) : Item(entity) {
 }
 
 void CrystalBallItem::applyEffects(Player& entity) {
-	// TODO: fede habilitame el spell.
+	Player* player = (Player*)&entity;
+
+	player->addCrystalBallSpell();
 }
 
 void CrystalBallItem::collideTo(Player& entity) {
