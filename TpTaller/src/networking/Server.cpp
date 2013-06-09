@@ -272,6 +272,7 @@ void Server::runMainLoop(int clientSocket, string playerName){
 		sendGameState(clientSocket, gameEnd);
 
 		if (gameEnd) {
+			sendGameScores(clientSocket);
 			break;
 		}
 
@@ -704,6 +705,18 @@ void Server::sendGameState(int clientSocket, bool state) {
 	if( state == true ) stateNumber = 1;
 
 	ComunicationUtils::sendNumber(clientSocket, stateNumber);
+
+}
+
+void Server::sendGameScores(int clientSocket) {
+
+	int winningTeam = missionManager->getWinningTeam();
+	int scoreTeamOne = missionManager->getScore(1);
+	int scoreTeamTwo = missionManager->getScore(2);
+
+	ComunicationUtils::sendNumber(clientSocket, winningTeam);
+	ComunicationUtils::sendNumber(clientSocket, scoreTeamOne);
+	ComunicationUtils::sendNumber(clientSocket, scoreTeamTwo);
 
 }
 

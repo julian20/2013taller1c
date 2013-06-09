@@ -55,6 +55,7 @@ public:
 	void sendNewEntities(int clientSocket,string playerName);
 
 	void sendGameState(int clientSocket, bool state);
+	void sendGameScores(int clientSocket);
 
 	vector<PlayerEvent*> recvEvents(int clientSocket);
 	void recvChatMessages(int clientSocket);

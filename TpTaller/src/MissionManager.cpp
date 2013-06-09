@@ -61,6 +61,9 @@ bool MissionManager::hasEndedTeamFight(list<Player*> players) {
 	bool someoneAliveFirstTeam = false;
 	bool someoneAliveSecondTeam = false;
 
+	scorage[1] = 0;
+	scorage[2] = 0;
+
 	int firstTeamPlayers = 0;
 	int secondTeamPlayers = 0;
 
@@ -75,6 +78,8 @@ bool MissionManager::hasEndedTeamFight(list<Player*> players) {
 			firstTeamPlayers++;
 			if (!actualPlayer->isDead()) {
 				someoneAliveFirstTeam = true;
+			} else {
+				scorage[actualPlayer->getTeam()]--;
 			}
 		}
 
@@ -82,6 +87,8 @@ bool MissionManager::hasEndedTeamFight(list<Player*> players) {
 			secondTeamPlayers++;
 			if (!actualPlayer->isDead()) {
 				someoneAliveSecondTeam = true;
+			} else {
+				scorage[actualPlayer->getTeam()]--;
 			}
 		}
 
