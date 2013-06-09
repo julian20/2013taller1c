@@ -8,6 +8,7 @@
 #include <model/entities/Entity.h>
 #include <model/map/Tile.h>
 #include <model/entities/MobileEntity.h>
+#include <model/entities/player/Player.h>
 #include <model/entities/Items/Item.h>
 #include <model/entities/Items/LifeHeart.h>
 
@@ -209,12 +210,8 @@ void Entity::collideTo(MobileEntity& mobileEntity) {
 	mobileEntity.attack(*this);
 }
 
-void Entity::collideTo(Item& item) {
-	item.applyEffects(*this);
-}
-
-void Entity::collideTo(LifeHeart& heart) {
-	heart.applyEffects(*this);
+void Entity::collideTo(Player& player) {
+	player.attack(*this);
 }
 
 void Entity::setLife(int life) {

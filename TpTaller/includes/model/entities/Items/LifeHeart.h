@@ -8,9 +8,9 @@
 #ifndef LIFEHEART_H_
 #define LIFEHEART_H_
 
-#include <model/entities/Entity.h>
-#include <model/entities/MobileEntity.h>
 #include <model/entities/Items/Item.h>
+
+class Player;
 
 using namespace std;
 
@@ -18,9 +18,8 @@ class LifeHeart: public Item {
 public:
 	LifeHeart();
 	LifeHeart(Item* entity);
-	virtual void applyEffects(Entity& entity);
-	virtual void applyEffects(MobileEntity& entity);
-	virtual void collideTo(MobileEntity& entity);
+	virtual void applyEffects(Player& entity);
+	virtual void collideTo(Player& entity);
 	virtual string getClassName();
 	virtual ~LifeHeart();
 };

@@ -6,6 +6,7 @@
  */
 
 #include <model/entities/Items/Item.h>
+#include <model/entities/player/Player.h>
 
 Item::Item() : Entity() {
 	this->attackable = false;
@@ -40,6 +41,9 @@ void Item::applyEffects(Entity& entity) {
 }
 
 void Item::collideTo(MobileEntity& mobileEntity) {
+}
+
+void Item::collideTo(Player& player) {
 }
 
 Item::~Item() {

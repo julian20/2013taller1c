@@ -26,14 +26,11 @@ SpeedBoots::SpeedBoots(Item* entity) :
 	this->killedBy = entity->getKilledBy();
 }
 
-void SpeedBoots::applyEffects(Entity& entity) {
-}
-
-void SpeedBoots::applyEffects(MobileEntity& entity) {
+void SpeedBoots::applyEffects(Player& entity) {
 	entity.setSpeedMagnitude(entity.getSpeed()->getMagnitude() + 1);
 }
 
-void SpeedBoots::collideTo(MobileEntity& entity) {
+void SpeedBoots::collideTo(Player& entity) {
 	applyEffects(entity);
 }
 

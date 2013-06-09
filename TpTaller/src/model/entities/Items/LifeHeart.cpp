@@ -6,6 +6,7 @@
  */
 
 #include <model/entities/Items/LifeHeart.h>
+#include <model/entities/player/Player.h>
 
 LifeHeart::LifeHeart() : Item() {
 }
@@ -25,16 +26,11 @@ LifeHeart::LifeHeart(Item* entity) : Item(entity) {
 	this->killedBy = entity->getKilledBy();
 }
 
-void LifeHeart::applyEffects(Entity& entity) {
-	// TODO: algun atributo o define de vida original.
+void LifeHeart::applyEffects(Player& entity) {
 	entity.setLife(100);
 }
 
-void LifeHeart::applyEffects(MobileEntity& entity) {
-	entity.setLife(100);
-}
-
-void LifeHeart::collideTo(MobileEntity& entity) {
+void LifeHeart::collideTo(Player& entity) {
 	applyEffects(entity);
 }
 

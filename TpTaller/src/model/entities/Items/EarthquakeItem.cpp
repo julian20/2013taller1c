@@ -25,14 +25,11 @@ EarthquakeItem::EarthquakeItem(Item* entity) : Item(entity) {
 	this->killedBy = entity->getKilledBy();
 }
 
-void EarthquakeItem::applyEffects(Entity& entity) {
-}
-
-void EarthquakeItem::applyEffects(MobileEntity& entity) {
+void EarthquakeItem::applyEffects(Player& entity) {
 	// TODO: fede habilitame el spell.
 }
 
-void EarthquakeItem::collideTo(MobileEntity& entity) {
+void EarthquakeItem::collideTo(Player& entity) {
 	applyEffects(entity);
 }
 

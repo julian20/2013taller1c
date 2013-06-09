@@ -25,15 +25,11 @@ Shield::Shield(Item* entity) : Item(entity) {
 	this->killedBy = entity->getKilledBy();
 }
 
-void Shield::applyEffects(Entity& entity) {
+void Shield::applyEffects(Player& entity) {
 	entity.setShield(20);
 }
 
-void Shield::applyEffects(MobileEntity& entity) {
-	entity.setShield(20);
-}
-
-void Shield::collideTo(MobileEntity& entity) {
+void Shield::collideTo(Player& entity) {
 	applyEffects(entity);
 }
 

@@ -25,11 +25,11 @@ Lantern::Lantern(Item* entity) : Item(entity) {
 	this->killedBy = entity->getKilledBy();
 }
 
-void Lantern::applyEffects(MobileEntity& entity) {
+void Lantern::applyEffects(Player& entity) {
 	entity.setViewRange(entity.getViewRange() + 50);
 }
 
-void Lantern::collideTo(MobileEntity& entity) {
+void Lantern::collideTo(Player& entity) {
 	applyEffects(entity);
 }
 
