@@ -105,6 +105,17 @@
     delay: 0 
     animationRepeats: 7
     baseRows: 1
+    baseCols: 1   
+  - name: strengthbuff
+    imageSrc: resources/items/StrengthBuff.png
+    imageWidth: 45
+    imageHeight: 45
+    numberOfClips: 0
+    anchorPixel: [22, 17]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
     baseCols: 1  
   - name: chest
     imageSrc: resources/items/Chest.png
@@ -373,6 +384,8 @@
     position: [5, 5, 0]
   - name: chest
     position: [8, 6, 0]
+  - name: strengthbuff
+    position: [3, 3, 0]
   - name: earthquakeitem
     position: [20, 17, 0]
   - name: crystalballitem
