@@ -2134,6 +2134,16 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 
 			parsedItems.push_back(spellShieldItem);
 
+		} else if (actualItem->getName() == "frostwanditem") {
+
+			FrostWandItem* frostWandItem = new FrostWandItem();
+
+			frostWandItem->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			frostWandItem->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(frostWandItem);
+
 		}
 
 	}

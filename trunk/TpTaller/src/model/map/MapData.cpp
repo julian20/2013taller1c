@@ -162,6 +162,8 @@ void MapData::addItem(int row, int col, Item* object) {
 					copy = new CrystalBallItem(object);
 				else if (object->getName() == "spellshielditem")
 					copy = new SpellShieldItem(object);
+				else if (object->getName() == "frostwanditem")
+					copy = new FrostWandItem(object);
 				else
 					copy = new Item(object);
 				currentData->addEntity(copy);
