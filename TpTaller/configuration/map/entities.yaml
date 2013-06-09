@@ -63,11 +63,11 @@
     delay: 0.5
 - entityViews:  
   - name: crystalballitem
-    imageSrc: resources/items/CrystalBallItem.png
-    imageWidth: 35
-    imageHeight: 46
-    numberOfClips: 0
-    anchorPixel: [17, 17]
+    imageSrc: resources/items/CrystalBallItemAnimated.png
+    imageWidth: 50
+    imageHeight: 85
+    numberOfClips: 4
+    anchorPixel: [25, 30]
     fps: 8
     delay: 0 
     animationRepeats: 7
@@ -85,11 +85,11 @@
     baseRows: 1
     baseCols: 1  
   - name: lifeheart
-    imageSrc: resources/items/heart.png
+    imageSrc: resources/items/LifeHeart.png
     imageWidth: 50
-    imageHeight: 50
-    numberOfClips: 3
-    anchorPixel: [20, 10]
+    imageHeight: 80
+    numberOfClips: 4
+    anchorPixel: [25, 30]
     fps: 8
     delay: 0 
     animationRepeats: 7
