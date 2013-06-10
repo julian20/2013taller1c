@@ -1965,7 +1965,6 @@ std::vector<MobileEntityView*> ConfigurationReader::assignMobileEntitiesViews(
 	return assignMobileEntities(entityViews, entities);
 }
 
-
 std::vector<PlayerView*> assignPlayers(std::vector<PlayerView*> playerViews,
 		std::vector<Player*> players) {
 	std::vector<PlayerView*> completeViews;
@@ -2019,6 +2018,52 @@ void cleanUnusedViews(std::vector<MobileEntityView*> viewVector) {
 }
 
 void setDefaultPlayerView() {
+
+}
+
+Item* createRandomItem() {
+
+	std::vector<string> itemNames;
+
+	float number = itemNames.size() * (rand() / (RAND_MAX + 1.0));
+
+	Item* randomItem;
+
+	if (number < 1) {
+		randomItem = new LifeHeart();
+	}
+	if (number < 2) {
+		randomItem = new MagicBottle();
+	}
+	if (number < 3) {
+		randomItem = new SpeedBoots();
+	}
+	if (number < 4) {
+		randomItem = new Lantern();
+	}
+	if (number < 5) {
+		randomItem = new Shield();
+	}
+	if (number < 6) {
+		randomItem = new MapItem();
+	}
+	if (number < 7) {
+		randomItem = new StrengthBuff();
+	}
+	if (number < 8) {
+		randomItem = new EarthquakeItem();
+	}
+	if (number < 9) {
+		randomItem = new CrystalBallItem();
+	}
+	if (number < 10) {
+		randomItem = new SpellShieldItem();
+	}
+	if (number < 11) {
+		randomItem = new FrostWandItem();
+	}
+
+	return randomItem;
 
 }
 
@@ -2099,6 +2144,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			chest->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			chest->setCoordinates(coord.getRow(), coord.getCol());
+			chest->setItemToContaing(createRandomItem());
 
 			parsedItems.push_back(chest);
 
@@ -2185,7 +2231,7 @@ void loadItemViewHolder(ItemViewHolder* viewHolder,
 	for (unsigned i = 0; i < itemViews.size(); i++) {
 		actualView = itemViews[i];
 		className = actualView->getEntity()->getClassName();
-		viewHolder->loadEntityView(className,actualView);
+		viewHolder->loadEntityView(className, actualView);
 	}
 
 }
@@ -2278,7 +2324,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 			assignMobileEntities(mobileEntityViewVector, mobileEntityVector);
 
 	ItemViewHolder* itemViewHolder = new ItemViewHolder();
-	loadItemViewHolder(itemViewHolder,cleanItemViews);
+	loadItemViewHolder(itemViewHolder, cleanItemViews);
 
 	assignEntities(mapData, entityVector);
 	assignItems(mapData, parsedItems);
