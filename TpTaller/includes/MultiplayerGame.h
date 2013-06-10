@@ -68,7 +68,7 @@ public:
 	void deliverMessage(ChatMessage* msj);
 	void updateMobs();
 	void createFlag(MapData* mapData);
-	void createGolem(string playerName);
+	void createGolem(Player* player);
 	virtual ~MultiplayerGame();
 
 private:
@@ -89,7 +89,7 @@ private:
 	list<Player*> players;
 	map<int,ArtificialIntelligence*> ias;
 	map<MobileEntity*, Coordinates> mobilesCoords;
-
+	map<string,MobileEntityView*> allViews;
 	map<int,MobileEntity*> mobileEntities;
 	map<int,MobileEntityView*> mobEntView;
 	vector<int> deletedMobileEntities;
