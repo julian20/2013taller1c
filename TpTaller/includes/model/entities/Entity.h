@@ -22,6 +22,7 @@
 #include <vector>
 #include <iostream>
 #define DAMAGE_DELAY 500 //milliseconds
+class MapData;
 class MobileEntity;
 class Player;
 class Item;
@@ -51,6 +52,7 @@ public:
 
 	void setRemoveFromGame(bool removeFromGame);
 	bool getRemoveFromGame();
+	virtual void onRemove(MapData* mapData);
 
 	void setShield(int shield);
 	int getShield();

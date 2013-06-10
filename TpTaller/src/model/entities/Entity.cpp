@@ -248,6 +248,10 @@ bool Entity::getRemoveFromGame() {
 	return removeFromGame;
 }
 
+void Entity::onRemove(MapData* mapData) {
+
+}
+
 void Entity::setShield(int shield) {
 	this->shield = shield;
 }
