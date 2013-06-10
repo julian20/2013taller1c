@@ -27,6 +27,10 @@ std::list<Entity*> TileData::getEntities() {
 	return entities;
 }
 
+std::list<MobileEntity*> TileData::getMobileEntities() {
+	return mobileEntities;
+}
+
 MobileEntity* TileData::getAttackableMobileEntity() {
 	MobileEntity* mobileEntity;
 

@@ -66,25 +66,27 @@ bool PlayerController::clickAnotherPlayer(int x, int y) {
 bool PlayerController::playerHasclickedAnEntity(Coordinates* coor) {
 
 	TileData* tileData = this->data->getTileData(coor->getRow(),
-			coor->getCol());
-	if (!tileData)
-		return false;
-	Entity* entity = tileData->getAttackableMobileEntity();
-	if (entity) {
-		if (entity->getTeam() != player->getTeam()) {
-			this->entityToCollideAgainst = entity;
-			return true;
-		}
+												 coor->getCol());
 
-	} else {
-		entity = tileData->getNextEntity();
-		if (entity) {
-			if (entity->getTeam() != player->getTeam()) {
-				this->entityToCollideAgainst = entity;
-				return true;
-			}
-		}
+	std::list<MobileEntity*> mobileEntities = tileData->getMobileEntities();
+	std::list<Entity*> entities = tileData->getEntities();
+
+	list<MobileEntity*>::const_iterator mobileIter;
+	for (mobileIter = mobileEntities.begin(); mobileIter != mobileEntities.end(); ++mobileIter) {
+		MobileEntity* mobile = *mobileIter;
+
+		this->entityToCollideAgainst = mobile;
+		return true;
 	}
+
+	list<Entity*>::const_iterator entityIter;
+	for (entityIter = entities.begin(); entityIter != entities.end(); ++entityIter) {
+		Entity* entity = *entityIter;
+
+		this->entityToCollideAgainst = entity;
+		return true;
+	}
+
 	return false;
 }
 
