@@ -26,7 +26,6 @@ void Mob::setType(MobType type) {
 }
 
 void Mob::collideTo(Entity& entity) {
-	//if(entity->getClassName()=="Item")
 	attack(entity);
 }
 

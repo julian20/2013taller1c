@@ -311,7 +311,6 @@ void Player::setChat(Chat* chat) {
 }
 
 void Player::collideTo(Entity& entity) {
-	//if(entity->getClassName()=="Item")
 	attack(entity);
 }
 
