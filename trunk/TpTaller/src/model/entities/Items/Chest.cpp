@@ -8,7 +8,10 @@
 #include <model/entities/Items/Chest.h>
 #include <model/map/MapData.h>
 
-Chest::Chest() {
+Chest::Chest() : Item() {
+	this->containingItem = NULL;
+	this->walkable = false;
+	this->attackable = true;
 }
 
 Chest::Chest(Item* entity) : Item(entity) {
@@ -25,6 +28,8 @@ Chest::Chest(Item* entity) : Item(entity) {
 	this->team = entity->getTeam();
 	this->killedBy = entity->getKilledBy();
 	this->containingItem = NULL;
+	this->walkable = false;
+	this->attackable = true;
 }
 
 void Chest::setItemToContaing(Item* containingItem) {
@@ -32,6 +37,7 @@ void Chest::setItemToContaing(Item* containingItem) {
 }
 
 void Chest::applyEffects(Player& entity) {
+	entity.attack(*this);
 }
 
 void Chest::collideTo(Player& entity) {

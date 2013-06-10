@@ -24,6 +24,7 @@ public:
 	std::string getType();
 	MobileEntity* getAttackableMobileEntity();
 	std::list<Entity*> getEntities();
+	std::list<MobileEntity*> getMobileEntities();
 	Entity* getNextEntity();
 	int getNumberOfEntitiesOnTile();
 	bool getWasVisible();
