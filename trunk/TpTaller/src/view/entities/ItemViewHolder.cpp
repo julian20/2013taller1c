@@ -10,11 +10,14 @@
 ItemViewHolder::ItemViewHolder() {
 }
 
-EntityView* ItemViewHolder::getEntityViewByItem(Item& item) {
+EntityView* ItemViewHolder::getEntityViewByItem(Item* item) {
 
-	string className = item.getClassName();
+	string className = (*item).getClassName();
 
-	return getEntityView(className);
+	EntityView* newView = getEntityView(className);
+	newView->setEntity(item);
+
+	return newView;
 
 }
 
