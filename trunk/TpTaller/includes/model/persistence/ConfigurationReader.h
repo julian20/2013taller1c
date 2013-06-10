@@ -65,6 +65,9 @@ public:
 			std::string configurationFile);
 	ClientPlayerPersistentConfiguration loadClientPlayerConfiguration(
 			std::string configurationFile);
+	static std::vector<MobileEntityView*> assignMobileEntitiesViews(
+			std::vector<MobileEntityView*> entityViews,
+			std::vector<MobileEntity*> entities);
 	virtual ~ConfigurationReader();
 private:
 };
