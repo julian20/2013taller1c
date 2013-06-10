@@ -172,7 +172,12 @@ void Entity::updateDamageTaken() {
 		damageBuffer = 0;
 	}
 
+	if (life <= 0)
+		removeFromGame = true;
+
+	std::cout << life << std::endl;
 }
+
 void Entity::applyDamage(int damage) {
 	//int totalDamage=damage falta calcular lo q protege el escudo
 	if (shield >= damage) {
@@ -194,11 +199,12 @@ void Entity::reduceMagic(int quantity) {
 }
 
 bool Entity::isDead() {
-	if (this->life <= 0) {
+	/*if (this->life <= 0) {
 		return true;
 	} else {
 		return false;
-	}
+	}*/
+	return false;
 }
 
 int Entity::getTeam() {

@@ -108,6 +108,7 @@ MenuEvent MultiplayerGame::run(){
 		int ticks = SDL_GetTicks();
 
 		playersUpdate();
+		updateEntities();
 		updateMobs();
 		addNewEntities();
 		addNewMobileEntities();
@@ -136,6 +137,15 @@ void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes){
 
 	Coordinates coords = player->getCoordinates();
 	mobilesCoords[player] = coords;
+}
+
+void MultiplayerGame::updateEntities() {
+	MapData* mapa = view->getMapData();
+
+	map<int,Entity*>::iterator iter;
+	for ( iter = entities.begin() ; iter != entities.end() ; ++iter ) {
+		(iter->second)->updateDamageTaken();
+	}
 }
 
 void MultiplayerGame::updateMobs(){

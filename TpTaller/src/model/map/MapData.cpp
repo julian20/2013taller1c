@@ -113,6 +113,9 @@ void MapData::addEntity(int row, int col, Entity* object) {
 			if (currentRow >= 0 && currentRow < nrows && currentCol >= 0
 					&& currentCol < ncols) {
 
+				if (row == currentRow && col == currentCol)
+					continue;
+
 				currentData = getTileData(currentRow, currentCol);
 
 				//Ponemos una copia
@@ -146,6 +149,9 @@ void MapData::addItem(int row, int col, Item* object) {
 
 			if (currentRow >= 0 && currentRow < nrows && currentCol >= 0
 					&& currentCol < ncols) {
+
+				if (row == currentRow && col == currentCol)
+					continue;
 
 				currentData = getTileData(currentRow, currentCol);
 

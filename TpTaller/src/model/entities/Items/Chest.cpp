@@ -10,6 +10,7 @@
 
 Chest::Chest() : Item() {
 	this->containingItem = NULL;
+	this->life = 1;
 	this->walkable = false;
 	this->attackable = true;
 }

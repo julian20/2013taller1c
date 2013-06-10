@@ -66,6 +66,7 @@ public:
 	vector<int> getDeletedEntities();
 
 	void deliverMessage(ChatMessage* msj);
+	void updateEntities();
 	void updateMobs();
 	void createFlag(MapData* mapData);
 	void createGolem(Player* player);

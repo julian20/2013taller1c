@@ -236,7 +236,7 @@ void Player::makeEarthquake(MapData* mapData) {
 			MobileEntity* current = *iter;
 
 			if (current->getTeam() != team)
-				current->setLife(current->getLife() - EARTHQUAKE_DAMAGE);
+				current->applyDamage(EARTHQUAKE_DAMAGE);
 
 		}
 
@@ -333,10 +333,8 @@ void Player::attack(Entity& entity) {
 			weaponToUse->attack(entity);
 			this->magic -= weaponToUse->getMagic();
 		}
-	}
-	else{
+	} else {
 		attackQueue.push(&entity);
-
 	}
 
 }
