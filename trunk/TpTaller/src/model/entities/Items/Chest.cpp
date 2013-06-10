@@ -6,6 +6,7 @@
  */
 
 #include <model/entities/Items/Chest.h>
+#include <model/map/MapData.h>
 
 Chest::Chest() {
 }
@@ -23,6 +24,11 @@ Chest::Chest(Item* entity) : Item(entity) {
 	this->currentTile = NULL;
 	this->team = entity->getTeam();
 	this->killedBy = entity->getKilledBy();
+	this->containingItem = NULL;
+}
+
+void Chest::setItemToContaing(Item* containingItem) {
+	this->containingItem = containingItem;
 }
 
 void Chest::applyEffects(Player& entity) {
@@ -30,6 +36,15 @@ void Chest::applyEffects(Player& entity) {
 
 void Chest::collideTo(Player& entity) {
 	applyEffects(entity);
+}
+
+void Chest::onRemove(MapData* mapData) {
+	if (this->containingItem == NULL)  {
+		std::cout << "No se ha asignado item al chest" << std::endl;
+		return;
+	}
+
+	mapData->addItem(coord->getRow(), coord->getCol(), containingItem);
 }
 
 string Chest::getClassName() {
