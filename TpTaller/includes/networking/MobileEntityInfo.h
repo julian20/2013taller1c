@@ -12,6 +12,7 @@
 #include <model/Vector3.h>
 #include <model/entities/MobileEntity.h>
 #include <view/entities/MobileEntityView.h>
+#include <view/entities/MobileEntityViewHolder.h>
 
 #include <string>
 
@@ -27,33 +28,13 @@ public:
 	void setName(string name);
 	string getName();
 
-	void setImages(map<string,string> images);
-	map<string,string> getImages();
-
 	void setInitCoordinates(Coordinates* coords);
 	Coordinates* getInitCoordinates();
-
-	void setDelay(float delay) ;
-	float getDelay();
-
-	void setFPS(int fps);
-	int getFPS();
-
-	void setImageDimentions(int width, int height);
-	int getImageWidth();
-	int getImageHeight();
-
-	void setAnchorPixel(float x, float y);
-	void setAnchorPixel(Vector2* anchorPixel);
-	Vector2* getAnchorPixel();
-
-
 
 	void setEntity(MobileEntity* entity);
 	MobileEntity* getEntity();
 
-	MobileEntityView* createMobileEntityView();
-	void updatePlayer(PlayerUpdate* update);
+	MobileEntityView* createMobileEntityView(MobileEntityViewHolder* vh);
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const MobileEntityInfo&);
@@ -66,15 +47,7 @@ private:
 	int id;
 	string name;
 
-	map<string,string> images;
-
 	Coordinates* initCoords;
-
-	int fps;
-	float delay;
-
-	int imageWidth, imageHeight;
-	Vector2* anchorPixel;
 
 	MobileEntity* entity;
 };

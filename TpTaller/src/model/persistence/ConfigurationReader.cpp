@@ -2234,6 +2234,19 @@ void loadItemViewHolder(ItemViewHolder* viewHolder,
 
 }
 
+void loadMobileEntityViewHolder(MobileEntityViewHolder* viewHolder, vector<MobileEntityView*> viewVector) {
+
+	string name;
+	MobileEntityView* actualView;
+
+	for (unsigned i = 0 ; i < viewVector.size() ; i++) {
+		actualView = viewVector[i];
+		name = actualView->getName();
+		viewHolder->loadMobileEntityView(name,actualView);
+	}
+
+}
+
 /* ********************************************* *
  * *********** CONFIGURATION LOADING *********** *
  * ********************************************* */
@@ -2324,6 +2337,9 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	ItemViewHolder* itemViewHolder = new ItemViewHolder();
 	loadItemViewHolder(itemViewHolder, cleanItemViews);
 
+	MobileEntityViewHolder* mobileEntityViewHolder = new MobileEntityViewHolder();
+	loadMobileEntityViewHolder(mobileEntityViewHolder,mobileEntityViewVector);
+
 	assignEntities(mapData, entityVector);
 	assignItems(mapData, parsedItems);
 	assignMobileEntities(mapData, mobileEntityVector);
@@ -2354,6 +2370,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	configuration.setMobileEntitiesView(mobileEntityViewVector);
 	configuration.setItemViews(cleanItemViews);
 	configuration.setItemViewHolder(itemViewHolder);
+	configuration.setMobileEntityViewHolder(mobileEntityViewHolder);
 
 	return configuration;
 }
