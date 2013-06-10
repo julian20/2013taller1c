@@ -82,12 +82,12 @@ void MapData::cleanNewMobileEntities() {
 	newMobileEntities.erase(newMobileEntities.begin(), newMobileEntities.end());
 }
 
-vector<Entity* > MapData::getNewEntities() {
-	return newEntities;
-}
-
 void MapData::cleanNewEntities() {
 	newEntities.erase(newEntities.begin(), newEntities.end());
+}
+
+vector<Entity* > MapData::getNewEntities() {
+	return newEntities;
 }
 
 Player* MapData::getMainPlayer() {
@@ -133,6 +133,7 @@ void MapData::addEntity(int row, int col, Entity* object) {
 
 void MapData::addItem(int row, int col, Item* object) {
 	addedEntities.push_back(object);
+	newEntities.push_back(object);
 	TileData* currentData = getTileData(row, col);
 	currentData->addEntity(object);
 	object->setTile(new Tile(new Coordinates(row, col)));
@@ -186,7 +187,7 @@ void MapData::addItem(int row, int col, Item* object) {
 				currentData->addEntity(copy);
 				copy->setCoordinates(currentRow, currentCol);
 
-				newEntities.push_back(object);
+				// newEntities.push_back(object);
 			}
 
 		}
@@ -208,7 +209,6 @@ TileData* MapData::getTileData(Coordinates coords) {
 }
 
 void MapData::addPlayer(int row, int col, Player* player) {
-	addedEntities.push_back(player);
 	TileData* tileData = getTileData(row, col);
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
