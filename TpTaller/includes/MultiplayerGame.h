@@ -75,6 +75,7 @@ private:
 	void updatePlayersCoordinates();
 	void updateMobsCoordinates();
 	void addNewMobileEntities();
+	void addNewEntities();
 	void playersUpdate();
 	void applyFPS(int timer);
 

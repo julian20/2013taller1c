@@ -32,18 +32,18 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	vector<EntityView*> entviewVector = configuration->getItemViews();
 	lastAddedView = 0;
 
-	for (unsigned int i = 0 ; i < viewVector.size() ; i++){
+	for (unsigned int i = 0 ; i < viewVector.size() ; i++) {
 
 		mobileEntities[i] = viewVector[i]->getEntity();
 		mobEntView[i] = viewVector[i];
-		ArtificialIntelligence* ia= new ArtificialIntelligence();
+		ArtificialIntelligence* ia = new ArtificialIntelligence();
 		ia->setMobileEntity(mobileEntities[i]);
 		ias[i] = ia;
 		lastAddedView++;
 
 	}
 
-	for (unsigned int i = 0 ; i < entviewVector.size() ; i++){
+	for (unsigned int i = 0 ; i < entviewVector.size() ; i++) {
 			int index = lastAddedView + 1;
 			entities[index] = entviewVector[i]->getEntity();
 			lastAddedView++;
@@ -90,13 +90,15 @@ void MultiplayerGame::createGolemIa(MobileEntity* golem)
 }
 MenuEvent MultiplayerGame::run(){
 	view->getMapData()->cleanNewMobileEntities();
+	view->getMapData()->cleanNewEntities();
 
 	while (true) {
 		int ticks = SDL_GetTicks();
 
 		playersUpdate();
 		updateMobs();
-		addNewMobileEntities();
+		addNewEntities();
+		//addNewMobileEntities();
 
 		applyFPS(ticks);
 
@@ -328,10 +330,23 @@ void MultiplayerGame::addNewMobileEntities() {
 
 		Coordinates coords = currentEntity->getCoordinates();
 
-		//addMobileEntity(current, currentEntity, coords);
+		addMobileEntity(current, currentEntity, coords);
 	}
 
 	mapData->cleanNewMobileEntities();
+}
+
+void MultiplayerGame::addNewEntities() {
+	MapData* mapData = view->getMapData();
+
+	vector<Entity* > newEntities = mapData->getNewEntities();
+
+	std::vector<Entity *>::const_iterator iter;
+	for (iter = newEntities.begin(); iter != newEntities.end(); ++iter) {
+		Entity* current = *iter;
+
+		addEntity(current, current->getCoordinates());
+	}
 }
 
 int MultiplayerGame::addMobileEntity(MobileEntityView* view, MobileEntity* entity, Coordinates coordiantes){
