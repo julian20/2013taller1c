@@ -26,33 +26,22 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	Tile::setTileWidth( gameConfig->getTileWidth() );
 	Tile::setTileHeight( gameConfig->getTileHeight() );
 
+	vector<Item*> itemVector = configuration->getItems();
+	vector<MobileEntity*> mobileEntityVector = configuration->getMobileEntityList();
+
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
-	vector<MobileEntityView*> viewVector = configuration->getMobileEntityViewList();
-	vector<MobileEntityView*> allViews = configuration->getMobileEntitiesView();
-	vector<EntityView*> entviewVector = configuration->getItemViews();//Aca tengo las imagenes
 	lastAddedView = 0;
 
-	for (unsigned int i = 0 ; i < allViews.size() ; i++){
-		MobileEntityView* view = allViews[i];
-		this->allViews[view->getName()]=view;
-	}
-
-	for (unsigned int i = 0 ; i < viewVector.size() ; i++){
-
-		mobileEntities[i] = viewVector[i]->getEntity();
-		mobEntView[i] = viewVector[i];
+	for (unsigned int i = 0 ; i < mobileEntityVector.size() ; i++){
 		ArtificialIntelligence* ia= new ArtificialIntelligence();
-		ia->setMobileEntity(mobileEntities[i]);
+		ia->setMobileEntity(mobileEntityVector[i]);
 		ias[i] = ia;
-		lastAddedView++;
-
+		addMobileEntity(mobileEntityVector[i],mobileEntityVector[i]->getCoordinates());
 	}
 
-	for (unsigned int i = 0 ; i < entviewVector.size() ; i++){
-			int index = lastAddedView + 1;
-			entities[index] = entviewVector[i]->getEntity();
-			lastAddedView++;
+	for (unsigned int i = 0 ; i < itemVector.size() ; i++){
+			addEntity(itemVector[i],itemVector[i]->getCoordinates());
 	}
 
 	createFlag(view->getMapData());
@@ -85,12 +74,11 @@ void MultiplayerGame::createGolem(Player* player)
 	Golem* golem = new Golem();
 	Coordinates coor = player->getCoordinates();
 	golem->setCoordinates(coor.getRow()+1,coor.getCol());
-	MobileEntityView* golemView = new MobileEntityView(allViews["dragon"]);
-	golemView->setEntity(golem);
-	view->addNewEntityView(golemView,golem->getCoordinates());
 	golem->setTeam(player->getTeam());
+	golem->setName("dragon");
 	this->createGolemIa(golem);
 	golemsMap[player->getName()] = golem ;
+	//addMobileEntity(golem,coor);
 
 }
 void MultiplayerGame::createGolemIa(MobileEntity* golem)
@@ -286,9 +274,8 @@ map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo(){
 
 	map<int,MobileEntityInfo*> infos;
 
-	for (map<int,MobileEntityView*>::iterator it = mobEntView.begin() ; it != mobEntView.end() ; ++it){
-		MobileEntityView* view = it->second;
-		MobileEntity* ent = view->getEntity();
+	for (map<int,MobileEntity*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
+		MobileEntity* ent = it->second;
 		MobileEntityInfo* info = new MobileEntityInfo();
 		info->setId(it->first);
 		info->setName(ent->getName());
@@ -338,17 +325,14 @@ void MultiplayerGame::addNewMobileEntities() {
 	MapData* mapData = view->getMapData();
 	vector<MobileEntity* > newMobiles = mapData->getnewMobileEntities();
 
-	std::vector<MobileEntityView*> mobileEntitiesViews =
-			ConfigurationReader::assignMobileEntitiesViews(viewVector, newMobiles);
+	std::vector<MobileEntity *>::const_iterator iter;
+	for (iter = newMobiles.begin(); iter != newMobiles.end(); ++iter) {
 
-	std::vector<MobileEntityView *>::const_iterator iter;
-	for (iter = mobileEntitiesViews.begin(); iter != mobileEntitiesViews.end(); ++iter) {
-		MobileEntityView* current = *iter;
-		MobileEntity* currentEntity =  current->getEntity();
+		MobileEntity* current = *iter;
 
-		Coordinates coords = currentEntity->getCoordinates();
+		Coordinates coords = current->getCoordinates();
 
-		addMobileEntity(current, currentEntity, coords);
+		addMobileEntity(current, coords);
 	}
 
 	mapData->cleanNewMobileEntities();
@@ -393,7 +377,7 @@ void MultiplayerGame::removeDeadEntities() {
 		}
 }
 
-int MultiplayerGame::addMobileEntity(MobileEntityView* view, MobileEntity* entity, Coordinates coordiantes){
+int MultiplayerGame::addMobileEntity(MobileEntity* entity, Coordinates coordiantes){
 
 	entity->setCoordinates(coordiantes.getRow(), coordiantes.getCol());
 	int x = Tile::computePosition(coordiantes.getRow(),coordiantes.getCol(),true)->getX();
@@ -401,7 +385,6 @@ int MultiplayerGame::addMobileEntity(MobileEntityView* view, MobileEntity* entit
 	entity->setPos(x,y,0);
 	int newId = lastAddedView + 1;
 	mobileEntities[newId] = entity;
-	mobEntView[newId] = view;
 	lastAddedView = newId;
 
 	return newId;
@@ -413,10 +396,6 @@ void MultiplayerGame::removeMobileEntity(int id){
 			delete ias[id];
 			ias.erase(id);
 		}
-		if (mobEntView.count(id) != 0){
-			mobEntView.erase(id);
-		}
-
 		mobileEntities.erase(id);
 
 		//TODO: SACARLO TAMBIEN DE MAP DATA

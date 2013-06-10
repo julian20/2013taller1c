@@ -42,14 +42,15 @@ public:
 	void setEntityViewMap(EntityViewMap* entityViewMap);
 	map<int,MobileEntity*> getMobileEntities();
 	void setMobileEntities(std::vector<MobileEntity*> mobiles);
-	std::vector<EntityView*> getItemViews();
-	void setItemViews(std::vector<EntityView*> itemViews);
+	std::vector<Item*> getItems();
+	void setItems(std::vector<Item*> itemViews);
 	ItemViewHolder* getItemViewHolder();
 	void setItemViewHolder(ItemViewHolder* itemViewHolder);
 	MobileEntityViewHolder* getMobileEntityViewHolder();
 	void setMobileEntityViewHolder(MobileEntityViewHolder* mobileEntityViewHolder);
 	void setMobileEntitiesView(std::vector<MobileEntityView*> list);
 	std::vector<MobileEntityView*> getMobileEntitiesView();
+	vector<MobileEntity*> getMobileEntityList();
 private:
 	std::vector<MobileEntityView*> allViewEntities;
 	map<int,MobileEntity*> mobileEntityMap;
@@ -57,7 +58,7 @@ private:
 	std::vector<MobileEntity*> mobs;
 	std::vector<PlayerView*> viewList;
 	std::vector<MobileEntityView*> mobileEntityViewList;
-	std::vector<EntityView*> itemViewList;
+	std::vector<Item*> itemList;
 	TextureHolder* textureHolder;
 	MapData* mapData;
 	GameConfiguration* animationConfiguration;

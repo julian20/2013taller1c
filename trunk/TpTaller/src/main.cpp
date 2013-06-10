@@ -53,8 +53,10 @@ void initGame() {
 	SinglePlayerServer* server = new SinglePlayerServer(serverPort);
 	server->run(MPgame);
 
+	PersistentConfiguration configClient = configReader.loadConfiguration(MAP_FILE,OUTPUT_FILENAME);
+
 	Client* client = new Client(serverIP, serverPort);
-	Game* game = new Game(&configuration, true);
+	Game* game = new Game(&configClient, true);
 	client->setGame(game);
 	client->initPlayerInfo(game->getPlayerView());
 	client->run();
