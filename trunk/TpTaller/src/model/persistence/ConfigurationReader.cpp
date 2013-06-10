@@ -2285,7 +2285,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	assignMobileEntities(mapData, mobileEntityVector);
 	cleanUnusedViews(entityViewVector);
 	cleanUnusedViews(playerViewVector);
-	cleanUnusedViews(mobileEntityViewVector);
+	//cleanUnusedViews(mobileEntityViewVector);
 
 // Parsing map tile locations.
 	yamlNode[MAP_TILES_POSITION] >> mapConfiguration;
@@ -2307,6 +2307,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	configuration.setViewList(cleanPlayerViews);
 	configuration.setMobileEntityViewList(cleanMobileEntityViews);
 	configuration.setMobileEntities(mobileEntityVector);
+	configuration.setMobileEntitiesView(mobileEntityViewVector);
 	configuration.setItemViews(cleanItemViews);
 	configuration.setItemViewHolder(itemViewHolder);
 

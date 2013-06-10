@@ -28,22 +28,28 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
-	viewVector = configuration->getMobileEntityViewList();
-	vector<EntityView*> entviewVector = configuration->getItemViews();
+	vector<MobileEntityView*> viewVector = configuration->getMobileEntityViewList();
+	vector<MobileEntityView*> allViews = configuration->getMobileEntitiesView();
+	vector<EntityView*> entviewVector = configuration->getItemViews();//Aca tengo las imagenes
 	lastAddedView = 0;
 
-	for (unsigned int i = 0 ; i < viewVector.size() ; i++) {
+	for (unsigned int i = 0 ; i < allViews.size() ; i++){
+		MobileEntityView* view = allViews[i];
+		this->allViews[view->getName()]=view;
+	}
+
+	for (unsigned int i = 0 ; i < viewVector.size() ; i++){
 
 		mobileEntities[i] = viewVector[i]->getEntity();
 		mobEntView[i] = viewVector[i];
-		ArtificialIntelligence* ia = new ArtificialIntelligence();
+		ArtificialIntelligence* ia= new ArtificialIntelligence();
 		ia->setMobileEntity(mobileEntities[i]);
 		ias[i] = ia;
 		lastAddedView++;
 
 	}
 
-	for (unsigned int i = 0 ; i < entviewVector.size() ; i++) {
+	for (unsigned int i = 0 ; i < entviewVector.size() ; i++){
 			int index = lastAddedView + 1;
 			entities[index] = entviewVector[i]->getEntity();
 			lastAddedView++;
@@ -74,11 +80,17 @@ void MultiplayerGame::createFlag(MapData* mapData)
 Flag* MultiplayerGame::getFlag() {
 	return flag;
 }
-void MultiplayerGame::createGolem(string playerName)
+void MultiplayerGame::createGolem(Player* player)
 {
 	Golem* golem = new Golem();
+	Coordinates coor = player->getCoordinates();
+	golem->setCoordinates(coor.getRow()+1,coor.getCol());
+	MobileEntityView* golemView = new MobileEntityView(allViews["dragon"]);
+	golemView->setEntity(golem);
+	view->addNewEntityView(golemView,golem->getCoordinates());
+	golem->setTeam(player->getTeam());
 	this->createGolemIa(golem);
-	golemsMap[playerName] = golem ;
+	golemsMap[player->getName()] = golem ;
 
 }
 void MultiplayerGame::createGolemIa(MobileEntity* golem)
@@ -159,9 +171,9 @@ void MultiplayerGame::updatePlayersCoordinates(){
 		view->getMapData()->updateMobilePos(initCoords.getRow(), initCoords.getCol(),
 											currentCoords.getRow(), currentCoords.getCol(),
 											player);
-		if (player->hasGolem() || golemsMap.find(player->getName()) == golemsMap.end() )
+		if (player->hasGolem() && golemsMap.find(player->getName()) == golemsMap.end() )
 		{
-			this->createGolem(player->getName());
+			this->createGolem(player);
 		}
 	}
 }

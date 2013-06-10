@@ -35,6 +35,7 @@ Player::Player() :
 	hasChanged = true;
 	chat = NULL;
 	needCastSpell = false;
+	golem=false;
 	castingSpell = false;
 	makingEarthquake = false;
 	needFrozeEnemies = false;
@@ -65,6 +66,7 @@ Player::Player(string name, Position* position, Speed* speed,
 	mainPlayer = true;
 	weapons = NULL;
 	needCastSpell = false;
+	golem = false;
 	castingSpell = false;
 	makingEarthquake = false;
 	needFrozeEnemies = false;

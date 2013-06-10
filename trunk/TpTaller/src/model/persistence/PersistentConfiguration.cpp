@@ -90,7 +90,14 @@ std::vector<PlayerView*> PersistentConfiguration::getViewList() {
 void PersistentConfiguration::setMobileEntityViewList(std::vector<MobileEntityView*> viewList) {
 	this->mobileEntityViewList = viewList;
 }
-
+void PersistentConfiguration::setMobileEntitiesView(std::vector<MobileEntityView*> list)
+{
+	this->allViewEntities = list;
+}
+std::vector<MobileEntityView*> PersistentConfiguration::getMobileEntitiesView()
+{
+	return this->allViewEntities;
+}
 std::vector<MobileEntityView*> PersistentConfiguration::getMobileEntityViewList() {
 	return mobileEntityViewList;
 }
