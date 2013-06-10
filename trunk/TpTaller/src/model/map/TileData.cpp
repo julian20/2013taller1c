@@ -63,10 +63,10 @@ bool TileData::getIsVisible() {
 
 bool TileData::isWalkable(bool ignoremobileEntity) {
 	bool allEntitiesWalkable = true;
-	MobileEntity* current;
-	list<MobileEntity *>::const_iterator iter;
-	for (iter = mobileEntities.begin(); iter != mobileEntities.end(); ++iter) {
-		current = *iter;
+
+	list<MobileEntity *>::const_iterator mobileIter;
+	for (mobileIter = mobileEntities.begin(); mobileIter != mobileEntities.end(); ++mobileIter) {
+		MobileEntity* current = *mobileIter;
 
 		if ( current->isWalkable() == false)
 			allEntitiesWalkable = false;
@@ -74,6 +74,14 @@ bool TileData::isWalkable(bool ignoremobileEntity) {
 
 	if (ignoremobileEntity == true && walkable == true)
 		return true;
+
+	list<Entity *>::const_iterator entityIter;
+	for (entityIter = entities.begin(); entityIter != entities.end(); ++entityIter) {
+		Entity* current = *entityIter;
+
+		if ( current->isWalkable() == false )
+			allEntitiesWalkable = false;
+	}
 
 	if (walkable == false)
 		return false;
