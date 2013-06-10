@@ -321,7 +321,7 @@ void Game::initMusic() {
 
 void Game::playersUpdate() {
 
-	personaje->update(mapData);
+	personaje->localUpdate(mapData);
 	personaje->setHasChanged(false);
 
 	for (list<Player*>::iterator player = otherPlayers.begin();
@@ -329,11 +329,6 @@ void Game::playersUpdate() {
 		(*player)->update(mapData);
 		(*player)->setHasChanged(false);
 	}
-/*		for (list<ArtificialIntelligence*>::iterator autoPlayer = ias.begin();
-	 autoPlayer != ias.end(); ++autoPlayer) {
-	 (*autoPlayer)->update(mapData);
-	 //(*autoPlayer)->setHasChanged(false);
-	 }*/
 
 }
 

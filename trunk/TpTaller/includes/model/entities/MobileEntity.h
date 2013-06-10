@@ -95,6 +95,8 @@ public:
 	list<PlayerEvent*> getPlayerEvents();
 	void addEvent(PlayerEvent* event);
 	float getLastAttackingDirecton();
+
+	void localUpdate(MapData* mapData);
 protected:
 	void loadNextPosition();
 	void emptyPath();
