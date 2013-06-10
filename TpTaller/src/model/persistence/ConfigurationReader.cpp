@@ -1958,6 +1958,14 @@ std::vector<MobileEntityView*> assignMobileEntities(
 	return completeViews;
 }
 
+std::vector<MobileEntityView*> ConfigurationReader::assignMobileEntitiesViews(
+		std::vector<MobileEntityView*> entityViews,
+		std::vector<MobileEntity*> entities) {
+
+	return assignMobileEntities(entityViews, entities);
+}
+
+
 std::vector<PlayerView*> assignPlayers(std::vector<PlayerView*> playerViews,
 		std::vector<Player*> players) {
 	std::vector<PlayerView*> completeViews;

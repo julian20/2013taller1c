@@ -28,7 +28,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
-	vector<MobileEntityView*> viewVector = configuration->getMobileEntityViewList();
+	viewVector = configuration->getMobileEntityViewList();
 	vector<EntityView*> entviewVector = configuration->getItemViews();
 	lastAddedView = 0;
 
@@ -318,15 +318,17 @@ void MultiplayerGame::addNewMobileEntities() {
 	MapData* mapData = view->getMapData();
 	vector<MobileEntity* > newMobiles = mapData->getnewMobileEntities();
 
-	std::vector<MobileEntity *>::const_iterator iter;
-	for (iter = newMobiles.begin(); iter != newMobiles.end(); ++iter) {
-		MobileEntity* current = *iter;
-		MobileEntityView* view = new MobileEntityView();
-		view->setMobileEntity(current);
+	std::vector<MobileEntityView*> mobileEntitiesViews =
+			ConfigurationReader::assignMobileEntitiesViews(viewVector, newMobiles);
 
-		Coordinates coords = current->getCoordinates();
+	std::vector<MobileEntityView *>::const_iterator iter;
+	for (iter = mobileEntitiesViews.begin(); iter != mobileEntitiesViews.end(); ++iter) {
+		MobileEntityView* current = *iter;
+		MobileEntity* currentEntity =  current->getEntity();
 
-		//addMobileEntity(view, current, coords);
+		Coordinates coords = currentEntity->getCoordinates();
+
+		//addMobileEntity(current, currentEntity, coords);
 	}
 
 	mapData->cleanNewMobileEntities();

@@ -14,6 +14,7 @@
 #include <Game.h>
 #include <model/Chat.h>
 #include <model/persistence/PersistentConfiguration.h>
+#include <model/persistence/ConfigurationReader.h>
 #include <model/entities/enemies/Mob.h>
 #include <model/entities/Golem/Golem.h>
 #include <model/entities/Flag.h>
@@ -79,6 +80,7 @@ private:
 
 	MapView* view;
 
+	vector<MobileEntityView*> viewVector;
 	map< string, NetworkPlayerController*> controllers;
 	map< string, Golem*> golemsMap;
 	list<Player*> players;
