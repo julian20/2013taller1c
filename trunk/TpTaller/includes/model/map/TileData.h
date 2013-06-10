@@ -25,7 +25,6 @@ public:
 	MobileEntity* getAttackableMobileEntity();
 	std::list<Entity*> getEntities();
 	std::list<MobileEntity*> getMobileEntities();
-	Entity* getNextEntity();
 	int getNumberOfEntitiesOnTile();
 	bool getWasVisible();
 	bool getIsVisible();
@@ -46,7 +45,6 @@ private:
 	std::list<MobileEntity*> mobileEntities;
 	std::list<Entity*> entities;
 	std::list<Entity*>::iterator iterator;
-	Entity* entity;
 	bool wasVisible;
 	bool isVisible;
 	bool walkable;
