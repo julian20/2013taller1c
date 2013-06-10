@@ -31,6 +31,7 @@ void MagicBottle::applyEffects(Player& entity) {
 
 void MagicBottle::collideTo(Player& entity) {
 	applyEffects(entity);
+	removeFromGame = true;
 }
 
 string MagicBottle::getClassName() {

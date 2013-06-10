@@ -33,6 +33,7 @@ void CrystalBallItem::applyEffects(Player& entity) {
 
 void CrystalBallItem::collideTo(Player& entity) {
 	applyEffects(entity);
+	removeFromGame = true;
 }
 
 string CrystalBallItem::getClassName() {

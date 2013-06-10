@@ -46,6 +46,7 @@ void Item::collideTo(MobileEntity& mobileEntity) {
 }
 
 void Item::collideTo(Player& player) {
+	removeFromGame = true;
 }
 
 Item::~Item() {

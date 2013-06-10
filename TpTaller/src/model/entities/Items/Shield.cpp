@@ -31,6 +31,7 @@ void Shield::applyEffects(Player& entity) {
 
 void Shield::collideTo(Player& entity) {
 	applyEffects(entity);
+	removeFromGame = true;
 }
 
 string Shield::getClassName() {

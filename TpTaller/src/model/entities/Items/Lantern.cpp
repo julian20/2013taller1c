@@ -31,6 +31,7 @@ void Lantern::applyEffects(Player& entity) {
 
 void Lantern::collideTo(Player& entity) {
 	applyEffects(entity);
+	removeFromGame = true;
 }
 
 string Lantern::getClassName() {

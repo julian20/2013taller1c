@@ -33,6 +33,7 @@ void SpellShieldItem::applyEffects(Player& entity) {
 
 void SpellShieldItem::collideTo(Player& entity) {
 	applyEffects(entity);
+	removeFromGame = true;
 }
 
 string SpellShieldItem::getClassName() {

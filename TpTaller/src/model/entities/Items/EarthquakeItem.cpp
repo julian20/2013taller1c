@@ -33,6 +33,7 @@ void EarthquakeItem::applyEffects(Player& entity) {
 
 void EarthquakeItem::collideTo(Player& entity) {
 	applyEffects(entity);
+	removeFromGame = true;
 }
 
 string EarthquakeItem::getClassName() {

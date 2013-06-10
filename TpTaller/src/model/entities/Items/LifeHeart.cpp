@@ -32,6 +32,7 @@ void LifeHeart::applyEffects(Player& entity) {
 
 void LifeHeart::collideTo(Player& entity) {
 	applyEffects(entity);
+	removeFromGame = true;
 }
 
 string LifeHeart::getClassName() {

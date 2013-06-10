@@ -174,8 +174,6 @@ void Entity::updateDamageTaken() {
 
 	if (life <= 0)
 		removeFromGame = true;
-
-	std::cout << life << std::endl;
 }
 
 void Entity::applyDamage(int damage) {
