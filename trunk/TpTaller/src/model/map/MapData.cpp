@@ -80,6 +80,14 @@ void MapData::cleanNewMobileEntities() {
 	newMobileEntities.erase(newMobileEntities.begin(), newMobileEntities.end());
 }
 
+vector<Entity* > MapData::getNewEntities() {
+	return newEntities;
+}
+
+void MapData::cleanNewEntities() {
+	newEntities.erase(newEntities.begin(), newEntities.end());
+}
+
 Player* MapData::getMainPlayer() {
 	return mainPlayer;
 }
@@ -111,6 +119,7 @@ void MapData::addEntity(int row, int col, Entity* object) {
 				copy->setCoordinates(currentRow, currentCol);
 				currentData->setWalkable(false);
 
+				newEntities.push_back(object);
 			}
 
 		}
@@ -169,6 +178,7 @@ void MapData::addItem(int row, int col, Item* object) {
 				currentData->addEntity(copy);
 				copy->setCoordinates(currentRow, currentCol);
 
+				newEntities.push_back(object);
 			}
 
 		}
