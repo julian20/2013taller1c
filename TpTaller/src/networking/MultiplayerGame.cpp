@@ -152,7 +152,7 @@ void MultiplayerGame::updateMobs(){
 	MapData* mapa = view->getMapData();
 
 	map<int,MobileEntity*>::iterator mobIter;
-	for ( mobIter = mobileEntities.begin() ; mobIter != mobileEntities.end() ; ++mobIter ) {
+	for (mobIter = mobileEntities.begin() ; mobIter != mobileEntities.end() ; ++mobIter ) {
 		(mobIter->second)->update(mapa);
 		(mobIter->second)->updateDamageTaken();
 	}
