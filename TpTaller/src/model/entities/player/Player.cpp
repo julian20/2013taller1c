@@ -75,6 +75,7 @@ Player::Player(string name, Position* position, Speed* speed,
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
 	golem = false;
+	frozen = false;
 	initializeSpellsInventory();
 }
 

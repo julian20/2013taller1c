@@ -157,14 +157,15 @@ void MobileEntity::extraUpdate(MapData* mapData) {
 }
 
 void MobileEntity::update(MapData* mapData) {
+
 	if (frozen) {
 		if (frozenTimer.getTimeIntervalSinceStart() > FROZEN_TIMEOUT)
 			frozen = false;
 		else
 			return;
 	}
-
 	extraUpdate(mapData);
+
 	if (attackToEntity != NULL)
 		checkAttackToNewPos(mapData);
 	if (IsMoving() == false) {
@@ -193,6 +194,41 @@ void MobileEntity::update(MapData* mapData) {
 		currentPos->add(moveDirection);
 	}
 }
+
+void MobileEntity::localUpdate(MapData* mapData) {
+	if (frozen)
+		return;
+	extraUpdate(mapData);
+
+	if (attackToEntity != NULL)
+		checkAttackToNewPos(mapData);
+	if (IsMoving() == false) {
+		if (path->size() == 0)
+			return;
+		else
+			loadNextPosition();
+	}
+
+	float relationSpeed = ((float) Tile::getTileHeight())
+			/ ((float) Tile::getTileWidth());
+
+	Vector3* moveDirection = new Vector3(endPos->getX() - currentPos->getX(),
+			endPos->getY() - currentPos->getY(),
+			endPos->getZ() - currentPos->getZ());
+
+	if (moveDirection->getNorm() < getSpeed()->getMagnitude() + 1) {
+		// Close enough to the end position to move in one step.
+		currentPos->setValues(endPos->getX(), endPos->getY());
+		loadNextPosition();
+	} else {
+		moveDirection->normalize();
+		moveDirection->multiplyBy(
+				fabs(moveDirection->getY()) * (relationSpeed - 1) + 1);
+		moveDirection->multiplyBy(getSpeed()->getMagnitude());
+		currentPos->add(moveDirection);
+	}
+}
+
 
 void MobileEntity::updateFromServer(MobileEntityUpdate* update) {
 
@@ -332,6 +368,7 @@ void MobileEntity::assignPath(list<Tile *> *_path) {
 void MobileEntity::froze() {
 	frozen = true;
 	frozenTimer.start();
+	this->hasChanged = true;
 }
 
 void MobileEntity::attackTo(Entity* attackTo) {
