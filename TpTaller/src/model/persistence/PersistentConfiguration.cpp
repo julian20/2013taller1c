@@ -102,12 +102,12 @@ std::vector<MobileEntityView*> PersistentConfiguration::getMobileEntityViewList(
 	return mobileEntityViewList;
 }
 
-std::vector<EntityView*> PersistentConfiguration::getItemViews() {
-	return itemViewList;
+std::vector<Item*> PersistentConfiguration::getItems() {
+	return itemList;
 }
 
-void PersistentConfiguration::setItemViews(std::vector<EntityView*> itemViews) {
-	itemViewList = itemViews;
+void PersistentConfiguration::setItems(std::vector<Item*> items) {
+	itemList = items;
 }
 
 ItemViewHolder* PersistentConfiguration::getItemViewHolder() {
@@ -124,4 +124,8 @@ MobileEntityViewHolder* PersistentConfiguration::getMobileEntityViewHolder() {
 
 void PersistentConfiguration::setMobileEntityViewHolder(MobileEntityViewHolder* mobileEntityViewHolder) {
 	this->mobileEntityViewHolder = mobileEntityViewHolder;
+}
+
+vector<MobileEntity*> PersistentConfiguration::getMobileEntityList(){
+	return mobs;
 }

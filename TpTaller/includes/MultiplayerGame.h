@@ -49,7 +49,7 @@ public:
 	// TODO LO QUE SE AGREGUE O SE QUITE CON ESTOS METODOS SERA ENVIADO AL SERVER.
 
 	// Agrega una mobile Entity a MultiplayerGame. Devuelve el ID que se le asigno.
-	int addMobileEntity(MobileEntityView* view, MobileEntity* entity, Coordinates coordiantes);
+	int addMobileEntity(MobileEntity* entity, Coordinates coordiantes);
 	// Quita del juego la mobileEntity con el id pasado como parametro.
 	void removeMobileEntity(int id);
 	// Agrega una Entity a MultiplayerGame. Devuelve el ID que se le asigno.
@@ -84,15 +84,12 @@ private:
 
 	MapView* view;
 
-	vector<MobileEntityView*> viewVector;
 	map< string, NetworkPlayerController*> controllers;
 	map< string, Golem*> golemsMap;
 	list<Player*> players;
 	map<int,ArtificialIntelligence*> ias;
 	map<MobileEntity*, Coordinates> mobilesCoords;
-	map<string,MobileEntityView*> allViews;
 	map<int,MobileEntity*> mobileEntities;
-	map<int,MobileEntityView*> mobEntView;
 	vector<int> deletedMobileEntities;
 	map<int,Entity*> entities;
 	vector<int> deletedEntities;
