@@ -10,12 +10,14 @@
 ItemViewHolder::ItemViewHolder() {
 }
 
-EntityView* ItemViewHolder::getEntityViewByItem(Item* item) {
+EntityView* ItemViewHolder::getEntityViewByItem(Entity* item) {
 
 	string className = (*item).getClassName();
 
 	EntityView* newView = getEntityView(className);
-	newView->setEntity(item);
+
+	if (newView != NULL)
+		newView->setEntity(item);
 
 	return newView;
 
@@ -51,8 +53,7 @@ ItemViewHolder::~ItemViewHolder() {
 	EntityView* actualView;
 
 	map<string, EntityView*>::iterator iter;
-	for (iter = entityViewMap.begin();
-			iter != entityViewMap.end(); iter++) {
+	for (iter = entityViewMap.begin(); iter != entityViewMap.end(); iter++) {
 		actualView = iter->second;
 		delete actualView;
 	}
