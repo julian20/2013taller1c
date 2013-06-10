@@ -21,6 +21,7 @@ public:
 	virtual ~ItemViewHolder();
 
 	EntityView* getEntityView(string className);
+	EntityView* getEntityViewByItem(Entity* item);
 	void loadEntityView(string className, EntityView* view);
 private:
 	EntityView* duplicateView(EntityView* view);
