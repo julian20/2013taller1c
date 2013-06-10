@@ -99,6 +99,7 @@ MenuEvent MultiplayerGame::run(){
 		updateMobs();
 		addNewEntities();
 		//addNewMobileEntities();
+		removeDeadEntities();
 
 		applyFPS(ticks);
 
@@ -347,6 +348,32 @@ void MultiplayerGame::addNewEntities() {
 
 		addEntity(current, current->getCoordinates());
 	}
+}
+
+int MultiplayerGame::getEntityId(Entity* entity) {
+	map<int,Entity*>::iterator it;
+	for (it = entities.begin() ; it != entities.end() ; ++it){
+		Entity* current = it->second;
+
+		if (current == entity)
+			return it->first;
+	}
+
+	std::cout << "Entity no encontrada" << std::endl;
+	return -1;
+}
+
+void MultiplayerGame::removeDeadEntities() {
+	MapData* mapData = view->getMapData();
+
+	list<Entity* > deadEntities = mapData->getDeadEntities();
+
+		std::list<Entity *>::const_iterator iter;
+		for (iter = deadEntities.begin(); iter != deadEntities.end(); ++iter) {
+			Entity* current = *iter;
+
+			removeEntity( getEntityId(current) );
+		}
 }
 
 int MultiplayerGame::addMobileEntity(MobileEntityView* view, MobileEntity* entity, Coordinates coordiantes){
