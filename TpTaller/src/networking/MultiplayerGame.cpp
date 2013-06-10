@@ -110,7 +110,7 @@ MenuEvent MultiplayerGame::run(){
 		playersUpdate();
 		updateMobs();
 		addNewEntities();
-		//addNewMobileEntities();
+		addNewMobileEntities();
 		removeDeadEntities();
 
 		applyFPS(ticks);
@@ -391,6 +391,9 @@ void MultiplayerGame::removeDeadEntities() {
 int MultiplayerGame::addMobileEntity(MobileEntityView* view, MobileEntity* entity, Coordinates coordiantes){
 
 	entity->setCoordinates(coordiantes.getRow(), coordiantes.getCol());
+	int x = Tile::computePosition(coordiantes.getRow(),coordiantes.getCol(),true)->getX();
+	int y = Tile::computePosition(coordiantes.getRow(),coordiantes.getCol(),true)->getY();
+	entity->setPos(x,y,0);
 	int newId = lastAddedView + 1;
 	mobileEntities[newId] = entity;
 	mobEntView[newId] = view;
