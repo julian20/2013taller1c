@@ -254,6 +254,8 @@
     imageHeight: 249
     numberOfClips: 0
     anchorPixel: [120, 180]
+    baseRows: 4
+    baseCols: 3
   - name: chapel
     imageSrc: resources/buildings/chapel.png
     imageWidth: 220
