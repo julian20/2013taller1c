@@ -76,6 +76,8 @@ private:
 	void updateMobsCoordinates();
 	void addNewMobileEntities();
 	void addNewEntities();
+	int getEntityId(Entity* entity);
+	void removeDeadEntities();
 	void playersUpdate();
 	void applyFPS(int timer);
 
