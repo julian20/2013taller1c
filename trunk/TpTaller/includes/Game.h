@@ -54,6 +54,7 @@ public:
         MapCameraView* getMapCameraView();
         MapData* getMapData();
         ItemViewHolder* getIterViewHolder();
+        MobileEntityViewHolder* getMobileEntityViewHolder();
         void setChat(Chat* chat);
         list<PlayerEvent*> getEvents();
         void cleanEvents();
@@ -79,6 +80,7 @@ private:
 
         MapData* mapData;
         ItemViewHolder* vh;
+        MobileEntityViewHolder* mobEntViewHolder;
         ChatController* chatController ;
         ChatWindowsView* chatView;
         Chat* chat;

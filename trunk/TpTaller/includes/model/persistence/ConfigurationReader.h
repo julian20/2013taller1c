@@ -43,6 +43,7 @@
 #include <view/entities/PlayerView.h>
 #include <view/entities/MobileEntityView.h>
 #include <view/entities/ItemViewHolder.h>
+#include <view/entities/MobileEntityViewHolder.h>
 #include <model/Logs/Logs.h>
 
 #include <iostream>

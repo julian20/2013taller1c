@@ -117,3 +117,11 @@ ItemViewHolder* PersistentConfiguration::getItemViewHolder() {
 void PersistentConfiguration::setItemViewHolder(ItemViewHolder* itemViewHolder) {
 	this->itemViewHolder = itemViewHolder;
 }
+
+MobileEntityViewHolder* PersistentConfiguration::getMobileEntityViewHolder() {
+	return mobileEntityViewHolder;
+}
+
+void PersistentConfiguration::setMobileEntityViewHolder(MobileEntityViewHolder* mobileEntityViewHolder) {
+	this->mobileEntityViewHolder = mobileEntityViewHolder;
+}

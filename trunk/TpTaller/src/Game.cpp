@@ -80,6 +80,7 @@ Game::Game(PersistentConfiguration* configuration, bool multiplayer) :
 	SDL_FreeSurface(pointerClickedTmp);
 
 	vh = configuration->getItemViewHolder();
+	mobEntViewHolder = configuration->getMobileEntityViewHolder();
 
 }
 Chat* Game::getChat() {
@@ -417,6 +418,10 @@ MapData* Game::getMapData() {
 
 ItemViewHolder* Game::getIterViewHolder(){
 	return vh;
+}
+
+MobileEntityViewHolder* Game::getMobileEntityViewHolder(){
+	return mobEntViewHolder;
 }
 
 bool Game::isActive() {

@@ -360,7 +360,7 @@ void Client::checkNewMobileEntity(){
 
 		int id = info->getId();
 		MobileEntity* entity = info->getEntity();
-		MobileEntityView* view = info->createMobileEntityView();
+		MobileEntityView* view = info->createMobileEntityView(game->getMobileEntityViewHolder());
 		game->addNewMobileEntity(entity,view,info->getInitCoordinates(), id);
 
 	}
