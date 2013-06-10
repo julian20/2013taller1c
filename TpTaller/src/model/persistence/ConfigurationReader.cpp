@@ -2023,9 +2023,7 @@ void setDefaultPlayerView() {
 
 Item* createRandomItem() {
 
-	std::vector<string> itemNames;
-
-	float number = itemNames.size() * (rand() / (RAND_MAX + 1.0));
+	float number = 11 * (rand() / (RAND_MAX + 1.0));
 
 	Item* randomItem;
 
