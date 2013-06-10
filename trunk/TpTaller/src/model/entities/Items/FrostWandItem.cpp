@@ -31,6 +31,7 @@ void FrostWandItem::applyEffects(Player& entity) {
 
 void FrostWandItem::collideTo(Player& entity) {
 	applyEffects(entity);
+	removeFromGame = true;
 }
 
 string FrostWandItem::getClassName() {

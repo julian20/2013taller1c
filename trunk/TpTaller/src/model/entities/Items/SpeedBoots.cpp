@@ -33,6 +33,7 @@ void SpeedBoots::applyEffects(Player& entity) {
 
 void SpeedBoots::collideTo(Player& entity) {
 	applyEffects(entity);
+	removeFromGame = true;
 }
 
 string SpeedBoots::getClassName() {

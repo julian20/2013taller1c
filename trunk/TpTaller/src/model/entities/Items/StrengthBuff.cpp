@@ -34,6 +34,7 @@ void StrengthBuff::applyEffects(Player& entity) {
 
 void StrengthBuff::collideTo(Player& entity) {
 	applyEffects(entity);
+	removeFromGame = true;
 }
 
 string StrengthBuff::getClassName() {

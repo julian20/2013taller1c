@@ -33,6 +33,7 @@ void MapItem::applyEffects(Player& entity) {
 
 void MapItem::collideTo(Player& entity) {
 	applyEffects(entity);
+	removeFromGame = true;
 }
 
 string MapItem::getClassName() {
