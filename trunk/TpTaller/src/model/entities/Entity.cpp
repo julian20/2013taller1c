@@ -266,7 +266,7 @@ int Entity::getShield() {
 
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const Entity& Entity) {
-	out << Entity.name << " " << *(Entity.currentPos) << " " << *(Entity.base) << " " << Entity.life << " " << Entity.team;
+	out << Entity.name << " " << *(Entity.currentPos) << " " << *(Entity.base) << " " << Entity.life << " " << Entity.team << " " << Entity.hideInFog;
 
 
 	return out;
@@ -289,6 +289,7 @@ istream& operator >>(std::istream& in, Entity& Entity) {
 	int team;
 	in >> team;
 	Entity.team = team;
+	in >> Entity.hideInFog;
 
 	return in;
 }

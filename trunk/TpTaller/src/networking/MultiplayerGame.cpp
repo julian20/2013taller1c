@@ -89,10 +89,11 @@ void MultiplayerGame::createGolemIa(MobileEntity* golem)
 	this->ias[cant++] = ia ;
 }
 MenuEvent MultiplayerGame::run(){
-	view->getMapData()->cleanNewMobileEntities();
 	view->getMapData()->cleanNewEntities();
 
 	while (true) {
+		view->getMapData()->cleanNewMobileEntities();
+
 		int ticks = SDL_GetTicks();
 
 		playersUpdate();
@@ -349,6 +350,8 @@ void MultiplayerGame::addNewEntities() {
 
 		addEntity(current, current->getCoordinates());
 	}
+
+	view->getMapData()->cleanNewEntities();
 }
 
 int MultiplayerGame::getEntityId(Entity* entity) {
