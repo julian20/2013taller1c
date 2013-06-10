@@ -10,6 +10,14 @@
 ItemViewHolder::ItemViewHolder() {
 }
 
+EntityView* ItemViewHolder::getEntityViewByItem(Item& item) {
+
+	string className = item.getClassName();
+
+	return getEntityView(className);
+
+}
+
 EntityView* ItemViewHolder::getEntityView(string className) {
 	if (entityViewMap.find(className) == entityViewMap.end()) {
 		return NULL;
