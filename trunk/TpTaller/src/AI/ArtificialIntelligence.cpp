@@ -110,6 +110,11 @@ void ArtificialIntelligence::watch(MapData* mapData) {
 	}
 }
 
+MobileEntity* ArtificialIntelligence::getMobileEntity() {
+	return entity;
+
+}
+
 ArtificialIntelligence::~ArtificialIntelligence() {
 
 }
