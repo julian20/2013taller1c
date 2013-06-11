@@ -33,6 +33,12 @@
 #define FULL_BAR_IMG "resources/misc/HPBarFull.png"
 #define FULL_MP_BAR_IMG "resources/misc/MPBarFull.png"
 
+#define WEAPON_MARGIN 800
+#define WEAPONSHEIGHT 60
+#define WEAPONSWIDTH 60
+#define WEAPONWINDOW "resources/fonts/chat-window.png"
+#define SWORDIMAGE "resources/sword.png"
+
 double uniform(double a, double b) {
 	return rand() / (RAND_MAX + 1.0) * (b - a) + a;
 }
@@ -250,7 +256,7 @@ void PlayerView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 
 	UpdateCameraPos(cam);
 	Show(screen, drawFog);
-
+	//showWeapon(screen);
 }
 
 void PlayerView::UpdateCameraPos(Position* _camPos) {
@@ -454,7 +460,25 @@ SpriteType computeDirection(float direction) {
 
 	return sprite;
 }
+void PlayerView::showWeapon(SDL_Surface* fondo)
+{
+	SDL_Rect clip;
+	clip.x = fondo->w - WEAPONSWIDTH;
+	clip.y = fondo->h - WEAPONSHEIGHT;
+	clip.h = WEAPONSHEIGHT;
+	clip.w = WEAPONSWIDTH;
+	SDL_Surface* img;
+	img = IMG_Load(SWORDIMAGE);
 
+//	float scaleX = (float) clip.w / img->w;
+//	float scaleY = (float) clip.h / img->h;
+
+//	SDL_Surface* resizeImg = rotozoomSurfaceXY(img,0,scaleX,scaleY,0);
+	SDL_Flip(img);
+	SDL_BlitSurface(img,NULL,fondo,&clip);
+
+
+}
 void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	//cosas del sound
 	string walkID = string("walk");
