@@ -415,7 +415,7 @@ int MultiplayerGame::addEntity(Entity* entity, Coordinates coordiantes){
 	entities[newId] = entity;
 	lastAddedView = newId;
 
-	view->getMapData()->addItem(coordiantes.getRow(), coordiantes.getCol(),(Item*)entity);
+//	view->getMapData()->addItem(coordiantes.getRow(), coordiantes.getCol(),(Item*)entity);
 
 
 	return newId;
@@ -425,7 +425,6 @@ void MultiplayerGame::removeEntity(int id){
 	if (entities.count(id) != 0){
 
 		entities.erase(id);
-
 		//TODO: SACARLO TAMBIEN DE MAP DATA
 
 		deletedEntities.push_back(id);

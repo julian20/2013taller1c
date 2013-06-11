@@ -45,16 +45,17 @@ void Chest::collideTo(Player& entity) {
 	applyEffects(entity);
 }
 
-// TODO: recibir entityViewMap e itemViewHolder
 void Chest::onRemove(MapData* mapData) {
 	if (this->containingItem == NULL)  {
 		std::cout << "No se ha asignado item al chest" << std::endl;
 		return;
 	}
 
+	containingItem->setCoordinates(coord->getRow(),coord->getCol());
+	containingItem->setPos(currentPos->getX(),currentPos->getY(),currentPos->getZ());
+	containingItem->setTile(new Tile(coord));
+
 	mapData->addItem(coord->getRow(), coord->getCol(), containingItem);
-	// EntityView* itemView = itemViewHolder->getEntityViewByItem(containingItem);
-	// entityViewMap->positionEntityView(itemView, coord);
 }
 
 string Chest::getClassName() {
