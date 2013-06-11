@@ -43,14 +43,19 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 			addEntity(itemVector[i],itemVector[i]->getCoordinates());
 	}
 
-	//createFlag(view->getMapData(),configuration->getEntitiesView());
+	createFlag(view->getMapData(),configuration->getEntitiesView());
 
+}
+EntityView* MultiplayerGame::getFlagView()
+{
+	return this->mb;
 }
 void MultiplayerGame::createFlag(MapData* mapData,std::vector<EntityView*> vector)
 {
 	int cols = mapData->getNCols();
 	int rows = mapData->getNRows();
-	flag= new Entity();
+	flag= new Flag();
+	 srand((unsigned) time(NULL));
 	//flag = mapData->getFlag();
 	//mapData->
 	int rCol= rand() % cols;
@@ -60,8 +65,10 @@ void MultiplayerGame::createFlag(MapData* mapData,std::vector<EntityView*> vecto
 		rCol= rand() % cols;
 		rRow= rand() % rows;
 	}
+//	rCol=10;
+//	rRow=15;
 	flag->setCoordinates(rRow,rCol);
-	EntityView* mb;
+
 	for (unsigned int i = 0 ; i < vector.size() ; i++){
 				if( vector[i]->getName()=="flag" )
 				{
@@ -72,15 +79,15 @@ void MultiplayerGame::createFlag(MapData* mapData,std::vector<EntityView*> vecto
 		}
 	mapData->addEntity(rRow,rCol,flag);
 	mapData->setFlag(flag);
-	flag->setLife(100);
-	flag->setName("flag");
-	view->addNewEntityView(mb,flag->getCoordinates());
-	this->addEntity(flag,flag->getCoordinates());
+	flag->setLife(10);
+	//flag->setName("flag");
+	//view->addNewEntityView(mb,flag->getCoordinates());
+	//this->addEntity(flag,flag->getCoordinates());
 
 
 }
 
-Entity* MultiplayerGame::getFlag() {
+Flag* MultiplayerGame::getFlag() {
 	return flag;
 }
 void MultiplayerGame::createGolem(Player* player)

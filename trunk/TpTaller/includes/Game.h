@@ -23,6 +23,7 @@
 //Ours
 #include <model/persistence/PersistentConfiguration.h>
 #include <model/entities/enemies/Mob.h>
+#include <model/entities/Flag.h>
 #include <model/Chat.h>
 #include <controller/MapController.h>
 #include <controller/MapCameraController.h>
@@ -62,7 +63,7 @@ public:
         bool isActive();
         void setActive();
         void setInactive();
-
+        void setFlag(Flag* flag, EntityView* view);
         virtual ~Game();
 protected:
 

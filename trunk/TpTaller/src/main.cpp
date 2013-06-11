@@ -57,6 +57,7 @@ void initGame() {
 
 	Client* client = new Client(serverIP, serverPort);
 	Game* game = new Game(&configClient, true);
+	game->setFlag(MPgame->getFlag(),MPgame->getFlagView());
 	client->setGame(game);
 	client->initPlayerInfo(game->getPlayerView());
 	client->run();

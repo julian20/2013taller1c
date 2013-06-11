@@ -61,7 +61,15 @@
     baseRows: 1
     baseCols: 1
     delay: 0.5
-- entityViews:  
+- entityViews:
+  - name: flag
+    imageSrc: resources/flag2.png
+    imageWidth: 38
+    imageHeight: 137
+    numberOfClips: 7
+    anchorPixel: [10, 100]
+    baseRows: 1
+    baseCols: 1  
   - name: crystalballitem
     imageSrc: resources/items/CrystalBallItemAnimated.png
     imageWidth: 50
@@ -232,14 +240,6 @@
     anchorPixel: [50, 70]
     baseRows: 1
     baseCols: 1
-  - name: flag
-    imageSrc: resources/flag2.png
-    imageWidth: 38
-    imageHeight: 137
-    numberOfClips: 7
-    anchorPixel: [10, 100]
-    baseRows: 1
-    baseCols: 1
   - name: barracks
     imageSrc: resources/buildings/barracks.png
     imageWidth: 320 
@@ -357,7 +357,7 @@
 - mapDimensions: [50, 50]
 - playerLocations:
   - name: NewPlayer
-    position: [9, 9, 0]
+    position: [36, 28, 0]
     speed:
       magnitude: 4
       direction: [1, 2]
@@ -429,8 +429,6 @@
 - entityLocations:
   - name: chapel
     position: [23, 20, 0]
-  - name: flag
-    position: [30, 30, 0]
   - name: portbuilding
     position: [34, 34, 0]
   - name: pottery
@@ -453,8 +451,6 @@
     position: [17, 5, 0]
   - name: barracks
     position: [5, 39, 0]
-  - name: watermill
-    position: [8, 3, 0]
   - name: farmhouse
     position: [13, 13, 0]
   - name: farmhouse
