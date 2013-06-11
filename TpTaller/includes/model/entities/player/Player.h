@@ -117,7 +117,7 @@ public:
 	Weapon* getCurrentWeapon();
 	void createGolem();
 	bool hasGolem();
-
+	void changeWeapon();
 	void updateDamageTaken();
 private:
 	void frozeEnemiesNow(MapData* mapData);
@@ -147,6 +147,7 @@ private:
 	Timer earthquakeTimer;
 	bool earthquakeLifeTaked;
 	bool golem;
+	int golemCost;
 
 	queue<Entity*> attackQueue;
 };
