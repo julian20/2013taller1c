@@ -46,6 +46,7 @@ public:
 	bool playerHasclickedAnEntity(int x, int y);
 	Entity* getEntityToCollideTo();
 	void createGolem();
+	void playerChangeWeapon();
 protected:
 	MapCameraView* camera;
 	MapData* data;

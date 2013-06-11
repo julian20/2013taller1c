@@ -187,7 +187,10 @@ void PlayerController::makeEarthquake() {
 void PlayerController::frozeEnemies() {
 	events.push_back(new PlayerEvent(EVENT_FROZE_ENEMIES));
 }
-
+void PlayerController::playerChangeWeapon()
+{
+	events.push_back(new PlayerEvent(EVENT_CHANGE_WEAPON));
+}
 void PlayerController::createGolem(){
 	events.push_back(new PlayerEvent(EVENT_GOLEM));
 }

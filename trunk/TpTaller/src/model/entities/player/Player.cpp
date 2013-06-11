@@ -7,7 +7,7 @@
 
 #include <model/entities/player/Player.h>
 #include <model/map/MapData.h>
-
+#define GOLEM_COST 20;
 #include <stdio.h>
 using namespace std;
 
@@ -331,7 +331,12 @@ Weapon* Player::getCurrentWeapon() {
 	weaponToUse->setTeam(team);
 	return weaponToUse;
 }
-
+void Player::changeWeapon()
+{
+	Weapon* actualWeapon = weapons->front();
+	weapons->pop_front();
+	weapons->push_back(actualWeapon);
+}
 void Player::attack(Entity& entity) {
 	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
 		attacking = true;
@@ -391,7 +396,6 @@ ChatUpdate* Player::generateChatUpdate() {
 		return update;
 	}
 }
-
 PlayerUpdate* Player::generatePlayerUpdate() {
 	if (!this->hasChanged)
 		return NULL;
@@ -581,10 +585,12 @@ bool Player::hasGolem() {
 }
 
 void Player::createGolem() {
-	Golem golem;
-	int cost = golem.cost();
+	int cost=GOLEM_COST;
 	if (this->magic >= cost)
+	{
+		this->magic-=cost;
 		this->golem = true;
+	}
 }
 
 Player::~Player() {
