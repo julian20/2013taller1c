@@ -45,6 +45,7 @@ public:
 	bool crystalBall;
 	bool shieldSpell;
 	bool map, mapUsed;
+	bool freeze;
 };
 
 class Player: public MobileEntity {
@@ -84,6 +85,7 @@ public:
 	void addCrystalBallSpell();
 	void addShieldSpell();
 	void addMap();
+	void addFreeze();
 
 	void block();
 	void setBlock(bool blocking);

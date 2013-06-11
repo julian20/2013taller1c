@@ -26,7 +26,9 @@ FrostWandItem::FrostWandItem(Item* entity) : Item(entity) {
 }
 
 void FrostWandItem::applyEffects(Player& entity) {
-	// TODO: habilitar spell frost wand.
+	Player* player = (Player*)&entity;
+
+	player->addFreeze();
 }
 
 void FrostWandItem::collideTo(Player& entity) {

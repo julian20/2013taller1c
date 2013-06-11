@@ -83,6 +83,7 @@ void Player::initializeSpellsInventory() {
 	inventory.earthquake = false;
 	inventory.crystalBall = false;
 	inventory.shieldSpell = false;
+	inventory.freeze = false;
 	inventory.map = inventory.mapUsed = false;
 }
 
@@ -117,6 +118,10 @@ void Player::addShieldSpell() {
 
 void Player::addMap() {
 	inventory.map = true;
+}
+
+void Player::addFreeze() {
+	inventory.freeze = true;
 }
 
 void Player::setUsingCrystalBall(bool usingCrystalBall) {
@@ -157,7 +162,10 @@ bool Player::getMakingEarthquake() {
 }
 
 void Player::frozeEnemies() {
-	needFrozeEnemies = true;
+	if (inventory.freeze) {
+		inventory.freeze = false;
+		needFrozeEnemies = true;
+	}
 }
 
 void Player::setCastingSpell(bool castingSpell) {
