@@ -6,15 +6,23 @@
  */
 
 #include <model/entities/Golem/Golem.h>
-#define GOLEM_COST 20
+#define GOLEM_COST 50
 Golem::Golem() {
 	this->life = 200 ;
 	this->magic = 0;
 	this->name = "Golem";
 }
-int Golem::cost()
-{
+
+int Golem::cost(){
 	return GOLEM_COST;
+}
+
+void Golem::setOwner(Player* owner){
+	this->owner = owner;
+}
+
+Player* Golem::getOwner(){
+	return owner;
 }
 
 Golem::~Golem() {

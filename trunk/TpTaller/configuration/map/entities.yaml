@@ -78,7 +78,7 @@
     imageWidth: 128
     imageHeight: 128
     numberOfClips: 0
-    anchorPixel: [64, 50]
+    anchorPixel: [32, 25]
     fps: 8
     delay: 0 
     animationRepeats: 7
