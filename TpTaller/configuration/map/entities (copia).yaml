@@ -48,6 +48,19 @@
     baseRows: 1
     baseCols: 1
     delay: 0.5
+  - name: flag
+    walkingImageSrc: resources/flag.png
+    idleImageSrc: resources/flag.png
+    runningImageSrc: resources/flag.png
+    attackImageSrc: resources/flag.png
+    idleBlockingImageSrc: resources/flag.png
+    imageWidth: 38
+    imageHeight: 137
+    numberOfClips: 4
+    anchorPixel: [45, 125]
+    baseRows: 1
+    baseCols: 1
+    delay: 0.5	
   - name: zombie
     walkingImageSrc: resources/zombie/zombieWalking.png
     idleImageSrc: resources/zombie/zombieStanding.png
@@ -232,14 +245,6 @@
     anchorPixel: [50, 70]
     baseRows: 1
     baseCols: 1
-  - name: flag
-    imageSrc: resources/flag2.png
-    imageWidth: 38
-    imageHeight: 137
-    numberOfClips: 7
-    anchorPixel: [10, 100]
-    baseRows: 1
-    baseCols: 1
   - name: barracks
     imageSrc: resources/buildings/barracks.png
     imageWidth: 320 
@@ -262,8 +267,6 @@
     imageHeight: 249
     numberOfClips: 0
     anchorPixel: [120, 180]
-    baseRows: 4
-    baseCols: 3
   - name: chapel
     imageSrc: resources/buildings/chapel.png
     imageWidth: 220
@@ -429,8 +432,6 @@
 - entityLocations:
   - name: chapel
     position: [23, 20, 0]
-  - name: flag
-    position: [30, 30, 0]
   - name: portbuilding
     position: [34, 34, 0]
   - name: pottery
@@ -1065,6 +1066,29 @@
     position: [49, 48, 0]
   - name: Water
     position: [49, 49, 0]
+	#Laberinto del fauno
+  - name: Water
+    position: [18, 10, 0]
+  - name: Water
+    position: [19, 10, 0]
+  - name: Water
+    position: [20, 10, 0]
+  - name: Water
+    position: [21, 10, 0]
+  - name: Water
+    position: [22, 10, 0]
+  - name: Water
+    position: [22, 11, 0]
+  - name: Water
+    position: [22, 12, 0]
+  - name: Water
+    position: [21, 12, 0]
+  - name: Water
+    position: [20, 12, 0]
+  - name: Water
+    position: [19, 12, 0]
+  - name: Water
+    position: [18, 12, 0]
 - tileLocations:
   - position: [0, 7, 0]
     texture: shallowWater

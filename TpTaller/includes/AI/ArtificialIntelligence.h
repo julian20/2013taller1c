@@ -24,6 +24,7 @@ public:
 	bool isAnyEnemyClose(MapData* mapData);
 	void followEnemy(Entity& entity);
 	Entity& getNearestEnemy();
+	MobileEntity* getEntity();
 private:
 	MobileEntity* entity;
 	list<MobileEntity*> entitiesNear;
