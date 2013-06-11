@@ -51,8 +51,8 @@ public:
 	void setMobileEntitiesView(std::vector<MobileEntityView*> list);
 	std::vector<MobileEntityView*> getMobileEntitiesView();
 	vector<MobileEntity*> getMobileEntityList();
-	void setFlag(Flag* flag);
-	Flag* getFlag();
+	void setFlag(Entity* flag);
+	Entity* getFlag();
 private:
 	std::vector<MobileEntityView*> allViewEntities;
 	map<int,MobileEntity*> mobileEntityMap;
@@ -67,7 +67,7 @@ private:
 	EntityViewMap* entityViewMap;
 	ItemViewHolder* itemViewHolder;
 	MobileEntityViewHolder* mobileEntityViewHolder;
-	Flag* flag;
+	Entity* flag;
 };
 
 #endif /* PERSISTENTCONFIGURATION_H_ */
