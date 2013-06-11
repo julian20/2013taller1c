@@ -15,7 +15,7 @@
 using namespace std;
 
 #include <model/entities/player/Player.h>
-#include <model/entities/Flag.h>
+#include <model/entities/Entity.h>
 
 class MissionManager {
 public:
@@ -23,10 +23,10 @@ public:
 	virtual ~MissionManager();
 
 	// Methods
-	bool hasEndedFlagCapture(list<Player*> players, Flag* flag);
+	bool hasEndedFlagCapture(list<Player*> players, Entity* flag);
 	bool hasEndedTeamFight(list<Player*> players);
 	bool hasEndedSuddenDeath(list<Player*> players);
-	bool hasEndedGame(list<Player*> players, Flag* flag);
+	bool hasEndedGame(list<Player*> players, Entity* flag);
 
 	// Getters and Setters
 	int getTypeOfMission();
