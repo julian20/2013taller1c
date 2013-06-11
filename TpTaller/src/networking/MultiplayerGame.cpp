@@ -45,6 +45,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	}
 
 	createFlag(view->getMapData());
+	flag = configuration->getFlag();
 
 }
 void MultiplayerGame::createFlag(MapData* mapData)
@@ -66,7 +67,7 @@ void MultiplayerGame::createFlag(MapData* mapData)
 
 }
 
-Flag* MultiplayerGame::getFlag() {
+Entity* MultiplayerGame::getFlag() {
 	return flag;
 }
 void MultiplayerGame::createGolem(Player* player)
