@@ -68,10 +68,9 @@ public:
 	void deliverMessage(ChatMessage* msj);
 	void updateEntities();
 	void updateMobs();
-	void createFlag(MapData* mapData,std::vector<EntityView*>);
+	void createFlag(MapData* mapData);
 	void createGolem(Player* player);
 	virtual ~MultiplayerGame();
-	EntityView* getFlagView();
 
 private:
 	void updatePlayersCoordinates();
@@ -96,7 +95,6 @@ private:
 	vector<int> deletedEntities;
 	int lastAddedView;
 	Flag* flag;
-	EntityView* mb;
 
 	int fps;
 	int tempFps;

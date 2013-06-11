@@ -16,10 +16,7 @@ ArtificialIntelligence::ArtificialIntelligence() {
 void ArtificialIntelligence::setMobileEntity(MobileEntity* entity) {
 	this->entity = entity;
 }
-MobileEntity* ArtificialIntelligence::getEntity()
-{
-	return this->entity;
-}
+
 void ArtificialIntelligence::update(MapData* mapData) {
 
 	if (!entity->isDead() && !entity->isFrozen()) {
@@ -36,7 +33,7 @@ void ArtificialIntelligence::update(MapData* mapData) {
 			Entity& enemy = this->getNearestEnemy();
 			entity->attackTo(&enemy);
 		} else {
-			if (entity->getClassName() == "MobileEntity" || entity->getClassName() == "Golem" ) {
+			if (entity->getClassName() == "MobileEntity") {
 				entity->cancelAttack();
 				this->watch(mapData);
 			}
@@ -102,7 +99,7 @@ void ArtificialIntelligence::watch(MapData* mapData) {
 				&& tile->getCoordinates().getRow() < mapData->getNRows()) {
 			if (tile->getCoordinates().getCol() > 0
 					&& tile->getCoordinates().getCol() < mapData->getNCols()) {
-				mapData->moveMobileEntity((MobileEntity*) this->entity, tile);
+				mapData->moveMobileEntity((Mob*) this->entity, tile);
 			}
 		}
 		if (tile)

@@ -92,17 +92,9 @@ void PersistentConfiguration::setMobileEntityViewList(std::vector<MobileEntityVi
 }
 void PersistentConfiguration::setMobileEntitiesView(std::vector<MobileEntityView*> list)
 {
-	this->allMobileViewEntities = list;
-}
-std::vector<MobileEntityView*> PersistentConfiguration::getMobileEntitiesView()
-{
-	return this->allMobileViewEntities;
-}
-void PersistentConfiguration::setEntitiesView(std::vector<EntityView*> list)
-{
 	this->allViewEntities = list;
 }
-std::vector<EntityView*> PersistentConfiguration::getEntitiesView()
+std::vector<MobileEntityView*> PersistentConfiguration::getMobileEntitiesView()
 {
 	return this->allViewEntities;
 }

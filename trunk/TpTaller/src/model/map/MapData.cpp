@@ -93,14 +93,7 @@ vector<Entity* > MapData::getNewEntities() {
 Player* MapData::getMainPlayer() {
 	return mainPlayer;
 }
-void MapData::setFlag(Entity* flag)
-{
-	this->flag = flag;
-}
-Entity* MapData::getFlag()
-{
-	return this->flag;
-}
+
 void MapData::addEntity(int row, int col, Entity* object) {
 	addedEntities.push_back(object);
 	TileData* currentData = getTileData(row, col);

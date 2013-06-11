@@ -50,14 +50,9 @@ public:
 	void setMobileEntityViewHolder(MobileEntityViewHolder* mobileEntityViewHolder);
 	void setMobileEntitiesView(std::vector<MobileEntityView*> list);
 	std::vector<MobileEntityView*> getMobileEntitiesView();
-
-	void setEntitiesView(std::vector<EntityView*> list);
-	std::vector<EntityView*> getEntitiesView();
-
 	vector<MobileEntity*> getMobileEntityList();
 private:
-	std::vector<MobileEntityView*> allMobileViewEntities;
-	std::vector<EntityView*> allViewEntities;
+	std::vector<MobileEntityView*> allViewEntities;
 	map<int,MobileEntity*> mobileEntityMap;
 	std::vector<Player*> entityList;
 	std::vector<MobileEntity*> mobs;

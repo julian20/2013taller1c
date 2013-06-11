@@ -38,8 +38,7 @@ public:
 	void addEntity(int row, int col, Entity* object);
 	void addItem(int row, int col, Item* object);
 	//void addFlag(int row, int col, Flag* flag);
-	void setFlag(Entity* flag);
-	Entity* getFlag();
+
 	void setTileType(std::string tileType, int row, int col);
 	std::string getTileType(int row, int col);
 	int getNRows();
@@ -87,7 +86,7 @@ private:
 	vector<MobileEntity* > newMobileEntities;
 	vector<Entity* > newEntities;
 	list<Entity*> addedEntities;
-	Entity* flag;
+
 	int nrows;
 	int ncols;
 };
