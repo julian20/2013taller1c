@@ -66,16 +66,15 @@ EntityViewMap* PersistentConfiguration::getEntityViewMap() {
 void PersistentConfiguration::setEntityViewMap(EntityViewMap* entityViewMap) {
 	this->entityViewMap = entityViewMap;
 }
-void PersistentConfiguration::setMobileEntities(std::vector<MobileEntity*> mobiles)
-{
-	this->mobs= mobiles;
+void PersistentConfiguration::setMobileEntities(
+		std::vector<MobileEntity*> mobiles) {
+	this->mobs = mobiles;
 	for (unsigned int i = 0; i < this->mobs.size(); i++) {
-			mobileEntityMap[i]= mobs[i];
-		}
+		mobileEntityMap[i] = mobs[i];
+	}
 
 }
-map<int,MobileEntity*> PersistentConfiguration::getMobileEntities()
-{
+map<int, MobileEntity*> PersistentConfiguration::getMobileEntities() {
 	return this->mobileEntityMap;
 }
 
@@ -87,15 +86,15 @@ std::vector<PlayerView*> PersistentConfiguration::getViewList() {
 	return viewList;
 }
 
-void PersistentConfiguration::setMobileEntityViewList(std::vector<MobileEntityView*> viewList) {
+void PersistentConfiguration::setMobileEntityViewList(
+		std::vector<MobileEntityView*> viewList) {
 	this->mobileEntityViewList = viewList;
 }
-void PersistentConfiguration::setMobileEntitiesView(std::vector<MobileEntityView*> list)
-{
+void PersistentConfiguration::setMobileEntitiesView(
+		std::vector<MobileEntityView*> list) {
 	this->allViewEntities = list;
 }
-std::vector<MobileEntityView*> PersistentConfiguration::getMobileEntitiesView()
-{
+std::vector<MobileEntityView*> PersistentConfiguration::getMobileEntitiesView() {
 	return this->allViewEntities;
 }
 std::vector<MobileEntityView*> PersistentConfiguration::getMobileEntityViewList() {
@@ -114,7 +113,8 @@ ItemViewHolder* PersistentConfiguration::getItemViewHolder() {
 	return itemViewHolder;
 }
 
-void PersistentConfiguration::setItemViewHolder(ItemViewHolder* itemViewHolder) {
+void PersistentConfiguration::setItemViewHolder(
+		ItemViewHolder* itemViewHolder) {
 	this->itemViewHolder = itemViewHolder;
 }
 
@@ -122,15 +122,19 @@ MobileEntityViewHolder* PersistentConfiguration::getMobileEntityViewHolder() {
 	return mobileEntityViewHolder;
 }
 
-void PersistentConfiguration::setMobileEntityViewHolder(MobileEntityViewHolder* mobileEntityViewHolder) {
+void PersistentConfiguration::setMobileEntityViewHolder(
+		MobileEntityViewHolder* mobileEntityViewHolder) {
 	this->mobileEntityViewHolder = mobileEntityViewHolder;
 }
 
-vector<MobileEntity*> PersistentConfiguration::getMobileEntityList(){
+vector<MobileEntity*> PersistentConfiguration::getMobileEntityList() {
 	return mobs;
 }
 
 void PersistentConfiguration::setFlag(Entity* flag) {
+	if (flag != NULL) {
+		flag->setLife(20);
+	}
 	this->flag = flag;
 }
 
