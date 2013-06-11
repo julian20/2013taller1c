@@ -1344,6 +1344,9 @@ void operator >>(const YAML::Node& yamlNode,
 	for (unsigned i = 0; i < entityLocations.size(); i++) {
 		Entity* entity = new Entity();
 		entityLocations[i] >> entity;
+		if (entity->getName() == "flag") {
+			entity = new Flag(entity);
+		}
 		if (entity != NULL)
 			entityVector.push_back(entity);
 	}
