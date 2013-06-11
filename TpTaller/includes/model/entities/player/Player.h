@@ -46,6 +46,7 @@ public:
 	bool shieldSpell;
 	bool map, mapUsed;
 	bool freeze;
+	bool golemSpellItem;
 };
 
 class Player: public MobileEntity {
@@ -86,6 +87,7 @@ public:
 	void addShieldSpell();
 	void addMap();
 	void addFreeze();
+	void enableGolem();
 
 	void block();
 	void setBlock(bool blocking);

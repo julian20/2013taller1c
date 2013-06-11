@@ -7,7 +7,6 @@
 
 #include <model/entities/player/Player.h>
 #include <model/map/MapData.h>
-#define GOLEM_COST 20;
 #include <stdio.h>
 using namespace std;
 
@@ -35,7 +34,7 @@ Player::Player() :
 	hasChanged = true;
 	chat = NULL;
 	needCastSpell = false;
-	golem=false;
+	golem = false;
 	castingSpell = false;
 	makingEarthquake = false;
 	needFrozeEnemies = false;
@@ -85,6 +84,7 @@ void Player::initializeSpellsInventory() {
 	inventory.shieldSpell = false;
 	inventory.freeze = false;
 	inventory.map = inventory.mapUsed = false;
+	inventory.golemSpellItem = false;
 }
 
 void Player::setLife(int life) {
@@ -122,6 +122,10 @@ void Player::addMap() {
 
 void Player::addFreeze() {
 	inventory.freeze = true;
+}
+
+void Player::enableGolem() {
+	inventory.golemSpellItem = true;
 }
 
 void Player::setUsingCrystalBall(bool usingCrystalBall) {
@@ -296,14 +300,14 @@ void Player::extraUpdate(MapData* mapData) {
 		makeEarthquake(mapData);
 	if (needFrozeEnemies)
 		frozeEnemiesNow(mapData);
-	if (inventory.map && mainPlayer){
+	if (inventory.map && mainPlayer) {
 		if (inventory.mapUsed == false) {
 			inventory.mapUsed = true;
 			mapData->showAllMap();
 		}
 	}
 	usingMagic();
-	if (!attackQueue.empty()){
+	if (!attackQueue.empty()) {
 		Entity* entity = attackQueue.front();
 		attackQueue.pop();
 		attack(*entity);
@@ -331,8 +335,7 @@ Weapon* Player::getCurrentWeapon() {
 	weaponToUse->setTeam(team);
 	return weaponToUse;
 }
-void Player::changeWeapon()
-{
+void Player::changeWeapon() {
 	Weapon* actualWeapon = weapons->front();
 	weapons->pop_front();
 	weapons->push_back(actualWeapon);
@@ -373,6 +376,7 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->makingEarthquake = update->getMakingEarthquake();
 	this->usingInvulnerability = update->getIsInvulnerable();
 	this->frozen = update->getFrozen();
+	this->magic = update->getMagic();
 	this->inventory.map = update->getMapItem();
 	if (currentTile)
 		delete currentTile;
@@ -588,11 +592,15 @@ bool Player::hasGolem() {
 }
 
 void Player::createGolem() {
-	int cost=GOLEM_COST;
-	if (this->magic >= cost)
-	{
-		this->magic-=cost;
-		this->golem = true;
+	int cost = GOLEM_COST;
+
+	if (inventory.golemSpellItem) {
+
+		if (this->magic >= cost) {
+			inventory.golemSpellItem = false;
+			this->magic -= cost;
+			this->golem = true;
+		}
 	}
 }
 

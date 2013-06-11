@@ -209,6 +209,8 @@ void MapData::addItem(int row, int col, Item* object) {
 					copy = new SpellShieldItem(object);
 				else if (object->getClassName() == "FrostWandItem")
 					copy = new FrostWandItem(object);
+				else if (object->getClassName() == "GolemSpellItem")
+					copy = new GolemSpellItem(object);
 				else
 					copy = new Item(object);
 				currentData->addEntity(copy);

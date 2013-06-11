@@ -18,6 +18,7 @@
 #include <model/entities/Items/CrystalBallItem.h>
 #include <model/entities/Items/SpellShieldItem.h>
 #include <model/entities/Items/FrostWandItem.h>
+#include <model/entities/Items/GolemSpellItem.h>
 #include <model/entities/MobileEntity.h>
 #include <model/entities/player/Player.h>
 #include <model/Logs/Logs.h>
