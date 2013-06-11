@@ -61,6 +61,19 @@
     baseRows: 1
     baseCols: 1
     delay: 0.5
+  - name: flago
+    walkingImageSrc: resources/buildings/bandera.png
+    idleImageSrc: resources/buildings/bandera.png
+    runningImageSrc: resources/buildings/bandera.png
+    attackImageSrc: resources/buildings/bandera.png
+    idleBlockingImageSrc: resources/buildings/bandera.png
+    imageWidth: 64
+    imageHeight: 64
+    numberOfClips: 0
+    anchorPixel: [32, 15]
+    baseRows: 1
+    baseCols: 1
+    delay: 0.5
 - entityViews:
   - name: crystalballitem
     imageSrc: resources/items/CrystalBallItemAnimated.png
@@ -404,6 +417,11 @@
     speed:
       magnitude: 1
       direction: [1, 2]
+  - name: flago
+    position: [37, 28, 0]
+    speed:
+      magnitude: 0
+      direction: [0, 0]
 - itemLocations:
   - name: lifeheart
     position: [15, 15, 0]
