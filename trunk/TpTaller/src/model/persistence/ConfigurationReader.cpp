@@ -2018,9 +2018,15 @@ void setDefaultPlayerView() {
 
 }
 
+
+
+double uniformDistribution(double a, double b) {
+	return rand() / (RAND_MAX + 1.0) * (b - a) + a;
+}
+
 Item* createRandomItem() {
 
-	int number = rand() % 12;
+	int number = (int)uniformDistribution(0,13);
 
 	Item* item;
 
