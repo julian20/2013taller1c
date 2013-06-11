@@ -19,6 +19,9 @@ void ArtificialIntelligence::setMobileEntity(MobileEntity* entity) {
 
 void ArtificialIntelligence::update(MapData* mapData) {
 
+	if (entity->isDead())
+		entity->setRemoveFromGame(true);
+
 	if (!entity->isDead() && !entity->isFrozen()) {
 		if (entity->getAttackToEntity() != NULL) {
 			Tile* currentTile = entity->getTile();

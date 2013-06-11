@@ -78,6 +78,33 @@ list<Entity*> MapData::getDeadEntities() {
 	return retval;
 }
 
+list<MobileEntity*> MapData::getDeadMobiles() {
+	list<MobileEntity*> retval;
+
+	list<MobileEntity*>::const_iterator iter;
+	for (iter = addedMobiles.begin(); iter != addedMobiles.end(); ++iter) {
+		MobileEntity* current = *iter;
+
+		if (current->getRemoveFromGame()) {
+			retval.push_back(current);
+
+			TileData* tileData = getTileData(current->getCoordinates());
+			tileData->removeMobileEntity(current);
+
+			current->onRemove(this);
+		}
+	}
+
+	// Elimino las mobiles que se sacaron de la lista de entities
+	for (iter = retval.begin(); iter != retval.end(); ++iter) {
+		MobileEntity* current = *iter;
+
+		addedMobiles.remove(current);
+	}
+
+	return retval;
+}
+
 void MapData::cleanNewMobileEntities() {
 	newMobileEntities.erase(newMobileEntities.begin(), newMobileEntities.end());
 }
@@ -252,7 +279,8 @@ void MapData::addPlayer(int row, int col, Player* player) {
 }
 
 void MapData::addMobileEntity(int row, int col, MobileEntity* mobileEntity) {
-	addedEntities.push_back(mobileEntity);
+	addedMobiles.push_back(mobileEntity);
+	newMobileEntities.push_back(mobileEntity);
 	TileData* tileData = getTileData(row, col);
 
 	Tile* entityTile = new Tile(new Coordinates(row, col));
@@ -260,8 +288,6 @@ void MapData::addMobileEntity(int row, int col, MobileEntity* mobileEntity) {
 	tileData->addMobileEntity(mobileEntity);
 
 	mobileEntity->setTile(entityTile);
-
-	newMobileEntities.push_back(mobileEntity);
 }
 
 void MapData::updateMobilePos(int prevRow, int prevCol, int row, int col,

@@ -337,6 +337,7 @@ void Player::changeWeapon()
 	weapons->pop_front();
 	weapons->push_back(actualWeapon);
 }
+
 void Player::attack(Entity& entity) {
 	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
 		attacking = true;

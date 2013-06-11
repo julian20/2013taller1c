@@ -15,6 +15,7 @@ public:
 	Golem();
 	int cost();
 	void setOwner(Player* owner);
+	void collideTo(MobileEntity& entity);
 	Player* getOwner();
 	virtual ~Golem();
 private:
