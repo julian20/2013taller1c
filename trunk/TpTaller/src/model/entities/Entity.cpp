@@ -197,12 +197,11 @@ void Entity::reduceMagic(int quantity) {
 }
 
 bool Entity::isDead() {
-	/*if (this->life <= 0) {
+	if (this->life <= 0) {
 		return true;
 	} else {
 		return false;
-	}*/
-	return false;
+	}
 }
 
 int Entity::getTeam() {

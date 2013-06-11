@@ -328,6 +328,7 @@ void Player::reverseCollide(Entity& entity) {
 
 Weapon* Player::getCurrentWeapon() {
 	Weapon* weaponToUse = weapons->front();
+	weaponToUse->setTeam(team);
 	return weaponToUse;
 }
 
