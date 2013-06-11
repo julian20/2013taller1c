@@ -90,6 +90,7 @@ protected:
 private:
 
 	int reconectPlayer(int clientSocket, string playerName, PlayerInfo* info);
+	void closeServer(string playerName, pthread_t thread);
 
 
 	map<string,PlayerInfo*> gamePlayers;
@@ -99,11 +100,11 @@ private:
 	map<string,map<int,MobileEntity*> > sendedMobileEntities;
 	map<string,map<int,int> > deletedMobileEntities;
 	map<string,map<int,Entity*> > sendedEntities;
-		map<string,map<int,int> > deletedEntities;
+	map<string,map<int,int> > deletedEntities;
 	map<string,vector<PlayerUpdate*> > updates;
 	vector<ChatMessage*> messages;
 
-	map<int,pthread_t> connections;
+	map<string,pthread_t> connections;
 
 	map<string,Timer> timers;
 
