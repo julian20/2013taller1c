@@ -43,7 +43,7 @@ public:
 	vector<MobileEntityUpdate*> getMobileEntitiesUpdates();
 	vector<ChatUpdate*> getChatUpdates();
 	list<Player*> getPlayers();
-	Entity* getFlag();
+	Flag* getFlag();
 
 	// METODOS PARA AGREGAR Y QUITAR MOBILEENTITIES DEL SERVER.
 	// TODO LO QUE SE AGREGUE O SE QUITE CON ESTOS METODOS SERA ENVIADO AL SERVER.
@@ -71,6 +71,7 @@ public:
 	void createFlag(MapData* mapData,std::vector<EntityView*>);
 	void createGolem(Player* player);
 	virtual ~MultiplayerGame();
+	EntityView* getFlagView();
 
 private:
 	void updatePlayersCoordinates();
@@ -94,7 +95,8 @@ private:
 	map<int,Entity*> entities;
 	vector<int> deletedEntities;
 	int lastAddedView;
-	Entity* flag;
+	Flag* flag;
+	EntityView* mb;
 
 	int fps;
 	int tempFps;
