@@ -23,10 +23,10 @@ public:
 	virtual ~MissionManager();
 
 	// Methods
-	bool hasEndedFlagCapture(list<Player*> players, Entity* flag);
+	bool hasEndedFlagCapture(list<Player*> players, MobileEntity* flag);
 	bool hasEndedTeamFight(list<Player*> players);
 	bool hasEndedSuddenDeath(list<Player*> players);
-	bool hasEndedGame(list<Player*> players, Entity* flag);
+	bool hasEndedGame(list<Player*> players, MobileEntity* flag);
 
 	// Getters and Setters
 	int getTypeOfMission();

@@ -47,27 +47,11 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 		addEntity(itemVector[i], itemVector[i]->getCoordinates());
 	}
 
-	createFlag(view->getMapData());
 	flag = configuration->getFlag();
 
 }
-void MultiplayerGame::createFlag(MapData* mapData) {
-	int cols = mapData->getNCols();
-	int rows = mapData->getNRows();
-	flag = new Flag();
 
-	int rCol = rand() % cols;
-	int rRow = rand() % rows;
-	while (mapData->getTileData(rRow, rCol)->getNumberOfEntitiesOnTile() > 0) {
-		rCol = rand() % cols;
-		rRow = rand() % rows;
-	}
-	mapData->addEntity(rRow, rCol, flag);
-	flag->setLife(1000);
-
-}
-
-Entity* MultiplayerGame::getFlag() {
+MobileEntity* MultiplayerGame::getFlag() {
 	return flag;
 }
 void MultiplayerGame::createGolem(Player* player) {
@@ -167,7 +151,6 @@ void MultiplayerGame::updateMobs() {
 
 	map<int, ArtificialIntelligence*>::iterator iaIter;
 	for (iaIter = ias.begin(); iaIter != ias.end(); ++iaIter) {
-		cout << iaIter->second->getMobileEntity()->getName() << endl;
 		(iaIter->second)->update(mapa);
 	}
 

@@ -31,6 +31,11 @@ void Golem::collideTo(MobileEntity& entity) {
 	entityPtr->applyDamage(10);
 }
 
+void Golem::attack(Entity& entity) {
+	Entity* entityPtr = (Entity*) &entity;
+	entityPtr->setLife(entityPtr->getLife() - 10);
+}
+
 Golem::~Golem() {
 }
 
