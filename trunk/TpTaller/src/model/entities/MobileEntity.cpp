@@ -445,8 +445,6 @@ void MobileEntity::attack(Entity& entity) {
 		attacking = true;
 		attackTimer.start();
 	}
-
-	cout << "mobile attack" << endl;
 }
 
 MobileEntity& MobileEntity::operator=(const MobileEntity &other) {

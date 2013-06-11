@@ -76,9 +76,10 @@ void MultiplayerGame::createGolem(Player* player)
 	golem->setCoordinates(coor.getRow()+1,coor.getCol());
 	golem->setTeam(player->getTeam());
 	golem->setName("dragon");
+	golem->setSpeed(player->getSpeed());
 	this->createGolemIa(golem);
 	golemsMap[player->getName()] = golem ;
-	//addMobileEntity(golem,coor);
+	addMobileEntity(golem,coor);
 
 }
 void MultiplayerGame::createGolemIa(MobileEntity* golem)
@@ -170,10 +171,6 @@ void MultiplayerGame::updatePlayersCoordinates(){
 		view->getMapData()->updateMobilePos(initCoords.getRow(), initCoords.getCol(),
 											currentCoords.getRow(), currentCoords.getCol(),
 											player);
-		if (player->hasGolem() && golemsMap.find(player->getName()) == golemsMap.end() )
-		{
-			this->createGolem(player);
-		}
 	}
 }
 
@@ -202,6 +199,9 @@ void MultiplayerGame::playersUpdate(){
 	for ( list<Player*>::iterator player = players.begin() ; player != players.end() ; ++player ){
 		(*player)->update(view->getMapData());
 		(*player)->updateDamageTaken();
+		if ((*player)->hasGolem() && golemsMap.find((*player)->getName()) == golemsMap.end() ) {
+			createGolem(*player);
+		}
 	}
 
 	updatePlayersCoordinates();
