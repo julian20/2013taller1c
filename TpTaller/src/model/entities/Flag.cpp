@@ -56,8 +56,9 @@ void Flag::collideTo(Player& player) {
 	}
 }
 
-void Flag::receiveDamage(MobileEntity& player) {
-	life -= player.getDamageBuffer();
+void Flag::receiveDamage(Player& player) {
+	player.attack(*this);
+	cout << this->life << endl;
 }
 
 Flag::~Flag() {
