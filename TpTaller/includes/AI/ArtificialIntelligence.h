@@ -20,12 +20,13 @@ public:
 	void setMobileEntity(MobileEntity* entity);
 	virtual ~ArtificialIntelligence();
 	void watch(MapData* mapData);
-	void update(MapData* mapData);
+	virtual void update(MapData* mapData);
 	bool isAnyEnemyClose(MapData* mapData);
 	void followEnemy(Entity& entity);
 	Entity& getNearestEnemy();
-private:
+protected:
 	MobileEntity* entity;
+private:
 	list<MobileEntity*> entitiesNear;
 	Timer attackTimer;
 };

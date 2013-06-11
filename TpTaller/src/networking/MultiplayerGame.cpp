@@ -7,6 +7,7 @@
 
 #include <MultiplayerGame.h>
 #include <model/map/MapData.h>
+#include <AI/GolemAI.h>
 #include <pthread.h>
 
 
@@ -78,14 +79,15 @@ void MultiplayerGame::createGolem(Player* player)
 	golem->setTeam(player->getTeam());
 	golem->setName("dragon");
 	golem->setSpeed(player->getSpeed());
+	golem->setOwner(player);
 	this->createGolemIa(golem);
 	golemsMap[player->getName()] = golem ;
 	addMobileEntity(golem,coor);
 
 }
-void MultiplayerGame::createGolemIa(MobileEntity* golem)
+void MultiplayerGame::createGolemIa(Golem* golem)
 {
-	ArtificialIntelligence* ia = new ArtificialIntelligence();
+	ArtificialIntelligence* ia = new GolemAI();
 	ia->setMobileEntity(golem);
 	int cant = ias.size();
 	this->ias[cant++] = ia ;

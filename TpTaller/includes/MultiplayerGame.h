@@ -58,7 +58,7 @@ public:
 	void removeEntity(int id);
 
 
-	void createGolemIa(MobileEntity* golem);
+	void createGolemIa(Golem* golem);
 	map<int,MobileEntityInfo*> getMobileEntityInfo();
 	vector<int> getDeletedMobileEntities();
 
