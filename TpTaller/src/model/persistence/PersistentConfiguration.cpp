@@ -130,10 +130,10 @@ vector<MobileEntity*> PersistentConfiguration::getMobileEntityList(){
 	return mobs;
 }
 
-void PersistentConfiguration::setFlag(Flag* flag) {
+void PersistentConfiguration::setFlag(Entity* flag) {
 	this->flag = flag;
 }
 
-Flag* PersistentConfiguration::getFlag() {
+Entity* PersistentConfiguration::getFlag() {
 	return this->flag;
 }

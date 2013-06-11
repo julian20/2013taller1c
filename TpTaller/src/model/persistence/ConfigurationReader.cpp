@@ -2245,16 +2245,33 @@ void loadItemViewHolder(ItemViewHolder* viewHolder,
 
 }
 
-void loadMobileEntityViewHolder(MobileEntityViewHolder* viewHolder, vector<MobileEntityView*> viewVector) {
+void loadMobileEntityViewHolder(MobileEntityViewHolder* viewHolder,
+		vector<MobileEntityView*> viewVector) {
 
 	string name;
 	MobileEntityView* actualView;
 
-	for (unsigned i = 0 ; i < viewVector.size() ; i++) {
+	for (unsigned i = 0; i < viewVector.size(); i++) {
 		actualView = viewVector[i];
 		name = actualView->getName();
-		viewHolder->loadMobileEntityView(name,actualView);
+		viewHolder->loadMobileEntityView(name, actualView);
 	}
+
+}
+
+Entity* lookForFlag(vector<Entity*> entityList) {
+
+	string entityName;
+	string flagName = "flag";
+
+	for (unsigned i = 0; i < entityList.size(); i++) {
+		entityName = entityList[i]->getName();
+		if (entityName == flagName) {
+			return entityList[i];
+		}
+	}
+
+	return NULL;
 
 }
 
@@ -2348,8 +2365,9 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	ItemViewHolder* itemViewHolder = new ItemViewHolder();
 	loadItemViewHolder(itemViewHolder, cleanItemViews);
 
-	MobileEntityViewHolder* mobileEntityViewHolder = new MobileEntityViewHolder();
-	loadMobileEntityViewHolder(mobileEntityViewHolder,mobileEntityViewVector);
+	MobileEntityViewHolder* mobileEntityViewHolder =
+			new MobileEntityViewHolder();
+	loadMobileEntityViewHolder(mobileEntityViewHolder, mobileEntityViewVector);
 
 	assignEntities(mapData, entityVector);
 	assignItems(mapData, parsedItems);
@@ -2369,6 +2387,8 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 //	loadEntityViewMap(entityViewMap, cleanItemViews);
 	//loadEntityViewMap(entityViewMap, cleanMobileEntityViews);
 
+	Entity* flag = lookForFlag(entityVector);
+
 // Packing parser results.
 	PersistentConfiguration configuration = PersistentConfiguration();
 	configuration.setEntityViewMap(entityViewMap);
@@ -2382,6 +2402,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	configuration.setItems(parsedItems);
 	configuration.setItemViewHolder(itemViewHolder);
 	configuration.setMobileEntityViewHolder(mobileEntityViewHolder);
+	configuration.setFlag(flag);
 
 	return configuration;
 }
