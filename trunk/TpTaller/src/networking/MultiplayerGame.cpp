@@ -10,8 +10,6 @@
 #include <AI/GolemAI.h>
 #include <pthread.h>
 
-
-
 using namespace std;
 
 pthread_mutex_t entities_mutex;
@@ -24,77 +22,76 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	this->fps = configuration->getAnimationConfiguration()->getFps();
 	this->fpsUpdatingTimer = 0;
 	this->tempFps = 0;
-	Tile::setTileWidth( gameConfig->getTileWidth() );
-	Tile::setTileHeight( gameConfig->getTileHeight() );
+	Tile::setTileWidth(gameConfig->getTileWidth());
+	Tile::setTileHeight(gameConfig->getTileHeight());
 
 	vector<Item*> itemVector = configuration->getItems();
-	vector<MobileEntity*> mobileEntityVector = configuration->getMobileEntityList();
+	vector<MobileEntity*> mobileEntityVector =
+			configuration->getMobileEntityList();
 
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
 	lastAddedView = 0;
 
-	for (unsigned int i = 0 ; i < mobileEntityVector.size() ; i++){
-		ArtificialIntelligence* ia= new ArtificialIntelligence();
-		ia->setMobileEntity(mobileEntityVector[i]);
-		ias[i] = ia;
-		addMobileEntity(mobileEntityVector[i],mobileEntityVector[i]->getCoordinates());
+	for (unsigned int i = 0; i < mobileEntityVector.size(); i++) {
+		if (mobileEntityVector[i]->getName() != "flag") {
+			ArtificialIntelligence* ia = new ArtificialIntelligence();
+			ia->setMobileEntity(mobileEntityVector[i]);
+			ias[i] = ia;
+			addMobileEntity(mobileEntityVector[i],
+					mobileEntityVector[i]->getCoordinates());
+		}
 	}
 
-	for (unsigned int i = 0 ; i < itemVector.size() ; i++){
-			addEntity(itemVector[i],itemVector[i]->getCoordinates());
+	for (unsigned int i = 0; i < itemVector.size(); i++) {
+		addEntity(itemVector[i], itemVector[i]->getCoordinates());
 	}
 
 	createFlag(view->getMapData());
 	flag = configuration->getFlag();
 
 }
-void MultiplayerGame::createFlag(MapData* mapData)
-{
+void MultiplayerGame::createFlag(MapData* mapData) {
 	int cols = mapData->getNCols();
 	int rows = mapData->getNRows();
 	flag = new Flag();
 
-	int rCol= rand() % cols;
-	int rRow= rand() % rows;
-	while (mapData->getTileData(rRow,rCol)->getNumberOfEntitiesOnTile()>0)
-	{
-		rCol= rand() % cols;
-		rRow= rand() % rows;
+	int rCol = rand() % cols;
+	int rRow = rand() % rows;
+	while (mapData->getTileData(rRow, rCol)->getNumberOfEntitiesOnTile() > 0) {
+		rCol = rand() % cols;
+		rRow = rand() % rows;
 	}
-	mapData->addEntity(rRow,rCol,flag);
+	mapData->addEntity(rRow, rCol, flag);
 	flag->setLife(1000);
-
 
 }
 
 Entity* MultiplayerGame::getFlag() {
 	return flag;
 }
-void MultiplayerGame::createGolem(Player* player)
-{
+void MultiplayerGame::createGolem(Player* player) {
 	Golem* golem = new Golem();
 	Coordinates coor = player->getCoordinates();
-	golem->setCoordinates(coor.getRow()+1,coor.getCol());
-	golem->setPos(Tile::computePosition(coor.getRow()+1,coor.getCol()));
+	golem->setCoordinates(coor.getRow() + 1, coor.getCol());
+	golem->setPos(Tile::computePosition(coor.getRow() + 1, coor.getCol()));
 	golem->setTeam(player->getTeam());
 	golem->setName("dragon");
 	golem->setSpeed(player->getSpeed());
 	golem->setOwner(player);
 	golem->setTile(new Tile(coor));
 	this->createGolemIa(golem);
-	golemsMap[player->getName()] = golem ;
-	addMobileEntity(golem,coor);
+	golemsMap[player->getName()] = golem;
+	addMobileEntity(golem, coor);
 
 }
-void MultiplayerGame::createGolemIa(Golem* golem)
-{
+void MultiplayerGame::createGolemIa(Golem* golem) {
 	ArtificialIntelligence* ia = new GolemAI();
 	ia->setMobileEntity(golem);
 	int cant = ias.size();
-	this->ias[cant++] = ia ;
+	this->ias[cant++] = ia;
 }
-MenuEvent MultiplayerGame::run(){
+MenuEvent MultiplayerGame::run() {
 	view->getMapData()->cleanNewEntities();
 
 	while (true) {
@@ -108,6 +105,7 @@ MenuEvent MultiplayerGame::run(){
 		addNewEntities();
 		addNewMobileEntities();
 		removeDeadEntities();
+		removeDeadMobiles();
 
 		applyFPS(ticks);
 
@@ -117,18 +115,23 @@ MenuEvent MultiplayerGame::run(){
 
 }
 
-void MultiplayerGame::addEventsToHandle(string playerName, vector<PlayerEvent*> events){
+void MultiplayerGame::addEventsToHandle(string playerName,
+		vector<PlayerEvent*> events) {
 
 	controllers[playerName]->handleEvents(events);
 }
 
-void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes){
+void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes) {
 
-	NetworkPlayerController* controller = new NetworkPlayerController(player, view->getMapData());
-	controllers.insert(pair<string, NetworkPlayerController*>(player->getName(), controller));
+	NetworkPlayerController* controller = new NetworkPlayerController(player,
+			view->getMapData());
+	controllers.insert(
+			pair<string, NetworkPlayerController*>(player->getName(),
+					controller));
 	players.push_back(player);
 
-	view->getMapData()->addPlayer(coordiantes->getRow(), coordiantes->getCol(), player);
+	view->getMapData()->addPlayer(coordiantes->getRow(), coordiantes->getCol(),
+			player);
 
 	Coordinates coords = player->getCoordinates();
 	mobilesCoords[player] = coords;
@@ -137,34 +140,37 @@ void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes){
 void MultiplayerGame::updateEntities() {
 	MapData* mapa = view->getMapData();
 
-	map<int,Entity*>::iterator iter;
-	for ( iter = entities.begin() ; iter != entities.end() ; ++iter ) {
+	map<int, Entity*>::iterator iter;
+	for (iter = entities.begin(); iter != entities.end(); ++iter) {
 		(iter->second)->updateDamageTaken();
 	}
 }
 
-void MultiplayerGame::updateMobs(){
+void MultiplayerGame::updateMobs() {
 	MapData* mapa = view->getMapData();
 
-	map<int,MobileEntity*>::iterator mobIter;
-	for (mobIter = mobileEntities.begin() ; mobIter != mobileEntities.end() ; ++mobIter ) {
+	map<int, MobileEntity*>::iterator mobIter;
+	for (mobIter = mobileEntities.begin(); mobIter != mobileEntities.end();
+			++mobIter) {
 		(mobIter->second)->update(mapa);
 		(mobIter->second)->updateDamageTaken();
 	}
 
-	map<int,ArtificialIntelligence*>::iterator iaIter;
-	for ( iaIter = ias.begin() ; iaIter != ias.end() ; ++iaIter ){
+	map<int, ArtificialIntelligence*>::iterator iaIter;
+	for (iaIter = ias.begin(); iaIter != ias.end(); ++iaIter) {
 		(iaIter->second)->update(mapa);
 	}
 
 }
 
-void MultiplayerGame::playersUpdate(){
+void MultiplayerGame::playersUpdate() {
 
-	for ( list<Player*>::iterator player = players.begin() ; player != players.end() ; ++player ){
+	for (list<Player*>::iterator player = players.begin();
+			player != players.end(); ++player) {
 		(*player)->update(view->getMapData());
 		(*player)->updateDamageTaken();
-		if ((*player)->hasGolem() && golemsMap.find((*player)->getName()) == golemsMap.end() ) {
+		if ((*player)->hasGolem()
+				&& golemsMap.find((*player)->getName()) == golemsMap.end()) {
 			createGolem(*player);
 		}
 	}
@@ -183,30 +189,29 @@ void MultiplayerGame::applyFPS(int timer) {
 		fps = (float) 1000 / delay;
 
 	} else
-		fps = (1000 / elapsedMiliseconds)+5;
+		fps = (1000 / elapsedMiliseconds) + 5;
 }
 
 vector<ChatUpdate*> MultiplayerGame::getChatUpdates() {
 	vector<ChatUpdate*> updates;
 
-		for ( list<Player*>::iterator player = players.begin() ; player != players.end() ; ++player )
-		{
-			ChatUpdate* update = (*player)->generateChatUpdate();
-			if (update)
-				{
-					updates.push_back(update);
-				}
+	for (list<Player*>::iterator player = players.begin();
+			player != players.end(); ++player) {
+		ChatUpdate* update = (*player)->generateChatUpdate();
+		if (update) {
+			updates.push_back(update);
 		}
+	}
 
-		return updates;
+	return updates;
 }
 
-
-vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
+vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates() {
 
 	vector<PlayerUpdate*> updates;
 
-	for ( list<Player*>::iterator player = players.begin() ; player != players.end() ; ++player ){
+	for (list<Player*>::iterator player = players.begin();
+			player != players.end(); ++player) {
 		PlayerUpdate* update = (*player)->generatePlayerUpdate();
 		if (update)
 			updates.push_back(update);
@@ -216,12 +221,13 @@ vector<PlayerUpdate*> MultiplayerGame::getPlayersUpdates(){
 
 }
 
-
-vector<MobileEntityUpdate*> MultiplayerGame::getMobileEntitiesUpdates(){
+vector<MobileEntityUpdate*> MultiplayerGame::getMobileEntitiesUpdates() {
 
 	vector<MobileEntityUpdate*> updates;
-	for (map<int,MobileEntity*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
-		MobileEntityUpdate* update = (it->second)->generateMobileEntityUpdate(it->first);
+	for (map<int, MobileEntity*>::iterator it = mobileEntities.begin();
+			it != mobileEntities.end(); ++it) {
+		MobileEntityUpdate* update = (it->second)->generateMobileEntityUpdate(
+				it->first);
 		if (update)
 			updates.push_back(update);
 	}
@@ -230,16 +236,16 @@ vector<MobileEntityUpdate*> MultiplayerGame::getMobileEntitiesUpdates(){
 
 }
 
-
 list<Player*> MultiplayerGame::getPlayers() {
 	return this->players;
 }
 
-map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo(){
+map<int, MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo() {
 
-	map<int,MobileEntityInfo*> infos;
+	map<int, MobileEntityInfo*> infos;
 
-	for (map<int,MobileEntity*>::iterator it = mobileEntities.begin() ; it != mobileEntities.end() ; ++it){
+	for (map<int, MobileEntity*>::iterator it = mobileEntities.begin();
+			it != mobileEntities.end(); ++it) {
 		MobileEntity* ent = it->second;
 		MobileEntityInfo* info = new MobileEntityInfo();
 		info->setId(it->first);
@@ -247,7 +253,7 @@ map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo(){
 		info->setEntity(ent);
 		int col = ent->getCoordinates().getCol();
 		int row = ent->getCoordinates().getRow();
-		Coordinates* tmp = new Coordinates(row,col);
+		Coordinates* tmp = new Coordinates(row, col);
 		info->setInitCoordinates(tmp);
 		infos[it->first] = info;
 	}
@@ -256,15 +262,16 @@ map<int,MobileEntityInfo*> MultiplayerGame::getMobileEntityInfo(){
 
 }
 
-vector<int> MultiplayerGame::getDeletedMobileEntities(){
+vector<int> MultiplayerGame::getDeletedMobileEntities() {
 	return deletedMobileEntities;
 }
 
-map<int,EntityInfo*> MultiplayerGame::getEntityInfo(){
+map<int, EntityInfo*> MultiplayerGame::getEntityInfo() {
 
-	map<int,EntityInfo*> infos;
+	map<int, EntityInfo*> infos;
 
-	for (map<int,Entity*>::iterator it = entities.begin() ; it != entities.end() ; ++it){
+	for (map<int, Entity*>::iterator it = entities.begin();
+			it != entities.end(); ++it) {
 		Entity* ent = it->second;
 		EntityInfo* info = new EntityInfo();
 		info->setId(it->first);
@@ -273,7 +280,7 @@ map<int,EntityInfo*> MultiplayerGame::getEntityInfo(){
 		info->setEntity(ent);
 		int col = ent->getCoordinates().getCol();
 		int row = ent->getCoordinates().getRow();
-		Coordinates* tmp = new Coordinates(row,col);
+		Coordinates* tmp = new Coordinates(row, col);
 		info->setInitCoordinates(tmp);
 		infos[it->first] = info;
 	}
@@ -282,13 +289,13 @@ map<int,EntityInfo*> MultiplayerGame::getEntityInfo(){
 
 }
 
-vector<int> MultiplayerGame::getDeletedEntities(){
+vector<int> MultiplayerGame::getDeletedEntities() {
 	return deletedEntities;
 }
 
 void MultiplayerGame::addNewMobileEntities() {
 	MapData* mapData = view->getMapData();
-	vector<MobileEntity* > newMobiles = mapData->getnewMobileEntities();
+	vector<MobileEntity*> newMobiles = mapData->getnewMobileEntities();
 
 	std::vector<MobileEntity *>::const_iterator iter;
 	for (iter = newMobiles.begin(); iter != newMobiles.end(); ++iter) {
@@ -306,7 +313,7 @@ void MultiplayerGame::addNewMobileEntities() {
 void MultiplayerGame::addNewEntities() {
 	MapData* mapData = view->getMapData();
 
-	vector<Entity* > newEntities = mapData->getNewEntities();
+	vector<Entity*> newEntities = mapData->getNewEntities();
 
 	std::vector<Entity *>::const_iterator iter;
 	for (iter = newEntities.begin(); iter != newEntities.end(); ++iter) {
@@ -319,8 +326,8 @@ void MultiplayerGame::addNewEntities() {
 }
 
 int MultiplayerGame::getEntityId(Entity* entity) {
-	map<int,Entity*>::iterator it;
-	for (it = entities.begin() ; it != entities.end() ; ++it){
+	map<int, Entity*>::iterator it;
+	for (it = entities.begin(); it != entities.end(); ++it) {
 		Entity* current = it->second;
 
 		if (current == entity)
@@ -331,25 +338,54 @@ int MultiplayerGame::getEntityId(Entity* entity) {
 	return -1;
 }
 
+int MultiplayerGame::getMobileId(MobileEntity* entity) {
+	map<int, MobileEntity*>::iterator it;
+	for (it = mobileEntities.begin(); it != mobileEntities.end(); ++it) {
+		MobileEntity* current = it->second;
+
+		if (current == entity)
+			return it->first;
+	}
+
+	std::cout << "MobileEntity no encontrada" << std::endl;
+	return -1;
+}
+
 void MultiplayerGame::removeDeadEntities() {
 	MapData* mapData = view->getMapData();
 
-	list<Entity* > deadEntities = mapData->getDeadEntities();
+	list<Entity*> deadEntities = mapData->getDeadEntities();
 
-		std::list<Entity *>::const_iterator iter;
-		for (iter = deadEntities.begin(); iter != deadEntities.end(); ++iter) {
-			Entity* current = *iter;
+	list<Entity *>::const_iterator iter;
+	for (iter = deadEntities.begin(); iter != deadEntities.end(); ++iter) {
+		Entity* current = *iter;
 
-			removeEntity( getEntityId(current) );
-		}
+		removeEntity(getEntityId(current));
+	}
 }
 
-int MultiplayerGame::addMobileEntity(MobileEntity* entity, Coordinates coordiantes){
+void MultiplayerGame::removeDeadMobiles() {
+	MapData* mapData = view->getMapData();
+
+	list<MobileEntity*> deadEntities = mapData->getDeadMobiles();
+
+	list<MobileEntity *>::const_iterator iter;
+	for (iter = deadEntities.begin(); iter != deadEntities.end(); ++iter) {
+		MobileEntity* current = *iter;
+
+		removeMobileEntity(getMobileId(current));
+	}
+}
+
+int MultiplayerGame::addMobileEntity(MobileEntity* entity,
+		Coordinates coordiantes) {
 
 	entity->setCoordinates(coordiantes.getRow(), coordiantes.getCol());
-	int x = Tile::computePosition(coordiantes.getRow(),coordiantes.getCol(),true)->getX();
-	int y = Tile::computePosition(coordiantes.getRow(),coordiantes.getCol(),true)->getY();
-	entity->setPos(x,y,0);
+	int x = Tile::computePosition(coordiantes.getRow(), coordiantes.getCol(),
+			true)->getX();
+	int y = Tile::computePosition(coordiantes.getRow(), coordiantes.getCol(),
+			true)->getY();
+	entity->setPos(x, y, 0);
 	int newId = lastAddedView + 1;
 	mobileEntities[newId] = entity;
 	lastAddedView = newId;
@@ -357,9 +393,9 @@ int MultiplayerGame::addMobileEntity(MobileEntity* entity, Coordinates coordiant
 	return newId;
 }
 
-void MultiplayerGame::removeMobileEntity(int id){
-	if (mobileEntities.count(id) != 0){
-		if (ias.count(id) != 0){
+void MultiplayerGame::removeMobileEntity(int id) {
+	if (mobileEntities.count(id) != 0) {
+		if (ias.count(id) != 0) {
 			delete ias[id];
 			ias.erase(id);
 		}
@@ -371,8 +407,7 @@ void MultiplayerGame::removeMobileEntity(int id){
 	}
 }
 
-
-int MultiplayerGame::addEntity(Entity* entity, Coordinates coordiantes){
+int MultiplayerGame::addEntity(Entity* entity, Coordinates coordiantes) {
 
 	entity->setCoordinates(coordiantes.getRow(), coordiantes.getCol());
 	int newId = lastAddedView + 1;
@@ -381,12 +416,11 @@ int MultiplayerGame::addEntity(Entity* entity, Coordinates coordiantes){
 
 //	view->getMapData()->addItem(coordiantes.getRow(), coordiantes.getCol(),(Item*)entity);
 
-
 	return newId;
 }
 
-void MultiplayerGame::removeEntity(int id){
-	if (entities.count(id) != 0){
+void MultiplayerGame::removeEntity(int id) {
+	if (entities.count(id) != 0) {
 
 		entities.erase(id);
 		//TODO: SACARLO TAMBIEN DE MAP DATA
@@ -395,11 +429,7 @@ void MultiplayerGame::removeEntity(int id){
 	}
 }
 
-
-
 MultiplayerGame::~MultiplayerGame() {
 	// TODO Auto-generated destructor stub
 }
-
-
 

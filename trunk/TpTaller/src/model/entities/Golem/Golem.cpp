@@ -25,7 +25,12 @@ Player* Golem::getOwner(){
 	return owner;
 }
 
+void Golem::collideTo(MobileEntity& entity) {
+	// Casteo a puntero.
+	MobileEntity* entityPtr = (MobileEntity*) &entity;
+	entityPtr->applyDamage(10);
+}
+
 Golem::~Golem() {
-	// TODO Auto-generated destructor stub
 }
 

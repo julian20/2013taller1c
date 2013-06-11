@@ -76,7 +76,9 @@ private:
 	void addNewMobileEntities();
 	void addNewEntities();
 	int getEntityId(Entity* entity);
+	int getMobileId(MobileEntity* entity);
 	void removeDeadEntities();
+	void removeDeadMobiles();
 	void playersUpdate();
 	void applyFPS(int timer);
 
