@@ -253,7 +253,6 @@ void Server::run(MultiplayerGame* game) {
 				Logs::logErrorMessage(
 						"Servidor: Error al inicializar handle thread");
 			}
-			connections[newsock] = thread;
 
 		}
 	}
@@ -273,6 +272,7 @@ void Server::runMainLoop(int clientSocket, string playerName){
 
 		if (gameEnd) {
 			sendGameScores(clientSocket);
+			closeServer(playerName,pthread_self() );
 			break;
 		}
 
@@ -453,6 +453,8 @@ int Server::addPlayerToGame(int clientSocket, PlayerInfo* info) {
 
 	sendedPlayers[playerName][playerName] = info->getPlayer();
 
+	connections[playerName] = pthread_self();
+
 	return 0;
 
 }
@@ -471,6 +473,8 @@ int Server::reconectPlayer(int clientSocket, string playerName,
 	updates[playerName] = vector<PlayerUpdate*>();
 
 	sendedPlayers[playerName][playerName] = info->getPlayer();
+
+	connections[playerName] = pthread_self();
 
 	return 0;
 }
@@ -762,6 +766,7 @@ void Server::disconectPlayer(int clientSocket, string playerName) {
 	game->addEventsToHandle(playerName, disconectEvent);
 
 	conectedPlayers.erase(playerName);
+	connections.erase(playerName);
 
 	disconectedPlayers[playerName] = gamePlayers[playerName]->getPlayer();
 
@@ -772,6 +777,18 @@ void Server::disconectPlayer(int clientSocket, string playerName) {
 	sendedEntities[playerName].clear();
 
 }
+
+void Server::closeServer(string playerName,pthread_t thread){
+
+	connections.erase(playerName);
+
+	if (connections.empty()){
+		cout << "El juego ha finalizado. Felicitaciones a los ganadores." << endl;
+		exit(0);
+	}
+
+}
+
 
 /* ***************** SERVER GETTERS & SETTERS ********************** */
 
@@ -806,7 +823,7 @@ void Server::setMissionManager(MissionManager* manager) {
 /* *********************** SERVER DESTRUCTOR *********************** */
 
 Server::~Server() {
-	for (map<int,pthread_t>::iterator it = connections.begin() ; it != connections.end() ; ++it){
+	for (map<string,pthread_t>::iterator it = connections.begin() ; it != connections.end() ; ++it){
 		pthread_join(it->second,NULL);
 	}
 	close(serverID);
