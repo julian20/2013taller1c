@@ -129,3 +129,11 @@ void PersistentConfiguration::setMobileEntityViewHolder(MobileEntityViewHolder* 
 vector<MobileEntity*> PersistentConfiguration::getMobileEntityList(){
 	return mobs;
 }
+
+void PersistentConfiguration::setFlag(Flag* flag) {
+	this->flag = flag;
+}
+
+Flag* PersistentConfiguration::getFlag() {
+	return this->flag;
+}

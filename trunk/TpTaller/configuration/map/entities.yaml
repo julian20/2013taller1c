@@ -62,20 +62,23 @@
     baseCols: 1
     delay: 0.5
 - entityViews:
-  - name: flag
-    imageSrc: resources/flag2.png
-    imageWidth: 38
-    imageHeight: 137
-    numberOfClips: 7
-    anchorPixel: [10, 100]
-    baseRows: 1
-    baseCols: 1  
   - name: crystalballitem
     imageSrc: resources/items/CrystalBallItemAnimated.png
     imageWidth: 50
     imageHeight: 85
     numberOfClips: 4
     anchorPixel: [25, 30]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
+    baseCols: 1
+  - name: flag
+    imageSrc: resources/buildings/warbanner.png
+    imageWidth: 128
+    imageHeight: 128
+    numberOfClips: 0
+    anchorPixel: [64, 50]
     fps: 8
     delay: 0 
     animationRepeats: 7
@@ -427,6 +430,8 @@
   - name: frostwanditem
     position: [6, 8, 0]
 - entityLocations:
+  - name: flag
+    position: [38, 28, 0]
   - name: chapel
     position: [23, 20, 0]
   - name: portbuilding
