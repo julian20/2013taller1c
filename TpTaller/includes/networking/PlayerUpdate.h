@@ -31,6 +31,8 @@ public:
 	bool isActive();
 	void setActive(bool active);
 	void setChat(Chat* chat);
+	void setMapItem(bool mapUpdate);
+	bool getMapItem();
 	void setMakingEarthquake(bool makingEarthquake);
 	bool getMakingEarthquake();
 
@@ -49,6 +51,7 @@ private:
 	bool makingEarthquake;
 	bool invulnerable;
 	bool golem;
+	bool mapItem;
 
 };
 

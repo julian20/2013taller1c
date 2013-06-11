@@ -296,7 +296,7 @@ void Player::extraUpdate(MapData* mapData) {
 		makeEarthquake(mapData);
 	if (needFrozeEnemies)
 		frozeEnemiesNow(mapData);
-	if (inventory.map){
+	if (inventory.map && mainPlayer){
 		if (inventory.mapUsed == false) {
 			inventory.mapUsed = true;
 			mapData->showAllMap();
@@ -372,6 +372,7 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->makingEarthquake = update->getMakingEarthquake();
 	this->usingInvulnerability = update->getIsInvulnerable();
 	this->frozen = update->getFrozen();
+	this->inventory.map = update->getMapItem();
 	if (currentTile)
 		delete currentTile;
 	this->currentTile = update->getTile();
@@ -420,6 +421,7 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setMakingEarthquake(this->makingEarthquake);
 	update->setInvulnerable(this->usingInvulnerability);
 	update->setFrozen(this->frozen);
+	update->setMapItem(this->inventory.map);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {

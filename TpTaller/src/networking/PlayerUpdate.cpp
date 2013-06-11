@@ -46,6 +46,14 @@ void PlayerUpdate::setActive(bool active) {
 	this->active = active;
 }
 
+void PlayerUpdate::setMapItem(bool mapItem) {
+	this->mapItem = mapItem;
+}
+
+bool PlayerUpdate::getMapItem() {
+	return mapItem;
+}
+
 void PlayerUpdate::setMakingEarthquake(bool makingEarthquake) {
 	this->makingEarthquake = makingEarthquake;
 }
@@ -73,7 +81,7 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 			<< " " << update.lastAttackingDirection << " " << update.team << " "
 			<< update.castingSpell << " " << update.viewRange << " "
 			<< update.frozen << " " << update.makingEarthquake << " "
-			<< update.invulnerable << " " << update.golem;
+			<< update.invulnerable << " " << update.golem << " " << update.mapItem;
 
 	return out;
 }
@@ -138,6 +146,7 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	bool golem;
 	in >> golem;
 	update.golem = golem;
+	in >> update.mapItem;
 	return in;
 }
 
