@@ -361,36 +361,6 @@
     mainPlayer: true
     viewRange: 400
 - mobileEntityLocations:
-  - name: dragon
-    position: [10, 10, 0]
-    speed:
-      magnitude: 1
-      direction: [1, 2]
-  - name: dragon
-    position: [10, 12, 0]
-    speed:
-      magnitude: 1
-      direction: [1, 2]
-  - name: zombie
-    position: [10, 14, 0]
-    speed:
-      magnitude: 1
-      direction: [1, 2]
-  - name: zombie
-    position: [10, 14, 0]
-    speed:
-      magnitude: 1
-      direction: [1, 2]
-  - name: zombie
-    position: [10, 24, 0]
-    speed:
-      magnitude: 3
-      direction: [1, 2]
-  - name: zombie
-    position: [20, 14, 0]
-    speed:
-      magnitude: 1
-      direction: [1, 2]
 - itemLocations:
   - name: lifeheart
     position: [15, 15, 0]
@@ -1053,29 +1023,6 @@
     position: [49, 48, 0]
   - name: Water
     position: [49, 49, 0]
-	#Laberinto del fauno
-  - name: Water
-    position: [18, 10, 0]
-  - name: Water
-    position: [19, 10, 0]
-  - name: Water
-    position: [20, 10, 0]
-  - name: Water
-    position: [21, 10, 0]
-  - name: Water
-    position: [22, 10, 0]
-  - name: Water
-    position: [22, 11, 0]
-  - name: Water
-    position: [22, 12, 0]
-  - name: Water
-    position: [21, 12, 0]
-  - name: Water
-    position: [20, 12, 0]
-  - name: Water
-    position: [19, 12, 0]
-  - name: Water
-    position: [18, 12, 0]
 - tileLocations:
   - position: [0, 7, 0]
     texture: shallowWater

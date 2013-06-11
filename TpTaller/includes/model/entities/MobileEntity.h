@@ -98,7 +98,7 @@ public:
 
 	void localUpdate(MapData* mapData);
 protected:
-	void loadNextPosition();
+	void loadNextPosition(MapData* mapData, bool checkNextPosition = true);
 	void emptyPath();
 	Vector3* endPos;
 	Speed* speed;
