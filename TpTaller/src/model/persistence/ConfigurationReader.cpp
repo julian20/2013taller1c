@@ -2026,7 +2026,7 @@ double uniformDistribution(double a, double b) {
 
 Item* createRandomItem() {
 
-	int number = (int)uniformDistribution(0,13);
+	int number = (int) uniformDistribution(0,11);
 
 	Item* item;
 
@@ -2269,10 +2269,10 @@ void loadMobileEntityViewHolder(MobileEntityViewHolder* viewHolder,
 
 }
 
-Entity* lookForFlag(vector<Entity*> entityList) {
+MobileEntity* lookForFlag(vector<MobileEntity*> entityList) {
 
 	string entityName;
-	string flagName = "flag";
+	string flagName = "flago";
 
 	for (unsigned i = 0; i < entityList.size(); i++) {
 		entityName = entityList[i]->getName();
@@ -2397,7 +2397,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 //	loadEntityViewMap(entityViewMap, cleanItemViews);
 	//loadEntityViewMap(entityViewMap, cleanMobileEntityViews);
 
-	Entity* flag = lookForFlag(entityVector);
+	MobileEntity* flag = lookForFlag(mobileEntityVector);
 
 // Packing parser results.
 	PersistentConfiguration configuration = PersistentConfiguration();

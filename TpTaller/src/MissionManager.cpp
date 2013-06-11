@@ -24,7 +24,8 @@ MissionManager::MissionManager() {
 MissionManager::~MissionManager() {
 }
 
-bool MissionManager::hasEndedFlagCapture(list<Player*> players, Entity* flag) {
+bool MissionManager::hasEndedFlagCapture(list<Player*> players,
+		MobileEntity* flag) {
 
 	list<Player*>::const_iterator iterator;
 	Player* actualPlayer;
@@ -40,9 +41,11 @@ bool MissionManager::hasEndedFlagCapture(list<Player*> players, Entity* flag) {
 		}
 	}
 
-	if (flag->isDead()) {
-		winningTeam = flag->getKilledBy();
-		return true;
+	if (flag != NULL) {
+		if (flag->isDead()) {
+			winningTeam = flag->getKilledBy();
+			return true;
+		}
 	}
 
 	return false;
@@ -123,7 +126,7 @@ bool MissionManager::hasEndedSuddenDeath(list<Player*> players) {
 	return hasEndedTeamFight(players);
 }
 
-bool MissionManager::hasEndedGame(list<Player*> players, Entity* flag) {
+bool MissionManager::hasEndedGame(list<Player*> players, MobileEntity* flag) {
 	if (typeOfMission == 1) {
 		return hasEndedFlagCapture(players, flag);
 	} else if (typeOfMission == 2) {
