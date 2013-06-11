@@ -31,6 +31,7 @@ MobileEntity::MobileEntity() :
 	viewRange = 200;
 	magicDamageDelay.start();
 	frozen = false;
+	walkable = false;
 }
 
 MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
@@ -52,6 +53,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	viewRange = 200;
 	magicDamageDelay.start();
 	frozen = false;
+	walkable = false;
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {
@@ -134,7 +136,6 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	}
 
 	if (path->size() == 0) {
-
 		assignPath(mapData->getPath(currentTile, enemyTile));
 		delete enemyTile;
 		return;
@@ -172,7 +173,7 @@ void MobileEntity::update(MapData* mapData) {
 		if (path->size() == 0)
 			return;
 		else
-			loadNextPosition();
+			loadNextPosition(mapData);
 	}
 
 	float relationSpeed = ((float) Tile::getTileHeight())
@@ -185,7 +186,7 @@ void MobileEntity::update(MapData* mapData) {
 	if (moveDirection->getNorm() < getSpeed()->getMagnitude() + 1) {
 		// Close enough to the end position to move in one step.
 		currentPos->setValues(endPos->getX(), endPos->getY());
-		loadNextPosition();
+		loadNextPosition(mapData);
 	} else {
 		moveDirection->normalize();
 		moveDirection->multiplyBy(
@@ -206,7 +207,7 @@ void MobileEntity::localUpdate(MapData* mapData) {
 		if (path->size() == 0)
 			return;
 		else
-			loadNextPosition();
+			loadNextPosition(mapData);
 	}
 
 	float relationSpeed = ((float) Tile::getTileHeight())
@@ -219,7 +220,7 @@ void MobileEntity::localUpdate(MapData* mapData) {
 	if (moveDirection->getNorm() < getSpeed()->getMagnitude() + 1) {
 		// Close enough to the end position to move in one step.
 		currentPos->setValues(endPos->getX(), endPos->getY());
-		loadNextPosition();
+		loadNextPosition(mapData);
 	} else {
 		moveDirection->normalize();
 		moveDirection->multiplyBy(
@@ -287,10 +288,25 @@ bool MobileEntity::isFrozen() {
 	return frozen;
 }
 
-void MobileEntity::loadNextPosition() {
+void MobileEntity::loadNextPosition(MapData* mapData, bool checkNextPosition) {
 	if (path->empty())
 		return;
 	Tile* tile = path->front();
+
+	if (checkNextPosition) {
+		if (! mapData->getTileData(tile->getCoordinates())->isWalkable()) {
+			/*if (attackToEntity != NULL) {
+				Tile* enemyTile = attackToEntity->getTile();
+				assignPath(mapData->getPath(currentTile, enemyTile));
+				delete enemyTile;
+			} else {
+				Tile* lastTile = path->back();
+				assignPath(mapData->getPath(currentTile, lastTile));
+			}*/
+			return;
+		}
+	}
+
 	path->remove(tile);
 
 	Position* tilePos = tile->getPosition();
@@ -361,7 +377,7 @@ void MobileEntity::assignPath(list<Tile *> *_path) {
 	}
 	this->path = _path;
 
-	loadNextPosition();
+	loadNextPosition(NULL, false);
 	this->hasChanged = true;
 }
 
