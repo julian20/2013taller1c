@@ -360,7 +360,7 @@ void Game::addNewMobileEntity(MobileEntity* entity, MobileEntityView* view, Coor
 void Game::addNewEntity(Entity* entity, EntityView* view, Coordinates* coords, int id){
 	entity->setCoordinates(coords->getRow(), coords->getCol());
 	MapData* map = mapView->getMapData();
-	//map->addEntity(coords->getRow(), coords->getCol(),entity);
+	map->addEntity(coords->getRow(), coords->getCol(),entity);
 	Coordinates newCoords = entity->getCoordinates();
 	mapView->addNewEntityView(view, newCoords);
 
