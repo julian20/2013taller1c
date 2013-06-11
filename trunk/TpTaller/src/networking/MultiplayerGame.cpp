@@ -32,7 +32,6 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	EntityViewMap* viewMap = configuration->getEntityViewMap();
 	this->view = new MapView(mapData, NULL, viewMap);
 	lastAddedView = 0;
-
 	for (unsigned int i = 0 ; i < mobileEntityVector.size() ; i++){
 		ArtificialIntelligence* ia= new ArtificialIntelligence();
 		ia->setMobileEntity(mobileEntityVector[i]);
@@ -44,15 +43,16 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 			addEntity(itemVector[i],itemVector[i]->getCoordinates());
 	}
 
-	createFlag(view->getMapData());
+	//createFlag(view->getMapData(),configuration->getEntitiesView());
 
 }
-void MultiplayerGame::createFlag(MapData* mapData)
+void MultiplayerGame::createFlag(MapData* mapData,std::vector<EntityView*> vector)
 {
 	int cols = mapData->getNCols();
 	int rows = mapData->getNRows();
-	flag = new Flag();
-
+	flag= new Entity();
+	//flag = mapData->getFlag();
+	//mapData->
 	int rCol= rand() % cols;
 	int rRow= rand() % rows;
 	while (mapData->getTileData(rRow,rCol)->getNumberOfEntitiesOnTile()>0)
@@ -60,13 +60,27 @@ void MultiplayerGame::createFlag(MapData* mapData)
 		rCol= rand() % cols;
 		rRow= rand() % rows;
 	}
+	flag->setCoordinates(rRow,rCol);
+	EntityView* mb;
+	for (unsigned int i = 0 ; i < vector.size() ; i++){
+				if( vector[i]->getName()=="flag" )
+				{
+					mb = new EntityView(vector[i]);
+					mb->setEntity(flag);
+					break;
+				}
+		}
 	mapData->addEntity(rRow,rCol,flag);
-	flag->setLife(1000);
+	mapData->setFlag(flag);
+	flag->setLife(100);
+	flag->setName("flag");
+	view->addNewEntityView(mb,flag->getCoordinates());
+	this->addEntity(flag,flag->getCoordinates());
 
 
 }
 
-Flag* MultiplayerGame::getFlag() {
+Entity* MultiplayerGame::getFlag() {
 	return flag;
 }
 void MultiplayerGame::createGolem(Player* player)
@@ -415,7 +429,7 @@ int MultiplayerGame::addEntity(Entity* entity, Coordinates coordiantes){
 	entities[newId] = entity;
 	lastAddedView = newId;
 
-//	view->getMapData()->addItem(coordiantes.getRow(), coordiantes.getCol(),(Item*)entity);
+	view->getMapData()->addItem(coordiantes.getRow(), coordiantes.getCol(),(Item*)entity);
 
 
 	return newId;
@@ -425,6 +439,7 @@ void MultiplayerGame::removeEntity(int id){
 	if (entities.count(id) != 0){
 
 		entities.erase(id);
+
 		//TODO: SACARLO TAMBIEN DE MAP DATA
 
 		deletedEntities.push_back(id);
