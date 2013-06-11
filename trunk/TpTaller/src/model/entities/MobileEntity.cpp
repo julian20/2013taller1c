@@ -66,6 +66,12 @@ void MobileEntity::addEvent(PlayerEvent* event) {
 	events.push_back(event);
 }
 
+void MobileEntity::setPos(Position* pos) {
+	setPos(pos->getX(), pos->getY(), pos->getZ());
+
+	delete pos;
+}
+
 void MobileEntity::setPos(float x, float y, float z) {
 	currentPos->setValues(x, y, z);
 

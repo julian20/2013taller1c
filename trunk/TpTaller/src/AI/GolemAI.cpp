@@ -7,8 +7,8 @@
 
 #include <AI/GolemAI.h>
 
-#define WATCHSIZE 8
-#define PLAYER_MAX_DIST 15
+#define WATCHSIZE 4
+#define PLAYER_MAX_DIST 6
 
 GolemAI::GolemAI() {
 	// TODO Auto-generated constructor stub
@@ -24,27 +24,26 @@ void GolemAI::update(MapData* mapData) {
 
 
 		if (playerDistance > PLAYER_MAX_DIST){
-			int x = Tile::computePosition(ownerTile->getCoordinates().getRow(),ownerTile->getCoordinates().getCol())->getX();
-			int y = Tile::computePosition(ownerTile->getCoordinates().getRow(),ownerTile->getCoordinates().getCol())->getY();
-			int z = Tile::computePosition(ownerTile->getCoordinates().getRow(),ownerTile->getCoordinates().getCol())->getZ();
-			entity->moveTo(x,y,z);
-		}
-
-		if (entity->getAttackToEntity() != NULL) {
-
-			Tile* enemyTile = entity->getAttackToEntity()->getTile();
-			if (mapData->distBetweenTilesInTiles(currentTile,enemyTile) < WATCHSIZE && playerDistance < PLAYER_MAX_DIST)
-				return;
-		}
-
-		if (this->isAnyEnemyClose(mapData)) {
-			if (playerDistance > PLAYER_MAX_DIST) return;
-			Entity& enemy = this->getNearestEnemy();
-			entity->attackTo(&enemy);
+			entity->assignPath(mapData->getPath(currentTile, ownerTile));
+			entity->attackTo(NULL);
 		} else {
-			if (entity->getClassName() == "MobileEntity") {
-				entity->cancelAttack();
-				this->watch(mapData);
+
+			if (entity->getAttackToEntity() != NULL) {
+
+				Tile* enemyTile = entity->getAttackToEntity()->getTile();
+				if (mapData->distBetweenTilesInTiles(currentTile,enemyTile) < WATCHSIZE && playerDistance < PLAYER_MAX_DIST)
+					return;
+			}
+
+			if (this->isAnyEnemyClose(mapData)) {
+				if (playerDistance > PLAYER_MAX_DIST) return;
+				Entity& enemy = this->getNearestEnemy();
+				entity->attackTo(&enemy);
+			} else {
+				if (entity->getClassName() == "MobileEntity") {
+					entity->cancelAttack();
+					this->watch(mapData);
+				}
 			}
 		}
 	}

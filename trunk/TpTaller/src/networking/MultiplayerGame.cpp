@@ -76,10 +76,12 @@ void MultiplayerGame::createGolem(Player* player)
 	Golem* golem = new Golem();
 	Coordinates coor = player->getCoordinates();
 	golem->setCoordinates(coor.getRow()+1,coor.getCol());
+	golem->setPos(Tile::computePosition(coor.getRow()+1,coor.getCol()));
 	golem->setTeam(player->getTeam());
 	golem->setName("dragon");
 	golem->setSpeed(player->getSpeed());
 	golem->setOwner(player);
+	golem->setTile(new Tile(coor));
 	this->createGolemIa(golem);
 	golemsMap[player->getName()] = golem ;
 	addMobileEntity(golem,coor);
