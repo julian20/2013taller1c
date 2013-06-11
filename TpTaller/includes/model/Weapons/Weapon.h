@@ -21,16 +21,19 @@ public:
 	void setAccuracy(int accuracy);
 	void setRange(int range);
 	void setMagic(int magic);
+	void setTeam(int team);
 	int getDamage();
 	int getRange();
 	int getAccuracy();
 	int getMagic();
+	int getTeam();
 
 protected:
 	int damage;
 	int magic;
 	int range;
 	int accuracy;
+	int team;
 	string name;
 };
 
