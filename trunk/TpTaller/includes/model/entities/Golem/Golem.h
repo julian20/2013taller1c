@@ -10,6 +10,8 @@
 #include <model/entities/MobileEntity.h>
 #include <model/entities/player/Player.h>
 
+#define GOLEM_COST 50
+
 class Golem : public MobileEntity {
 public:
 	Golem();

@@ -6,7 +6,7 @@
  */
 
 #include <model/entities/Golem/Golem.h>
-#define GOLEM_COST 50
+
 Golem::Golem() {
 	this->life = 200 ;
 	this->magic = 0;

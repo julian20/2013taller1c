@@ -30,6 +30,7 @@
 
 #include <model/Logs/Logs.h>
 #include <view/timer/Timer.h>
+#include <view/Popup.h>
 #include <networking/Server.h>
 #include <networking/ComunicationUtils.h>
 #include <networking/PlayerInfo.h>
@@ -783,7 +784,12 @@ void Server::closeServer(string playerName,pthread_t thread){
 	connections.erase(playerName);
 
 	if (connections.empty()){
-		cout << "El juego ha finalizado. Felicitaciones a los ganadores." << endl;
+		cout << "El juego ha finalizado. Felicitaciones Team " << getMissionManager()->getWinningTeam() << endl;
+		stringstream ss;
+		ss << getMissionManager()->getWinningTeam();
+		stringstream ss2;
+		ss2 << getMissionManager()->getScore(getMissionManager()->getWinningTeam());
+		Popup::popupWindow("El juego ha finalizado. Felicitaciones Team " + ss.str() + " han ganado con " + ss2.str());
 		exit(0);
 	}
 

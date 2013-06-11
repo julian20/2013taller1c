@@ -32,6 +32,7 @@
 #include <model/entities/Items/CrystalBallItem.h>
 #include <model/entities/Items/SpellShieldItem.h>
 #include <model/entities/Items/FrostWandItem.h>
+#include <model/entities/Items/GolemSpellItem.h>
 #include <model/map/Tile.h>
 #include <model/map/TextureDefinition.h>
 #include <model/map/TextureHolder.h>

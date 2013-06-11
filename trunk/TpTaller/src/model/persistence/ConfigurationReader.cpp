@@ -2026,7 +2026,7 @@ double uniformDistribution(double a, double b) {
 
 Item* createRandomItem() {
 
-	int number = (int) uniformDistribution(0,11);
+	int number = (int) uniformDistribution(0,12);
 
 	Item* item;
 
@@ -2078,6 +2078,11 @@ Item* createRandomItem() {
 	if (number < 10) {
 		item = new SpellShieldItem();
 		item->setName("spellshielditem");
+		return item;
+	}
+	if (number < 11) {
+		item = new GolemSpellItem();
+		item->setName("golemspellitem");
 		return item;
 	}
 	item = new FrostWandItem();
@@ -2216,6 +2221,16 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			frostWandItem->setCoordinates(coord.getRow(), coord.getCol());
 
 			parsedItems.push_back(frostWandItem);
+
+		} else if (actualItem->getName() == "golemspellitem") {
+
+			GolemSpellItem* golemSpellItem = new GolemSpellItem();
+
+			golemSpellItem->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			golemSpellItem->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(golemSpellItem);
 
 		}
 
