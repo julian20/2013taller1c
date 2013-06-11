@@ -36,6 +36,7 @@ public:
 	virtual ~MobileEntity();
 	void moveTo(int x, int y, int z = 0);
 	void setPos(float x, float y, float z = 0);
+	void setPos(Position* pos);
 
 	virtual void extraUpdate(MapData* mapData);
 	void update(MapData* mapData);
