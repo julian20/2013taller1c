@@ -436,6 +436,7 @@ Tile* MapData::getValidTile(Tile* from, Tile* goal) {
 		return goal;
 
 	Tile* current = goal;
+	Tile* closest;
 	map<int, Tile *> tilesContainer;// Uso esto para ir guardando los punteros
 
 	while (true) {
@@ -450,19 +451,26 @@ Tile* MapData::getValidTile(Tile* from, Tile* goal) {
 			current->setFScore(distBetweenTiles(current, from));
 		}
 
-		neighborTiles.sort(compTileList);
-		current = neighborTiles.back();	// El tile mas cercano al punto de partida
-		tileData = getTileData(current->getCoordinates());
+		closest = neighborTiles.back();
 
-		Coordinates currentCooords = current->getCoordinates();
-		Coordinates fromCoords = from->getCoordinates();
+		while (neighborTiles.size() > 0) {
 
-		if (tileData->isWalkable() || currentCooords.isEqual(fromCoords)) {
-			current = new Tile(new Coordinates(current->getCoordinates()));
-			emptyTilesContainer(tilesContainer);
-			return current;
+			neighborTiles.sort(compTileList);
+			current = neighborTiles.back();	// El tile mas cercano al punto de partida
+			neighborTiles.remove(current);
+			tileData = getTileData(current->getCoordinates());
+
+			Coordinates currentCooords = current->getCoordinates();
+			Coordinates fromCoords = from->getCoordinates();
+
+			if (tileData->isWalkable() || currentCooords.isEqual(fromCoords)) {
+				current = new Tile(new Coordinates(current->getCoordinates()));
+				emptyTilesContainer(tilesContainer);
+				return current;
+			}
 		}
 
+		current = closest;
 	}
 
 	return NULL;
@@ -612,7 +620,7 @@ void MapData::moveMobileEntity(MobileEntity* mobile, Tile* toTile) {
 	// Si la posicion inicial y final son distintas calcula el path
 	if (!fromCoords.isEqual(toCoords)) {
 		list<Tile *> *path = getPath(fromTile, toTile);
-		mobile->assignPath(path);
+		mobile->assignPath(path, this);
 	}
 
 	delete fromTile;

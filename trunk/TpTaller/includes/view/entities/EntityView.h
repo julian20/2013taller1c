@@ -92,6 +92,9 @@ protected:
 	int numberOfRepeats;
 	int currentRepeat;
 
+	map<int, Uint32> teamColors;
+private:
+	void declareTeamColorConstant();
 };
 
 #endif /* ENTITYVIEW_H */

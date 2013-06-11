@@ -11,6 +11,7 @@ Flag::Flag() {
 	player = "";
 	classname = "Flag";
 	life = 30;
+	attackable = true;
 }
 
 Flag::Flag(Entity* entity) :
@@ -37,6 +38,7 @@ Flag::Flag(Entity* entity) :
 	player = "";
 	classname = "Flag";
 	life = 30;
+	attackable = true;
 }
 
 void Flag::attackedBy(string player) {

@@ -73,8 +73,6 @@ public:
 	virtual ~MultiplayerGame();
 
 private:
-	void updatePlayersCoordinates();
-	void updateMobsCoordinates();
 	void addNewMobileEntities();
 	void addNewEntities();
 	int getEntityId(Entity* entity);
