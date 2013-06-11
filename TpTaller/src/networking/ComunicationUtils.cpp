@@ -277,6 +277,7 @@ EntityInfo* ComunicationUtils::recvEntityInfo(int sockID){
 
 	infostream >> *info;
 
+	cout << *info << endl;
 	return info;
 }
 

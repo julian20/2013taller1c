@@ -9,6 +9,7 @@
 #include <model/entities/player/Player.h>
 
 Item::Item() : Entity() {
+	this->name = "Item";
 	this->attackable = false;
 	this->walkable = true;
 	this->hideInFog = true;

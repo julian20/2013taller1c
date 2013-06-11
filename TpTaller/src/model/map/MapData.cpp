@@ -158,36 +158,35 @@ void MapData::addItem(int row, int col, Item* object) {
 
 				//Ponemos una copia
 				Item* copy;
-				if (object->getName() == "lifeheart")
+				if (object->getClassName() == "LifeHeart")
 					copy = new LifeHeart(object);
-				else if (object->getName() == "magicbottle")
+				else if (object->getClassName() == "MagicBottle")
 					copy = new MagicBottle(object);
-				else if (object->getName() == "speedboots")
+				else if (object->getClassName() == "SpeedBoots")
 					copy = new SpeedBoots(object);
-				else if (object->getName() == "lantern")
+				else if (object->getClassName() == "Lantern")
 					copy = new Lantern(object);
-				else if (object->getName() == "shield")
+				else if (object->getClassName() == "Shield")
 					copy = new Shield(object);
-				else if (object->getName() == "mapitem")
+				else if (object->getClassName() == "MapItem")
 					copy = new MapItem(object);
-				else if (object->getName() == "chest")
+				else if (object->getClassName() == "Chest")
 					copy = new Chest(object);
-				else if (object->getName() == "strengthbuff")
+				else if (object->getClassName() == "StrengthBuff")
 					copy = new StrengthBuff(object);
-				else if (object->getName() == "earthquakeitem")
+				else if (object->getClassName() == "EarthquakeItem")
 					copy = new EarthquakeItem(object);
-				else if (object->getName() == "crystalballitem")
+				else if (object->getClassName() == "CrystalBallItem")
 					copy = new CrystalBallItem(object);
-				else if (object->getName() == "spellshielditem")
+				else if (object->getClassName() == "SpellShieldItem")
 					copy = new SpellShieldItem(object);
-				else if (object->getName() == "frostwanditem")
+				else if (object->getClassName() == "FrostWandItem")
 					copy = new FrostWandItem(object);
 				else
 					copy = new Item(object);
 				currentData->addEntity(copy);
 				copy->setCoordinates(currentRow, currentCol);
 
-				// newEntities.push_back(object);
 			}
 
 		}
