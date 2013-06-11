@@ -2016,45 +2016,63 @@ void setDefaultPlayerView() {
 
 Item* createRandomItem() {
 
-	float number = 11 * (rand() / (RAND_MAX + 1.0));
+	float number = 11 * (rand() / (RAND_MAX));
 
-	Item* randomItem;
+	Item* item;
 
 	if (number < 1) {
-		randomItem = new LifeHeart();
+		item = new LifeHeart();
+		item->setName("lifeheart");
+		return item;
 	}
 	if (number < 2) {
-		randomItem = new MagicBottle();
+		item = new MagicBottle();
+		item->setName("magicbottle");
+		return item;
 	}
 	if (number < 3) {
-		randomItem = new SpeedBoots();
+		item = new SpeedBoots();
+		item->setName("speedboots");
+		return item;
 	}
 	if (number < 4) {
-		randomItem = new Lantern();
+		item = new Lantern();
+		item->setName("lantern");
+		return item;
 	}
 	if (number < 5) {
-		randomItem = new Shield();
+		item = new Shield();
+		item->setName("shield");
+		return item;
 	}
 	if (number < 6) {
-		randomItem = new MapItem();
+		item = new MapItem();
+		item->setName("mapitem");
+		return item;
 	}
 	if (number < 7) {
-		randomItem = new StrengthBuff();
+		item = new StrengthBuff();
+		item->setName("strengthbuff");
+		return item;
 	}
 	if (number < 8) {
-		randomItem = new EarthquakeItem();
+		item = new EarthquakeItem();
+		item->setName("earthquakeitem");
+		return item;
 	}
 	if (number < 9) {
-		randomItem = new CrystalBallItem();
+		item = new CrystalBallItem();
+		item->setName("crystalballitem");
+		return item;
 	}
 	if (number < 10) {
-		randomItem = new SpellShieldItem();
+		item = new SpellShieldItem();
+		item->setName("spellshielditem");
+		return item;
 	}
-	if (number < 11) {
-		randomItem = new FrostWandItem();
-	}
-
-	return randomItem;
+	item = new FrostWandItem();
+	item->setName("frostwanditem");
+	return item;
 
 }
 
@@ -2336,7 +2354,7 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	assignEntities(mapData, entityVector);
 	assignItems(mapData, parsedItems);
 	assignMobileEntities(mapData, mobileEntityVector);
-	//cleanUnusedViews(entityViewVector);
+	cleanUnusedViews(entityViewVector);
 	cleanUnusedViews(playerViewVector);
 	//cleanUnusedViews(mobileEntityViewVector);
 
@@ -2361,7 +2379,6 @@ PersistentConfiguration ConfigurationReader::loadConfiguration(
 	configuration.setMobileEntityViewList(cleanMobileEntityViews);
 	configuration.setMobileEntities(mobileEntityVector);
 	configuration.setMobileEntitiesView(mobileEntityViewVector);
-	configuration.setEntitiesView(entityViewVector);
 	configuration.setItems(parsedItems);
 	configuration.setItemViewHolder(itemViewHolder);
 	configuration.setMobileEntityViewHolder(mobileEntityViewHolder);

@@ -332,12 +332,7 @@ void Game::playersUpdate() {
 	}
 
 }
-void Game::setFlag(Flag* flag, EntityView* view)
-{
-	MapData* map = mapView->getMapData();
-	map->addEntity(flag->getCoordinates().getRow(),flag->getCoordinates().getCol(), flag);
-	mapView->addNewEntityView(view,flag->getCoordinates());
-}
+
 void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords) {
 	player->setCoordinates(coords->getRow(), coords->getCol());
 	MapData* map = mapView->getMapData();
