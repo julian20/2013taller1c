@@ -58,7 +58,7 @@ public:
 	void setInitSpeedMagnitude(int initSpeed);
 	Speed* getInitSpeed();
 
-	void assignPath(list<Tile *> *_path);
+	void assignPath(list<Tile *> *_path, MapData* mapData);
 	bool isRunning();
 
 	void froze();
@@ -99,7 +99,7 @@ public:
 
 	void localUpdate(MapData* mapData);
 protected:
-	void loadNextPosition(MapData* mapData, bool checkNextPosition = true);
+	void loadNextPosition(MapData* mapData, bool checkColition = true);
 	void emptyPath();
 	Vector3* endPos;
 	Speed* speed;

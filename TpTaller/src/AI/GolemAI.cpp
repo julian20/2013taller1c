@@ -24,7 +24,7 @@ void GolemAI::update(MapData* mapData) {
 
 
 		if (playerDistance > PLAYER_MAX_DIST){
-			entity->assignPath(mapData->getPath(currentTile, ownerTile));
+			entity->assignPath(mapData->getPath(currentTile, ownerTile), mapData);
 			entity->attackTo(NULL);
 		} else {
 

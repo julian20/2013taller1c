@@ -45,6 +45,7 @@ EntityView::EntityView() {
 	timeSinceLastAnimation = 1000;
 
 	setNumberOfRepeats(0);
+	declareTeamColorConstant();
 }
 
 EntityView::EntityView(EntityView* otherEntity) {
@@ -75,6 +76,20 @@ EntityView::EntityView(EntityView* otherEntity) {
 	timeSinceLastAnimation = 1000;
 
 	setNumberOfRepeats(otherEntity->getNumberOfRepeats());
+	declareTeamColorConstant();
+}
+
+void EntityView::declareTeamColorConstant() {
+	// 0xAARRGGBB	A->Alpha	R->Red	G->Green	B->Blue
+	const Uint32 alpha = 0x40000000;
+
+	teamColors[0] = 0x00000000 + alpha;	// Sin color
+	teamColors[1] = 0x00FF0000 + alpha;	// Rojo
+	teamColors[2] = 0x0000FF00 + alpha;	// Verde
+	teamColors[3] = 0x000000FF + alpha;	// Azul
+	teamColors[4] = 0x00FF00FF + alpha;	// Violeta
+	teamColors[5] = 0x00FFFF00 + alpha;	// Cian
+	teamColors[6] = 0x0000FFFF + alpha;	// Amarillo
 }
 
 bool EntityView::isMovable() {

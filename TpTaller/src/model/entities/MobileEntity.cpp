@@ -142,7 +142,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	}
 
 	if (path->size() == 0) {
-		assignPath(mapData->getPath(currentTile, enemyTile));
+		assignPath(mapData->getPath(currentTile, enemyTile), mapData);
 		delete enemyTile;
 		return;
 	}
@@ -155,7 +155,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		return;
 	}
 
-	assignPath(mapData->getPath(currentTile, enemyTile));
+	assignPath(mapData->getPath(currentTile, enemyTile), mapData);
 	delete enemyTile;
 }
 
@@ -294,21 +294,21 @@ bool MobileEntity::isFrozen() {
 	return frozen;
 }
 
-void MobileEntity::loadNextPosition(MapData* mapData, bool checkNextPosition) {
+void MobileEntity::loadNextPosition(MapData* mapData, bool checkColition) {
 	if (path->empty())
 		return;
 	Tile* tile = path->front();
 
-	if (checkNextPosition) {
+	if (checkColition) {
 		if (! mapData->getTileData(tile->getCoordinates())->isWalkable()) {
-			/*if (attackToEntity != NULL) {
+			if (attackToEntity != NULL) {
 				Tile* enemyTile = attackToEntity->getTile();
-				assignPath(mapData->getPath(currentTile, enemyTile));
+				assignPath(mapData->getPath(currentTile, enemyTile), mapData);
 				delete enemyTile;
 			} else {
 				Tile* lastTile = path->back();
-				assignPath(mapData->getPath(currentTile, lastTile));
-			}*/
+				assignPath(mapData->getPath(currentTile, lastTile), mapData);
+			}
 			return;
 		}
 	}
@@ -318,7 +318,15 @@ void MobileEntity::loadNextPosition(MapData* mapData, bool checkNextPosition) {
 	Position* tilePos = tile->getPosition();
 	moveTo(tilePos->getX(), tilePos->getY());
 
+	int prevRow = currentTile->getCoordinates().getRow();
+	int prevCol = currentTile->getCoordinates().getCol();
+
 	setTile(tile);
+
+	int row = currentTile->getCoordinates().getRow();
+	int col = currentTile->getCoordinates().getCol();
+
+	mapData->updateMobilePos(prevRow, prevCol, row, col, this);
 }
 
 Vector2* MobileEntity::getMovementDirection() {
@@ -376,14 +384,14 @@ Speed* MobileEntity::getInitSpeed() {
 	return this->initSpeed;
 }
 
-void MobileEntity::assignPath(list<Tile *> *_path) {
+void MobileEntity::assignPath(list<Tile *> *_path, MapData* mapData) {
 	if (path) {
 		path->erase(path->begin(), path->end());
 		delete path;
 	}
 	this->path = _path;
 
-	loadNextPosition(NULL, false);
+	loadNextPosition(mapData, false);
 	this->hasChanged = true;
 }
 

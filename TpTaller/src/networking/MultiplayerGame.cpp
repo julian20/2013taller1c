@@ -157,46 +157,6 @@ void MultiplayerGame::updateMobs(){
 		(iaIter->second)->update(mapa);
 	}
 
-	updateMobsCoordinates();
-}
-
-void MultiplayerGame::updatePlayersCoordinates(){
-	Player* player;
-	for ( list<Player*>::iterator playerIterator = players.begin() ; playerIterator != players.end() ; ++playerIterator ){
-		player = *playerIterator;
-
-		Coordinates initCoords = mobilesCoords[player];
-		Coordinates currentCoords = player->getTile()->getCoordinates();
-
-		if (currentCoords.isEqual( initCoords ))
-			continue;
-
-		mobilesCoords[player] = currentCoords;
-
-		view->getMapData()->updateMobilePos(initCoords.getRow(), initCoords.getCol(),
-											currentCoords.getRow(), currentCoords.getCol(),
-											player);
-	}
-}
-
-void MultiplayerGame::updateMobsCoordinates(){
-	MobileEntity* mobileEntity;
-	for ( map<int,MobileEntity*>::iterator iter = mobileEntities.begin() ;
-			iter != mobileEntities.end() ; ++iter ){
-		mobileEntity = (iter->second);
-
-		Coordinates initCoords = mobilesCoords[mobileEntity];
-		Coordinates currentCoords = mobileEntity->getTile()->getCoordinates();
-
-		if (currentCoords.isEqual( initCoords ))
-			continue;
-
-		mobilesCoords[mobileEntity] = currentCoords;
-
-		view->getMapData()->updateMobilePos(initCoords.getRow(), initCoords.getCol(),
-											currentCoords.getRow(), currentCoords.getCol(),
-											mobileEntity);
-	}
 }
 
 void MultiplayerGame::playersUpdate(){
@@ -209,7 +169,6 @@ void MultiplayerGame::playersUpdate(){
 		}
 	}
 
-	updatePlayersCoordinates();
 }
 
 void MultiplayerGame::applyFPS(int timer) {

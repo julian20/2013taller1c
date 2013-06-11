@@ -61,8 +61,6 @@ PlayerView::PlayerView()
 	lastDirection = M_PI * 1 / 2;
 	chatView = NULL;
 	previousLife = 0;
-
-	declareTeamColorConstant();
 }
 
 PlayerView::PlayerView(PlayerView* otherPlayer) :
@@ -88,20 +86,6 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	this->setName(otherPlayer->getName());
 	chatView = NULL;
 	previousLife = 0;
-	declareTeamColorConstant();
-}
-
-void PlayerView::declareTeamColorConstant() {
-	// 0xAARRGGBB	A->Alpha	R->Red	G->Green	B->Blue
-	const Uint32 alpha = 0x40000000;
-
-	teamColors[0] = 0x00000000 + alpha;	// Sin color
-	teamColors[1] = 0x00FF0000 + alpha;	// Rojo
-	teamColors[2] = 0x0000FF00 + alpha;	// Verde
-	teamColors[3] = 0x000000FF + alpha;	// Azul
-	teamColors[4] = 0x00FF00FF + alpha;	// Violeta
-	teamColors[5] = 0x00FFFF00 + alpha;	// Cian
-	teamColors[6] = 0x0000FFFF + alpha;	// Amarillo
 }
 
 list<PlayerEvent*> PlayerView::getPlayerViewEvents() {
