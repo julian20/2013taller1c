@@ -19,7 +19,7 @@ public:
 	Flag(Entity* entity);
 	void attackedBy(string player);
 	void collideTo(Player& player);
-	void receiveDamage(MobileEntity& player);
+	void receiveDamage(Player& player);
 	virtual ~Flag();
 	string getClassName();
 private:
