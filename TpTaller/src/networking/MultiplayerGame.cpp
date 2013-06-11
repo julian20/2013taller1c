@@ -72,14 +72,24 @@ Entity* MultiplayerGame::getFlag() {
 }
 void MultiplayerGame::createGolem(Player* player) {
 	Golem* golem = new Golem();
-	Coordinates coor = player->getCoordinates();
-	golem->setCoordinates(coor.getRow() + 1, coor.getCol());
-	golem->setPos(Tile::computePosition(coor.getRow() + 1, coor.getCol()));
+
+	Coordinates playerCoor = player->getCoordinates();
+	Tile* playerTile = player->getTile();
+
+	Coordinates golemCoords = Coordinates(playerCoor.getRow() + 3, playerCoor.getCol() + 3);
+	Tile* aproxTile = new Tile(golemCoords);
+
+	Tile* golemTile = view->getMapData()->getValidTile(playerTile, aproxTile);
+
+	Coordinates coor = aproxTile->getCoordinates();
+
+	golem->setCoordinates(coor.getRow(), coor.getCol());
+	golem->setPos(Tile::computePosition(coor.getRow(), coor.getCol()));
 	golem->setTeam(player->getTeam());
 	golem->setName("dragon");
 	golem->setSpeed(player->getSpeed());
 	golem->setOwner(player);
-	golem->setTile(new Tile(coor));
+	golem->setTile(golemTile);
 	this->createGolemIa(golem);
 	golemsMap[player->getName()] = golem;
 	addMobileEntity(golem, coor);
@@ -88,8 +98,7 @@ void MultiplayerGame::createGolem(Player* player) {
 void MultiplayerGame::createGolemIa(Golem* golem) {
 	ArtificialIntelligence* ia = new GolemAI();
 	ia->setMobileEntity(golem);
-	int cant = ias.size();
-	this->ias[cant++] = ia;
+	this->ias[++lastAddedView] = ia;
 }
 MenuEvent MultiplayerGame::run() {
 	view->getMapData()->cleanNewEntities();
@@ -158,6 +167,7 @@ void MultiplayerGame::updateMobs() {
 
 	map<int, ArtificialIntelligence*>::iterator iaIter;
 	for (iaIter = ias.begin(); iaIter != ias.end(); ++iaIter) {
+		cout << iaIter->second->getMobileEntity()->getName() << endl;
 		(iaIter->second)->update(mapa);
 	}
 

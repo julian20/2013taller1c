@@ -69,6 +69,7 @@ public:
 	void updateVisibleTiles(MobileEntity* mobile = NULL);
 	void showAllMap();
 	static int distBetweenTilesInTiles(Tile* from, Tile* to);
+	Tile* getValidTile(Tile* from, Tile* goal);
 private:
 	float heuristicCostEstimate(Tile* from, Tile* to);
 	float distBetweenTiles(Tile* from, Tile* to);
@@ -77,7 +78,6 @@ private:
 	list<Tile *> *reconstructPath(map<int, Tile *> cameFrom, Tile* goal);
 	list<Tile *> getNeighborTiles(Tile* tile, map<int, Tile *> *tilesContainer,
 			bool getNoWalkableTiles = false);
-	Tile* getValidTile(Tile* from, Tile* goal);
 	void initializeData();
 	void checkRowColsValue(int row, int col);
 

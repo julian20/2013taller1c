@@ -17,6 +17,7 @@
 class ArtificialIntelligence {
 public:
 	ArtificialIntelligence();
+	MobileEntity* getMobileEntity();
 	void setMobileEntity(MobileEntity* entity);
 	virtual ~ArtificialIntelligence();
 	void watch(MapData* mapData);
