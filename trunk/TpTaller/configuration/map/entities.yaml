@@ -496,8 +496,6 @@
   - name: freezespellitem
     position: [6, 8, 0]
 - entityLocations:
-  - name: flag
-    position: [38, 28, 0]
   - name: chapel
     position: [23, 20, 0]
   - name: portbuilding
