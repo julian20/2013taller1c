@@ -307,6 +307,16 @@ void Player::frozeEnemiesNow(MapData* mapData) {
 	}
 }
 
+void Player::extraUpdateLocal(MapData* mapData) {
+	if (inventory.map && mainPlayer) {
+		if (inventory.mapUsed == false) {
+			inventory.mapUsed = true;
+			mapData->showAllMap();
+		}
+	}
+	usingMagic();
+}
+
 void Player::extraUpdate(MapData* mapData) {
 	if (needCastSpell)
 		castSpellNow(mapData);
@@ -314,12 +324,6 @@ void Player::extraUpdate(MapData* mapData) {
 		makeEarthquake(mapData);
 	if (needFrozeEnemies)
 		frozeEnemiesNow(mapData);
-	if (inventory.map && mainPlayer) {
-		if (inventory.mapUsed == false) {
-			inventory.mapUsed = true;
-			mapData->showAllMap();
-		}
-	}
 	usingMagic();
 	if (!attackQueue.empty()) {
 		Entity* entity = attackQueue.front();
@@ -367,7 +371,8 @@ void Player::attack(Entity& entity) {
 			this->magic -= weaponToUse->getMagic();
 		}
 	} else {
-		attackQueue.push(&entity);
+		if (attackQueue.size() < 3)
+			attackQueue.push(&entity);
 	}
 
 }

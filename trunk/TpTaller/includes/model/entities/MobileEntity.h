@@ -38,6 +38,7 @@ public:
 	void setPos(float x, float y, float z = 0);
 	void setPos(Position* pos);
 
+	virtual void extraUpdateLocal(MapData* mapData);
 	virtual void extraUpdate(MapData* mapData);
 	void update(MapData* mapData);
 	void updateFromServer(MobileEntityUpdate* update);

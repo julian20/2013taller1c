@@ -64,6 +64,7 @@ public:
 	std::vector<Power*> getPowers();
 	void setPowers(std::vector<Power*> powers);
 
+	void extraUpdateLocal(MapData* mapData);
 	void extraUpdate(MapData* mapData);
 	bool isMainPlayer();
 	void setAsMainPlayer();
