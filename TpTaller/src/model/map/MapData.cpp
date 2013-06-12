@@ -307,13 +307,6 @@ void MapData::updateMobilePos(int prevRow, int prevCol, int row, int col,
 	TileData* tileDataPrev = getTileData(prevRow, prevCol);
 	TileData* tileDataCurrent = getTileData(row, col);
 
-	// Aca se hace una llamada a:
-	// this->reverseCollide( attackToEntity );
-	// y adentro de esa llamada se hace:
-	// entity->collideTo( this );
-	// Sino nunca va a cambiar el tipo de clase de lo que colisionamos.
-	// Solo vamos a poder colisionar con Entity, y nunca podremos
-	// diferenciar si es un player, un item, o que.
 	std::list<Entity*> mobileEntities = tileDataCurrent->getEntities();
 
 	list<Entity *>::const_iterator iter;

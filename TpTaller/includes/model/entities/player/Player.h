@@ -33,9 +33,10 @@
 #define RESPAWN_TIMEOUT 15000
 #define CRYSTALBALL_MANA	3
 #define SHIELD_MANA	5
+#define EARTHQUAKE_MAGIC 10
 #define EARTHQUAKE_TIMEOUT 2000
-#define EARTHQUAKE_RADIUS 10	// Tiles
-#define EARTHQUAKE_DAMAGE 25
+#define EARTHQUAKE_RADIUS 5	// Tiles
+#define EARTHQUAKE_DAMAGE 10
 #define FROZE_RADIUS	8
 
 using namespace std;
@@ -100,7 +101,7 @@ public:
 	void SetUnactive();
 
 	void respawn();
-
+	void applyDamage(int dmg);
 	virtual void collideTo(Entity& entity);
 	virtual void reverseCollide(Entity& entity);
 	virtual void attack(Entity& entity);

@@ -51,6 +51,7 @@ void Golem::attack(Entity& entity) {
 		entityPtr->setLife(entityPtr->getLife() - 2);
 		attackTimer.start();
 	}
+	cout<<life<<endl;
 	if(entityPtr->isDead()) entityPtr->setKilledBy(team);
 }
 
