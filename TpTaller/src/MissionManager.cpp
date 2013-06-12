@@ -45,6 +45,7 @@ bool MissionManager::hasEndedFlagCapture(list<Player*> players,
 	if (flag != NULL) {
 		if (flag->isDead()) {
 			winningTeam = flag->getKilledBy();
+			scorage[winningTeam] += 15;
 			return true;
 		}
 	}
