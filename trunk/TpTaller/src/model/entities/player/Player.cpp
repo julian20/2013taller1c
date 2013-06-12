@@ -71,6 +71,19 @@ Player::Player(string name, Position* position, Speed* speed,
 	createWeapons();
 }
 
+void Player::applyDamage(int damage) {
+	//int totalDamage=damage falta calcular lo q protege el escudo
+	if (shield >= damage) {
+		shield -= damage;
+		damage = 0;
+	} else {
+		damage = damage - shield;
+		shield = 0;
+	}
+	damageBuffer = damage;
+	damageTimer.start();
+}
+
 void Player::initializeSpellsInventory() {
 	inventory.earthquake = false;
 	inventory.crystalBall = false;
@@ -157,6 +170,7 @@ void Player::setMakingEarthquake(bool makingEarthquake) {
 		this->makingEarthquake = makingEarthquake;
 
 		if (makingEarthquake) {
+			earthquakeLifeTaked = false;
 			earthquakeTimer.start();
 		}
 	}
@@ -240,7 +254,8 @@ void Player::castSpellNow(MapData* mapData) {
 }
 
 void Player::makeEarthquake(MapData* mapData) {
-	if (earthquakeLifeTaked == false) {
+	if (!earthquakeLifeTaked) {
+		this->magic -= EARTHQUAKE_MAGIC;
 		list<MobileEntity*> mobiles = mapData->getClosestEntities(*coord,
 				EARTHQUAKE_RADIUS, true);
 
@@ -257,9 +272,7 @@ void Player::makeEarthquake(MapData* mapData) {
 	} else {
 		if (earthquakeTimer.getTimeIntervalSinceStart() > EARTHQUAKE_TIMEOUT)
 			makingEarthquake = earthquakeLifeTaked = false;
-
 	}
-
 }
 
 void Player::usingMagic() {

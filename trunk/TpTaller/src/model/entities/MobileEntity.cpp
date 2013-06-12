@@ -217,7 +217,7 @@ void MobileEntity::update(MapData* mapData) {
 void MobileEntity::localUpdate(MapData* mapData) {
 	if (frozen)
 		return;
-	extraUpdate(mapData);
+	//extraUpdate(mapData);
 
 	if (IsMoving() == false) {
 		if (path->size() == 0)

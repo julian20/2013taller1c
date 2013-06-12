@@ -185,8 +185,7 @@ void Entity::applyDamage(int damage) {
 		damage = damage - shield;
 		shield = 0;
 	}
-	damageBuffer = damage;
-	damageTimer.start();
+	life-=damage;
 
 }
 
