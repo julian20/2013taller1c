@@ -97,7 +97,7 @@
     animationRepeats: 7
     baseRows: 1
     baseCols: 1  
-  - name: frostwanditem
+  - name: freezespellitem
     imageSrc: resources/items/FrostWandItem.png
     imageWidth: 55
     imageHeight: 55
@@ -482,7 +482,7 @@
     position: [1, 8, 0]
   - name: golemspellitem
     position: [34, 25, 0]
-  - name: frostwanditem
+  - name: freezespellitem
     position: [6, 8, 0]
 - entityLocations:
   - name: flag

@@ -2085,8 +2085,8 @@ Item* createRandomItem() {
 		item->setName("lifeheart");
 		return item;
 	}
-	item = new FrostWandItem();
-	item->setName("frostwanditem");
+	item = new FreezeSpellItem();
+	item->setName("freezespellitem");
 	return item;
 
 }
@@ -2212,15 +2212,15 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 
 			parsedItems.push_back(spellShieldItem);
 
-		} else if (actualItem->getName() == "frostwanditem") {
+		} else if (actualItem->getName() == "freezespellitem") {
 
-			FrostWandItem* frostWandItem = new FrostWandItem();
+			FreezeSpellItem* freezeSpellItem = new FreezeSpellItem();
 
-			frostWandItem->setName(actualItem->getName());
+			freezeSpellItem->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
-			frostWandItem->setCoordinates(coord.getRow(), coord.getCol());
+			freezeSpellItem->setCoordinates(coord.getRow(), coord.getCol());
 
-			parsedItems.push_back(frostWandItem);
+			parsedItems.push_back(freezeSpellItem);
 
 		} else if (actualItem->getName() == "golemspellitem") {
 
