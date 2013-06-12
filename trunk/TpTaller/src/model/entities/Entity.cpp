@@ -32,7 +32,7 @@ Entity::Entity() {
 	this->positionInitialized = false;
 	this->damageBuffer = 0;
 	this->walkable = false;
-	this->attackable = true;
+	this->attackable = false;
 	this->shield = 0;
 	this->removeFromGame = false;
 	this->hideInFog = false;
