@@ -362,8 +362,10 @@ void Player::attack(Entity& entity) {
 		attacking = true;
 		attackTimer.start();
 		Weapon* weaponToUse = this->getCurrentWeapon();
-		weaponToUse->attack(entity);
-		this->magic -= weaponToUse->getMagic();
+		if (weaponToUse->getMagic() <= this->magic) {
+			weaponToUse->attack(entity);
+			this->magic -= weaponToUse->getMagic();
+		}
 	} else {
 		attackQueue.push(&entity);
 	}

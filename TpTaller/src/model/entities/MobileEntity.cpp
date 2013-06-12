@@ -44,6 +44,7 @@ MobileEntity::MobileEntity() :
 	magicDamageDelay.start();
 	frozen = false;
 	walkable = false;
+	attackable = true;
 }
 
 MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
@@ -66,6 +67,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	magicDamageDelay.start();
 	frozen = false;
 	walkable = false;
+	attackable = true;
 }
 
 list<PlayerEvent*> MobileEntity::getPlayerEvents() {
@@ -150,6 +152,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		lookAtEnemy();
 		//	cancelAttack();
 		attackToEntity = NULL;
+		path->erase(path->begin(), path->end());
 		return;
 	}
 
