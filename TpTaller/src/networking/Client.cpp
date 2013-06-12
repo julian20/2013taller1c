@@ -515,9 +515,13 @@ void Client::recvGameScores() {
 	int scoreTeamOne = ComunicationUtils::recvNumber(clientID);
 	int scoreTeamTwo = ComunicationUtils::recvNumber(clientID);
 
-	cout << "Winning Team: " << winningTeam << endl;
-	cout << "Team 1 Score: " << scoreTeamOne << endl;
-	cout << "Team 2 Score: " << scoreTeamTwo << endl;
+	stringstream ss;
+	ss << "Winning Team: " << winningTeam << endl;
+	ss << "Team 1 Score: " << scoreTeamOne << endl;
+	ss << "Team 2 Score: " << scoreTeamTwo << endl;
+
+	cout << ss.str();
+	Popup::popupWindow(ss.str());
 }
 
 
