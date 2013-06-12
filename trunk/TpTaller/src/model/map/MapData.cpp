@@ -91,7 +91,7 @@ list<MobileEntity*> MapData::getDeadMobiles() {
 			TileData* tileData = getTileData(current->getCoordinates());
 			tileData->removeMobileEntity(current);
 
-			if (current->getClassName() == "Golem"){
+			if (current->getClassName() == "Golem") {
 				cout << "GOLEM" << endl;
 			}
 
@@ -117,7 +117,7 @@ void MapData::cleanNewEntities() {
 	newEntities.erase(newEntities.begin(), newEntities.end());
 }
 
-vector<Entity* > MapData::getNewEntities() {
+vector<Entity*> MapData::getNewEntities() {
 	return newEntities;
 }
 
@@ -219,6 +219,7 @@ void MapData::addItem(int row, int col, Item* object) {
 					copy = new GolemSpellItem(object);
 				else
 					copy = new Item(object);
+
 				currentData->addEntity(copy);
 				copy->setCoordinates(currentRow, currentCol);
 
@@ -247,7 +248,7 @@ void MapData::addPlayer(int row, int col, Player* player) {
 
 	Tile* personajeTile = new Tile(new Coordinates(row, col));
 	Tile* current;
-	if (tileData->isWalkable()) {// Si el tile es transitable se agrega el personaje ahi
+	if (tileData->isWalkable()) { // Si el tile es transitable se agrega el personaje ahi
 		tileData->addMobileEntity(player);
 
 		player->setTile(personajeTile);

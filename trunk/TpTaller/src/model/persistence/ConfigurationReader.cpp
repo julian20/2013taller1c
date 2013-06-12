@@ -2114,6 +2114,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			lifeHeart->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			lifeHeart->setCoordinates(coord.getRow(), coord.getCol());
+			lifeHeart->setRemoveFromGame(true);
 
 			parsedItems.push_back(lifeHeart);
 
@@ -2124,6 +2125,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			magicbottle->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			magicbottle->setCoordinates(coord.getRow(), coord.getCol());
+			magicbottle->setRemoveFromGame(true);
 
 			parsedItems.push_back(magicbottle);
 
@@ -2134,6 +2136,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			speedBoots->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			speedBoots->setCoordinates(coord.getRow(), coord.getCol());
+			speedBoots->setRemoveFromGame(true);
 
 			parsedItems.push_back(speedBoots);
 
@@ -2144,6 +2147,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			lantern->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			lantern->setCoordinates(coord.getRow(), coord.getCol());
+			lantern->setRemoveFromGame(true);
 
 			parsedItems.push_back(lantern);
 
@@ -2154,6 +2158,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			shield->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			shield->setCoordinates(coord.getRow(), coord.getCol());
+			shield->setRemoveFromGame(true);
 
 			parsedItems.push_back(shield);
 
@@ -2164,6 +2169,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			mapItem->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			mapItem->setCoordinates(coord.getRow(), coord.getCol());
+			mapItem->setRemoveFromGame(true);
 
 			parsedItems.push_back(mapItem);
 
@@ -2185,6 +2191,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			strengthBuff->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			strengthBuff->setCoordinates(coord.getRow(), coord.getCol());
+			strengthBuff->setRemoveFromGame(true);
 
 			parsedItems.push_back(strengthBuff);
 
@@ -2195,6 +2202,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			earthquakeItem->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			earthquakeItem->setCoordinates(coord.getRow(), coord.getCol());
+			earthquakeItem->setRemoveFromGame(true);
 
 			parsedItems.push_back(earthquakeItem);
 
@@ -2205,6 +2213,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			earthquakeItem->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			earthquakeItem->setCoordinates(coord.getRow(), coord.getCol());
+			earthquakeItem->setRemoveFromGame(true);
 
 			parsedItems.push_back(earthquakeItem);
 
@@ -2215,6 +2224,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			spellShieldItem->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			spellShieldItem->setCoordinates(coord.getRow(), coord.getCol());
+			spellShieldItem->setRemoveFromGame(true);
 
 			parsedItems.push_back(spellShieldItem);
 
@@ -2225,6 +2235,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			freezeSpellItem->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			freezeSpellItem->setCoordinates(coord.getRow(), coord.getCol());
+			freezeSpellItem->setRemoveFromGame(true);
 
 			parsedItems.push_back(freezeSpellItem);
 
@@ -2235,6 +2246,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			frostWandItem->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			frostWandItem->setCoordinates(coord.getRow(), coord.getCol());
+			frostWandItem->setRemoveFromGame(true);
 
 			parsedItems.push_back(frostWandItem);
 
@@ -2245,6 +2257,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			golemSpellItem->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			golemSpellItem->setCoordinates(coord.getRow(), coord.getCol());
+			golemSpellItem->setRemoveFromGame(true);
 
 			parsedItems.push_back(golemSpellItem);
 
