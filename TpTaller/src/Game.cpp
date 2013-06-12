@@ -327,7 +327,7 @@ void Game::playersUpdate() {
 
 	for (list<Player*>::iterator player = otherPlayers.begin();
 			player != otherPlayers.end(); ++player) {
-		(*player)->update(mapData);
+		(*player)->localUpdate(mapData);
 		(*player)->setHasChanged(false);
 	}
 
