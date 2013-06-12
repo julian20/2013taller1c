@@ -8,6 +8,7 @@
 #ifndef WEAPON_H_
 #define WEAPON_H_
 #include <model/entities/Entity.h>
+#include <model/entities/MobileEntity.h>
 #include <string>
 using namespace std;
 class Weapon {
@@ -15,7 +16,7 @@ public:
 	Weapon();
 	void applyDamage(Entity& entity);
 	void reduceEnergy(Entity& entity);
-	void attack(Entity& entity);
+	virtual void attack(Entity& entity);
 	string getName();
 	void setDamage(int damage);
 	void setAccuracy(int accuracy);

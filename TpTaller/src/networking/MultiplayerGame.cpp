@@ -147,8 +147,6 @@ void MultiplayerGame::addNewPlayer(Player* player, Coordinates* coordiantes) {
 }
 
 void MultiplayerGame::updateEntities() {
-	MapData* mapa = view->getMapData();
-
 	map<int, Entity*>::iterator iter;
 	for (iter = entities.begin(); iter != entities.end(); ++iter) {
 		(iter->second)->updateDamageTaken();

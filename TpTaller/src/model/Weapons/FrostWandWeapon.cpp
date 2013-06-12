@@ -15,6 +15,17 @@ FrostWandWeapon::FrostWandWeapon() : Weapon() {
 	this->name = "FrostWand";
 }
 
+void FrostWandWeapon::attack(Entity& entity) {
+	if (entity.getClassName() == "Player" ||
+		entity.getClassName() == "MobileEntity") {
+
+		MobileEntity* mobile = (MobileEntity*)&entity;
+
+		mobile->froze();
+	}
+}
+
 FrostWandWeapon::~FrostWandWeapon() {
+
 }
 

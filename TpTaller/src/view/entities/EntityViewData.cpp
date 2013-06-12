@@ -19,6 +19,9 @@ EntityViewData::EntityViewData() {
 	this->imageWidth = 0;
 	this->nClips = 0;
 	this->anchorPixel = new Vector2(0, 0);
+	this->fps = 30;
+	this->nOfRepeats = 0;
+	this->delay = 0;
 }
 
 void EntityViewData::setScale() {
