@@ -2026,7 +2026,7 @@ double uniformDistribution(double a, double b) {
 }
 
 Item* createRandomItem() {
-	srand(time(NULL));
+
 	double number = uniformDistribution(0,13);
 
 	Item* item;
@@ -2326,6 +2326,8 @@ MobileEntity* lookForFlag(vector<MobileEntity*> entityList) {
  */
 PersistentConfiguration ConfigurationReader::loadConfiguration(
 		std::string configurationFile, std::string outputFilename) {
+
+	srand(time(NULL));
 
 	if (textureHolder != NULL) {
 		delete textureHolder;

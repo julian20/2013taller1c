@@ -8,7 +8,7 @@
 #include <model/entities/Golem/Golem.h>
 
 Golem::Golem() {
-	this->life = 200 ;
+	this->life = 10 ;
 	this->magic = 0;
 	this->name = "Golem";
 	this->owner = NULL;
@@ -29,13 +29,13 @@ Player* Golem::getOwner(){
 void Golem::collideTo(MobileEntity& entity) {
 	// Casteo a puntero.
 	MobileEntity* entityPtr = (MobileEntity*) &entity;
-	entityPtr->applyDamage(10);
+	entityPtr->applyDamage(1);
 	if(entityPtr->isDead()) entityPtr->setKilledBy(team);
 }
 
 void Golem::attack(Entity& entity) {
 	Entity* entityPtr = (Entity*) &entity;
-	entityPtr->setLife(entityPtr->getLife() - 10);
+	entityPtr->setLife(entityPtr->getLife() - 1);
 	if(entityPtr->isDead()) entityPtr->setKilledBy(team);
 }
 
