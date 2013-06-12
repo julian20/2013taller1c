@@ -7,11 +7,12 @@
 
 #include <model/Weapons/Sword.h>
 
-Sword::Sword() {
-	this->damage=0;
-	this->range=0;
-	this->accuracy=0;
-
+Sword::Sword() : Weapon() {
+	this->accuracy = 10;
+	this->damage = 10;
+	this->magic = 0;
+	this->range = 1;
+	this->name = "Sword";
 }
 
 Sword::~Sword() {

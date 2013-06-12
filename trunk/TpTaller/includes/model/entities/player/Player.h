@@ -21,6 +21,7 @@
 #include <networking/ChatUpdate.h>
 #include <model/Weapons/Weapon.h>
 #include <model/Weapons/Sword.h>
+#include <model/Weapons/FrostWandWeapon.h>
 #include <model/entities/Items/Item.h>
 #include <model/entities/Items/LifeHeart.h>
 #include <model/entities/spells/SpellEffect.h>
@@ -122,6 +123,7 @@ public:
 	void changeWeapon();
 	void updateDamageTaken();
 private:
+	void createWeapons();
 	void frozeEnemiesNow(MapData* mapData);
 	void usingMagic();
 	void initializeSpellsInventory();

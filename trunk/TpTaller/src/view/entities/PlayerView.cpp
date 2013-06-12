@@ -37,7 +37,8 @@
 #define WEAPONSHEIGHT 60
 #define WEAPONSWIDTH 60
 #define WEAPONWINDOW "resources/fonts/chat-window.png"
-#define SWORDIMAGE "resources/sword.png"
+#define SWORDIMAGE "resources/weapons/sword.png"
+#define FROSTWANDIMAGE "resources/weapons/magicWand.png"
 
 double uniform(double a, double b) {
 	return rand() / (RAND_MAX + 1.0) * (b - a) + a;
@@ -61,6 +62,8 @@ PlayerView::PlayerView()
 	lastDirection = M_PI * 1 / 2;
 	chatView = NULL;
 	previousLife = 0;
+
+	loadWeaponsHudSurfaces();
 }
 
 PlayerView::PlayerView(PlayerView* otherPlayer) :
@@ -86,11 +89,14 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	this->setName(otherPlayer->getName());
 	chatView = NULL;
 	previousLife = 0;
+
+	loadWeaponsHudSurfaces();
 }
 
 list<PlayerEvent*> PlayerView::getPlayerViewEvents() {
 	return this->events;
 }
+
 void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 	SDL_Rect offset, offsetFog, offsetColor;// Se tiene que hacer esto porque al
 											// blitear se cagan algunos valores
@@ -444,25 +450,7 @@ SpriteType computeDirection(float direction) {
 
 	return sprite;
 }
-void PlayerView::showWeapon(SDL_Surface* fondo)
-{
-	SDL_Rect clip;
-	clip.x = fondo->w - WEAPONSWIDTH;
-	clip.y = fondo->h - WEAPONSHEIGHT;
-	clip.h = WEAPONSHEIGHT;
-	clip.w = WEAPONSWIDTH;
-	SDL_Surface* img;
-	img = IMG_Load(SWORDIMAGE);
 
-//	float scaleX = (float) clip.w / img->w;
-//	float scaleY = (float) clip.h / img->h;
-
-//	SDL_Surface* resizeImg = rotozoomSurfaceXY(img,0,scaleX,scaleY,0);
-	SDL_Flip(img);
-	SDL_BlitSurface(img,NULL,fondo,&clip);
-
-
-}
 void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	//cosas del sound
 	string walkID = string("walk");
@@ -693,6 +681,29 @@ void PlayerView::blitIceSpellEffect(SDL_Surface* screen, int x, int y) {
 	currentClip.h = spellSprite->h;
 	SDL_BlitSurface(spellSprite, &currentClip, screen, &offsetSpell);
 	currentIceSpellClip++;
+
+}
+
+void PlayerView::showWeaponsHud(SDL_Surface* fondo) {
+	SDL_Rect clip;
+	clip.x = fondo->w - WEAPONSWIDTH;
+	clip.y = fondo->h - WEAPONSHEIGHT;
+	clip.h = WEAPONSHEIGHT;
+	clip.w = WEAPONSWIDTH;
+	SDL_Surface* img = weaponsHud[player->getCurrentWeapon()->getName()];
+
+//	float scaleX = (float) clip.w / img->w;
+//	float scaleY = (float) clip.h / img->h;
+
+//	SDL_Surface* resizeImg = rotozoomSurfaceXY(img,0,scaleX,scaleY,0);
+	SDL_Flip(img);
+	SDL_BlitSurface(img,NULL,fondo,&clip);
+
+}
+
+void PlayerView::loadWeaponsHudSurfaces() {
+	weaponsHud["Sword"] = IMG_Load(SWORDIMAGE);
+	weaponsHud["FrostWand"] = IMG_Load(FROSTWANDIMAGE);
 
 }
 

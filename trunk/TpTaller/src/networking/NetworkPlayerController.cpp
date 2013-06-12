@@ -62,8 +62,8 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 		this->player->createGolem();
 		break;
 	case EVENT_CHANGE_WEAPON:
-			this->player->changeWeapon();
-			break;
+		this->player->changeWeapon();
+		break;
 	case EVENT_CAST_SHIELD:
 		player->setUsingShieldSpell(!player->getUsingShieldSpell());
 		break;
