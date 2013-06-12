@@ -29,11 +29,13 @@ void Golem::collideTo(MobileEntity& entity) {
 	// Casteo a puntero.
 	MobileEntity* entityPtr = (MobileEntity*) &entity;
 	entityPtr->applyDamage(10);
+	if(entityPtr->isDead()) entityPtr->setKilledBy(team);
 }
 
 void Golem::attack(Entity& entity) {
 	Entity* entityPtr = (Entity*) &entity;
 	entityPtr->setLife(entityPtr->getLife() - 10);
+	if(entityPtr->isDead()) entityPtr->setKilledBy(team);
 }
 
 Golem::~Golem() {
