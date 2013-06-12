@@ -2026,13 +2026,13 @@ double uniformDistribution(double a, double b) {
 
 Item* createRandomItem() {
 
-	int number = (int) uniformDistribution(0,12);
+	double number = uniformDistribution(0,12);
 
 	Item* item;
 
-	if (number < 1) {
-		item = new LifeHeart();
-		item->setName("lifeheart");
+	if (number < 0.2) {
+		item = new GolemSpellItem();
+		item->setName("golemspellitem");
 		return item;
 	}
 	if (number < 2) {
@@ -2081,8 +2081,8 @@ Item* createRandomItem() {
 		return item;
 	}
 	if (number < 11) {
-		item = new GolemSpellItem();
-		item->setName("golemspellitem");
+		item = new LifeHeart();
+		item->setName("lifeheart");
 		return item;
 	}
 	item = new FrostWandItem();
