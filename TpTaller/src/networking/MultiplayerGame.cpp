@@ -9,6 +9,8 @@
 #include <model/map/MapData.h>
 #include <AI/GolemAI.h>
 #include <pthread.h>
+#include <time.h>
+
 
 using namespace std;
 
@@ -48,7 +50,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	}
 
 	flag = configuration->getFlag();
-
+	changeFlagPosition(mapData);
 }
 
 MenuEvent MultiplayerGame::run() {
@@ -73,6 +75,37 @@ MenuEvent MultiplayerGame::run() {
 	}
 
 	return EXIT_EVENT;
+
+}
+
+void MultiplayerGame::changeFlagPosition(MapData* mapData) {
+
+	int prevRow = flag->getCoordinates().getRow();
+	int prevCol = flag->getCoordinates().getCol();
+
+	int randRow;
+	int randCol;
+	srand(time(NULL));
+	while (true) {
+		randRow = rand() % mapData->getNRows();
+		randCol = rand() % mapData->getNCols();
+
+		Coordinates coords = Coordinates(randRow, randCol);
+
+		if (mapData->getTileData(coords)->isWalkable())
+			break;
+	}
+
+	Coordinates coor = Coordinates(randRow, randCol);
+	Tile* newTile = new Tile(coor);
+	flag->setCoordinates(coor.getRow(), coor.getCol());
+	flag->setPos(Tile::computePosition(coor.getRow(), coor.getCol()+1));
+	flag->setTile(newTile);
+
+	int row = flag->getCoordinates().getRow();
+	int col = flag->getCoordinates().getCol();
+
+	mapData->updateMobilePos(prevRow, prevCol, row, col, flag);
 
 }
 

@@ -12,6 +12,7 @@ Flag::Flag() {
 	classname = "Flag";
 	life = 30;
 	attackable = true;
+	name = "flag";
 }
 
 Flag::Flag(Entity* entity) :

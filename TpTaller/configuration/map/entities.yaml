@@ -490,7 +490,7 @@
   - name: spellshielditem
     position: [1, 8, 0]
   - name: golemspellitem
-    position: [34, 25, 0]
+    position: [35, 27, 0]
   - name: frostwanditem
     position: [35, 27, 0]
   - name: freezespellitem

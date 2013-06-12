@@ -73,6 +73,7 @@ public:
 	virtual ~MultiplayerGame();
 
 private:
+	void changeFlagPosition(MapData* mapData);
 	void addNewMobileEntities();
 	void addNewEntities();
 	int getEntityId(Entity* entity);
