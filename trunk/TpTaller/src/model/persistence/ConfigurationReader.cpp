@@ -2026,7 +2026,7 @@ double uniformDistribution(double a, double b) {
 
 Item* createRandomItem() {
 
-	double number = uniformDistribution(0,12);
+	double number = uniformDistribution(0,13);
 
 	Item* item;
 
@@ -2083,6 +2083,11 @@ Item* createRandomItem() {
 	if (number < 11) {
 		item = new LifeHeart();
 		item->setName("lifeheart");
+		return item;
+	}
+	if (number < 12) {
+		item = new FrostWandItem();
+		item->setName("frostwanditem");
 		return item;
 	}
 	item = new FreezeSpellItem();
@@ -2221,6 +2226,16 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			freezeSpellItem->setCoordinates(coord.getRow(), coord.getCol());
 
 			parsedItems.push_back(freezeSpellItem);
+
+		}  else if (actualItem->getName() == "frostwanditem") {
+
+			FrostWandItem* frostWandItem = new FrostWandItem();
+
+			frostWandItem->setName(actualItem->getName());
+			Coordinates coord = actualItem->getCoordinates();
+			frostWandItem->setCoordinates(coord.getRow(), coord.getCol());
+
+			parsedItems.push_back(frostWandItem);
 
 		} else if (actualItem->getName() == "golemspellitem") {
 
