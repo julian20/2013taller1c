@@ -176,10 +176,10 @@
     baseCols: 1
   - name: frostwanditem
     imageSrc: resources/items/frostWand.png
-    imageWidth: 45
-    imageHeight: 45
+    imageWidth: 50
+    imageHeight: 58
     numberOfClips: 0
-    anchorPixel: [22, 17]
+    anchorPixel: [25, 20]
     fps: 8
     delay: 0 
     animationRepeats: 7
