@@ -51,9 +51,34 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
 }
 
+MenuEvent MultiplayerGame::run() {
+	view->getMapData()->cleanNewEntities();
+
+	while (true) {
+		view->getMapData()->cleanNewMobileEntities();
+
+		int ticks = SDL_GetTicks();
+
+		playersUpdate();
+		updateEntities();
+		updateMobs();
+		addNewEntities();
+		addNewMobileEntities();
+		removeDeadEntities();
+		removeDeadMobiles();
+
+		applyFPS(ticks);
+
+	}
+
+	return EXIT_EVENT;
+
+}
+
 MobileEntity* MultiplayerGame::getFlag() {
 	return flag;
 }
+
 void MultiplayerGame::createGolem(Player* player) {
 	MapData* mapData = view->getMapData();
 	Golem* golem = new Golem();
@@ -92,33 +117,11 @@ void MultiplayerGame::createGolem(Player* player) {
 	addMobileEntity(golem, coor);
 
 }
+
 void MultiplayerGame::createGolemIa(Golem* golem) {
 	ArtificialIntelligence* ia = new GolemAI();
 	ia->setMobileEntity(golem);
 	this->ias[++lastAddedView] = ia;
-}
-MenuEvent MultiplayerGame::run() {
-	view->getMapData()->cleanNewEntities();
-
-	while (true) {
-		view->getMapData()->cleanNewMobileEntities();
-
-		int ticks = SDL_GetTicks();
-
-		playersUpdate();
-		updateEntities();
-		updateMobs();
-		addNewEntities();
-		addNewMobileEntities();
-		removeDeadEntities();
-		removeDeadMobiles();
-
-		applyFPS(ticks);
-
-	}
-
-	return EXIT_EVENT;
-
 }
 
 void MultiplayerGame::addEventsToHandle(string playerName,
