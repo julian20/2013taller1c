@@ -134,7 +134,7 @@
     imageSrc: resources/items/GolemSpellItem.png
     imageWidth: 50
     imageHeight: 50
-    numberOfClips: 0
+    numberOfClips: 7
     anchorPixel: [25, 20]
     fps: 8
     delay: 0 
