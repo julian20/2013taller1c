@@ -343,12 +343,9 @@ void Player::attack(Entity& entity) {
 	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
 		attacking = true;
 		attackTimer.start();
-		//this->magic--;
-		if (magic > 0) {
-			Weapon* weaponToUse = this->getCurrentWeapon();
-			weaponToUse->attack(entity);
-			this->magic -= weaponToUse->getMagic();
-		}
+		Weapon* weaponToUse = this->getCurrentWeapon();
+		weaponToUse->attack(entity);
+		this->magic -= weaponToUse->getMagic();
 	} else {
 		attackQueue.push(&entity);
 	}
