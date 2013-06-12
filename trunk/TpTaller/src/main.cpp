@@ -14,6 +14,7 @@
 #include <model/Logs/Logs.h>
 #include <Game.h>
 #include <Menu.h>
+#include <view/Popup.h>
 #include <networking/Client.h>
 #include <networking/Server.h>
 #include <networking/SinglePlayerGame/SinglePlayerServer.h>
@@ -130,9 +131,19 @@ void initServer() {
 
 void initMenu(PersistentConfiguration* configuration, string& playerName,
 		string& playerType) {
-
+	stringstream ss;
+	ss << "Controles:" << endl;
+	ss << "   Movimiento: Mouse Click 1 sobre el terreno" << endl;
+	ss << "   Chat: Mouse Click 2 sobre otro player" << endl;
+	ss << "   Ataque y FrostWand: Mouse Click 1 sobre un enemigo" << endl;
+	ss << "   Campo de fuerza: Tecla q" << endl;
+	ss << "   IceNova: Tecla f" << endl;
+	ss << "   Earthquake: Tecla e" << endl;
+	ss << "   Bola de Cristal: Tecla b" << endl;
+	ss << "   Golem: Tecla g" << endl;
+	ss << "   Cambio de arma: Tecla TAB" << endl;
 	Menu* menu = new Menu(configuration->getAnimationConfiguration());
-
+	Popup::alertWindow(ss.str());
 	MenuEvent event = NOTHING_EVENT;
 	while (event != EXIT_EVENT) {
 
