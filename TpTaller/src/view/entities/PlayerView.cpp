@@ -511,7 +511,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 
 	FoggedSprite spriteToBeShown;
 
-	if (previousLife != life) {
+	if (previousLife > life) {
 		attacked = true;
 		if (marco >= spriteMap[string("hit")].numberOfClips)
 			//marco = 0;
@@ -566,7 +566,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		SoundEffectHandler::stopSound(walkID);
 
 	if (!player->IsMoving() && !player->isAttacking() && !player->isBlocking()
-			&& previousLife == life && !player->isDead()
+			&& previousLife <= life && !player->isDead()
 			&& !player->isCastingSpell()) {
 		if (!wasStanding) {
 			timer.start();
