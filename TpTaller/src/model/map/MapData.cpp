@@ -207,8 +207,8 @@ void MapData::addItem(int row, int col, Item* object) {
 					copy = new CrystalBallItem(object);
 				else if (object->getClassName() == "SpellShieldItem")
 					copy = new SpellShieldItem(object);
-				else if (object->getClassName() == "FrostWandItem")
-					copy = new FrostWandItem(object);
+				else if (object->getClassName() == "FreezeSpellItem")
+					copy = new FreezeSpellItem(object);
 				else if (object->getClassName() == "GolemSpellItem")
 					copy = new GolemSpellItem(object);
 				else

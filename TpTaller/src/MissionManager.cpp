@@ -98,11 +98,11 @@ bool MissionManager::hasEndedTeamFight(list<Player*> players) {
 
 	}
 
-	// No se conecto ningun jugador del equipo contrario.
+// No se conecto ningun jugador del equipo contrario.
 	if (firstTeamPlayers < 1 || secondTeamPlayers < 1)
 		return false;
 
-	// Caso muy borde.
+// Caso muy borde.
 	if (!someoneAliveFirstTeam && !someoneAliveSecondTeam) {
 		winningTeam = 0;
 		return true;
@@ -122,8 +122,8 @@ bool MissionManager::hasEndedTeamFight(list<Player*> players) {
 }
 
 bool MissionManager::hasEndedSuddenDeath(list<Player*> players) {
-	// En principio seria igual a team vs team.
-	// Cambiaria como spawnean cosas, pero no esta aca.
+// En principio seria igual a team vs team.
+// Cambiaria como spawnean cosas, pero no esta aca.
 	return hasEndedTeamFight(players);
 }
 
