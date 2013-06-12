@@ -37,7 +37,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 		if (mobileEntityVector[i]->getName() != "flag") {
 			ArtificialIntelligence* ia = new ArtificialIntelligence();
 			ia->setMobileEntity(mobileEntityVector[i]);
-			ias[i] = ia;
+			ias[i+1] = ia;
 			addMobileEntity(mobileEntityVector[i],
 					mobileEntityVector[i]->getCoordinates());
 		}
@@ -121,7 +121,7 @@ void MultiplayerGame::createGolem(Player* player) {
 void MultiplayerGame::createGolemIa(Golem* golem) {
 	ArtificialIntelligence* ia = new GolemAI();
 	ia->setMobileEntity(golem);
-	this->ias[++lastAddedView] = ia;
+	this->ias[lastAddedView+1] = ia;
 }
 
 void MultiplayerGame::addEventsToHandle(string playerName,

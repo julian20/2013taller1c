@@ -349,7 +349,7 @@ void Client::checkNewMobileEntity(){
 	// 1ro recibo la cantidad de mobs nuevos que hay
 	int n = ComunicationUtils::recvNumber(clientID);
 	// No hay nuevos jugadores
-
+	cout<<"Nuevos Mobs "<<n<<endl;
 	for (int i = 0; i < n; i++) {
 
 		MobileEntityInfo* info = ComunicationUtils::recvMobileEntityInfo(clientID);
@@ -366,6 +366,7 @@ void Client::checkNewMobileEntity(){
 	}
 
 	n = ComunicationUtils::recvNumber(clientID);
+	cout<<"Mobs borrados "<<n<<endl;
 	// No hay mobs borrados
 	if (n <= 0) return;
 
