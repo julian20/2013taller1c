@@ -70,6 +70,8 @@ public:
 	bool isAttacking();
 	void cancelAttack();
 
+	virtual void onRemove(MapData* mapData);
+
 	void setHasChanged(bool change);
 	bool getHasChanged();
 
