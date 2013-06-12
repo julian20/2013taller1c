@@ -12,6 +12,7 @@ Golem::Golem() {
 	this->magic = 0;
 	this->name = "Golem";
 	this->owner = NULL;
+	attackTimer.start();
 }
 
 int Golem::cost(){
@@ -35,7 +36,10 @@ void Golem::collideTo(MobileEntity& entity) {
 
 void Golem::attack(Entity& entity) {
 	Entity* entityPtr = (Entity*) &entity;
-	entityPtr->setLife(entityPtr->getLife() - 1);
+	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
+		entityPtr->setLife(entityPtr->getLife() - 1);
+		attackTimer.start();
+	}
 	if(entityPtr->isDead()) entityPtr->setKilledBy(team);
 }
 
