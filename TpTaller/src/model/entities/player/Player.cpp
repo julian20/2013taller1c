@@ -21,13 +21,6 @@ Player::Player() :
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	this->weapons = new list<Weapon*>;
 	team = 4;
-	//TODO: sacar este harcode. tendria q venir de yaml
-	Sword* sword = new Sword();
-	sword->setAccuracy(10);
-	sword->setDamage(10);
-	sword->setRange(1);
-	sword->setMagic(0);
-	weapons->push_front(sword);
 	isActive = true;
 	attacking = false;
 	blocking = false;
@@ -43,6 +36,7 @@ Player::Player() :
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
 	initializeSpellsInventory();
+	createWeapons();
 }
 
 Player::Player(string name, Position* position, Speed* speed,
@@ -74,6 +68,7 @@ Player::Player(string name, Position* position, Speed* speed,
 	viewRange = 200;
 	frozen = false;
 	initializeSpellsInventory();
+	createWeapons();
 }
 
 void Player::initializeSpellsInventory() {
@@ -83,6 +78,14 @@ void Player::initializeSpellsInventory() {
 	inventory.freeze = false;
 	inventory.map = inventory.mapUsed = false;
 	inventory.golemSpellItem = false;
+}
+
+void Player::createWeapons() {
+	FrostWandWeapon* frostWand = new FrostWandWeapon();
+	weapons->push_front(frostWand);
+
+	Sword* sword = new Sword();
+	weapons->push_front(sword);
 }
 
 void Player::setLife(int life) {
@@ -333,6 +336,7 @@ Weapon* Player::getCurrentWeapon() {
 	weaponToUse->setTeam(team);
 	return weaponToUse;
 }
+
 void Player::changeWeapon() {
 	Weapon* actualWeapon = weapons->front();
 	weapons->pop_front();

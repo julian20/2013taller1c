@@ -78,9 +78,11 @@ void MapController::clickListener(SDL_Event event) {
 	if ((event.type == SDL_KEYUP) && (event.key.keysym.sym == SDLK_LALT)) {
 		playerController->playerCancelBlock();
 	}
+
 	if ((event.type == SDL_KEYUP) && (event.key.keysym.sym == SDLK_TAB)) {
 		playerController->playerChangeWeapon();
 	}
+
 	if ((event.type == SDL_KEYUP) && (event.key.keysym.sym == SDLK_SPACE)) {
 		Player* player = playerController->getPlayer();
 		Vector3* pos = player->getCurrentPos();

@@ -53,9 +53,10 @@ public:
 	virtual ~PlayerView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
-	void showWeapon(SDL_Surface* screen);
+	void showWeaponsHud(SDL_Surface* screen);
 	list<PlayerEvent*> getPlayerViewEvents();
 private:
+	void loadWeaponsHudSurfaces();
 	void showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog);
 
 	void showStandingAnimation(SpriteType sprite, SDL_Surface* fondo,
@@ -96,6 +97,7 @@ private:
 	map<string, map<string, FoggedSprite > > weaponViewMap;
 	map<string, FoggedSprite> spriteMap;
 	map<string,FoggedSprite> spellMap;
+	map<string, SDL_Surface* > weaponsHud;
 	bool loaded;
 
 };

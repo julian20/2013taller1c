@@ -247,7 +247,7 @@ void Game::draw() {
 		SDL_BlitSurface(pointer, NULL, screen, &rect);
 		clickAnimation.blitNextFrame(screen, clickedLocation);
 	}
-	personajeVista->showWeapon(screen);
+	personajeVista->showWeaponsHud(screen);
 	SDL_Flip(screen);
 }
 

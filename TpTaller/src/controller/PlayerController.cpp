@@ -187,13 +187,16 @@ void PlayerController::makeEarthquake() {
 void PlayerController::frozeEnemies() {
 	events.push_back(new PlayerEvent(EVENT_FROZE_ENEMIES));
 }
-void PlayerController::playerChangeWeapon()
-{
+
+void PlayerController::playerChangeWeapon() {
 	events.push_back(new PlayerEvent(EVENT_CHANGE_WEAPON));
+	player->changeWeapon();
 }
-void PlayerController::createGolem(){
+
+void PlayerController::createGolem() {
 	events.push_back(new PlayerEvent(EVENT_GOLEM));
 }
+
 //TODO - hardcoded
 void PlayerController::toggleRunning() {
 	if (player->isRunning()) {

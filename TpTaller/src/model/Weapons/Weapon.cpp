@@ -12,6 +12,11 @@ Weapon::Weapon() {
 	damage = 0;
 	accuracy = 0;
 	magic = 0;
+	team = -1;
+}
+
+string Weapon::getName() {
+	return name;
 }
 
 void Weapon::setRange(int range) {
