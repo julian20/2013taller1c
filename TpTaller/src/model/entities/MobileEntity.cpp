@@ -8,6 +8,18 @@
 #include <model/entities/MobileEntity.h>
 #include <model/entities/Items/Item.h>
 #include <model/entities/Items/LifeHeart.h>
+#include <model/entities/Items/MagicBottle.h>
+#include <model/entities/Items/Lantern.h>
+#include <model/entities/Items/Shield.h>
+#include <model/entities/Items/MapItem.h>
+#include <model/entities/Items/Chest.h>
+#include <model/entities/Items/StrengthBuff.h>
+#include <model/entities/Items/EarthquakeItem.h>
+#include <model/entities/Items/CrystalBallItem.h>
+#include <model/entities/Items/SpellShieldItem.h>
+#include <model/entities/Items/FreezeSpellItem.h>
+#include <model/entities/Items/GolemSpellItem.h>
+#include <model/entities/Items/FrostWandItem.h>
 #include <model/map/MapData.h>
 
 using namespace std;
@@ -528,15 +540,56 @@ istream& operator >>(std::istream& in, MobileEntity& MobileEntity) {
 
 void MobileEntity::onRemove(MapData* mapData) {
 
-	LifeHeart* containingItem = new LifeHeart();
+	double number = rand() / (RAND_MAX + 1.0) * 13;
 
-	containingItem->setName("lifeheart");
-	containingItem->setCoordinates(coord->getRow(), coord->getCol());
-	containingItem->setPos(currentPos->getX(), currentPos->getY(),
+	Item* item;
+	if (number < 0.2) {
+		item = new GolemSpellItem();
+		item->setName("golemspellitem");
+	} else if (number < 2) {
+		item = new MagicBottle();
+		item->setName("magicbottle");
+	} else if (number < 3) {
+		item = new SpeedBoots();
+		item->setName("speedboots");
+	} else if (number < 4) {
+		item = new Lantern();
+		item->setName("lantern");
+	} else if (number < 5) {
+		item = new Shield();
+		item->setName("shield");
+	} else if (number < 6) {
+		item = new MapItem();
+		item->setName("mapitem");
+	} else if (number < 7) {
+		item = new StrengthBuff();
+		item->setName("strengthbuff");
+	} else if (number < 8) {
+		item = new EarthquakeItem();
+		item->setName("earthquakeitem");
+	} else if (number < 9) {
+		item = new CrystalBallItem();
+		item->setName("crystalballitem");
+	} else if (number < 10) {
+		item = new SpellShieldItem();
+		item->setName("spellshielditem");
+	} else if (number < 11) {
+		item = new LifeHeart();
+		item->setName("lifeheart");
+	} else if (number < 12) {
+		item = new FrostWandItem();
+		item->setName("frostwanditem");
+	} else {
+		item = new FreezeSpellItem();
+		item->setName("freezespellitem");
+	}
+
+	item->setCoordinates(coord->getRow(), coord->getCol());
+	item->setPos(currentPos->getX(), currentPos->getY(),
 			currentPos->getZ());
-	containingItem->setTile(new Tile(coord));
+	item->setTile(new Tile(coord));
 
-	mapData->addItem(coord->getRow(), coord->getCol(), containingItem);
+	mapData->addItem(coord->getRow(), coord->getCol(), item);
 
 }
 
