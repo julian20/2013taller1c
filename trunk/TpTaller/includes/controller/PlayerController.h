@@ -44,6 +44,8 @@ public:
 
 	bool playerHasclickedAnEntity(Coordinates* coor);
 	bool playerHasclickedAnEntity(int x, int y);
+	bool searchForEntityInNeighbours(Tile* tile);
+
 	Entity* getEntityToCollideTo();
 	void createGolem();
 	void playerChangeWeapon();

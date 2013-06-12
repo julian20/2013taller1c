@@ -66,13 +66,14 @@ bool PlayerController::clickAnotherPlayer(int x, int y) {
 bool PlayerController::playerHasclickedAnEntity(Coordinates* coor) {
 
 	TileData* tileData = this->data->getTileData(coor->getRow(),
-												 coor->getCol());
+			coor->getCol());
 
 	std::list<MobileEntity*> mobileEntities = tileData->getMobileEntities();
 	std::list<Entity*> entities = tileData->getEntities();
 
 	list<MobileEntity*>::const_iterator mobileIter;
-	for (mobileIter = mobileEntities.begin(); mobileIter != mobileEntities.end(); ++mobileIter) {
+	for (mobileIter = mobileEntities.begin();
+			mobileIter != mobileEntities.end(); ++mobileIter) {
 		MobileEntity* mobile = *mobileIter;
 
 		this->entityToCollideAgainst = mobile;
@@ -80,16 +81,53 @@ bool PlayerController::playerHasclickedAnEntity(Coordinates* coor) {
 	}
 
 	list<Entity*>::const_iterator entityIter;
-	for (entityIter = entities.begin(); entityIter != entities.end(); ++entityIter) {
+	for (entityIter = entities.begin(); entityIter != entities.end();
+			++entityIter) {
 		Entity* entity = *entityIter;
 
 		this->entityToCollideAgainst = entity;
 		return true;
 	}
 
+//	//Si no lo encontró, buscamos en los vecinos.
+//	Tile actualTile(coor);
+//	list<Tile *> tiles = this->data->getNeighborTiles(&actualTile);
+//	list<Tile*>::iterator it;
+//	for (it = tiles.begin(); it != tiles.end(); ++it) {
+//		if (searchForEntityInNeighbours(*it)){
+//			return true;
+//		}
+//	}
 	return false;
 }
 
+bool PlayerController::searchForEntityInNeighbours(Tile* tile) {
+	Coordinates coor = tile->getCoordinates();
+	TileData* tileData = this->data->getTileData(coor.getRow(),
+			coor.getCol());
+
+	std::list<MobileEntity*> mobileEntities = tileData->getMobileEntities();
+	std::list<Entity*> entities = tileData->getEntities();
+
+	list<MobileEntity*>::const_iterator mobileIter;
+	for (mobileIter = mobileEntities.begin();
+			mobileIter != mobileEntities.end(); ++mobileIter) {
+		MobileEntity* mobile = *mobileIter;
+
+		this->entityToCollideAgainst = mobile;
+		return true;
+	}
+
+	list<Entity*>::const_iterator entityIter;
+	for (entityIter = entities.begin(); entityIter != entities.end();
+			++entityIter) {
+		Entity* entity = *entityIter;
+
+		this->entityToCollideAgainst = entity;
+		return true;
+	}
+	return false;
+}
 bool PlayerController::playerHasclickedAnEntity(int x, int y) {
 	Position* cameraPos = this->camera->getPosition();
 
@@ -221,8 +259,6 @@ void PlayerController::changeStateUsingShieldSpell() {
 	//player->setUsingShieldSpell(!player->getUsingShieldSpell());
 	events.push_back(new PlayerEvent(EVENT_CAST_SHIELD));
 }
-
-
 
 void PlayerController::castSpell() {
 	events.push_back(new PlayerEvent(EVENT_CAST_SPELL));

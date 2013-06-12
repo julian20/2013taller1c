@@ -173,7 +173,18 @@
     delay: 0 
     animationRepeats: 7
     baseRows: 1
-    baseCols: 1  
+    baseCols: 1
+  - name: frostwanditem
+    imageSrc: resources/items/frostWand.png
+    imageWidth: 45
+    imageHeight: 45
+    numberOfClips: 0
+    anchorPixel: [22, 17]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
+    baseCols: 1   
   - name: chest
     imageSrc: resources/items/Chest.png
     imageWidth: 50
