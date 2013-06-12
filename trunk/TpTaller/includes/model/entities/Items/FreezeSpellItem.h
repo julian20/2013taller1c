@@ -1,7 +1,7 @@
 /*
  * FrostWandItem.h
  *
- *  Created on: Jun 12, 2013
+ *  Created on: Jun 9, 2013
  *      Author: gonchub
  */
 
@@ -11,14 +11,14 @@
 #include <model/entities/player/Player.h>
 #include <model/entities/Items/Item.h>
 
-class FrostWandItem: public Item {
+class FreezeSpellItem: public Item {
 public:
-	FrostWandItem();
-	FrostWandItem(Item* entity);
+	FreezeSpellItem();
+	FreezeSpellItem(Item* entity);
 	virtual void applyEffects(Player& entity);
 	virtual void collideTo(Player& entity);
 	virtual string getClassName();
-	virtual ~FrostWandItem();
+	virtual ~FreezeSpellItem();
 };
 
 #endif /* FROSTWANDITEM_H_ */

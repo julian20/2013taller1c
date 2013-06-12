@@ -1,16 +1,16 @@
 /*
  * FrostWandItem.cpp
  *
- *  Created on: Jun 12, 2013
+ *  Created on: Jun 9, 2013
  *      Author: gonchub
  */
 
-#include <model/entities/Items/FrostWandItem.h>
+#include <model/entities/Items/FreezeSpellItem.h>
 
-FrostWandItem::FrostWandItem() {
+FreezeSpellItem::FreezeSpellItem() {
 }
 
-FrostWandItem::FrostWandItem(Item* entity) : Item(entity) {
+FreezeSpellItem::FreezeSpellItem(Item* entity) : Item(entity) {
 	Vector3* pos = entity->getCurrentPos();
 	this->currentPos = new Vector3(pos->getX(), pos->getY(), pos->getZ());
 	Coordinates coordin = entity->getCoordinates();
@@ -25,21 +25,21 @@ FrostWandItem::FrostWandItem(Item* entity) : Item(entity) {
 	this->killedBy = entity->getKilledBy();
 }
 
-void FrostWandItem::applyEffects(Player& entity) {
+void FreezeSpellItem::applyEffects(Player& entity) {
 	Player* player = (Player*)&entity;
 
 	player->addFreeze();
 }
 
-void FrostWandItem::collideTo(Player& entity) {
+void FreezeSpellItem::collideTo(Player& entity) {
 	applyEffects(entity);
 	removeFromGame = true;
 }
 
-string FrostWandItem::getClassName() {
-	return "FrostWandItem";
+string FreezeSpellItem::getClassName() {
+	return "FreezeSpellItem";
 }
 
-FrostWandItem::~FrostWandItem() {
+FreezeSpellItem::~FreezeSpellItem() {
 }
 
