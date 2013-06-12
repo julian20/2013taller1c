@@ -95,8 +95,8 @@ void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
 			if (entityColliding->isAttackable())
 				playerAttackTo(entityColliding);
 
-			if (!entityColliding->isWalkable())
-				return;
+			//if (!entityColliding->isWalkable())
+			//	return;
 		}
 
 		if (player != NULL) {

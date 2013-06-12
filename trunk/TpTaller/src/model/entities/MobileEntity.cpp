@@ -592,8 +592,7 @@ void MobileEntity::onRemove(MapData* mapData) {
 	}
 
 	item->setCoordinates(coord->getRow(), coord->getCol());
-	item->setPos(currentPos->getX(), currentPos->getY(),
-			currentPos->getZ());
+	item->setPos(currentPos->getX(), currentPos->getY(), currentPos->getZ());
 	item->setTile(new Tile(coord));
 
 	mapData->addItem(coord->getRow(), coord->getCol(), item);
