@@ -174,6 +174,10 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	delete enemyTile;
 }
 
+void MobileEntity::extraUpdateLocal(MapData* mapData) {
+
+}
+
 void MobileEntity::extraUpdate(MapData* mapData) {
 	// Se overraidea en player
 }
@@ -220,7 +224,7 @@ void MobileEntity::update(MapData* mapData) {
 void MobileEntity::localUpdate(MapData* mapData) {
 	if (frozen)
 		return;
-	//extraUpdate(mapData);
+	extraUpdateLocal(mapData);
 
 	if (IsMoving() == false) {
 		if (path->size() == 0)

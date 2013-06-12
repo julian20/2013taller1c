@@ -33,7 +33,6 @@ EntityView* ItemViewHolder::getEntityView(string className) {
 }
 
 void ItemViewHolder::loadEntityView(string className, EntityView* view) {
-	std::cout << className << std::endl;
 	if (entityViewMap.find(className) == entityViewMap.end()) {
 		entityViewMap[className] = view;
 	} else {
