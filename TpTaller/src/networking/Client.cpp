@@ -521,7 +521,7 @@ void Client::recvGameScores() {
 	ss << "Team 2 Score: " << scoreTeamTwo << endl;
 
 	cout << ss.str();
-	Popup::popupWindow(ss.str());
+	Popup::alertWindow(ss.str());
 }
 
 

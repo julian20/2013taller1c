@@ -796,7 +796,7 @@ void Server::closeServer(string playerName,pthread_t thread){
 		ss << getMissionManager()->getWinningTeam();
 		stringstream ss2;
 		ss2 << getMissionManager()->getScore(getMissionManager()->getWinningTeam());
-		Popup::popupWindow("El juego ha finalizado. Felicitaciones Team " + ss.str() + " han ganado con " + ss2.str());
+		Popup::alertWindow("El juego ha finalizado. Felicitaciones Team " + ss.str() + " han ganado con " + ss2.str());
 		exit(0);
 	}
 
