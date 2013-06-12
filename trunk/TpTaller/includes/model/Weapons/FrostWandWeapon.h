@@ -12,6 +12,8 @@
 class FrostWandWeapon : public Weapon {
 public:
 	FrostWandWeapon();
+	virtual void attack(Entity& entity);
+
 	virtual ~FrostWandWeapon();
 };
 

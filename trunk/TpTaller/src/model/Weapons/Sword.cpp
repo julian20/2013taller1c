@@ -16,5 +16,6 @@ Sword::Sword() : Weapon() {
 }
 
 Sword::~Sword() {
+
 }
 
