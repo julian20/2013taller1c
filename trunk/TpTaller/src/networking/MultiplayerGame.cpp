@@ -55,15 +55,28 @@ MobileEntity* MultiplayerGame::getFlag() {
 	return flag;
 }
 void MultiplayerGame::createGolem(Player* player) {
+	MapData* mapData = view->getMapData();
 	Golem* golem = new Golem();
 
 	Coordinates playerCoor = player->getCoordinates();
 	Tile* playerTile = player->getTile();
+	Coordinates* golemCoords;
 
-	Coordinates golemCoords = Coordinates(playerCoor.getRow() + 3, playerCoor.getCol() + 3);
+	while (true) {
+		golemCoords = new Coordinates(playerCoor.getRow() + rand() % 10 - 5,
+									  playerCoor.getCol() + rand() % 10 - 5);
+		// Repite hasta encontrar un tile valido que pertenezca al mapa
+		if (golemCoords->isEqual(playerCoor) ||
+			golemCoords->getRow() < 0 || golemCoords->getRow() >= mapData->getNRows() ||
+			golemCoords->getCol() < 0 || golemCoords->getCol() >= mapData->getNCols() ) {
+				delete golemCoords;
+				continue;
+		}
+		break;
+	}
 	Tile* aproxTile = new Tile(golemCoords);
 
-	Tile* golemTile = view->getMapData()->getValidTile(playerTile, aproxTile);
+	Tile* golemTile = mapData->getValidTile(playerTile, aproxTile);
 
 	Coordinates coor = aproxTile->getCoordinates();
 

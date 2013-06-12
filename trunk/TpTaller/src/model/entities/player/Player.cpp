@@ -42,7 +42,6 @@ Player::Player() :
 	earthquakeLifeTaked = true;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
-	golem = false;
 	initializeSpellsInventory();
 }
 
@@ -73,7 +72,6 @@ Player::Player(string name, Position* position, Speed* speed,
 	earthquakeLifeTaked = false;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
-	golem = false;
 	frozen = false;
 	initializeSpellsInventory();
 }
