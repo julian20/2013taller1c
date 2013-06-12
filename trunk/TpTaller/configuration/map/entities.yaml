@@ -473,8 +473,6 @@
   - name: chest
     position: [49, 20, 0]
   - name: chest
-    position: [9, 14, 0]
-  - name: chest
     position: [0, 0, 0]
   - name: chest
     position: [47, 0, 0]
