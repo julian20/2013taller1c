@@ -603,6 +603,10 @@ void Player::createGolem() {
 	}
 }
 
+int Player::getAttackingDistance() {
+	return getCurrentWeapon()->getRange();
+}
+
 Player::~Player() {
 	delete currentPos;
 	delete endPos;

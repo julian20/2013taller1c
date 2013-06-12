@@ -122,6 +122,7 @@ public:
 	bool hasGolem();
 	void changeWeapon();
 	void updateDamageTaken();
+	int getAttackingDistance();
 private:
 	void createWeapons();
 	void frozeEnemiesNow(MapData* mapData);

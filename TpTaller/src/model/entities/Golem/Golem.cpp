@@ -11,6 +11,7 @@ Golem::Golem() {
 	this->life = 200 ;
 	this->magic = 0;
 	this->name = "Golem";
+	this->owner = NULL;
 }
 
 int Golem::cost(){

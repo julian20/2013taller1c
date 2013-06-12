@@ -11,7 +11,7 @@ FrostWandWeapon::FrostWandWeapon() : Weapon() {
 	this->accuracy = 10;
 	this->damage = 10;
 	this->magic = 0;
-	this->range = 1;
+	this->range = 4;
 	this->name = "FrostWand";
 }
 
