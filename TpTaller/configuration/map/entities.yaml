@@ -446,8 +446,32 @@
     position: [22, 15, 0]
   - name: mapitem
     position: [5, 5, 0]
+#cofres
   - name: chest
-    position: [8, 6, 0]
+    position: [18, 26, 0]
+  - name: chest
+    position: [8, 46, 0]
+  - name: chest
+    position: [48, 6, 0]
+  - name: chest
+    position: [14, 36, 0]
+  - name: chest
+    position: [18, 16, 0]
+  - name: chest
+    position: [39, 24, 0]
+  - name: chest
+    position: [49, 20, 0]
+  - name: chest
+    position: [9, 14, 0]
+  - name: chest
+    position: [0, 0, 0]
+  - name: chest
+    position: [47, 0, 0]
+  - name: chest
+    position: [0, 12, 0]
+  - name: chest
+    position: [4, 36, 0]
+#fin cofres
   - name: strengthbuff
     position: [3, 3, 0]
   - name: earthquakeitem
