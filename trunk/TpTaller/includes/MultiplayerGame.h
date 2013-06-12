@@ -69,6 +69,7 @@ public:
 	void updateEntities();
 	void updateMobs();
 	void createGolem(Player* player);
+	void updateGolems();
 	virtual ~MultiplayerGame();
 
 private:

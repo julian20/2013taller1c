@@ -16,7 +16,6 @@ GolemAI::GolemAI() {
 }
 
 void GolemAI::update(MapData* mapData) {
-
 	if (!entity->isDead() && !entity->isFrozen()) {
 		Tile* currentTile = entity->getTile();
 		Tile* ownerTile = ((Golem*)entity)->getOwner()->getTile();

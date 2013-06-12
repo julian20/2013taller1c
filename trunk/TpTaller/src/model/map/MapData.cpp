@@ -91,6 +91,10 @@ list<MobileEntity*> MapData::getDeadMobiles() {
 			TileData* tileData = getTileData(current->getCoordinates());
 			tileData->removeMobileEntity(current);
 
+			if (current->getClassName() == "Golem"){
+				cout << "GOLEM" << endl;
+			}
+
 			current->onRemove(this);
 		}
 	}

@@ -715,7 +715,7 @@ void operator >>(const YAML::Node& yamlNode, MobileEntity* mobileEntity) {
 			auxPosition->getY());
 	Tile* newTile = new Tile(mobileEntityCoords);
 
-	mobileEntity->setLife(1);
+	mobileEntity->setLife(10);
 	mobileEntity->setCoordinates(auxPosition->getX(), auxPosition->getY());
 	mobileEntity->setTile(newTile);
 }
