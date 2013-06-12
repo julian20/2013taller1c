@@ -130,7 +130,8 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	if (currentTile->isEqual(enemyTile))
 		return;
 	//Llego hasta el player
-	if (MapData::distBetweenTilesInTiles(currentTile, enemyTile) <= getAttackingDistance()) {
+	if (MapData::distBetweenTilesInTiles(currentTile, enemyTile)
+			<= getAttackingDistance()) {
 		delete enemyTile;
 		MobileEntity& thisMobileEntity = *this;
 		thisMobileEntity.reverseCollide(*attackToEntity);
@@ -233,7 +234,6 @@ void MobileEntity::localUpdate(MapData* mapData) {
 	}
 }
 
-
 void MobileEntity::updateFromServer(MobileEntityUpdate* update) {
 
 	this->currentPos->setValues(update->getCurrentPos()->getX(),
@@ -297,7 +297,7 @@ void MobileEntity::loadNextPosition(MapData* mapData, bool checkColition) {
 	Tile* tile = path->front();
 
 	if (checkColition) {
-		if (! mapData->getTileData(tile->getCoordinates())->isWalkable()) {
+		if (!mapData->getTileData(tile->getCoordinates())->isWalkable()) {
 			if (attackToEntity != NULL) {
 				Tile* enemyTile = attackToEntity->getTile();
 				assignPath(mapData->getPath(currentTile, enemyTile), mapData);
@@ -524,6 +524,20 @@ istream& operator >>(std::istream& in, MobileEntity& MobileEntity) {
 	in >> froze;
 	MobileEntity.frozen = froze;
 	return in;
+}
+
+void MobileEntity::onRemove(MapData* mapData) {
+
+	LifeHeart* containingItem = new LifeHeart();
+
+	containingItem->setName("lifeheart");
+	containingItem->setCoordinates(coord->getRow(), coord->getCol());
+	containingItem->setPos(currentPos->getX(), currentPos->getY(),
+			currentPos->getZ());
+	containingItem->setTile(new Tile(coord));
+
+	mapData->addItem(coord->getRow(), coord->getCol(), containingItem);
+
 }
 
 Vector3* MobileEntity::getEndPos() {
