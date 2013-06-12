@@ -38,8 +38,10 @@ public:
 	void setWinningTeam(int team);
 	void setMissionTypes(map<string, int> missionMap);
 	void setMission(string mission);
+	void regenLife(list<Player*> players);
 
 private:
+	float regen;
 	int typeOfMission, nextAvailableTeam;
 	int winningTeam;
 	map<int, int> scorage;
