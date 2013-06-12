@@ -129,7 +129,6 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	Tile* enemyTile = attackToEntity->getTile();
 	if (currentTile->isEqual(enemyTile))
 		return;
-
 	//Llego hasta el player
 	if (MapData::distBetweenTilesInTiles(currentTile, enemyTile) <= getAttackingDistance()) {
 		delete enemyTile;
@@ -150,7 +149,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	Tile* lastTile = path->back();
 
 	if (lastTile->isNeighbor(enemyTile)) {
-		cancelAttack();
+		//cancelAttack();
 		delete enemyTile;
 		return;
 	}
@@ -207,8 +206,6 @@ void MobileEntity::localUpdate(MapData* mapData) {
 		return;
 	extraUpdate(mapData);
 
-	if (attackToEntity != NULL)
-		checkAttackToNewPos(mapData);
 	if (IsMoving() == false) {
 		if (path->size() == 0)
 			return;
