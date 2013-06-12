@@ -311,7 +311,8 @@ void Player::extraUpdate(MapData* mapData) {
 	if (!attackQueue.empty()) {
 		Entity* entity = attackQueue.front();
 		attackQueue.pop();
-		attack(*entity);
+		if (!entity->isDead())
+			attack(*entity);
 	}
 
 }
