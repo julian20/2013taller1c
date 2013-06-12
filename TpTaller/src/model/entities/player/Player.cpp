@@ -20,7 +20,7 @@ Player::Player() :
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	this->weapons = new list<Weapon*>;
-	team = 4;
+	team = 2;
 	isActive = true;
 	attacking = false;
 	blocking = false;
