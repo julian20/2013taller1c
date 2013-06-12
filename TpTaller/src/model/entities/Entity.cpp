@@ -187,6 +187,7 @@ void Entity::applyDamage(int damage) {
 	}
 	damageBuffer = damage;
 	damageTimer.start();
+
 }
 
 void Entity::reduceMagic(int quantity) {

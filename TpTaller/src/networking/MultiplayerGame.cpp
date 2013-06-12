@@ -66,6 +66,7 @@ MenuEvent MultiplayerGame::run() {
 		addNewMobileEntities();
 		removeDeadEntities();
 		removeDeadMobiles();
+		updateGolems();
 
 		applyFPS(ticks);
 
@@ -114,7 +115,7 @@ void MultiplayerGame::createGolem(Player* player) {
 	golem->setTile(golemTile);
 	this->createGolemIa(golem);
 	golemsMap[player->getName()] = golem;
-	addMobileEntity(golem, coor);
+	golem->setId(addMobileEntity(golem, coor));
 
 }
 
@@ -122,6 +123,14 @@ void MultiplayerGame::createGolemIa(Golem* golem) {
 	ArtificialIntelligence* ia = new GolemAI();
 	ia->setMobileEntity(golem);
 	this->ias[++lastAddedView] = ia;
+}
+
+void MultiplayerGame::updateGolems(){
+	for (map<string,Golem*>::iterator it = golemsMap.begin() ; it != golemsMap.end() ; ++it){
+		if (it->second->isDead()){
+			removeMobileEntity(it->second->getId());
+		}
+	}
 }
 
 void MultiplayerGame::addEventsToHandle(string playerName,
@@ -408,7 +417,6 @@ void MultiplayerGame::removeMobileEntity(int id) {
 		}
 		mobileEntities.erase(id);
 
-		//TODO: SACARLO TAMBIEN DE MAP DATA
 
 		deletedMobileEntities.push_back(id);
 	}
