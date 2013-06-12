@@ -109,12 +109,12 @@
     baseRows: 1
     baseCols: 1  
   - name: spellshielditem
-    imageSrc: resources/items/SpellShieldItem.png
+    imageSrc: resources/items/glowingBall.png
     imageWidth: 45
     imageHeight: 45
-    numberOfClips: 0
+    numberOfClips: 3
     anchorPixel: [22, 17]
-    fps: 8
+    fps: 2
     delay: 0 
     animationRepeats: 7
     baseRows: 1
