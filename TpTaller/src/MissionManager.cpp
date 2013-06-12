@@ -191,8 +191,11 @@ void MissionManager::regenLife(list<Player*> players) {
 	for (iterator = players.begin(); iterator != players.end(); ++iterator) {
 
 		actualPlayer = (Player*) (*iterator);
-		actualPlayer->setLife(actualPlayer->getLife() + 1);
-		actualPlayer->setMagic(actualPlayer->getMagic() + 1);
+
+		if (actualPlayer->getLife() < 100)
+			actualPlayer->setLife(actualPlayer->getLife() + 1);
+		if (actualPlayer->getMagic() < 100)
+			actualPlayer->setMagic(actualPlayer->getMagic() + 1);
 
 	}
 }
