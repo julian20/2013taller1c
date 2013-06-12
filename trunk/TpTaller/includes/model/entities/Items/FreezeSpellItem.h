@@ -5,8 +5,8 @@
  *      Author: gonchub
  */
 
-#ifndef FROSTWANDITEM_H_
-#define FROSTWANDITEM_H_
+#ifndef FREEZESPELLITEM_H_
+#define FREEZESPELLITEM_H_
 
 #include <model/entities/player/Player.h>
 #include <model/entities/Items/Item.h>
@@ -21,4 +21,4 @@ public:
 	virtual ~FreezeSpellItem();
 };
 
-#endif /* FROSTWANDITEM_H_ */
+#endif /* FREEZESPELLITEM_H_ */
