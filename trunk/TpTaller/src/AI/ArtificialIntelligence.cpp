@@ -46,9 +46,6 @@ void ArtificialIntelligence::update(MapData* mapData) {
 
 bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData) {
 
-	if (entity->isDead())
-		entity->setRemoveFromGame(true);
-
 	entitiesNear = mapData->getClosestEntities(entity->getCoordinates(),
 			WATCHSIZE);
 	list<MobileEntity*>::iterator iter;
@@ -63,9 +60,6 @@ bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData) {
 }
 
 Entity& ArtificialIntelligence::getNearestEnemy() {
-
-	if (entity->isDead())
-		entity->setRemoveFromGame(true);
 
 	MobileEntity* mob;
 	list<MobileEntity*>::iterator iter;
