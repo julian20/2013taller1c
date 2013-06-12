@@ -19,6 +19,7 @@ MissionManager::MissionManager() {
 	scorage[0] = 0;
 	scorage[1] = 0;
 	scorage[2] = 0;
+	regen = 0;
 }
 
 MissionManager::~MissionManager() {
@@ -127,6 +128,11 @@ bool MissionManager::hasEndedSuddenDeath(list<Player*> players) {
 }
 
 bool MissionManager::hasEndedGame(list<Player*> players, MobileEntity* flag) {
+	regen += 0.05;
+	if (regen >= 1) {
+		regen = 0;
+		regenLife(players);
+	}
 	if (typeOfMission == 1) {
 		return hasEndedFlagCapture(players, flag);
 	} else if (typeOfMission == 2) {
@@ -176,4 +182,16 @@ int MissionManager::getWinningTeam() {
 
 void MissionManager::setWinningTeam(int team) {
 	winningTeam = team;
+}
+
+void MissionManager::regenLife(list<Player*> players) {
+	list<Player*>::const_iterator iterator;
+	Player* actualPlayer;
+
+	for (iterator = players.begin(); iterator != players.end(); ++iterator) {
+
+		actualPlayer = (Player*) (*iterator);
+		actualPlayer->setLife(actualPlayer->getLife() + 1);
+
+	}
 }
