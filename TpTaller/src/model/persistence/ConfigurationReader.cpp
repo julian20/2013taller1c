@@ -7,6 +7,7 @@
 
 #include <model/persistence/ConfigurationReader.h>
 #include <model/Logs/Logs.h>
+#include <time.h>
 using namespace std;
 
 /**
@@ -2025,7 +2026,7 @@ double uniformDistribution(double a, double b) {
 }
 
 Item* createRandomItem() {
-
+	srand(time(NULL));
 	double number = uniformDistribution(0,13);
 
 	Item* item;
