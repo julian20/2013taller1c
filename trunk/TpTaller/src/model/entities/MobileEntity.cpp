@@ -131,7 +131,7 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		return;
 
 	//Llego hasta el player
-	if (this->currentTile->isNeighbor(enemyTile)) {
+	if (MapData::distBetweenTilesInTiles(currentTile, enemyTile) <= getAttackingDistance()) {
 		delete enemyTile;
 		MobileEntity& thisMobileEntity = *this;
 		thisMobileEntity.reverseCollide(*attackToEntity);
@@ -561,3 +561,6 @@ Tile* MobileEntity::getTile() {
 	return retval;
 }
 
+int MobileEntity::getAttackingDistance() {
+	return 1;
+}

@@ -84,7 +84,6 @@ public:
 
 	//Operator to transform the object into a stream.
 	friend ostream& operator <<(std::ostream&, const MobileEntity&);
-
 	//Operator to load an object from a stream
 	friend istream& operator >>(std::istream&, MobileEntity&);
 
@@ -98,6 +97,7 @@ public:
 	float getLastAttackingDirecton();
 
 	void localUpdate(MapData* mapData);
+	virtual int getAttackingDistance();
 protected:
 	void loadNextPosition(MapData* mapData, bool checkColition = true);
 	void emptyPath();

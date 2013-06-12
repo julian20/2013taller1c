@@ -401,32 +401,32 @@
   - name: zombie
     position: [10, 10, 0]
     speed:
-      magnitude: 3
+      magnitude: 2
       direction: [1, 2]
   - name: zombie
     position: [10, 12, 0]
     speed:
-      magnitude: 3
+      magnitude: 2
       direction: [1, 2]
   - name: zombie
     position: [10, 14, 0]
     speed:
-      magnitude: 3
+      magnitude: 2
       direction: [1, 2]
   - name: zombie
     position: [10, 14, 0]
     speed:
-      magnitude: 3
+      magnitude: 2
       direction: [1, 2]
   - name: zombie
     position: [10, 24, 0]
     speed:
-      magnitude: 3
+      magnitude: 2
       direction: [1, 2]
   - name: zombie
     position: [20, 14, 0]
     speed:
-      magnitude: 3
+      magnitude: 2
       direction: [1, 2]
   - name: flago
     position: [35, 25, 0]
