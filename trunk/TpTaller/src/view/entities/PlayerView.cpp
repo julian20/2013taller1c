@@ -10,7 +10,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_rotozoom.h>
 #include <SDL/SDL_ttf.h>
-#include <view/sound/SoundEffectHandler.h>
 #include <model/Logs/Logs.h>
 #include <cmath>
 #include <string>
@@ -26,6 +25,7 @@
 #define DIE1_SOUND "resources/sound/player/die1.ogg"
 #define DIE2_SOUND "resources/sound/player/die2.ogg"
 #define QUAKE_SOUND "resources/sound/spells/quake.ogg"
+
 
 #define HP_BAR_WIDTH 100
 #define HP_BAR_HEIGHT 10
@@ -54,7 +54,7 @@ PlayerView::PlayerView()
 	numberOfClips = 0;
 	movable = true;
 	direction = DOWN;
-	wasStanding  = true;
+	wasStanding = true;
 	attacking = attacked = loaded = spellBeingCast = spellHasEnded = false;
 	player = NULL;
 	nameImage = NULL;
@@ -79,8 +79,8 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	setNumberOfRepeats(otherPlayer->getNumberOfRepeats());
 	movable = true;
 	direction = DOWN;
-	wasStanding =  true;
-	attacking = attacked = loaded = spellBeingCast = spellHasEnded =false;
+	wasStanding = true;
+	attacking = attacked = loaded = spellBeingCast = spellHasEnded = false;
 	player = NULL;
 	nameImage = NULL;
 	currentSprite = DOWN;
@@ -98,8 +98,8 @@ list<PlayerEvent*> PlayerView::getPlayerViewEvents() {
 }
 
 void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
-	SDL_Rect offset, offsetFog, offsetColor;// Se tiene que hacer esto porque al
-											// blitear se cagan algunos valores
+	SDL_Rect offset, offsetFog, offsetColor; // Se tiene que hacer esto porque al
+											 // blitear se cagan algunos valores
 	if (drawFog)
 		return;
 
@@ -124,11 +124,11 @@ void PlayerView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
 	blitName(screen, x, y);
 
 	blitHPBar(screen, x, y);
-	blitIceSpellEffect(screen,x,y);
+	blitIceSpellEffect(screen, x, y);
 }
 
 void PlayerView::blitSpellEffect(SDL_Surface* screen, int x, int y) {
-	if (!player->getUsingShieldSpell()){
+	if (!player->getUsingShieldSpell()) {
 		currentSpellClip = 0;
 		return;
 	}
@@ -267,6 +267,7 @@ void initSounds() {
 	SoundEffectHandler::loadSound(string(DIE1_SOUND), DIE1_SOUND);
 	SoundEffectHandler::loadSound(string(DIE2_SOUND), DIE2_SOUND);
 	SoundEffectHandler::loadSound(string(QUAKE_SOUND), QUAKE_SOUND);
+	SoundEffectHandler::loadSound(string(ICE_SOUND), ICE_SOUND);
 
 }
 
@@ -450,17 +451,22 @@ SpriteType computeDirection(float direction) {
 
 	return sprite;
 }
-
+bool wasFrozenBefore = false;
 void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	//cosas del sound
 	string walkID = string("walk");
 	string attackID = string("attack");
+	if (player->isFrozen() && !wasFrozenBefore)
+		if (!SoundEffectHandler::isSoundPlaying(ICE_SOUND)){
+			SoundEffectHandler::playSound(ICE_SOUND);
+			wasFrozenBefore = true;
+		}
 	if (!loaded) {
 		loaded = true;
 		loadPlayerImage();
 		damageReceivedTimer.start();
 	}
-	if (player->getMagic()<=0)
+	if (player->getMagic() <= 0)
 		spellHasEnded = true;
 	player->updateDamageTaken();
 	Vector2* movementDirection = this->player->getMovementDirection();
@@ -536,7 +542,7 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 		spellBeingCast = true;
 		spellHasEnded = false;
 		if (!SoundEffectHandler::isSoundPlaying(QUAKE_SOUND))
-					SoundEffectHandler::playSound(QUAKE_SOUND);
+			SoundEffectHandler::playSound(QUAKE_SOUND);
 	}
 
 	if (player->isAttacking()) {
@@ -653,7 +659,8 @@ void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 
 	showFrame(screen, &clipToDraw, drawFog);
 	if (animationChangeRate >= ANIMATION_CHANGE_DELAY) {
-		if (!player->isFrozen()) this->marco++;
+		if (!player->isFrozen())
+			this->marco++;
 		animationChangeRate = 0; // Move to the next marco in the animation
 	} else
 		animationChangeRate++;
@@ -661,19 +668,20 @@ void PlayerView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 }
 
 void PlayerView::blitIceSpellEffect(SDL_Surface* screen, int x, int y) {
-	if (!player->isFrozen()){
+	if (!player->isFrozen()) {
 		currentIceSpellClip = 0;
 		return;
 	}
 	SDL_Surface* spellSprite = textureHolder->getTexture(string(ICE_IMG));
 	int numberOfClips = 4;
 	if (currentIceSpellClip >= numberOfClips) {
-		currentIceSpellClip = numberOfClips-1;
+		currentIceSpellClip = numberOfClips - 1;
 	}
 	SDL_Rect offsetSpell, currentClip;
 	int frameWidth = spellSprite->w / numberOfClips;
 	offsetSpell.x = (int) x + camPos->getX() - frameWidth / 2 + 10;
-	offsetSpell.y = (int) y + camPos->getY() - this->anchorPixel->getY() + frameWidth/10;
+	offsetSpell.y = (int) y + camPos->getY() - this->anchorPixel->getY()
+			+ frameWidth / 10;
 
 	currentClip.x = currentIceSpellClip * frameWidth;
 	currentClip.y = 0;
@@ -697,7 +705,7 @@ void PlayerView::showWeaponsHud(SDL_Surface* fondo) {
 
 //	SDL_Surface* resizeImg = rotozoomSurfaceXY(img,0,scaleX,scaleY,0);
 	SDL_Flip(img);
-	SDL_BlitSurface(img,NULL,fondo,&clip);
+	SDL_BlitSurface(img, NULL, fondo, &clip);
 
 }
 

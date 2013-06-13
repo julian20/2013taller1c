@@ -14,8 +14,10 @@
 #include <view/TextHandler.h>
 #include <model/entityProperties/Position.h>
 #include <SDL/SDL.h>
+#include <view/sound/SoundEffectHandler.h>
 #include <SDL/SDL_image.h>
 #include <model/Vector2.h>
+#define ICE_SOUND "resources/sound/spells/ice.ogg"
 
 #include <string>
 
@@ -66,7 +68,8 @@ protected:
 	int numberOfClips;
 	int direction;
 	float lastDirection;
-	bool wasStanding;
+	bool wasStanding, wasFrozen;
+
 
 	SDL_Surface* attackImage;
 
