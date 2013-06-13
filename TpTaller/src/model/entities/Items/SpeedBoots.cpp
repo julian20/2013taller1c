@@ -27,8 +27,8 @@ SpeedBoots::SpeedBoots(Item* entity) :
 }
 
 void SpeedBoots::applyEffects(Player& entity) {
-	entity.setSpeedMagnitude(entity.getSpeed()->getMagnitude() + 1);
-	entity.setInitSpeedMagnitude(entity.getInitSpeed()->getMagnitude() + 1);
+	entity.setSpeedMagnitude(entity.getSpeed()->getMagnitude()*2);
+	entity.setInitSpeedMagnitude(entity.getInitSpeed()->getMagnitude()*2);
 }
 
 void SpeedBoots::collideTo(Player& entity) {

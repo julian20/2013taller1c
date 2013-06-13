@@ -520,7 +520,14 @@ void Server::sendNewPlayers(int clientSocket,string playerName) {
 void Server::sendNewMobileEntities(int clientSocket,string playerName){
 	// 1ro envio la cantidad de mobs que voy a mandar
 	map<int,MobileEntityInfo*> infos = game->getMobileEntityInfo();
-	int n = infos.size() + deletedMobileEntities[playerName].size() - sendedMobileEntities[playerName].size();
+	vector<int> deleted = game->getDeletedMobileEntities();
+
+
+	for (unsigned int i = 0 ; i < deleted.size() ; i++){
+		if (sendedMobileEntities[playerName].count(deleted[i]) > 0) sendedMobileEntities[playerName].erase(deleted[i]);
+	}
+
+	int n = infos.size() - sendedMobileEntities[playerName].size();
 
 	ComunicationUtils::sendNumber(clientSocket, n);
 
@@ -535,10 +542,8 @@ void Server::sendNewMobileEntities(int clientSocket,string playerName){
 
 	}
 
-	vector<int> deleted = game->getDeletedMobileEntities();
-	int cantDeleted = deletedMobileEntities[playerName].size();
-	//int ot = deleted.size();
-	n = deleted.size() - cantDeleted;
+
+	n = deleted.size() - deletedMobileEntities[playerName].size();
 	ComunicationUtils::sendNumber(clientSocket, n);
 	if (n <= 0) return;
 	for (unsigned int i = 0 ; i < deleted.size() ; i++){
@@ -792,6 +797,7 @@ void Server::closeServer(string playerName,pthread_t thread){
 		stringstream ss2;
 		ss2 << getMissionManager()->getScore(getMissionManager()->getWinningTeam());
 		Popup::alertWindow("El juego ha finalizado. Felicitaciones Team " + ss.str() + " han ganado con " + ss2.str());
+		close(serverID);
 		exit(0);
 	}
 
