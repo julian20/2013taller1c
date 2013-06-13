@@ -380,7 +380,10 @@ int MultiplayerGame::getEntityId(Entity* entity) {
 		Entity* current = it->second;
 
 		if (current == entity)
+		{
+
 			return it->first;
+		}
 	}
 
 	std::cout << "Entity no encontrada" << std::endl;
@@ -393,7 +396,9 @@ int MultiplayerGame::getMobileId(MobileEntity* entity) {
 		MobileEntity* current = it->second;
 
 		if (current == entity)
+		{
 			return it->first;
+		}
 	}
 
 	std::cout << "MobileEntity no encontrada" << std::endl;
@@ -445,7 +450,7 @@ int MultiplayerGame::addMobileEntity(MobileEntity* entity,
 void MultiplayerGame::removeMobileEntity(int id) {
 	if (mobileEntities.count(id) != 0) {
 		if (ias.count(id) != 0) {
-			delete ias[id];
+		//	delete ias[id];
 			ias.erase(id);
 		}
 		mobileEntities.erase(id);

@@ -19,6 +19,7 @@ void ArtificialIntelligence::setMobileEntity(MobileEntity* entity) {
 
 void ArtificialIntelligence::update(MapData* mapData) {
 
+	//cout<<"pos del mob "<<entity->getCoordinates().getRow()<< " "<<entity->getCoordinates().getCol()<<endl;
 	if (entity->isDead())
 		entity->setRemoveFromGame(true);
 

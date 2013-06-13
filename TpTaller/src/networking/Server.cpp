@@ -520,9 +520,6 @@ void Server::sendNewPlayers(int clientSocket,string playerName) {
 void Server::sendNewMobileEntities(int clientSocket,string playerName){
 	// 1ro envio la cantidad de mobs que voy a mandar
 	map<int,MobileEntityInfo*> infos = game->getMobileEntityInfo();
-//	int c1 = infos.size() ;
-//	int c2 = sendedMobileEntities[playerName].size();
-//	cout << "viene de game "<<c1<< " y tengo en server "<<c2<<endl;
 	int n = infos.size() + deletedMobileEntities[playerName].size() - sendedMobileEntities[playerName].size();
 
 	ComunicationUtils::sendNumber(clientSocket, n);
@@ -542,11 +539,9 @@ void Server::sendNewMobileEntities(int clientSocket,string playerName){
 	int cantDeleted = deletedMobileEntities[playerName].size();
 	//int ot = deleted.size();
 	n = deleted.size() - cantDeleted;
-//	cout<<"deleted "<<n<<endl;
 	ComunicationUtils::sendNumber(clientSocket, n);
 	if (n <= 0) return;
 	for (unsigned int i = 0 ; i < deleted.size() ; i++){
-	//for (unsigned int i = 0 ; i < n ; i++){
 		if (deletedMobileEntities[playerName].count(deleted[i]) == 0){
 			ComunicationUtils::sendNumber(clientSocket,deleted[i]);
 			deletedMobileEntities[playerName][deleted[i]] = deleted[i];
