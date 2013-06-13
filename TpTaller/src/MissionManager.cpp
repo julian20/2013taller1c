@@ -193,6 +193,8 @@ void MissionManager::regenLife(list<Player*> players) {
 
 		actualPlayer = (Player*) (*iterator);
 
+		if (actualPlayer->isDead()) continue;
+
 		if (actualPlayer->getLife() < 100)
 			actualPlayer->setLife(actualPlayer->getLife() + 1);
 		if (actualPlayer->getMagic() < 100)
