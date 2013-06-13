@@ -370,7 +370,15 @@ void Game::addNewEntity(Entity* entity, EntityView* view, Coordinates* coords, i
 }
 
 void Game::removeMobileEntity(int id){
+
+	if (mobileEntitiesView.count(id) == 0){
+		return;
+	}
+
 	MobileEntityView* view = mobileEntitiesView[id];
+	if (!view) return;
+	mobileEntities.erase(id);
+	mobileEntitiesView.erase(id);
 	mapView->removeMobileEntity(view);
 	// TODO: Estas lineas estan comentadas porque al borrarlo dejo a otro thread accediendo a algo que esta en estado invalido.
 //	delete mobileEntities[id];
@@ -378,8 +386,15 @@ void Game::removeMobileEntity(int id){
 }
 
 void Game::removeEntity(int id){
+
+	if (entitiesView.count(id) == 0){
+		return;
+	}
+
 	EntityView* view = entitiesView[id];
 	if (!view) return;
+	entities.erase(id);
+	entitiesView.erase(id);
 	mapView->removeEntity(view);
 	// TODO: Estas lineas estan comentadas porque al borrarlo dejo a otro thread accediendo a algo que esta en estado invalido.
 //	delete mobileEntities[id];

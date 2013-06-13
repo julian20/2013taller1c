@@ -104,7 +104,7 @@ void initMultiplayerGame(string& playerName, string& playerType) {
 	client->run();
 
 	delete client;
-	delete game;
+	//delete game;
 
 }
 
