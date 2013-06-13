@@ -55,10 +55,9 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
 MenuEvent MultiplayerGame::run() {
 	view->getMapData()->cleanNewEntities();
+	view->getMapData()->cleanNewMobileEntities();
 
 	while (true) {
-		view->getMapData()->cleanNewMobileEntities();
-
 		int ticks = SDL_GetTicks();
 
 		playersUpdate();
@@ -345,6 +344,7 @@ vector<int> MultiplayerGame::getDeletedEntities() {
 void MultiplayerGame::addNewMobileEntities() {
 	MapData* mapData = view->getMapData();
 	vector<MobileEntity*> newMobiles = mapData->getnewMobileEntities();
+	mapData->cleanNewMobileEntities();
 
 	std::vector<MobileEntity *>::const_iterator iter;
 	for (iter = newMobiles.begin(); iter != newMobiles.end(); ++iter) {
@@ -355,14 +355,13 @@ void MultiplayerGame::addNewMobileEntities() {
 
 		addMobileEntity(current, coords);
 	}
-
-	mapData->cleanNewMobileEntities();
 }
 
 void MultiplayerGame::addNewEntities() {
 	MapData* mapData = view->getMapData();
 
 	vector<Entity*> newEntities = mapData->getNewEntities();
+	mapData->cleanNewEntities();
 
 	std::vector<Entity *>::const_iterator iter;
 	for (iter = newEntities.begin(); iter != newEntities.end(); ++iter) {
@@ -370,8 +369,6 @@ void MultiplayerGame::addNewEntities() {
 
 		addEntity(current, current->getCoordinates());
 	}
-
-	view->getMapData()->cleanNewEntities();
 }
 
 int MultiplayerGame::getEntityId(Entity* entity) {

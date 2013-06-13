@@ -143,9 +143,8 @@ void Player::enableGolem() {
 }
 
 void Player::setUsingCrystalBall(bool usingCrystalBall) {
-	if (inventory.crystalBall) {
+	if (inventory.crystalBall)
 		this->usingCrystalBall = usingCrystalBall;
-	}
 }
 
 void Player::setUsingShieldSpell(bool usingShieldSpell) {
@@ -276,9 +275,8 @@ void Player::makeEarthquake(MapData* mapData) {
 }
 
 void Player::usingMagic() {
-	if (usingCrystalBall) {
+	if (usingCrystalBall)
 		reduceMagic(CRYSTALBALL_MANA);
-	}
 
 	if (usingInvulnerability)
 		reduceMagic(SHIELD_MANA);
@@ -406,6 +404,8 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->frozen = update->getFrozen();
 	this->magic = update->getMagic();
 	this->inventory.map = update->getMapItem();
+	this->inventory.crystalBall = update->getCrystalBall();
+	this->usingCrystalBall = update->getUsingCrystalBall();
 	if (currentTile)
 		delete currentTile;
 	this->currentTile = update->getTile();
@@ -455,6 +455,8 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setInvulnerable(this->usingInvulnerability);
 	update->setFrozen(this->frozen);
 	update->setMapItem(this->inventory.map);
+	update->setUsingCrystalBall(this->usingCrystalBall);
+	update->setCrystalBall(this->inventory.crystalBall);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {

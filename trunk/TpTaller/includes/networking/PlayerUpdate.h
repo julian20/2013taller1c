@@ -35,6 +35,10 @@ public:
 	bool getMapItem();
 	void setMakingEarthquake(bool makingEarthquake);
 	bool getMakingEarthquake();
+	void setUsingCrystalBall(bool usingCrystalBall);
+	bool getUsingCrystalBall();
+	void setCrystalBall(bool crystalBall);
+	bool getCrystalBall();
 
 	void setInvulnerable(bool invul);
 	bool getIsInvulnerable();
@@ -49,10 +53,11 @@ private:
 	bool blocking;
 	bool active;
 	bool makingEarthquake;
+	bool crystalBall;
+	bool usingCrystalBall;
 	bool invulnerable;
 	bool golem;
 	bool mapItem;
-
 };
 
 #endif /* PLAYERUPDATE_H_ */

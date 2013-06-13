@@ -70,6 +70,9 @@ void NetworkPlayerController::handleEvent(PlayerEvent* event){
 	case EVENT_FROZE_ENEMIES:
 		player->frozeEnemies();
 		break;
+	case EVENT_CHANGE_STATE_CRYSTAL_BALL:
+		player->setUsingCrystalBall(!player->getUsingCrystalBall());
+		break;
 	}
 
 	player->setHasChanged(true);

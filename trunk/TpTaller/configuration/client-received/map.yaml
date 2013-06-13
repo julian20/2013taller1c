@@ -61,7 +61,20 @@
     baseRows: 1
     baseCols: 1
     delay: 0.5
-- entityViews:  
+  - name: flago
+    walkingImageSrc: resources/buildings/bandera.png
+    idleImageSrc: resources/buildings/bandera.png
+    runningImageSrc: resources/buildings/bandera.png
+    attackImageSrc: resources/buildings/bandera.png
+    idleBlockingImageSrc: resources/buildings/bandera.png
+    imageWidth: 64
+    imageHeight: 64
+    numberOfClips: 0
+    anchorPixel: [64, 40]
+    baseRows: 1
+    baseCols: 1
+    delay: 0.5
+- entityViews:
   - name: crystalballitem
     imageSrc: resources/items/CrystalBallItemAnimated.png
     imageWidth: 50
@@ -72,8 +85,19 @@
     delay: 0 
     animationRepeats: 7
     baseRows: 1
+    baseCols: 1
+  - name: flag
+    imageSrc: resources/buildings/warbanner.png
+    imageWidth: 128
+    imageHeight: 128
+    numberOfClips: 0
+    anchorPixel: [32, 25]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
     baseCols: 1  
-  - name: frostwanditem
+  - name: freezespellitem
     imageSrc: resources/items/FrostWandItem.png
     imageWidth: 55
     imageHeight: 55
@@ -85,12 +109,12 @@
     baseRows: 1
     baseCols: 1  
   - name: spellshielditem
-    imageSrc: resources/items/SpellShieldItem.png
+    imageSrc: resources/items/glowingBall.png
     imageWidth: 45
     imageHeight: 45
-    numberOfClips: 0
+    numberOfClips: 3
     anchorPixel: [22, 17]
-    fps: 8
+    fps: 2
     delay: 0 
     animationRepeats: 7
     baseRows: 1
@@ -101,6 +125,17 @@
     imageHeight: 50
     numberOfClips: 0
     anchorPixel: [25, 15]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
+    baseCols: 1   
+  - name: golemspellitem
+    imageSrc: resources/items/GolemSpellItem.png
+    imageWidth: 50
+    imageHeight: 50
+    numberOfClips: 7
+    anchorPixel: [25, 20]
     fps: 8
     delay: 0 
     animationRepeats: 7
@@ -138,7 +173,18 @@
     delay: 0 
     animationRepeats: 7
     baseRows: 1
-    baseCols: 1  
+    baseCols: 1
+  - name: frostwanditem
+    imageSrc: resources/items/frostWand.png
+    imageWidth: 50
+    imageHeight: 58
+    numberOfClips: 0
+    anchorPixel: [25, 20]
+    fps: 8
+    delay: 0 
+    animationRepeats: 7
+    baseRows: 1
+    baseCols: 1   
   - name: chest
     imageSrc: resources/items/Chest.png
     imageWidth: 50
@@ -254,6 +300,8 @@
     imageHeight: 249
     numberOfClips: 0
     anchorPixel: [120, 180]
+    baseRows: 4
+    baseCols: 3
   - name: chapel
     imageSrc: resources/buildings/chapel.png
     imageWidth: 220
@@ -305,7 +353,7 @@
 - gameConfiguration:
     serverIP: 127.0.0.1
     serverPort: 32001
-    missionType: TeamFight
+    missionType: FlagCapture
     fps: 30
     delay: 10
     movementMargin: 90
@@ -347,7 +395,7 @@
 - mapDimensions: [50, 50]
 - playerLocations:
   - name: NewPlayer
-    position: [9, 9, 0]
+    position: [36, 28, 0]
     speed:
       magnitude: 4
       direction: [1, 2]
@@ -361,6 +409,41 @@
     mainPlayer: true
     viewRange: 400
 - mobileEntityLocations:
+  - name: zombie
+    position: [10, 10, 0]
+    speed:
+      magnitude: 2
+      direction: [1, 2]
+  - name: zombie
+    position: [10, 12, 0]
+    speed:
+      magnitude: 2
+      direction: [1, 2]
+  - name: zombie
+    position: [10, 14, 0]
+    speed:
+      magnitude: 2
+      direction: [1, 2]
+  - name: zombie
+    position: [10, 14, 0]
+    speed:
+      magnitude: 2
+      direction: [1, 2]
+  - name: zombie
+    position: [10, 24, 0]
+    speed:
+      magnitude: 2
+      direction: [1, 2]
+  - name: zombie
+    position: [20, 14, 0]
+    speed:
+      magnitude: 2
+      direction: [1, 2]
+  - name: flago
+    position: [35, 25, 0]
+    speed:
+      magnitude: 0
+      direction: [0, 0]
 - itemLocations:
   - name: lifeheart
     position: [15, 15, 0]
@@ -374,8 +457,30 @@
     position: [22, 15, 0]
   - name: mapitem
     position: [5, 5, 0]
+#cofres
   - name: chest
-    position: [8, 6, 0]
+    position: [18, 26, 0]
+  - name: chest
+    position: [8, 46, 0]
+  - name: chest
+    position: [48, 6, 0]
+  - name: chest
+    position: [14, 36, 0]
+  - name: chest
+    position: [18, 16, 0]
+  - name: chest
+    position: [39, 24, 0]
+  - name: chest
+    position: [49, 20, 0]
+  - name: chest
+    position: [0, 0, 0]
+  - name: chest
+    position: [47, 0, 0]
+  - name: chest
+    position: [0, 12, 0]
+  - name: chest
+    position: [4, 36, 0]
+#fin cofres
   - name: strengthbuff
     position: [3, 3, 0]
   - name: earthquakeitem
@@ -384,7 +489,11 @@
     position: [19, 21, 0]
   - name: spellshielditem
     position: [1, 8, 0]
+  - name: golemspellitem
+    position: [35, 27, 0]
   - name: frostwanditem
+    position: [35, 27, 0]
+  - name: freezespellitem
     position: [6, 8, 0]
 - entityLocations:
   - name: chapel
@@ -411,8 +520,6 @@
     position: [17, 5, 0]
   - name: barracks
     position: [5, 39, 0]
-  - name: watermill
-    position: [8, 3, 0]
   - name: farmhouse
     position: [13, 13, 0]
   - name: farmhouse

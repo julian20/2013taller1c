@@ -21,9 +21,12 @@ PlayerUpdate::PlayerUpdate() :
 	this->nextTile = new Tile();
 	this->initCoords = new Coordinates();
 	this->chat = NULL;
-	invulnerable = false;
-	makingEarthquake = false;
+	this->invulnerable = false;
+	this->makingEarthquake = false;
 	this->golem = false;
+	this->usingCrystalBall = false;
+	this->mapItem = false;
+	this->crystalBall = false;
 }
 
 void PlayerUpdate::setChat(Chat* chat) {
@@ -62,6 +65,22 @@ bool PlayerUpdate::getMakingEarthquake() {
 	return makingEarthquake;
 }
 
+void PlayerUpdate::setUsingCrystalBall(bool usingCrystalBall) {
+	this->usingCrystalBall = usingCrystalBall;
+}
+
+bool PlayerUpdate::getUsingCrystalBall() {
+	return usingCrystalBall;
+}
+
+void PlayerUpdate::setCrystalBall(bool crystalBall) {
+	this->crystalBall = crystalBall;
+}
+
+bool PlayerUpdate::getCrystalBall() {
+	return crystalBall;
+}
+
 void PlayerUpdate::setInvulnerable(bool inv) {
 	this->invulnerable = inv;
 }
@@ -81,7 +100,8 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 			<< " " << update.lastAttackingDirection << " " << update.team << " "
 			<< update.castingSpell << " " << update.viewRange << " "
 			<< update.frozen << " " << update.makingEarthquake << " "
-			<< update.invulnerable << " " << update.golem << " " << update.mapItem;
+			<< update.invulnerable << " " << update.golem << " " << update.mapItem
+			<< " " << update.usingCrystalBall << " " << update.crystalBall;
 
 	return out;
 }
@@ -134,19 +154,13 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	int view;
 	in >> view;
 	update.setViewRange(view);
-	bool frozen;
-	in >> frozen;
-	update.frozen = frozen;
-	bool earth;
-	in >> earth;
-	update.makingEarthquake = earth;
-	bool inv;
-	in >> inv;
-	update.invulnerable = inv;
-	bool golem;
-	in >> golem;
-	update.golem = golem;
+	in >> update.frozen;
+	in >> update.makingEarthquake;
+	in >> update.invulnerable;
+	in >> update.golem;
 	in >> update.mapItem;
+	in >> update.usingCrystalBall;
+	in >> update.crystalBall;
 	return in;
 }
 
