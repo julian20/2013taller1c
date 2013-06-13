@@ -30,16 +30,18 @@ void ArtificialIntelligence::update(MapData* mapData) {
 
 			if (mapData->distBetweenTilesInTiles(currentTile,
 					enemyTile) < WATCHSIZE)
+				entity->cancelAttack();
 				return;
 		}
-
-		if (this->isAnyEnemyClose(mapData)) {
-			Entity& enemy = this->getNearestEnemy();
-			entity->attackTo(&enemy);
-		} else {
-			if (entity->getClassName() == "MobileEntity") {
-				entity->cancelAttack();
-				this->watch(mapData);
+		else{
+			if (this->isAnyEnemyClose(mapData)) {
+				Entity& enemy = this->getNearestEnemy();
+				entity->attackTo(&enemy);
+			} else {
+				//if (entity->getClassName() == "MobileEntity") {
+					entity->cancelAttack();
+					this->watch(mapData);
+				//}
 			}
 		}
 	}
@@ -53,7 +55,7 @@ bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData) {
 
 	for (iter = entitiesNear.begin(); iter != entitiesNear.end(); ++iter) {
 		MobileEntity* mob = *iter;
-		if (mob->getTeam() != this->entity->getTeam())
+		if (mob->getTeam() != this->entity->getTeam() && !mob->isDead())
 			return true;
 	}
 	return false;
@@ -66,7 +68,7 @@ Entity& ArtificialIntelligence::getNearestEnemy() {
 	list<MobileEntity*>::iterator iter;
 	for (iter = entitiesNear.begin(); iter != entitiesNear.end(); ++iter) {
 		mob = *iter;
-		if (mob->getTeam() != this->entity->getTeam())
+		if (mob->getTeam() != this->entity->getTeam()&& !mob->isDead())
 			return *mob;
 	}
 
