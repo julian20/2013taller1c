@@ -15,8 +15,6 @@
 #include <cmath>
 #include <string>
 
-
-
 //Posicion de los pies del personaje respecto de la base de la imagen
 #define OFFSET_Y	15
 #define ANIMATION_CHANGE_DELAY 2
@@ -37,15 +35,16 @@ MobileEntityView::MobileEntityView()
 	wasStanding = true;
 	mobileEntity = NULL;
 	nameImage = runningImage = walkingImage = NULL;
-	idleImage =  attackImage=NULL;
+	idleImage = attackImage = NULL;
 	numberOfRunningClips = numberOfWalkingClips = 0;
 	numberOfIdleClips = 0;
 	numberOfAttackClips = 0;
 	currentSprite = DOWN;
 	lastDirection = M_PI * 1 / 2;
+	wasFrozen = false;
 }
 
-MobileEntityView::MobileEntityView(MobileEntityView* othermobileEntity):
+MobileEntityView::MobileEntityView(MobileEntityView* othermobileEntity) :
 		EntityView(othermobileEntity) {
 
 	imageHeight = othermobileEntity->getImageHeight();
@@ -54,7 +53,7 @@ MobileEntityView::MobileEntityView(MobileEntityView* othermobileEntity):
 	fps = othermobileEntity->getFps();
 	camPos = new Position(0, 0);
 	marco = 0;
-	animationChangeRate = currentSpellClip= 0;
+	animationChangeRate = currentSpellClip = 0;
 	numberOfClips = othermobileEntity->getNClips();
 	setNumberOfRepeats(othermobileEntity->getNumberOfRepeats());
 	movable = true;
@@ -62,7 +61,7 @@ MobileEntityView::MobileEntityView(MobileEntityView* othermobileEntity):
 	wasStanding = true;
 	mobileEntity = NULL;
 	nameImage = runningImage = walkingImage = NULL;
-	idleImage =  attackImage =NULL;
+	idleImage = attackImage = NULL;
 	numberOfRunningClips = numberOfWalkingClips = 0;
 	numberOfIdleClips = 0;
 	numberOfAttackClips = 0;
@@ -71,41 +70,56 @@ MobileEntityView::MobileEntityView(MobileEntityView* othermobileEntity):
 	textureHolder = othermobileEntity->getTextureHolder();
 	//chatView = new ChatWindowsView();
 	this->setName(othermobileEntity->getName());
+	wasFrozen = false;
 }
 
-void MobileEntityView::showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog) {
+void MobileEntityView::showFrame(SDL_Surface* screen, SDL_Rect* clip,
+		bool drawFog) {
 	SDL_Rect offset, offsetFog;
 
-	if (drawFog) return;
+	if (drawFog)
+		return;
 
 	Vector3* position = mobileEntity->getCurrentPos();
 	float x = position->getX();
 	float y = position->getY();
-	offset.x = offsetFog.x = (int) x + camPos->getX() - this->anchorPixel->getX();
+	offset.x = offsetFog.x = (int) x + camPos->getX()
+			- this->anchorPixel->getX();
 	int h = Tile::computePositionTile(0, 0).h;
-	offset.y = offsetFog.y = (int) y + camPos->getY() - this->anchorPixel->getY() - h / 2;
+	offset.y = offsetFog.y = (int) y + camPos->getY()
+			- this->anchorPixel->getY() - h / 2;
 	offset.w = offsetFog.w = clip->w;
 	offset.h = offsetFog.h = clip->h;
 
 	SDL_BlitSurface(this->image, clip, screen, &offset);
-	blitIceSpellEffect(screen,x,y);
+	blitIceSpellEffect(screen, x, y);
 
 }
 
+
 void MobileEntityView::blitIceSpellEffect(SDL_Surface* screen, int x, int y) {
-	if (!mobileEntity->isFrozen()){
+	if (mobileEntity->isFrozen() && !wasFrozen) {
+		if (!SoundEffectHandler::isSoundPlaying(ICE_SOUND)) {
+			SoundEffectHandler::playSound(ICE_SOUND);
+		}
+		wasFrozen = true;
+	}
+
+	if (!mobileEntity->isFrozen()) {
 		currentSpellClip = 0;
+		wasFrozen = false;
 		return;
 	}
 	SDL_Surface* spellSprite = textureHolder->getTexture(string(ICE_IMG));
 	int numberOfClips = 4;
 	if (currentSpellClip >= numberOfClips) {
-		currentSpellClip = numberOfClips-1;
+		currentSpellClip = numberOfClips - 1;
 	}
 	SDL_Rect offsetSpell, currentClip;
 	int frameWidth = spellSprite->w / numberOfClips;
 	offsetSpell.x = (int) x + camPos->getX() - frameWidth / 2 + 10;
-	offsetSpell.y = (int) y + camPos->getY() - this->anchorPixel->getY() + frameWidth/10;
+	offsetSpell.y = (int) y + camPos->getY() - this->anchorPixel->getY()
+			+ frameWidth / 10;
 
 	currentClip.x = currentSpellClip * frameWidth;
 	currentClip.y = 0;
@@ -143,8 +157,6 @@ void MobileEntityView::loadMobileEntityImage() {
 
 	// Fogs
 
-
-
 	//If there was a problem loading the sprite
 	if (!walkingImage) {
 		Logs::logErrorMessage("Unable to load walking image");
@@ -176,8 +188,8 @@ void MobileEntityView::setEntity(Entity* entity) {
 	mobileEntity = aux;
 }
 
-void MobileEntityView::showStandingAnimation(SpriteType sprite, SDL_Surface* fondo,
-		bool drawFog) {
+void MobileEntityView::showStandingAnimation(SpriteType sprite,
+		SDL_Surface* fondo, bool drawFog) {
 
 	SDL_Rect clipToDraw;
 	clipToDraw.x = imageWidth * currentClip * scaleWidth;
@@ -190,7 +202,6 @@ void MobileEntityView::showStandingAnimation(SpriteType sprite, SDL_Surface* fon
 	showFrame(fondo, &clipToDraw, drawFog);
 
 	timeSinceLastAnimation = timer.getTimeSinceLastAnimation();
-
 
 	//Apply delay
 	if (currentClip < (numberOfClips - 1)
@@ -255,14 +266,13 @@ void MobileEntityView::Show(SDL_Surface* fondo, bool drawFog) {
 
 	if (mobileEntity->isAttacking()) {
 		//Si se estaba moviendo, reseteamos el marco para que no quede un # de clip invalido
-		if (mobileEntity->IsMoving()){
+		if (mobileEntity->IsMoving()) {
 			marco = 0;
 			mobileEntity->stop();
 		}
 		image = attackImage;
 		numberOfClips = numberOfAttackClips;
 	}
-
 
 	if (mobileEntity->IsMoving()) {
 		image = walkingImage;
@@ -312,7 +322,8 @@ void MobileEntityView::setName(std::string name) {
 	color.g = 255;
 	color.b = 255;
 	TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
-	if (nameImage) SDL_FreeSurface(nameImage);
+	if (nameImage)
+		SDL_FreeSurface(nameImage);
 	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);
 	if (!nameImage || !font)
 		Logs::logErrorMessage(
@@ -320,16 +331,18 @@ void MobileEntityView::setName(std::string name) {
 
 }
 
-void MobileEntityView::setShowableName(string name){
+void MobileEntityView::setShowableName(string name) {
 	SDL_Color color;
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
 	TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
-	if (nameImage) SDL_FreeSurface(nameImage);
+	if (nameImage)
+		SDL_FreeSurface(nameImage);
 	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);
 	if (!nameImage || !font)
-		Logs::logErrorMessage("Error al cargar la fuente para el nombre del personaje");
+		Logs::logErrorMessage(
+				"Error al cargar la fuente para el nombre del personaje");
 }
 
 void MobileEntityView::playAnimation(SpriteType sprite, SDL_Surface* screen,
@@ -353,7 +366,7 @@ void MobileEntityView::playAnimation(SpriteType sprite, SDL_Surface* screen,
 }
 
 int MobileEntityView::computeNumberOfClips(SDL_Surface* img) {
-	float number = (float)img->w / imageWidth;
+	float number = (float) img->w / imageWidth;
 	float aux = round(number);
-	return (int)aux;
+	return (int) aux;
 }
