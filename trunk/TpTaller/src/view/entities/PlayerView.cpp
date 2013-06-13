@@ -513,7 +513,11 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 	 *	spriteMap=selectWeaponView(this->player);
 	 *
 	 */
-	spriteMap = weaponViewMap[string("sword")];
+	if (player->getCurrentWeapon()->getName()=="FrostWand")
+		spriteMap = weaponViewMap[string("bow")];
+	else
+		spriteMap = weaponViewMap[string("sword")];
+
 
 	FoggedSprite spriteToBeShown;
 
