@@ -328,8 +328,13 @@ void Player::extraUpdate(MapData* mapData) {
 	if (!attackQueue.empty()) {
 		Entity* entity = attackQueue.front();
 		attackQueue.pop();
-		if (!entity->isDead())
-			attack(*entity);
+		if (!entity->isDead()) {
+			Tile* tile = entity->getTile();
+			int dist = MapData::distBetweenTilesInTiles(currentTile, tile);
+			if (dist <= getAttackingDistance())
+				attack(*entity);
+			delete tile;
+		}
 	}
 
 }
@@ -362,19 +367,22 @@ void Player::changeWeapon() {
 }
 
 void Player::attack(Entity& entity) {
-	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
-		attacking = true;
-		attackTimer.start();
-		Weapon* weaponToUse = this->getCurrentWeapon();
-		if (weaponToUse->getMagic() <= this->magic) {
-			weaponToUse->attack(entity);
-			this->magic -= weaponToUse->getMagic();
+		if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
+			attackTimer.start();
+			Weapon* weaponToUse = this->getCurrentWeapon();
+			if (weaponToUse->getName()=="FrostWand")
+				castingSpell = true;
+			else
+				attacking = true;
+			if (weaponToUse->getMagic() <= this->magic) {
+				weaponToUse->attack(entity);
+				this->magic -= weaponToUse->getMagic();
+			}
 		}
-	} else {
-		if (attackQueue.size() < 3)
-			attackQueue.push(&entity);
-	}
-
+	else {
+			if (attackQueue.size() < 3)
+				attackQueue.push(&entity);
+		}
 }
 
 void Player::updateFromServer(PlayerUpdate* update) {
