@@ -109,7 +109,6 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
 		std::map<string, int> visibleTiles) {
 
 	updateMovablePos();
-
 	for (int col = visibleTiles["StartCol"]; col < visibleTiles["EndCol"];
 			col++) {
 

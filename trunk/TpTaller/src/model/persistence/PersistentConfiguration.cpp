@@ -69,9 +69,9 @@ void PersistentConfiguration::setEntityViewMap(EntityViewMap* entityViewMap) {
 void PersistentConfiguration::setMobileEntities(
 		std::vector<MobileEntity*> mobiles) {
 	this->mobs = mobiles;
-	for (unsigned int i = 0; i < this->mobs.size(); i++) {
+/*	for (unsigned int i = 0; i < this->mobs.size(); i++) {
 		mobileEntityMap[i] = mobs[i];
-	}
+	}*/
 
 }
 map<int, MobileEntity*> PersistentConfiguration::getMobileEntities() {
