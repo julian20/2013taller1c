@@ -409,6 +409,7 @@ void Game::handleMobileEntityUpdates(vector<MobileEntityUpdate*> mobileEntityUpd
 
 		mobileEntities[id]->updateFromServer(mobileEntityUpdates[i]);
 
+
 	}
 }
 
