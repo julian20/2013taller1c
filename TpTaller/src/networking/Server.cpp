@@ -236,6 +236,8 @@ void Server::run(MultiplayerGame* game) {
 
 	pthread_create(&gameThread, &attr, runGameBackEnd, (void*) game);
 
+	cout << "Server Running ..." << endl;
+
 	/* Main loop */
 	while (this->isActive()) {
 		unsigned int size = sizeof(struct sockaddr_in);
@@ -798,7 +800,7 @@ void Server::closeServer(string playerName,pthread_t thread){
 		ss2 << getMissionManager()->getScore(getMissionManager()->getWinningTeam());
 		Popup::alertWindow("El juego ha finalizado. Felicitaciones Team " + ss.str() + " han ganado con " + ss2.str());
 		close(serverID);
-		exit(0);
+		exit(2);
 	}
 
 }

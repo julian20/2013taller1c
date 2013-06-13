@@ -38,7 +38,8 @@
 
 #define OUTPUT_FILENAME "configuration/parserOutput.yaml"
 
-#define COPY_MAP_SCRIPT "./copyServerSendFile.sh"
+#define COPY_MAP_SCRIPT "./.copyServerSendFile.sh"
+#define SERVER_SCRIPT "./.resetServer.sh"
 
 using namespace std;
 
@@ -104,7 +105,6 @@ void initMultiplayerGame(string& playerName, string& playerType) {
 	client->run();
 
 	delete client;
-	//delete game;
 
 }
 
@@ -127,6 +127,11 @@ void initServer() {
 	server->getMissionManager()->setMission(configuration.getAnimationConfiguration()->getMission());
 	server->run(game);
 	delete server;
+}
+
+void initServerScript(){
+	system(SERVER_SCRIPT);
+	exit(0);
 }
 
 void initMenu(PersistentConfiguration* configuration, string& playerName,
@@ -171,6 +176,8 @@ void initMenu(PersistentConfiguration* configuration, string& playerName,
 			break;
 		case SERVER_EVENT:
 			menu->close();
+			// TODO: Descomentar esta linea para hacer que se reinicie el server.
+			//initServerScript();
 			initServer();
 			event = EXIT_EVENT;
 			break;
@@ -190,6 +197,22 @@ int main(int argc, char** argv) {
 	Logs::openFile();
 	Logs::logErrorMessage(string("************Program Starting**************** "));
 	SDL_Init(SDL_INIT_EVERYTHING);
+
+
+	string arg = "";
+
+	if (argc > 1) {
+		arg = string(argv[1]);
+	}
+	if (arg == "--server-no-restart" || arg == "-sn" || arg == "-s -n"){
+		initServer();
+		exit(0);
+	}
+
+	if (arg == "--server" || arg == "-s"){
+		initServerScript();
+		exit(0);
+	}
 
 	string playerName("NewPlayer");
 	string playerType("NewPlayer");
