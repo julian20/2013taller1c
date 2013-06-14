@@ -20,10 +20,11 @@ using namespace std;
 class Tile {
 public:
 	Tile();
+	Tile(Tile* tile);
 	Tile(Position* position, std::string textureId);
 	Tile(Coordinates* _coordinates);
 	Tile(Coordinates _coordinates);
-	virtual ~Tile();
+
 	Position* getPosition();
 	void setPosition(int x, int y);
 	void setPosition(int x, int y, int z);
@@ -58,6 +59,7 @@ public:
 
 	Tile& operator=(Tile &other);
 
+	virtual ~Tile();
 private:
 	void updatePosition();
 

@@ -16,10 +16,26 @@
 unsigned int Tile::tileWidth = TextureWidth;
 unsigned int Tile::tileHeight = TextureHeight;
 
+Tile::Tile() {
+	fScore = 0;
+	this->position = new Position(0, 0, 0);
+	this->coordinates = new Coordinates(0, 0);
+}
+
 Tile::Tile(Position* position, std::string textureId) {
 	this->coordinates = new Coordinates(0, 0);
 	this->position = position;
 	this->textureIdentifier = textureId;
+	this->fScore = 0;
+}
+
+Tile::Tile(Tile* tile) {
+	Position* pos = tile->getPosition();
+	Coordinates coords = tile->getCoordinates();
+
+	this->coordinates = new Coordinates(coords.getRow(), coords.getCol());
+	this->position = new Position(pos->getX(), pos->getY(), pos->getZ());
+	this->textureIdentifier = tile->getTextureIdentifier();
 	this->fScore = 0;
 }
 
@@ -37,12 +53,6 @@ Tile::Tile(Coordinates _coordinates) {
 	this->position = new Position(0, 0, 0);
 	this->fScore = 0;
 	setCoordinates(_coordinates);
-}
-
-Tile::Tile() {
-	fScore = 0;
-	this->position = new Position(0, 0, 0);
-	this->coordinates = new Coordinates(0, 0);
 }
 
 Tile::~Tile() {
