@@ -97,7 +97,7 @@ void MultiplayerGame::addRandomChest() {
 		chest->setCoordinates(coord.getRow(), coord.getCol());
 		chest->setItemToContaing(ConfigurationReader::createRandomItem());
 
-		addEntity(chest, coord);
+		mapData->addItem(coord.getRow(), coord.getCol(), chest);
 	}
 }
 
