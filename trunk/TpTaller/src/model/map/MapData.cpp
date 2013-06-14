@@ -542,7 +542,7 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 	}
 
 	Tile* currentGoal = getValidTile(from, goal);
-	map<int, Tile *> tilesContainer;// Uso esto para ir guardando los punteros
+	map<int, Tile *> tilesContainer; // Uso esto para ir guardando los punteros
 	list<Tile *> closedSet;
 	list<Tile *> openSet;
 	openSet.push_back(from);

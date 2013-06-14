@@ -155,15 +155,11 @@ void Entity::setTile(Tile* _tile) {
 	if (this->currentTile)
 		delete this->currentTile;
 	currentTile = _tile;
-
-	// Las coordinates se actualizan en EntityViewMap
 }
 
 Tile* Entity::getTile() {
 	// Devuelve una copia del tile
-	Tile* retval = new Tile(new Coordinates(coord->getRow(), coord->getCol()));
-
-	return retval;
+	return new Tile(this->currentTile);
 }
 
 void Entity::updateDamageTaken() {

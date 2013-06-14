@@ -79,35 +79,28 @@ void ArtificialIntelligence::watch(MapData* mapData) {
 
 	Coordinates coor = this->entity->getCoordinates();
 
-	Tile* tile;
+	Tile* tile = NULL;
 	//Si no se esta moviendo o atacando busco a otro contrincante
 	if (!entity->IsMoving() && !entity->isDead()) {
 		int direction = rand() % 4;
 		if (direction == 0) {
-			//mobile->moveTo(coor.getCol(),coor.getRow()+WATCHSIZE);
-			tile = new Tile(
-					new Coordinates(coor.getRow(), coor.getCol() + WATCHSIZE));
-
+			tile = new Tile(new Coordinates(coor.getRow(), coor.getCol() + WATCHSIZE));
 		} else if (direction == 1) {
-			//mobile->moveTo(coor.getCol(),coor.getRow()-WATCHSIZE);
-			tile = new Tile(
-					new Coordinates(coor.getRow(), coor.getCol() - WATCHSIZE));
+			tile = new Tile(new Coordinates(coor.getRow(), coor.getCol() - WATCHSIZE));
 		} else if (direction == 2) {
-			//mobile->moveTo(coor.getCol()+WATCHSIZE,coor.getRow());
-			tile = new Tile(
-					new Coordinates(coor.getRow() + WATCHSIZE, coor.getCol()));
+			tile = new Tile(new Coordinates(coor.getRow() + WATCHSIZE, coor.getCol()));
 		} else if (direction == 3) {
-			//mobile->moveTo(coor.getCol()-WATCHSIZE,coor.getRow());
-			tile = new Tile(
-					new Coordinates(coor.getRow() - WATCHSIZE, coor.getCol()));
+			tile = new Tile(new Coordinates(coor.getRow() - WATCHSIZE, coor.getCol()));
 		}
-		if (tile->getCoordinates().getRow() > 0
-				&& tile->getCoordinates().getRow() < mapData->getNRows()) {
-			if (tile->getCoordinates().getCol() > 0
-					&& tile->getCoordinates().getCol() < mapData->getNCols()) {
-				mapData->moveMobileEntity((Mob*) this->entity, tile);
-			}
+
+		int row = tile->getCoordinates().getRow();
+		int col = tile->getCoordinates().getCol();
+
+		if ( row >= 0 && row < mapData->getNRows() &&
+			 col >= 0 && col < mapData->getNCols() ) {
+				mapData->moveMobileEntity(this->entity, tile);
 		}
+
 		if (tile)
 			delete tile;
 	}
