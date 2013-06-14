@@ -20,18 +20,9 @@ MapController::MapController(MapView* mapView, MapData* mapData,
 
 void MapController::clickListener(SDL_Event event) {
 	if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == 1)) {
-		buttonPressed = true;
-	}
-
-	if ((event.type == SDL_MOUSEBUTTONUP) && (event.button.button == SDL_BUTTON_LEFT))
-		buttonPressed = false;
-
-	if (buttonPressed) {
 		int mouseX, mouseY;
 		SDL_GetMouseState(&mouseX, &mouseY);
-
 		playerController->movePlayer(mouseX, mouseY);
-
 	}
 
 	if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_q)) {

@@ -32,7 +32,7 @@
 #include <stdlib.h>
 
 #define CHEST_RESPAWN_TIME	10000
-
+#define MAX_CHESTS 15
 using namespace std;
 
 class MultiplayerGame {
@@ -100,6 +100,7 @@ private:
 	int lastAddedView;
 	MobileEntity* flag;
 	Timer chestTimer;
+	int nChests;
 
 	int fps;
 	int tempFps;
