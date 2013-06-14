@@ -36,6 +36,7 @@ Entity::Entity() {
 	this->shield = 0;
 	this->removeFromGame = false;
 	this->hideInFog = false;
+	this->entityViewMapCoordinates.changeTo(0,0);
 }
 
 Entity::Entity(Entity* entity) {
@@ -59,6 +60,7 @@ Entity::Entity(Entity* entity) {
 	this->hideInFog = entity->getHideInFog();
 	this->shield = 0;
 	this->removeFromGame = false;
+	this->entityViewMapCoordinates.changeTo(coordin.getRow(), coordin.getCol());
 }
 
 bool Entity::isWalkable() {
@@ -287,6 +289,15 @@ istream& operator >>(std::istream& in, Entity& Entity) {
 	in >> Entity.hideInFog;
 
 	return in;
+}
+
+
+void Entity::setEntityViewMapCoordinates(int row, int col){
+	entityViewMapCoordinates.changeTo(row,col);
+}
+
+Coordinates Entity::getEntityViewMapCoordinates(){
+	return entityViewMapCoordinates;
 }
 
 

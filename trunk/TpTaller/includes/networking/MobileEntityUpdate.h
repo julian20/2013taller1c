@@ -47,8 +47,6 @@ public:
 	void setLastAttackingDirection(float dir);
 	Tile* getTile();
 	void setTile(Tile* tile);
-	Coordinates* getInitCoordinates();
-	void setInitCoordinates(Coordinates* initCoords);
 	void setNextTile(Tile* nextTile);
 	Tile* getNextTile();
 	//Operator to transform the object into a stream.

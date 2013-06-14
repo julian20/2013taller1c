@@ -199,8 +199,6 @@ istream& operator >>(std::istream& in, PlayerInfo& info) {
 
 void PlayerInfo::updatePlayer(PlayerUpdate* update) {
 	Player* player = this->getPlayer();
-	player->setCoordinates(update->getInitCoordinates()->getRow(),
-			update->getInitCoordinates()->getCol());
 	player->setSpeed(update->getSpeed());
 	player->setPos(update->getCurrentPos()->getX(),
 			update->getCurrentPos()->getY(), update->getCurrentPos()->getZ());
