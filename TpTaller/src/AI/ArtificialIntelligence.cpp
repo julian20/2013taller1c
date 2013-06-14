@@ -19,32 +19,30 @@ void ArtificialIntelligence::setMobileEntity(MobileEntity* entity) {
 
 void ArtificialIntelligence::update(MapData* mapData) {
 
-	//cout<<"pos del mob "<<entity->getCoordinates().getRow()<< " "<<entity->getCoordinates().getCol()<<endl;
 	if (entity->isDead())
 		entity->setRemoveFromGame(true);
 
-	if (!entity->isDead() && !entity->isFrozen()) {
-		if (entity->getAttackToEntity() != NULL) {
-			Tile* currentTile = entity->getTile();
-			Tile* enemyTile = entity->getAttackToEntity()->getTile();
+	if (entity->isDead() || entity->isFrozen())
+		return;
+	if (entity->getAttackToEntity() != NULL) {
+		Tile* currentTile = entity->getTile();
+		Tile* enemyTile = entity->getAttackToEntity()->getTile();
 
-			if (mapData->distBetweenTilesInTiles(currentTile,
-					enemyTile) < WATCHSIZE)
-				entity->cancelAttack();
-				return;
+		if (mapData->distBetweenTilesInTiles(currentTile, enemyTile) < WATCHSIZE) {
+			entity->cancelAttack();
+			delete currentTile;
+			delete enemyTile;
 		}
-		else{
-			if (this->isAnyEnemyClose(mapData)) {
-				Entity& enemy = this->getNearestEnemy();
-				entity->attackTo(&enemy);
-			} else {
-				//if (entity->getClassName() == "MobileEntity") {
-					entity->cancelAttack();
-					this->watch(mapData);
-				//}
-			}
+	} else {
+		if (this->isAnyEnemyClose(mapData)) {
+			Entity& enemy = this->getNearestEnemy();
+			entity->attackTo(&enemy);
+		} else {
+			entity->cancelAttack();
+			this->watch(mapData);
 		}
 	}
+
 }
 
 bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData) {
@@ -59,7 +57,6 @@ bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData) {
 			return true;
 	}
 	return false;
-	//return false; // TODO :cambiar este harcoding
 }
 
 Entity& ArtificialIntelligence::getNearestEnemy() {
@@ -68,7 +65,7 @@ Entity& ArtificialIntelligence::getNearestEnemy() {
 	list<MobileEntity*>::iterator iter;
 	for (iter = entitiesNear.begin(); iter != entitiesNear.end(); ++iter) {
 		mob = *iter;
-		if (mob->getTeam() != this->entity->getTeam()&& !mob->isDead())
+		if (mob->getTeam() != this->entity->getTeam() && !mob->isDead())
 			return *mob;
 	}
 
@@ -84,21 +81,25 @@ void ArtificialIntelligence::watch(MapData* mapData) {
 	if (!entity->IsMoving() && !entity->isDead()) {
 		int direction = rand() % 4;
 		if (direction == 0) {
-			tile = new Tile(new Coordinates(coor.getRow(), coor.getCol() + WATCHSIZE));
+			tile = new Tile(
+					new Coordinates(coor.getRow(), coor.getCol() + WATCHSIZE));
 		} else if (direction == 1) {
-			tile = new Tile(new Coordinates(coor.getRow(), coor.getCol() - WATCHSIZE));
+			tile = new Tile(
+					new Coordinates(coor.getRow(), coor.getCol() - WATCHSIZE));
 		} else if (direction == 2) {
-			tile = new Tile(new Coordinates(coor.getRow() + WATCHSIZE, coor.getCol()));
+			tile = new Tile(
+					new Coordinates(coor.getRow() + WATCHSIZE, coor.getCol()));
 		} else if (direction == 3) {
-			tile = new Tile(new Coordinates(coor.getRow() - WATCHSIZE, coor.getCol()));
+			tile = new Tile(
+					new Coordinates(coor.getRow() - WATCHSIZE, coor.getCol()));
 		}
 
 		int row = tile->getCoordinates().getRow();
 		int col = tile->getCoordinates().getCol();
 
-		if ( row >= 0 && row < mapData->getNRows() &&
-			 col >= 0 && col < mapData->getNCols() ) {
-				mapData->moveMobileEntity(this->entity, tile);
+		if (row >= 0 && row < mapData->getNRows() && col >= 0
+				&& col < mapData->getNCols()) {
+			mapData->moveMobileEntity(this->entity, tile);
 		}
 
 		if (tile)
