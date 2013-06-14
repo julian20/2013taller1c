@@ -361,6 +361,25 @@ void emptyTilesContainer(map<int, Tile *> tilesContainer) {
 	}
 }
 
+Tile* MapData::getRandomTile() {
+	int randRow;
+	int randCol;
+
+	srand(time(NULL));
+	while (true) {
+		randRow = rand() % getNRows();
+		randCol = rand() % getNCols();
+
+		Coordinates coords = Coordinates(randRow, randCol);
+
+		if (getTileData(coords)->isWalkable())
+			break;
+	}
+
+	Coordinates coor = Coordinates(randRow, randCol);
+	return new Tile(coor);
+}
+
 void MapData::addTileToList(list<Tile *> *list,
 		map<int, Tile *> *tilesContainer, int row, int col,
 		bool getNoWalkableTiles) {

@@ -72,6 +72,7 @@ public:
 	void showAllMap();
 	static int distBetweenTilesInTiles(Tile* from, Tile* to);
 	Tile* getValidTile(Tile* from, Tile* goal);
+	Tile* getRandomTile();
 private:
 	float heuristicCostEstimate(Tile* from, Tile* to);
 	float distBetweenTiles(Tile* from, Tile* to);

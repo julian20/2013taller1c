@@ -31,6 +31,8 @@
 #include <map>
 #include <stdlib.h>
 
+#define CHEST_RESPAWN_TIME	10
+
 using namespace std;
 
 class MultiplayerGame {
@@ -73,6 +75,7 @@ public:
 	virtual ~MultiplayerGame();
 
 private:
+	void addRandomChest();
 	void changeFlagPosition(MapData* mapData);
 	void addNewMobileEntities();
 	void addNewEntities();
@@ -96,6 +99,7 @@ private:
 	vector<int> deletedEntities;
 	int lastAddedView;
 	MobileEntity* flag;
+	Timer chestTimer;
 
 	int fps;
 	int tempFps;
