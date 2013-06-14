@@ -365,26 +365,24 @@ void Player::changeWeapon() {
 }
 
 void Player::attack(Entity& entity) {
-		if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
-			attackTimer.start();
-			Weapon* weaponToUse = this->getCurrentWeapon();
-			if (weaponToUse->getName()=="FrostWand")
-				castingSpell = true;
-			else
-				attacking = true;
-			if (weaponToUse->getMagic() <= this->magic) {
-				weaponToUse->attack(entity);
-				this->magic -= weaponToUse->getMagic();
-			}
+	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
+		attackTimer.start();
+		Weapon* weaponToUse = this->getCurrentWeapon();
+		if (weaponToUse->getName() == "FrostWand")
+			castingSpell = true;
+		else
+			attacking = true;
+		if (weaponToUse->getMagic() <= this->magic) {
+			weaponToUse->attack(entity);
+			this->magic -= weaponToUse->getMagic();
 		}
-	else {
-			if (attackQueue.size() < 3)
-				attackQueue.push(&entity);
-		}
+	} else {
+		if (attackQueue.size() < 3)
+			attackQueue.push(&entity);
+	}
 }
 
 void Player::updateFromServer(PlayerUpdate* update) {
-
 	this->currentPos->setValues(update->getCurrentPos()->getX(),
 			update->getCurrentPos()->getY(), update->getCurrentPos()->getZ());
 	this->endPos->setValues(update->getEndPos()->getX(),
@@ -444,7 +442,6 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setBlocking(this->blocking);
 	update->setActive(this->isActive);
 	update->setTile(this->currentTile);
-	update->setInitCoordinates(this->coord);
 	update->setLife(this->life);
 	update->setMagic(this->magic);
 	update->setLastAttackingDirection(lastAttackingDirection);

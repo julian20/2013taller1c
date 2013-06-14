@@ -143,15 +143,6 @@ void MobileEntityUpdate::setTile(Tile* tile) {
 	this->currentTile->setCoordinates(tile->getCoordinates());
 }
 
-Coordinates* MobileEntityUpdate::getInitCoordinates() {
-	return initCoords;
-}
-
-void MobileEntityUpdate::setInitCoordinates(Coordinates* initCoords) {
-	this->initCoords->setCol(initCoords->getCol());
-	this->initCoords->setRow(initCoords->getRow());
-}
-
 void MobileEntityUpdate::setNextTile(Tile* nextTile) {
 	this->nextTile->setFScore(nextTile->getFScore());
 	this->nextTile->setPosition(nextTile->getPosition());
@@ -168,7 +159,6 @@ Tile* MobileEntityUpdate::getNextTile() {
 MobileEntityUpdate::~MobileEntityUpdate() {
 	delete currentPos;
 	delete endPos;
-	delete initCoords;
 	delete speed;
 	delete currentTile;
 	delete nextTile;
@@ -180,7 +170,7 @@ ostream& operator <<(std::ostream& out, const MobileEntityUpdate& update) {
 	out << update.id << " " << update.name << " " << *update.currentPos << " "
 			<< *update.endPos << " " << *update.speed << " " << update.attacking
 			<< " " << " " << *update.currentTile << " " << *update.nextTile
-			<< " " << *update.initCoords << " " << update.life << " "
+			<< " " << update.life << " "
 			<< update.magic << " " << update.lastAttackingDirection << " "
 			<< update.team << " " << update.viewRange << " " << update.frozen;
 
@@ -209,9 +199,6 @@ istream& operator >>(std::istream& in, MobileEntityUpdate& update) {
 	update.setTile(&tile);
 	in >> tile;
 	update.setNextTile(&tile);
-	Coordinates coords;
-	in >> coords;
-	update.setInitCoordinates(&coords);
 	int life, magic;
 	in >> life;
 	update.setLife(life);

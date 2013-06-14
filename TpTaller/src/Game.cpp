@@ -335,6 +335,7 @@ void Game::playersUpdate() {
 
 void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords) {
 	player->setCoordinates(coords->getRow(), coords->getCol());
+	player->setEntityViewMapCoordinates(coords->getRow(), coords->getCol());
 	MapData* map = mapView->getMapData();
 	map->addPlayer(coords->getRow(), coords->getCol(), player);
 	Coordinates newCoords = player->getCoordinates();
@@ -347,6 +348,7 @@ void Game::addNewPlayer(Player* player, PlayerView* view, Coordinates* coords) {
 
 void Game::addNewMobileEntity(MobileEntity* entity, MobileEntityView* view, Coordinates* coords, int id){
 	entity->setCoordinates(coords->getRow(), coords->getCol());
+	entity->setEntityViewMapCoordinates(coords->getRow(), coords->getCol());
 	MapData* map = mapView->getMapData();
 	map->addMobileEntity(coords->getRow(), coords->getCol(),entity);
 	Coordinates newCoords = entity->getCoordinates();
@@ -359,6 +361,7 @@ void Game::addNewMobileEntity(MobileEntity* entity, MobileEntityView* view, Coor
 
 void Game::addNewEntity(Entity* entity, EntityView* view, Coordinates* coords, int id){
 	entity->setCoordinates(coords->getRow(), coords->getCol());
+	entity->setEntityViewMapCoordinates(coords->getRow(), coords->getCol());
 	MapData* map = mapView->getMapData();
 	map->addEntity(coords->getRow(), coords->getCol(),entity);
 	Coordinates newCoords = entity->getCoordinates();

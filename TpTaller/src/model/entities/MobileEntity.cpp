@@ -290,7 +290,6 @@ MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate(int id) {
 	update->setSpeed(this->speed);
 	update->setAttacking(this->attacking);
 	update->setTile(this->currentTile);
-	update->setInitCoordinates(this->coord);
 	update->setLastAttackingDirection(this->lastAttackingDirection);
 	update->setLife(this->life);
 	update->setMagic(this->magic);

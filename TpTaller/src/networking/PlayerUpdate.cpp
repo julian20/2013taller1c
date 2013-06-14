@@ -95,8 +95,8 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 	out << update.name << " " << *update.currentPos << " " << *update.endPos
 			<< " " << *update.speed << " " << update.attacking << " "
 			<< update.blocking << " " << update.active << " "
-			<< *update.currentTile << " " << *update.nextTile << " "
-			<< *update.initCoords << " " << update.life << " " << update.magic
+			<< *update.currentTile << " " << *update.nextTile <<
+			" " << update.life << " " << update.magic
 			<< " " << update.lastAttackingDirection << " " << update.team << " "
 			<< update.castingSpell << " " << update.viewRange << " "
 			<< update.frozen << " " << update.makingEarthquake << " "
@@ -136,9 +136,6 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	update.setTile(&tile);
 	in >> tile;
 	update.setNextTile(&tile);
-	Coordinates coords;
-	in >> coords;
-	update.setInitCoordinates(&coords);
 	int life, magic;
 	in >> life;
 	update.setLife(life);

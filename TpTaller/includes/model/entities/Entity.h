@@ -86,6 +86,10 @@ public:
 	virtual void updateDamageTaken();
 	void setDamageBuffer(int dmg);
 	int getDamageBuffer();
+
+	void setEntityViewMapCoordinates(int row, int col);
+	Coordinates getEntityViewMapCoordinates();
+
 protected:
 	Vector3* currentPos;
 	Base* base;
@@ -110,6 +114,7 @@ protected:
 	bool removeFromGame;
 	bool hideInFog;
 private:
+	Coordinates entityViewMapCoordinates;
 	bool positionInitialized;
 };
 

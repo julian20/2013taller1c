@@ -78,8 +78,8 @@ void EntityViewMap::updateMovablePos() {
 		EntityView* entityView = *it;
 		Entity* entity = entityView->getEntity();
 
-		int initRow = entity->getCoordinates().getRow();
-		int initCol = entity->getCoordinates().getCol();
+		int initRow = entity->getEntityViewMapCoordinates().getRow();
+		int initCol = entity->getEntityViewMapCoordinates().getCol();
 		Vector3* entityPos = entity->getCurrentPos();
 		Coordinates* c = Tile::getTileCoordinates(entityPos->getX(),
 				entityPos->getY());
@@ -89,10 +89,9 @@ void EntityViewMap::updateMovablePos() {
 		if (initRow == currentRow && initCol == currentCol)
 			continue;
 
-		list<EntityView*> coord = getListAtRowAndCol(initRow, initCol);
-		//if (!coord.empty())
-			coord.remove(entityView);
-		map[initCol][initRow] = coord;
+		if (!map[initCol][initRow].empty())
+			map[initCol][initRow].remove(entityView);
+		entity->setEntityViewMapCoordinates(currentRow, currentCol);
 		entity->setCoordinates(currentRow, currentCol);
 		map.at(currentCol).at(currentRow).push_back(entityView);
 
