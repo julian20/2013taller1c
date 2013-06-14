@@ -19,6 +19,7 @@ pthread_mutex_t entities_mutex;
 MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
 	MapData* mapData = configuration->getMapData();
+	nChests = 0;
 
 	this->gameConfig = configuration->getAnimationConfiguration();
 	this->fps = configuration->getAnimationConfiguration()->getFps();
@@ -46,6 +47,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	}
 
 	for (unsigned int i = 0; i < itemVector.size(); i++) {
+		if (itemVector[i]->getClassName() == "Chest") nChests++;
 		addEntity(itemVector[i], itemVector[i]->getCoordinates());
 	}
 
@@ -53,6 +55,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 	changeFlagPosition(mapData);
 
 	chestTimer.start();
+
 }
 
 MenuEvent MultiplayerGame::run() {
@@ -85,7 +88,7 @@ MenuEvent MultiplayerGame::run() {
 void MultiplayerGame::addRandomChest() {
 	MapData* mapData = view->getMapData();
 
-	if (chestTimer.getTimeIntervalSinceStart() > CHEST_RESPAWN_TIME) {
+	if (chestTimer.getTimeIntervalSinceStart() > CHEST_RESPAWN_TIME && nChests < MAX_CHESTS) {
 		chestTimer.start();
 
 		Tile* randomTile = mapData->getRandomTile();
@@ -98,6 +101,7 @@ void MultiplayerGame::addRandomChest() {
 		chest->setItemToContaing(ConfigurationReader::createRandomItem());
 
 		mapData->addItem(coord.getRow(), coord.getCol(), chest);
+		nChests++;
 	}
 }
 
@@ -482,7 +486,10 @@ int MultiplayerGame::addEntity(Entity* entity, Coordinates coordiantes) {
 
 void MultiplayerGame::removeEntity(int id) {
 	if (entities.count(id) != 0) {
-
+		Entity* ent = entities[id];
+		if (ent->getClassName() == "Chest"){
+			nChests--;
+		}
 		entities.erase(id);
 		//TODO: SACARLO TAMBIEN DE MAP DATA
 
