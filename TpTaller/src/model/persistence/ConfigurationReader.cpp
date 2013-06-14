@@ -2025,7 +2025,8 @@ double uniformDistribution(double a, double b) {
 	return rand() / (RAND_MAX + 1.0) * (b - a) + a;
 }
 
-Item* createRandomItem() {
+
+Item* createRandomItemLocal() {
 
 	double number = uniformDistribution(0,13);
 
@@ -2095,6 +2096,10 @@ Item* createRandomItem() {
 	item->setName("freezespellitem");
 	return item;
 
+}
+
+Item* ConfigurationReader::createRandomItem() {
+	return createRandomItemLocal();
 }
 
 std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
@@ -2180,7 +2185,7 @@ std::vector<Item*> parseItems(std::vector<Item*> itemVector) {
 			chest->setName(actualItem->getName());
 			Coordinates coord = actualItem->getCoordinates();
 			chest->setCoordinates(coord.getRow(), coord.getCol());
-			chest->setItemToContaing(createRandomItem());
+			chest->setItemToContaing(createRandomItemLocal());
 
 			parsedItems.push_back(chest);
 

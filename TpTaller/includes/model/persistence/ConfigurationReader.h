@@ -69,6 +69,7 @@ public:
 			std::string configurationFile);
 	ClientPlayerPersistentConfiguration loadClientPlayerConfiguration(
 			std::string configurationFile);
+	static Item* createRandomItem();
 	virtual ~ConfigurationReader();
 private:
 };
