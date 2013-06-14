@@ -26,7 +26,7 @@ Lantern::Lantern(Item* entity) : Item(entity) {
 }
 
 void Lantern::applyEffects(Player& entity) {
-	entity.setViewRange(entity.getViewRange() + 50);
+	entity.setViewRange((entity.getViewRange()*150)/100);
 }
 
 void Lantern::collideTo(Player& entity) {
