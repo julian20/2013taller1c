@@ -31,7 +31,7 @@
 #include <map>
 #include <stdlib.h>
 
-#define CHEST_RESPAWN_TIME	15000
+#define CHEST_RESPAWN_TIME	10000
 
 using namespace std;
 
