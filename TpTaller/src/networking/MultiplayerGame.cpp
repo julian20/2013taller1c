@@ -51,11 +51,15 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 
 	flag = configuration->getFlag();
 	changeFlagPosition(mapData);
+
+	chestTimer.start();
 }
 
 MenuEvent MultiplayerGame::run() {
-	view->getMapData()->cleanNewEntities();
-	view->getMapData()->cleanNewMobileEntities();
+	MapData* mapData = view->getMapData();
+
+	mapData->cleanNewEntities();
+	mapData->cleanNewMobileEntities();
 
 	while (true) {
 		int ticks = SDL_GetTicks();
@@ -68,6 +72,7 @@ MenuEvent MultiplayerGame::run() {
 		removeDeadEntities();
 		removeDeadMobiles();
 		updateGolems();
+		addRandomChest();
 
 		applyFPS(ticks);
 
@@ -77,32 +82,29 @@ MenuEvent MultiplayerGame::run() {
 
 }
 
+void MultiplayerGame::addRandomChest() {
+	MapData* mapData = view->getMapData();
+
+	if (chestTimer.getTimeIntervalSinceStart() > CHEST_RESPAWN_TIME) {
+		chestTimer.start();
+
+
+	}
+}
+
 void MultiplayerGame::changeFlagPosition(MapData* mapData) {
 
 	int prevRow = flag->getCoordinates().getRow();
 	int prevCol = flag->getCoordinates().getCol();
 
-	int randRow;
-	int randCol;
-	srand(time(NULL));
-	while (true) {
-		randRow = rand() % mapData->getNRows();
-		randCol = rand() % mapData->getNCols();
+	Tile* newTile = mapData->getRandomTile();
 
-		Coordinates coords = Coordinates(randRow, randCol);
+	int row = newTile->getCoordinates().getRow();
+	int col = newTile->getCoordinates().getCol();
 
-		if (mapData->getTileData(coords)->isWalkable())
-			break;
-	}
-
-	Coordinates coor = Coordinates(randRow, randCol);
-	Tile* newTile = new Tile(coor);
-	flag->setCoordinates(coor.getRow(), coor.getCol());
-	flag->setPos(Tile::computePosition(coor.getRow(), coor.getCol()+1));
+	flag->setCoordinates(row, col);
+	flag->setPos(Tile::computePosition(row, col + 1));
 	flag->setTile(newTile);
-
-	int row = flag->getCoordinates().getRow();
-	int col = flag->getCoordinates().getCol();
 
 	mapData->updateMobilePos(prevRow, prevCol, row, col, flag);
 
