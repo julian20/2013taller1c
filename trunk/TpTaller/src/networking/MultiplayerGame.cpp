@@ -88,7 +88,16 @@ void MultiplayerGame::addRandomChest() {
 	if (chestTimer.getTimeIntervalSinceStart() > CHEST_RESPAWN_TIME) {
 		chestTimer.start();
 
+		Tile* randomTile = mapData->getRandomTile();
 
+		Chest* chest = new Chest();
+
+		chest->setName("chest");
+		Coordinates coord = randomTile->getCoordinates();
+		chest->setCoordinates(coord.getRow(), coord.getCol());
+		chest->setItemToContaing(ConfigurationReader::createRandomItem());
+
+		addEntity(chest, coord);
 	}
 }
 
