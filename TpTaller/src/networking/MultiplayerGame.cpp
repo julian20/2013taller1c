@@ -41,6 +41,7 @@ MultiplayerGame::MultiplayerGame(PersistentConfiguration* configuration) {
 			ArtificialIntelligence* ia = new ArtificialIntelligence();
 			ia->setMobileEntity(mobileEntityVector[i]);
 			ias[i+1] = ia;
+			mobileEntityVector[i]->setId(i+1);
 			addMobileEntity(mobileEntityVector[i],
 					mobileEntityVector[i]->getCoordinates());
 		}
@@ -215,8 +216,11 @@ void MultiplayerGame::updateMobs() {
 	map<int, MobileEntity*>::iterator mobIter;
 	for (mobIter = mobileEntities.begin(); mobIter != mobileEntities.end();
 			++mobIter) {
-		(mobIter->second)->update(mapa);
-		(mobIter->second)->updateDamageTaken();
+		MobileEntity* mob = mobIter->second;
+		if(mob){
+			mob->update(mapa);
+			mob->updateDamageTaken();
+		}
 	}
 
 	map<int, ArtificialIntelligence*>::iterator iaIter;
@@ -360,7 +364,8 @@ void MultiplayerGame::addNewMobileEntities() {
 	MapData* mapData = view->getMapData();
 	vector<MobileEntity*> newMobiles = mapData->getnewMobileEntities();
 	mapData->cleanNewMobileEntities();
-
+	if(newMobiles.size()>0)
+		cout << "hay "<<newMobiles.size()<< " Mobiles nuevas "<<endl;
 	std::vector<MobileEntity *>::const_iterator iter;
 	for (iter = newMobiles.begin(); iter != newMobiles.end(); ++iter) {
 
@@ -439,7 +444,7 @@ void MultiplayerGame::removeDeadMobiles() {
 	for (iter = deadEntities.begin(); iter != deadEntities.end(); ++iter) {
 		MobileEntity* current = *iter;
 
-		removeMobileEntity(getMobileId(current));
+		removeMobileEntity(current->getId());
 	}
 }
 
@@ -454,6 +459,7 @@ int MultiplayerGame::addMobileEntity(MobileEntity* entity,
 	entity->setPos(x, y, 0);
 	int newId = lastAddedView + 1;
 	mobileEntities[newId] = entity;
+	entity->setId(newId);
 	lastAddedView = newId;
 
 	return newId;

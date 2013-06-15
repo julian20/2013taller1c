@@ -7,7 +7,7 @@
 
 #include <AI/ArtificialIntelligence.h>
 #include <stdlib.h>
-#define WATCHSIZE 5
+#define WATCHSIZE 15
 
 ArtificialIntelligence::ArtificialIntelligence() {
 	entity = NULL;

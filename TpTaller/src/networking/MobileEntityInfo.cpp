@@ -57,9 +57,9 @@ MobileEntity* MobileEntityInfo::getEntity(){
 
 MobileEntityView* MobileEntityInfo::createMobileEntityView(MobileEntityViewHolder* vh) {
 	MobileEntityView* view = vh->getMobileEntityView(name);
-	view->setName(name);
-	view->setEntity(entity);
 
+	view->setEntity(entity);
+	view->setName(name);
 	return view;
 }
 

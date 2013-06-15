@@ -14,6 +14,7 @@
 
 #include <cmath>
 #include <string>
+#include <sstream>
 
 //Posicion de los pies del personaje respecto de la base de la imagen
 #define OFFSET_Y	15
@@ -93,10 +94,22 @@ void MobileEntityView::showFrame(SDL_Surface* screen, SDL_Rect* clip,
 
 	SDL_BlitSurface(this->image, clip, screen, &offset);
 	blitIceSpellEffect(screen, x, y);
-
+	//blitName(screen, x, y);
 }
 
 
+void MobileEntityView::blitName(SDL_Surface* screen, int x, int y) {
+	SDL_Rect offsetNombre;
+	this->setShowableName(mobileEntity->getName());
+	int h = Tile::computePositionTile(0, 0).h;
+	offsetNombre.x = (int) x + camPos->getX() - nameImage->w / 2;
+	offsetNombre.y = (int) y + camPos->getY() - this->anchorPixel->getY()
+			- h / 2 - 20;
+	offsetNombre.w = nameImage->w;
+	offsetNombre.h = nameImage->h;
+	SDL_BlitSurface(nameImage, NULL, screen, &offsetNombre);
+
+}
 void MobileEntityView::blitIceSpellEffect(SDL_Surface* screen, int x, int y) {
 	if (mobileEntity->isFrozen() && !wasFrozen) {
 		if (!SoundEffectHandler::isSoundPlaying(ICE_SOUND)) {
@@ -321,28 +334,33 @@ void MobileEntityView::setName(std::string name) {
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
-	TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
-	if (nameImage)
+	//TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
+	/*if (nameImage)
 		SDL_FreeSurface(nameImage);
-	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);
-	if (!nameImage || !font)
-		Logs::logErrorMessage(
-				"Error al cargar la fuente para el nombre del personaje");
+	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);*/
+	//if (!nameImage || !font)
+	//	Logs::logErrorMessage(
+		//		"Error al cargar la fuente para el nombre del personaje");
 
 }
 
 void MobileEntityView::setShowableName(string name) {
-	SDL_Color color;
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
-	TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
-	if (nameImage)
-		SDL_FreeSurface(nameImage);
-	nameImage = TTF_RenderText_Solid(font, name.c_str(), color);
-	if (!nameImage || !font)
-		Logs::logErrorMessage(
-				"Error al cargar la fuente para el nombre del personaje");
+	if (!nameImage){
+		int id = this->mobileEntity->getId();
+		std::stringstream sstm;
+		sstm <<  id;
+		SDL_Color color;
+		color.r = 255;
+		color.g = 255;
+		color.b = 255;
+		TTF_Font* font = TTF_OpenFont("resources/fonts/Baramond.ttf", 28);
+
+		//	SDL_FreeSurface(nameImage);
+		nameImage = TTF_RenderText_Solid(font, sstm.str().c_str(), color);
+		if (!nameImage || !font)
+			Logs::logErrorMessage(
+					"Error al cargar la fuente para el nombre del personaje");
+	}
 }
 
 void MobileEntityView::playAnimation(SpriteType sprite, SDL_Surface* screen,

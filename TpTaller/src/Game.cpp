@@ -407,8 +407,8 @@ void Game::removeEntity(int id){
 void Game::handleMobileEntityUpdates(vector<MobileEntityUpdate*> mobileEntityUpdates) {
 	for (size_t i = 0; i < mobileEntityUpdates.size(); i++) {
 		int id = mobileEntityUpdates[i]->getId();
-		if (mobileEntities.count(id) == 0)
-			continue;
+		//if (mobileEntities.count(id) == 0)
+		//	continue;
 
 		mobileEntities[id]->updateFromServer(mobileEntityUpdates[i]);
 

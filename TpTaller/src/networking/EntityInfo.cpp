@@ -65,9 +65,9 @@ Entity* EntityInfo::getEntity(){
 
 EntityView* EntityInfo::createEntityView(ItemViewHolder* vh) {
 	EntityView* view = vh->getEntityView(className);
-	view->setName(name);
-	view->setEntity(entity);
 
+	view->setEntity(entity);
+	view->setName(name);
 	return view;
 }
 
