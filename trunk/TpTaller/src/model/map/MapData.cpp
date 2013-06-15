@@ -569,18 +569,13 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 					+ heuristicCostEstimate(from, currentGoal));
 	Tile* current;
 
-	cout << "llego al while" << endl;
 	while (openSet.size() > 0) {
-		cout << "ciclo" << endl;
 		openSet.sort(compTileList);
 		current = openSet.back();	// node having the lowest fScore value
 
 		if (current->isEqual(currentGoal)) {
-			cout << "devolver 1" << endl;
 			list<Tile *>* path = reconstructPath(cameFrom, currentGoal);
-			cout << "devolver 2" << endl;
 			emptyTilesContainer(tilesContainer);
-			cout << "devolver 3" << endl;
 			return path;
 		}
 
@@ -615,9 +610,7 @@ list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 		}
 	}
 
-	cout << "no hay path" << endl;
 	emptyTilesContainer(tilesContainer);
-	cout << "no hay path, tiles limpiados" << endl;
 	return new list<Tile *>();
 }
 
