@@ -535,6 +535,10 @@ void printPath(list<Tile *>* path) {
 
 list<Tile *> *MapData::getPath(Tile* from, Tile* goal) {
 	TileData* data = getTileData(from->getCoordinates());
+	if (data == NULL) {
+		std::cout << "Segfault avoided like a champ" << std::endl;
+		return new list<Tile *>();
+	}
 	if (data->isWalkable(true) == false) {
 		std::cout << "El tile donde se encuentra el jugador no es transitable"
 				<< std::endl;
