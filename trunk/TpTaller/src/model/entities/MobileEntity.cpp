@@ -32,6 +32,7 @@ MobileEntity::MobileEntity() :
 	attacking = false;
 	endPos = new Vector3(0, 0);
 	team = 0;
+	id=-1;
 	attackToEntity = NULL;
 //	ia = ArtificialIntelligence();
 	this->speed = new Speed(0, new Vector2(0, 0));
@@ -61,6 +62,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	hasChanged = false;
 	initSpeed = 0;
 	team = 0;
+	id = -1 ;
 	attackTimer.start();
 	lastAttackingDirection = 0;
 	viewRange = 200;
@@ -75,7 +77,14 @@ list<PlayerEvent*> MobileEntity::getPlayerEvents() {
 	events.clear();
 	return aux;
 }
+void MobileEntity::setId(int id){
 
+	this->id = id ;
+}
+
+int MobileEntity::getId (){
+	return this->id;
+}
 void MobileEntity::addEvent(PlayerEvent* event) {
 	events.push_back(event);
 }
@@ -273,6 +282,7 @@ void MobileEntity::updateFromServer(MobileEntityUpdate* update) {
 	}
 	this->life = update->getLife();
 	this->team = update->getTeam();
+	this->id = update->getId();
 
 }
 
@@ -283,7 +293,7 @@ MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate(int id) {
 
 	MobileEntityUpdate* update = new MobileEntityUpdate();
 
-	update->setId(id);
+	update->setId(this->id);
 	update->setName(this->name);
 	update->setCurrentPos(this->currentPos);
 	update->setEndPos(this->endPos);
@@ -294,7 +304,7 @@ MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate(int id) {
 	update->setLife(this->life);
 	update->setMagic(this->magic);
 	update->setTeam(this->team);
-	update->setViewRange(this->viewRange);
+//	update->setViewRange(this->viewRange);
 	update->setFrozen(frozen);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
@@ -498,7 +508,7 @@ ostream& operator <<(std::ostream& out, const MobileEntity& MobileEntity) {
 	out << *(MobileEntity.currentTile);
 	out << " " << MobileEntity.life << " " << MobileEntity.team;
 	out << " " << MobileEntity.lastAttackingDirection;
-	out << " " << MobileEntity.viewRange;
+	//out << " " << MobileEntity.viewRange;
 	out << " " << MobileEntity.frozen;
 
 	return out;

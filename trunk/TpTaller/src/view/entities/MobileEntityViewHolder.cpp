@@ -46,6 +46,7 @@ void MobileEntityViewHolder::loadMobileEntityView(string className, MobileEntity
 	}
 }
 
+
 MobileEntityView* MobileEntityViewHolder::duplicateView(MobileEntityView* view) {
 	MobileEntityView* duplicateView = new MobileEntityView(view);
 	return duplicateView;

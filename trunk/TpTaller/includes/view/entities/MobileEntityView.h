@@ -52,7 +52,7 @@ public:
 	virtual ~MobileEntityView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
-
+	void blitName(SDL_Surface* screen, int x, int y);
 
 protected:
 

@@ -62,7 +62,7 @@ list<Entity*> MapData::getDeadEntities() {
 
 			TileData* tileData = getTileData(current->getCoordinates());
 			tileData->removeEntity(current);
-			tileData->removeMobileEntity((MobileEntity*) current);
+		//	tileData->removeMobileEntity((MobileEntity*) current);
 
 			current->onRemove(this);
 		}
@@ -96,6 +96,7 @@ list<MobileEntity*> MapData::getDeadMobiles() {
 			}
 
 			current->onRemove(this);
+			//addedMobiles.remove(current);
 		}
 	}
 

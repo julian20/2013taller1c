@@ -100,6 +100,8 @@ public:
 	float getLastAttackingDirecton();
 
 	void localUpdate(MapData* mapData);
+	void setId(int id);
+	int getId();
 	virtual int getAttackingDistance();
 protected:
 	void loadNextPosition(MapData* mapData, bool checkColition = true);
@@ -110,7 +112,7 @@ protected:
 	//ArtificialIntelligence* ia;
 	list<Tile *>* path;
 	int viewRange;
-
+	int id;
 	bool attacking;
 
 	bool hasChanged;

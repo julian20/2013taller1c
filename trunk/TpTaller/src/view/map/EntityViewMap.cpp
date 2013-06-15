@@ -51,9 +51,15 @@ void EntityViewMap::removeEntityView(EntityView* view){
 		}
 	}
 	for (list<EntityView*>::iterator it = movableEntities.begin() ; it != movableEntities.end() ; ++it){
-		if ((*it)->getEntity()->getName() == view->getEntity()->getName()){
-			movableEntities.erase(it);
-			break;
+		MobileEntity* mb = (MobileEntity*)(*it)->getEntity();
+		if(view->getEntity()->getClassName()=="MobileEntity")
+		{
+			MobileEntity* mb2 = (MobileEntity*)view->getEntity();
+			if (mb->getId() == mb2->getId()){
+						movableEntities.erase(it);
+						break;
+		}
+
 		}
 	}
 }
@@ -108,6 +114,7 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
 		std::map<string, int> visibleTiles) {
 
 	updateMovablePos();
+	//cout << "visible TIles "<<visibleTiles["StartCol"]<<" "<<visibleTiles["EndCol"]<<"  "<<visibleTiles["StartRow"]<<" "<<visibleTiles["EndRow"]<<endl;
 	for (int col = visibleTiles["StartCol"]; col < visibleTiles["EndCol"];
 			col++) {
 

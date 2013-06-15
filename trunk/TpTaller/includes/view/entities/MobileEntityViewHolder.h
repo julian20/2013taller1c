@@ -23,6 +23,7 @@ public:
 	MobileEntityView* getMobileEntityView(string name);
 	MobileEntityView* getMobileEntityViewByEntity(MobileEntity* entity);
 	void loadMobileEntityView(string className, MobileEntityView* view);
+
 private:
 	MobileEntityView* duplicateView(MobileEntityView* view);
 	map<string, MobileEntityView*> entityViewMap;
