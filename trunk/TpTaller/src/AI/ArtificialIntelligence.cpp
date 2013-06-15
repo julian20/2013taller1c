@@ -7,7 +7,7 @@
 
 #include <AI/ArtificialIntelligence.h>
 #include <stdlib.h>
-#define WATCHSIZE 15
+#define WATCHSIZE 5
 
 ArtificialIntelligence::ArtificialIntelligence() {
 	entity = NULL;
@@ -24,7 +24,16 @@ void ArtificialIntelligence::update(MapData* mapData) {
 
 	if (entity->isDead() || entity->isFrozen())
 		return;
-	if (entity->getAttackToEntity() != NULL) {
+
+
+	if (this->isAnyEnemyClose(mapData)) {
+				Entity& enemy = this->getNearestEnemy();
+				entity->attackTo(&enemy);
+			} else {
+				entity->cancelAttack();
+				this->watch(mapData);
+			}
+/*	else (entity->getAttackToEntity() != NULL) {
 		Tile* currentTile = entity->getTile();
 		Tile* enemyTile = entity->getAttackToEntity()->getTile();
 
@@ -33,15 +42,7 @@ void ArtificialIntelligence::update(MapData* mapData) {
 			delete currentTile;
 			delete enemyTile;
 		}
-	} else {
-		if (this->isAnyEnemyClose(mapData)) {
-			Entity& enemy = this->getNearestEnemy();
-			entity->attackTo(&enemy);
-		} else {
-			entity->cancelAttack();
-			this->watch(mapData);
-		}
-	}
+	}*/
 
 }
 
