@@ -30,6 +30,8 @@ protected:
 private:
 	list<MobileEntity*> entitiesNear;
 	Timer attackTimer;
+
+	Timer watchdog;
 };
 
 #endif /* ARTIFICIALINTELLIGENCE_H_ */

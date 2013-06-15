@@ -83,6 +83,8 @@ private:
 			bool getNoWalkableTiles = false);
 	void initializeData();
 	void checkRowColsValue(int row, int col);
+	list<Tile *> getTilesInSquare(int startRow, int startCol, int endRow, int endCol,
+			map<int, Tile *> *tilesContainer, bool getNoWalkableTiles = false);
 
 	Player* mainPlayer;
 	vector<TileData *> visibleTiles;
