@@ -90,7 +90,7 @@ void Player::initializeSpellsInventory() {
 	inventory.shieldSpell = false;
 	inventory.freeze = false;
 	inventory.map = inventory.mapUsed = false;
-	inventory.golemSpellItem = false;
+	inventory.golemSpellItem = true;
 }
 
 void Player::createWeapons() {

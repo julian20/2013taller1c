@@ -170,7 +170,10 @@ void MultiplayerGame::createGolem(Player* player) {
 void MultiplayerGame::createGolemIa(Golem* golem) {
 	ArtificialIntelligence* ia = new GolemAI();
 	ia->setMobileEntity(golem);
-	this->ias[++lastAddedView] = ia;
+	int newId = lastAddedView + 1;
+	this->ias[newId] = ia;
+	lastAddedView++;
+	golem->setId(newId);
 }
 
 void MultiplayerGame::updateGolems(){
