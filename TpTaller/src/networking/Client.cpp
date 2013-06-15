@@ -98,6 +98,7 @@ void* transmit(void* _client) {
 			client->recvGameScores();
 			Popup::alertWindow(string("El juego termino"));
 			game->setInactive();
+			close(client->getID());
 			break;
 		}
 
@@ -184,6 +185,10 @@ Client::Client(string host, int port) {
 Chat* Client::getChat()
 {
 	return this->chat;
+}
+
+int Client::getID(){
+	return clientID;
 }
 string Client::getPlayerName()
 {
