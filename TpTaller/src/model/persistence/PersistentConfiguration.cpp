@@ -13,12 +13,14 @@ PersistentConfiguration::PersistentConfiguration() {
 	this->animationConfiguration = NULL;
 	this->entityViewMap = NULL;
 	this->itemViewHolder = NULL;
+	this->flag = NULL;
+	this->mobileEntityViewHolder= NULL;
 }
 
 PersistentConfiguration::~PersistentConfiguration() {
 	delete this->mapData;
 	delete this->animationConfiguration;
-	delete this->entityViewMap;
+	//delete this->entityViewMap;
 	for (unsigned int i = 0; i < this->entityList.size(); i++) {
 		delete this->entityList[i];
 	}
