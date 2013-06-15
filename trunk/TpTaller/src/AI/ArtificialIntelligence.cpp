@@ -13,6 +13,11 @@ ArtificialIntelligence::ArtificialIntelligence() {
 	entity = NULL;
 }
 
+void* watchdogFunc(void* par) {
+
+	return NULL;
+}
+
 void ArtificialIntelligence::setMobileEntity(MobileEntity* entity) {
 	this->entity = entity;
 }
@@ -100,7 +105,12 @@ void ArtificialIntelligence::watch(MapData* mapData) {
 
 		if (row >= 0 && row < mapData->getNRows() && col >= 0
 				&& col < mapData->getNCols()) {
+			//pthread_t watchdogThread;
+			//watchdog.start();
+			//pthread_create(&watchdogThread,NULL,watchdogFunc,(void*)&watchdog);
+			cout << "In" << endl;
 			mapData->moveMobileEntity(this->entity, tile);
+			cout << "Out" << endl;
 		}
 
 		if (tile)
