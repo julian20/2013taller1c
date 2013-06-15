@@ -33,7 +33,7 @@ public:
 	int getServerAproval();
 	void recvNewName();
 	void addLocalPlayer();
-
+	int getID();
 	bool recvGameState();
 	void recvGameScores();
 
