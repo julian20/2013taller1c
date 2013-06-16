@@ -149,17 +149,12 @@ void MobileEntity::lookAtEnemy() {
 }
 
 void MobileEntity::checkAttackToNewPos(MapData* mapData) {
-	TileData* tileData = mapData->getTileData(attackToEntity->getCoordinates());
-
-	if(this->getClassName()=="player"){
-		if (!tileData->getIsVisible()) {
-			cancelAttack();
-			return;
-		}
-	}
 	Tile* enemyTile = attackToEntity->getTile();
-	if (currentTile->isEqual(enemyTile))
+
+	if (currentTile->isEqual(enemyTile)) {
+		delete enemyTile;
 		return;
+	}
 
 	//Llego hasta el player
 	if (MapData::distBetweenTilesInTiles(currentTile, enemyTile)
@@ -196,7 +191,16 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 }
 
 void MobileEntity::extraUpdateLocal(MapData* mapData) {
+	if (attackToEntity == NULL)
+		return;
 
+	Tile* enemyTile = attackToEntity->getTile();
+	TileData* tileData = mapData->getTileData(enemyTile->getCoordinates());
+
+	if (this->getClassName() == "Player" && !tileData->getIsVisible())
+		cancelAttack();
+
+	delete enemyTile;
 }
 
 void MobileEntity::extraUpdate(MapData* mapData) {
