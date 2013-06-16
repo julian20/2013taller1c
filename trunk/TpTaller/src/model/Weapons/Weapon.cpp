@@ -13,6 +13,7 @@ Weapon::Weapon() {
 	accuracy = 0;
 	magic = 0;
 	team = -1;
+	uses = -1;	// Para cantidad de usos infinito
 }
 
 string Weapon::getName() {
@@ -54,6 +55,26 @@ void Weapon::setMagic(int magic) {
 	this->magic = magic;
 }
 
+void Weapon::attack(Entity& enemy) {
+	this->applyDamage(enemy);
+}
+
+void Weapon::setUses(int uses) {
+	this->uses = uses;
+}
+
+int Weapon::getUses() {
+	return uses;
+}
+
+void Weapon::setTeam(int team) {
+	this->team = team;
+}
+
+int Weapon::getTeam() {
+	return this->team;
+}
+
 void Weapon::applyDamage(Entity& entity) {
 	int randomAccuracy = rand() % MAXACCURACY + 1;
 	int damageToApply = ceil(
@@ -69,16 +90,16 @@ void Weapon::applyDamage(Entity& entity) {
 
 }
 
-void Weapon::attack(Entity& enemy) {
-	this->applyDamage(enemy);
-}
+bool Weapon::canAttackTo(string name) {
+	list<string>::const_iterator iter;
+	for (iter = notValidAttacksNames.begin(); iter != notValidAttacksNames.end(); ++iter) {
+		string current = *iter;
 
-void Weapon::setTeam(int team) {
-	this->team = team;
-}
+		if (name.compare(current) == 0)
+			return false;
+	}
 
-int Weapon::getTeam() {
-	return this->team;
+	return true;
 }
 
 Weapon::~Weapon() {

@@ -35,7 +35,8 @@ Player::Player() :
 	earthquakeLifeTaked = true;
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
-	initializeSpellsInventory();
+	frostWandWeaponAdded = false;
+	initializeInventory();
 	createWeapons();
 }
 
@@ -67,7 +68,8 @@ Player::Player(string name, Position* position, Speed* speed,
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
 	frozen = false;
-	initializeSpellsInventory();
+	frostWandWeaponAdded = false;
+	initializeInventory();
 	createWeapons();
 }
 
@@ -84,19 +86,17 @@ void Player::applyDamage(int damage) {
 	damageTimer.start();
 }
 
-void Player::initializeSpellsInventory() {
+void Player::initializeInventory() {
 	inventory.earthquake = false;
 	inventory.crystalBall = false;
 	inventory.shieldSpell = false;
 	inventory.freeze = false;
 	inventory.map = inventory.mapUsed = false;
 	inventory.golemSpellItem = false;
+	inventory.frostWandWeapon = false;
 }
 
 void Player::createWeapons() {
-	FrostWandWeapon* frostWand = new FrostWandWeapon();
-	weapons->push_front(frostWand);
-
 	Sword* sword = new Sword();
 	weapons->push_front(sword);
 }
@@ -116,6 +116,16 @@ void Player::updateDamageTaken() {
 		damageBuffer = 0;
 	}
 
+}
+
+void Player::addFrostWandWeapon() {
+	inventory.frostWandWeapon = true;
+	if (!frostWandWeaponAdded) {
+		FrostWandWeapon* frostWand = new FrostWandWeapon();
+		addWeapon(frostWand);
+
+		frostWandWeaponAdded = true;
+	}
 }
 
 void Player::addEarthquakeSpell() {
@@ -312,6 +322,8 @@ void Player::extraUpdateLocal(MapData* mapData) {
 			mapData->showAllMap();
 		}
 	}
+	if (inventory.frostWandWeapon)
+		addFrostWandWeapon();
 	usingMagic();
 }
 
@@ -358,24 +370,41 @@ Weapon* Player::getCurrentWeapon() {
 	return weaponToUse;
 }
 
+void Player::addWeapon(Weapon* weapon) {
+	cout << "in" << endl;
+	cout << weapons->size() << endl;
+	weapons->push_back(weapon);
+	cout << weapons->size() << endl;
+}
+
 void Player::changeWeapon() {
+	cout << "change" << endl;
+	cout << weapons->size() << endl;
 	Weapon* actualWeapon = weapons->front();
 	weapons->pop_front();
 	weapons->push_back(actualWeapon);
+	cout << weapons->size() << endl;
 }
 
 void Player::attack(Entity& entity) {
 	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
+
 		attackTimer.start();
 		Weapon* weaponToUse = this->getCurrentWeapon();
 		if (weaponToUse->getName() == "FrostWand")
 			castingSpell = true;
 		else
 			attacking = true;
-		if (weaponToUse->getMagic() <= this->magic) {
-			weaponToUse->attack(entity);
-			this->magic -= weaponToUse->getMagic();
+
+		if (weaponToUse->getUses() > 0 || weaponToUse->getUses() == -1) {
+			if (weaponToUse->getMagic() <= this->magic) {
+				weaponToUse->attack(entity);
+				this->magic -= weaponToUse->getMagic();
+			}
+			if (weaponToUse->getUses() > 0)
+					weaponToUse->setUses(weaponToUse->getUses() - 1);
 		}
+
 	} else {
 		if (attackQueue.size() < 3)
 			attackQueue.push(&entity);
@@ -404,6 +433,7 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->inventory.map = update->getMapItem();
 	this->inventory.crystalBall = update->getCrystalBall();
 	this->usingCrystalBall = update->getUsingCrystalBall();
+	this->inventory.frostWandWeapon = update->getFrostWandWeapon();
 	if (currentTile)
 		delete currentTile;
 	this->currentTile = update->getTile();
@@ -454,6 +484,7 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setMapItem(this->inventory.map);
 	update->setUsingCrystalBall(this->usingCrystalBall);
 	update->setCrystalBall(this->inventory.crystalBall);
+	update->setFrostWandWeapon(this->inventory.frostWandWeapon);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {
@@ -528,6 +559,7 @@ ostream& operator <<(std::ostream& out, const Player& player) {
 	out << " " << player.golem;
 	out << " " << player.frozen;
 	out << " " << player.viewRange;
+	out << " " << player.inventory.frostWandWeapon;
 	return out;
 }
 
@@ -593,6 +625,7 @@ istream& operator >>(std::istream& in, Player& player) {
 	int view;
 	in >> view;
 	player.viewRange = view;
+	in >> player.inventory.frostWandWeapon;
 	return in;
 }
 

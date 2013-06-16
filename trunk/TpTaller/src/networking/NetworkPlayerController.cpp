@@ -89,25 +89,28 @@ void NetworkPlayerController::toggleRunning() {
 }
 
 void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
+	if (player == NULL) return;
+
 	if (tileCoord->getCol() >= 0 && tileCoord->getCol() < data->getNCols() &&
 		tileCoord->getRow() >= 0 && tileCoord->getRow() < data->getNRows() ) {
 
 		if (this->playerHasclickedAnEntity(tileCoord)){
 			Entity* entityColliding = getEntityToCollideTo();
 
-			if (entityColliding->isAttackable())
-				playerAttackTo(entityColliding);
+			if (entityColliding->isAttackable() ) {
+				if (player->getCurrentWeapon()->canAttackTo(entityColliding->getClassName())) {
+					playerAttackTo(entityColliding);
+					return;
+				}
+			}
 
-			//if (!entityColliding->isWalkable())
-			//	return;
 		}
 
-		if (player != NULL) {
-			Tile* toTile = new Tile(
-					new Coordinates(tileCoord->getRow(), tileCoord->getCol()));
-			data->moveMobileEntity(player, toTile);
-			delete toTile;
-		}
+
+		Tile* toTile = new Tile(
+				new Coordinates(tileCoord->getRow(), tileCoord->getCol()));
+		data->moveMobileEntity(player, toTile);
+		delete toTile;
 
 	}
 

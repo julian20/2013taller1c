@@ -22,12 +22,16 @@ public:
 	void setAccuracy(int accuracy);
 	void setRange(int range);
 	void setMagic(int magic);
+	void setUses(int uses);
 	void setTeam(int team);
 	int getDamage();
 	int getRange();
 	int getAccuracy();
 	int getMagic();
+	int getUses();
 	int getTeam();
+
+	bool canAttackTo(string name);
 
 	virtual ~Weapon();
 protected:
@@ -35,8 +39,11 @@ protected:
 	int magic;
 	int range;
 	int accuracy;
+	int uses;
 	int team;
 	string name;
+
+	list<string> notValidAttacksNames;
 };
 
 #endif /* WEAPON_H_ */

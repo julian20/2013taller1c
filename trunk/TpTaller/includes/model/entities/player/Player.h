@@ -49,6 +49,7 @@ public:
 	bool map, mapUsed;
 	bool freeze;
 	bool golemSpellItem;
+	bool frostWandWeapon;
 };
 
 class Player: public MobileEntity {
@@ -120,6 +121,8 @@ public:
 	void setChat(Chat* chat);
 	ChatUpdate* generateChatUpdate();
 	Weapon* getCurrentWeapon();
+	void addWeapon(Weapon* weapon);
+	void addFrostWandWeapon();
 	void createGolem();
 	bool hasGolem();
 	void changeWeapon();
@@ -129,7 +132,7 @@ private:
 	void createWeapons();
 	void frozeEnemiesNow(MapData* mapData);
 	void usingMagic();
-	void initializeSpellsInventory();
+	void initializeInventory();
 	void castSpellNow(MapData* mapData);
 	void setSpellDirection(SpellEffect* spell,
 			Coordinates starting, Coordinates ending);
@@ -144,6 +147,7 @@ private:
 	Inventory inventory;
 
 	bool usingCrystalBall,usingInvulnerability;
+	bool frostWandWeaponAdded;
 	bool makingEarthquake;
 	bool needFrozeEnemies;
 	bool castingSpell;

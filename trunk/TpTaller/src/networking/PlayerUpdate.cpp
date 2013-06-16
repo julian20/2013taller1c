@@ -81,6 +81,14 @@ bool PlayerUpdate::getCrystalBall() {
 	return crystalBall;
 }
 
+void PlayerUpdate::setFrostWandWeapon(bool frostWandWeapon) {
+	this->frostWandWeapon = frostWandWeapon;
+}
+
+bool PlayerUpdate::getFrostWandWeapon() {
+	return frostWandWeapon;
+}
+
 void PlayerUpdate::setInvulnerable(bool inv) {
 	this->invulnerable = inv;
 }
@@ -101,7 +109,8 @@ ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 			<< update.castingSpell << " " << update.viewRange << " "
 			<< update.frozen << " " << update.makingEarthquake << " "
 			<< update.invulnerable << " " << update.golem << " " << update.mapItem
-			<< " " << update.usingCrystalBall << " " << update.crystalBall;
+			<< " " << update.usingCrystalBall << " " << update.crystalBall
+			<< " " << update.frostWandWeapon;
 
 	return out;
 }
@@ -158,6 +167,7 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	in >> update.mapItem;
 	in >> update.usingCrystalBall;
 	in >> update.crystalBall;
+	in >> update.frostWandWeapon;
 	return in;
 }
 
