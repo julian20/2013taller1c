@@ -19,7 +19,6 @@ Player::Player() :
 	this->name = "";
 	this->path = new list<Tile *>();
 	this->currentTile = new Tile(new Coordinates(0, 0));
-	this->weapons = new list<Weapon*>;
 	team = 2;
 	isActive = true;
 	attacking = false;
@@ -36,6 +35,7 @@ Player::Player() :
 	spellEffects.push_back(new SpellEffect());
 	viewRange = 200;
 	frostWandWeaponAdded = false;
+	selectedWeapon = 0;
 	initializeInventory();
 	createWeapons();
 }
@@ -57,7 +57,6 @@ Player::Player(string name, Position* position, Speed* speed,
 	isActive = true;
 	team = 4;
 	mainPlayer = true;
-	weapons = NULL;
 	needCastSpell = false;
 	golem = false;
 	castingSpell = false;
@@ -69,6 +68,7 @@ Player::Player(string name, Position* position, Speed* speed,
 	viewRange = 200;
 	frozen = false;
 	frostWandWeaponAdded = false;
+	selectedWeapon = 0;
 	initializeInventory();
 	createWeapons();
 }
@@ -98,7 +98,7 @@ void Player::initializeInventory() {
 
 void Player::createWeapons() {
 	Sword* sword = new Sword();
-	weapons->push_front(sword);
+	weapons.push_back(sword);
 }
 
 void Player::setLife(int life) {
@@ -122,7 +122,7 @@ void Player::addFrostWandWeapon() {
 	inventory.frostWandWeapon = true;
 	if (!frostWandWeaponAdded) {
 		FrostWandWeapon* frostWand = new FrostWandWeapon();
-		addWeapon(frostWand);
+		weapons.push_back(frostWand);
 
 		frostWandWeaponAdded = true;
 	}
@@ -367,25 +367,15 @@ void Player::reverseCollide(Entity& entity) {
 }
 
 Weapon* Player::getCurrentWeapon() {
-	Weapon* weaponToUse = weapons->front();
+	Weapon* weaponToUse = weapons[selectedWeapon];
 	weaponToUse->setTeam(team);
 	return weaponToUse;
 }
 
-void Player::addWeapon(Weapon* weapon) {
-	cout << "in" << endl;
-	cout << weapons->size() << endl;
-	weapons->push_back(weapon);
-	cout << weapons->size() << endl;
-}
-
 void Player::changeWeapon() {
-	cout << "change" << endl;
-	cout << weapons->size() << endl;
-	Weapon* actualWeapon = weapons->front();
-	weapons->pop_front();
-	weapons->push_back(actualWeapon);
-	cout << weapons->size() << endl;
+	selectedWeapon++;
+	if (selectedWeapon >= weapons.size() )
+		selectedWeapon = 0;
 }
 
 void Player::attack(Entity& entity) {
@@ -436,6 +426,7 @@ void Player::updateFromServer(PlayerUpdate* update) {
 	this->inventory.crystalBall = update->getCrystalBall();
 	this->usingCrystalBall = update->getUsingCrystalBall();
 	this->inventory.frostWandWeapon = update->getFrostWandWeapon();
+	this->selectedWeapon = update->getSelectedWeapon();
 	if (currentTile)
 		delete currentTile;
 	this->currentTile = update->getTile();
@@ -487,6 +478,7 @@ PlayerUpdate* Player::generatePlayerUpdate() {
 	update->setUsingCrystalBall(this->usingCrystalBall);
 	update->setCrystalBall(this->inventory.crystalBall);
 	update->setFrostWandWeapon(this->inventory.frostWandWeapon);
+	update->setSelectedWeapon(this->selectedWeapon);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());
 	} else {

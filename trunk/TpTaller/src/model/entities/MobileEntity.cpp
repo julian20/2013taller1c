@@ -167,9 +167,6 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		attackToEntity = NULL;
 		path->erase(path->begin(), path->end());
 		return;
-	}else
-	{
-		cancelAttack();
 	}
 
 	if (path->size() == 0) {

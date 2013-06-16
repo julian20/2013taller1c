@@ -97,20 +97,41 @@ bool PlayerUpdate::getIsInvulnerable() {
 	return invulnerable;
 }
 
+void PlayerUpdate::setSelectedWeapon(int selectedWeapon) {
+	this->selectedWeapon = selectedWeapon;
+}
+
+int PlayerUpdate::getSelectedWeapon() {
+	return selectedWeapon;
+}
+
 //Operator to transform the object into a stream.
 ostream& operator <<(std::ostream& out, const PlayerUpdate& update) {
 
-	out << update.name << " " << *update.currentPos << " " << *update.endPos
-			<< " " << *update.speed << " " << update.attacking << " "
-			<< update.blocking << " " << update.active << " "
-			<< *update.currentTile << " " << *update.nextTile <<
-			" " << update.life << " " << update.magic
-			<< " " << update.lastAttackingDirection << " " << update.team << " "
-			<< update.castingSpell << " " << update.viewRange << " "
-			<< update.frozen << " " << update.makingEarthquake << " "
-			<< update.invulnerable << " " << update.golem << " " << update.mapItem
-			<< " " << update.usingCrystalBall << " " << update.crystalBall
-			<< " " << update.frostWandWeapon;
+	out << update.name
+		<< " " << *update.currentPos
+		<< " " << *update.endPos
+		<< " " << *update.speed
+		<< " " << update.attacking
+		<< " " << update.blocking
+		<< " " << update.active
+		<< " " << *update.currentTile
+		<< " " << *update.nextTile
+		<< " " << update.life
+		<< " " << update.magic
+		<< " " << update.lastAttackingDirection
+		<< " " << update.team
+		<< " " << update.castingSpell
+		<< " " << update.viewRange
+		<< " " << update.frozen
+		<< " " << update.makingEarthquake
+		<< " " << update.invulnerable
+		<< " " << update.golem
+		<< " " << update.mapItem
+		<< " " << update.usingCrystalBall
+		<< " " << update.crystalBall
+		<< " " << update.frostWandWeapon
+		<< " " << update.selectedWeapon;
 
 	return out;
 }
@@ -168,6 +189,7 @@ istream& operator >>(std::istream& in, PlayerUpdate& update) {
 	in >> update.usingCrystalBall;
 	in >> update.crystalBall;
 	in >> update.frostWandWeapon;
+	in >> update.selectedWeapon;
 	return in;
 }
 
