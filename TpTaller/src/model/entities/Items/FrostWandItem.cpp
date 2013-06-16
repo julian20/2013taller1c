@@ -26,7 +26,9 @@ FrostWandItem::FrostWandItem(Item* entity) : Item(entity) {
 }
 
 void FrostWandItem::applyEffects(Player& entity) {
-	// TODO: agregar frost wand.
+	Player* player = (Player*)&entity;
+
+	player->addFrostWandWeapon();
 }
 
 void FrostWandItem::collideTo(Player& entity) {

@@ -13,6 +13,9 @@ FrostWandWeapon::FrostWandWeapon() : Weapon() {
 	this->magic = 5;
 	this->range = 4;
 	this->name = "FrostWand";
+	this->uses = 3;
+
+	notValidAttacksNames.push_back("Chest");
 }
 
 void FrostWandWeapon::attack(Entity& entity) {
