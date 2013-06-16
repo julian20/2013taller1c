@@ -106,9 +106,7 @@ void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
 
 		}
 
-
-		Tile* toTile = new Tile(
-				new Coordinates(tileCoord->getRow(), tileCoord->getCol()));
+		Tile* toTile = new Tile(new Coordinates(tileCoord->getRow(), tileCoord->getCol()));
 		data->moveMobileEntity(player, toTile);
 		delete toTile;
 

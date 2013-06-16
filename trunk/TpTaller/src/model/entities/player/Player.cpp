@@ -316,6 +316,8 @@ void Player::frozeEnemiesNow(MapData* mapData) {
 }
 
 void Player::extraUpdateLocal(MapData* mapData) {
+	MobileEntity::extraUpdateLocal(mapData);
+
 	if (inventory.map && mainPlayer) {
 		if (inventory.mapUsed == false) {
 			inventory.mapUsed = true;
