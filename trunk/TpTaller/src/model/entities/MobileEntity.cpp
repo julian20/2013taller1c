@@ -149,6 +149,11 @@ void MobileEntity::lookAtEnemy() {
 }
 
 void MobileEntity::checkAttackToNewPos(MapData* mapData) {
+	TileData* tileData = mapData->getTileData(attackToEntity->getCoordinates());
+	if (!tileData->getIsVisible()) {
+		cancelAttack();
+		return;
+	}
 	Tile* enemyTile = attackToEntity->getTile();
 	if (currentTile->isEqual(enemyTile))
 		return;
