@@ -41,7 +41,7 @@ MobileEntity::MobileEntity() :
 	this->currentTile = new Tile(new Coordinates(0, 0));
 	attackTimer.start();
 	lastAttackingDirection = 0;
-	viewRange = 200;
+	viewRange = 5;
 	magicDamageDelay.start();
 	frozen = false;
 	walkable = false;
@@ -65,7 +65,7 @@ MobileEntity::MobileEntity(string name, Position* position, Speed* speed) {
 	id = -1 ;
 	attackTimer.start();
 	lastAttackingDirection = 0;
-	viewRange = 200;
+	viewRange = 5;
 	magicDamageDelay.start();
 	frozen = false;
 	walkable = false;
@@ -150,13 +150,17 @@ void MobileEntity::lookAtEnemy() {
 
 void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 	TileData* tileData = mapData->getTileData(attackToEntity->getCoordinates());
-	if (!tileData->getIsVisible()) {
-		cancelAttack();
-		return;
+
+	if(this->getClassName()=="player"){
+		if (!tileData->getIsVisible()) {
+			cancelAttack();
+			return;
+		}
 	}
 	Tile* enemyTile = attackToEntity->getTile();
 	if (currentTile->isEqual(enemyTile))
 		return;
+
 	//Llego hasta el player
 	if (MapData::distBetweenTilesInTiles(currentTile, enemyTile)
 			<= getAttackingDistance()) {
@@ -168,6 +172,9 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		attackToEntity = NULL;
 		path->erase(path->begin(), path->end());
 		return;
+	}else
+	{
+		cancelAttack();
 	}
 
 	if (path->size() == 0) {
@@ -309,7 +316,7 @@ MobileEntityUpdate* MobileEntity::generateMobileEntityUpdate(int id) {
 	update->setLife(this->life);
 	update->setMagic(this->magic);
 	update->setTeam(this->team);
-//	update->setViewRange(this->viewRange);
+	update->setViewRange(this->viewRange);
 	update->setFrozen(frozen);
 	if (!this->path->empty()) {
 		update->setNextTile(this->path->front());

@@ -27,12 +27,17 @@ void ArtificialIntelligence::update(MapData* mapData) {
 
 
 	if (this->isAnyEnemyClose(mapData)) {
-				Entity& enemy = this->getNearestEnemy();
-				entity->attackTo(&enemy);
-			} else {
-				entity->cancelAttack();
-				this->watch(mapData);
-			}
+		if(entity->getAttackToEntity()==NULL){
+			Entity& enemy = this->getNearestEnemy();
+			entity->attackTo(&enemy);
+		}else
+		{
+
+		}
+	} else {
+		entity->cancelAttack();
+		this->watch(mapData);
+	}
 /*	else (entity->getAttackToEntity() != NULL) {
 		Tile* currentTile = entity->getTile();
 		Tile* enemyTile = entity->getAttackToEntity()->getTile();
