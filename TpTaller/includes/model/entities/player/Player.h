@@ -121,7 +121,6 @@ public:
 	void setChat(Chat* chat);
 	ChatUpdate* generateChatUpdate();
 	Weapon* getCurrentWeapon();
-	void addWeapon(Weapon* weapon);
 	void addFrostWandWeapon();
 	void createGolem();
 	bool hasGolem();
@@ -142,7 +141,7 @@ private:
 	bool mainPlayer;
 
 	std::vector<Power*> powers;
-	list<Weapon*>* weapons;
+	vector<Weapon*> weapons;
 	list<SpellEffect*> spellEffects;
 	Inventory inventory;
 
@@ -154,6 +153,7 @@ private:
 	bool needCastSpell;
 	bool blocking;
 	bool isActive;
+	int selectedWeapon;
 
 	Timer earthquakeTimer;
 	bool earthquakeLifeTaked;

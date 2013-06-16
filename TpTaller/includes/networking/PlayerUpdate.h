@@ -41,6 +41,8 @@ public:
 	bool getCrystalBall();
 	void setFrostWandWeapon(bool frostWandWeapon);
 	bool getFrostWandWeapon();
+	void setSelectedWeapon(int selectedWeapon);
+	int getSelectedWeapon();
 
 	void setInvulnerable(bool invul);
 	bool getIsInvulnerable();
@@ -61,6 +63,7 @@ private:
 	bool golem;
 	bool mapItem;
 	bool frostWandWeapon;
+	int selectedWeapon;
 };
 
 #endif /* PLAYERUPDATE_H_ */
