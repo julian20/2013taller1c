@@ -167,6 +167,11 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 		attackToEntity = NULL;
 		path->erase(path->begin(), path->end());
 		return;
+	}else{
+		//Dami:Esto ayuda a la vista de los mobs.
+		Entity* enemy = this->getAttackToEntity();
+		cancelAttack();
+		attackToEntity = enemy ;
 	}
 
 	if (path->size() == 0) {

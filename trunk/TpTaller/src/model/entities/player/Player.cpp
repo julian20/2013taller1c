@@ -509,7 +509,13 @@ void Player::cancelBlock() {
 		hasChanged = true;
 	}
 }
+void Player::setMap(MapData* map){
+	this->map = map ;
+}
 
+MapData* Player::getMap (){
+	return this->map ;
+}
 bool Player::isBlocking() {
 	return blocking;
 }

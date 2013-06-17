@@ -102,6 +102,9 @@ public:
 	void setActive();
 	void SetUnactive();
 
+	void setMap(MapData* map);
+	MapData* getMap();
+
 	void respawn();
 	void applyDamage(int dmg);
 	virtual void collideTo(Entity& entity);
@@ -135,7 +138,7 @@ private:
 	void castSpellNow(MapData* mapData);
 	void setSpellDirection(SpellEffect* spell,
 			Coordinates starting, Coordinates ending);
-
+	MapData* map;
 	Chat* chat;
 
 	bool mainPlayer;
