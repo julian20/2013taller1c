@@ -27,15 +27,17 @@ void ArtificialIntelligence::update(MapData* mapData) {
 
 
 	if (this->isAnyEnemyClose(mapData)) {
-		if(entity->getAttackToEntity()==NULL){
+		if(entity->getAttackToEntity()==NULL && enemy==NULL){
 			Entity& enemy = this->getNearestEnemy();
 			entity->attackTo(&enemy);
+			//this->enemy = enemy;
 		}else
 		{
-
+			entity->attackTo(enemy);
 		}
 	} else {
 		entity->cancelAttack();
+		this->enemy = NULL;
 		this->watch(mapData);
 	}
 /*	else (entity->getAttackToEntity() != NULL) {
@@ -68,11 +70,18 @@ bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData) {
 Entity& ArtificialIntelligence::getNearestEnemy() {
 
 	MobileEntity* mob;
+	if(enemy != NULL)
+	{
+		return *enemy;
+	}
 	list<MobileEntity*>::iterator iter;
 	for (iter = entitiesNear.begin(); iter != entitiesNear.end(); ++iter) {
 		mob = *iter;
-		if (mob->getTeam() != this->entity->getTeam() && !mob->isDead())
+		if (mob->getTeam() != this->entity->getTeam() && !mob->isDead()){
+			this->enemy = mob ;
 			return *mob;
+		}
+
 	}
 
 	return *mob;

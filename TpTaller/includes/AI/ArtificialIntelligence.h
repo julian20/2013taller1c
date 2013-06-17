@@ -29,6 +29,7 @@ protected:
 	MobileEntity* entity;
 private:
 	list<MobileEntity*> entitiesNear;
+	Entity* enemy;
 	Timer attackTimer;
 };
 
