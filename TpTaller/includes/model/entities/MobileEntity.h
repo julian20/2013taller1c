@@ -19,7 +19,7 @@
 #include <view/timer/Timer.h>
 #include <queue>
 
-#define ATTACK_TIMEOUT			5000
+#define ATTACK_TIMEOUT			1000
 #define MAGIC_DAMAGE_TIMEOUT	1000
 #define FROZEN_TIMEOUT			5000
 #define MAXSPEED				15
