@@ -120,11 +120,11 @@ protected:
 	Timer frozenTimer;
 	bool frozen;
 	float lastAttackingDirection;
+	Entity* attackToEntity;
 private:
 	void checkAttackToNewPos(MapData* mapData);
 	void lookAtEnemy();
 
-	Entity* attackToEntity;
 	list<PlayerEvent*>events;
 };
 
