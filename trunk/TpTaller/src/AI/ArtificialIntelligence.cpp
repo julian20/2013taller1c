@@ -27,7 +27,7 @@ void ArtificialIntelligence::update(MapData* mapData) {
 
 
 	if (this->isAnyEnemyClose(mapData)) {
-		if(entity->getAttackToEntity()==NULL && enemy==NULL){
+		if(entity->getAttackToEntity()==NULL && ( enemy==NULL || enemy->isDead())){
 			Entity& enemy = this->getNearestEnemy();
 			entity->attackTo(&enemy);
 			//this->enemy = enemy;
@@ -70,7 +70,7 @@ bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData) {
 Entity& ArtificialIntelligence::getNearestEnemy() {
 
 	MobileEntity* mob;
-	if(enemy != NULL)
+	if(enemy != NULL && !enemy->isDead())
 	{
 		return *enemy;
 	}
