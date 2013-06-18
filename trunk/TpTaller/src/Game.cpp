@@ -248,7 +248,7 @@ void Game::draw() {
 		clickAnimation.blitNextFrame(screen, clickedLocation);
 	}
 	personajeVista->showWeaponsHud(screen);
-	personaje->setMap(this->mapData);
+
 	SDL_Flip(screen);
 }
 
