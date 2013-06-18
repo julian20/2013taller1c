@@ -234,7 +234,8 @@ TileData* MapData::getTileData(int row, int col) {
 	if ((row < 0 || row >= nrows) || (col < 0 || col >= ncols)) {
 		std::cout << "Se esta intentando pedir un tile fuera de rango"
 				<< std::endl;
-		return NULL;
+		//ANTE ERROR DEVOLVEMOS el 0,0
+		return &data[0];
 	}
 
 	return &data[row + nrows * col];
@@ -490,8 +491,6 @@ Tile* MapData::getValidTile(Tile* from, Tile* goal) {
 	if (tileData->isWalkable())
 		return goal;
 
-	Tile* current = goal;
-	Tile* closest;
 	map<int, Tile *> tilesContainer;// Uso esto para ir guardando los punteros
 
 	Coordinates fromCoords = from->getCoordinates();
