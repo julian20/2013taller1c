@@ -97,7 +97,7 @@ void NetworkPlayerController::movePlayer(Coordinates* tileCoord){
 		if (this->playerHasclickedAnEntity(tileCoord)){
 			Entity* entityColliding = getEntityToCollideTo();
 
-			if (entityColliding->isAttackable() ) {
+			if (entityColliding->isAttackable() && entityColliding != player) {
 				if (player->getCurrentWeapon()->canAttackTo(entityColliding->getClassName())) {
 					playerAttackTo(entityColliding);
 					return;
