@@ -349,6 +349,11 @@ void Player::extraUpdate(MapData* mapData) {
 		}
 	}
 
+	if (attackToEntity != NULL) {
+		Tile* enemyTile = attackToEntity->getTile();
+		if (MapData::distBetweenTiles(currentTile, enemyTile) > getViewRange())
+			cancelAttack();
+	}
 }
 
 void Player::setChat(Chat* chat) {

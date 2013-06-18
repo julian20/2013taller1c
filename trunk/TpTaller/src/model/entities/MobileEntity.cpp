@@ -195,14 +195,6 @@ void MobileEntity::checkAttackToNewPos(MapData* mapData) {
 void MobileEntity::extraUpdateLocal(MapData* mapData) {
 	if (attackToEntity == NULL)
 		return;
-
-	Tile* enemyTile = attackToEntity->getTile();
-	TileData* tileData = mapData->getTileData(enemyTile->getCoordinates());
-
-	if (this->getClassName() == "Player" && !tileData->getIsVisible())
-		cancelAttack();
-
-	delete enemyTile;
 }
 
 void MobileEntity::extraUpdate(MapData* mapData) {
