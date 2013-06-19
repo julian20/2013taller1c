@@ -96,7 +96,6 @@ void* transmit(void* _client) {
 
 		if (gameHasEnded) {
 			client->recvGameScores();
-			Popup::alertWindow(string("El juego termino"));
 			game->setInactive();
 			close(client->getID());
 			break;
@@ -520,9 +519,9 @@ void Client::recvGameScores() {
 	int scoreTeamTwo = ComunicationUtils::recvNumber(clientID);
 
 	stringstream ss;
-	ss << "Winning Team: " << winningTeam << endl;
-	ss << "Team 1 Score: " << scoreTeamOne << endl;
-	ss << "Team 2 Score: " << scoreTeamTwo << endl;
+	ss << "El juego ha terminado. Equipo ganador: " << winningTeam << endl;
+	// ss << "Team 1 Score: " << scoreTeamOne << endl;
+	// ss << "Team 2 Score: " << scoreTeamTwo << endl;
 
 	cout << ss.str();
 	Popup::alertWindow(ss.str());
