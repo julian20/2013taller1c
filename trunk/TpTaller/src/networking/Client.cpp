@@ -127,7 +127,7 @@ void* transmit(void* _client) {
 	}
 
 	pthread_cancel(isAliveThread);
-	return NULL;
+	close(client->getID());
 	return NULL;
 }
 
@@ -284,6 +284,7 @@ void Client::recvNewName() {
 	string newName = ComunicationUtils::recvString(clientID);
 	if (newName == string("")){
 		Popup::popupWindow("Ha ocurrido un error en la recepcion del nuevo nombre.");
+		close(getID());
 		exit(1);
 	}
 	this->player->setName(newName);
