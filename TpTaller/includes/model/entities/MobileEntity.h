@@ -22,7 +22,7 @@
 #define ATTACK_TIMEOUT			1000
 #define MAGIC_DAMAGE_TIMEOUT	1000
 #define FROZEN_TIMEOUT			5000
-#define MAXSPEED				15
+#define MAXSPEED				10
 
 using namespace std;
 class MapData;

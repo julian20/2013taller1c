@@ -202,8 +202,6 @@ void MobileEntity::extraUpdate(MapData* mapData) {
 }
 
 void MobileEntity::update(MapData* mapData) {
-    if (isDead())
-		return;
 	if (frozen) {
 		if (frozenTimer.getTimeIntervalSinceStart() > FROZEN_TIMEOUT)
 			frozen = false;
@@ -220,6 +218,9 @@ void MobileEntity::update(MapData* mapData) {
 		else
 			loadNextPosition(mapData);
 	}
+
+    if (isDead())
+		return;
 
 	float relationSpeed = ((float) Tile::getTileHeight())
 			/ ((float) Tile::getTileWidth());
