@@ -198,7 +198,7 @@ Server::Server(int port) {
 	if (bind(serverID, (struct sockaddr *) &svInfo, sizeof(svInfo)) < 0) {
 		Logs::logErrorMessage("Servidor: Error de asignacion de direccion");
 		cerr << "Servidor: Error de asignacion de direccion" << endl;
-		exit(1);
+		exit(5);
 	}
 	active = false;
 
