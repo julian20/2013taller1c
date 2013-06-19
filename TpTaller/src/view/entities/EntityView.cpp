@@ -263,3 +263,7 @@ std::string EntityView::getName() {
 void EntityView::setName(std::string name) {
 	this->name = name;
 }
+
+string EntityView::getClassName() {
+	return "EntityView";
+}

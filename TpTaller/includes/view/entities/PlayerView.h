@@ -50,11 +50,13 @@ public:
 	void setNClips(int clips);
 	void setName(std::string name);
 	void setShowableName(string name);
-	virtual ~PlayerView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
 	void showWeaponsHud(SDL_Surface* screen);
 	list<PlayerEvent*> getPlayerViewEvents();
+	string getClassName();
+
+	virtual ~PlayerView();
 private:
 	void loadWeaponsHudSurfaces();
 	void showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog);

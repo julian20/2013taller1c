@@ -32,12 +32,21 @@ EntityViewMap::EntityViewMap(MapData* _mapData) {
 
 void EntityViewMap::positionEntityView(EntityView* entity,
 		Coordinates coordinates) {
-	int row = coordinates.getRow();
-	int col = coordinates.getCol();
 
-	map.at(col).at(row).push_back(entity);
-	if (entity->isMovable()) {
-		movableEntities.push_back(entity);
+	bool entityAlreadyAdded = !(addedEntities.find(entity->getEntity())
+			== addedEntities.end());
+
+	if (!entityAlreadyAdded || !addedEntities[entity->getEntity()]) {
+
+		int row = coordinates.getRow();
+		int col = coordinates.getCol();
+
+		map.at(col).at(row).push_back(entity);
+		if (entity->isMovable()) {
+			movableEntities.push_back(entity);
+		}
+
+		addedEntities[entity->getEntity()] = true;
 	}
 }
 
@@ -47,6 +56,7 @@ void EntityViewMap::removeEntityView(EntityView* view){
 	for (list<EntityView*>::iterator it = map.at(col).at(row).begin() ; it != map.at(col).at(row).end() ; ++it){
 		if ((*it)->getEntity()->getName() == view->getEntity()->getName()){
 			map.at(col).at(row).erase(it);
+			addedEntities[view->getEntity()] = false;
 			break;
 		}
 	}
@@ -152,6 +162,11 @@ bool EntityViewMap::isEntityInWasVisibleTile(EntityView* entityView) {
 			entityPos->getY());
 
 	TileData* tileData = mapData->getTileData(coords->getRow(), coords->getCol());
+
+	if (entityView->getClassName() == "PlayerView" && !tileData->getIsVisible()) {
+		delete coords;
+		return false;
+	}
 
 	if (tileData->getWasVisible()) {
 		delete coords;

@@ -145,6 +145,9 @@ void MobileEntityView::blitIceSpellEffect(SDL_Surface* screen, int x, int y) {
 
 void MobileEntityView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 
+	if (drawFog)
+		return;
+
 	UpdateCameraPos(cam);
 	Show(screen, drawFog);
 	//chatView->drawChatView(screen);
@@ -387,4 +390,8 @@ int MobileEntityView::computeNumberOfClips(SDL_Surface* img) {
 	float number = (float) img->w / imageWidth;
 	float aux = round(number);
 	return (int) aux;
+}
+
+string MobileEntityView::getClassName() {
+	return "MobileEntityView";
 }
