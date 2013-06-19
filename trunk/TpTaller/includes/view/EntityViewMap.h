@@ -32,6 +32,7 @@ public:
 	list<EntityView*> getListAtRowAndCol(int row, int col);
 	void assingEntitiesView(EntityHolder* entityHolder);
 	//void drawEntities(TileData* tileData,SDL_Surface* screen, Position* cam, int row, int col);
+
 	virtual ~EntityViewMap();
 private:
 	bool isEntityInWasVisibleTile(EntityView* entity);
@@ -41,7 +42,7 @@ private:
 	EntityHolder* entityHolder;
 	vector<vector<list<EntityView*> > > map;
 	list<EntityView*> movableEntities;
-	std::map<EntityView*, Coordinates*> entitiesCoordinates;
+	std::map<Entity*, bool> addedEntities;
 	void updateMovablePos();
 
 };

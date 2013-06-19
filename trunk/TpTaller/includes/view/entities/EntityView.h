@@ -60,6 +60,8 @@ public:
 	int getBaseCols();
 	std::string getName();
 	virtual void setName(std::string name);
+	virtual string getClassName();
+
 protected:
 	virtual void loadImage();
 	void updateBaseSize();

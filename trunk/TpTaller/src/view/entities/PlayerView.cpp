@@ -244,9 +244,11 @@ void PlayerView::blitHPBar(SDL_Surface* screen, int x, int y) {
 }
 void PlayerView::draw(SDL_Surface* screen, Position* cam, bool drawFog) {
 
-	UpdateCameraPos(cam);
-	Show(screen, drawFog);
-	//showWeapon(screen);
+	if (!drawFog) {
+		UpdateCameraPos(cam);
+		Show(screen, drawFog);
+		//showWeapon(screen);
+	}
 }
 
 void PlayerView::UpdateCameraPos(Position* _camPos) {
@@ -717,5 +719,9 @@ void PlayerView::loadWeaponsHudSurfaces() {
 	weaponsHud["Sword"] = IMG_Load(SWORDIMAGE);
 	weaponsHud["FrostWand"] = IMG_Load(FROSTWANDIMAGE);
 
+}
+
+string PlayerView::getClassName() {
+	return "PlayerView";
 }
 

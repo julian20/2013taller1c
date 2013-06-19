@@ -49,11 +49,12 @@ public:
 	void setName(std::string name);
 	void setShowableName(string name);
 	void setMobileEntity(MobileEntity* entity);
-	virtual ~MobileEntityView();
 	void EstablecerLosClips();
 	void draw(SDL_Surface* screen, Position* camera, bool drawFog);
 	void blitName(SDL_Surface* screen, int x, int y);
+	virtual string getClassName();
 
+	virtual ~MobileEntityView();
 protected:
 
 	void showFrame(SDL_Surface* screen, SDL_Rect* clip, bool drawFog);
