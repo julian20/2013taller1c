@@ -62,6 +62,7 @@ PlayerView::PlayerView()
 	lastDirection = M_PI * 1 / 2;
 	chatView = NULL;
 	previousLife = 0;
+	loadedTeam = -1;
 
 	loadWeaponsHudSurfaces();
 }
@@ -89,6 +90,7 @@ PlayerView::PlayerView(PlayerView* otherPlayer) :
 	this->setName(otherPlayer->getName());
 	chatView = NULL;
 	previousLife = 0;
+	loadedTeam = -1;
 
 	loadWeaponsHudSurfaces();
 }
@@ -279,7 +281,7 @@ FoggedSprite PlayerView::loadFoggedSprite(const char* modifier) {
 	sprite.image = textureHolder->getTexture(name + id);
 	sprite.foggedImage = textureHolder->getFogTexture(name + id);
 	sprite.teamColorImage = FogCreator::getFog(sprite.image,
-			teamColors[player->getTeam()]);
+			teamColors[loadedTeam]);
 	sprite.numberOfClips = computeNumberOfClips(sprite.image);
 	return sprite;
 
@@ -291,7 +293,7 @@ FoggedSprite PlayerView::loadFoggedSpellSprite(const char* modifier) {
 	sprite.image = textureHolder->getTexture(id);
 	sprite.foggedImage = textureHolder->getFogTexture(id);
 	sprite.teamColorImage = FogCreator::getFog(sprite.image,
-			teamColors[player->getTeam()]);
+			teamColors[loadedTeam]);
 	sprite.numberOfClips = 4;
 	return sprite;
 
@@ -463,7 +465,8 @@ void PlayerView::Show(SDL_Surface* fondo, bool drawFog) {
 			SoundEffectHandler::playSound(ICE_SOUND);
 			wasFrozenBefore = true;
 		}
-	if (!loaded) {
+	if (!loaded || loadedTeam != getEntity()->getTeam()) {
+		loadedTeam = getEntity()->getTeam();
 		loaded = true;
 		loadPlayerImage();
 		damageReceivedTimer.start();

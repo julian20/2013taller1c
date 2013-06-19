@@ -101,7 +101,7 @@ private:
 	map<string,FoggedSprite> spellMap;
 	map<string, SDL_Surface* > weaponsHud;
 	bool loaded;
-
+	int loadedTeam;
 };
 
 #endif	/* PERSONAJEVISTA_H */
