@@ -34,7 +34,7 @@ public:
 	//void drawEntities(TileData* tileData,SDL_Surface* screen, Position* cam, int row, int col);
 	virtual ~EntityViewMap();
 private:
-	bool isEntityInTile(EntityView* entity, int row, int col);
+	bool isEntityInWasVisibleTile(EntityView* entity);
 
 	int rows, cols;
 	MapData* mapData;
