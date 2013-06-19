@@ -351,8 +351,10 @@ void Player::extraUpdate(MapData* mapData) {
 
 	if (attackToEntity != NULL) {
 		Tile* enemyTile = attackToEntity->getTile();
-		if (MapData::distBetweenTiles(currentTile, enemyTile) > getViewRange())
+		if (MapData::distBetweenTiles(currentTile, enemyTile) > getViewRange()) {
 			cancelAttack();
+			path->erase(path->begin(), path->end());
+		}
 	}
 }
 
