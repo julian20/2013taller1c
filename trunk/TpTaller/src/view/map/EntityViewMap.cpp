@@ -131,7 +131,7 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
 					for (it = aList.begin(); it != aList.end(); ++it) {
 						EntityView* view = *it;
 
-						if (!isEntityInTile(view, row, col))
+						if (!isEntityInWasVisibleTile(view))
 							continue;
 
 						if (!view)
@@ -146,17 +146,19 @@ void EntityViewMap::drawViews(SDL_Surface* screen, Position* cam,
 
 }
 
-bool EntityViewMap::isEntityInTile(EntityView* entityView, int row, int col) {
+bool EntityViewMap::isEntityInWasVisibleTile(EntityView* entityView) {
 	Vector3* entityPos = entityView->getEntity()->getCurrentPos();
 	Coordinates* coords = Tile::getTileCoordinates(entityPos->getX(),
 			entityPos->getY());
 
-	if (coords->getRow() != row || coords->getCol() != col) {
+	TileData* tileData = mapData->getTileData(coords->getRow(), coords->getCol());
+
+	if (tileData->getWasVisible()) {
 		delete coords;
-		return false;
+		return true;
 	}
 	delete coords;
-	return true;
+	return false;
 }
 
 EntityViewMap::~EntityViewMap() {
