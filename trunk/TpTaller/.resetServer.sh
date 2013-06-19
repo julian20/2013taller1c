@@ -6,6 +6,8 @@ while true; do
 	result="$?"
 	if [ "$result" -eq "2" ]; then 
 		kill -9 $(lsof -n -i| grep "$port" | sed -n "s/^[a-Z]*[ ]\([0-9][0-9]*\)[ ].*$/\1/p" | grep -m 1 ".*") 2> /dev/null
+		echo "Reiniciando el servidor ..."
+		sleep 10
 	fi
 	if [ "$result" -eq "5" ]; then
 		echo "Error al bindear al puerto, reintentando en 5 segundos"
@@ -24,5 +26,4 @@ while true; do
 	if [ "$result" -ne "2" ] && [ "$result" -ne "5" ]; then
 		exit
 	fi
-	echo "Reiniciando el servidor ..."
 done
