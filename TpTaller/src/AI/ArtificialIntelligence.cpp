@@ -11,6 +11,7 @@
 
 ArtificialIntelligence::ArtificialIntelligence() {
 	entity = NULL;
+	enemy = NULL;
 }
 
 void ArtificialIntelligence::setMobileEntity(MobileEntity* entity) {
@@ -70,8 +71,7 @@ bool ArtificialIntelligence::isAnyEnemyClose(MapData* mapData) {
 Entity& ArtificialIntelligence::getNearestEnemy() {
 
 	MobileEntity* mob;
-	if(enemy != NULL && !enemy->isDead())
-	{
+	if(enemy != NULL && !enemy->isDead()) {
 		return *enemy;
 	}
 	list<MobileEntity*>::iterator iter;
