@@ -8,7 +8,7 @@
 #include <model/entities/Golem/Golem.h>
 
 Golem::Golem() {
-	this->life = 10 ;
+	this->life = 50;
 	this->magic = 0;
 	this->name = "Golem";
 	this->owner = NULL;
@@ -48,7 +48,7 @@ void Golem::attack(Entity& entity) {
 	Entity* entityPtr = (Entity*) &entity;
 	if (entityPtr->getName() == "flago") return;
 	if (attackTimer.getTimeIntervalSinceStart() > ATTACK_TIMEOUT) {
-		entityPtr->setLife(entityPtr->getLife() - 2);
+		entityPtr->setLife(entityPtr->getLife() - 5);
 		attackTimer.start();
 	}
 	if(entityPtr->isDead()) entityPtr->setKilledBy(team);
