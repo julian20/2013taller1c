@@ -219,10 +219,12 @@ void Entity::setKilledBy(int team) {
 }
 
 void Entity::collideTo(MobileEntity& mobileEntity) {
+	if (this->team == mobileEntity.getTeam()) return;
 	mobileEntity.attack(*this);
 }
 
 void Entity::collideTo(Player& player) {
+	if (this->team == player.getTeam()) return;
 	player.attack(*this);
 }
 
